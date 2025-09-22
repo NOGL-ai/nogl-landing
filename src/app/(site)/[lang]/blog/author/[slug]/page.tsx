@@ -1,9 +1,9 @@
-import { getPostsByAuthor, getAuthorBySlug } from "@/sanity/sanity-utils";
+import { getPostsByAuthor, getAuthorBySlug } from "@/ghost/ghost-utils";
 import BlogItem from "@/components/Blog/BlogItem";
 import Breadcrumbs from "@/components/Common/Breadcrumbs";
 import { Author } from "@/types/blog";
 import Image from "next/image";
-import { imageBuilder } from "@/sanity/sanity-utils";
+import { imageBuilder } from "@/ghost/ghost-utils";
 
 type Props = {
 	params: {

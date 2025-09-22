@@ -108,6 +108,12 @@ const nextConfig = {
 			port: '',
 			pathname: '/**',
 		  },
+		{
+		  protocol: 'https',
+		  hostname: 'static.ghost.org',
+		  port: '',
+		  pathname: '/**',
+		},
 	  ],
 	},
 	eslint: {

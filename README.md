@@ -22,7 +22,7 @@ A full-stack SaaS landing page and application built with Next.js, featuring mod
 - **Database**: Prisma ORM
 - **Authentication**: NextAuth.js
 - **Payments**: Stripe, LemonSqueezy, Paddle
-- **CMS**: Sanity
+- **CMS**: Ghost
 - **Deployment**: Vercel
 
 ## 📦 Installation

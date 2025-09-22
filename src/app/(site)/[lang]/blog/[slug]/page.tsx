@@ -1,5 +1,5 @@
 import React from "react";
-import { getPostBySlug, imageBuilder } from "@/sanity/sanity-utils";
+import { getPostBySlug, imageBuilder } from "@/ghost/ghost-utils";
 import RenderBodyContent from "@/components/Blog/RenderBodyContent";
 import Link from "next/link";
 import Image from "next/image";

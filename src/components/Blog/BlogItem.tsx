@@ -1,22 +1,20 @@
 import React from "react";
 import { Blog } from "@/types/blog";
 import Image from "next/image";
-import { imageBuilder } from "@/sanity/sanity-utils";
+import { imageBuilder } from "@/ghost/ghost-utils";
 import Link from "next/link";
 import { Route } from 'next';
 
 const BlogItem = ({ blog }: { blog: Blog }) => {
-	if (!blog?.slug?.current) {
+	if (!blog?.slug) {
 		return null; // Or a fallback UI
 	}
 
-	const blogUrl = `/blog/${blog.slug.current}`;
-	const authorUrl = blog?.author?.slug?.current
-		? `/blog/author/${blog.author.slug.current}`
+	const blogUrl = `/blog/${blog.slug}`;
+	const authorUrl = blog?.primary_author?.slug
+		? `/blog/author/${blog.primary_author.slug}`
 		: '#';
-	const imageUrl = blog?.mainImage
-		? imageBuilder(blog.mainImage).url() || '/placeholder-image.jpg'
-		: '/placeholder-image.jpg'; // Ensure imageUrl is always a string
+	const imageUrl = blog?.feature_image || '/placeholder-image.jpg';
 
 	return (
 		<article className='group overflow-hidden rounded-[15px] bg-white shadow-dropdown dark:bg-gray-dark'>
@@ -41,7 +39,7 @@ const BlogItem = ({ blog }: { blog: Blog }) => {
 							href={authorUrl as Route}
 							className='flex items-center gap-2 font-satoshi text-sm font-medium -tracking-[0.1px] dark:text-gray-5'
 					>
-						{blog?.author?.name || 'Anonymous'}
+						{blog?.primary_author?.name || 'Anonymous'}
 					</Link>
 				</div>
 

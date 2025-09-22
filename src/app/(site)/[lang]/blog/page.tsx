@@ -1,4 +1,4 @@
-import { getPosts } from "@/sanity/sanity-utils";
+import { getPosts } from "@/ghost/ghost-utils";
 import BlogItem from "@/components/Blog/BlogItem";
 import Breadcrumbs from "@/components/Common/Breadcrumbs";
 import Image from "next/image";

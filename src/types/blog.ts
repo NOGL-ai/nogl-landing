@@ -1,24 +1,20 @@
-import { PortableTextBlock } from "sanity";
-
+// Ghost CMS types
 export type Author = {
 	name: string;
-	image: string;
+	profile_image?: string;
 	bio?: string;
-	slug: {
-		current: string;
-	};
-	_id?: number | string;
-	_ref?: number | string;
+	slug: string;
+	id?: string;
 };
 
 export type Blog = {
-	_id: number;
+	id: string;
 	title: string;
-	slug: any;
-	metadata: string;
-	body: PortableTextBlock[];
-	mainImage: any;
-	author: Author;
-	tags: string[];
-	publishedAt: string;
+	slug: string;
+	excerpt?: string;
+	html: string;
+	feature_image?: string;
+	primary_author?: Author;
+	tags?: any[];
+	published_at: string;
 };

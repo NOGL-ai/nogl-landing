@@ -1,7 +1,7 @@
 import React from "react";
 import BlogItem from "@/components/Blog/BlogItem";
 import SectionHeader from "@/components/Common/SectionHeader";
-import { getPosts } from "@/sanity/sanity-utils";
+import { getPosts } from "@/ghost/ghost-utils";
 
 interface BlogProps {
 	dictionary: {
