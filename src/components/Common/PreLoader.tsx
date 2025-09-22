@@ -2,11 +2,18 @@
 import { useEffect, useState } from "react";
 
 const Loader = () => {
-	const [loading, setLoading] = useState<boolean>(true);
+	const [loading, setLoading] = useState<boolean>(false);
+	const [mounted, setMounted] = useState(false);
 
 	useEffect(() => {
+		setMounted(true);
 		setTimeout(() => setLoading(false), 1000);
 	}, []);
+
+	// Prevent hydration mismatch by not rendering until mounted
+	if (!mounted) {
+		return null;
+	}
 
 	return (
 		<>

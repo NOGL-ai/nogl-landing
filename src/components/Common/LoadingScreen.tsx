@@ -1,22 +1,29 @@
 "use client";
 
 import dynamic from 'next/dynamic';
-import { useEffect, useRef, useState } from 'react';
-import { useLoading } from '@/context/LoadingContext';
+import { useEffect, useRef, useState, useContext } from 'react';
+import { LoadingContext } from '@/context/LoadingContext';
 import type { LottieRefCurrentProps } from 'lottie-react';
+import loading from '../../../public/animations/loading.json';
+import loadingMobile from '../../../public/animations/loading-mobile.json';
 
-// Dynamically import Lottie to avoid SSR issues
-const Lottie = dynamic(() => import('lottie-react'), {
+// Dynamically import Lottie default export to avoid SSR issues
+const Lottie = dynamic(() => import('lottie-react').then(mod => mod.default), {
   ssr: false,
   loading: () => <div className="w-full h-full bg-white dark:bg-neutral-900" />
 });
 
 const LoadingScreen = () => {
-  const { isLoading } = useLoading();
-  const lottieRef = useRef<LottieRefCurrentProps>(null);
+  const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const lottieRef = useRef<LottieRefCurrentProps>(null);
+  
+  // Safely get loading state with fallback
+  const loadingContext = useContext(LoadingContext);
+  const isLoading = loadingContext?.isLoading ?? false;
 
   useEffect(() => {
+    setMounted(true);
     // Check if window is defined (client-side)
     if (typeof window !== 'undefined') {
       // Initial check
@@ -40,24 +47,23 @@ const LoadingScreen = () => {
     }
   }, []);
 
-  if (!isLoading) return null;
+  // Prevent hydration mismatch by not rendering until mounted
+  if (!mounted || !isLoading) return null;
 
   return (
     <div className="fixed inset-0 z-[9999] w-full h-full bg-white dark:bg-neutral-900 overflow-hidden">
       <div className="relative w-full h-full flex items-center justify-center">
-        {typeof window !== 'undefined' && (
-          <Lottie
-            lottieRef={lottieRef}
-            animationData={require(`/public/animations/${isMobile ? 'loading-mobile' : 'loading'}.json`)}
-            loop={false}
-            autoplay={true}
-            className="w-full h-full"
-            rendererSettings={{
-              preserveAspectRatio: 'xMidYMid slice',
-              progressiveLoad: true,
-            }}
-          />
-        )}
+        <Lottie
+          lottieRef={lottieRef}
+          animationData={isMobile ? loadingMobile : loading}
+          loop={false}
+          autoplay={true}
+          className="w-full h-full"
+          rendererSettings={{
+            preserveAspectRatio: 'xMidYMid slice',
+            progressiveLoad: true,
+          }}
+        />
       </div>
     </div>
   );

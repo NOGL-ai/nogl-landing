@@ -1,16 +1,18 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useThemeMode } from "@/utils/useThemeMode";
 
 const ClientCommons = () => {
-	//
+	const [mounted, setMounted] = useState(false);
 	useThemeMode();
 
 	const pathname = usePathname();
+	
 	//  CUSTOM THEME STYLE
 	useEffect(() => {
+		setMounted(true);
 		const $body = document.querySelector("body");
 		if (!$body) return;
 
@@ -28,6 +30,11 @@ const ClientCommons = () => {
 			newBodyClass && $body.classList.remove(newBodyClass);
 		};
 	}, [pathname]);
+
+	// Prevent hydration mismatch by not rendering until mounted
+	if (!mounted) {
+		return <></>;
+	}
 
 	return <></>;
 };

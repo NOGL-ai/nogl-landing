@@ -7,12 +7,14 @@ interface LoadingContextType {
   setIsLoading: (loading: boolean) => void;
 }
 
-const LoadingContext = createContext<LoadingContextType | undefined>(undefined);
+export const LoadingContext = createContext<LoadingContextType | undefined>(undefined);
 
 export function LoadingProvider({ children }: { children: React.ReactNode }) {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     // Match the Lottie animation's exact duration of 2.6 seconds
     const pageLoader = setTimeout(() => {
       setIsLoading(false);

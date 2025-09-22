@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { createGlobalState } from "react-hooks-global-state";
 
 const initialState = { isDarkmode: true }; // Set default to true
@@ -6,8 +6,10 @@ const { useGlobalState } = createGlobalState(initialState);
 
 export const useThemeMode = () => {
   const [isDarkMode, setIsDarkMode] = useGlobalState("isDarkmode");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     // If there's no theme in localStorage, default to dark
     if (!localStorage.theme) {
       localStorage.theme = "dark";
@@ -46,7 +48,7 @@ export const useThemeMode = () => {
   }
 
   return {
-    isDarkMode,
+    isDarkMode: mounted ? isDarkMode : true, // Return default value during SSR
     toDark,
     toLight,
     _toogleDarkMode,
