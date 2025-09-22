@@ -6,10 +6,10 @@ export interface SocialsList1Props {
 }
 
 const socials: SocialType[] = [
-	{ name: "Facebook", icon: "lab la-facebook-square", href: "#" },
-	{ name: "Twitter", icon: "lab la-twitter", href: "#" },
-	{ name: "Youtube", icon: "lab la-youtube", href: "#" },
-	{ name: "Instagram", icon: "lab la-instagram", href: "#" },
+	{ name: "Facebook", icon: "lab la-facebook-square", href: "https://facebook.com/noglai" },
+	{ name: "Twitter", icon: "lab la-twitter", href: "https://twitter.com/noglai" },
+	{ name: "Youtube", icon: "lab la-youtube", href: "https://youtube.com/@noglai" },
+	{ name: "Instagram", icon: "lab la-instagram", href: "https://instagram.com/noglai" },
 ];
 
 const SocialsList1: FC<SocialsList1Props> = ({ className = "space-y-2.5" }) => {

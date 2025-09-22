@@ -14,47 +14,42 @@ export interface WidgetFooterMenu {
 
 const widgetMenus: WidgetFooterMenu[] = [
 	{
-		id: "5",
-		title: "Getting started",
-		menus: [
-			{ href: "/", label: "Home" },
-			{ href: "/about", label: "About" },
-			{ href: "/blog", label: "Blog" },
-			{ href: "#", label: "Browser Support" },
-			{ href: "#", label: "Editor Support" },
-		],
-	},
-	{
 		id: "1",
-		title: "Members",
+		title: "Product",
 		menus: [
-			{ href: "#", label: "How it works" },
-			{ href: "#", label: "Login" },
-			{ href: "#", label: "Register" },
-			{ href: "/#", label: "Subscription" },
-			{ href: "#", label: "Security" },
+			{ href: "/about", label: "How it works" },
+			{ href: "/listing-session", label: "Find Experts" },
+			{ href: "/#pricing", label: "Pricing" },
+			{ href: "/become-expert", label: "Become Expert" },
 		],
 	},
 	{
 		id: "2",
-		title: "Experts",
+		title: "Company",
 		menus: [
-			{ href: "/listing-session", label: "Meet the Experts" },
-			{ href: "#", label: "Support" },
-			{ href: "#", label: "Developers" },
-			{ href: "#", label: "Learn design" },
-			{ href: "#", label: "Releases" },
+			{ href: "/about", label: "About" },
+			{ href: "/blog", label: "Blog" },
+			{ href: "/contact", label: "Contact" },
+			{ href: "/support", label: "Support" },
+		],
+	},
+	{
+		id: "3",
+		title: "Account",
+		menus: [
+			{ href: "/auth/signin", label: "Sign In" },
+			{ href: "/auth/signup", label: "Sign Up" },
+			{ href: "/user", label: "Dashboard" },
+			{ href: "/user/billing", label: "Billing" },
 		],
 	},
 	{
 		id: "4",
-		title: "Community",
+		title: "Legal",
 		menus: [
-			{ href: "#", label: "Discussion Forums" },
-			{ href: "#", label: "Code of Conduct" },
-			{ href: "#", label: "Community Resources" },
-			{ href: "#", label: "Contributing" },
-			{ href: "#", label: "Concurrent Mode" },
+			{ href: "/privacy-policy", label: "Privacy Policy" },
+			{ href: "/tos", label: "Terms of Service" },
+			{ href: "/support", label: "Help Center" },
 		],
 	},
 ];
