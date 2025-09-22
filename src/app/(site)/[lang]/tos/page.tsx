@@ -1,180 +1,281 @@
 import React from 'react';
-import { getSEOTags } from '@/libs/seo';
-import { renderSchemaTags } from "@/libs/seo";
+import { getSEOTags, renderSchemaTags } from '@/libs/seo';
+import Breadcrumb from '@/components/Common/Breadcrumb';
+import Section from '@/components/section';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { FileText, Shield, User, CreditCard, Ban, Scale, Landmark, Mail, Link as LinkIcon, Globe } from 'lucide-react';
 
 export const metadata = getSEOTags({
   title: `Terms of Service | ${process.env.SITE_NAME}`,
-  description: 'Learn about how Nogl handles and protects your personal information, data collection practices, and your privacy rights as our user.',
-  canonicalUrlRelative: "/tos", // Changed to relative URL
+  description: 'Terms governing use of the service, user obligations, content rights, liability, and contact.',
+  canonicalUrlRelative: "/tos",
 });
 
 const TermsOfServicePage = () => {
   const siteName = process.env.SITE_NAME || "Nogl";
   const siteUrl = process.env.SITE_URL || "https://www.nogl.ai";
+  const lastUpdated = new Date().toISOString().split('T')[0];
 
   const schemaData = {
     "@context": "https://schema.org",
     "@type": "WebPage",
     name: "Terms of Service",
-    description: "Learn about how Nogl handles and protects your personal information, data collection practices, and your privacy rights as our user.",
-    dateModified: new Date().toISOString().split('T')[0],
+    description: "Terms governing use of the service, user obligations, content rights, liability, and contact.",
+    dateModified: lastUpdated,
     url: `${siteUrl}/tos`,
     publisher: {
       "@type": "Organization",
       name: siteName,
       url: siteUrl,
     }
-  };
+  } as const;
 
   return (
     <>
       {renderSchemaTags(schemaData)}
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <h1 className="text-3xl font-bold mb-6">Terms of Service</h1>
 
-        <p className="text-sm text-gray-500 mb-4">Last Updated: November 12, 2024</p>
+      <Breadcrumb pageTitle="Terms of Service" />
 
-        {/* 1. Introduction */}
-        <h2 className="text-2xl font-semibold mt-8 mb-4">1. Introduction</h2>
-        <p>
-          Welcome to Nogl ("we," "us," "our," "Platform," or "Service"). By accessing or using our website at{' '}
-          <a href="https://www.nogl.ai/" className="text-blue-600 underline">
-            https://www.nogl.ai/
-          </a>
-          , you agree to be bound by these Terms of Service ("Terms"). If you disagree with any part of these terms, you may not access our Service.
-        </p>
+      <Section className="bg-gray-50 dark:bg-gray-900">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-6">
+              <FileText className="w-8 h-8 text-primary" />
+            </div>
+            <h1 className="text-4xl font-bold mb-3">Terms of Service</h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Last updated: {lastUpdated}</p>
+          </div>
 
-        {/* 2. Definitions */}
-        <h2 className="text-2xl font-semibold mt-8 mb-4">2. Definitions</h2>
-        <ul className="list-disc pl-6 space-y-2">
-          <li>
-            <strong>Service:</strong> The Nogl platform and website accessible at{' '}
-            <a href="https://www.nogl.ai/" className="text-blue-600 underline">
-              https://www.nogl.ai/
-            </a>
-          </li>
-          <li>
-            <strong>User:</strong> Any individual or entity accessing or using our Service
-          </li>
-          <li>
-            <strong>Content:</strong> All information, data, text, graphics, or other materials uploaded, downloaded, or appearing on our Service
-          </li>
-        </ul>
+          {/* Quick Navigation */}
+          <div className="mb-10">
+            <div className="flex flex-wrap gap-2 text-sm">
+              <a href="#introduction" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Introduction</a>
+              <a href="#definitions" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Definitions</a>
+              <a href="#account" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Accounts</a>
+              <a href="#content" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Content & IP</a>
+              <a href="#conduct" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Conduct</a>
+              <a href="#privacy" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Privacy</a>
+              <a href="#payments" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Payments</a>
+              <a href="#termination" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Termination</a>
+              <a href="#liability" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Liability</a>
+              <a href="#changes" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Changes</a>
+              <a href="#law" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Governing law</a>
+              <a href="#contact" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Contact</a>
+            </div>
+          </div>
 
-        {/* 3. Account Registration and Security */}
-        <h2 className="text-2xl font-semibold mt-8 mb-4">3. Account Registration and Security</h2>
-        <p>
-          When you create an account with us, you must provide accurate, complete, and current information. You are responsible for:
-        </p>
-        <ul className="list-disc pl-6 space-y-2">
-          <li>Maintaining the confidentiality of your account credentials</li>
-          <li>All activities that occur under your account</li>
-          <li>Notifying us immediately of any unauthorized access</li>
-        </ul>
+          {/* 1. Introduction */}
+          <Card id="introduction" className="mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3">
+                <Shield className="w-6 h-6 text-primary" />
+                1. Introduction
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600 dark:text-gray-300">
+                Welcome to {siteName} ("we," "us," "our"). By accessing or using our website at{' '}
+                <a href={siteUrl} className="text-primary underline">{siteUrl}</a>, you agree to these Terms of Service ("Terms"). If you do not agree,
+                do not access or use the Service.
+              </p>
+            </CardContent>
+          </Card>
 
-        {/* 4. Recording and Content Rights */}
-        <h2 className="text-2xl font-semibold mt-8 mb-4">4. Recording and Content Rights</h2>
+          {/* 2. Definitions */}
+          <Card id="definitions" className="mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3">
+                <Globe className="w-6 h-6 text-primary" />
+                2. Definitions
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+                <li className="flex items-start gap-2"><span className="w-2 h-2 bg-primary rounded-full mt-2"></span>
+                  <strong>Service:</strong> The {siteName} platform and website.
+                </li>
+                <li className="flex items-start gap-2"><span className="w-2 h-2 bg-primary rounded-full mt-2"></span>
+                  <strong>User:</strong> Any individual or entity using the Service.
+                </li>
+                <li className="flex items-start gap-2"><span className="w-2 h-2 bg-primary rounded-full mt-2"></span>
+                  <strong>Content:</strong> Information, data, text, graphics, or materials on the Service.
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
 
-        {/* Session Recording */}
-        <h3 className="text-xl font-semibold mt-6 mb-2">Session Recording</h3>
-        <ul className="list-disc pl-6 space-y-2">
-          <li>All sessions conducted through our platform may be recorded</li>
-          <li>By using our Service, you explicitly consent to the recording of sessions</li>
-          <li>We retain full ownership and rights to all recorded content</li>
-        </ul>
+          {/* 3. Account Registration and Security */}
+          <Card id="account" className="mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3">
+                <User className="w-6 h-6 text-primary" />
+                3. Account Registration and Security
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600 dark:text-gray-300 mb-3">You agree to:</p>
+              <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+                <li className="flex items-start gap-2"><span className="w-2 h-2 bg-primary rounded-full mt-2"></span>Provide accurate and current information</li>
+                <li className="flex items-start gap-2"><span className="w-2 h-2 bg-primary rounded-full mt-2"></span>Maintain the confidentiality of your credentials</li>
+                <li className="flex items-start gap-2"><span className="w-2 h-2 bg-primary rounded-full mt-2"></span>Notify us of unauthorized access immediately</li>
+              </ul>
+            </CardContent>
+          </Card>
 
-        {/* Intellectual Property */}
-        <h3 className="text-xl font-semibold mt-6 mb-2">Intellectual Property</h3>
-        <ul className="list-disc pl-6 space-y-2">
-          <li>All content, features, and functionality of our Service are owned by Nogl</li>
-          <li>Users may not reproduce, distribute, or create derivative works without our explicit permission</li>
-        </ul>
+          {/* 4. Content and Intellectual Property */}
+          <Card id="content" className="mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3">
+                <FileText className="w-6 h-6 text-primary" />
+                4. Content and Intellectual Property
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">
+                We do not record calls or similar communications. If we introduce recording features in the future,
+                we will provide prominent notice and obtain required consent before any recording occurs.
+              </p>
+              <h3 className="text-lg font-semibold mb-2">Intellectual Property</h3>
+              <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+                <li className="flex items-start gap-2"><span className="w-2 h-2 bg-primary rounded-full mt-2"></span>All content, features, and functionality are owned by {siteName}</li>
+                <li className="flex items-start gap-2"><span className="w-2 h-2 bg-primary rounded-full mt-2"></span>No reproduction or derivative works without permission</li>
+              </ul>
+            </CardContent>
+          </Card>
 
-        {/* 5. User Conduct */}
-        <h2 className="text-2xl font-semibold mt-8 mb-4">5. User Conduct</h2>
-        <p>You agree not to:</p>
-        <ul className="list-disc pl-6 space-y-2">
-          <li>Use our Service for any illegal purposes</li>
-          <li>Interfere with or disrupt our Service</li>
-          <li>Attempt to gain unauthorized access to our systems</li>
-          <li>Upload or transmit malicious code</li>
-          <li>Impersonate any person or entity</li>
-        </ul>
+          {/* 5. User Conduct */}
+          <Card id="conduct" className="mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3">
+                <Shield className="w-6 h-6 text-primary" />
+                5. User Conduct
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600 dark:text-gray-300 mb-3">You agree not to:</p>
+              <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+                <li className="flex items-start gap-2"><span className="w-2 h-2 bg-primary rounded-full mt-2"></span>Use the Service for illegal purposes</li>
+                <li className="flex items-start gap-2"><span className="w-2 h-2 bg-primary rounded-full mt-2"></span>Interfere with or disrupt the Service</li>
+                <li className="flex items-start gap-2"><span className="w-2 h-2 bg-primary rounded-full mt-2"></span>Attempt unauthorized access</li>
+                <li className="flex items-start gap-2"><span className="w-2 h-2 bg-primary rounded-full mt-2"></span>Upload or transmit malicious code</li>
+                <li className="flex items-start gap-2"><span className="w-2 h-2 bg-primary rounded-full mt-2"></span>Impersonate any person or entity</li>
+              </ul>
+            </CardContent>
+          </Card>
 
-        {/* 6. Data Collection and Privacy */}
-        <h2 className="text-2xl font-semibold mt-8 mb-4">6. Data Collection and Privacy</h2>
-        <p>
-          We collect and process your data as described in our{' '}
-          <a href="/privacy-policy" className="text-blue-600 underline">
-            Privacy Policy
-          </a>
-          , available at{' '}
-          <a href="https://www.nogl.ai/privacy-policy" className="text-blue-600 underline">
-            https://www.nogl.ai/privacy-policy
-          </a>
-          . This includes:
-        </p>
-        <ul className="list-disc pl-6 space-y-2">
-          <li>Personal information (name, email, payment details)</li>
-          <li>Non-personal data through cookies and similar technologies</li>
-        </ul>
+          {/* 6. Data Collection and Privacy */}
+          <Card id="privacy" className="mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3">
+                <LinkIcon className="w-6 h-6 text-primary" />
+                6. Data Collection and Privacy
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600 dark:text-gray-300">
+                We collect and process your data as described in our <a href="privacy-policy" className="text-primary underline">Privacy Policy</a>.
+              </p>
+            </CardContent>
+          </Card>
 
-        {/* 7. Payment Terms */}
-        <h2 className="text-2xl font-semibold mt-8 mb-4">7. Payment Terms</h2>
-        <ul className="list-disc pl-6 space-y-2">
-          <li>All fees are in the displayed currency and exclusive of applicable taxes</li>
-          <li>Payments are processed through secure third-party payment processors</li>
-          <li>We reserve the right to modify our pricing with reasonable notice</li>
-        </ul>
+          {/* 7. Payment Terms */}
+          <Card id="payments" className="mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3">
+                <CreditCard className="w-6 h-6 text-primary" />
+                7. Payment Terms
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+                <li className="flex items-start gap-2"><span className="w-2 h-2 bg-primary rounded-full mt-2"></span>Fees exclude applicable taxes</li>
+                <li className="flex items-start gap-2"><span className="w-2 h-2 bg-primary rounded-full mt-2"></span>Payments are handled by secure third-party processors</li>
+                <li className="flex items-start gap-2"><span className="w-2 h-2 bg-primary rounded-full mt-2"></span>Pricing may change with reasonable notice</li>
+              </ul>
+            </CardContent>
+          </Card>
 
-        {/* 8. Termination */}
-        <h2 className="text-2xl font-semibold mt-8 mb-4">8. Termination</h2>
-        <p>We may terminate or suspend your account and access to our Service:</p>
-        <ul className="list-disc pl-6 space-y-2">
-          <li>Immediately for violations of these Terms</li>
-          <li>With reasonable notice for any other reason</li>
-          <li>At your request through proper account closure procedures</li>
-        </ul>
+          {/* 8. Termination */}
+          <Card id="termination" className="mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3">
+                <Ban className="w-6 h-6 text-primary" />
+                8. Termination
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600 dark:text-gray-300 mb-3">We may terminate or suspend your account:</p>
+              <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+                <li className="flex items-start gap-2"><span className="w-2 h-2 bg-primary rounded-full mt-2"></span>Immediately for violations of these Terms</li>
+                <li className="flex items-start gap-2"><span className="w-2 h-2 bg-primary rounded-full mt-2"></span>With reasonable notice for other reasons</li>
+                <li className="flex items-start gap-2"><span className="w-2 h-2 bg-primary rounded-full mt-2"></span>At your request, following account closure procedures</li>
+              </ul>
+            </CardContent>
+          </Card>
 
-        {/* 9. Limitation of Liability */}
-        <h2 className="text-2xl font-semibold mt-8 mb-4">9. Limitation of Liability</h2>
-        <p>To the maximum extent permitted by law, Nogl shall not be liable for:</p>
-        <ul className="list-disc pl-6 space-y-2">
-          <li>Any indirect, incidental, or consequential damages</li>
-          <li>Any loss or damage arising from your use of our Service</li>
-          <li>Service interruptions or technical issues</li>
-        </ul>
+          {/* 9. Limitation of Liability */}
+          <Card id="liability" className="mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3">
+                <Scale className="w-6 h-6 text-primary" />
+                9. Limitation of Liability
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600 dark:text-gray-300">To the maximum extent permitted by law, {siteName} is not liable for indirect, incidental, or consequential damages, losses arising from use of the Service, or interruptions and technical issues.</p>
+            </CardContent>
+          </Card>
 
-        {/* 10. Changes to Terms */}
-        <h2 className="text-2xl font-semibold mt-8 mb-4">10. Changes to Terms</h2>
-        <p>We reserve the right to modify these Terms at any time. We will notify you of any changes by:</p>
-        <ul className="list-disc pl-6 space-y-2">
-          <li>Sending an email to the address associated with your account</li>
-          <li>Posting a notice on our website</li>
-          <li>Updating the "Last Updated" date at the top of these Terms</li>
-        </ul>
+          {/* 10. Changes to Terms */}
+          <Card id="changes" className="mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3">
+                <FileText className="w-6 h-6 text-primary" />
+                10. Changes to Terms
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+                <li className="flex items-start gap-2"><span className="w-2 h-2 bg-primary rounded-full mt-2"></span>We may modify these Terms at any time</li>
+                <li className="flex items-start gap-2"><span className="w-2 h-2 bg-primary rounded-full mt-2"></span>We will notify you by email and/or prominent site notice</li>
+                <li className="flex items-start gap-2"><span className="w-2 h-2 bg-primary rounded-full mt-2"></span>We will update the Last updated date above</li>
+              </ul>
+            </CardContent>
+          </Card>
 
-        {/* 11. Governing Law */}
-        <h2 className="text-2xl font-semibold mt-8 mb-4">11. Governing Law</h2>
-        <p>
-          These Terms shall be governed by and construed in accordance with the laws of Germany, without regard to its conflict of law provisions.
-        </p>
+          {/* 11. Governing Law */}
+          <Card id="law" className="mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3">
+                <Landmark className="w-6 h-6 text-primary" />
+                11. Governing Law
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600 dark:text-gray-300">These Terms are governed by the laws of Germany, excluding conflict of law principles.</p>
+            </CardContent>
+          </Card>
 
-        {/* 12. Contact Information */}
-        <h2 className="text-2xl font-semibold mt-8 mb-4">12. Contact Information</h2>
-        <p>For any questions about these Terms, please contact us at:</p>
-        <p>
-          Email:{' '}
-          <a href="mailto:info@nogl.tech" className="text-blue-600 underline">
-            info@nogl.tech
-          </a>
-        </p>
+          {/* 12. Contact Information */}
+          <Card id="contact" className="mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3">
+                <Mail className="w-6 h-6 text-primary" />
+                12. Contact Information
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600 dark:text-gray-300 mb-3">Questions about these Terms:</p>
+              <a href="mailto:privacy@nogl.tech" className="text-primary underline">privacy@nogl.tech</a>
+            </CardContent>
+          </Card>
 
-        {/* Acceptance */}
-        <p className="mt-8">
-          By using our Service, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service.
-        </p>
-      </div>
+          {/* Acceptance */}
+          <p className="mt-8 text-gray-600 dark:text-gray-300 text-center">
+            By using our Service, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service.
+          </p>
+        </div>
+      </Section>
     </>
   );
 };

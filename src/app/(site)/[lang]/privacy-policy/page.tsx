@@ -346,7 +346,7 @@ const PrivacyPolicyPage = () => {
               <ul className="space-y-2 text-gray-600 dark:text-gray-300 mb-4">
                 <li className="flex items-start gap-2">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                  Maintain your session and login status
+                  Maintain your authentication state and login status
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
