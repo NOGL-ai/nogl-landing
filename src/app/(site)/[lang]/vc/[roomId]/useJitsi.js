@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
-const useJitsi = ({
+// Commented out useJitsi hook to prevent performance issues
+const _useJitsi = ({
   domain = 'meet.jit.si',
   parentNode,
   subject,
@@ -76,4 +77,4 @@ useJitsi.propTypes = {
   })
 }
 
-export default useJitsi
+export default _useJitsi

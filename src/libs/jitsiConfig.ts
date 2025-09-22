@@ -1,7 +1,8 @@
 // src/libs/jitsiConfig.js or src/libs/jitsiConfig.ts
 
+// Commented out Jitsi configuration to prevent performance issues
 // Exporting the jitsiConfig object
-export const jitsiConfig = {
+export const _jitsiConfig = {
   // Connection settings for the Jitsi server
   hosts: {
     domain: 'jitsi.tuhinmallick.com', // Your Jitsi server domain

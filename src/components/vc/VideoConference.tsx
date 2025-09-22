@@ -5,6 +5,15 @@ import { useRouter } from 'next/navigation';
 import { jitsiConfig } from '@/libs/jitsiConfig'; // Adjust the import path if needed
 
 const VideoConferencePage = ({ params }: { params: { roomId: string } }) => {
+  // Commented out VideoConference component to prevent performance issues
+  return (
+    <div style={{ padding: '20px', textAlign: 'center' }}>
+      <h2>Video Conference Temporarily Unavailable</h2>
+      <p>This feature has been temporarily disabled for performance optimization.</p>
+    </div>
+  );
+
+  /* Original implementation commented out:
   const [api, setApi] = useState<any>(null);
   const [loadingError, setLoadingError] = useState(false);
   const router = useRouter();
@@ -104,6 +113,7 @@ const VideoConferencePage = ({ params }: { params: { roomId: string } }) => {
       />
     </div>
   );
+  */
 };
 
 export default VideoConferencePage;

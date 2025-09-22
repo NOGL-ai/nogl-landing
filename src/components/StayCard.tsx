@@ -73,7 +73,9 @@ const StayCardBookings: React.FC<StayCardBookingsProps> = ({
   const handleAttendClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation(); // Stop the event from bubbling up
     event.preventDefault();  // Prevent the default link behavior
-    router.push(`/videoconference?id=${conferenceId}`); // Navigate to the videoconference page with conferenceId
+    // Commented out video conference navigation to prevent performance issues
+    alert('Video conference feature is temporarily unavailable for performance optimization.');
+    // router.push(`/videoconference?id=${conferenceId}`); // Navigate to the videoconference page with conferenceId
   };
 
   const renderSliderGallery = () => {
