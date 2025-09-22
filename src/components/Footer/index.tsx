@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Route } from "@/routers/types";
 
 const Footer = () => {
 	return (
@@ -9,7 +10,7 @@ const Footer = () => {
 				{/* <!-- footer menu start --> */}
 				<div className='flex flex-wrap gap-10 lg:justify-between xl:flex-nowrap xl:gap-20'>
             <div className='w-full max-w-[275px]'>
-						<Link href='/'>
+						<Link href={"/" as Route<string>}>
 							<Image
 								src='/images/logo/logo-light.svg'
 								alt='Logo'

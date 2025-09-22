@@ -31,22 +31,22 @@ interface NavItem {
 const NAV: NavItem[] = [
 	{
 		name: "Home",
-		link: "/",
+    link: "/" as PathName,
 		icon: HomeIcon,
 	},
-	{
-		name: "Sessions",
-		link: "/listing-session",
-		icon: VideoCameraIcon,
-	},
-	{
-		name: "Experts",
-		link: "/",
-		icon: UserGroupIcon,
-	},
+  {
+    name: "Forecasts",
+    link: "/listing-session" as PathName,
+    icon: VideoCameraIcon,
+  },
+  {
+    name: "Intelligence",
+    link: "/" as PathName,
+    icon: UserGroupIcon,
+  },
 	{
 		name: "Bookings",
-		link: "/account-bookings",
+    link: "/account-bookings" as PathName,
 		icon: CalendarDaysIcon,
 	},
 	{

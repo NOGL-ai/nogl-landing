@@ -23,9 +23,7 @@ const SocialsList: FC<SocialsListProps> = ({
 		<nav
 			className={`nc-SocialsList text-neutral-6000 flex space-x-2.5 text-2xl dark:text-neutral-300 ${className}`}
 			data-nc-id='SocialsList'
-                    aria-label={item.name}
-                    title={item.name}
-                >
+		>
 			{socials.map((item, i) => (
 				<a
 					key={i}
@@ -34,6 +32,7 @@ const SocialsList: FC<SocialsListProps> = ({
 					target='_blank'
 					rel='noopener noreferrer'
 					title={item.name}
+					aria-label={item.name}
 				>
 					<i className={item.icon}></i>
 				</a>
