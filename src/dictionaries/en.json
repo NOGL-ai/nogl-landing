@@ -196,22 +196,22 @@
       {
         "id": 1,
         "question": "Is there a free trial available?",
-        "answer": "Yes, we offer a free trial with full access to all features for as long as you need. This allows you to explore our platform without any commitment and see how it can help you grow your expertise and client base."
+        "answer": "Yes. Start a free trial to access trend briefs, sample forecasts, and AI insights. Explore the platform without commitment and see the impact on demand prediction and assortment decisions."
       },
       {
         "id": 2,
-        "question": "How do clients book a session with an expert?",
-        "answer": "Clients can easily browse expert profiles, select a convenient time, and book a session directly through the platform. The process is seamless, and you'll receive a notification once a booking is confirmed."
+        "question": "How do teams access forecasts and reports?",
+        "answer": "Browse categories, choose your markets, and open on‑demand forecasts and deep‑dive reports. You can filter by season, category, price band, and export insights for your workflows."
       },
       {
         "id": 3,
-        "question": "How can I customize my expert profile?",
-        "answer": "You can customize your expert profile by adding your bio, areas of expertise, and achievements. This helps you stand out and attract the right clients who are looking for your specific skills."
+        "question": "Can we customize outputs to our taxonomy?",
+        "answer": "Yes. Align categories, attributes, and KPIs to your internal taxonomy. Map sizes, colors, price tiers, and hierarchy levels for consistent planning and reporting."
       },
       {
         "id": 4,
         "question": "How is my data protected on the platform?",
-        "answer": "We take data security very seriously. Our platform uses advanced encryption and secure servers to protect all your personal and professional information, ensuring your data is safe at all times."
+        "answer": "We use encryption in transit and at rest, scoped access controls, and audited infrastructure. Enterprise options include data residency and SSO (SAML/OIDC)."
       }
     ]
   },

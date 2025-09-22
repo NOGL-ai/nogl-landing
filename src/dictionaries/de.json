@@ -268,22 +268,22 @@
       {
         "id": 1,
         "question": "Gibt es eine kostenlose Testversion?",
-        "answer": "Ja, wir bieten eine kostenlose Testversion mit vollem Zugriff auf alle Funktionen, solange Sie möchten. Dies ermöglicht es Ihnen, unsere Plattform ohne Verpflichtung zu erkunden und zu sehen, wie sie Ihnen helfen kann, Ihr Fachwissen und Ihre Kundenbasis zu erweitern."
+        "answer": "Ja. Starten Sie eine kostenlose Testphase mit Zugriff auf Trend‑Briefings, Beispiel‑Forecasts und KI‑Insights. Testen Sie ohne Verpflichtung und sehen Sie den Effekt auf Nachfrageprognosen und Sortimentsentscheidungen."
       },
       {
         "id": 2,
-        "question": "Wie buchen Kunden eine Sitzung mit einem Experten?",
-        "answer": "Kunden können einfach Expertenprofile durchsuchen, eine passende Zeit auswählen und direkt über die Plattform eine Sitzung buchen. Der Prozess ist nahtlos, und Sie erhalten eine Benachrichtigung, sobald eine Buchung bestätigt wird."
+        "question": "Wie greifen Teams auf Forecasts und Reports zu?",
+        "answer": "Durchsuchen Sie Kategorien, wählen Sie Märkte und öffnen Sie On‑Demand‑Forecasts sowie Deep‑Dive‑Reports. Filtern Sie nach Saison, Kategorie, Preissegment und exportieren Sie Insights für Ihre Workflows."
       },
       {
         "id": 3,
-        "question": "Wie kann ich mein Expertenprofil anpassen?",
-        "answer": "Sie können Ihr Expertenprofil anpassen, indem Sie Ihre Biografie, Fachgebiete und Erfolge hinzufügen. Dies hilft Ihnen, sich von anderen abzuheben und die richtigen Kunden anzuziehen, die nach Ihren spezifischen Fähigkeiten suchen."
+        "question": "Können wir die Ausgaben auf unsere Taxonomie anpassen?",
+        "answer": "Ja. Richten Sie Kategorien, Attribute und KPIs auf Ihre interne Taxonomie aus. Mappen Sie Größen, Farben, Preisklassen und Hierarchieebenen für konsistente Planung und Berichte."
       },
       {
         "id": 4,
         "question": "Wie werden meine Daten auf der Plattform geschützt?",
-        "answer": "Wir nehmen Datensicherheit sehr ernst. Unsere Plattform verwendet fortschrittliche Verschlüsselung und sichere Server, um alle Ihre persönlichen und beruflichen Informationen zu schützen und sicherzustellen, dass Ihre Daten jederzeit sicher sind."
+        "answer": "Wir nutzen Verschlüsselung während der Übertragung und im Ruhezustand, rollenbasierte Zugriffe und auditierte Infrastruktur. Für Enterprise bieten wir Datenresidenz und SSO (SAML/OIDC)."
       }
     ]
   },
