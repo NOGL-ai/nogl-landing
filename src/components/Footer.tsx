@@ -18,9 +18,9 @@ const widgetMenus: WidgetFooterMenu[] = [
 		title: "Product",
 		menus: [
 			{ href: "/about", label: "How it works" },
-			{ href: "/listing-session", label: "Find Experts" },
+			{ href: "/listing-session", label: "Trend Forecasts" },
 			{ href: "/#pricing", label: "Pricing" },
-			{ href: "/become-expert", label: "Become Expert" },
+			{ href: "/become-expert", label: "For Teams" },
 		],
 	},
 	{
