@@ -2,6 +2,7 @@
 
 import { motion, Variants } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useAnimationCapabilities, getAnimationVariants, getStaggerTiming } from "@/hooks/useAnimationCapabilities";
 
 interface FlipTextProps {
   word: string;
@@ -10,44 +11,45 @@ interface FlipTextProps {
   className?: string;
 }
 
-// Container variants for staggered animation
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1, // Delay between each word
-      delayChildren: 0.1,   // Initial delay before first word
-    },
-  },
-};
-
-// Individual word variants
-const wordVariants: Variants = {
-  hidden: { 
-    opacity: 0, 
-    y: 20,
-    scale: 0.8
-  },
-  visible: { 
-    opacity: 1, 
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.4,
-      ease: "easeOut",
-    },
-  },
-};
-
 export default function FlipText({
   word,
   duration = 0.4,
   staggerDelay = 0.1,
   className,
 }: FlipTextProps) {
+  const { animationLevel } = useAnimationCapabilities();
+  
+  // Get adaptive animation variants based on device capabilities
+  const wordVariants = getAnimationVariants(animationLevel);
+  const staggerTiming = getStaggerTiming(animationLevel);
+  
+  // Container variants that adapt to device capabilities
+  const containerVariants: Variants = {
+    hidden: { opacity: animationLevel === 'none' ? 1 : 0 },
+    visible: {
+      opacity: 1,
+      transition: staggerTiming,
+    },
+  };
+
   // Split by words instead of characters for better performance
   const words = word.split(" ");
+
+  // For 'none' level, render without motion components
+  if (animationLevel === 'none') {
+    return (
+      <span className={cn("inline-block", className)}>
+        {words.map((wordText, i) => (
+          <span
+            key={i}
+            className="inline-block mr-2 last:mr-0"
+          >
+            {wordText}
+          </span>
+        ))}
+      </span>
+    );
+  }
 
   return (
     <motion.span 
@@ -55,14 +57,18 @@ export default function FlipText({
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      style={{ willChange: "opacity" }}
+      style={{ 
+        willChange: animationLevel === 'minimal' ? 'opacity' : 'transform, opacity' 
+      }}
     >
       {words.map((wordText, i) => (
         <motion.span
           key={i}
           variants={wordVariants}
           className="inline-block mr-2 last:mr-0"
-          style={{ willChange: "transform, opacity" }}
+          style={{ 
+            willChange: animationLevel === 'minimal' ? 'opacity' : 'transform, opacity' 
+          }}
         >
           {wordText}
         </motion.span>
