@@ -7,7 +7,7 @@
 	},
 	"scripts": {
 		"dev": "next dev",
-		"build": "next build",
+		"build": "prisma generate && next build",
 		"start": "next start",
 		"stripe:listen": "stripe listen --forward-to http://localhost:3000/api/stripe/webhook",
 		"check-format": "prettier --check .",
