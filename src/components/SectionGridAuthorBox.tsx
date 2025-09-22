@@ -44,7 +44,7 @@ const SectionGridAuthorBox: FC<SectionGridAuthorBoxProps> = ({
 				>
 					<span className="relative">
 						<span className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-primary/80 via-primary to-primary/80 bg-clip-text text-transparent">
-							Expert Directory
+							Fashion Intelligence Directory
 						</span>
 						<span className="absolute -bottom-2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent"></span>
 					</span>
@@ -70,7 +70,7 @@ const SectionGridAuthorBox: FC<SectionGridAuthorBoxProps> = ({
 							className="hover:transform hover:scale-105 transition-transform text-sm sm:text-base px-3 sm:px-6 py-2.5"
 							disabled
 						>
-							Discover Experts
+							Discover Specialists
 						</RipplingButton>
 					</Link>
 					<Link href="/author">
@@ -78,7 +78,7 @@ const SectionGridAuthorBox: FC<SectionGridAuthorBoxProps> = ({
 							className="hover:transform hover:scale-105 transition-transform text-sm sm:text-base px-3 sm:px-6 py-2.5"
 							disabled
 						>
-							Join as Expert
+							Join as Specialist
 						</PulsatingButton>
 					</Link>
 				</div>

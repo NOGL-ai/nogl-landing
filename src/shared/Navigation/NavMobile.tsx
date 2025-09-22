@@ -123,7 +123,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
 				<Logo />
 				<div className='mt-5 flex flex-col text-sm text-neutral-700 dark:text-neutral-300'>
 					<span>
-						Connect with Expert Mentors and Book Transformative Sessions
+						Forecast Trends, Predict Demand, Optimize Assortments
 					</span>
 
 					<div className='mt-4 flex items-center justify-between'>
@@ -147,7 +147,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
 							shimmerColor="#ffffff33"
 							className="font-medium dark:!text-white"
 						>
-							Host a Session
+							New Forecast
 						</ShimmerButton>
 					</Link>
 				)}

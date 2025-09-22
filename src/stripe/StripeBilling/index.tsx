@@ -140,14 +140,14 @@ export function Pricing({ isBilling = false }: { isBilling?: boolean }) {
 								className="text-white dark:text-white"
 								onClick={() => window.location.href = "https://empowhernetwork.de"}
 							>
-								Join Our Expert Community →
+							Join Our Community →
 							</ShimmerButton>
 						</CardContent>
 						<div className="before:content-[''] relative isolate hidden h-[240px] w-full before:absolute before:left-32 before:top-0 before:z-[-1] before:h-full before:w-full before:skew-x-[-45deg] before:border-l before:border-gray-200 before:bg-gray-100 dark:before:border-gray-800 dark:before:bg-gray-900 md:block lg:w-2/3">
 							<div className="ml-12 flex h-full w-full flex-col items-center justify-center gap-y-0.5">
 								<h1 className="text-4xl font-bold">Join Our Community</h1>
 								<p className="text-center text-gray-500 dark:text-gray-400">
-									Continuous guidance from experts 
+										Continuous guidance from forecasting specialists 
 									<br />
 									in our private WhatsApp community
 								</p>

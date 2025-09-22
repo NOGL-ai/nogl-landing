@@ -3,7 +3,7 @@ import React, { FC, ReactNode } from "react";
 import ButtonPrimary from "@/shared/ButtonPrimary";
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 
-// Define featured experts data
+// Define featured leaders data
 const FEATURED_EXPERTS = [
   {
     id: 1,
@@ -60,7 +60,7 @@ const SectionHero: FC<SectionHeroProps> = ({
   subHeading,
   btnText,
   btnLink = "/signup",
-  imgAlt = "Expert consultation platform",
+  imgAlt = "AI fashion forecasting platform",
 }) => {
   return (
     <div className={`nc-SectionHero relative ${className}`}>
@@ -68,8 +68,8 @@ const SectionHero: FC<SectionHeroProps> = ({
         {/* Left Content */}
         <div className="max-w-2xl flex-shrink-0 space-y-8 lg:w-1/2 lg:space-y-10">
           <h1 className="text-3xl font-bold !leading-tight md:text-4xl xl:text-5xl">
-            Transforming How People <br />
-            <span className="text-primary-600">Access Expert Knowledge</span>
+            Transforming How Brands <br />
+            <span className="text-primary-600">Forecast Trends & Predict Demand</span>
           </h1>
           
           <span className="block text-base sm:text-lg md:text-xl font-medium text-neutral-600 dark:text-neutral-400">
@@ -77,11 +77,11 @@ const SectionHero: FC<SectionHeroProps> = ({
           </span>
           
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-            <ButtonPrimary href={btnLink}>
+            <ButtonPrimary href={btnLink as any}>
               {btnText}
             </ButtonPrimary>
             <ButtonPrimary 
-              href="/"
+              href={"/" as any}
               className="bg-white text-primary-600 hover:bg-neutral-50 dark:bg-neutral-800 dark:text-neutral-100 dark:hover:bg-neutral-700"
             >
               How It Works
@@ -109,7 +109,7 @@ const SectionHero: FC<SectionHeroProps> = ({
               </div>
               <div className="flex items-center gap-2">
                 <span>✓</span>
-                <span>Verified experts</span>
+                <span>Demand‑sensed insights</span>
               </div>
             </div>
           </div>
@@ -128,9 +128,9 @@ const SectionHero: FC<SectionHeroProps> = ({
           {/* Floating Stats Card */}
           <div className="absolute -left-8 bottom-8 hidden rounded-2xl bg-white p-4 shadow-2xl dark:bg-neutral-800 lg:block">
             <div className="text-sm font-medium">
-              <div className="mb-2 text-2xl font-bold text-primary-600">2,000+</div>
+              <div className="mb-2 text-2xl font-bold text-primary-600">+60% / +30% / +20%</div>
               <div className="text-neutral-500 dark:text-neutral-400">
-                Expert consultations completed this month
+                Velocity / Turns / Full‑price sell‑through
               </div>
             </div>
           </div>

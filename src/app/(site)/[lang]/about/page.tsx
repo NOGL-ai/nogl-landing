@@ -20,9 +20,9 @@ const PageAbout: FC<PageAboutProps> = () => {
         {/* Hero Section */}
         <SectionHero
           rightImg={rightImg}
-          heading="Connecting Experts with Knowledge Seekers"
+          heading="AI Fashion Intelligence for Trend & Demand"
           btnText="Join Our Mission"
-          subHeading={`At Nogl, we believe everyone deserves access to expert knowledge. We're solving the challenge of connecting people with trusted experts for personalized, one-on-one video sessions. Our platform makes it easy to find, book, and learn from industry leaders across technology, business, arts, and more.`}
+          subHeading={`We help fashion teams predict trends, forecast new-product demand, and optimize localized assortments using demand‑sensing AI. Reduce markdowns, increase turns, and lift full‑price sell‑through.`}
         />
 
         {/* Founder Section */}
