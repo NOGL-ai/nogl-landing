@@ -1,4 +1,4 @@
-const { getAllHashedSessionIds } = require('./src/utils/hashId');
+// const { getAllHashedSessionIds } = require('./src/utils/hashId');
 
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
@@ -57,17 +57,18 @@ module.exports = {
   /**
    * Allows adding dynamic paths to the sitemap.
    * Used here to add all session detail pages with their hashed IDs.
+   * COMMENTED OUT: Database dependency removed to prevent build failures on Vercel
    */
-  additionalPaths: async (config) => {
-    const hashedSessions = await getAllHashedSessionIds();
-    
-    return hashedSessions.map((session) => ({
-      loc: `/listing-session-detail/${session.hashedId}`,
-      changefreq: 'daily',
-      priority: 0.7,
-      lastmod: session.lastmod,
-    }));
-  },
+  // additionalPaths: async (config) => {
+  //   const hashedSessions = await getAllHashedSessionIds();
+  //   
+  //   return hashedSessions.map((session) => ({
+  //     loc: `/listing-session-detail/${session.hashedId}`,
+  //     changefreq: 'daily',
+  //     priority: 0.7,
+  //     lastmod: session.lastmod,
+  //   }));
+  // },
 
   /**
    * Specifies the maximum number of URLs per sitemap file.
