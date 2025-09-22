@@ -413,8 +413,8 @@ const brandData: Brand[] = [
 	},
 	{
 		id: 1 + i,
-		name: "SaaSBold",
-		link: "https://SaaSBold.com",
+		name: "NOGL",
+		link: "https://nogl.ai",
 		image: (
 			<svg
 				width='154'

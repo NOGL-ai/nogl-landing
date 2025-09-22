@@ -68,6 +68,6 @@ export const menuData: Menu[] = [
 		id: 4,
 		title: "Buy Now ↗",
 		newTab: true,
-		path: "https://saasbold.com/#pricing",
+		path: "https://nogl.tech/#pricing",
 	},
 ];
