@@ -201,13 +201,13 @@
     "description": "Treten Sie noch heute unserer Plattform bei und vernetzen Sie sich mit Experten, die Ihnen beim Wachsen helfen können",
     "buttonText": "Jetzt mit dem Lernen beginnen",
     "buttonUrl": "#newsletter",
-    "testimonial": {
-      "heading": "Erfolgsgeschichten von",
-      "subheading": "Branchenführern",
-      "quote": "In nur einer Content-Creation-Strategy-Sitzung habe ich es geschafft, von Schwierigkeiten mit Content zu einer Verdreifachung meines Engagements und meiner Leads zu kommen. Das war der Fahrplan, den ich für authentischen Social-Media-Erfolg brauchte!",
-      "author": "Viola Weller",
-      "role": "Gründerin von VLACE",
-      "waitlistButton": "Der Warteliste beitreten"
+    "_testimonial": {
+      "_heading": "Erfolgsgeschichten von",
+      "_subheading": "Branchenführern",
+      "_quote": "In nur einer Content-Creation-Strategy-Sitzung habe ich es geschafft, von Schwierigkeiten mit Content zu einer Verdreifachung meines Engagements und meiner Leads zu kommen. Das war der Fahrplan, den ich für authentischen Social-Media-Erfolg brauchte!",
+      "_author": "Viola Weller",
+      "_role": "Gründerin von VLACE",
+      "_waitlistButton": "Der Warteliste beitreten"
     }
   },
   "common": {

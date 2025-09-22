@@ -26,6 +26,10 @@ interface CallToActionProps {
 }
 
 export const CallToAction = ({ dictionary }: CallToActionProps) => {
+  // Commented out Success Stories from Industry Leaders section to prevent performance issues
+  return null;
+  
+  /* Original implementation commented out:
   if (!dictionary?.callToAction) {
     return null;
   }
@@ -73,4 +77,5 @@ export const CallToAction = ({ dictionary }: CallToActionProps) => {
       </ContainerScroll>
     </section>
   );
+  */
 };
