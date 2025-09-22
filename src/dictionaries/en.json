@@ -225,8 +225,8 @@
     "invalidEmailMessage": "Please enter a valid email address."
   },
   "blog": {
-    "title": "Insights & Updates",
-    "description": "Explore the latest insights, expert articles, and industry news curated to help you stay informed and ahead in your field.",
+    "title": "Forecasting Insights & Updates",
+    "description": "Trend forecasting, demand sensing, and merchandising insights to help you reduce markdowns and optimize assortments.",
     "viewAllText": "View All",
     "noPostsText": "No posts found"
   },
