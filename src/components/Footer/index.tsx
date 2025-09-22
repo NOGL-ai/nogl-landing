@@ -18,7 +18,7 @@ const Footer = () => {
 							/>
 						</Link>
 						<p className='mt-5 text-gray-5'>
-							© Your SaaS - Demo SaaS website created using SaaSBold
+							© Nogl - Professional Services Platform
 						</p>
 
 						<ul className='mt-11 flex items-center gap-2'>

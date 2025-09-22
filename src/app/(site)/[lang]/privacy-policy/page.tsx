@@ -189,7 +189,7 @@ const PrivacyPolicyPage = () => {
         <p>For privacy-related inquiries:</p>
         <p>Email: <Link href="mailto:info@nogl.tech" className="text-blue-600 underline">info@nogl.tech</Link></p>
         <p>Address: Hamburg, Germany</p>
-        <p>Data Protection Officer: CallAPro GmbH</p>
+        <p>Data Protection Officer: Nogl GmbH</p>
       </div>
     </>
   );

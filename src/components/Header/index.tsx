@@ -71,7 +71,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
               <AuroraText 
                 className="text-xl font-semibold [--color-1:120_100%_50%] [--color-2:200_100%_50%] [--color-3:120_100%_50%] [--color-4:200_100%_50%] bg-white/90 dark:bg-neutral-900/90"
               >
-                CallAPro
+                Nogl
               </AuroraText>
             </div>
             <div className="hidden lg:block self-center h-10 border-l border-neutral-300 dark:border-neutral-500"></div>
