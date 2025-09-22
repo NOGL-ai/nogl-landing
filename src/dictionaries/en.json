@@ -216,10 +216,10 @@
     ]
   },
   "newsletter": {
-    "title": "Connecting People Beyond Borders",
-    "description": "Join our global community of innovators, experts, and thought leaders. Get exclusive access to cross-border opportunities, cultural insights, and meaningful connections that transcend geographical boundaries. Be part of a movement that's reshaping global collaboration.",
+    "title": "Stay Ahead with Fashion Trend Forecasts",
+    "description": "Join a community of merchandisers, designers, and buyers. Get demand‑sensed trend briefs, forecasting insights, and assortment best practices delivered to your inbox.",
     "emailPlaceholder": "Enter your email",
-    "buttonText": "Connect Now",
+    "buttonText": "Get Forecasts",
     "successMessage": "Thanks for signing up!",
     "errorMessage": "Please enter your email address.",
     "invalidEmailMessage": "Please enter a valid email address."
