@@ -1,0 +1,32 @@
+/* Customize the popup style */
+#mc_embed_signup {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+#mc_embed_signup .mc-field-group {
+  margin-bottom: 15px;
+}
+
+#mc_embed_signup input[type="email"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+}
+
+#mc_embed_signup .button {
+  background-color: #FB923C;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#mc_embed_signup .button:hover {
+  background-color: #F97316;
+} 

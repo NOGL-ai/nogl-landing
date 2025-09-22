@@ -1,0 +1,332 @@
+{
+  "locale": "de",
+  "navigation": {
+    "main": [
+      {
+        "id": 1,
+        "title": "Funktionen",
+        "newTab": false,
+        "path": "#features"
+      },
+      {
+        "id": 2,
+        "title": "Preise",
+        "newTab": false,
+        "path": "#pricing"
+      },
+      {
+        "id": 3,
+        "title": "Blog",
+        "newTab": false,
+        "path": "/blog"
+      }
+    ],
+    "dropdown": {
+      "title": "Mehr",
+      "items": [
+        {
+          "id": 1,
+          "title": "Blog",
+          "path": "/blog",
+          "newTab": false
+        },
+        {
+          "id": 2,
+          "title": "Anmelden",
+          "path": "/auth/signin",
+          "newTab": false
+        },
+        {
+          "id": 3,
+          "title": "Registrieren",
+          "path": "/auth/signup",
+          "newTab": false
+        },
+        {
+          "id": 4,
+          "title": "Unterstützung",
+          "path": "/support",
+          "newTab": false
+        }
+      ]
+    },
+    "buttons": {
+      "signIn": "Anmelden",
+      "signUp": "Registrieren",
+      "getStarted": "Jetzt starten",
+      "buyNow": "Jetzt kaufen ↗"
+    }
+  },
+  "header": [
+    {
+      "id": 1,
+      "title": "Funktionen",
+      "newTab": false,
+      "path": "#features"
+    },
+    {
+      "id": 2,
+      "title": "Preise",
+      "newTab": false,
+      "path": "#pricing"
+    },
+    {
+      "id": 2,
+      "title": "Blog",
+      "newTab": false,
+      "path": "/blog"
+    },
+    {
+      "id": 2,
+      "title": "Seiten",
+      "newTab": false,
+      "submenu": [
+        {
+          "id": 301,
+          "title": "Blog",
+          "newTab": false,
+          "path": "/blog"
+        },
+        {
+          "id": 304,
+          "title": "Anmelden",
+          "newTab": false,
+          "path": "/auth/signin"
+        },
+        {
+          "id": 305,
+          "title": "Registrieren",
+          "newTab": false,
+          "path": "/auth/signup"
+        },
+        {
+          "id": 306,
+          "title": "404 Fehler",
+          "newTab": false,
+          "path": "/error"
+        },
+        {
+          "id": 303,
+          "title": "Unterstützung",
+          "newTab": false,
+          "path": "/support"
+        },
+        {
+          "id": 301,
+          "title": "Blog Details",
+          "newTab": false,
+          "path": "/blog/proin-ac-ipsum-et-neque-tincidunt-aliquam-ut-ut-ex-in-viverra"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Jetzt kaufen ↗",
+      "newTab": true,
+      "path": "https://saasbold.com/#pricing"
+    }
+  ],
+  "Home": {
+    "title": "Halo dunia!"
+  },
+  "hero": {
+    "introducing": "Willkommen bei Nogl.ai",
+    "title": ["Erweitern Sie Ihr Wissen durch", "Expertengespräche"],
+    "description": "Treten Sie einer Plattform bei, um durch Einzelgespräche, Gruppensitzungen und von Experten geleitete Inhalte zu wachsen",
+    "buttonText": "Jetzt kostenlos starten"
+  },
+  "problem": {
+    "title": "Die Herausforderung",
+    "subtitle": "Barrieren beim Zugang zu Expertenwissen",
+    "description": "In der heutigen schnelllebigen Welt ist der Zugang zu Expertenwissen oft kompliziert, zeitaufwendig und kostspielig",
+    "challenges": [
+      {
+        "title": "Begrenzte Verfügbarkeit",
+        "description": "Schwierigkeiten, den richtigen Experten zur richtigen Zeit zu finden"
+      },
+      {
+        "title": "Hohe Kosten",
+        "description": "Traditionelle Beratung ist oft mit erheblichen Kosten verbunden"
+      },
+      {
+        "title": "Zeitaufwand",
+        "description": "Lange Wartezeiten und komplizierte Terminvereinbarungen"
+      }
+    ]
+  },
+  "solution": {
+    "title": "Unsere Lösung",
+    "subtitle": "Wir verändern den Zugang zu Expertise",
+    "description": "Überwinden Sie Barrieren und beschleunigen Sie Ihr Wachstum mit unserer innovativen Plattform",
+    "features": [
+      {
+        "title": "Kostengünstige Gruppensitzungen",
+        "description": "Sparen Sie Geld durch die Teilnahme an Gruppenanrufen mit Experten und gewinnen Sie wertvolle Erkenntnisse ohne hohe Kosten."
+      },
+      {
+        "title": "Zugang zu umfangreichem Expertenverzeichnis",
+        "description": "Finden und verbinden Sie sich schnell mit den richtigen Fachleuten aus verschiedenen Bereichen, alles an einem Ort."
+      },
+      {
+        "title": "Zuverlässige KI-Unterstützung",
+        "description": "Profitieren Sie von KI-Tools, die mit Expertenwissen angereichert sind und genaue, praktische Informationen liefern."
+      },
+      {
+        "title": "Interaktive Lernerfahrung",
+        "description": "Tauschen Sie sich mit Experten und anderen Teilnehmern durch Live-Chats und Fragerunden aus."
+      }
+    ]
+  },
+  "counter": {
+    "title": "Sprachbarrieren überwinden",
+    "stats": [
+      {
+        "value": "12",
+        "label": "unterstützte Sprachen für KI-Echtzeit-Übersetzung während Videoanrufen"
+      },
+      {
+        "value": "25",
+        "label": "Minuten durchschnittliche Zeitersparnis pro Beratung mit unseren KI-gestützten Funktionen"
+      },
+      {
+        "value": "95",
+        "label": "Prozent Genauigkeit bei Echtzeit-Übersetzungen in professionellen Beratungen"
+      }
+    ],
+    "heading": "Globales Expertenwissen erschließen: Sprachbarrieren mit KI-gestützten Expertensitzungen überwinden",
+    "aboutButton": "Starten Sie Ihre Reise"
+  },
+  "callToAction": {
+    "title": "Bereit loszulegen?",
+    "description": "Treten Sie noch heute unserer Plattform bei und vernetzen Sie sich mit Experten, die Ihnen beim Wachsen helfen können",
+    "buttonText": "Jetzt mit dem Lernen beginnen",
+    "buttonUrl": "#newsletter",
+    "testimonial": {
+      "heading": "Erfolgsgeschichten von",
+      "subheading": "Branchenführern",
+      "quote": "In nur einer Content-Creation-Strategy-Sitzung habe ich es geschafft, von Schwierigkeiten mit Content zu einer Verdreifachung meines Engagements und meiner Leads zu kommen. Das war der Fahrplan, den ich für authentischen Social-Media-Erfolg brauchte!",
+      "author": "Viola Weller",
+      "role": "Gründerin von VLACE",
+      "waitlistButton": "Der Warteliste beitreten"
+    }
+  },
+  "common": {
+    "comingSoon": "Demnächst verfügbar"
+  },
+  "pricing": {
+    "title": "Einfache, transparente Preise",
+    "subtitle": "Wählen Sie den Plan, der zu Ihnen passt",
+    "description": "Beginnen Sie mit unserer kostenlosen Version und erweitern Sie nach Bedarf",
+    "plans": [
+      {
+        "name": "Kostenlos",
+        "price": "0",
+        "description": "Perfekt für den Einstieg",
+        "features": [
+          "Zugang zu Gruppensitzungen",
+          "Basis KI-Chat-Unterstützung",
+          "Zugang zum Community-Forum",
+          "E-Mail-Support"
+        ],
+        "buttonText": "Jetzt starten"
+      },
+      {
+        "name": "Pro",
+        "price": "29",
+        "description": "Ideal für Profis",
+        "features": [
+          "Alle kostenlosen Funktionen",
+          "Vorrangiger Zugang zu Sitzungen",
+          "Erweiterte KI-Tools",
+          "Prioritäts-Support"
+        ],
+        "buttonText": "Pro-Plan starten",
+        "popular": true
+      },
+      {
+        "name": "Enterprise",
+        "price": "Individuell",
+        "description": "Für große Organisationen",
+        "features": [
+          "Alle Pro-Funktionen",
+          "Individuelle Integrationen",
+          "Dedizierter Support",
+          "Maßgeschneiderte KI-Modelle"
+        ],
+        "buttonText": "Vertrieb kontaktieren"
+      }
+    ]
+  },
+  "faq": {
+    "title": "Häufig gestellte Fragen",
+    "description": "Brauchen Sie Hilfe? Hier sind einige der häufigsten Fragen, die wir erhalten.",
+    "items": [
+      {
+        "id": 1,
+        "question": "Gibt es eine kostenlose Testversion?",
+        "answer": "Ja, wir bieten eine kostenlose Testversion mit vollem Zugriff auf alle Funktionen, solange Sie möchten. Dies ermöglicht es Ihnen, unsere Plattform ohne Verpflichtung zu erkunden und zu sehen, wie sie Ihnen helfen kann, Ihr Fachwissen und Ihre Kundenbasis zu erweitern."
+      },
+      {
+        "id": 2,
+        "question": "Wie buchen Kunden eine Sitzung mit einem Experten?",
+        "answer": "Kunden können einfach Expertenprofile durchsuchen, eine passende Zeit auswählen und direkt über die Plattform eine Sitzung buchen. Der Prozess ist nahtlos, und Sie erhalten eine Benachrichtigung, sobald eine Buchung bestätigt wird."
+      },
+      {
+        "id": 3,
+        "question": "Wie kann ich mein Expertenprofil anpassen?",
+        "answer": "Sie können Ihr Expertenprofil anpassen, indem Sie Ihre Biografie, Fachgebiete und Erfolge hinzufügen. Dies hilft Ihnen, sich von anderen abzuheben und die richtigen Kunden anzuziehen, die nach Ihren spezifischen Fähigkeiten suchen."
+      },
+      {
+        "id": 4,
+        "question": "Wie werden meine Daten auf der Plattform geschützt?",
+        "answer": "Wir nehmen Datensicherheit sehr ernst. Unsere Plattform verwendet fortschrittliche Verschlüsselung und sichere Server, um alle Ihre persönlichen und beruflichen Informationen zu schützen und sicherzustellen, dass Ihre Daten jederzeit sicher sind."
+      }
+    ]
+  },
+  "newsletter": {
+    "title": "Menschen über Grenzen hinweg verbinden",
+    "description": "Werden Sie Teil unserer globalen Gemeinschaft von Innovatoren, Experten und Vordenkern. Erhalten Sie exklusiven Zugang zu grenzüberschreitenden Möglichkeiten, kulturellen Einblicken und bedeutungsvollen Verbindungen. Seien Sie Teil einer Bewegung, die die globale Zusammenarbeit neu gestaltet.",
+    "emailPlaceholder": "E-Mail eingeben",
+    "buttonText": "Jetzt verbinden",
+    "successMessage": "Danke für Ihre Anmeldung!",
+    "errorMessage": "Bitte geben Sie Ihre E-Mail-Adresse ein.",
+    "invalidEmailMessage": "Bitte geben Sie eine gültige E-Mail-Adresse ein."
+  },
+  "blog": {
+    "title": "Einblicke & Updates",
+    "description": "Entdecken Sie die neuesten Erkenntnisse, Expertenbeiträge und Branchenneuigkeiten, die Ihnen helfen, informiert und führend in Ihrem Bereich zu bleiben.",
+    "viewAllText": "Alle anzeigen",
+    "noPostsText": "Keine Beiträge gefunden"
+  },
+  "features": {
+    "title": "KI-gestützte Kommunikation",
+    "description": "Überwinden Sie Sprachbarrieren mit KI-Echtzeit-Übersetzung und Stimmklonen",
+    "learnMore": "Mehr erfahren",
+    "cards": [
+      {
+        "id": 1,
+        "title": "KI-Übersetzung",
+        "content": "Echtzeit-Übersetzung während Videoanrufen mit Unterstützung für über 100 Sprachen",
+        "video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/jywpgkr3vpwyj9hdbthz.mp4",
+        "thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/jywpgkr3vpwyj9hdbthz.jpg",
+        "url": "/features/ai-translate"
+      },
+      {
+        "id": 2,
+        "title": "Auto-Übersetzung",
+        "content": "Automatische Untertitel-Übersetzung für aufgezeichnete Sitzungen",
+        "video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129913/jjpzskulirmmasd0fzo0.mp4",
+        "thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129913/jjpzskulirmmasd0fzo0.jpg",
+        "url": "/features/auto-translate"
+      },
+      {
+        "id": 3,
+        "title": "KI-Stimmklonen",
+        "content": "Klonen Sie Ihre Stimme für nahtlose mehrsprachige Kommunikation",
+        "video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/uhk3nuqrglo1haxnvkzg.mp4",
+        "thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/uhk3nuqrglo1haxnvkzg.jpg",
+        "url": "/features/voice-cloning"
+      }
+    ]
+  }
+}

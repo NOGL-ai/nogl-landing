@@ -1,0 +1,127 @@
+[
+  {
+    "id": "expert_001",
+    "authorId": 1,
+    "authorName": "Sarah Johnson",
+    "hostBio": "Digital marketing specialist with 10+ years of experience in email marketing and campaign optimization. Former Growth Lead at major tech companies.",
+    "expertise": ["Digital Marketing", "Growth Strategy", "Email Campaigns"],
+    "yearsOfExperience": 10,
+    "languages": ["English", "Spanish"],
+    "hourlyRate": 150.0,
+    "rating": 4.8,
+    "responseRate": 98.5,
+    "totalSessions": 156,
+    "isVerifiedExpert": true,
+    "verificationDate": "2023-08-15T00:00:00Z",
+    "expertCategories": ["MARKETING", "BUSINESS"],
+    "totalEarnings": 23500.0,
+    "featuredImage": "https://images.pexels.com/photos/2381069/pexels-photo-2381069.jpeg",
+    "socialLinks": {
+      "linkedin": "https://linkedin.com/in/sarahjohnson",
+      "twitter": "https://twitter.com/sarahjohnson"
+    },
+    "certificates": [
+      {
+        "name": "Google Analytics Expert",
+        "issuer": "Google",
+        "issueDate": "2022-03-15",
+        "expiryDate": "2024-03-15"
+      }
+    ],
+    "availability": [
+      {
+        "dayOfWeek": 1,
+        "startTime": "09:00",
+        "endTime": "17:00"
+      },
+      {
+        "dayOfWeek": 2,
+        "startTime": "09:00",
+        "endTime": "17:00"
+      }
+    ]
+  },
+  {
+    "id": "expert_002",
+    "authorId": 2,
+    "authorName": "Michael Chen",
+    "hostBio": "Enterprise sales expert and startup advisor. Helped scale multiple SaaS companies from seed to Series B.",
+    "expertise": ["Enterprise Sales", "B2B Strategy", "SaaS Growth"],
+    "yearsOfExperience": 8,
+    "languages": ["English", "Mandarin"],
+    "hourlyRate": 200.0,
+    "rating": 4.9,
+    "responseRate": 95.0,
+    "totalSessions": 98,
+    "isVerifiedExpert": true,
+    "verificationDate": "2023-09-20T00:00:00Z",
+    "expertCategories": ["BUSINESS", "MARKETING"],
+    "totalEarnings": 45000.0,
+    "featuredImage": "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg",
+    "socialLinks": {
+      "linkedin": "https://linkedin.com/in/michaelchen",
+      "twitter": "https://twitter.com/michaelchen"
+    },
+    "certificates": [
+      {
+        "name": "Salesforce Sales Expert",
+        "issuer": "Salesforce",
+        "issueDate": "2023-01-10"
+      }
+    ],
+    "availability": [
+      {
+        "dayOfWeek": 3,
+        "startTime": "10:00",
+        "endTime": "18:00"
+      },
+      {
+        "dayOfWeek": 4,
+        "startTime": "10:00",
+        "endTime": "18:00"
+      }
+    ]
+  },
+  {
+    "id": "expert_003",
+    "authorId": 3,
+    "authorName": "Emma Davis",
+    "hostBio": "Product leader with expertise in AI/ML applications. Previously led product teams at Google and Meta.",
+    "expertise": ["Product Management", "AI/ML", "Tech Leadership"],
+    "yearsOfExperience": 12,
+    "languages": ["English", "French"],
+    "hourlyRate": 250.0,
+    "rating": 4.95,
+    "responseRate": 99.0,
+    "totalSessions": 134,
+    "isVerifiedExpert": true,
+    "verificationDate": "2023-07-01T00:00:00Z",
+    "expertCategories": ["DEVELOPMENT", "BUSINESS"],
+    "totalEarnings": 67000.0,
+    "featuredImage": "https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg",
+    "socialLinks": {
+      "linkedin": "https://linkedin.com/in/emmadavis",
+      "twitter": "https://twitter.com/emmadavis"
+    },
+    "certificates": [
+      {
+        "name": "AWS Solutions Architect",
+        "issuer": "Amazon Web Services",
+        "issueDate": "2023-05-20",
+        "expiryDate": "2026-05-20"
+      }
+    ],
+    "availability": [
+      {
+        "dayOfWeek": 2,
+        "startTime": "11:00",
+        "endTime": "19:00"
+      },
+      {
+        "dayOfWeek": 5,
+        "startTime": "11:00",
+        "endTime": "19:00"
+      }
+    ]
+  }
+]

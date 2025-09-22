@@ -1,0 +1,23 @@
+# *
+User-agent: *
+Allow: /
+
+# Googlebot
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/*
+Disallow: /login
+
+# Bingbot
+User-agent: Bingbot
+Allow: /
+
+# Host
+Host: https://www.nogl.ai/
+
+# Sitemaps
+Sitemap: https://www.nogl.ai/sitemap.xml
+Sitemap: https://www.nogl.ai/sitemap-pages.xml
+Sitemap: undefined/sitemap-blog.xml
+Sitemap: undefined/sitemap-products.xml
+Sitemap: https://www.nogl.ai/server-sitemap.xml

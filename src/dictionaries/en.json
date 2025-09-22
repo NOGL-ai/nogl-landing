@@ -1,0 +1,263 @@
+{
+  "locale": "en",
+  "navigation": {
+    "main": [
+      {
+        "id": 1,
+        "title": "Features",
+        "newTab": false,
+        "path": "#features"
+      },
+      {
+        "id": 2,
+        "title": "Pricing",
+        "newTab": false,
+        "path": "#pricing"
+      },
+      {
+        "id": 3,
+        "title": "Blog",
+        "newTab": false,
+        "path": "/blog"
+      }
+    ],
+    "dropdown": {
+      "title": "More",
+      "items": [
+        {
+          "id": 1,
+          "title": "Blog",
+          "path": "/blog",
+          "newTab": false
+        },
+        {
+          "id": 2,
+          "title": "Sign In",
+          "path": "/auth/signin",
+          "newTab": false
+        },
+        {
+          "id": 3,
+          "title": "Sign Up",
+          "path": "/auth/signup",
+          "newTab": false
+        },
+        {
+          "id": 4,
+          "title": "Support",
+          "path": "/support",
+          "newTab": false
+        }
+      ]
+    },
+    "buttons": {
+      "signIn": "Sign In",
+      "signUp": "Sign Up",
+      "getStarted": "Get Started",
+      "buyNow": "Buy Now ↗"
+    }
+  },
+  "Home": {
+    "title": "Hello World!"
+  },
+  "hero": {
+    "introducing": "Introducing Nogl.ai",
+    "title": "Expand Knowledge Through Expert Talks",
+    "description": "Join a platform to grow through one-on-one calls, group sessions, and expert-led content",
+    "buttonText": "Start Connecting for free"
+  },
+  "problem": {
+    "title": "The Problem",
+    "subtitle": "Barriers to Accessing Expert Knowledge",
+    "description": "In today's fast-paced world, accessing expert knowledge is often complicated, time-consuming, and costly",
+    "challenges": [
+      {
+        "title": "Limited Availability",
+        "description": "Difficulty finding the right expert at the right time"
+      },
+      {
+        "title": "High Costs",
+        "description": "Traditional consulting comes with significant expenses"
+      },
+      {
+        "title": "Time Investment",
+        "description": "Long wait times and complicated scheduling processes"
+      }
+    ]
+  },
+  "solution": {
+    "title": "Our Solution",
+    "subtitle": "Transforming How You Access Expertise",
+    "description": "Overcome barriers and accelerate your growth with our innovative platform",
+    "features": [
+      {
+        "title": "Join Affordable Group Sessions",
+        "description": "Save money by participating in group calls with experts, gaining valuable insights without the hefty price tag."
+      },
+      {
+        "title": "Access a Vast Expert Directory",
+        "description": "Quickly find and connect with the right professionals across various fields, all in one place."
+      },
+      {
+        "title": "Experience Reliable AI Assistance",
+        "description": "Benefit from AI tools enhanced with expert knowledge, providing accurate and practical information."
+      },
+      {
+        "title": "Interactive Learning Experience",
+        "description": "Engage with experts and peers through live chats and Q&A sessions."
+      }
+    ]
+  },
+  "counter": {
+    "title": "Breaking Language Barriers",
+    "stats": [
+      {
+        "value": "12",
+        "label": "languages supported for real-time AI translation during video calls"
+      },
+      {
+        "value": "25",
+        "label": "minutes average time saved per consultation with our AI-powered features"
+      },
+      {
+        "value": "95",
+        "label": "percent accuracy in real-time translations across professional consultations"
+      }
+    ],
+    "heading": "Unlock Global Expertise: Break Language Barriers with AI-Powered Expert Sessions",
+    "aboutButton": "Start Your Journey"
+  },
+  "callToAction": {
+    "title": "Ready to Get Started?",
+    "description": "Join our platform today and connect with experts who can help you grow",
+    "buttonText": "Start Learning Now",
+    "buttonUrl": "#newsletter",
+    "testimonial": {
+      "heading": "Success Stories from",
+      "subheading": "Industry Leaders",
+      "quote": "In just one Content Creation Strategy session, I went from struggling with content to tripling my engagement and leads. This is the blueprint I needed for authentic social media success!",
+      "author": "Viola Weller",
+      "role": "Founder of VLACE",
+      "waitlistButton": "Join the Waitlist"
+    }
+  },
+  "pricing": {
+    "title": "Simple, Transparent Pricing",
+    "subtitle": "Choose the plan that's right for you",
+    "description": "Start with our free tier and upgrade as you grow",
+    "plans": [
+      {
+        "name": "Free",
+        "price": "0",
+        "description": "Perfect for getting started",
+        "features": [
+          "Access to group sessions",
+          "Basic AI chat support",
+          "Community forum access",
+          "Email support"
+        ],
+        "buttonText": "Get Started"
+      },
+      {
+        "name": "Pro",
+        "price": "29",
+        "description": "Best for professionals",
+        "features": [
+          "All Free features",
+          "Priority access to sessions",
+          "Advanced AI tools",
+          "Priority support"
+        ],
+        "buttonText": "Start Pro Plan",
+        "popular": true
+      },
+      {
+        "name": "Enterprise",
+        "price": "Custom",
+        "description": "For large organizations",
+        "features": [
+          "All Pro features",
+          "Custom integrations",
+          "Dedicated support",
+          "Custom AI models"
+        ],
+        "buttonText": "Contact Sales"
+      }
+    ]
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "description": "Need help with something? Here are some of the most common questions we get.",
+    "items": [
+      {
+        "id": 1,
+        "question": "Is there a free trial available?",
+        "answer": "Yes, we offer a free trial with full access to all features for as long as you need. This allows you to explore our platform without any commitment and see how it can help you grow your expertise and client base."
+      },
+      {
+        "id": 2,
+        "question": "How do clients book a session with an expert?",
+        "answer": "Clients can easily browse expert profiles, select a convenient time, and book a session directly through the platform. The process is seamless, and you'll receive a notification once a booking is confirmed."
+      },
+      {
+        "id": 3,
+        "question": "How can I customize my expert profile?",
+        "answer": "You can customize your expert profile by adding your bio, areas of expertise, and achievements. This helps you stand out and attract the right clients who are looking for your specific skills."
+      },
+      {
+        "id": 4,
+        "question": "How is my data protected on the platform?",
+        "answer": "We take data security very seriously. Our platform uses advanced encryption and secure servers to protect all your personal and professional information, ensuring your data is safe at all times."
+      }
+    ]
+  },
+  "newsletter": {
+    "title": "Connecting People Beyond Borders",
+    "description": "Join our global community of innovators, experts, and thought leaders. Get exclusive access to cross-border opportunities, cultural insights, and meaningful connections that transcend geographical boundaries. Be part of a movement that's reshaping global collaboration.",
+    "emailPlaceholder": "Enter your email",
+    "buttonText": "Connect Now",
+    "successMessage": "Thanks for signing up!",
+    "errorMessage": "Please enter your email address.",
+    "invalidEmailMessage": "Please enter a valid email address."
+  },
+  "blog": {
+    "title": "Insights & Updates",
+    "description": "Explore the latest insights, expert articles, and industry news curated to help you stay informed and ahead in your field.",
+    "viewAllText": "View All",
+    "noPostsText": "No posts found"
+  },
+  "common": {
+    "comingSoon": "Coming soon"
+  },
+  "features": {
+    "title": "AI-Powered Communication",
+    "description": "Break language barriers with real-time AI translation and voice cloning",
+    "learnMore": "Learn more",
+    "cards": [
+      {
+        "id": 1,
+        "title": "AI Translate",
+        "content": "Real-time translation during video calls with support for 100+ languages",
+        "video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/jywpgkr3vpwyj9hdbthz.mp4",
+        "thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/jywpgkr3vpwyj9hdbthz.jpg",
+        "url": "/features/ai-translate"
+      },
+      {
+        "id": 2,
+        "title": "Auto Translate",
+        "content": "Automatic subtitle translation for recorded sessions",
+        "video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129913/jjpzskulirmmasd0fzo0.mp4",
+        "thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129913/jjpzskulirmmasd0fzo0.jpg",
+        "url": "/features/auto-translate"
+      },
+      {
+        "id": 3,
+        "title": "AI Voice Cloning",
+        "content": "Clone your voice for seamless multilingual communication",
+        "video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/uhk3nuqrglo1haxnvkzg.mp4",
+        "thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/uhk3nuqrglo1haxnvkzg.jpg",
+        "url": "/features/voice-cloning"
+      }
+    ]
+  }
+}

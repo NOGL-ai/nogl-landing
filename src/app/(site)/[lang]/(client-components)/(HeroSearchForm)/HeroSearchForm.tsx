@@ -1,0 +1,83 @@
+"use client";
+
+import React, { FC, useState } from "react";
+import StaySearchForm from "./(stay-search-form)/StaySearchForm";
+import ExperiencesSearchForm from "./(experiences-search-form)/ExperiencesSearchForm";
+import RentalCarSearchForm from "./(car-search-form)/RentalCarSearchForm";
+import FlightSearchForm from "./(flight-search-form)/FlightSearchForm";
+import SessionSearchForm from "./(session-search-form)/SessionSearchForm"; // New import
+import ExpertSearchForm from "./(expert-search-form)/ExpertSearchForm";   // New import
+
+// Updated SearchTab to include Sessions and Experts
+export type SearchTab = "Stays" | "Experiences" | "Cars" | "Flights" | "Sessions" | "Experts";
+
+export interface HeroSearchFormProps {
+  className?: string;
+  currentTab?: SearchTab;
+  currentPage?: "Stays" | "Experiences" | "Cars" | "Flights" | "Sessions" | "Experts";
+}
+
+const HeroSearchForm: FC<HeroSearchFormProps> = ({
+  className = "",
+  currentTab = "Stays",
+  currentPage,
+}) => {
+  const tabs: SearchTab[] = ["Stays", "Experiences", "Cars", "Flights", "Sessions", "Experts"];
+  const [tabActive, setTabActive] = useState<SearchTab>(currentTab);
+
+  // Render the tabs for switching between search forms
+  const renderTab = () => {
+    return (
+      <ul className="hiddenScrollbar ml-2 flex space-x-5 overflow-x-auto sm:ml-6 sm:space-x-8 md:ml-12 lg:space-x-11">
+        {tabs.map((tab) => {
+          const active = tab === tabActive;
+          return (
+            <li
+              onClick={() => setTabActive(tab)}
+              className={`flex flex-shrink-0 cursor-pointer items-center text-sm font-medium lg:text-base ${
+                active
+                  ? "text-neutral-900 dark:text-neutral-100" // Active tab style
+                  : "text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-400"
+              }`}
+              key={tab}
+            >
+              {active && (
+                <span className="mr-2 block h-2.5 w-2.5 rounded-full bg-neutral-800 dark:bg-neutral-100" />
+              )}
+              <span>{tab}</span>
+            </li>
+          );
+        })}
+      </ul>
+    );
+  };
+
+  // Render the form based on the active tab
+  const renderForm = () => {
+    switch (tabActive) {
+      case "Stays":
+        return <StaySearchForm />;
+      case "Experiences":
+        return <ExperiencesSearchForm />;
+      case "Cars":
+        return <RentalCarSearchForm />;
+      case "Flights":
+        return <FlightSearchForm />;
+      case "Sessions":  // New case for Sessions
+        return <SessionSearchForm />;
+      case "Experts":   // New case for Experts
+        return <ExpertSearchForm />;
+      default:
+        return <p>Invalid Tab</p>; // Fallback if no matching tab
+    }
+  };
+
+  return (
+    <div className={`nc-HeroSearchForm w-full max-w-6xl py-5 lg:py-0 ${className}`}>
+      {renderTab()}
+      {renderForm()}
+    </div>
+  );
+};
+
+export default HeroSearchForm;
