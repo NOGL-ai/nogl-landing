@@ -1,9 +1,12 @@
-import React from "react";
-import { getAuthorData } from "./utils/getData";
-import Sidebar from "@/components/Sidebar";
-import TabSection from "./components/TabSection";
+// COMMENTED OUT - Author page disabled for build optimization
+// import React from "react";
+// import { getAuthorData } from "./utils/getData";
+// import Sidebar from "@/components/Sidebar";
+// import TabSection from "./components/TabSection";
 
-// This is now a Server Component
+// // This is now a Server Component
+// COMMENTED OUT - Author component disabled for build optimization
+/*
 async function AuthorPage() {
 	const expertId = "tuhin_mallick";
 	const { sessions, error } = await getAuthorData(expertId);
@@ -38,6 +41,23 @@ async function AuthorPage() {
 					/>
 				</div>
 			</main>
+		</div>
+	);
+}
+*/
+
+// Placeholder component to prevent build errors
+async function AuthorPage() {
+	return (
+		<div className="min-h-screen flex items-center justify-center">
+			<div className="text-center">
+				<h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+					Author Page Temporarily Unavailable
+				</h1>
+				<p className="text-gray-600 dark:text-gray-400">
+					This feature has been temporarily disabled for build optimization.
+				</p>
+			</div>
 		</div>
 	);
 }

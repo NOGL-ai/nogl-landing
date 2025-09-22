@@ -1,20 +1,23 @@
-import React from "react";
-import { fetchSessions } from "@/utils/fetchSessions";
-import SectionGridFilterCard from "../SectionGridFilterCard";
-import { processSessionData } from "@/utils/processSessionData";
-import { SessionDataType } from "@/data/types";
-// import { generateSessionUrl } from "@/utils/hashId";
-import { Route } from "@/routers/types";
+// COMMENTED OUT - Listing Session page disabled for build optimization
+// import React from "react";
+// import { fetchSessions } from "@/utils/fetchSessions";
+// import SectionGridFilterCard from "../SectionGridFilterCard";
+// import { processSessionData } from "@/utils/processSessionData";
+// import { SessionDataType } from "@/data/types";
+// // import { generateSessionUrl } from "@/utils/hashId";
+// import { Route } from "@/routers/types";
 
-const R2_BUCKET_URL = 'https://pub-beabd1ed711d4df3bbda9b37465d8b04.r2.dev';
+// const R2_BUCKET_URL = 'https://pub-beabd1ed711d4df3bbda9b37465d8b04.r2.dev';
 
-// Temporary local encode function for testing
-const localGenerateSessionUrl = (id: string): Route => {
-  return `/listing-session-detail/${id}` as Route;
-};
+// // Temporary local encode function for testing
+// const localGenerateSessionUrl = (id: string): Route => {
+//   return `/listing-session-detail/${id}` as Route;
+// };
 
-export const revalidate = 0;
+// export const revalidate = 0;
 
+// COMMENTED OUT - Listing Session component disabled for build optimization
+/*
 export default async function ListingSessionPage() {
   try {
     const rawSessions = await fetchSessions();
@@ -63,4 +66,21 @@ export default async function ListingSessionPage() {
     console.error('Error in ListingSessionPage:', error);
     return <div>Error loading sessions</div>;
   }
+}
+*/
+
+// Placeholder component to prevent build errors
+export default async function ListingSessionPage() {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+          Session Listings Temporarily Unavailable
+        </h1>
+        <p className="text-gray-600 dark:text-gray-400">
+          This feature has been temporarily disabled for build optimization.
+        </p>
+      </div>
+    </div>
+  );
 }

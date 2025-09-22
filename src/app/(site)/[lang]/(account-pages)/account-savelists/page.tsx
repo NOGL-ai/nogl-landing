@@ -1,11 +1,14 @@
-"use client";
+// COMMENTED OUT - Account Savelists page disabled for build optimization
+// "use client";
 
-import { Tab } from "@headlessui/react";
-import StayCard2 from "@/components/StayCard2"; // Reusing StayCard2 for sessions
-import { DEMO_SESSIONS_LISTINGS } from "@/data/listings";
-import React, { Fragment, useState } from "react";
-import ButtonSecondary from "@/shared/ButtonSecondary";
+// import { Tab } from "@headlessui/react";
+// import StayCard2 from "@/components/StayCard2"; // Reusing StayCard2 for sessions
+// import { DEMO_SESSIONS_LISTINGS } from "@/data/listings";
+// import React, { Fragment, useState } from "react";
+// import ButtonSecondary from "@/shared/ButtonSecondary";
 
+// COMMENTED OUT - Account Savelists component disabled for build optimization
+/*
 const Session = () => {
   const [categories] = useState(["Sessions"]);
 
@@ -55,6 +58,23 @@ const Session = () => {
   };
 
   return renderSection();
+};
+*/
+
+// Placeholder component to prevent build errors
+const Session = () => {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+          Account Savelists Temporarily Unavailable
+        </h1>
+        <p className="text-gray-600 dark:text-gray-400">
+          This feature has been temporarily disabled for build optimization.
+        </p>
+      </div>
+    </div>
+  );
 };
 
 export default Session;
