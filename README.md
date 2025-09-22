@@ -41,7 +41,6 @@ Visit the live application at [your-domain.com]
 
 This project is licensed under the MIT License.
 
-
 ## Update Logs
 
 📆 13 June 2024
