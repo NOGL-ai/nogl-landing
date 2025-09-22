@@ -1,6 +1,7 @@
-import { connectSearchBox } from "react-instantsearch-dom";
+import { useSearchBox } from "react-instantsearch";
 
-function CustomSearchBox({ refine }: any) {
+function CustomSearchBox() {
+	const { query, refine } = useSearchBox();
 	return (
 		<form
 			action=''
@@ -11,6 +12,7 @@ function CustomSearchBox({ refine }: any) {
 				<input
 					id='algolia_search'
 					type='search'
+					value={query}
 					onChange={(e) => refine(e.currentTarget.value)}
 					placeholder='Site Search ... (Powered by Algolia)'
 					className='h-[74px] w-full rounded-lg pl-[60px] pr-5 text-black outline-none dark:bg-black dark:text-gray-5'
@@ -34,4 +36,4 @@ function CustomSearchBox({ refine }: any) {
 	);
 }
 
-export default connectSearchBox(CustomSearchBox);
+export default CustomSearchBox;

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Highlight } from "react-instantsearch-dom";
+import { Highlight } from "react-instantsearch";
 
 function CustomHits(props: any) {
 	const { hit, setSearchModalOpen } = props;
@@ -29,14 +29,14 @@ function CustomHits(props: any) {
 						)}
 						<div className='w-full'>
 							<h3 className='text-base font-medium text-black dark:text-gray-400'>
-								<Highlight attribute='title' hit={hit} />
+								<Highlight hit={hit} attribute='title' />
 							</h3>
 							<div className='text-body-color flex text-sm'>
 								<div>
-									<Highlight attribute='type' hit={hit} />
+									<Highlight hit={hit} attribute='type' />
 								</div>
 								<div>
-									: <Highlight attribute='url' hit={hit} />
+									: <Highlight hit={hit} attribute='url' />
 								</div>
 							</div>
 						</div>

@@ -1,6 +1,6 @@
 import algoliasearch from "algoliasearch";
 import React, { useEffect } from "react";
-import { Hits, InstantSearch } from "react-instantsearch-dom";
+import { Hits, InstantSearch } from "react-instantsearch";
 import CustomHits from "./CustomHits";
 import SearchBox from "./CustomSearchBox";
 import EmptyState from "./EmptyState";
@@ -52,7 +52,7 @@ const GlobalSearchModal = (props: Props) => {
 								<SearchBox />
 								<EmptyState />
 								<Hits
-									hitComponent={(props) => (
+									hitComponent={(props: any) => (
 										<CustomHits
 											{...props}
 											setSearchModalOpen={setSearchModalOpen}

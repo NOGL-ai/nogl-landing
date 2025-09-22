@@ -1,7 +1,8 @@
 import React from "react";
-import { connectHits } from "react-instantsearch-dom";
+import { useHits } from "react-instantsearch";
 
-const EmptyState = ({ hits }: any) => {
+const EmptyState = () => {
+	const { hits } = useHits();
 	return (
 		<>
 			{hits?.length == 0 ? (
@@ -15,4 +16,4 @@ const EmptyState = ({ hits }: any) => {
 	);
 };
 
-export default connectHits(EmptyState);
+export default EmptyState;
