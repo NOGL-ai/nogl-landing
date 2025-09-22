@@ -19,7 +19,7 @@ import ButtonCircle from '@/shared/ButtonCircle';
 import SectionDateRange from './SectionDateRange';
 import LikeSaveBtns from '@/components/LikeSaveBtns';
 import ShareModal from '@/components/ShareModal';
-import MobileFooterSticky from './MobileFooterSticky'
+// import MobileFooterSticky from './MobileFooterSticky'
 import ImageGalleryGrid from './ImageGalleryGrid';
 import Sidebar from './Sidebar';
 import BenefitsModal from './BenefitsModal';
@@ -202,8 +202,8 @@ const SessionDetail: FC<SessionDetailProps> = ({
             session={session}
           />
 
-          {/* STICKY FOOTER MOBILE */}
-          <div className="fixed inset-x-0 bottom-0 z-40 block lg:hidden">
+          {/* STICKY FOOTER MOBILE - COMMENTED OUT */}
+          {/* <div className="fixed inset-x-0 bottom-0 z-40 block lg:hidden">
             <MobileFooterSticky 
               session={session}
               total={total}
@@ -211,7 +211,7 @@ const SessionDetail: FC<SessionDetailProps> = ({
               participants={participants}
               handleBookNow={handleBookNow}
             />
-          </div>
+          </div> */}
         </div>
       </SessionContext.Provider>
     </>
