@@ -70,7 +70,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         />
       </head>
       <body
-        className={`${inter.className} flex min-h-screen flex-col dark:bg-neutral-900 dark:text-white`}
+        className={`${inter.className} flex min-h-screen flex-col bg-gray-50 dark:bg-gray-900 dark:text-white`}
       >
         <ClientLayout>
           {children}

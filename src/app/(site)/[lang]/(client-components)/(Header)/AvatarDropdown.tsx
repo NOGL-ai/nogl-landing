@@ -4,6 +4,7 @@ import Avatar from "@/shared/Avatar";
 import SwitchDarkMode2 from "@/shared/SwitchDarkMode2";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import { Route } from "@/routers/types";
 
 interface Props {
   className?: string;
@@ -325,15 +326,17 @@ export default function AvatarDropdown({ className = "" }: Props) {
                       <>
                         {/* Sign In Link */}
                         <Link
-                          href='/auth/signin'
+                          // @ts-expect-error - TypedRoutes experimental feature
+                          href="/auth/signin"
                           className='px-5 py-2 font-satoshi font-medium text-black dark:text-white'
                         >
                           Sign In
                         </Link>
                         {/* Sign Up Link */}
                         <Link
-                          href='/auth/signup'
-                          className='rounded-full bg-primary px-5 py-2 font-satoshi font-medium text-white hover:bg-primary-dark'
+                          // @ts-expect-error - TypedRoutes experimental feature
+                          href="/auth/signup"
+                          className='rounded-full bg-primary-500 px-5 py-2 font-satoshi font-medium text-white hover:bg-primary-600 shadow-lg border-2 border-primary-400'
                         >
                           Sign Up
                         </Link>
