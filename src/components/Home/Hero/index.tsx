@@ -4,7 +4,7 @@ import AnimatedShinyText from "@/components/ui/animated-shiny-text";
 import FlipText from "@/components/ui/flip-text";
 import { RainbowButton } from "@/components/ui/rainbow-button";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
-import { useInView } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
 interface HeroProps {
@@ -58,16 +58,37 @@ export default function HeroSection({ dictionary }: HeroProps) {
           </h1>
         ))}
       </div>
-      <p className="mt-16 mb-16 text-base tracking-tight text-gray-400 md:text-lg text-balance translate-y-[-1rem] animate-fade-in opacity-0 [--animation-delay:200ms]">
-        {dictionary.hero.description}
-      </p>
-      <RainbowButton 
-        onClick={scrollToNewsletter}
-        className="translate-y-[-1rem] animate-fade-in gap-1 rounded-lg text-white dark:text-black opacity-0 ease-in-out [--animation-delay:300ms]"
+      <motion.p 
+        className="mt-16 mb-16 text-base tracking-tight text-gray-400 md:text-lg text-balance"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ 
+          duration: 0.5, 
+          delay: 1.2, // After title animations complete
+          ease: "easeOut" 
+        }}
+        style={{ willChange: "transform, opacity" }}
       >
-        <span>{dictionary.hero.buttonText}</span>
-        <ArrowRightIcon className="ml-1 size-4 transition-transform duration-300 ease-in-out group-hover:translate-x-1" />
-      </RainbowButton>
+        {dictionary.hero.description}
+      </motion.p>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ 
+          duration: 0.5, 
+          delay: 1.5, // After description
+          ease: "easeOut" 
+        }}
+        style={{ willChange: "transform, opacity" }}
+      >
+        <RainbowButton 
+          onClick={scrollToNewsletter}
+          className="gap-1 rounded-lg text-white dark:text-black"
+        >
+          {dictionary.hero.buttonText}
+          <ArrowRightIcon className="ml-1 size-4 transition-transform duration-300 ease-in-out group-hover:translate-x-1" />
+        </RainbowButton>
+      </motion.div>
     </section>
   );
 }

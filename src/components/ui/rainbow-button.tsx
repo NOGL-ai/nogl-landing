@@ -1,16 +1,62 @@
+"use client";
+
 import React from "react";
+import { motion, Variants } from "framer-motion";
 
 import { cn } from "@/lib/utils";
+
 interface RainbowButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children: React.ReactNode;
+}
+
+// Container variants for button text animation
+const buttonContainerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.06, // Fast stagger for button text
+      delayChildren: 0.1,
+    },
+  },
+};
+
+// Individual word variants for button text
+const buttonWordVariants: Variants = {
+  hidden: { 
+    opacity: 0, 
+    y: 5,
+    scale: 0.9
+  },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.25,
+      ease: "easeOut",
+    },
+  },
+};
 
 export function RainbowButton({
   children,
   className,
   ...props
 }: RainbowButtonProps) {
+  // Extract text from children for word-by-word animation
+  const text = typeof children === 'string' ? children : 
+    React.Children.toArray(children)
+      .filter(child => typeof child === 'string')
+      .join(' ');
+  
+  const words = text.split(' ').filter(word => word.length > 0);
+  const nonTextChildren = React.Children.toArray(children)
+    .filter(child => typeof child !== 'string');
+
   return (
-    <button
+    <motion.button
       className={cn(
         "group relative inline-flex h-11 cursor-pointer items-center justify-center rounded-xl border-0 bg-[length:200%] px-8 py-2 font-medium text-primary-foreground transition-all duration-300 [background-clip:padding-box,border-box,border-box] [background-origin:border-box] [border:calc(0.08*1rem)_solid_transparent] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
 
@@ -28,9 +74,25 @@ export function RainbowButton({
 
         className,
       )}
+      variants={buttonContainerVariants}
+      initial="hidden"
+      animate="visible"
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      style={{ willChange: "transform, opacity" }}
       {...props}
     >
-      {children}
-    </button>
+      {words.map((word, index) => (
+        <motion.span
+          key={index}
+          variants={buttonWordVariants}
+          className="inline-block mr-1 last:mr-0"
+          style={{ willChange: "transform, opacity" }}
+        >
+          {word}
+        </motion.span>
+      ))}
+      {nonTextChildren}
+    </motion.button>
   );
 }
