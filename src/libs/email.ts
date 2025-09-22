@@ -3,15 +3,18 @@ import DOMPurify from 'isomorphic-dompurify';
 import validator from 'validator';
 import { getBookingConfirmationEmail } from './emailTemplates/bookingConfirmationEmail';
 
-// Validate required environment variables at startup
+// Validate required environment variables at startup (only in production)
 const requiredEnvVars = ['EMAIL_SERVER_HOST', 'EMAIL_SERVER_USER', 'EMAIL_SERVER_PASSWORD', 'EMAIL_FROM'];
 
-requiredEnvVars.forEach((varName) => {
-    if (!process.env[varName]) {
-        console.error(`Environment variable ${varName} is not set.`);
-        process.exit(1);
-    }
-});
+// Only validate environment variables in production, not during build
+if (process.env.NODE_ENV === 'production' && !process.env.NEXT_PHASE) {
+    requiredEnvVars.forEach((varName) => {
+        if (!process.env[varName]) {
+            console.error(`Environment variable ${varName} is not set.`);
+            process.exit(1);
+        }
+    });
+}
 
 type EmailPayload = {
     to: string;
