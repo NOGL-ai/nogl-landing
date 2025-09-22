@@ -22,28 +22,28 @@ export interface SectionClientSayProps {
 	data?: typeof DEMO_DATA;
 }
 
-// Adjusted the demo data to reflect testimonials specifically about expert sessions
+// Adjusted the demo data to reflect testimonials specifically about fashion forecasting
 const DEMO_DATA = [
 	{
 		id: 1,
 		clientName: "Emily Schomaker",
 		clientAddress: "Hamburg, Germany",
 		content:
-			"The expert session on SEO and Influencer Marketing was incredibly insightful. The platform's AI features made the interaction seamless!",
+      "The forecast on denim color and silhouette shifts was spot on. Our buys improved and AI-insights made decisions seamless!",
 	},
 	{
 		id: 2,
 		clientName: "Jane Smith",
 		clientAddress: "London, UK",
 		content:
-			"I attended a session on startup financing, and the expert's advice was game-changing. Highly recommend this platform!",
+      "We validated our new range with demand signals before committing. Game-changing for margin and markdowns.",
 	},
 	{
 		id: 3,
 		clientName: "Ahmed Khan",
 		clientAddress: "Dubai, UAE",
 		content:
-			"The ability to book sessions with industry leaders and get AI-powered summaries afterward is a huge plus. Fantastic experience!",
+      "Localized assortment guidance and AI summaries helped our team align fast across regions.",
 	},
 ];
 

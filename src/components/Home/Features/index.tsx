@@ -12,10 +12,10 @@ const Features = () => {
 		>
 			{/* <!-- section title --> */}
 			<SectionHeader
-				// Updated title to better reflect the platform's unique value proposition
-				title={"Empower Your Sessions with AI"}
-				// Adjusted description to emphasize the platform's AI features and expertise access
-				description='Explore how our platform enhances your expert sessions with AI-driven tools.'
+				// Updated title to reflect fashion forecasting positioning
+				title={"AI Fashion Intelligence for Trend & Demand"}
+				// Description emphasizes demand sensing and assortment optimization
+				description='Discover demand-sensed trends, predict new-product demand, and optimize assortments.'
 			/>
 
 			<div className='relative z-1 mx-auto w-full max-w-[1170px] px-4 sm:px-8 xl:px-0'>

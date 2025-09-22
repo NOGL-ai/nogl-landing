@@ -16,22 +16,22 @@ const SectionSubscribe2: FC<SectionSubscribe2Props> = ({ className = "" }) => {
 			data-nc-id='SectionSubscribe2'
 		>
 			<div className='mb-10 flex-shrink-0 lg:mb-0 lg:mr-10 lg:w-2/5'>
-				<h2 className='text-4xl font-semibold'>Stay Updated with Expert Sessions 🎯</h2>
+			<h2 className='text-4xl font-semibold'>Stay Updated with Fashion Trend Forecasts 🎯</h2>
 				<span className='mt-5 block text-neutral-500 dark:text-neutral-400'>
-					Get notified about new expert sessions, exclusive offers, and industry insights.
+				Get notified about new forecasts, demand insights, and assortment best practices.
 					Join our community of learners and professionals.
 				</span>
 				<ul className='mt-10 space-y-4'>
 					<li className='flex items-center space-x-4'>
 						<Badge name='01' />
 						<span className='font-medium text-neutral-700 dark:text-neutral-300'>
-							Get notified about new sessions
+						Get notified about new forecasts
 						</span>
 					</li>
 					<li className='flex items-center space-x-4'>
 						<Badge color='red' name='02' />
 						<span className='font-medium text-neutral-700 dark:text-neutral-300'>
-							Exclusive offers from experts
+						Exclusive research and insights
 						</span>
 					</li>
 				</ul>
@@ -54,7 +54,7 @@ const SectionSubscribe2: FC<SectionSubscribe2Props> = ({ className = "" }) => {
 				</form>
 			</div>
 			<div className='flex-grow'>
-				<Image alt='Subscribe to expert sessions newsletter' src={rightImg} />
+			<Image alt='Subscribe to fashion trend forecasting newsletter' src={rightImg} />
 			</div>
 		</div>
 	);

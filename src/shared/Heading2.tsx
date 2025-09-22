@@ -13,7 +13,7 @@ export interface Heading2Props {
 
 const Heading2: React.FC<Heading2Props> = ({
   className = "",
-  heading = "Expert Sessions",
+  heading = "Fashion Trend Forecasts",
   subHeading,
   totalSessions = 0,
   dateRange = "Upcoming dates",
@@ -29,7 +29,7 @@ const Heading2: React.FC<Heading2Props> = ({
         <span className='mt-3 block text-neutral-500 dark:text-neutral-400'>
           {filtersApplied ? (
             <>
-              {totalSessions} sessions available
+              {totalSessions} forecasts available
               <span className='mx-2'>·</span>
               {dateRange}
               <span className='mx-2'>·</span>
@@ -37,7 +37,7 @@ const Heading2: React.FC<Heading2Props> = ({
             </>
           ) : (
             <>
-              Showing all available sessions
+              Showing all available forecasts
               <span className='mx-2'>·</span>
               {dateRange}
             </>

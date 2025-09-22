@@ -8,9 +8,9 @@ export const pricingData: Price[] = [
 		description: "Start your learning journey today",
 		subtitle: "Perfect for exploring",
 		includes: [
-			"Starter Pack: 3 hand-picked expert sessions ($297 value)",
-			"Success Vault: Access curated session highlights",
-			"AI Learning Assistant: Experience smart insights preview",
+			"Starter Pack: 3 demand-sensed trend reports ($297 value)",
+			"Insights Vault: Access curated forecast highlights",
+			"AI Forecast Assistant: Experience smart insights preview",
 		],
 		icon: `/images/pricing/pricing-icon-01.svg`,
 	},
@@ -18,12 +18,12 @@ export const pricingData: Price[] = [
 		priceId: "price_1QJh0XC8DkZnisvUHaJvjM6c",
 		unit_amount: 100 * 100, // Pro Plan
 		nickname: "Pro Plan",
-		description: "Transform your learning with unlimited access & AI insights",
+		description: "Transform your merchandising with forecasting & AI insights",
 		subtitle: "For ambitious learners",
 		includes: [
-			"Weekly Growth Sessions: Guided expert learning path ($997/month value)",
-			"Personal AI Coach: Get summaries & action plans after each session",
-			"Members-only mastermind sessions with industry experts",
+			"Weekly Forecasts: Demand and trend drops ($997/month value)",
+			"AI Merchandising Coach: Summaries & action plans from forecasts",
+			"Members-only insights from category specialists",
 		],
 		icon: `/images/pricing/pricing-icon-02.svg`,
 		active: true,
@@ -33,12 +33,12 @@ export const pricingData: Price[] = [
 		unit_amount: 0, // Flexible pricing determined by the expert
 		nickname: "Community Access",
 		description:
-			"Join our thriving community of ambitious learners",
+			"Join our community of data-driven fashion teams",
 		subtitle: "For occasional learners",
 		includes: [
-			"One-time access to an expert session",
-			"Option to purchase recordings",
-			"Add-ons available for enhanced learning",
+			"One-time access to a category forecast",
+			"Option to purchase deep-dive reports",
+			"Add-ons available for enhanced insights",
 			"Email support",
 		],
 		icon: `/images/pricing/pricing-icon-03.svg`,

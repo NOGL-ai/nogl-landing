@@ -84,7 +84,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
                     : "text-black hover:bg-primary/5 hover:text-primary dark:text-gray-5 dark:hover:bg-white/5 dark:hover:text-white"
                 }`}
               >
-                Find Sessions
+                Trend Forecasts
               </Link>
               <Link
                 href="/author"
@@ -95,7 +95,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
                 }`}
                 onClick={(e) => e.preventDefault()}
               >
-                Browse Experts
+                Fashion Intelligence
                 <span className="absolute -right-2 -top-2 inline-flex items-center rounded-full bg-primary-500 px-2 py-0.5 text-[10px] font-medium text-white">
                   Soon
                 </span>
@@ -120,9 +120,9 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
               className="dark:border-neutral-6000 relative flex w-full items-center rounded-full border border-neutral-200 px-4 py-2 pr-12 shadow-lg"
             >
               <span className="flex-1 text-left">
-                <span className="block text-sm font-medium">Search Sessions</span>
+                <span className="block text-sm font-medium">Search Trends</span>
                 <span className="mt-0.5 block text-xs font-light text-neutral-500 dark:text-neutral-400">
-                  Find expert sessions
+                  Forecasts, demand, assortments
                 </span>
               </span>
               <div className="absolute right-2 top-1/2 flex -translate-y-1/2 transform">
@@ -178,7 +178,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
                     shimmerColor="#ffffff33"
                     className="font-medium dark:!text-white"
                   >
-                    Host a Session
+                    New Forecast
                   </ShimmerButton>
                 </Link>
               )}
@@ -258,7 +258,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
                     : "text-black hover:bg-primary/5 hover:text-primary dark:text-gray-5 dark:hover:bg-white/5 dark:hover:text-white"
                 }`}
               >
-                Find Sessions
+                Trend Forecasts
               </Link>
             </li>
             <li>
@@ -271,7 +271,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
                     : "text-black hover:bg-primary/5 hover:text-primary dark:text-gray-5 dark:hover:bg-white/5 dark:hover:text-white"
                 }`}
               >
-                Browse Experts
+                Fashion Intelligence
               </Link>
             </li>
             <li>

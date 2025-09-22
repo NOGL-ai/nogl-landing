@@ -89,7 +89,7 @@ export const getSEOTags = ({
     // OpenGraph
     openGraph: {
       title: title || defaultSiteName,
-      description: description || 'AI-Powered Expert Sessions',
+      description: description || 'AI-Powered Fashion Trend Forecasting & Demand Prediction',
       url: canonicalUrlRelative
         ? constructUrl(canonicalUrlRelative, defaultSiteUrl)
         : defaultSiteUrl,
@@ -138,7 +138,7 @@ export const renderSchemaTags = (customSchema?: Record<string, any>) => {
     '@context': 'http://schema.org',
     '@type': 'SoftwareApplication',
     name: defaultSiteName,
-    description: 'Nogl - AI-Powered Expert Sessions',
+    description: 'Nogl - AI-Powered Fashion Trend Forecasting & Demand Prediction',
     image: `${defaultImageBaseUrl}/icon.png`,
     url: defaultSiteUrl,
     // Author updated to Organization

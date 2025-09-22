@@ -62,54 +62,54 @@
   },
   "hero": {
     "introducing": "Introducing Nogl.ai",
-    "title": "Expand Knowledge Through Expert Talks",
-    "description": "Join a platform to grow through one-on-one calls, group sessions, and expert-led content",
-    "buttonText": "Start Connecting for free"
+    "title": "AI-Powered Fashion Trend Forecasting & Demand Prediction",
+    "description": "Predict trends, forecast new-product demand, and optimize localized assortments with demand-sensing AI.",
+    "buttonText": "Start Forecasting for free"
   },
   "problem": {
     "title": "The Problem",
-    "subtitle": "Barriers to Accessing Expert Knowledge",
-    "description": "In today's fast-paced world, accessing expert knowledge is often complicated, time-consuming, and costly",
+    "subtitle": "Subjective, supply-driven fashion decisions",
+    "description": "Traditional trend forecasts are opinion-led and noisy, causing overproduction, markdowns, and missed demand.",
     "challenges": [
       {
-        "title": "Limited Availability",
-        "description": "Difficulty finding the right expert at the right time"
+        "title": "Subjective trend bets",
+        "description": "Decisions driven by opinion instead of real demand signals"
       },
       {
-        "title": "High Costs",
-        "description": "Traditional consulting comes with significant expenses"
+        "title": "Markdown wastage",
+        "description": "Overstock from poor demand prediction"
       },
       {
-        "title": "Time Investment",
-        "description": "Long wait times and complicated scheduling processes"
+        "title": "Slow speed to market",
+        "description": "Long cycles without rapid validation"
       }
     ]
   },
   "solution": {
     "title": "Our Solution",
-    "subtitle": "Transforming How You Access Expertise",
-    "description": "Overcome barriers and accelerate your growth with our innovative platform",
+    "subtitle": "True Demand–driven fashion intelligence",
+    "description": "Demand-sensing AI for trend forecasting, new-product demand, and localized assortments",
     "features": [
       {
-        "title": "Join Affordable Group Sessions",
-        "description": "Save money by participating in group calls with experts, gaining valuable insights without the hefty price tag."
+        "title": "Demand-sensed trends",
+        "description": "See what consumers want by category and market with less noise."
       },
       {
-        "title": "Access a Vast Expert Directory",
-        "description": "Quickly find and connect with the right professionals across various fields, all in one place."
+        "title": "New product demand prediction",
+        "description": "Forecast performance using visual + attribute signals and consumer data."
       },
       {
-        "title": "Experience Reliable AI Assistance",
-        "description": "Benefit from AI tools enhanced with expert knowledge, providing accurate and practical information."
+        "title": "Localized assortment optimization",
+        "description": "Balance width and depth across stores and regions to lift sell-through."
       },
       {
-        "title": "Interactive Learning Experience",
-        "description": "Engage with experts and peers through live chats and Q&A sessions."
+        "title": "AI summaries and actions",
+        "description": "Auto-summarized insights with next-step recommendations for your team."
       }
     ]
   },
   "counter": {
-    "title": "Breaking Language Barriers",
+    "title": "Demand-sensed Fashion Intelligence",
     "stats": [
       {
         "value": "12",
@@ -124,7 +124,7 @@
         "label": "percent accuracy in real-time translations across professional consultations"
       }
     ],
-    "heading": "Unlock Global Expertise: Break Language Barriers with AI-Powered Expert Sessions",
+    "heading": "Unlock Fashion Intelligence: Demand‑sensed Trend Forecasting & Demand Prediction",
     "aboutButton": "Start Your Journey"
   },
   "callToAction": {
@@ -151,9 +151,9 @@
         "price": "0",
         "description": "Perfect for getting started",
         "features": [
-          "Access to group sessions",
-          "Basic AI chat support",
-          "Community forum access",
+          "Access to trend briefs",
+          "Basic AI insight support",
+          "Community access",
           "Email support"
         ],
         "buttonText": "Get Started"
@@ -161,10 +161,10 @@
       {
         "name": "Pro",
         "price": "29",
-        "description": "Best for professionals",
+        "description": "Best for merchandising teams",
         "features": [
           "All Free features",
-          "Priority access to sessions",
+          "Priority access to forecasts",
           "Advanced AI tools",
           "Priority support"
         ],

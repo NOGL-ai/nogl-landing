@@ -131,54 +131,54 @@
   },
   "hero": {
     "introducing": "Willkommen bei Nogl.ai",
-    "title": ["Erweitern Sie Ihr Wissen durch", "Expertengespräche"],
-    "description": "Treten Sie einer Plattform bei, um durch Einzelgespräche, Gruppensitzungen und von Experten geleitete Inhalte zu wachsen",
-    "buttonText": "Jetzt kostenlos starten"
+    "title": ["KI-gestützte Mode-Trendprognosen", "& Nachfragevorhersage"],
+    "description": "Prognostizieren Sie Trends, sagen Sie die Nachfrage für neue Produkte voraus und optimieren Sie lokale Sortimente mit Demand-Sensing-KI.",
+    "buttonText": "Jetzt Prognosen starten"
   },
   "problem": {
     "title": "Die Herausforderung",
-    "subtitle": "Barrieren beim Zugang zu Expertenwissen",
-    "description": "In der heutigen schnelllebigen Welt ist der Zugang zu Expertenwissen oft kompliziert, zeitaufwendig und kostspielig",
+    "subtitle": "Subjektive, angebotsgetriebene Modeentscheidungen",
+    "description": "Traditionelle Trendprognosen sind meinungsgetrieben und verrauscht – das führt zu Überproduktion, Abschriften und verpasster Nachfrage.",
     "challenges": [
       {
-        "title": "Begrenzte Verfügbarkeit",
-        "description": "Schwierigkeiten, den richtigen Experten zur richtigen Zeit zu finden"
+        "title": "Subjektive Trendwetten",
+        "description": "Entscheidungen ohne echte Nachfragesignale"
       },
       {
-        "title": "Hohe Kosten",
-        "description": "Traditionelle Beratung ist oft mit erheblichen Kosten verbunden"
+        "title": "Abschriften",
+        "description": "Überbestand durch schlechte Nachfragevorhersage"
       },
       {
-        "title": "Zeitaufwand",
-        "description": "Lange Wartezeiten und komplizierte Terminvereinbarungen"
+        "title": "Geringe Time-to-Market",
+        "description": "Lange Zyklen ohne schnelle Validierung"
       }
     ]
   },
   "solution": {
     "title": "Unsere Lösung",
-    "subtitle": "Wir verändern den Zugang zu Expertise",
-    "description": "Überwinden Sie Barrieren und beschleunigen Sie Ihr Wachstum mit unserer innovativen Plattform",
+    "subtitle": "True-Demand‑getriebene Modeintelligenz",
+    "description": "Demand-Sensing‑KI für Trendprognosen, neue Produktnachfrage und lokale Sortimentsoptimierung",
     "features": [
       {
-        "title": "Kostengünstige Gruppensitzungen",
-        "description": "Sparen Sie Geld durch die Teilnahme an Gruppenanrufen mit Experten und gewinnen Sie wertvolle Erkenntnisse ohne hohe Kosten."
+        "title": "Demand‑gesensete Trends",
+        "description": "Erkennen Sie Verbraucherwünsche nach Kategorie und Markt – mit weniger Rauschen."
       },
       {
-        "title": "Zugang zu umfangreichem Expertenverzeichnis",
-        "description": "Finden und verbinden Sie sich schnell mit den richtigen Fachleuten aus verschiedenen Bereichen, alles an einem Ort."
+        "title": "Nachfragevorhersage für Neuprodukte",
+        "description": "Prognose mit visuellen + Attributsignalen und Verbraucherdaten."
       },
       {
-        "title": "Zuverlässige KI-Unterstützung",
-        "description": "Profitieren Sie von KI-Tools, die mit Expertenwissen angereichert sind und genaue, praktische Informationen liefern."
+        "title": "Lokalisierte Sortimentsoptimierung",
+        "description": "Breite und Tiefe über Stores und Regionen ausbalancieren, um Sell‑through zu steigern."
       },
       {
-        "title": "Interaktive Lernerfahrung",
-        "description": "Tauschen Sie sich mit Experten und anderen Teilnehmern durch Live-Chats und Fragerunden aus."
+        "title": "KI‑Zusammenfassungen & Aktionen",
+        "description": "Automatisierte Insights mit nächsten Schritten für Ihr Team."
       }
     ]
   },
   "counter": {
-    "title": "Sprachbarrieren überwinden",
+    "title": "Demand‑gesensete Modeintelligenz",
     "stats": [
       {
         "value": "12",
@@ -193,7 +193,7 @@
         "label": "Prozent Genauigkeit bei Echtzeit-Übersetzungen in professionellen Beratungen"
       }
     ],
-    "heading": "Globales Expertenwissen erschließen: Sprachbarrieren mit KI-gestützten Expertensitzungen überwinden",
+    "heading": "Modeintelligenz freischalten: Trendprognosen & Nachfragevorhersage",
     "aboutButton": "Starten Sie Ihre Reise"
   },
   "callToAction": {
