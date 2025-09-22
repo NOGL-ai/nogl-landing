@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { motion, Variants } from "framer-motion";
 import { CSSProperties, FC, ReactNode } from "react";
 import { useAnimationCapabilities, getAnimationVariants, getStaggerTiming } from "@/hooks/useAnimationCapabilities";
@@ -20,7 +21,21 @@ const AnimatedShinyText: FC<AnimatedShinyTextProps> = ({
   const { animationLevel, hasGPU } = useAnimationCapabilities();
   
   // Convert children to string and split into words
-  const text = typeof children === 'string' ? children : children?.toString() || '';
+  const extractTextFromChildren = (children: ReactNode): string => {
+    return React.Children.toArray(children)
+      .map(child => {
+        if (typeof child === 'string') return child;
+        if (typeof child === 'number') return child.toString();
+        if (React.isValidElement(child)) {
+          // Recursively extract text from nested elements
+          return extractTextFromChildren(child.props.children);
+        }
+        return '';
+      })
+      .join('');
+  };
+
+  const text = typeof children === 'string' ? children : extractTextFromChildren(children);
   const words = text.split(' ');
 
   // Get adaptive animation variants
