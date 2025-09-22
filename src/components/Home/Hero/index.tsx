@@ -51,19 +51,19 @@ export default function HeroSection({ dictionary }: HeroProps) {
           <h1 key={index} className="block">
             <FlipText 
               word={line}
-              duration={0.5}
-              delayMultiple={0.08}
+              duration={0.4}
+              staggerDelay={0.1}
               className="bg-gradient-to-br dark:from-white from-black from-30% dark:to-white/40 to-black/40 bg-clip-text text-base font-medium text-transparent xsm:text-base lsm:text-lg sm:text-xl md:text-3xl lg:text-5xl xl:text-6xl lg:leading-[1.2] py-2 inline-block"
             />
           </h1>
         ))}
       </div>
-      <p className="mt-16 mb-16 text-base tracking-tight text-gray-400 md:text-lg text-balance translate-y-[-1rem] animate-fade-in opacity-0 [--animation-delay:400ms]">
+      <p className="mt-16 mb-16 text-base tracking-tight text-gray-400 md:text-lg text-balance translate-y-[-1rem] animate-fade-in opacity-0 [--animation-delay:200ms]">
         {dictionary.hero.description}
       </p>
       <RainbowButton 
         onClick={scrollToNewsletter}
-        className="translate-y-[-1rem] animate-fade-in gap-1 rounded-lg text-white dark:text-black opacity-0 ease-in-out [--animation-delay:600ms]"
+        className="translate-y-[-1rem] animate-fade-in gap-1 rounded-lg text-white dark:text-black opacity-0 ease-in-out [--animation-delay:300ms]"
       >
         <span>{dictionary.hero.buttonText}</span>
         <ArrowRightIcon className="ml-1 size-4 transition-transform duration-300 ease-in-out group-hover:translate-x-1" />

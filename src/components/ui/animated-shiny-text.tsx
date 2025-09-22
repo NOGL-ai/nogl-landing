@@ -23,11 +23,11 @@ const AnimatedShinyText: FC<AnimatedShinyTextProps> = ({
       className={cn(
         "mx-auto max-w-md text-neutral-600/70 dark:text-neutral-400/70",
 
-        // Shine effect
-        "animate-shiny-text bg-clip-text bg-no-repeat [background-position:0_0] [background-size:var(--shiny-width)_100%] [transition:background-position_1s_cubic-bezier(.6,.6,0,1)_infinite]",
+        // Optimized shine effect with reduced animation complexity
+        "animate-shiny-text bg-clip-text bg-no-repeat [background-position:0_0] [background-size:var(--shiny-width)_100%] [transition:background-position_2s_ease-in-out_infinite] [will-change:background-position]",
 
-        // Shine gradient
-        "bg-gradient-to-r from-transparent via-black/80 via-50% to-transparent  dark:via-white/80",
+        // Simplified shine gradient
+        "bg-gradient-to-r from-transparent via-black/60 via-50% to-transparent dark:via-white/60",
 
         className,
       )}

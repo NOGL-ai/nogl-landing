@@ -431,7 +431,7 @@ const config: Config = {
   			'accordion-up': 'accordion-up 0.2s ease-out',
   			'slide-down': 'slide-down 300ms cubic-bezier(0.87, 0, 0.13, 1)',
   			'slide-up': 'slide-up 300ms cubic-bezier(0.87, 0, 0.13, 1)',
-  			'shiny-text': 'shiny-text 8s infinite',
+  			'shiny-text': 'shiny-text 4s infinite',
   			'fade-in': 'fade-in 1000ms var(--animation-delay, 0ms) ease forwards',
   			'fade-up': 'fade-up 1000ms var(--animation-delay, 0ms) ease forwards',
   			'marquee': 'marquee var(--duration) linear infinite',
