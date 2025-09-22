@@ -1,3 +1,5 @@
+// MOBILE BOOKING COMPONENT - COMMENTED OUT
+/*
 import React, { FC, useState } from "react";
 import ButtonPrimary from "@/shared/ButtonPrimary";
 import { SessionWithExpert } from "@/types/session";
@@ -228,3 +230,4 @@ const MobileFooterSticky: FC<MobileFooterStickyProps> = ({
 };
 
 export default MobileFooterSticky;
+*/

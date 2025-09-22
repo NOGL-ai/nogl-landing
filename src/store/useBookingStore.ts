@@ -1,3 +1,5 @@
+// BOOKING STORE - COMMENTED OUT
+/*
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -41,4 +43,5 @@ export const useBookingStore = create<BookingStore>()(
       name: 'booking-storage',
     }
   )
-); 
+);
+*/ 
