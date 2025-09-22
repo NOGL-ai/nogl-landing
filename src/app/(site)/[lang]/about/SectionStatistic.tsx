@@ -12,31 +12,31 @@ export interface Statistic {
 const PLATFORM_STATS: Statistic[] = [
   {
     id: "1",
-    heading: "Knowledge Shared",
-    subHeading: "Hours of expert consultations delivered, helping professionals achieve their goals",
-    metric: "10,000+",
-    icon: "🎯"
+    heading: "+60% Velocity",
+    subHeading: "Increase sales/revenue velocity with demand‑sensed trend and buy decisions",
+    metric: "+60%",
+    icon: "⚡"
   },
   {
     id: "2",
-    heading: "Success Rate",
-    subHeading: "Of our users report significant progress towards their learning objectives",
-    metric: "94%",
-    icon: "📈"
+    heading: "+30% Turns",
+    subHeading: "Improve inventory turns through better width/depth and localization",
+    metric: "+30%",
+    icon: "🔁"
   },
   {
     id: "3",
-    heading: "Expert Network",
-    subHeading: "Verified industry leaders across technology, business, creative arts, and more",
-    metric: "500+",
-    icon: "🌟"
+    heading: "+20% Full‑price Sell‑through",
+    subHeading: "Lift first-quality sell‑through with accurate demand prediction",
+    metric: "+20%",
+    icon: "🏷️"
   },
   {
     id: "4",
-    heading: "Global Reach",
-    subHeading: "Countries represented in our community of experts and learners",
-    metric: "40+",
-    icon: "🌍"
+    heading: "100+ Brands & Retailers",
+    subHeading: "Trusted by leading fashion and lifestyle businesses globally",
+    metric: "100+",
+    icon: "🏬"
   },
 ];
 
@@ -51,11 +51,10 @@ const SectionStatistic: FC<SectionStatisticProps> = ({ className = "" }) => {
         {/* Section Heading */}
         <div className="mx-auto max-w-2xl text-center mb-16">
           <h2 className="text-3xl font-bold mb-4">
-            Making an Impact Through Knowledge Sharing
+            Impact with AI Fashion Intelligence
           </h2>
           <p className="text-neutral-500 dark:text-neutral-400">
-            Every day, we're helping professionals connect with experts who can transform their careers and businesses. 
-            Here's what we've achieved together.
+            Demand‑sensed trend forecasting and demand prediction that reduce markdowns and accelerate growth.
           </p>
         </div>
 
