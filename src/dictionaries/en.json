@@ -229,34 +229,34 @@
   "common": {
     "comingSoon": "Coming soon"
   },
-  "features": {
-    "title": "AI-Powered Communication",
-    "description": "Break language barriers with real-time AI translation and voice cloning",
-    "learnMore": "Learn more",
-    "cards": [
+  "_features": {
+    "_title": "AI-Powered Communication",
+    "_description": "Break language barriers with real-time AI translation and voice cloning",
+    "_learnMore": "Learn more",
+    "_cards": [
       {
-        "id": 1,
-        "title": "AI Translate",
-        "content": "Real-time translation during video calls with support for 100+ languages",
-        "video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/jywpgkr3vpwyj9hdbthz.mp4",
-        "thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/jywpgkr3vpwyj9hdbthz.jpg",
-        "url": "/features/ai-translate"
+        "_id": 1,
+        "_title": "AI Translate",
+        "_content": "Real-time translation during video calls with support for 100+ languages",
+        "_video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/jywpgkr3vpwyj9hdbthz.mp4",
+        "_thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/jywpgkr3vpwyj9hdbthz.jpg",
+        "_url": "/features/ai-translate"
       },
       {
-        "id": 2,
-        "title": "Auto Translate",
-        "content": "Automatic subtitle translation for recorded sessions",
-        "video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129913/jjpzskulirmmasd0fzo0.mp4",
-        "thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129913/jjpzskulirmmasd0fzo0.jpg",
-        "url": "/features/auto-translate"
+        "_id": 2,
+        "_title": "Auto Translate",
+        "_content": "Automatic subtitle translation for recorded sessions",
+        "_video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129913/jjpzskulirmmasd0fzo0.mp4",
+        "_thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129913/jjpzskulirmmasd0fzo0.jpg",
+        "_url": "/features/auto-translate"
       },
       {
-        "id": 3,
-        "title": "AI Voice Cloning",
-        "content": "Clone your voice for seamless multilingual communication",
-        "video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/uhk3nuqrglo1haxnvkzg.mp4",
-        "thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/uhk3nuqrglo1haxnvkzg.jpg",
-        "url": "/features/voice-cloning"
+        "_id": 3,
+        "_title": "AI Voice Cloning",
+        "_content": "Clone your voice for seamless multilingual communication",
+        "_video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/uhk3nuqrglo1haxnvkzg.mp4",
+        "_thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/uhk3nuqrglo1haxnvkzg.jpg",
+        "_url": "/features/voice-cloning"
       }
     ]
   }

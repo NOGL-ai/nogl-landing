@@ -298,34 +298,34 @@
     "viewAllText": "Alle anzeigen",
     "noPostsText": "Keine Beiträge gefunden"
   },
-  "features": {
-    "title": "KI-gestützte Kommunikation",
-    "description": "Überwinden Sie Sprachbarrieren mit KI-Echtzeit-Übersetzung und Stimmklonen",
-    "learnMore": "Mehr erfahren",
-    "cards": [
+  "_features": {
+    "_title": "KI-gestützte Kommunikation",
+    "_description": "Überwinden Sie Sprachbarrieren mit KI-Echtzeit-Übersetzung und Stimmklonen",
+    "_learnMore": "Mehr erfahren",
+    "_cards": [
       {
-        "id": 1,
-        "title": "KI-Übersetzung",
-        "content": "Echtzeit-Übersetzung während Videoanrufen mit Unterstützung für über 100 Sprachen",
-        "video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/jywpgkr3vpwyj9hdbthz.mp4",
-        "thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/jywpgkr3vpwyj9hdbthz.jpg",
-        "url": "/features/ai-translate"
+        "_id": 1,
+        "_title": "KI-Übersetzung",
+        "_content": "Echtzeit-Übersetzung während Videoanrufen mit Unterstützung für über 100 Sprachen",
+        "_video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/jywpgkr3vpwyj9hdbthz.mp4",
+        "_thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/jywpgkr3vpwyj9hdbthz.jpg",
+        "_url": "/features/ai-translate"
       },
       {
-        "id": 2,
-        "title": "Auto-Übersetzung",
-        "content": "Automatische Untertitel-Übersetzung für aufgezeichnete Sitzungen",
-        "video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129913/jjpzskulirmmasd0fzo0.mp4",
-        "thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129913/jjpzskulirmmasd0fzo0.jpg",
-        "url": "/features/auto-translate"
+        "_id": 2,
+        "_title": "Auto-Übersetzung",
+        "_content": "Automatische Untertitel-Übersetzung für aufgezeichnete Sitzungen",
+        "_video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129913/jjpzskulirmmasd0fzo0.mp4",
+        "_thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129913/jjpzskulirmmasd0fzo0.jpg",
+        "_url": "/features/auto-translate"
       },
       {
-        "id": 3,
-        "title": "KI-Stimmklonen",
-        "content": "Klonen Sie Ihre Stimme für nahtlose mehrsprachige Kommunikation",
-        "video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/uhk3nuqrglo1haxnvkzg.mp4",
-        "thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/uhk3nuqrglo1haxnvkzg.jpg",
-        "url": "/features/voice-cloning"
+        "_id": 3,
+        "_title": "KI-Stimmklonen",
+        "_content": "Klonen Sie Ihre Stimme für nahtlose mehrsprachige Kommunikation",
+        "_video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/uhk3nuqrglo1haxnvkzg.mp4",
+        "_thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/uhk3nuqrglo1haxnvkzg.jpg",
+        "_url": "/features/voice-cloning"
       }
     ]
   }

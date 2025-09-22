@@ -200,7 +200,8 @@ export function FeatureScroll({ dictionary }: FeatureScrollProps) {
     <section className="relative">
       <div className="container mx-auto px-4">
         <div className="text-center py-12 space-y-4">
-          <AuroraText 
+          {/* Commented out AI-Powered Communication section to prevent performance issues */}
+          {/* <AuroraText 
             as="h2"
             className="text-4xl md:text-5xl lg:text-6xl font-bold [--color-1:120_100%_50%] [--color-2:200_100%_50%] [--color-3:120_100%_50%] [--color-4:200_100%_50%]"
           >
@@ -216,10 +217,10 @@ export function FeatureScroll({ dictionary }: FeatureScrollProps) {
               <span>{dictionary.features?.learnMore || "Explore Features"}</span>
               <ArrowRightIcon className="ml-1 size-4 transition-transform duration-300 ease-in-out group-hover:translate-x-1" />
             </RainbowButton>
-          </div>
+          </div> */}
         </div>
       </div>
-      <Feature cardData={cardData} dictionary={dictionary} />
+      {/* <Feature cardData={cardData} dictionary={dictionary} /> */}
     </section>
   );
 }
