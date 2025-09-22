@@ -8,7 +8,7 @@ const Footer = () => {
 			<div className='mx-auto max-w-[1170px] px-4 sm:px-8 xl:px-0'>
 				{/* <!-- footer menu start --> */}
 				<div className='flex flex-wrap gap-10 lg:justify-between xl:flex-nowrap xl:gap-20'>
-					<div className='w-full max-w-[275px]'>
+            <div className='w-full max-w-[275px]'>
 						<Link href='/'>
 							<Image
 								src='/images/logo/logo-light.svg'
@@ -21,11 +21,11 @@ const Footer = () => {
 							© Nogl - Professional Services Platform
 						</p>
 
-						<ul className='mt-11 flex items-center gap-2'>
+            <ul className='mt-11 flex items-center gap-2'>
 							<li>
 								<a
-									href='#'
-									aria-label='Twitter Social Link'
+                  href='https://twitter.com/noglai'
+                  aria-label='Twitter'
 									className='flex duration-200 ease-out hover:text-white'
 								>
 									<svg
@@ -43,8 +43,8 @@ const Footer = () => {
 
 							<li>
 								<a
-									href='#'
-									aria-label='Dev Social Link'
+                  href='https://facebook.com/noglai'
+                  aria-label='Facebook'
 									className='flex duration-200 ease-out hover:text-white'
 								>
 									<svg
@@ -60,24 +60,42 @@ const Footer = () => {
 								</a>
 							</li>
 
-							<li>
-								<a
-									href='#'
-									aria-label='Github Social Link'
-									className='flex duration-200 ease-out hover:text-white'
-								>
-									<svg
-										className='fill-current'
-										width='32'
-										height='32'
-										viewBox='0 0 32 32'
-										fill='none'
-										xmlns='http://www.w3.org/2000/svg'
-									>
-										<path d='M16 8.19995C11.6 8.19995 8 11.8 8 16.2C8 19.7 10.3 22.7 13.5 23.8C13.9 23.9 14 23.6 14 23.4V22C11.8 22.5 11.3 21 11.3 21C10.9 20.1 10.4 19.8 10.4 19.8C9.7 19.3 10.5 19.3 10.5 19.3C11.3 19.4 11.7 20.1 11.7 20.1C12.4 21.4 13.6 21 14 20.8C14.1 20.3 14.3 19.9 14.5 19.7C12.7 19.5 10.9 18.8 10.9 15.7C10.9 14.8 11.2 14.1 11.7 13.6C11.6 13.4 11.3 12.6 11.8 11.5C11.8 11.5 12.5 11.3 14 12.3C14.6 12.1 15.3 12 16 12C16.7 12 17.4 12.1 18 12.3C19.5 11.3 20.2 11.5 20.2 11.5C20.6 12.6 20.4 13.4 20.3 13.6C20.8 14.2 21.1 14.9 21.1 15.7C21.1 18.8 19.2 19.4 17.4 19.6C17.7 20 18 20.5 18 21.2V23.4C18 23.6 18.1 23.9 18.6 23.8C21.8 22.7 24.1 19.7 24.1 16.2C24 11.8 20.4 8.19995 16 8.19995Z' />
-									</svg>
-								</a>
-							</li>
+              <li>
+                <a
+                  href='https://youtube.com/@noglai'
+                  aria-label='YouTube'
+                  className='flex duration-200 ease-out hover:text-white'
+                >
+                  <svg
+                    className='fill-current'
+                    width='32'
+                    height='32'
+                    viewBox='0 0 32 32'
+                    fill='none'
+                    xmlns='http://www.w3.org/2000/svg'
+                  >
+                    <path d='M27 12.3c-.2-1.6-1.6-2.9-3.2-3.1C21.6 9 16 9 16 9s-5.6 0-7.8.2C6.6 9.4 5.2 10.7 5 12.3 4.8 14.3 4.8 18 4.8 18s0 3.7.2 5.7c.2 1.6 1.6 2.9 3.2 3.1C10.4 27 16 27 16 27s5.6 0 7.8-.2c1.6-.2 3-1.5 3.2-3.1.2-2 .2-5.7.2-5.7s0-3.7-.2-5.7zM14 21v-6l6 3-6 3z' />
+                  </svg>
+                </a>
+              </li>
+              <li>
+                <a
+                  href='https://instagram.com/noglai'
+                  aria-label='Instagram'
+                  className='flex duration-200 ease-out hover:text-white'
+                >
+                  <svg
+                    className='fill-current'
+                    width='32'
+                    height='32'
+                    viewBox='0 0 32 32'
+                    fill='none'
+                    xmlns='http://www.w3.org/2000/svg'
+                  >
+                    <path d='M20 8H12C9.8 8 8 9.8 8 12V20C8 22.2 9.8 24 12 24H20C22.2 24 24 22.2 24 20V12C24 9.8 22.2 8 20 8ZM22 20C22 21.1 21.1 22 20 22H12C10.9 22 10 21.1 10 20V12C10 10.9 10.9 10 12 10H20C21.1 10 22 10.9 22 12V20ZM21 12.5C21 12.8 20.8 13 20.5 13H19.5C19.2 13 19 12.8 19 12.5V11.5C19 11.2 19.2 11 19.5 11H20.5C20.8 11 21 11.2 21 11.5V12.5ZM16 12C13.8 12 12 13.8 12 16C12 18.2 13.8 20 16 20C18.2 20 20 18.2 20 16C20 13.8 18.2 12 16 12ZM16 18.5C14.6 18.5 13.5 17.4 13.5 16C13.5 14.6 14.6 13.5 16 13.5C17.4 13.5 18.5 14.6 18.5 16C18.5 17.4 17.4 18.5 16 18.5Z' />
+                  </svg>
+                </a>
+              </li>
 						</ul>
 					</div>
 
