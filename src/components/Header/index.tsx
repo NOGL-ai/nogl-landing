@@ -77,14 +77,28 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
             <div className="hidden lg:block self-center h-10 border-l border-neutral-300 dark:border-neutral-500"></div>
             <div className="hidden lg:flex items-center space-x-4">
               <Link
-                href="/listing-session"
+                href="/price-intelligence"
                 className={`text-sm font-medium ${
-                  isActive("/listing-session")
+                  isActive("/price-intelligence")
                     ? "bg-primary/5 text-primary dark:bg-white/5 dark:text-white"
                     : "text-black hover:bg-primary/5 hover:text-primary dark:text-gray-5 dark:hover:bg-white/5 dark:hover:text-white"
                 }`}
               >
+                Price Intelligence
+              </Link>
+              <Link
+                href="/listing-session"
+                className={`text-sm font-medium relative cursor-not-allowed opacity-70 ${
+                  isActive("/listing-session")
+                    ? "bg-primary/5 text-primary dark:bg-white/5 dark:text-white"
+                    : "text-black hover:bg-primary/5 hover:text-primary dark:text-gray-5 dark:hover:bg-white/5 dark:hover:text-white"
+                }`}
+                onClick={(e) => e.preventDefault()}
+              >
                 Trend Forecasts
+                <span className="absolute -right-2 -top-2 inline-flex items-center rounded-full bg-primary-500 px-2 py-0.5 text-[10px] font-medium text-white">
+                  Soon
+                </span>
               </Link>
               <Link
                 href="/author"
@@ -250,28 +264,53 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
           <ul className="flex flex-col gap-4">
             <li>
               <Link
-                href="/listing-session"
+                href="/price-intelligence"
                 onClick={() => setNavbarOpen(false)}
                 className={`text-sm font-medium ${
+                  isActive("/price-intelligence")
+                    ? "bg-primary/5 text-primary dark:bg-white/5 dark:text-white"
+                    : "text-black hover:bg-primary/5 hover:text-primary dark:text-gray-5 dark:hover:bg-white/5 dark:hover:text-white"
+                }`}
+              >
+                Price Intelligence
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/listing-session"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setNavbarOpen(false);
+                }}
+                className={`text-sm font-medium relative cursor-not-allowed opacity-70 ${
                   isActive("/listing-session")
                     ? "bg-primary/5 text-primary dark:bg-white/5 dark:text-white"
                     : "text-black hover:bg-primary/5 hover:text-primary dark:text-gray-5 dark:hover:bg-white/5 dark:hover:text-white"
                 }`}
               >
                 Trend Forecasts
+                <span className="absolute -right-2 -top-2 inline-flex items-center rounded-full bg-primary-500 px-2 py-0.5 text-[10px] font-medium text-white">
+                  Soon
+                </span>
               </Link>
             </li>
             <li>
               <Link
                 href="/author"
-                onClick={() => setNavbarOpen(false)}
-                className={`text-sm font-medium ${
+                onClick={(e) => {
+                  e.preventDefault();
+                  setNavbarOpen(false);
+                }}
+                className={`text-sm font-medium relative cursor-not-allowed opacity-70 ${
                   isActive("/author")
                     ? "bg-primary/5 text-primary dark:bg-white/5 dark:text-white"
                     : "text-black hover:bg-primary/5 hover:text-primary dark:text-gray-5 dark:hover:bg-white/5 dark:hover:text-white"
                 }`}
               >
                 Fashion Intelligence
+                <span className="absolute -right-2 -top-2 inline-flex items-center rounded-full bg-primary-500 px-2 py-0.5 text-[10px] font-medium text-white">
+                  Soon
+                </span>
               </Link>
             </li>
             <li>
