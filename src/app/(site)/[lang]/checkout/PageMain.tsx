@@ -5,7 +5,7 @@ import Image from "next/image";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { useSession } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, useParams } from "next/navigation";
 import ParticipantsInput from "./ParticipantsInput";
 import ButtonPrimary from "@/shared/ButtonPrimary";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
@@ -47,6 +47,8 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({ className = "" })
   const router = useRouter();
   const { data: session } = useSession();
   const searchParams = useSearchParams();
+  const params = useParams();
+  const lang = params?.lang as string;
 
   const [bookingData, setBookingData] = useState<BookingData | null>(null);
   const [participantEmails, setParticipantEmails] = useState<string[]>([]);
@@ -455,12 +457,12 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({ className = "" })
                 <span className="text-sm text-neutral-600 dark:text-neutral-300">
                   I agree to the{" "}
                   <a 
-                    href="/terms" 
+                    href={lang === 'de' ? '/agb' : '/tos'} 
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-primary-600 hover:underline"
                   >
-                    Terms and Conditions
+                    {lang === 'de' ? 'Allgemeine Geschäftsbedingungen' : 'Terms and Conditions'}
                   </a>
                   <span className="text-red-500">*</span>
                 </span>

@@ -1,14 +1,16 @@
 "use client";
-import { usePathname } from "next/navigation";
+import { usePathname, useParams } from "next/navigation";
 import Footer from ".";
 
 const FooterWrapper = () => {
 	const pathname = usePathname();
+	const params = useParams();
+	const lang = params?.lang as string;
 
 	return (
 		<>
 			{!pathname.startsWith("/admin") && !pathname.startsWith("/user") && (
-				<Footer />
+				<Footer lang={lang} />
 			)}
 		</>
 	);

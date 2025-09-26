@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Route } from "@/routers/types";
 
-const Footer = () => {
+const Footer = ({ lang = 'en' }: { lang?: string }) => {
 	return (
 		<footer className='relative z-1 mt-auto overflow-hidden bg-black py-17.5 lg:py-22.5 xl:py-27.5'>
 			<div className='mx-auto max-w-[1170px] px-4 sm:px-8 xl:px-0'>
@@ -254,6 +254,41 @@ const Footer = () => {
 										Work With Us
 									</a>
 								</li>
+							</ul>
+						</div>
+
+						<div className='w-full sm:w-auto'>
+							<h2 className='mb-5 font-satoshi text-lg font-bold -tracking-[0.2px] text-white'>
+								Legal
+							</h2>
+
+							<ul className='flex flex-col gap-3'>
+								<li>
+									<Link
+										href={lang === 'de' ? "/datenschutz" : "/privacy-policy"}
+										className='text-gray-5 duration-200 ease-out hover:text-white'
+									>
+										{lang === 'de' ? 'Datenschutzerklärung' : 'Privacy Policy'}
+									</Link>
+								</li>
+								<li>
+									<Link
+										href={lang === 'de' ? "/agb" : "/tos"}
+										className='text-gray-5 duration-200 ease-out hover:text-white'
+									>
+										{lang === 'de' ? 'Allgemeine Geschäftsbedingungen' : 'Terms of Service'}
+									</Link>
+								</li>
+								{lang === 'de' && (
+									<li>
+										<Link
+											href="/impressum"
+											className='text-gray-5 duration-200 ease-out hover:text-white'
+										>
+											Impressum
+										</Link>
+									</li>
+								)}
 							</ul>
 						</div>
 					</div>

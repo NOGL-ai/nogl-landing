@@ -273,6 +273,8 @@
   },
   "footer": {
     "privacyPolicy": "Privacy Policy",
-    "termsOfService": "Terms of Service"
+    "termsOfService": "Terms of Service",
+    "impressum": "Impressum",
+    "agb": "Terms of Service"
   }
 }
