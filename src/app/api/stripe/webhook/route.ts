@@ -53,7 +53,7 @@ async function processWebhookEvent(event: Stripe.Event) {
     
     try {
       // Your existing booking creation code
-      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://nogl.ai:3000';
       const response = await fetch(`https://www.nogl.ai/api/user/bookings/create`, {
         method: 'POST',
         headers: {

@@ -10,7 +10,7 @@ This document outlines the environment configuration for the SaaS platform with 
 
 ```env
 # Application URL (Required)
-NEXTAUTH_URL=http://localhost:3000  # Development
+NEXTAUTH_URL=http://nogl.ai:3000  # Development
 NEXTAUTH_URL=https://yourdomain.com  # Production
 
 # NextAuth Secret (Required - Generate a secure random string)
@@ -21,7 +21,7 @@ NEXTAUTH_SECRET=your-secret-key-here-minimum-32-characters
 
 ```env
 # Main Domain Configuration
-NEXT_PUBLIC_DOMAIN=localhost:3000     # Development
+NEXT_PUBLIC_DOMAIN=nogl.ai:3000     # Development
 NEXT_PUBLIC_DOMAIN=yourdomain.com     # Production
 
 # Subdomain Configuration
@@ -33,7 +33,7 @@ NEXT_PUBLIC_AUTH_SUBDOMAIN=           # Leave empty to use main domain for auth
 
 ```env
 # PostgreSQL Database URL
-DATABASE_URL=postgresql://user:password@localhost:5432/dbname
+DATABASE_URL=postgresql://user:password@nogl.ai:5432/dbname
 ```
 
 ### 4. Authentication Providers
@@ -111,9 +111,9 @@ OPENAI_API_KEY=sk-...
 3. For local development with subdomains, add to your hosts file:
 
    ```text
-   127.0.0.1 localhost
-   127.0.0.1 app.localhost
-   127.0.0.1 auth.localhost
+   127.0.0.1 nogl.ai
+   127.0.0.1 app.nogl.ai
+   127.0.0.1 auth.nogl.ai
    ```
 
 ## Production Deployment
@@ -189,8 +189,8 @@ The application uses subdomain routing with the following behavior:
 If subdomains don't work locally:
 
 1. Check hosts file configuration
-2. Use `127.0.0.1` instead of `localhost`
-3. Access via `http://app.localhost:3000`
+2. Use `127.0.0.1` instead of `nogl.ai`
+3. Access via `http://app.nogl.ai:3000`
 
 ### Production Subdomain Issues
 

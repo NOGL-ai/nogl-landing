@@ -9,7 +9,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 async function getBaseUrl() {
 	return process.env.NEXT_PUBLIC_APP_URL || (async () => {
 		const headersList = await headers();
-		const host = headersList.get("host") || "localhost:3000"
+		  const host = headersList.get("host") || "nogl.ai:3000"
 		const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
 		return `${protocol}://${host}`;
 	})();
