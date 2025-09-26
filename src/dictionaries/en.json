@@ -263,5 +263,16 @@
         "_url": "/features/voice-cloning"
       }
     ]
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "description": "Discover how Nogl safeguards your personal information, the ways we use it, and your privacy rights in our comprehensive privacy policy.",
+    "effectiveDate": "Effective Date: November 12, 2024",
+    "lastUpdated": "Last updated",
+    "breadcrumb": "Privacy Policy"
+  },
+  "footer": {
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service"
   }
 }
