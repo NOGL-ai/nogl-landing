@@ -48,6 +48,7 @@ const widgetMenus: WidgetFooterMenu[] = [
 		title: "Legal",
 		menus: [
 			{ href: "/privacy-policy", label: "Privacy Policy" },
+			{ href: "/datenschutz", label: "Datenschutzerklärung" },
 			{ href: "/tos", label: "Terms of Service" },
 			{ href: "/support", label: "Help Center" },
 		],

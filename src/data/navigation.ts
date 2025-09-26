@@ -76,6 +76,11 @@ export const NAVIGATION_DEMO_2: NavItemType[] = [
 		href: "/privacy-policy",
 	},
 	{
+		id: "privacy-de",
+		name: "Datenschutzerklärung",
+		href: "/datenschutz",
+	},
+	{
 		id: "terms",
 		name: "Terms of Service",
 		href: "/tos",
