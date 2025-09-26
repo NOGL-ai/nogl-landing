@@ -6,16 +6,16 @@ Create a `.env.local` file in your project root with these **essential** variabl
 
 ```env
 # ===== REQUIRED FOR BASIC FUNCTIONALITY =====
-NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_URL=http://nogl.ai:3000
 NEXTAUTH_SECRET=your-super-secret-key-minimum-32-characters-long
-DATABASE_URL="postgresql://username:password@localhost:5432/nogl_db"
+DATABASE_URL="postgresql://username:password@nogl.ai:5432/nogl_db"
 
 # ===== GOOGLE OAUTH (REQUIRED) =====
 GOOGLE_CLIENT_ID=your-google-client-id.googleusercontent.com
 GOOGLE_CLIENT_SECRET=your-google-client-secret
 
 # ===== DOMAIN CONFIGURATION =====
-NEXT_PUBLIC_DOMAIN=localhost:3000
+NEXT_PUBLIC_DOMAIN=nogl.ai:3000
 NEXT_PUBLIC_APP_SUBDOMAIN=app
 ```
 
@@ -35,7 +35,7 @@ Or use: [https://generate-secret.vercel.app/32](https://generate-secret.vercel.a
 #### Option A: Local PostgreSQL
 
 ```env
-DATABASE_URL="postgresql://postgres:password@localhost:5432/nogl_dev"
+DATABASE_URL="postgresql://postgres:password@nogl.ai:5432/nogl_dev"
 ```
 
 #### Option B: Supabase (Free)
@@ -65,7 +65,7 @@ DATABASE_URL="postgresql://username:password@ep-xxx.us-east-1.aws.neon.tech/neon
 3. Enable Google+ API
 4. Go to Credentials > Create Credentials > OAuth 2.0 Client IDs
 5. Set authorized redirect URIs:
-   - `http://localhost:3000/api/auth/callback/google`
+   - `http://nogl.ai:3000/api/auth/callback/google`
    - `https://yourdomain.com/api/auth/callback/google` (for production)
 
 ## Complete Environment Variables
@@ -73,15 +73,15 @@ DATABASE_URL="postgresql://username:password@ep-xxx.us-east-1.aws.neon.tech/neon
 ### Core Application
 
 ```env
-NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_URL=http://nogl.ai:3000
 NEXTAUTH_SECRET=your-super-secret-key-minimum-32-characters-long
-DATABASE_URL="postgresql://username:password@localhost:5432/nogl_db"
+DATABASE_URL="postgresql://username:password@nogl.ai:5432/nogl_db"
 ```
 
 ### Domain Configuration (SaaS)
 
 ```env
-NEXT_PUBLIC_DOMAIN=localhost:3000
+NEXT_PUBLIC_DOMAIN=nogl.ai:3000
 NEXT_PUBLIC_APP_SUBDOMAIN=app
 NEXT_PUBLIC_AUTH_SUBDOMAIN=
 ```
