@@ -3,7 +3,7 @@ import { getSEOTags, renderSchemaTags } from '@/libs/seo';
 import Breadcrumb from '@/components/Common/Breadcrumb';
 import Section from '@/components/section';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { FileText, Shield, User, CreditCard, Ban, Scale, Landmark, Mail, Link as LinkIcon, Globe, AlertTriangle, Clock, Building, Phone, MapPin } from 'lucide-react';
+import { FileText, Shield, User, CreditCard, Ban, Scale, Landmark, Mail, Link as LinkIcon, Globe, AlertTriangle, Building, Phone, MapPin } from 'lucide-react';
 
 export const metadata = getSEOTags({
   title: `Terms of Service | ${process.env.SITE_NAME}`,
@@ -77,8 +77,8 @@ const TermsOfServicePage = () => {
             </CardHeader>
             <CardContent>
               <p className="text-gray-600 dark:text-gray-300 mb-4">
-                Welcome to {siteName} ("we," "us," "our," or "Company"). These Terms of Service ("Terms") govern your use of our website located at{' '}
-                <a href={siteUrl} className="text-primary underline">{siteUrl}</a> and our related services, applications, and tools (collectively, the "Service").
+                Welcome to {siteName} (&quot;we,&quot; &quot;us,&quot; &quot;our,&quot; or &quot;Company&quot;). These Terms of Service (&quot;Terms&quot;) govern your use of our website located at{' '}
+                <a href={siteUrl} className="text-primary underline">{siteUrl}</a> and our related services, applications, and tools (collectively, the &quot;Service&quot;).
               </p>
               <p className="text-gray-600 dark:text-gray-300 mb-4">
                 By accessing, browsing, or using our Service, you acknowledge that you have read, understood, and agree to be bound by these Terms and our Privacy Policy. 
@@ -109,37 +109,37 @@ const TermsOfServicePage = () => {
                 <li className="flex items-start gap-2">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
                   <div>
-                    <strong>"Service" or "Services":</strong> The {siteName} platform, website, applications, tools, and all related services provided by us.
+                    <strong>&quot;Service&quot; or &quot;Services&quot;:</strong> The {siteName} platform, website, applications, tools, and all related services provided by us.
                   </div>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
                   <div>
-                    <strong>"User," "You," or "Your":</strong> Any individual, entity, or organization that accesses or uses the Service.
+                    <strong>&quot;User,&quot; &quot;You,&quot; or &quot;Your&quot;:</strong> Any individual, entity, or organization that accesses or uses the Service.
                   </div>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
                   <div>
-                    <strong>"Content":</strong> All information, data, text, graphics, images, audio, video, software, and other materials available through the Service.
+                    <strong>&quot;Content&quot;:</strong> All information, data, text, graphics, images, audio, video, software, and other materials available through the Service.
                   </div>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
                   <div>
-                    <strong>"User Content":</strong> Any content that you submit, upload, post, or otherwise make available through the Service.
+                    <strong>&quot;User Content&quot;:</strong> Any content that you submit, upload, post, or otherwise make available through the Service.
                   </div>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
                   <div>
-                    <strong>"Account":</strong> Your user account with us that allows you to access and use certain features of the Service.
+                    <strong>&quot;Account&quot;:</strong> Your user account with us that allows you to access and use certain features of the Service.
                   </div>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
                   <div>
-                    <strong>"Subscription":</strong> A paid plan or service tier that provides access to premium features of the Service.
+                    <strong>&quot;Subscription&quot;:</strong> A paid plan or service tier that provides access to premium features of the Service.
                   </div>
                 </li>
               </ul>
@@ -272,7 +272,7 @@ const TermsOfServicePage = () => {
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                    The design, structure, selection, coordination, expression, "look and feel," and arrangement of such content
+                    The design, structure, selection, coordination, expression, &quot;look and feel,&quot; and arrangement of such content
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
@@ -312,7 +312,7 @@ const TermsOfServicePage = () => {
                   User Content
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 mb-3">
-                  You retain ownership of any content you submit, upload, or post to the Service ("User Content"). By submitting User Content, you grant us a worldwide, non-exclusive, royalty-free license to use, reproduce, modify, and distribute your User Content in connection with the Service.
+                  You retain ownership of any content you submit, upload, or post to the Service (&quot;User Content&quot;). By submitting User Content, you grant us a worldwide, non-exclusive, royalty-free license to use, reproduce, modify, and distribute your User Content in connection with the Service.
                 </p>
                 <p className="text-gray-600 dark:text-gray-300 mb-3">
                   You represent and warrant that your User Content:
@@ -653,7 +653,7 @@ const TermsOfServicePage = () => {
                   Disclaimer of Warranties
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 mb-3">
-                  The Service is provided "as is" and "as available" without warranties of any kind, either express or implied. 
+                  The Service is provided &quot;as is&quot; and &quot;as available&quot; without warranties of any kind, either express or implied. 
                   To the fullest extent permitted by applicable law, we disclaim all warranties, including but not limited to:
                 </p>
                 <ul className="space-y-2 text-gray-600 dark:text-gray-300">
@@ -723,7 +723,7 @@ const TermsOfServicePage = () => {
             <CardContent>
               <p className="text-gray-600 dark:text-gray-300 mb-4">
                 You agree to indemnify, defend, and hold harmless {siteName}, its officers, directors, employees, agents, and affiliates 
-                from and against any and all claims, damages, obligations, losses, liabilities, costs, and expenses (including reasonable attorney's fees) 
+                from and against any and all claims, damages, obligations, losses, liabilities, costs, and expenses (including reasonable attorney&apos;s fees) 
                 arising from or related to:
               </p>
               <ul className="space-y-2 text-gray-600 dark:text-gray-300">
@@ -787,7 +787,7 @@ const TermsOfServicePage = () => {
               <div className="p-4 bg-primary/5 rounded-lg">
                 <p className="text-sm text-gray-600 dark:text-gray-300">
                   <strong>Consumer Rights:</strong> If you are a consumer under German law, you may have additional rights regarding 
-                  dispute resolution, including the ability to use the European Commission's Online Dispute Resolution platform.
+                  dispute resolution, including the ability to use the European Commission&apos;s Online Dispute Resolution platform.
                 </p>
               </div>
             </CardContent>
@@ -808,7 +808,7 @@ const TermsOfServicePage = () => {
               <ul className="space-y-2 text-gray-600 dark:text-gray-300 mb-4">
                 <li className="flex items-start gap-2">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                  Update the "Last updated" date at the top of these Terms
+                  Update the &quot;Last updated&quot; date at the top of these Terms
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
@@ -826,7 +826,7 @@ const TermsOfServicePage = () => {
               <div className="p-4 bg-primary/5 rounded-lg">
                 <p className="text-sm text-gray-600 dark:text-gray-300">
                   <strong>Material Changes:</strong> For material changes that significantly affect your rights or obligations, 
-                  we will provide at least 30 days' notice before the changes take effect.
+                  we will provide at least 30 days&apos; notice before the changes take effect.
                 </p>
               </div>
             </CardContent>
@@ -928,7 +928,7 @@ const TermsOfServicePage = () => {
               <div className="p-4 bg-primary/5 rounded-lg">
                 <p className="text-sm text-gray-600 dark:text-gray-300">
                   <strong>Response Time:</strong> We will respond to your inquiry within 5 business days. 
-                  For urgent legal matters, please mark your email as "URGENT" in the subject line.
+                  For urgent legal matters, please mark your email as &quot;URGENT&quot; in the subject line.
                 </p>
               </div>
             </CardContent>
