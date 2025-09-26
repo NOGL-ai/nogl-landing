@@ -342,6 +342,8 @@
   },
   "footer": {
     "privacyPolicy": "Datenschutzerklärung",
-    "termsOfService": "Nutzungsbedingungen"
+    "termsOfService": "Nutzungsbedingungen",
+    "impressum": "Impressum",
+    "agb": "Allgemeine Geschäftsbedingungen"
   }
 }
