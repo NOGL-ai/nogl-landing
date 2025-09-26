@@ -18,7 +18,7 @@ export default function SetApiKeyModal(props: any) {
 	const handleSubmit = (e: any) => {
 		e.preventDefault();
 
-		if (apiKey) {
+		if (apiKey && typeof window !== 'undefined') {
 			localStorage.setItem("apiKey", apiKey);
 			setShowModal(false);
 			router.refresh();
