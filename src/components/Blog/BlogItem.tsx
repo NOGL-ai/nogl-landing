@@ -1,7 +1,7 @@
 import React from "react";
 import { Blog } from "@/types/blog";
 import Image from "next/image";
-import { imageBuilder } from "@/ghost/ghost-utils";
+// import { imageBuilder } from "@/ghost/ghost-utils";
 import Link from "next/link";
 import { Route } from 'next';
 

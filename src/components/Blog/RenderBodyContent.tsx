@@ -1,30 +1,30 @@
 import { Blog } from "@/types/blog";
 // Ghost content rendering - no need for asset utils
-import Image from "next/image";
+// import Image from "next/image";
 
 // Barebones lazy-loaded image component
-const SampleImageComponent = ({ value, isInline }: any) => {
-	return (
-		<div className='my-10 overflow-hidden rounded-[15px]'>
-			<Image
-				src={value || '/placeholder-image.jpg'}
-				width={800}
-				height={400}
-				alt={"blog image"}
-				loading='lazy'
-				style={{
-					display: isInline ? "inline-block" : "block",
-				}}
-			/>
-		</div>
-	);
-};
+// const SampleImageComponent = ({ value, isInline }: any) => {
+// 	return (
+// 		<div className='my-10 overflow-hidden rounded-[15px]'>
+// 			<Image
+// 				src={value || '/placeholder-image.jpg'}
+// 				width={800}
+// 				height={400}
+// 				alt={"blog image"}
+// 				loading='lazy'
+// 				style={{
+// 					display: isInline ? "inline-block" : "block",
+// 				}}
+// 			/>
+// 		</div>
+// 	);
+// };
 
-const components = {
-	types: {
-		image: SampleImageComponent,
-	},
-};
+// const components = {
+// 	types: {
+// 		image: SampleImageComponent,
+// 	},
+// };
 
 const RenderBodyContent = ({ post }: { post: Blog }) => {
 	return (

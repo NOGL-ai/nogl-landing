@@ -1,14 +1,14 @@
 "use client";
 
 import {
-	HeartIcon,
-	MagnifyingGlassIcon,
-	CalendarIcon,
+	// HeartIcon,
+	// MagnifyingGlassIcon,
+	// CalendarIcon,
 	HomeIcon,
 	VideoCameraIcon,
 	UserGroupIcon,
 	CalendarDaysIcon,
-	Bars3Icon,
+	// Bars3Icon,
 } from "@heroicons/react/24/outline";
 import React, { useEffect, useRef } from "react";
 import { PathName } from "@/routers/types";

@@ -13,7 +13,7 @@ export interface ExpertCardProps {
 }
 
 const ExpertCard: FC<ExpertCardProps> = ({
-  size = "default",
+  // size = "default",
   className = "",
   data,
 }) => {
@@ -23,7 +23,7 @@ const ExpertCard: FC<ExpertCardProps> = ({
 
   const {
     galleryImgs,
-    title,
+    // title,
     href,
     like,
     id,

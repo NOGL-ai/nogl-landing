@@ -2,13 +2,13 @@ import { StarIcon } from "@heroicons/react/24/solid";
 import React, { FC } from "react";
 import Avatar from "@/shared/Avatar";
 
-interface CommentListingDataType {
-	name: string;
-	avatar?: string;
-	date: string;
-	comment: string;
-	starPoint: number;
-}
+// interface CommentListingDataType {
+// 	name: string;
+// 	avatar?: string;
+// 	date: string;
+// 	comment: string;
+// 	starPoint: number;
+// }
 
 export interface CommentListingProps {
 	hasListingTitle?: boolean;
@@ -23,18 +23,18 @@ export interface CommentListingProps {
 	date: string;
 }
 
-const DEMO_DATA: CommentListingDataType = {
-	name: "Cody Fisher",
-	date: "May 20, 2021",
-	comment:
-		"There’s no stopping the tech giant. Apple now opens its 100th store in China.There’s no stopping the tech giant.",
-	starPoint: 5,
-};
+// const DEMO_DATA: CommentListingDataType = {
+// 	name: "Cody Fisher",
+// 	date: "May 20, 2021",
+// 	comment:
+// 		"There's no stopping the tech giant. Apple now opens its 100th store in China.There's no stopping the tech giant.",
+// 	starPoint: 5,
+// };
 
 const CommentListing: FC<CommentListingProps> = ({
 	className = "",
 	user,
-	rating,
+	// rating,
 	comment,
 	date,
 }) => {

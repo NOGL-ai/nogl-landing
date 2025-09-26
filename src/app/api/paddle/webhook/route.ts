@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
 
 		const body = JSON.parse(rawBody);
 		const { data } = body;
-		// eslint-disable-next-line @typescript-eslint/naming-convention
+		 
 		const { billing_period, subscription_id, customer_id, items } = data;
 
 		if (!billing_period || !subscription_id || !customer_id || !items) {

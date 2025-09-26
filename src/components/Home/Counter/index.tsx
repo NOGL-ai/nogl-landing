@@ -46,7 +46,7 @@ const Counter = ({ dictionary }: CounterProps) => {
 	, [dictionary.counter.stats]);
 
 	// Memoize circle calculations
-	const { radius, circumference, strokeDashoffset } = useMemo(() => {
+	const { /* radius, */ circumference, strokeDashoffset } = useMemo(() => {
 		const radius = 19;
 		const circumference = 2 * Math.PI * radius;
 		const strokeDashoffset = circumference - (progress / 100) * circumference;

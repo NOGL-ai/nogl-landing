@@ -1,5 +1,5 @@
 import { Tab } from "@headlessui/react";
-import React, { Fragment, ReactNode } from "react";
+import React, { ReactNode } from "react";
 
 export interface TabItemType {
   name: string;
@@ -19,8 +19,8 @@ interface TabGroupProps {
 
 const TabGroup: React.FC<TabGroupProps> = ({ 
   tabs, 
-  className = "",
-  variant = 'default',
+  // className = "",
+  // variant = 'default',
   onChange,
   sticky = false
 }) => {

@@ -6,7 +6,7 @@ import Image, { StaticImageData } from "next/image";
 import { useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { variants } from "@/utils/animationVariants";
-import { Route } from "@/routers/types";
+// import { Route } from "@/routers/types";
 
 export interface GallerySliderProps {
 	className?: string;
@@ -23,7 +23,7 @@ export default function GallerySlider({
 	galleryImgs,
 	ratioClass = "aspect-w-4 aspect-h-3",
 	imageClass = "",
-	uniqueID = "uniqueID",
+	// uniqueID = "uniqueID",
 	galleryClass = "rounded-xl",
 	navigation = true,
 }: GallerySliderProps) {

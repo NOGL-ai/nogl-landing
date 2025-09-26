@@ -6,7 +6,7 @@ interface Props {
   className?: string;
 }
 
-const DatePickerCustomDay: FC<Props> = ({ dayOfMonth, date, className }) => {
+const DatePickerCustomDay: FC<Props> = ({ dayOfMonth, /* date, */ className }) => {
   return <span className={`react-datepicker__day_span ${className}`}>{dayOfMonth}</span>;
 };
 

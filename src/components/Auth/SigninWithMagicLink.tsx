@@ -51,7 +51,7 @@ export default function SigninWithMagicLink() {
       } else {
         toast.error("Something went wrong. Please try again.");
       }
-    } catch (error) {
+    } catch {
       toast.error("Failed to send magic link");
     } finally {
       setLoading(false);

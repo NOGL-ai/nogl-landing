@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import GithubSigninButton from "../GithubSigninButton";
+// import GithubSigninButton from "../GithubSigninButton";
 import GoogleSigninButton from "../GoogleSigninButton";
 import SigninWithMagicLink from "../SigninWithMagicLink";
 import SignupWithPassword from "../SignupWithPassword";

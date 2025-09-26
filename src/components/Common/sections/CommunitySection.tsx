@@ -19,7 +19,7 @@ interface CommunitySectionProps {
 
 const CommunitySection: React.FC<CommunitySectionProps> = ({
   memberCount = 5988,
-  discussions = 0,
+  // discussions = 0,
   className = "",
   stickyOffset = "80px",
   tabs = [

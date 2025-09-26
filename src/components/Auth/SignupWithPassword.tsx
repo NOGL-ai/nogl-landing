@@ -4,7 +4,7 @@ import InputGroup from "@/components/Common/Dashboard/InputGroup";
 import toast from "react-hot-toast";
 import axios from "axios";
 import Loader from "../Common/Loader";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import validator from "validator";
 import DOMPurify from "dompurify";
@@ -25,7 +25,7 @@ const SignupWithPassword = () => {
   });
 
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  // const router = useRouter();
 
   // Handle input changes and validation
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

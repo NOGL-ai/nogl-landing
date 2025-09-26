@@ -1,10 +1,10 @@
 "use client";
-import { Card, CardContent } from "@/components/ui/card";
-import ShimmerButton from "@/components/ui/shimmer-button";
-import Link from "next/link";
-import { ContainerScroll } from "@/components/ui/container-scroll-animation";
-import type { FC } from 'react';
-import type { Route } from 'next';
+// import { Card, CardContent } from "@/components/ui/card";
+// import ShimmerButton from "@/components/ui/shimmer-button";
+// import Link from "next/link";
+// import { ContainerScroll } from "@/components/ui/container-scroll-animation";
+// import type { FC } from 'react';
+// import type { Route } from 'next';
 
 interface CallToActionProps {
   dictionary: {
@@ -25,7 +25,7 @@ interface CallToActionProps {
   };
 }
 
-export const CallToAction = ({ dictionary }: CallToActionProps) => {
+export const CallToAction = (_props: CallToActionProps) => {
   // Commented out Success Stories from Industry Leaders section to prevent performance issues
   return null;
   

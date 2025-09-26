@@ -8,9 +8,9 @@ import toast from 'react-hot-toast';
 import { CompanyType, PayoutMethod } from '@prisma/client';
 import { 
   FaUser, FaBriefcase, FaFileInvoiceDollar, FaLink, FaIdCard, 
-  FaUpload, FaTimes, FaImages 
+  FaUpload, FaTimes /* , FaImages */ 
 } from 'react-icons/fa';
-import { slugifyUsername, generateUniqueUsername } from '@/utils/slugify';
+import { /* slugifyUsername, */ generateUniqueUsername } from '@/utils/slugify';
 import debounce from 'lodash/debounce';
 
 const VALIDATION_MESSAGES = {
@@ -166,7 +166,7 @@ export default function ExpertVerificationForm() {
       });
 
       if (res.ok) {
-        const data = await res.json();
+        // const data = await res.json();
         await update({
           ...session,
           user: {
@@ -179,7 +179,7 @@ export default function ExpertVerificationForm() {
       } else {
         toast.error('Verification failed. Please try again.');
       }
-    } catch (error) {
+    } catch {
       toast.error('Something went wrong. Please try again.');
     } finally {
       setLoading(false);
@@ -671,9 +671,9 @@ export default function ExpertVerificationForm() {
     }
   };
 
-  const debouncedHandleNameChange = debounce(async (newName: string) => {
-    await handleNameChange(newName);
-  }, 500);
+  // const debouncedHandleNameChange = debounce(async (newName: string) => {
+  //   await handleNameChange(newName);
+  // }, 500);
 
   const validateUsername = (username: string): boolean => {
     const usernameRegex = /^[a-zA-Z0-9-]+$/;

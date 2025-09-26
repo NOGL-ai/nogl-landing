@@ -1,9 +1,9 @@
 import React, { FC } from "react";
 import { ExpertDataType } from "@/data/types";
-import Link from "next/link";
+// import Link from "next/link";
 import Image from "next/image";
-import { StarIcon, CheckBadgeIcon, EyeIcon } from "@heroicons/react/24/solid";
-import ShimmerButton from "@/components/ui/shimmer-button";
+import { StarIcon, CheckBadgeIcon /* , EyeIcon */ } from "@heroicons/react/24/solid";
+// import ShimmerButton from "@/components/ui/shimmer-button";
 
 export interface ExperiencesCardProps {
 	className?: string;
@@ -12,7 +12,7 @@ export interface ExperiencesCardProps {
 }
 
 const ExperiencesCard: FC<ExperiencesCardProps> = ({
-	size = "default",
+	// size = "default",
 	className = "",
 	data,
 }) => {
@@ -23,14 +23,14 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
 		hostBio,
 		featuredImage,
 		expertise = [],
-		id,
+		// id,
 		rating = 0,
 		totalSessions = 0,
 		isVerifiedExpert,
 		languages = [],
 	} = data;
 
-	const href = `/expert/${id}` as const;
+	// const href = `/expert/${id}` as const;
 
 	const renderRating = () => {
 		if (totalSessions === 0) {

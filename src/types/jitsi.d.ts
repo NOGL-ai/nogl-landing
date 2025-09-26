@@ -2,4 +2,4 @@ interface Window {
   JitsiMeetExternalAPI: any;
 }
 
-declare var JitsiMeetExternalAPI: any; 
+declare let JitsiMeetExternalAPI: any; 

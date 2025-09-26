@@ -12,7 +12,7 @@ export interface ExperiencesCardProps {
 }
 
 const ExperiencesCard: FC<ExperiencesCardProps> = ({
-	size = "default",
+	// size = "default",
 	className = "",
 	data,
 }) => {
