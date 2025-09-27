@@ -10,12 +10,8 @@ export default function HoverDemoPage() {
     avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face&auto=format',
   };
 
-  const handleLogout = () => {
-    console.log('Logout clicked');
-  };
-
   return (
-    <SidebarLayout user={user} onLogout={handleLogout}>
+    <SidebarLayout user={user}>
       <div className="p-8 max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">

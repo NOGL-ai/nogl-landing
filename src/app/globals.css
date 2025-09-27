@@ -27,10 +27,31 @@
   display: none;
 }
 
+:root {
+  --bg-white-0: #FFF;
+  --bg-weak-100: #F6F8FA;
+  --text-main-900: #0A0D14;
+  --text-sub-500: #525866;
+  --stroke-soft-200: #E2E4E9;
+  --red-lighter: #FDEDF0;
+  --red-base: #DF1C41;
+  --state-information: #375DFB;
+  --blue-base: #375DFB;
+  --text-soft-400: #868C98;
+  --Alerts-Success-0: #EFFEFA;
+  --Alerts-Success-200: #287F6E;
+  --Greyscale-400: #737373;
+  --colorblack-70: #54565B;
+  --primary-dark: rgba(37, 62, 167, 1);
+  --primary-base: rgba(55, 93, 251, 1);
+  --stroke-white-0: #FFF;
+  --neutral-300: #CDD0D5;
+  --bg-soft-200: #E2E4E9;
+}
+
 body {
   margin: 0;
   padding: 0;
-  overflow: hidden;
 }
 
 /* When video conference is active */
@@ -41,4 +62,4 @@ body.video-conference-active {
   height: 100%;
   margin: 0;
   padding: 0;
-} 
+}

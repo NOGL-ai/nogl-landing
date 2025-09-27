@@ -8,14 +8,12 @@ import { UserProfile } from '@/types/navigation';
 interface SidebarLayoutProps {
   children: React.ReactNode;
   user?: UserProfile;
-  onLogout?: () => void;
   className?: string;
 }
 
 const SidebarLayout: React.FC<SidebarLayoutProps> = ({
   children,
   user,
-  onLogout,
   className = '',
 }) => {
   const {
@@ -32,6 +30,12 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
     setShowSupportCard(false);
   };
 
+  const handleLogout = () => {
+    console.log('User logout clicked');
+    // Add your logout logic here
+    // For example: signOut(), redirect to login page, etc.
+  };
+
   return (
     <div className={`flex h-screen bg-gray-50 dark:bg-gray-900 ${className}`}>
       {/* Desktop Sidebar */}
@@ -40,7 +44,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
           isCollapsed={isCollapsed}
           onToggleCollapse={toggleCollapse}
           user={user}
-          onLogout={onLogout}
+          onLogout={handleLogout}
         />
       </div>
 
@@ -49,7 +53,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
         isOpen={isMobileOpen}
         onClose={closeMobile}
         user={user}
-        onLogout={onLogout}
+        onLogout={handleLogout}
         showSupportCard={showSupportCard}
         onDismissSupport={handleDismissSupport}
       />

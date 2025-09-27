@@ -61,7 +61,6 @@ export const mainNavigationItems: NavigationSection = {
       id: 'product-feed',
       title: 'Product Feed',
       path: '/product-feed',
-      isActive: true,
       icon: (
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M10 17.5C10.2327 17.5 10.449 17.394 10.8816 17.182L14.3587 15.478C15.8974 14.724 16.6667 14.347 16.6667 13.75V6.25M10 17.5C9.76734 17.5 9.55104 17.394 9.11844 17.182L5.64131 15.478C4.10267 14.724 3.33334 14.347 3.33334 13.75V6.25M10 17.5V10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>

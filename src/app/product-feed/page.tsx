@@ -1,5 +1,6 @@
 import { Metadata } from "next";
-import GlassParticlePage from "@/components/layouts/GlassParticlePage";
+import SidebarLayout from "@/components/Sidebar/SidebarLayout";
+import DatafeedSettings from "@/components/ProductFeed/DatafeedSettings";
 
 export const metadata: Metadata = {
   title: "Product Feed | Nogl",
@@ -13,20 +14,17 @@ export const metadata: Metadata = {
 };
 
 export default function ProductFeedPage() {
+  const user = {
+    name: 'John Doe',
+    email: 'john@pricefy.io',
+    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face&auto=format',
+  };
+
   return (
-    <GlassParticlePage>
-      <div className="container mx-auto px-4 py-24">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="mb-16">
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-              Product Feed
-            </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-              Streamline your product distribution with optimized feeds and automated management.
-            </p>
-          </div>
-        </div>
+    <SidebarLayout user={user}>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <DatafeedSettings />
       </div>
-    </GlassParticlePage>
+    </SidebarLayout>
   );
 }

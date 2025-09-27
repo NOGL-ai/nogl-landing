@@ -345,5 +345,58 @@
     "termsOfService": "Nutzungsbedingungen",
     "impressum": "Impressum",
     "agb": "Allgemeine Geschäftsbedingungen"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "color": "Farbe",
+    "editWidgets": "Widgets bearbeiten",
+    "overpricedProduct": "Überteuerte Produkte",
+    "samePriceProducts": "Gleiche Preisprodukte",
+    "competitiveProducts": "Wettbewerbsfähige Produkte",
+    "priceChangesSummary": "Preisänderungsübersicht",
+    "priceGroups": "Preisgruppen",
+    "products": "Produkte",
+    "profitStatus": "Gewinnstatus",
+    "competitorPriceChanges": "Konkurrentenpreisänderungen",
+    "keyVendorInsights": "Wichtige Anbieter-Insights",
+    "inventoryValue": "Inventarwert",
+    "historicalPriceLeaders": "Historische Preisführer",
+    "historicalIndex": "Historischer Index",
+    "vendorStockChanges": "Anbieter-Bestandsänderungen",
+    "product": "Produkt",
+    "competitor": "Konkurrent",
+    "change": "Änderung",
+    "time": "Zeit",
+    "stockChange": "Änderung",
+    "brand": "Marke",
+    "daysAgo": "Tage her",
+    "inStock": "Auf Lager",
+    "outOfStock": "Nicht auf Lager",
+    "months": {
+      "jan": "Jan",
+      "feb": "Feb",
+      "mar": "Mär", 
+      "apr": "Apr",
+      "may": "Mai",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Aug",
+      "sep": "Sep",
+      "oct": "Okt",
+      "nov": "Nov",
+      "dec": "Dez"
+    },
+    "pieChartLabels": {
+      "overpriced": "Überteuert",
+      "samePrice": "Gleicher Preis",
+      "competitive": "Wettbewerbsfähig"
+    },
+    "logoutClicked": "Abmelden geklickt"
+  },
+  "productFeed": {
+    "title": "Produkt-Feed",
+    "description": "Verwalten und optimieren Sie Ihre Produkt-Feeds für bessere Marktreichweite",
+    "metaTitle": "Produkt-Feed | Nogl",
+    "metaDescription": "Verwalten und optimieren Sie Ihre Produkt-Feeds für bessere Marktreichweite"
   }
 }

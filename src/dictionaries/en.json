@@ -276,5 +276,58 @@
     "termsOfService": "Terms of Service",
     "impressum": "Impressum",
     "agb": "Terms of Service"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "color": "Color",
+    "editWidgets": "Edit Widgets",
+    "overpricedProduct": "Overpriced Product",
+    "samePriceProducts": "Same Price Products",
+    "competitiveProducts": "Competitive Products",
+    "priceChangesSummary": "Price changes summary",
+    "priceGroups": "Price groups",
+    "products": "Products",
+    "profitStatus": "Profit status",
+    "competitorPriceChanges": "Competitor price changes",
+    "keyVendorInsights": "Key vendor insights",
+    "inventoryValue": "Inventory Value",
+    "historicalPriceLeaders": "Historical price leaders",
+    "historicalIndex": "Historical index",
+    "vendorStockChanges": "Vendor Stock changes",
+    "product": "Product",
+    "competitor": "Competitor",
+    "change": "Change",
+    "time": "Time",
+    "stockChange": "Change",
+    "brand": "Brand",
+    "daysAgo": "days ago",
+    "inStock": "In stock",
+    "outOfStock": "Out of stock",
+    "months": {
+      "jan": "Jan",
+      "feb": "Feb", 
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Aug",
+      "sep": "Sep",
+      "oct": "Oct",
+      "nov": "Nov",
+      "dec": "Dec"
+    },
+    "pieChartLabels": {
+      "overpriced": "Overpriced",
+      "samePrice": "Same Price", 
+      "competitive": "Competitive"
+    },
+    "logoutClicked": "Logout clicked"
+  },
+  "productFeed": {
+    "title": "Product Feed",
+    "description": "Manage and optimize your product feeds for better market reach",
+    "metaTitle": "Product Feed | Nogl",
+    "metaDescription": "Manage and optimize your product feeds for better market reach"
   }
 }

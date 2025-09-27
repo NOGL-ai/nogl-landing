@@ -130,7 +130,26 @@ const config: Config = {
   			green: {
   				...colors.green,
   				DEFAULT: '#00BC55'
-  			}
+  			},
+  			'bg-white-0': 'var(--bg-white-0)',
+  			'bg-weak-100': 'var(--bg-weak-100)',
+  			'text-main-900': 'var(--text-main-900)',
+  			'text-sub-500': 'var(--text-sub-500)',
+  			'stroke-soft-200': 'var(--stroke-soft-200)',
+  			'red-lighter': 'var(--red-lighter)',
+  			'red-base': 'var(--red-base)',
+  			'state-information': 'var(--state-information)',
+  			'blue-base': 'var(--blue-base)',
+  			'text-soft-400': 'var(--text-soft-400)',
+  			'Alerts-Success-0': 'var(--Alerts-Success-0)',
+  			'Alerts-Success-200': 'var(--Alerts-Success-200)',
+  			'Greyscale-400': 'var(--Greyscale-400)',
+  			'colorblack-70': 'var(--colorblack-70)',
+  			'primary-dark': 'var(--primary-dark)',
+  			'primary-base': 'var(--primary-base)',
+  			'stroke-white-0': 'var(--stroke-white-0)',
+  			'neutral-300': 'var(--neutral-300)',
+  			'bg-soft-200': 'var(--bg-soft-200)'
   		},
   		borderRadius: {
   			'10': '10px',
