@@ -9,7 +9,7 @@
 		"dev": "next dev",
 		"build": "prisma generate && next build",
 		"start": "next start",
-		"stripe:listen": "stripe listen --forward-to http://localhost:3000/api/stripe/webhook",
+		    "stripe:listen": "stripe listen --forward-to http://nogl.ai:3000/api/stripe/webhook",
 		"check-format": "prettier --check .",
 		"check-lint": "eslint . --ext ts --ext tsx --ext js",
 		"check-style": "npm run check-format && npm run check-lint",

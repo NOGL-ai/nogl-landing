@@ -332,5 +332,18 @@
         "_url": "/features/voice-cloning"
       }
     ]
+  },
+  "privacy": {
+    "title": "Datenschutzerklärung",
+    "description": "Erfahren Sie, wie Nogl Ihre persönlichen Daten schützt, wie wir sie verwenden und welche Datenschutzrechte Sie haben.",
+    "effectiveDate": "Gültig ab: 12. November 2024",
+    "lastUpdated": "Letzte Aktualisierung",
+    "breadcrumb": "Datenschutzerklärung"
+  },
+  "footer": {
+    "privacyPolicy": "Datenschutzerklärung",
+    "termsOfService": "Nutzungsbedingungen",
+    "impressum": "Impressum",
+    "agb": "Allgemeine Geschäftsbedingungen"
   }
 }

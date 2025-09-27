@@ -47,14 +47,15 @@ const widgetMenus: WidgetFooterMenu[] = [
 		id: "4",
 		title: "Legal",
 		menus: [
-			{ href: "/privacy-policy", label: "Privacy Policy" },
-			{ href: "/tos", label: "Terms of Service" },
+			{ href: lang === 'de' ? "/datenschutz" : "/privacy-policy", label: lang === 'de' ? "Datenschutzerklärung" : "Privacy Policy" },
+			{ href: lang === 'de' ? "/agb" : "/tos", label: lang === 'de' ? "Allgemeine Geschäftsbedingungen" : "Terms of Service" },
+			...(lang === 'de' ? [{ href: "/impressum", label: "Impressum" }] : []),
 			{ href: "/support", label: "Help Center" },
 		],
 	},
 ];
 
-const Footer: React.FC = () => {
+const Footer: React.FC<{ lang?: string }> = ({ lang = 'en' }) => {
 	const renderWidgetMenuItem = (menu: WidgetFooterMenu, index: number) => {
 		return (
 			<div key={index} className='text-sm'>

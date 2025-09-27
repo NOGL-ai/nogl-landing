@@ -10,40 +10,50 @@ export const useThemeMode = () => {
 
   useEffect(() => {
     setMounted(true);
-    // If there's no theme in localStorage, default to dark
-    if (!localStorage.theme) {
-      localStorage.theme = "dark";
-    }
+    
+    // Only access localStorage on client-side
+    if (typeof window !== 'undefined') {
+      // If there's no theme in localStorage, default to dark
+      if (!localStorage.theme) {
+        localStorage.theme = "dark";
+      }
 
-    if (localStorage.theme === "dark") {
-      toDark();
-    } else {
-      toLight();
+      if (localStorage.theme === "dark") {
+        toDark();
+      } else {
+        toLight();
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const toDark = () => {
     setIsDarkMode(true);
-    const root = document.querySelector("html");
-    if (!root) return;
-    root.classList.add("dark");
-    localStorage.theme = "dark";
+    if (typeof window !== 'undefined') {
+      const root = document.querySelector("html");
+      if (!root) return;
+      root.classList.add("dark");
+      localStorage.theme = "dark";
+    }
   };
 
   const toLight = () => {
     setIsDarkMode(false);
-    const root = document.querySelector("html");
-    if (!root) return;
-    root.classList.remove("dark");
-    localStorage.theme = "light";
+    if (typeof window !== 'undefined') {
+      const root = document.querySelector("html");
+      if (!root) return;
+      root.classList.remove("dark");
+      localStorage.theme = "light";
+    }
   };
 
   function _toogleDarkMode() {
-    if (localStorage.theme === "light") {
-      toDark();
-    } else {
-      toLight();
+    if (typeof window !== 'undefined') {
+      if (localStorage.theme === "light") {
+        toDark();
+      } else {
+        toLight();
+      }
     }
   }
 

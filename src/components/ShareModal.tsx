@@ -22,7 +22,9 @@ const ShareModal: FC<ShareModalProps> = ({ isOpen, onClose, session }) => {
 
   useEffect(() => {
     // Set the share URL once the component mounts
-    setShareUrl(`${window.location.origin}/listing-session-detail/${session.id}`);
+    if (typeof window !== 'undefined') {
+      setShareUrl(`${window.location.origin}/listing-session-detail/${session.id}`);
+    }
   }, [session.id]);
 
   if (!shareUrl) return null; // Don't render until we have the shareUrl
@@ -85,7 +87,7 @@ const ShareModal: FC<ShareModalProps> = ({ isOpen, onClose, session }) => {
                   url={shareUrl} 
                   title={title}
                   summary={session.description || ''}
-                  source={window.location.origin}
+                  source={typeof window !== 'undefined' ? window.location.origin : ''}
                 >
                   <div className="flex flex-col items-center gap-1">
                     <i className="lab la-linkedin text-2xl text-blue-700"></i>

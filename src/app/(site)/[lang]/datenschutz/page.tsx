@@ -7,12 +7,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Shield, Eye, Lock, Users, FileText, Mail, Phone, MapPin, Globe, Scale, Landmark, Cookie } from 'lucide-react';
 
 export const metadata = getSEOTags({
-  title: `Privacy Policy | ${process.env.SITE_NAME}`,
-  description: 'Discover how Nogl safeguards your personal information, the ways we use it, and your privacy rights in our comprehensive privacy policy.',
-  canonicalUrlRelative: "/privacy-policy",
+  title: `Datenschutzerklärung | ${process.env.SITE_NAME}`,
+  description: 'Erfahren Sie, wie Nogl Ihre persönlichen Daten schützt, wie wir sie verwenden und welche Datenschutzrechte Sie haben.',
+  canonicalUrlRelative: "/datenschutz",
 });
 
-const PrivacyPolicyPage = () => {
+const DatenschutzPage = () => {
   const siteName = process.env.SITE_NAME || "Nogl";
   const siteUrl = process.env.SITE_URL || "https://www.nogl.ai";
   const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE_URL || siteUrl;
@@ -21,9 +21,9 @@ const PrivacyPolicyPage = () => {
   const schemaData = {
     "@context": "https://schema.org",
     "@type": "PrivacyPolicy",
-    "name": "Privacy Policy",
-    "description": "Discover how Nogl safeguards your personal information, the ways we use it, and your privacy rights in our comprehensive privacy policy.",
-    "url": `${siteUrl}/privacy-policy`,
+    "name": "Datenschutzerklärung",
+    "description": "Erfahren Sie, wie Nogl Ihre persönlichen Daten schützt, wie wir sie verwenden und welche Datenschutzrechte Sie haben.",
+    "url": `${siteUrl}/datenschutz`,
     "dateModified": new Date().toISOString().split('T')[0],
     "publisher": {
       "@type": "Organization",
@@ -38,7 +38,7 @@ const PrivacyPolicyPage = () => {
       "@type": "ContactPoint",
       "contactType": "customer support",
       "telephone": "+49-40-12345678",
-      "email": "privacy@nogl.tech",
+      "email": "datenschutz@nogl.tech",
     },
   };
 
@@ -47,7 +47,7 @@ const PrivacyPolicyPage = () => {
       {renderSchemaTags(schemaData)}
       
       {/* Breadcrumb */}
-      <Breadcrumb pageTitle="Privacy Policy" />
+      <Breadcrumb pageTitle="Datenschutzerklärung" />
       
       {/* Main Content */}
       <Section className="bg-gray-50 dark:bg-gray-900">
@@ -58,140 +58,158 @@ const PrivacyPolicyPage = () => {
               <Shield className="w-8 h-8 text-primary" />
             </div>
             <h1 className="text-4xl font-bold mb-4 text-gray-900 dark:text-white">
-              Privacy Policy
+              Datenschutzerklärung
             </h1>
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-4">
-              Effective Date: November 12, 2024
+              Gültig ab: 12. November 2024
             </p>
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
-              Last updated: {lastUpdated}
+              Letzte Aktualisierung: {lastUpdated}
             </p>
             <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              At {siteName} ("we," "us," or "our"), accessible from{' '}
+              Bei {siteName} ("wir", "uns" oder "unser"), erreichbar unter{' '}
               <a href={siteUrl} className="text-primary hover:underline font-medium">
                 {siteUrl}
               </a>
-              , we prioritize the protection of your personal information and privacy
-              rights. This Privacy Policy explains our practices regarding the
-              collection, use, and protection of your data.
+              , legen wir höchsten Wert auf den Schutz Ihrer persönlichen Daten und Datenschutzrechte. 
+              Diese Datenschutzerklärung erläutert unsere Praktiken bezüglich der Erhebung, 
+              Verwendung und des Schutzes Ihrer Daten.
             </p>
           </div>
 
           {/* Quick Navigation */}
           <div className="mb-10">
             <div className="flex flex-wrap gap-2 text-sm">
-              <a href="#data-collection" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Data collection</a>
-              <a href="#security" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Security</a>
-              <a href="#your-rights" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Your rights</a>
-              <a href="#sharing" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Data sharing</a>
-              <a href="#retention" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Data retention</a>
+              <a href="#datenerhebung" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Datenerhebung</a>
+              <a href="#sicherheit" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Sicherheit</a>
+              <a href="#ihre-rechte" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Ihre Rechte</a>
+              <a href="#weitergabe" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Datenweitergabe</a>
+              <a href="#aufbewahrung" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Datenaufbewahrung</a>
               <a href="#cookies" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Cookies</a>
-              <a href="#legal-bases" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Legal bases</a>
-              <a href="#international-transfers" className="px-3 py-1 rounded-full bg-primary/10 text-primary">International transfers</a>
-              <a href="#do-not-sell" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Do Not Sell/Share</a>
-              <a href="#authority" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Supervisory authority</a>
-              <a href="#contact" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Contact</a>
+              <a href="#rechtsgrundlagen" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Rechtsgrundlagen</a>
+              <a href="#datenuebertragung" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Datenübertragung</a>
+              <a href="#kontakt" className="px-3 py-1 rounded-full bg-primary/10 text-primary">Kontakt</a>
             </div>
           </div>
 
+          {/* Verantwortlicher */}
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3">
+                <Landmark className="w-6 h-6 text-primary" />
+                Verantwortlicher
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">
+                Verantwortlicher im Sinne der Datenschutz-Grundverordnung (DSGVO) ist:
+              </p>
+              <div className="space-y-2 text-gray-600 dark:text-gray-300">
+                <p><strong>Nogl GmbH</strong></p>
+                <p>Hamburg, Deutschland</p>
+                <p>E-Mail: <Link href="mailto:datenschutz@nogl.tech" className="text-primary hover:underline">datenschutz@nogl.tech</Link></p>
+                <p>Telefon: +49-40-12345678</p>
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Information Collection and Use */}
-          <Card id="data-collection" className="mb-8">
+          <Card id="datenerhebung" className="mb-8">
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
                 <Eye className="w-6 h-6 text-primary" />
-                Information Collection and Use
+                Datenerhebung und -verwendung
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div>
                 <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white">
-                  Personal Information You Provide
+                  Von Ihnen bereitgestellte personenbezogene Daten
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 mb-3">
-                  When you sign up for our services or interact with our platform, you voluntarily provide us with personal data including:
+                  Wenn Sie sich für unsere Dienste anmelden oder mit unserer Plattform interagieren, 
+                  stellen Sie uns freiwillig personenbezogene Daten zur Verfügung, einschließlich:
                 </p>
                 <ul className="space-y-2 text-gray-600 dark:text-gray-300">
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                    Name, email address, and contact details
+                    Name, E-Mail-Adresse und Kontaktdaten
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                    Company name and business information
+                    Firmenname und Geschäftsinformationen
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                    Phone number and billing address
+                    Telefonnummer und Rechnungsadresse
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                    Payment and billing information (processed securely through third-party providers)
+                    Zahlungs- und Abrechnungsinformationen (sicher über Drittanbieter verarbeitet)
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                    Communication preferences and marketing consent
+                    Kommunikationspräferenzen und Marketing-Einverständnis
                   </li>
                 </ul>
               </div>
 
               <div>
                 <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white">
-                  Automatically Collected Data
+                  Automatisch erhobene Daten
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 mb-3">
-                  We automatically collect certain information when you visit our website or use our services:
+                  Wir erheben automatisch bestimmte Informationen, wenn Sie unsere Website besuchen oder unsere Dienste nutzen:
                 </p>
                 <ul className="space-y-2 text-gray-600 dark:text-gray-300">
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                    Log data (IP address, browser type, date and time of requests)
+                    Protokolldaten (IP-Adresse, Browsertyp, Datum und Uhrzeit der Anfragen)
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                    Device information (device type, operating system, unique device identifiers)
+                    Geräteinformationen (Gerätetyp, Betriebssystem, eindeutige Geräte-IDs)
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                    Usage data and interactions with our platform
+                    Nutzungsdaten und Interaktionen mit unserer Plattform
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                    Referral sources and navigation patterns
+                    Verweisquellen und Navigationsmuster
                   </li>
                 </ul>
               </div>
 
               <div>
                 <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white">
-                  How We Use Your Information
+                  Verwendungszwecke Ihrer Daten
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 mb-3">
-                  We use the collected data to provide and administer our services, respond to your requests, and communicate with you regarding service usage. Specifically, we use your information to:
+                  Wir verwenden die erhobenen Daten zur Bereitstellung und Verwaltung unserer Dienste, 
+                  zur Beantwortung Ihrer Anfragen und zur Kommunikation bezüglich der Dienstnutzung. 
+                  Konkret verwenden wir Ihre Informationen für:
                 </p>
                 <ul className="space-y-2 text-gray-600 dark:text-gray-300">
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                    Process and fulfill your service requests and transactions
+                    Bearbeitung und Erfüllung Ihrer Dienstleistungsanfragen und Transaktionen
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                    Provide customer support and technical assistance
+                    Kundensupport und technische Unterstützung
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                    Conduct analytics to understand how visitors interact with our site and services
+                    Analysen zur Verbesserung unserer Dienste und optimalen Darstellung
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                    Improve our services and ensure optimal presentation
+                    Marketing-Kommunikation (mit Ihrer ausdrücklichen Einwilligung)
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                    Send marketing communications (with your explicit consent)
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                    Comply with legal obligations and regulatory requirements
+                    Erfüllung rechtlicher Verpflichtungen und regulatorischer Anforderungen
                   </li>
                 </ul>
               </div>
@@ -199,101 +217,101 @@ const PrivacyPolicyPage = () => {
           </Card>
 
           {/* Data Security and Protection */}
-          <Card id="security" className="mb-8">
+          <Card id="sicherheit" className="mb-8">
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
                 <Lock className="w-6 h-6 text-primary" />
-                Data Security and Protection
+                Datensicherheit und -schutz
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600 dark:text-gray-300 mb-4">
-                We implement industry-standard security measures to protect your
-                personal information, including:
+                Wir implementieren branchenübliche Sicherheitsmaßnahmen zum Schutz Ihrer 
+                personenbezogenen Daten, einschließlich:
               </p>
               <ul className="space-y-2 text-gray-600 dark:text-gray-300">
                 <li className="flex items-start gap-2">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                  End-to-end encryption of sensitive data
+                  Ende-zu-Ende-Verschlüsselung sensibler Daten
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                  Secure data storage systems with regular backups
+                  Sichere Datenspeichersysteme mit regelmäßigen Backups
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                  Multi-factor authentication and access controls
+                  Multi-Faktor-Authentifizierung und Zugriffskontrollen
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                  Regular security audits and vulnerability assessments
+                  Regelmäßige Sicherheitsaudits und Schwachstellenbewertungen
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                  Employee training on data protection best practices
+                  Mitarbeiterschulungen zu Datenschutz-Best-Practices
                 </li>
               </ul>
             </CardContent>
           </Card>
 
           {/* Your Privacy Rights */}
-          <Card id="your-rights" className="mb-8">
+          <Card id="ihre-rechte" className="mb-8">
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
                 <Users className="w-6 h-6 text-primary" />
-                Your Privacy Rights and Choices
+                Ihre Datenschutzrechte und -wahlmöglichkeiten
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600 dark:text-gray-300 mb-4">
-                Under applicable data protection laws, you have the following rights regarding your personal data:
+                Nach geltendem Datenschutzrecht haben Sie folgende Rechte bezüglich Ihrer personenbezogenen Daten:
               </p>
               
               <div className="mb-6">
                 <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white">
-                  Your Data Protection Rights
+                  Ihre Datenschutzrechte nach DSGVO
                 </h3>
                 <ul className="space-y-3 text-gray-600 dark:text-gray-300">
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
                     <div>
-                      <strong>Access:</strong> Request a copy of your personal information and details about how we process it
+                      <strong>Auskunftsrecht (Art. 15 DSGVO):</strong> Anforderung einer Kopie Ihrer personenbezogenen Daten und Details zur Verarbeitung
                     </div>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
                     <div>
-                      <strong>Rectification:</strong> Request corrections to inaccurate or incomplete personal data
+                      <strong>Berichtigungsrecht (Art. 16 DSGVO):</strong> Anforderung von Korrekturen unrichtiger oder unvollständiger personenbezogener Daten
                     </div>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
                     <div>
-                      <strong>Erasure:</strong> Request deletion of your personal information (right to be forgotten)
+                      <strong>Löschungsrecht (Art. 17 DSGVO):</strong> Anforderung der Löschung Ihrer personenbezogenen Daten (Recht auf Vergessenwerden)
                     </div>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
                     <div>
-                      <strong>Portability:</strong> Receive your data in a structured, machine-readable format
+                      <strong>Datenübertragbarkeit (Art. 20 DSGVO):</strong> Erhalt Ihrer Daten in strukturiertem, maschinenlesbarem Format
                     </div>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
                     <div>
-                      <strong>Restriction:</strong> Request limitation of processing under certain circumstances
+                      <strong>Einschränkung der Verarbeitung (Art. 18 DSGVO):</strong> Anforderung der Einschränkung der Verarbeitung unter bestimmten Umständen
                     </div>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
                     <div>
-                      <strong>Objection:</strong> Object to processing based on legitimate interests or for marketing purposes
+                      <strong>Widerspruchsrecht (Art. 21 DSGVO):</strong> Widerspruch gegen Verarbeitung aufgrund berechtigter Interessen oder zu Marketingzwecken
                     </div>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
                     <div>
-                      <strong>Withdrawal:</strong> Withdraw consent at any time where processing is based on consent
+                      <strong>Widerruf der Einwilligung (Art. 7 Abs. 3 DSGVO):</strong> Widerruf der Einwilligung jederzeit, wenn die Verarbeitung auf Einwilligung basiert
                     </div>
                   </li>
                 </ul>
@@ -301,129 +319,141 @@ const PrivacyPolicyPage = () => {
 
               <div className="mb-6">
                 <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white">
-                  How to Exercise Your Rights
+                  Ausübung Ihrer Rechte
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 mb-3">
-                  You can exercise these rights by contacting us at{' '}
-                  <Link href="mailto:privacy@nogl.tech" className="text-primary hover:underline font-medium">
-                    privacy@nogl.tech
+                  Sie können diese Rechte ausüben, indem Sie uns unter{' '}
+                  <Link href="mailto:datenschutz@nogl.tech" className="text-primary hover:underline font-medium">
+                    datenschutz@nogl.tech
                   </Link>
-                  . We will respond to your request within 30 days and may request additional information to verify your identity.
+                  {' '}kontaktieren. Wir werden Ihre Anfrage innerhalb von 30 Tagen beantworten und können zusätzliche 
+                  Informationen zur Identitätsverifikation anfordern.
                 </p>
                 <ul className="space-y-2 text-gray-600 dark:text-gray-300">
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                    Provide your full name and email address associated with your account
+                    Vollständigen Namen und E-Mail-Adresse Ihres Kontos angeben
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                    Clearly describe the specific right you wish to exercise
+                    Das spezifische Recht, das Sie ausüben möchten, klar beschreiben
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                    Include any relevant account information to help us locate your data
+                    Relevante Kontoinformationen zur Datenlokalisierung angeben
                   </li>
                 </ul>
               </div>
 
               <div className="p-4 bg-primary/5 rounded-lg">
                 <p className="text-sm text-gray-600 dark:text-gray-300">
-                  <strong>Note:</strong> Some rights may be limited in certain circumstances, such as when we have a legal obligation to retain data or when the request is manifestly unfounded or excessive. We will explain any limitations when responding to your request.
+                  <strong>Hinweis:</strong> Einige Rechte können unter bestimmten Umständen eingeschränkt sein, 
+                  z.B. wenn wir eine rechtliche Verpflichtung zur Datenaufbewahrung haben oder die Anfrage 
+                  offensichtlich unbegründet oder übermäßig ist. Wir werden alle Einschränkungen bei der 
+                  Beantwortung Ihrer Anfrage erläutern.
                 </p>
               </div>
             </CardContent>
           </Card>
 
           {/* Data Sharing and Third Parties */}
-          <Card id="sharing" className="mb-8">
+          <Card id="weitergabe" className="mb-8">
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
                 <FileText className="w-6 h-6 text-primary" />
-                Data Sharing and Disclosure
+                Datenweitergabe und -offenlegung
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600 dark:text-gray-300 mb-4">
-                We may share your personal data with vendors and service providers who assist in our business operations, including:
+                Wir können Ihre personenbezogenen Daten mit Dienstleistern und Anbietern teilen, 
+                die bei unseren Geschäftsabläufen helfen, einschließlich:
               </p>
               <ul className="space-y-2 text-gray-600 dark:text-gray-300 mb-6">
                 <li className="flex items-start gap-2">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                  <strong>Hosting Services:</strong> Cloud infrastructure providers for secure data storage and processing
+                  <strong>Hosting-Dienste:</strong> Cloud-Infrastruktur-Anbieter für sichere Datenspeicherung und -verarbeitung
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                  <strong>Payment Processors:</strong> Secure transaction handling and billing services
+                  <strong>Zahlungsabwickler:</strong> Sichere Transaktionsabwicklung und Abrechnungsdienste
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                  <strong>Email Communication:</strong> Service providers for transactional and marketing communications
+                  <strong>E-Mail-Kommunikation:</strong> Dienstleister für Transaktions- und Marketing-Kommunikation
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                  <strong>Customer Support:</strong> Third-party support platforms and tools
+                  <strong>Kundensupport:</strong> Drittanbieter-Support-Plattformen und -tools
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                  <strong>Analytics Services:</strong> Website and service usage analysis providers
+                  <strong>Analytics-Dienste:</strong> Website- und Dienstnutzungsanalyse-Anbieter
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                  <strong>Marketing Services:</strong> Advertising and remarketing platforms (with your consent)
+                  <strong>Marketing-Dienste:</strong> Werbe- und Remarketing-Plattformen (mit Ihrer Einwilligung)
                 </li>
               </ul>
 
               <div className="mb-6">
                 <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white">
-                  Business Transfers
+                  Unternehmensübertragungen
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  In the event of a merger, acquisition, or sale of assets, your personal data may be transferred as part of the business transaction. We will ensure that any such transfer is subject to appropriate safeguards and that your privacy rights are protected.
+                  Im Falle einer Fusion, Übernahme oder eines Verkaufs von Vermögenswerten können Ihre 
+                  personenbezogenen Daten als Teil der Geschäftstransaktion übertragen werden. Wir stellen 
+                  sicher, dass jede solche Übertragung angemessenen Schutzmaßnahmen unterliegt und Ihre 
+                  Datenschutzrechte geschützt sind.
                 </p>
               </div>
 
               <div className="mb-6">
                 <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white">
-                  Legal Requirements
+                  Rechtliche Anforderungen
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  We may disclose your personal data when required by law, to comply with legal obligations, or to protect our rights, property, or safety, as well as that of our users or others.
+                  Wir können Ihre personenbezogenen Daten offenlegen, wenn dies gesetzlich vorgeschrieben ist, 
+                  um rechtlichen Verpflichtungen nachzukommen oder unsere Rechte, unser Eigentum oder unsere 
+                  Sicherheit sowie die unserer Nutzer oder anderer zu schützen.
                 </p>
               </div>
 
               <div className="p-4 bg-primary/5 rounded-lg">
                 <p className="text-sm text-gray-600 dark:text-gray-300">
-                  <strong>Data Protection:</strong> All third-party partners are contractually obligated to protect your data and comply with applicable privacy laws. We ensure that any data sharing is subject to appropriate safeguards and data processing agreements.
+                  <strong>Datenschutz:</strong> Alle Drittanbieter-Partner sind vertraglich verpflichtet, 
+                  Ihre Daten zu schützen und geltende Datenschutzgesetze einzuhalten. Wir stellen sicher, 
+                  dass jede Datenweitergabe angemessenen Schutzmaßnahmen und Datenverarbeitungsverträgen unterliegt.
                 </p>
               </div>
             </CardContent>
           </Card>
 
           {/* Data Retention */}
-          <Card id="retention" className="mb-8">
+          <Card id="aufbewahrung" className="mb-8">
             <CardHeader>
-              <CardTitle>Data Retention</CardTitle>
+              <CardTitle>Datenaufbewahrung</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600 dark:text-gray-300 mb-4">
-                We retain your personal information only for as long as necessary to:
+                Wir bewahren Ihre personenbezogenen Informationen nur so lange auf, wie es erforderlich ist für:
               </p>
               <ul className="space-y-2 text-gray-600 dark:text-gray-300">
                 <li className="flex items-start gap-2">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                  Fulfill the purposes outlined in this policy
+                  Erfüllung der in dieser Richtlinie dargelegten Zwecke
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                  Comply with legal obligations and regulatory requirements
+                  Einhaltung rechtlicher Verpflichtungen und regulatorischer Anforderungen
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                  Resolve disputes and enforce our agreements
+                  Beilegung von Streitigkeiten und Durchsetzung unserer Vereinbarungen
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                  Maintain business continuity and service quality
+                  Aufrechterhaltung der Geschäftskontinuität und Servicequalität
                 </li>
               </ul>
             </CardContent>
@@ -434,41 +464,46 @@ const PrivacyPolicyPage = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
                 <Cookie className="w-6 h-6 text-primary" />
-                Cookies and Tracking Technologies
+                Cookies und Tracking-Technologien
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600 dark:text-gray-300 mb-4">
-                We use cookies and similar tracking technologies to recognize repeat users and track web usage behavior. Our use of cookies includes:
+                Wir verwenden Cookies und ähnliche Tracking-Technologien, um wiederkehrende Nutzer zu erkennen 
+                und Web-Nutzungsverhalten zu verfolgen. Unsere Verwendung von Cookies umfasst:
               </p>
               
               <div className="mb-6">
                 <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white">
-                  Types of Cookies We Use
+                  Arten von Cookies, die wir verwenden
                 </h3>
                 <ul className="space-y-3 text-gray-600 dark:text-gray-300">
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
                     <div>
-                      <strong>Strictly Necessary Cookies:</strong> Essential for site navigation and functionality, including authentication and security features.
+                      <strong>Unbedingt erforderliche Cookies:</strong> Wesentlich für Website-Navigation und -Funktionalität, 
+                      einschließlich Authentifizierung und Sicherheitsfunktionen.
                     </div>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
                     <div>
-                      <strong>Analytics Cookies:</strong> Help us understand how visitors interact with our site and services to improve performance and user experience.
+                      <strong>Analytics-Cookies:</strong> Helfen uns zu verstehen, wie Besucher mit unserer Website 
+                      und unseren Diensten interagieren, um Leistung und Benutzererfahrung zu verbessern.
                     </div>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
                     <div>
-                      <strong>Functionality Cookies:</strong> Remember your preferences and settings to provide personalized experiences.
+                      <strong>Funktionalitäts-Cookies:</strong> Merken sich Ihre Präferenzen und Einstellungen, 
+                      um personalisierte Erfahrungen zu bieten.
                     </div>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
                     <div>
-                      <strong>Marketing and Remarketing Cookies:</strong> Used for targeted advertising and remarketing campaigns (with your consent).
+                      <strong>Marketing- und Remarketing-Cookies:</strong> Werden für gezielte Werbung und 
+                      Remarketing-Kampagnen verwendet (mit Ihrer Einwilligung).
                     </div>
                   </li>
                 </ul>
@@ -476,141 +511,128 @@ const PrivacyPolicyPage = () => {
 
               <div className="mb-6">
                 <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white">
-                  Managing Your Cookie Preferences
+                  Verwaltung Ihrer Cookie-Einstellungen
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 mb-3">
-                  You have several options for managing cookies:
+                  Sie haben mehrere Optionen zur Verwaltung von Cookies:
                 </p>
                 <ul className="space-y-2 text-gray-600 dark:text-gray-300">
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                    Use our cookie consent banner to accept or decline non-essential cookies
+                    Verwenden Sie unser Cookie-Einwilligungsbanner, um nicht-essenzielle Cookies zu akzeptieren oder abzulehnen
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                    Adjust your browser settings to block or delete cookies
+                    Passen Sie Ihre Browser-Einstellungen an, um Cookies zu blockieren oder zu löschen
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                    Use browser extensions or privacy tools to manage tracking
+                    Verwenden Sie Browser-Erweiterungen oder Datenschutz-Tools zur Tracking-Verwaltung
                   </li>
                 </ul>
               </div>
 
               <div className="p-4 bg-primary/5 rounded-lg">
                 <p className="text-sm text-gray-600 dark:text-gray-300">
-                  <strong>Note:</strong> Disabling certain cookies may affect the functionality of our website and services. Essential cookies cannot be disabled as they are necessary for basic site operations.
+                  <strong>Hinweis:</strong> Das Deaktivieren bestimmter Cookies kann die Funktionalität unserer 
+                  Website und Dienste beeinträchtigen. Essenzielle Cookies können nicht deaktiviert werden, 
+                  da sie für grundlegende Website-Operationen erforderlich sind.
                 </p>
               </div>
             </CardContent>
           </Card>
 
           {/* GDPR Legal Bases for Processing */}
-          <Card id="legal-bases" className="mb-8">
+          <Card id="rechtsgrundlagen" className="mb-8">
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
                 <Scale className="w-6 h-6 text-primary" />
-                GDPR Legal Bases for Processing
+                Rechtsgrundlagen der Verarbeitung nach DSGVO
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600 dark:text-gray-300 mb-4">
-                When we process personal data of individuals in the EEA/UK, we rely on one or more of the following legal bases:
+                Wenn wir personenbezogene Daten von Personen in der EU/EWR verarbeiten, stützen wir uns 
+                auf eine oder mehrere der folgenden Rechtsgrundlagen:
               </p>
               <ul className="space-y-2 text-gray-600 dark:text-gray-300">
                 <li className="flex items-start gap-2"><span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                  <strong>Contract:</strong> To provide our services and fulfill our agreements with you.
+                  <strong>Vertrag (Art. 6 Abs. 1 lit. b DSGVO):</strong> Zur Bereitstellung unserer Dienste und Erfüllung unserer Vereinbarungen mit Ihnen.
                 </li>
                 <li className="flex items-start gap-2"><span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                  <strong>Consent:</strong> For optional features such as marketing communications or certain analytics cookies.
+                  <strong>Einwilligung (Art. 6 Abs. 1 lit. a DSGVO):</strong> Für optionale Funktionen wie Marketing-Kommunikation oder bestimmte Analytics-Cookies.
                 </li>
                 <li className="flex items-start gap-2"><span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                  <strong>Legitimate interests:</strong> To improve and secure our services, provided these interests are not overridden by your rights.
+                  <strong>Berechtigte Interessen (Art. 6 Abs. 1 lit. f DSGVO):</strong> Zur Verbesserung und Sicherung unserer Dienste, vorausgesetzt, diese Interessen werden nicht von Ihren Rechten überwogen.
                 </li>
                 <li className="flex items-start gap-2"><span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                  <strong>Legal obligation:</strong> To comply with applicable laws (e.g., tax and accounting).
+                  <strong>Rechtliche Verpflichtung (Art. 6 Abs. 1 lit. c DSGVO):</strong> Zur Einhaltung geltender Gesetze (z.B. Steuer- und Buchhaltungsvorschriften).
                 </li>
               </ul>
             </CardContent>
           </Card>
 
           {/* International Data Transfers */}
-          <Card id="international-transfers" className="mb-8">
+          <Card id="datenuebertragung" className="mb-8">
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
                 <Globe className="w-6 h-6 text-primary" />
-                International Data Transfers
+                Internationale Datenübertragungen
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600 dark:text-gray-300 mb-4">
-                We are based in Germany and may process personal data in the United States and other countries through our service providers. 
-                When we transfer personal data from the EEA/UK to countries that do not provide an adequate level of protection, we implement 
-                appropriate safeguards to ensure your data remains protected.
+                Wir haben unseren Sitz in Deutschland und können personenbezogene Daten in den Vereinigten 
+                Staaten und anderen Ländern über unsere Dienstleister verarbeiten. Wenn wir personenbezogene 
+                Daten aus der EU/EWR in Länder übertragen, die kein angemessenes Schutzniveau bieten, 
+                implementieren wir angemessene Schutzmaßnahmen, um sicherzustellen, dass Ihre Daten geschützt bleiben.
               </p>
               
               <div className="mb-6">
                 <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white">
-                  Safeguards for Data Transfers
+                  Schutzmaßnahmen für Datenübertragungen
                 </h3>
                 <ul className="space-y-2 text-gray-600 dark:text-gray-300">
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                    <strong>Standard Contractual Clauses (SCCs):</strong> EU-approved contractual terms ensuring adequate protection
+                    <strong>Standardvertragsklauseln (SCCs):</strong> EU-genehmigte Vertragsbedingungen zur Gewährleistung angemessenen Schutzes
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                    <strong>Certified Frameworks:</strong> Where applicable, certified frameworks such as the EU–US Data Privacy Framework
+                    <strong>Zertifizierte Rahmenwerke:</strong> Wo anwendbar, zertifizierte Rahmenwerke wie das EU-US Data Privacy Framework
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                    <strong>Technical and Organizational Measures:</strong> Additional security measures to protect transferred data
+                    <strong>Technische und organisatorische Maßnahmen:</strong> Zusätzliche Sicherheitsmaßnahmen zum Schutz übertragener Daten
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                    <strong>Data Processing Agreements:</strong> Contractual obligations ensuring third-party compliance with privacy laws
+                    <strong>Datenverarbeitungsverträge:</strong> Vertragliche Verpflichtungen zur Einhaltung von Datenschutzgesetzen durch Dritte
                   </li>
                 </ul>
               </div>
 
               <div className="p-4 bg-primary/5 rounded-lg">
                 <p className="text-sm text-gray-600 dark:text-gray-300">
-                  <strong>Service Providers:</strong> We use service providers such as Amazon Web Services and payment processors in the United States, 
-                  which are certified under appropriate data protection frameworks. Copies of our data transfer safeguards are available upon request.
+                  <strong>Dienstleister:</strong> Wir verwenden Dienstleister wie Amazon Web Services und 
+                  Zahlungsabwickler in den Vereinigten Staaten, die unter angemessenen Datenschutz-Rahmenwerken 
+                  zertifiziert sind. Kopien unserer Datenübertragungsschutzmaßnahmen sind auf Anfrage verfügbar.
                 </p>
               </div>
-            </CardContent>
-          </Card>
-
-          {/* Removed India-specific DPDP section as requested */}
-
-          {/* Do Not Sell/Share (California) */}
-          <Card id="do-not-sell" className="mb-8">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-3">
-                <Scale className="w-6 h-6 text-primary" />
-                Do Not Sell or Share My Personal Information (CPRA)
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600 dark:text-gray-300">
-                We do not sell or share personal information as those terms are defined under the California Privacy Rights Act (CPRA).
-                If our practices change, we will update this policy and provide a clear opt-out mechanism.
-              </p>
             </CardContent>
           </Card>
 
           {/* Children's Privacy */}
           <Card className="mb-8">
             <CardHeader>
-              <CardTitle>Children's Privacy</CardTitle>
+              <CardTitle>Datenschutz von Kindern</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600 dark:text-gray-300">
-                We do not knowingly collect information from children under 13 years of age. 
-                If we discover that we have collected personal information from a child under 13, 
-                we will delete it immediately. If you believe we have collected information from 
-                a child under 13, please contact us immediately.
+                Wir sammeln wissentlich keine Informationen von Kindern unter 13 Jahren. 
+                Wenn wir feststellen, dass wir personenbezogene Informationen von einem Kind unter 13 Jahren 
+                gesammelt haben, werden wir diese sofort löschen. Wenn Sie glauben, dass wir Informationen 
+                von einem Kind unter 13 Jahren gesammelt haben, kontaktieren Sie uns bitte sofort.
               </p>
             </CardContent>
           </Card>
@@ -618,40 +640,41 @@ const PrivacyPolicyPage = () => {
           {/* Updates to This Policy */}
           <Card className="mb-8">
             <CardHeader>
-              <CardTitle>Updates to This Policy</CardTitle>
+              <CardTitle>Aktualisierungen dieser Richtlinie</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600 dark:text-gray-300">
-                We regularly review and update this policy to reflect changes in our
-                practices and legal requirements. We will notify you of significant
-                changes via email or prominent website notice at least 30 days before
-                the changes take effect. Your continued use of our services after
-                such changes constitutes acceptance of the updated policy.
+                Wir überprüfen und aktualisieren diese Richtlinie regelmäßig, um Änderungen in unseren 
+                Praktiken und rechtlichen Anforderungen widerzuspiegeln. Wir werden Sie über wesentliche 
+                Änderungen per E-Mail oder durch eine auffällige Website-Benachrichtigung mindestens 30 Tage 
+                vor Inkrafttreten der Änderungen informieren. Ihre fortgesetzte Nutzung unserer Dienste nach 
+                solchen Änderungen stellt die Annahme der aktualisierten Richtlinie dar.
               </p>
             </CardContent>
           </Card>
 
           {/* Contact Information */}
-          <Card id="contact" className="mb-8">
+          <Card id="kontakt" className="mb-8">
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
                 <Mail className="w-6 h-6 text-primary" />
-                Contact Information
+                Kontaktinformationen
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600 dark:text-gray-300 mb-4">
-                For privacy-related inquiries, data subject requests, or questions about this policy, you can reach us through multiple channels:
+                Für datenschutzbezogene Anfragen, Betroffenenrechtsanfragen oder Fragen zu dieser Richtlinie 
+                können Sie uns über mehrere Kanäle erreichen:
               </p>
               
               <div className="space-y-4 mb-6">
                 <div className="flex items-start gap-3">
                   <Mail className="w-5 h-5 text-primary mt-1" />
                   <div>
-                    <Link href="mailto:privacy@nogl.tech" className="text-primary hover:underline font-medium">
-                      privacy@nogl.tech
+                    <Link href="mailto:datenschutz@nogl.tech" className="text-primary hover:underline font-medium">
+                      datenschutz@nogl.tech
                     </Link>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Primary privacy contact</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Primärer Datenschutz-Kontakt</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -660,43 +683,44 @@ const PrivacyPolicyPage = () => {
                     <Link href="mailto:support@nogl.tech" className="text-primary hover:underline font-medium">
                       support@nogl.tech
                     </Link>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">General support and assistance</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Allgemeiner Support und Hilfe</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Phone className="w-5 h-5 text-primary mt-1" />
                   <div>
                     <span className="text-gray-600 dark:text-gray-300 font-medium">+49-40-12345678</span>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Business hours: Monday-Friday, 9:00-17:00 CET</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Geschäftszeiten: Montag-Freitag, 9:00-17:00 MEZ</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-primary mt-1" />
                   <div>
-                    <span className="text-gray-600 dark:text-gray-300 font-medium">Hamburg, Germany</span>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Our registered office</p>
+                    <span className="text-gray-600 dark:text-gray-300 font-medium">Hamburg, Deutschland</span>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Unser eingetragener Sitz</p>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-4">
                 <div className="p-4 bg-primary/5 rounded-lg">
-                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Data Subject Rights Requests</h4>
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Betroffenenrechtsanfragen</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
-                    To exercise your rights under GDPR (access, rectification, erasure, portability, etc.), please contact us with:
+                    Um Ihre Rechte nach der DSGVO auszuüben (Auskunft, Berichtigung, Löschung, Übertragbarkeit, etc.), 
+                    kontaktieren Sie uns bitte mit:
                   </p>
                   <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
-                    <li>• Your full name and email address</li>
-                    <li>• Description of the specific right you wish to exercise</li>
-                    <li>• Any relevant account information</li>
+                    <li>• Ihrem vollständigen Namen und E-Mail-Adresse</li>
+                    <li>• Beschreibung des spezifischen Rechts, das Sie ausüben möchten</li>
+                    <li>• Relevante Kontoinformationen</li>
                   </ul>
                 </div>
 
                 <div className="p-4 bg-primary/5 rounded-lg">
                   <p className="text-sm text-gray-600 dark:text-gray-300">
-                    <strong>Data Protection Officer:</strong> Nogl GmbH<br />
-                    <strong>Response Time:</strong> We will respond to your inquiry within 30 days of receipt<br />
-                    <strong>Verification:</strong> We may request additional information to verify your identity
+                    <strong>Datenschutzbeauftragter:</strong> Nogl GmbH<br />
+                    <strong>Antwortzeit:</strong> Wir werden Ihre Anfrage innerhalb von 30 Tagen nach Eingang beantworten<br />
+                    <strong>Verifikation:</strong> Wir können zusätzliche Informationen zur Identitätsverifikation anfordern
                   </p>
                 </div>
               </div>
@@ -704,17 +728,18 @@ const PrivacyPolicyPage = () => {
           </Card>
 
           {/* Supervisory Authority (EU/EEA) */}
-          <Card id="authority" className="mb-8">
+          <Card className="mb-8">
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
                 <Landmark className="w-6 h-6 text-primary" />
-                Supervisory Authority (EU/EEA)
+                Aufsichtsbehörde (EU/EWR)
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600 dark:text-gray-300">
-                If you are located in the EEA/UK, you have the right to lodge a complaint with your local supervisory authority.
-                In Germany (Hamburg), please see the Hamburg Commissioner for Data Protection and Freedom of Information:
+                Wenn Sie sich in der EU/EWR befinden, haben Sie das Recht, eine Beschwerde bei Ihrer 
+                örtlichen Aufsichtsbehörde einzureichen. In Deutschland (Hamburg) wenden Sie sich bitte 
+                an den Hamburgischen Beauftragten für Datenschutz und Informationsfreiheit:
                 {' '}<a className="text-primary underline" href="https://datenschutz-hamburg.de/" target="_blank" rel="noopener noreferrer">datenschutz-hamburg.de</a>.
               </p>
             </CardContent>
@@ -725,4 +750,4 @@ const PrivacyPolicyPage = () => {
   );
 };
 
-export default PrivacyPolicyPage;
+export default DatenschutzPage;
