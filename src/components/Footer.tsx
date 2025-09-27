@@ -12,7 +12,7 @@ export interface WidgetFooterMenu {
 	menus: CustomLink[];
 }
 
-const widgetMenus: WidgetFooterMenu[] = [
+const getWidgetMenus = (lang: string): WidgetFooterMenu[] => [
 	{
 		id: "1",
 		title: "Product",
@@ -56,6 +56,8 @@ const widgetMenus: WidgetFooterMenu[] = [
 ];
 
 const Footer: React.FC<{ lang?: string }> = ({ lang = 'en' }) => {
+	const widgetMenus = getWidgetMenus(lang);
+	
 	const renderWidgetMenuItem = (menu: WidgetFooterMenu, index: number) => {
 		return (
 			<div key={index} className='text-sm'>
