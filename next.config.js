@@ -41,7 +41,7 @@ const nextConfig = {
 	  remotePatterns: [
 		{
 		  protocol: 'https',
-		          hostname: 'nogl.ai',
+		  hostname: 'localhost',
 		  port: '',
 		},
 		{
