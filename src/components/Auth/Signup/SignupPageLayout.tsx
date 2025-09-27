@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
-import toast from "react-hot-toast";
+import toast from "react-hot-toast";  
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
@@ -407,15 +407,15 @@ export default function SignupPageLayout() {
     <div className="flex w-full min-h-screen bg-white">
       {/* Left Column - Form */}
       <div className="flex flex-col w-full lg:w-1/2 min-h-screen">
-        <div className="flex flex-col justify-center items-center flex-1 px-4 md:px-[120px] py-8 md:py-[136px] gap-12">
+        <div className="flex flex-col justify-start items-center flex-1 px-2 sm:px-4 md:px-8 lg:px-[120px] py-1 sm:py-2 md:py-4 lg:py-[80px] gap-1 sm:gap-2 md:gap-4 lg:gap-8">
           {/* Header */}
-          <div className="flex flex-col items-start gap-12 w-full">
+          <div className="flex flex-col items-start gap-1 sm:gap-2 md:gap-4 lg:gap-6 w-full">
             {/* Title */}
-            <div className="flex flex-col items-start gap-3 w-full">
-              <h1 className="text-[28px] font-bold leading-8 text-[#212121] font-inter tracking-[-0.28px]">
+            <div className="flex flex-col items-start gap-0.5 w-full">
+              <h1 className="text-base sm:text-lg md:text-2xl lg:text-[28px] font-bold leading-5 sm:leading-6 md:leading-7 lg:leading-8 text-[#212121] font-inter tracking-[-0.28px]">
                 Create Account
               </h1>
-              <p className="text-base font-normal leading-5 text-[#374151] font-inter w-full">
+              <p className="text-xs sm:text-sm md:text-base font-normal leading-4 sm:leading-5 text-[#374151] font-inter w-full">
                 Start monitoring competitor prices today.
               </p>
             </div>
@@ -455,96 +455,96 @@ export default function SignupPageLayout() {
           </div>
 
           {/* Signup Content */}
-          <div className="flex flex-col gap-10 w-full min-h-[400px]">
+          <div className="flex flex-col gap-1 sm:gap-2 md:gap-4 lg:gap-8 w-full min-h-[180px] sm:min-h-[250px] md:min-h-[300px]">
             {signupMethod === "form" ? (
-              <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-10 w-full">
-            <div className="flex flex-col gap-6 w-full">
+              <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-1 sm:gap-2 md:gap-4 lg:gap-8 w-full">
+            <div className="flex flex-col gap-1 sm:gap-2 md:gap-3 lg:gap-5 w-full">
               {/* Form Fields */}
-              <div className="flex flex-col gap-5 w-full">
+              <div className="flex flex-col gap-1 sm:gap-2 md:gap-3 w-full">
                 {/* Name Row */}
-                <div className="flex flex-col sm:flex-row items-start gap-4 w-full">
+                <div className="flex flex-col sm:flex-row gap-1 sm:gap-2 w-full">
                   {/* First Name */}
-                  <div className="flex flex-col gap-1 flex-1">
-                    <label className="text-sm font-medium leading-[21px] text-[#212121] font-inter tracking-[0.28px]">
+                  <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+                    <label className="text-xs sm:text-sm font-medium leading-[18px] text-[#212121] font-inter tracking-[0.28px]">
                     Name
                   </label>
-                    <div className="flex flex-col gap-1.5 w-full">
-                      <div className="flex h-12 px-4 py-1.5 items-center gap-3 w-full rounded-lg border border-[#CED4DA] bg-white">
+                    <div className="flex flex-col gap-0.5 w-full">
+                      <div className="flex h-10 sm:h-12 px-2 sm:px-3 py-1 items-center gap-2 w-full rounded-lg border border-[#CED4DA] bg-white">
                         <input
                           {...register("firstName")}
                           type="text"
                           placeholder="Enter name"
                           autoComplete="given-name"
-                          className="flex-1 text-sm font-normal leading-[21px] text-[#6C757D] font-inter tracking-[0.28px] bg-transparent border-none outline-none placeholder:text-[#6C757D]"
+                          className="flex-1 min-w-0 text-xs sm:text-sm font-normal leading-[18px] text-[#6C757D] font-inter tracking-[0.28px] bg-transparent border-none outline-none placeholder:text-[#6C757D]"
                         />
                       </div>
                       {errors.firstName && (
-                        <span className="text-sm text-red-500">{errors.firstName.message}</span>
+                        <span className="text-xs sm:text-sm text-red-500">{errors.firstName.message}</span>
                       )}
                     </div>
                   </div>
 
                   {/* Last Name */}
-                  <div className="flex flex-col gap-1 flex-1">
-                    <label className="text-sm font-medium leading-[21px] text-[#212121] font-inter tracking-[0.28px]">
+                  <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+                    <label className="text-xs sm:text-sm font-medium leading-[18px] text-[#212121] font-inter tracking-[0.28px]">
                       Last Name
                     </label>
-                    <div className="flex flex-col gap-1.5 w-full">
-                      <div className="flex h-12 px-4 py-1.5 items-center gap-3 w-full rounded-lg border border-[#CED4DA] bg-white">
+                    <div className="flex flex-col gap-0.5 w-full">
+                      <div className="flex h-10 sm:h-12 px-2 sm:px-3 py-1 items-center gap-2 w-full rounded-lg border border-[#CED4DA] bg-white">
                         <input
                           {...register("lastName")}
                           type="text"
                           placeholder="Enter last name"
                           autoComplete="family-name"
-                          className="flex-1 text-sm font-normal leading-[21px] text-[#6C757D] font-inter tracking-[0.28px] bg-transparent border-none outline-none placeholder:text-[#6C757D]"
+                          className="flex-1 min-w-0 text-xs sm:text-sm font-normal leading-[18px] text-[#6C757D] font-inter tracking-[0.28px] bg-transparent border-none outline-none placeholder:text-[#6C757D]"
                         />
                       </div>
                       {errors.lastName && (
-                        <span className="text-sm text-red-500">{errors.lastName.message}</span>
+                        <span className="text-xs sm:text-sm text-red-500">{errors.lastName.message}</span>
                       )}
                     </div>
                   </div>
                 </div>
 
                 {/* Email */}
-                <div className="flex flex-col gap-1 w-full">
-                  <label className="text-sm font-medium leading-[21px] text-[#212121] font-inter tracking-[0.28px]">
+                <div className="flex flex-col gap-0.5 w-full">
+                  <label className="text-xs sm:text-sm font-medium leading-[18px] text-[#212121] font-inter tracking-[0.28px]">
                     Email
                   </label>
-                  <div className="flex flex-col gap-1.5 w-full">
-                    <div className="flex h-12 px-4 py-1.5 items-center gap-3 w-full rounded-lg border border-[#CED4DA] bg-white">
+                  <div className="flex flex-col gap-0.5 w-full">
+                    <div className="flex h-10 sm:h-12 px-2 sm:px-3 py-1 items-center gap-2 w-full rounded-lg border border-[#CED4DA] bg-white">
                       <input
                         {...register("email")}
                         type="email"
                         placeholder="yourmail@gmail.com"
                         autoComplete="email"
-                        className="flex-1 text-sm font-normal leading-[21px] text-[#6C757D] font-inter tracking-[0.42px] bg-transparent border-none outline-none placeholder:text-[#6C757D]"
+                        className="flex-1 text-xs sm:text-sm font-normal leading-[18px] text-[#6C757D] font-inter tracking-[0.42px] bg-transparent border-none outline-none placeholder:text-[#6C757D]"
                       />
                     </div>
                     {errors.email && (
-                      <span className="text-sm text-red-500">{errors.email.message}</span>
+                      <span className="text-xs sm:text-sm text-red-500">{errors.email.message}</span>
                     )}
                   </div>
                 </div>
 
                 {/* Password */}
-                <div className="flex flex-col gap-1 w-full">
-                  <label className="text-sm font-medium leading-[21px] text-[#212121] font-inter tracking-[0.28px]">
+                <div className="flex flex-col gap-0.5 w-full">
+                  <label className="text-xs sm:text-sm font-medium leading-[18px] text-[#212121] font-inter tracking-[0.28px]">
                     Password
                   </label>
-                  <div className="flex flex-col gap-1.5 w-full">
-                    <div className="flex h-12 px-4 py-1.5 items-center gap-3 w-full rounded-lg border border-[#CED4DA] bg-white">
+                  <div className="flex flex-col gap-0.5 w-full">
+                    <div className="flex h-10 sm:h-12 px-2 sm:px-3 py-1 items-center gap-2 w-full rounded-lg border border-[#CED4DA] bg-white">
                       <input
                         {...register("password")}
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter your password"
                         autoComplete="new-password"
-                        className="flex-1 text-sm font-normal leading-[21px] text-[#6C757D] font-inter tracking-[0.28px] bg-transparent border-none outline-none placeholder:text-[#6C757D]"
+                        className="flex-1 text-xs sm:text-sm font-normal leading-[18px] text-[#6C757D] font-inter tracking-[0.28px] bg-transparent border-none outline-none placeholder:text-[#6C757D]"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="text-[#737373] hover:text-[#4A5568] transition-colors"
+                        className="text-[#737373] hover:text-[#4A5568] transition-colors p-1"
                       >
                         {showPassword ? (
                           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -560,7 +560,7 @@ export default function SignupPageLayout() {
                       </button>
                     </div>
                     {errors.password && (
-                      <span className="text-sm text-red-500">{errors.password.message}</span>
+                      <span className="text-xs sm:text-sm text-red-500">{errors.password.message}</span>
                     )}
                     <PasswordStrengthIndicator password={watchedPassword || ""} />
                   </div>
@@ -568,29 +568,29 @@ export default function SignupPageLayout() {
               </div>
 
               {/* Checkboxes */}
-              <div className="flex flex-col gap-4 w-full">
+              <div className="flex flex-col gap-0.5 sm:gap-1 md:gap-2 w-full">
                 {/* Terms Checkbox */}
-                <div className="flex items-center gap-3 w-full">
+                <div className="flex items-center gap-1 w-full">
                   <div className="flex p-0.5 items-center gap-1">
-                    <div className="w-6 h-6 relative">
+                    <div className="w-5 h-5 relative">
                       <div
-                        className={`w-[18px] h-[18px] rounded-sm transition-colors cursor-pointer absolute left-[3px] top-[3px] ${
+                        className={`w-[16px] h-[16px] rounded-sm transition-colors cursor-pointer absolute left-[2px] top-[2px] ${
                           watchedTerms ? "bg-[#3B82F6]" : "bg-white border border-[#CED4DA]"
                         }`}
                         onClick={() => setValue("termsAccepted", !watchedTerms)}
                       >
                         {watchedTerms && (
                           <svg
-                            width="9"
-                            height="6"
+                            width="8"
+                            height="5"
                             viewBox="0 0 11 8"
                             fill="none"
-                            className="absolute left-[5px] top-[6px]"
+                            className="absolute left-[3px] top-[4px]"
                           >
                             <path
                               d="M1 4.2L3.86364 7L10 1"
                               stroke="white"
-                              strokeWidth="1.5"
+                              strokeWidth="1.2"
                               strokeLinecap="round"
                               strokeLinejoin="round"
                             />
@@ -599,7 +599,7 @@ export default function SignupPageLayout() {
                       </div>
                     </div>
                   </div>
-                  <div className="flex-1 text-sm font-normal leading-[150%] tracking-[0.28px] font-inter">
+                  <div className="flex-1 text-xs sm:text-sm font-normal leading-[150%] tracking-[0.28px] font-inter">
                     <span className="text-[#495057]">I have read and agreed to the </span>
                     <Link href={"/tos" as Route<string>} className="text-[#212121] hover:underline">
                       terms of use
@@ -612,31 +612,31 @@ export default function SignupPageLayout() {
                   </div>
                 </div>
                 {errors.termsAccepted && (
-                  <span className="text-sm text-red-500">{errors.termsAccepted.message}</span>
+                  <span className="text-xs sm:text-sm text-red-500">{errors.termsAccepted.message}</span>
                 )}
 
                 {/* Newsletter Checkbox */}
-                <div className="flex items-center gap-3 w-full">
+                <div className="flex items-center gap-1 w-full">
                   <div className="flex p-0.5 items-center gap-1">
-                    <div className="w-6 h-6 relative">
+                    <div className="w-5 h-5 relative">
                       <div
-                        className={`w-[18px] h-[18px] rounded-sm border border-[#CED4DA] bg-white cursor-pointer absolute left-[3px] top-[3px] ${
+                        className={`w-[16px] h-[16px] rounded-sm border border-[#CED4DA] bg-white cursor-pointer absolute left-[2px] top-[2px] ${
                           watchedNewsletter ? "bg-[#3B82F6]" : ""
                         }`}
                         onClick={() => setValue("newsletter", !watchedNewsletter)}
                       >
                         {watchedNewsletter && (
                           <svg
-                            width="9"
-                            height="6"
+                            width="8"
+                            height="5"
                             viewBox="0 0 11 8"
                             fill="none"
-                            className="absolute left-[5px] top-[6px]"
+                            className="absolute left-[3px] top-[4px]"
                           >
                             <path
                               d="M1 4.2L3.86364 7L10 1"
                               stroke="white"
-                              strokeWidth="1.5"
+                              strokeWidth="1.2"
                               strokeLinecap="round"
                               strokeLinejoin="round"
                             />
@@ -645,7 +645,7 @@ export default function SignupPageLayout() {
                       </div>
                     </div>
                   </div>
-                  <span className="flex-1 text-sm font-normal leading-[21px] text-[#495057] font-inter tracking-[0.28px]">
+                  <span className="flex-1 text-xs sm:text-sm font-normal leading-[18px] text-[#495057] font-inter tracking-[0.28px]">
                     Signup for newsletter
                   </span>
                 </div>
@@ -659,7 +659,7 @@ export default function SignupPageLayout() {
                 }}
               />
               {errors.recaptcha && (
-                <span className="text-sm text-red-500">{errors.recaptcha.message}</span>
+                <span className="text-xs sm:text-sm text-red-500">{errors.recaptcha.message}</span>
               )}
             </div>
 
@@ -667,7 +667,7 @@ export default function SignupPageLayout() {
             <button
               type="submit"
               disabled={loading}
-              className="flex h-14 px-4 py-4 justify-center items-center gap-2 w-full rounded-xl bg-[#3B82F6] hover:bg-[#2563EB] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="flex h-10 sm:h-12 px-2 sm:px-4 py-2 sm:py-3 justify-center items-center gap-2 w-full rounded-xl bg-[#3B82F6] hover:bg-[#2563EB] disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-xs sm:text-base"
             >
               {loading ? (
                 <>
@@ -675,12 +675,12 @@ export default function SignupPageLayout() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  <span className="text-base font-semibold leading-6 text-white font-inter tracking-[0.32px]">
+                  <span className="text-xs sm:text-base font-semibold leading-6 text-white font-inter tracking-[0.32px]">
                     Creating Account...
                   </span>
                 </>
               ) : (
-                <span className="text-base font-semibold leading-6 text-white font-inter tracking-[0.32px]">
+                <span className="text-xs sm:text-base font-semibold leading-6 text-white font-inter tracking-[0.32px]">
                   Create Account
                 </span>
               )}
@@ -694,7 +694,7 @@ export default function SignupPageLayout() {
           </div>
 
           {/* Sign In Link */}
-          <div className="w-full text-center text-base font-semibold leading-[150%] tracking-[0.32px] font-inter">
+          <div className="w-full text-center text-sm sm:text-base font-semibold leading-[150%] tracking-[0.32px] font-inter">
             <span className="text-[#212121]">Already have an account? </span>
             <Link href={"/auth/signin" as Route<string>} className="text-[#3B82F6] hover:underline">
               Sign In
@@ -703,7 +703,7 @@ export default function SignupPageLayout() {
         </div>
 
         {/* Footer */}
-        <div className="flex flex-col sm:flex-row w-full max-w-[640px] items-start gap-4 opacity-75 p-4 md:p-10">
+        <div className="flex flex-col sm:flex-row w-full max-w-[640px] items-start gap-1 sm:gap-2 md:gap-3 opacity-75 p-1 sm:p-2 md:p-4 lg:p-6">
           <div className="flex-1 text-sm font-normal leading-5 text-[#676869] font-inter tracking-[-0.084px]">
             © 2025 - NOGL
           </div>
@@ -717,7 +717,7 @@ export default function SignupPageLayout() {
       </div>
 
       {/* Right Column - Modern Design */}
-      <div className="flex flex-1 min-h-screen relative bg-[#0c2441] overflow-hidden">
+      <div className="hidden lg:flex flex-1 min-h-screen relative bg-[#0c2441] overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-[0.036]">
           <div className="absolute inset-0" style={{

@@ -3,7 +3,7 @@ import Header from ".";
 import { usePathname } from "next/navigation";
 
 export const HeaderWrapper = () => {
-	const pathname = usePathname();
+	const pathname = usePathname() || '';
 
 	// Routes that should have the header hidden (app routes with sidebar)
 	const appRoutes = [

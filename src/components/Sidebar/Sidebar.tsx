@@ -39,6 +39,12 @@ const Sidebar: React.FC<SidebarProps> = ({
   // Determine if sidebar should show expanded content
   const shouldShowExpandedContent = !isCollapsed || isHovered;
 
+  // Helper function to check if a path is active
+  const isPathActive = (itemPath: string): boolean => {
+    if (!pathname) return false;
+    return pathname === itemPath || pathname.startsWith(itemPath + '/');
+  };
+
   return (
     <div
       className={clsx(
@@ -119,7 +125,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 <SidebarItem
                   key={item.id}
                   item={item}
-                  isActive={item.isActive || pathname === item.path || pathname.startsWith(item.path + '/')}
+                  isActive={item.isActive || isPathActive(item.path)}
                   isCollapsed={!shouldShowExpandedContent}
                 />
               ))}
@@ -143,7 +149,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 <SidebarItem
                   key={item.id}
                   item={item}
-                  isActive={pathname === item.path || pathname.startsWith(item.path + '/')}
+                  isActive={isPathActive(item.path)}
                   isCollapsed={!shouldShowExpandedContent}
                 />
               ))}
