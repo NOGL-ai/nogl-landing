@@ -10,7 +10,7 @@ const CatalogContent = () => {
   const [currentPage, setCurrentPage] = useState(57);
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
 
-  // Updated mock data to match the design exactly
+  // Mock data - in real app this would come from API/database
   const products = [
     {
       id: '1',
@@ -29,7 +29,7 @@ const CatalogContent = () => {
         cheapest: '€ 13.98',
         avg: '€ 13.98',
         highest: '€ 13.98',
-        cheapestColor: 'green'
+        cheapestColor: 'green' as const
       },
       triggeredRule: 'test new price adjust'
     },
@@ -44,13 +44,13 @@ const CatalogContent = () => {
       maxPrice: '-',
       brand: {
         name: 'Apple',
-        logo: null
+        logo: null // Will use Apple icon
       },
       competitors: {
         cheapest: '€ 13.98',
         avg: '€ 13.98',
         highest: '€ 13.98',
-        cheapestColor: 'green'
+        cheapestColor: 'green' as const
       },
       triggeredRule: 'test new price adjust'
     },
@@ -71,7 +71,7 @@ const CatalogContent = () => {
         cheapest: '€ 13.98',
         avg: '€ 565.03',
         highest: '€ 13.98',
-        cheapestColor: 'red'
+        cheapestColor: 'red' as const
       },
       triggeredRule: 'test new price adjust'
     },
@@ -92,7 +92,7 @@ const CatalogContent = () => {
         cheapest: '€ 13.98',
         avg: '€ 13.98',
         highest: '€ 13.98',
-        cheapestColor: 'green'
+        cheapestColor: 'green' as const
       },
       triggeredRule: 'test new price adjust'
     },
@@ -113,7 +113,7 @@ const CatalogContent = () => {
         cheapest: '-',
         avg: '-',
         highest: '-',
-        cheapestColor: 'gray'
+        cheapestColor: 'gray' as const
       },
       triggeredRule: 'test new price adjust'
     },
@@ -134,7 +134,7 @@ const CatalogContent = () => {
         cheapest: '-',
         avg: '-',
         highest: '-',
-        cheapestColor: 'gray'
+        cheapestColor: 'gray' as const
       },
       triggeredRule: 'test new price adjust'
     },
@@ -155,7 +155,7 @@ const CatalogContent = () => {
         cheapest: '-',
         avg: '-',
         highest: '-',
-        cheapestColor: 'gray'
+        cheapestColor: 'gray' as const
       },
       triggeredRule: 'test new price adjust'
     },
@@ -170,13 +170,13 @@ const CatalogContent = () => {
       maxPrice: '-',
       brand: {
         name: 'Shopify',
-        logo: null
+        logo: null // Will use Shopify icon
       },
       competitors: {
         cheapest: '-',
         avg: '-',
         highest: '-',
-        cheapestColor: 'gray'
+        cheapestColor: 'gray' as const
       },
       triggeredRule: 'test new price adjust'
     }
@@ -199,7 +199,7 @@ const CatalogContent = () => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-gray-2">
+    <div className="w-full h-full bg-gray-1 dark:bg-gray-900">
       <div className="w-full max-w-[1168px] mx-auto p-6">
         <CatalogHeader 
           searchQuery={searchQuery}
