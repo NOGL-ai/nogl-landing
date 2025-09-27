@@ -685,20 +685,20 @@ export default function SignupPageLayout() {
                 </span>
               )}
             </button>
+
+            {/* Sign In Link */}
+            <div className="w-full text-center text-sm sm:text-base font-semibold leading-[150%] tracking-[0.32px] font-inter">
+              <span className="text-[#212121]">Already have an account? </span>
+              <Link href={"/auth/signin" as Route<string>} className="text-[#3B82F6] hover:underline">
+                Sign In
+              </Link>
+            </div>
           </form>
             ) : (
               <div className="w-full flex flex-col justify-center">
                 <MagicLinkSignup />
               </div>
             )}
-          </div>
-
-          {/* Sign In Link */}
-          <div className="w-full text-center text-sm sm:text-base font-semibold leading-[150%] tracking-[0.32px] font-inter">
-            <span className="text-[#212121]">Already have an account? </span>
-            <Link href={"/auth/signin" as Route<string>} className="text-[#3B82F6] hover:underline">
-              Sign In
-            </Link>
           </div>
         </div>
 
