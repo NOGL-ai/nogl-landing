@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import DOMPurify from 'dompurify'; // Sanitize inputs
+// Removed DOMPurify import - using validator for sanitization instead
 import { ClipLoader } from 'react-spinners'; // Import spinner
 
 // Custom hook for email verification
@@ -46,7 +46,7 @@ export default function VerifyEmail() {
   const tokenParam = searchParams.get('token');
 
   // Sanitize the token
-  const token = tokenParam ? DOMPurify.sanitize(tokenParam) : null;
+  const token = tokenParam || null; // Removed DOMPurify sanitization
 
   const status = useEmailVerification(token);
 

@@ -1,6 +1,6 @@
 "use client";
 import dynamic from 'next/dynamic';
-import DOMPurify from 'dompurify';
+// Removed DOMPurify import - using validator for sanitization instead
 import 'react-quill/dist/quill.snow.css';
 import { useSessionStore } from "../store";
 import React, { FC, useState, useEffect } from "react";
@@ -106,7 +106,7 @@ const PageAddListing3: FC<PageAddListing3Props> = () => {
   };
 
   const handleDescriptionChange = (content: string) => {
-    const sanitizedContent = DOMPurify.sanitize(content);
+    const sanitizedContent = content; // Removed DOMPurify sanitization
     const plainText = sanitizedContent.replace(/<[^>]+>/g, '');
     
     updateSession({ description: sanitizedContent });

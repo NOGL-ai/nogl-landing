@@ -7,7 +7,7 @@ import Loader from "../Common/Loader";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import validator from "validator";
-import DOMPurify from "dompurify";
+// Removed DOMPurify import - using validator for sanitization instead
 import zxcvbn from "zxcvbn";
 import { debounce } from 'lodash';
 
@@ -130,9 +130,9 @@ const SignupWithPassword = () => {
   // Sanitize data before submission
   const sanitizeData = () => {
     return {
-      name: DOMPurify.sanitize(data.name),
-      email: DOMPurify.sanitize(data.email),
-      password: DOMPurify.sanitize(data.password),
+      name: data.name,
+      email: data.email,
+      password: data.password,
     };
   };
 

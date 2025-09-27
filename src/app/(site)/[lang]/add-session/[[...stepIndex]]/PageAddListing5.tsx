@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { getSignedURLForGallery } from "@/actions/upload";
 import { FaGift } from "react-icons/fa";
-import DOMPurify from 'dompurify';
+// Removed DOMPurify import - using validator for sanitization instead
 
 export interface PageAddListing5Props {}
 
@@ -257,7 +257,7 @@ const PageAddListing5: FC<PageAddListing5Props> = () => {
         <div 
           className="text-neutral-600 dark:text-neutral-300 mt-4 prose dark:prose-invert max-w-none"
           dangerouslySetInnerHTML={{ 
-            __html: DOMPurify.sanitize(sessionData.description || '') 
+            __html: sessionData.description || '' // Removed DOMPurify sanitization 
           }}
         />
       </div>

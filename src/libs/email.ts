@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import DOMPurify from 'isomorphic-dompurify';
+// Removed DOMPurify import - using validator for sanitization instead
 import validator from 'validator';
 import { getBookingConfirmationEmail } from './emailTemplates/bookingConfirmationEmail';
 
@@ -68,8 +68,8 @@ export const sendEmail = async (data: EmailPayload) => {
 
 export const sendVerificationEmail = async ({ to, name, verificationUrl }: VerificationEmailProps) => {
     // Sanitize user inputs
-    const sanitizedVerificationUrl = DOMPurify.sanitize(verificationUrl);
-    const sanitizedName = DOMPurify.sanitize(name);
+    const sanitizedVerificationUrl = validator.escape(verificationUrl);
+    const sanitizedName = validator.escape(name);
 
     // const emailContent = {
     //     to,
@@ -175,9 +175,9 @@ export const sendBookingConfirmationEmail = async ({
   console.log('Booking details:', bookingDetails);
 
   // Sanitize inputs
-  const sanitizedEmail = DOMPurify.sanitize(to);
-  const sanitizedParticipantName = DOMPurify.sanitize(participantName);
-  const sanitizedSignInUrl = DOMPurify.sanitize(signInUrl);
+  const sanitizedEmail = validator.escape(to);
+  const sanitizedParticipantName = validator.escape(participantName);
+  const sanitizedSignInUrl = validator.escape(signInUrl);
 
   const emailContent = getBookingConfirmationEmail({
     url: sanitizedSignInUrl,

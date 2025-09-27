@@ -8,7 +8,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Loader from "../Common/Loader";
 import validator from "validator";
-import DOMPurify from "dompurify";
+// Removed DOMPurify import - using validator for sanitization instead
 
 export default function SigninWithPassword() {
   const [data, setData] = useState({
@@ -90,8 +90,8 @@ export default function SigninWithPassword() {
   // Sanitize data before submission
   const sanitizeData = () => {
     return {
-      email: DOMPurify.sanitize(data.email),
-      password: DOMPurify.sanitize(data.password),
+      email: data.email,
+      password: data.password,
       remember: data.remember,
     };
   };
