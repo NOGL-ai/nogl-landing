@@ -4,16 +4,18 @@ A comprehensive sidebar navigation component with collapsible functionality, mob
 
 ## Features
 
-- 🔄 Collapsible desktop sidebar
+- 🔄 Collapsible desktop sidebar with hover-to-expand
+- 🖱️ Smart hover interactions and tooltips
 - 📱 Mobile responsive with drawer
 - 🌙 Dark theme optimized
 - 🎨 Matches exact design specifications
 - 🔧 Customizable navigation items
-- 👤 User profile section
+- 👤 User profile section with dropdown menu
 - 📞 Support card with dismiss functionality
 - 🏷️ Version info with badges
 - 💾 Persistent state management
 - ♿ Accessible with proper ARIA labels
+- ⚡ Smooth animations and transitions
 
 ## Components
 
@@ -133,7 +135,33 @@ export default function CustomLayout({ children }: { children: React.ReactNode }
 }
 ```
 
-### 3. Customizing Navigation Items
+### 3. Testing Hover Functionality
+
+```tsx
+// Visit the demo page to see hover features in action
+// Navigate to: /hover-demo
+
+// Or test in your own component:
+import { SidebarLayout } from '@/components/Sidebar';
+
+export default function TestPage() {
+  return (
+    <SidebarLayout user={user} onLogout={handleLogout}>
+      <div className="p-8">
+        <h1>Test the sidebar hover functionality!</h1>
+        <ol>
+          <li>Click the collapse button in the sidebar</li>
+          <li>Hover over the collapsed sidebar to see it expand</li>
+          <li>Hover over individual icons to see tooltips</li>
+          <li>Try the profile dropdown in both states</li>
+        </ol>
+      </div>
+    </SidebarLayout>
+  );
+}
+```
+
+### 4. Customizing Navigation Items
 
 Edit `/src/data/sidebarNavigation.tsx`:
 
@@ -171,16 +199,46 @@ export const mainNavigationItems: NavigationSection = {
 const {
   isCollapsed,        // Boolean: sidebar collapsed state
   isMobileOpen,       // Boolean: mobile sidebar open state
+  isHovered,          // Boolean: hover state for collapsed sidebar
   toggleCollapse,     // Function: toggle desktop sidebar
   openMobile,         // Function: open mobile sidebar
   closeMobile,        // Function: close mobile sidebar
   toggleMobile,       // Function: toggle mobile sidebar
+  setHovered,         // Function: manually control hover state
 } = useSidebar({
   defaultCollapsed: false,    // Initial collapsed state
   persistState: true,         // Save state to localStorage
   storageKey: 'sidebar-collapsed', // localStorage key
 });
 ```
+
+## Hover Functionality
+
+The sidebar includes intelligent hover-to-expand functionality:
+
+### **🖱️ Hover to Expand**
+- When collapsed, hover over the sidebar to temporarily expand it
+- Shows all navigation items and labels
+- Smooth 300ms transitions
+- Visual feedback with subtle shadow
+
+### **💡 Tooltips**
+- In collapsed mode, hover over navigation icons to see tooltips
+- Shows navigation item names and badges
+- Positioned to the right of the sidebar
+- Includes arrow pointer for clear association
+
+### **🎨 Visual Feedback**
+- Collapsed sidebar gains shadow on hover
+- Smooth width transitions
+- All content scales appropriately
+- Maintains design consistency
+
+### **⚡ Smart Interactions**
+- Hover state only activates when sidebar is collapsed
+- No interference with click interactions
+- Proper cleanup on mouse leave
+- Works with all sidebar features (profile dropdown, support card, etc.)
 
 ## Styling
 

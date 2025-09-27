@@ -11,10 +11,12 @@ interface UseSidebarOptions {
 interface UseSidebarReturn {
   isCollapsed: boolean;
   isMobileOpen: boolean;
+  isHovered: boolean;
   toggleCollapse: () => void;
   openMobile: () => void;
   closeMobile: () => void;
   toggleMobile: () => void;
+  setHovered: (hovered: boolean) => void;
 }
 
 export const useSidebar = (options: UseSidebarOptions = {}): UseSidebarReturn => {
@@ -35,6 +37,9 @@ export const useSidebar = (options: UseSidebarOptions = {}): UseSidebarReturn =>
 
   // Mobile sidebar state
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+  // Hover state for desktop sidebar
+  const [isHovered, setIsHovered] = useState(false);
 
   // Persist collapsed state to localStorage
   useEffect(() => {
@@ -61,6 +66,11 @@ export const useSidebar = (options: UseSidebarOptions = {}): UseSidebarReturn =>
     setIsMobileOpen(prev => !prev);
   }, []);
 
+  // Hover controls
+  const setHovered = useCallback((hovered: boolean) => {
+    setIsHovered(hovered);
+  }, []);
+
   // Close mobile sidebar on route change (to be used with Next.js router)
   useEffect(() => {
     const handleRouteChange = () => {
@@ -77,9 +87,11 @@ export const useSidebar = (options: UseSidebarOptions = {}): UseSidebarReturn =>
   return {
     isCollapsed,
     isMobileOpen,
+    isHovered,
     toggleCollapse,
     openMobile,
     closeMobile,
     toggleMobile,
+    setHovered,
   };
 };

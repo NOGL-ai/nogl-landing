@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { clsx } from 'clsx';
 import { NavigationItem } from '@/types/navigation';
@@ -12,6 +12,8 @@ interface SidebarItemProps {
 }
 
 const SidebarItem: React.FC<SidebarItemProps> = ({ item, isActive, isCollapsed }) => {
+  const [showTooltip, setShowTooltip] = useState(false);
+
   const baseClasses = clsx(
     'flex items-center gap-2 px-3 py-2 rounded-[5px] transition-all duration-200 relative',
     'font-inter text-[14px] font-medium leading-5 tracking-[-0.084px]',
@@ -27,7 +29,12 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ item, isActive, isCollapsed }
 
   return (
     <div className="relative">
-      <Link href={item.path} className={baseClasses}>
+      <Link
+        href={item.path}
+        className={baseClasses}
+        onMouseEnter={() => isCollapsed && setShowTooltip(true)}
+        onMouseLeave={() => setShowTooltip(false)}
+      >
         {/* Icon */}
         <div className={iconClasses}>
           {item.icon}
@@ -45,8 +52,8 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ item, isActive, isCollapsed }
           <div className={clsx(
             'px-1.5 py-0.5 rounded text-[12px] font-medium leading-3',
             item.badge.variant === 'new' && 'bg-[#DF1C41] text-white',
-            item.badge.variant === 'soon' && isActive 
-              ? 'bg-white/10 text-white' 
+            item.badge.variant === 'soon' && isActive
+              ? 'bg-white/10 text-white'
               : 'bg-[#375DFB]/10 text-[#375DFB]',
             item.badge.variant === 'default' && 'bg-gray-100 text-gray-700'
           )}>
@@ -54,6 +61,27 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ item, isActive, isCollapsed }
           </div>
         )}
       </Link>
+
+      {/* Tooltip for collapsed state */}
+      {isCollapsed && showTooltip && (
+        <div className="absolute left-full ml-2 top-1/2 transform -translate-y-1/2 z-50">
+          <div className="bg-gray-900 text-white px-2 py-1 rounded text-sm whitespace-nowrap shadow-lg">
+            {item.title}
+            {item.badge && (
+              <span className={clsx(
+                'ml-2 px-1.5 py-0.5 rounded text-xs',
+                item.badge.variant === 'new' && 'bg-red-500 text-white',
+                item.badge.variant === 'soon' && 'bg-blue-500 text-white',
+                item.badge.variant === 'default' && 'bg-gray-500 text-white'
+              )}>
+                {item.badge.text}
+              </span>
+            )}
+            {/* Tooltip arrow */}
+            <div className="absolute right-full top-1/2 transform -translate-y-1/2 border-4 border-transparent border-r-gray-900"></div>
+          </div>
+        </div>
+      )}
 
       {/* Active indicator (blue line on the right) */}
       {isActive && (

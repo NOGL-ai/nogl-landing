@@ -19,18 +19,36 @@ const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const pathname = usePathname();
   const [showSupportCard, setShowSupportCard] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleDismissSupport = () => {
     setShowSupportCard(false);
   };
 
+  // Handle hover with slight delay to prevent accidental triggers
+  const handleMouseEnter = () => {
+    if (isCollapsed) {
+      setIsHovered(true);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
+  // Determine if sidebar should show expanded content
+  const shouldShowExpandedContent = !isCollapsed || isHovered;
+
   return (
     <div
       className={clsx(
-        'flex h-screen bg-[#111729] transition-all duration-300 ease-in-out',
-        isCollapsed ? 'w-[80px]' : 'w-[272px]',
+        'flex h-screen bg-[#111729] transition-all duration-300 ease-in-out relative z-10',
+        isCollapsed && !isHovered ? 'w-[80px]' : 'w-[272px]',
+        isCollapsed && isHovered && 'shadow-2xl shadow-black/20',
         className
       )}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <div className="flex flex-col w-full">
         {/* Header */}
@@ -45,7 +63,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             </div>
 
             {/* Company name and details (only visible when expanded) */}
-            {!isCollapsed && (
+            {shouldShowExpandedContent && (
               <div className="flex flex-col">
                 <span className="text-white font-inter text-[14px] font-semibold leading-[14px] tracking-[-0.084px]">
                   NOGL
@@ -58,7 +76,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           </div>
 
           {/* Toggle and dropdown (only visible when expanded) */}
-          {!isCollapsed && (
+          {shouldShowExpandedContent && (
             <div className="flex items-center gap-2">
               <button className="p-1">
                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -81,7 +99,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           {/* Main Navigation */}
           <div className="flex flex-col gap-1.5">
             {/* Section title (only visible when expanded) */}
-            {!isCollapsed && (
+            {shouldShowExpandedContent && (
               <div className="px-1 py-1">
                 <span className="text-[#D7E0F4] font-inter text-[12px] font-medium uppercase tracking-[0.48px] leading-4">
                   {mainNavigationItems.title}
@@ -96,7 +114,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                   key={item.id}
                   item={item}
                   isActive={item.isActive || pathname === item.path || pathname.startsWith(item.path + '/')}
-                  isCollapsed={isCollapsed}
+                  isCollapsed={!shouldShowExpandedContent}
                 />
               ))}
             </div>
@@ -105,7 +123,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           {/* Other Navigation */}
           <div className="flex flex-col gap-1.5">
             {/* Section title (only visible when expanded) */}
-            {!isCollapsed && (
+            {shouldShowExpandedContent && (
               <div className="px-1 py-1">
                 <span className="text-[#D7E0F4] font-inter text-[12px] font-medium uppercase tracking-[0.48px] leading-4">
                   {otherNavigationItems.title}
@@ -120,7 +138,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                   key={item.id}
                   item={item}
                   isActive={pathname === item.path || pathname.startsWith(item.path + '/')}
-                  isCollapsed={isCollapsed}
+                  isCollapsed={!shouldShowExpandedContent}
                 />
               ))}
             </div>
@@ -130,12 +148,12 @@ const Sidebar: React.FC<SidebarProps> = ({
           <div className="flex-1"></div>
 
           {/* Support Card (only visible when expanded and not dismissed) */}
-          {!isCollapsed && showSupportCard && (
+          {shouldShowExpandedContent && showSupportCard && (
             <SupportCard onDismiss={handleDismissSupport} />
           )}
 
           {/* Support Icon (only visible when collapsed) */}
-          {isCollapsed && (
+          {!shouldShowExpandedContent && (
             <div className="flex justify-center py-4">
               <button className="p-2">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -148,12 +166,12 @@ const Sidebar: React.FC<SidebarProps> = ({
           {/* Version Info */}
           <div className={clsx(
             'flex items-center gap-2 py-2',
-            isCollapsed ? 'justify-center' : 'px-3'
+            !shouldShowExpandedContent ? 'justify-center' : 'px-3'
           )}>
             <div className="w-5 h-5 text-[#9293A9]">
               {versionInfo.icon}
             </div>
-            {!isCollapsed && (
+            {shouldShowExpandedContent && (
               <div className="flex items-center justify-between flex-1">
                 <span className="text-[#9293A9] font-inter text-[12px] font-medium leading-5 tracking-[-0.072px]">
                   Version {versionInfo.version}
@@ -171,7 +189,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         {/* Footer - User Profile */}
         <UserProfile
           user={user}
-          isCollapsed={isCollapsed}
+          isCollapsed={!shouldShowExpandedContent}
           onLogout={onLogout}
         />
       </div>
