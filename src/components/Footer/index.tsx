@@ -1,6 +1,5 @@
 import React from "react";
-import Image from "next/image";
-import Link from "next/link";
+import Logo from "@/shared/Logo";
 import { Route } from "@/routers/types";
 
 const Footer = ({ lang = 'en' }: { lang?: string }) => {
@@ -10,16 +9,9 @@ const Footer = ({ lang = 'en' }: { lang?: string }) => {
 				{/* <!-- footer menu start --> */}
 				<div className='flex flex-wrap gap-10 lg:justify-between xl:flex-nowrap xl:gap-20'>
             <div className='w-full max-w-[275px]'>
-						<Link href={"/" as Route<string>}>
-							<Image
-								src='/images/logo/logo-light.svg'
-								alt='Logo'
-								width={214}
-								height={40}
-							/>
-						</Link>
+						<Logo variant="dark" size="lg" />
 						<p className='mt-5 text-gray-5'>
-							© Nogl - Professional Services Platform
+							© Nogl- Professional Services Platform
 						</p>
 
             <ul className='mt-11 flex items-center gap-2'>

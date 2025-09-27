@@ -74,6 +74,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         />
       </head>
       <body
+        suppressHydrationWarning={true}
         className={`${inter.className} flex min-h-screen flex-col bg-gray-50 dark:bg-gray-900 dark:text-white`}
       >
         <ClientLayout>

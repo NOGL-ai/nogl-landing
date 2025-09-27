@@ -121,21 +121,27 @@ export function Globe({ globeConfig, data }: WorldProps) {
     let points = [];
     for (let i = 0; i < arcs.length; i++) {
       const arc = arcs[i];
-      const rgb = hexToRgb(arc.color) as { r: number; g: number; b: number };
-      points.push({
-        size: defaultProps.pointSize,
-        order: arc.order,
-        color: (t: number) => `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${1 - t})`,
-        lat: arc.startLat,
-        lng: arc.startLng,
-      });
-      points.push({
-        size: defaultProps.pointSize,
-        order: arc.order,
-        color: (t: number) => `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${1 - t})`,
-        lat: arc.endLat,
-        lng: arc.endLng,
-      });
+      const rgb = hexToRgb(arc.color) as { r: number; g: number; b: number } | null;
+      const colorFn = (t: number) => rgb ? `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${1 - t})` : `rgba(255, 255, 255, ${1 - t})`;
+      const isValid = (n: any) => typeof n === 'number' && Number.isFinite(n);
+      if (isValid(arc.startLat) && isValid(arc.startLng)) {
+        points.push({
+          size: defaultProps.pointSize,
+          order: arc.order,
+          color: colorFn,
+          lat: arc.startLat,
+          lng: arc.startLng,
+        });
+      }
+      if (isValid(arc.endLat) && isValid(arc.endLng)) {
+        points.push({
+          size: defaultProps.pointSize,
+          order: arc.order,
+          color: colorFn,
+          lat: arc.endLat,
+          lng: arc.endLng,
+        });
+      }
     }
 
     // remove duplicates for same lat and lng
@@ -189,8 +195,11 @@ export function Globe({ globeConfig, data }: WorldProps) {
       .arcDashAnimateTime((e) => defaultProps.arcTime);
 
     globeRef.current
-      .pointsData(data)
-      .pointColor((e) => (e as { color: string }).color)
+      .pointsData(globeData)
+      .pointColor((e: any) => {
+        const c = e?.color;
+        return typeof c === 'function' ? c(0) : c || '#ffffff';
+      })
       .pointsMerge(true)
       .pointAltitude(0.0)
       .pointRadius(2);

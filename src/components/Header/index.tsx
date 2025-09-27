@@ -13,7 +13,6 @@ import { usePathname } from "next/navigation";
 import { onScroll } from "@/libs/scrollActive";
 import { useSession } from "next-auth/react";
 import { Route } from "@/routers/types";
-import { AuroraText } from "@/components/ui/aurora-text";
 
 export interface MainNav2Props {
   className?: string;
@@ -66,14 +65,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
         >
           {/* Left Section (Web Only) */}
           <div className="hidden md:flex justify-start flex-1 space-x-3 sm:space-x-8 lg:space-x-10">
-            <div className="flex items-center gap-2">
-              <Logo className="w-8 h-8" />
-              <AuroraText 
-                className="text-xl font-semibold [--color-1:120_100%_50%] [--color-2:200_100%_50%] [--color-3:120_100%_50%] [--color-4:200_100%_50%] bg-white/90 dark:bg-neutral-900/90"
-              >
-                Nogl
-              </AuroraText>
-            </div>
+            <Logo size="md" />
             <div className="hidden lg:block self-center h-10 border-l border-neutral-300 dark:border-neutral-500"></div>
             <div className="hidden lg:flex items-center space-x-4">
               <Link
@@ -133,6 +125,10 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
 
           {/* Center Section (Mobile Only) */}
           <div className="self-center lg:hidden flex-[3] max-w-lg mx-auto md:px-3 flex items-center">
+            {/* Mobile Logo */}
+            <div className="flex-shrink-0 mr-2">
+              <Logo size="sm" />
+            </div>
             <button
               onClick={() => setSearchModalOpen(true)}
               className="dark:border-neutral-6000 relative flex w-full items-center rounded-full border border-neutral-200 px-4 py-2 pr-12 shadow-lg"

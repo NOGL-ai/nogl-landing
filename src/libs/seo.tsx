@@ -138,7 +138,7 @@ export const renderSchemaTags = (customSchema?: Record<string, any>) => {
     '@context': 'http://schema.org',
     '@type': 'SoftwareApplication',
     name: defaultSiteName,
-    description: 'Nogl - AI-Powered Fashion Trend Forecasting & Demand Prediction',
+    description: 'Nogl- AI-Powered Fashion Trend Forecasting & Demand Prediction',
     image: `${defaultImageBaseUrl}/icon.png`,
     url: defaultSiteUrl,
     // Author updated to Organization

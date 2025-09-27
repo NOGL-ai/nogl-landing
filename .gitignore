@@ -53,3 +53,6 @@ next-env.d.ts
 Thumbs.db
 ehthumbs.db
 Icon?
+
+# Playwright MCP Screenshots
+.playwright-mcp/
