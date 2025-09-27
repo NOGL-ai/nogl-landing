@@ -271,55 +271,49 @@ export default function DashboardPage() {
         {/* Main Chart Container */}
         <div className="bg-white dark:bg-gray-800 rounded-xl border border-[#F2F2F2] dark:border-gray-700 p-4 mb-5">
           {/* First Row - Stat Widgets */}
-          <div className="flex gap-5 mb-5">
-            <div className="w-[352px]">
-              <StatWidget
-                title="Overpriced Product"
-                percentage={39.5}
-                value={764}
-                total={1263}
-                progressColor="#FB3748"
-                progressBackgroundColor="#FFEBED"
-                className="h-[161px]"
-              />
-            </div>
-            <div className="w-[352px]">
-              <StatWidget
-                title="Same Price Products"
-                percentage={0}
-                value={0}
-                total={1263}
-                progressColor="#E1E4EA"
-                progressBackgroundColor="#E1E4EA"
-                className="h-[161px]"
-              />
-            </div>
-            <div className="w-[352px]">
-              <StatWidget
-                title="Competitive Products"
-                percentage={32.5}
-                value={499}
-                total={1263}
-                progressColor="#1FC16B"
-                progressBackgroundColor="#E9F9F0"
-                className="h-[161px]"
-              />
-            </div>
+          <div className="grid grid-cols-3 gap-5 mb-5">
+            <StatWidget
+              title="Overpriced Product"
+              percentage={39.5}
+              value={764}
+              total={1263}
+              progressColor="#FB3748"
+              progressBackgroundColor="#FFEBED"
+              className="h-[161px]"
+            />
+            <StatWidget
+              title="Same Price Products"
+              percentage={0}
+              value={0}
+              total={1263}
+              progressColor="#E1E4EA"
+              progressBackgroundColor="#E1E4EA"
+              className="h-[161px]"
+            />
+            <StatWidget
+              title="Competitive Products"
+              percentage={32.5}
+              value={499}
+              total={1263}
+              progressColor="#1FC16B"
+              progressBackgroundColor="#E9F9F0"
+              className="h-[161px]"
+            />
           </div>
 
           {/* Second Row - Charts */}
-          <div className="flex justify-between gap-5">
+          <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-5">
             <StackedBarChart
               data={priceChangesData}
               title="Price changes summary"
-              className="w-[760px] h-[442px]"
+              className="h-[442px]"
             />
             <PieChart
               data={pieChartData}
               centerValue="1263"
               centerLabel="Products"
               title="Price groups"
-              className="w-[316px] h-[442px]"
+              className="h-[442px]"
             />
           </div>
         </div>
