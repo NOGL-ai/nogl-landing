@@ -1,5 +1,4 @@
-import Signup from "@/components/Auth/Signup";
-
+import SignupPageLayout from "@/components/Auth/Signup/SignupPageLayout";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -9,8 +8,8 @@ export const metadata: Metadata = {
 
 const SignupPage = () => {
 	return (
-		<main className='pt-[150px]'>
-			<Signup />
+		<main className='min-h-screen'>
+			<SignupPageLayout />
 		</main>
 	);
 };
