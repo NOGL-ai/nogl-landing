@@ -23,7 +23,6 @@ function getProtectedRoutes(protectedPaths: string[], locales: Locale[]) {
 	return protectedPathsWithLocale;
 }
 
-
 export function withAuthMiddleware(middleware: CustomMiddleware) {
 	return async (request: NextRequest, event: NextFetchEvent) => {
 		// Create a response object to pass down the chain

@@ -1,5 +1,5 @@
 import algoliasearch from "algoliasearch";
-import { JSDOM } from "jsdom";
+import { load as loadHTML } from "cheerio";
 
 const appID = process.env.NEXT_PUBLIC_ALGOLIA_PROJECT_ID ?? "";
 const apiKEY = process.env.NEXT_PUBLIC_ALGOLIA_API_KEY ?? "";
@@ -16,8 +16,8 @@ export const structuredAlgoliaHtmlData = async ({
 	imageURL = "",
 }) => {
 	try {
-		const dom = new JSDOM(htmlString);
-		const textContent = dom.window.document.body.textContent || "";
+		const $ = loadHTML(htmlString);
+		const textContent = $("body").text() || "";
 		
 		const data = {
 			objectID: pageUrl,
