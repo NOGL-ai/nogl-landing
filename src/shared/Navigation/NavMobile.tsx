@@ -142,14 +142,19 @@ const NavMobile: React.FC<NavMobileProps> = ({
 			</ul>
 			<div className='flex items-center justify-between px-5 py-6'>
 				{session && (
-					<Link href={"/add-session" as Route<string>}>
-						<ShimmerButton
-							shimmerColor="#ffffff33"
-							className="font-medium dark:!text-white"
-						>
-							New Forecast
-						</ShimmerButton>
-					</Link>
+					<div className="relative">
+						<Link href={"/add-session" as Route<string>} onClick={(e) => e.preventDefault()}>
+							<ShimmerButton
+								shimmerColor="#ffffff33"
+								className="font-medium dark:!text-white opacity-70 cursor-not-allowed"
+							>
+								New Forecast
+							</ShimmerButton>
+						</Link>
+						<span className="absolute -right-2 -top-2 inline-flex items-center rounded-full bg-primary-500 px-2 py-0.5 text-[10px] font-medium text-white">
+							Soon
+						</span>
+					</div>
 				)}
 
 				<LangDropdown

@@ -116,13 +116,17 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
               </Link>
               <Link
                 href={"/#pricing" as Route<string>}
-                className={`text-sm font-medium ${
+                className={`text-sm font-medium relative cursor-not-allowed opacity-70 ${
                   isActive("/#pricing")
                     ? "bg-primary/5 text-primary dark:bg-white/5 dark:text-white"
                     : "text-black hover:bg-primary/5 hover:text-primary dark:text-gray-5 dark:hover:bg-white/5 dark:hover:text-white"
                 }`}
+                onClick={(e) => e.preventDefault()}
               >
                 Plans & Pricing
+                <span className="absolute -right-2 -top-2 inline-flex items-center rounded-full bg-primary-500 px-2 py-0.5 text-[10px] font-medium text-white">
+                  Soon
+                </span>
               </Link>
             </div>
           </div>
@@ -187,14 +191,19 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
           <div className="flex items-center space-x-4">
             <div className="hidden lg:flex space-x-4 items-center">
               {session && (
-                <Link href={"/add-session" as Route<string>}>
-                  <ShimmerButton
-                    shimmerColor="#ffffff33"
-                    className="font-medium dark:!text-white"
-                  >
-                    New Forecast
-                  </ShimmerButton>
-                </Link>
+                <div className="relative">
+                  <Link href={"/add-session" as Route<string>} onClick={(e) => e.preventDefault()}>
+                    <ShimmerButton
+                      shimmerColor="#ffffff33"
+                      className="font-medium dark:!text-white opacity-70 cursor-not-allowed"
+                    >
+                      New Forecast
+                    </ShimmerButton>
+                  </Link>
+                  <span className="absolute -right-2 -top-2 inline-flex items-center rounded-full bg-primary-500 px-2 py-0.5 text-[10px] font-medium text-white">
+                    Soon
+                  </span>
+                </div>
               )}
               <div className="mt-7 flex flex-wrap items-center lg:mt-0">
                 <button
@@ -316,14 +325,20 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
             <li>
               <Link
                 href={"/#pricing" as Route<string>}
-                onClick={() => setNavbarOpen(false)}
-                className={`text-sm font-medium ${
+                onClick={(e) => {
+                  e.preventDefault();
+                  setNavbarOpen(false);
+                }}
+                className={`text-sm font-medium relative cursor-not-allowed opacity-70 ${
                   isActive("/#pricing")
                     ? "bg-primary/5 text-primary dark:bg-white/5 dark:text-white"
                     : "text-black hover:bg-primary/5 hover:text-primary dark:text-gray-5 dark:hover:bg-white/5 dark:hover:text-white"
                 }`}
               >
                 Plans & Pricing
+                <span className="absolute -right-2 -top-2 inline-flex items-center rounded-full bg-primary-500 px-2 py-0.5 text-[10px] font-medium text-white">
+                  Soon
+                </span>
               </Link>
             </li>
           </ul>
