@@ -56,3 +56,6 @@ Icon?
 
 # Playwright MCP Screenshots
 .playwright-mcp/
+
+# Builder configuration
+builder.config.json

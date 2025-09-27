@@ -8,7 +8,6 @@ import EmailProvider from "next-auth/providers/email";
 import { getServerSession } from "next-auth";
 import bcrypt from "bcrypt";
 import { User } from "@prisma/client";
-import Cookies from "js-cookie";
 import { createTransport } from "nodemailer";
 import { getMagicLinkEmail } from "@/libs/emailTemplates/magicLinkEmail";
 import { getBookingConfirmationEmail } from '@/libs/emailTemplates/bookingConfirmationEmail';

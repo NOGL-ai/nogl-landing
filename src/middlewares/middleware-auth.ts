@@ -28,7 +28,7 @@ export function withAuthMiddleware(middleware: CustomMiddleware) {
 		// Create a response object to pass down the chain
 		const response = NextResponse.next();
 
-		const token = await getToken({ req: request, secret: process.env.SECRET });
+		const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
 		const isAdmin = token?.role === "ADMIN";
 		const isUser = token?.role === "USER";
 

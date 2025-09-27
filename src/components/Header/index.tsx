@@ -124,7 +124,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
           </div>
 
           {/* Center Section (Mobile Only) */}
-          <div className="self-center lg:hidden flex-[3] max-w-lg mx-auto md:px-3 flex items-center">
+          <div className="self-center md:hidden flex-[3] max-w-lg mx-auto px-3 flex items-center">
             {/* Mobile Logo */}
             <div className="flex-shrink-0 mr-2">
               <Logo size="sm" />
