@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import { UserProfile as UserProfileType } from '@/types/navigation';
+import Avatar from '@/shared/Avatar';
+import { Route } from 'next';
 
 interface UserProfileProps {
   user: UserProfileType;
@@ -50,13 +52,22 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, isCollapsed, onLogout }
         <div className="p-3 flex justify-center">
           <Menu as="div" className="relative">
             <Menu.Button className="flex items-center">
-              <div className="w-10 h-10 rounded-full overflow-hidden">
+              {/* OLD AVATAR IMPLEMENTATION - COMMENTED OUT */}
+              {/* <div className="w-10 h-10 rounded-full overflow-hidden">
                 <img
                   src={user.avatar}
                   alt={user.name}
                   className="w-full h-full object-cover"
                 />
-              </div>
+              </div> */}
+              
+              {/* NEW STANDARD AVATAR COMPONENT */}
+              <Avatar
+                sizeClass="w-10 h-10"
+                imgUrl={user.avatar}
+                userName={user.name}
+                containerClassName="ring-1 ring-white/20"
+              />
             </Menu.Button>
 
             <Transition
@@ -74,7 +85,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, isCollapsed, onLogout }
                     <Menu.Item key={item.href}>
                       {({ active }) => (
                         <Link
-                          href={item.href}
+                          href={item.href as Route}
                           className={`${
                             active ? 'bg-gray-100 dark:bg-gray-700' : ''
                           } flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200`}
@@ -117,12 +128,22 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, isCollapsed, onLogout }
       <div className="p-3">
         <Menu as="div" className="relative">
           <Menu.Button className="flex items-center gap-3 p-3 rounded-[10px] w-full hover:bg-white/5 transition-colors">
-            {/* Avatar */}
-            <div className="relative w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+            {/* OLD AVATAR IMPLEMENTATION - COMMENTED OUT */}
+            {/* <div className="relative w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
               <img
                 src={user.avatar}
                 alt={user.name}
                 className="w-full h-full object-cover"
+              />
+            </div> */}
+            
+            {/* NEW STANDARD AVATAR COMPONENT */}
+            <div className="flex-shrink-0">
+              <Avatar
+                sizeClass="w-10 h-10"
+                imgUrl={user.avatar}
+                userName={user.name}
+                containerClassName="ring-1 ring-white/20"
               />
             </div>
 
@@ -162,7 +183,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, isCollapsed, onLogout }
                   <Menu.Item key={item.href}>
                     {({ active }) => (
                       <Link
-                        href={item.href}
+                        href={item.href as Route}
                         className={`${
                           active ? 'bg-gray-100 dark:bg-gray-700' : ''
                         } flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200`}
