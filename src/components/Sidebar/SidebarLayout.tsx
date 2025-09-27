@@ -8,12 +8,14 @@ import { UserProfile } from '@/types/navigation';
 interface SidebarLayoutProps {
   children: React.ReactNode;
   user?: UserProfile;
+  onLogout?: () => void;
   className?: string;
 }
 
 const SidebarLayout: React.FC<SidebarLayoutProps> = ({
   children,
   user,
+  onLogout,
   className = '',
 }) => {
   const {
@@ -31,9 +33,13 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
   };
 
   const handleLogout = () => {
-    console.log('User logout clicked');
-    // Add your logout logic here
-    // For example: signOut(), redirect to login page, etc.
+    if (onLogout) {
+      onLogout();
+    } else {
+      console.log('User logout clicked');
+      // Add your logout logic here
+      // For example: signOut(), redirect to login page, etc.
+    }
   };
 
   return (
