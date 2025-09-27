@@ -35,7 +35,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
   return (
     <div className={`flex h-screen bg-gray-50 dark:bg-gray-900 ${className}`}>
       {/* Desktop Sidebar */}
-      <div className="hidden lg:block">
+      <div className="hidden lg:block fixed left-0 top-0 z-50">
         <Sidebar
           isCollapsed={isCollapsed}
           onToggleCollapse={toggleCollapse}
@@ -55,7 +55,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
       />
 
       {/* Main Content */}
-      <div className="flex flex-1 flex-col overflow-hidden">
+      <div className={`flex flex-1 flex-col overflow-hidden ${isCollapsed ? 'lg:ml-[80px]' : 'lg:ml-[272px]'} transition-all duration-300`}>
         {/* Mobile header */}
         <div className="lg:hidden">
           <div className="flex items-center justify-between bg-white border-b border-gray-200 px-4 py-3">
@@ -89,7 +89,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
         </div>
 
         {/* Page content */}
-        <main className="flex-1 overflow-y-auto bg-white dark:bg-gray-800">
+        <main className="flex-1 overflow-y-auto bg-white dark:bg-gray-800 sidebar-scroll">
           {children}
         </main>
       </div>

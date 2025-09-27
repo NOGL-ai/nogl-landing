@@ -42,7 +42,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   return (
     <div
       className={clsx(
-        'flex h-screen bg-[#111729] transition-all duration-300 ease-in-out relative z-10',
+        'flex bg-[#111729] transition-all duration-300 ease-in-out sticky-sidebar',
         isCollapsed && !isHovered ? 'w-[80px]' : 'w-[272px]',
         isCollapsed && isHovered && 'shadow-2xl shadow-black/20',
         className
@@ -95,7 +95,13 @@ const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* Content */}
-        <div className="flex flex-col flex-1 px-5 py-5 gap-5 overflow-y-auto">
+        <div 
+          className="flex flex-col flex-1 px-5 py-5 gap-5 sticky-sidebar-content scroll-smooth"
+          style={{
+            scrollbarWidth: 'none', /* Firefox */
+            msOverflowStyle: 'none' /* IE and Edge */
+          }}
+        >
           {/* Main Navigation */}
           <div className="flex flex-col gap-1.5">
             {/* Section title (only visible when expanded) */}

@@ -30,7 +30,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ item, isActive, isCollapsed }
   return (
     <div className="relative">
       <Link
-        href={item.path}
+        href={item.path as any}
         className={baseClasses}
         onMouseEnter={() => isCollapsed && setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}

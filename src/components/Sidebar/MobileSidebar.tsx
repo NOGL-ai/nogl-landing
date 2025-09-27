@@ -106,7 +106,13 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({
                   </div>
 
                   {/* Content */}
-                  <div className="flex flex-col flex-1 px-5 py-5 gap-5 overflow-y-auto">
+                  <div 
+                    className="flex flex-col flex-1 px-5 py-5 gap-5 sticky-sidebar-content scroll-smooth"
+                    style={{
+                      scrollbarWidth: 'none', /* Firefox */
+                      msOverflowStyle: 'none' /* IE and Edge */
+                    }}
+                  >
                     {/* Main Navigation */}
                     <div className="flex flex-col gap-1.5">
                       <div className="px-1 py-1">
