@@ -84,11 +84,9 @@ export const DashboardPageHeader: React.FC<DashboardPageHeaderProps> = ({
               <div className="flex w-4 h-4 p-[1.333px] justify-center items-center flex-shrink-0">
                 <CustomizeIcon />
               </div>
-              <div className="hidden sm:flex px-1 justify-center items-center">
-                <span className="text-[#14151A] dark:text-white text-center font-inter text-sm font-medium leading-5 tracking-[-0.07px]">
-                  Edit Widgets
-                </span>
-              </div>
+              <span className="hidden sm:inline text-[#14151A] dark:text-white text-center font-inter text-sm font-medium leading-5 tracking-[-0.07px]">
+                Edit Widgets
+              </span>
             </button>
           </div>
         </div>
