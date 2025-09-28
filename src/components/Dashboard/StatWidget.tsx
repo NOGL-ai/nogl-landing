@@ -33,7 +33,7 @@ export const StatWidget: React.FC<StatWidgetProps> = ({
   );
 
   return (
-    <div className={`bg-white dark:bg-gray-800 rounded-lg border border-[#E1E4EA] dark:border-gray-700 shadow-[0_1px_2px_0_rgba(10,13,20,0.03)] dark:shadow-[0_1px_2px_0_rgba(0,0,0,0.1)] ${className}`} style={{ padding: '20px 16px' }}>
+    <div className={`bg-white dark:bg-gray-800 rounded-xl border border-[#E1E4EA] dark:border-gray-700 shadow-[0_1px_2px_0_rgba(10,13,20,0.03)] dark:shadow-[0_1px_2px_0_rgba(0,0,0,0.1)] transition-all duration-200 hover:shadow-lg hover:border-[#D0D5DD] dark:hover:border-gray-600 ${className}`} style={{ padding: '20px 16px' }}>
       <div className="flex flex-col justify-between h-full">
         {/* Header */}
         <div className="flex flex-col gap-4">
@@ -55,7 +55,7 @@ export const StatWidget: React.FC<StatWidgetProps> = ({
             {showSeeAll && (
               <button
                 onClick={onSeeAllClick}
-                className="flex items-center justify-center gap-0.5 px-1.5 py-1.5 rounded-lg border border-[#E1E4EA] dark:border-gray-600 bg-white dark:bg-gray-700 shadow-[0_1px_2px_0_rgba(10,13,20,0.03)] dark:shadow-[0_1px_2px_0_rgba(0,0,0,0.1)] hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                className="flex items-center justify-center gap-0.5 px-1.5 py-1.5 rounded-lg border border-[#E1E4EA] dark:border-gray-600 bg-white dark:bg-gray-700 shadow-[0_1px_2px_0_rgba(10,13,20,0.03)] dark:shadow-[0_1px_2px_0_rgba(0,0,0,0.1)] hover:bg-gray-50 dark:hover:bg-gray-600 hover:shadow-md transition-all duration-200 hover:scale-105"
               >
                 <span
                   className="text-[#525866] dark:text-gray-300 font-medium text-sm px-1"
@@ -78,23 +78,25 @@ export const StatWidget: React.FC<StatWidgetProps> = ({
 
         {/* Progress & Content */}
         <div className="flex items-center gap-4">
-          <CircularProgress
-            percentage={percentage}
-            color={progressColor}
-            backgroundColor={progressBackgroundColor}
-            size={72}
-          />
+          <div className="transition-transform duration-200 hover:scale-110">
+            <CircularProgress
+              percentage={percentage}
+              color={progressColor}
+              backgroundColor={progressBackgroundColor}
+              size={72}
+            />
+          </div>
           <div className="flex flex-col justify-between flex-1">
             <div className="text-[#3D5067] dark:text-gray-200" style={{ fontFamily: 'Inter', fontSize: '18px', lineHeight: '130%' }}>
               <span
-                className="font-bold text-3xl text-gray-900 dark:text-white"
+                className="font-bold text-3xl text-gray-900 dark:text-white transition-colors duration-200"
                 style={{
                   fontSize: '34px'
                 }}
               >
                 {value.toLocaleString()}
               </span>
-              <span className="font-normal text-lg text-[#3D5067] dark:text-gray-400 ml-1">
+              <span className="font-normal text-lg text-[#3D5067] dark:text-gray-400 ml-1 transition-colors duration-200">
                 /{total.toLocaleString()}
               </span>
             </div>

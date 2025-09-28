@@ -1,9 +1,5 @@
 import React from 'react';
-import StatWidget from '@/components/Dashboard/StatWidget';
-import StackedBarChart from '@/components/Dashboard/StackedBarChart';
-import PieChart from '@/components/Dashboard/PieChart';
-import DataTable from '@/components/Dashboard/DataTable';
-import LoadingChart from '@/components/Dashboard/LoadingChart';
+import DashboardPageClient from '@/components/Dashboard/DashboardPageClient';
 import { getDictionary } from '@/libs/dictionary';
 import { Locale } from '@/i18n';
 
@@ -83,94 +79,14 @@ export default async function DashboardPage({
   ];
 
   return (
-    <div className="p-5">
-      {/* Page Header */}
-      <div className="mb-3 bg-white dark:bg-gray-800 rounded-xl border border-[#F2F2F2] dark:border-gray-700 p-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-start gap-1.5 flex-1">
-            <div className="flex flex-col items-start gap-1 flex-1">
-              <h1 className="text-[#14151A] dark:text-white font-bold text-2xl leading-8">
-                {dict.dashboard.title}
-              </h1>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Chart Container */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl border border-[#F2F2F2] dark:border-gray-700 p-4 mb-5">
-        {/* First Row - Stat Widgets */}
-        <div className="grid grid-cols-3 gap-5 mb-5">
-          <StatWidget
-            title={dict.dashboard.overpricedProduct}
-            percentage={39.5}
-            value={764}
-            total={1263}
-            progressColor="#FB3748"
-            progressBackgroundColor="#FFEBED"
-            className="h-[161px]"
-          />
-          <StatWidget
-            title={dict.dashboard.samePriceProducts}
-            percentage={0}
-            value={0}
-            total={1263}
-            progressColor="#E1E4EA"
-            progressBackgroundColor="#E1E4EA"
-            className="h-[161px]"
-          />
-          <StatWidget
-            title={dict.dashboard.competitiveProducts}
-            percentage={32.5}
-            value={499}
-            total={1263}
-            progressColor="#1FC16B"
-            progressBackgroundColor="#E9F9F0"
-            className="h-[161px]"
-          />
-        </div>
-
-        {/* Second Row - Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-5">
-          <StackedBarChart
-            data={priceChangesData}
-            title={dict.dashboard.priceChangesSummary}
-            className="h-[442px]"
-          />
-          <PieChart
-            data={pieChartData}
-            centerValue="1263"
-            centerLabel={dict.dashboard.products}
-            title={dict.dashboard.priceGroups}
-            className="h-[442px]"
-          />
-        </div>
-      </div>
-
-      {/* Third Row - Tables and Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-5 mb-5">
-        <LoadingChart
-          title={dict.dashboard.profitStatus}
-          height="412px"
-          className="w-full"
-        />
-        <DataTable
-          columns={competitorColumns}
-          data={competitorData}
-          title={dict.dashboard.competitorPriceChanges}
-          className="w-full h-[412px]"
-        />
-      </div>
-
-      {/* Fourth Row - Tables */}
-      <div className="bg-white rounded-lg border border-[#E2E4E9] p-4">
-        <DataTable
-          columns={stockColumns}
-          data={stockData}
-          title={dict.dashboard.vendorStockChanges}
-          className="w-full"
-        />
-      </div>
-    </div>
+    <DashboardPageClient
+      dict={dict}
+      priceChangesData={priceChangesData}
+      pieChartData={pieChartData}
+      competitorColumns={competitorColumns}
+      competitorData={competitorData}
+      stockColumns={stockColumns}
+      stockData={stockData}
+    />
   );
 }

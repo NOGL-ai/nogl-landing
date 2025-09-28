@@ -10,175 +10,217 @@ const CatalogContent = () => {
   const [currentPage, setCurrentPage] = useState(57);
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
 
-  // Mock data - in real app this would come from API/database
+  // German jewelry brands data from Shopify stores
   const products = [
     {
       id: '1',
-      name: 'Blue Jeans',
-      sku: 'tshirt-test-demo1',
-      image: '/api/placeholder/32/32',
+      name: 'Halskette Geo',
+      sku: '0201493117_16',
+      image: 'https://cdn.shopify.com/s/files/1/0754/3170/6907/files/78843-image-squared-1-1630067079.jpg?v=1756801903',
       cost: '-',
-      price: '€ 45.19',
+      price: '€ 49.90',
       minPrice: '-',
       maxPrice: '-',
       brand: {
-        name: 'Energizer',
+        name: 'Ellijewelry',
         logo: '/api/placeholder/24/24'
       },
       competitors: {
-        cheapest: '€ 13.98',
-        avg: '€ 13.98',
-        highest: '€ 13.98',
+        cheapest: '€ 45.90',
+        avg: '€ 52.30',
+        highest: '€ 58.90',
         cheapestColor: 'green' as const
       },
-      triggeredRule: 'test new price adjust'
+      triggeredRule: 'price optimization active'
     },
     {
       id: '2',
-      name: 'Graphic print T-shirt',
-      sku: 'tshirt-test-demo1',
-      image: '/api/placeholder/32/32',
+      name: 'Armband Geo',
+      sku: '0201493117_16',
+      image: 'https://cdn.shopify.com/s/files/1/0754/3170/6907/files/78843-image-squared-1-1630067079.jpg?v=1756801903',
       cost: '-',
-      price: '€ 13.98',
+      price: '€ 69.90',
       minPrice: '-',
       maxPrice: '-',
       brand: {
-        name: 'Apple',
-        logo: null // Will use Apple icon
+        name: 'Ellijewelry',
+        logo: '/api/placeholder/24/24'
       },
       competitors: {
-        cheapest: '€ 13.98',
-        avg: '€ 13.98',
-        highest: '€ 13.98',
+        cheapest: '€ 65.90',
+        avg: '€ 72.50',
+        highest: '€ 79.90',
         cheapestColor: 'green' as const
       },
-      triggeredRule: 'test new price adjust'
+      triggeredRule: 'price optimization active'
     },
     {
       id: '3',
-      name: 'Trousers',
-      sku: 'tshirt-test-demo1',
-      image: '/api/placeholder/32/32',
+      name: 'Anhänger | Süßwasserperle',
+      sku: '726061-042',
+      image: 'https://cdn.shopify.com/s/files/1/0754/3170/6907/files/80418-image-squared-1-1642483170_ea9381cc-5ded-4e43-936a-d95edd786ede.jpg?v=1753813240',
       cost: '-',
-      price: '€ 25.59',
+      price: '€ 99.00',
       minPrice: '-',
       maxPrice: '-',
       brand: {
-        name: 'Borz',
+        name: 'Nenalina',
         logo: '/api/placeholder/24/24'
       },
       competitors: {
-        cheapest: '€ 13.98',
-        avg: '€ 565.03',
-        highest: '€ 13.98',
-        cheapestColor: 'red' as const
+        cheapest: '€ 89.90',
+        avg: '€ 105.50',
+        highest: '€ 119.90',
+        cheapestColor: 'green' as const
       },
-      triggeredRule: 'test new price adjust'
+      triggeredRule: 'price optimization active'
     },
     {
       id: '4',
-      name: 'Leather biker jacket',
-      sku: 'tshirt-test-demo1',
-      image: '/api/placeholder/32/32',
+      name: 'Halskette Feder',
+      sku: '0103342725_50',
+      image: 'https://cdn.shopify.com/s/files/1/0760/3893/0739/files/92563-image-squared-1-1744873272.jpg?v=1746632949',
       cost: '-',
-      price: '€ 24.39',
+      price: '€ 49.90',
       minPrice: '-',
       maxPrice: '-',
       brand: {
-        name: 'Lightahead',
+        name: 'Kuzzoi',
         logo: '/api/placeholder/24/24'
       },
       competitors: {
-        cheapest: '€ 13.98',
-        avg: '€ 13.98',
-        highest: '€ 13.98',
+        cheapest: '€ 45.90',
+        avg: '€ 52.30',
+        highest: '€ 58.90',
         cheapestColor: 'green' as const
       },
-      triggeredRule: 'test new price adjust'
+      triggeredRule: 'price optimization active'
     },
     {
       id: '5',
-      name: 'Sporty bomber jacket',
-      sku: 'tshirt-test-demo1',
-      image: '/api/placeholder/32/32',
+      name: 'Siegelring Quadrat',
+      sku: '0603732725_62',
+      image: 'https://cdn.shopify.com/s/files/1/0760/3893/0739/files/92553-image-squared-1-1743745897.jpg?v=1746632953',
       cost: '-',
-      price: '€ 13.89',
+      price: '€ 69.90',
       minPrice: '-',
       maxPrice: '-',
       brand: {
-        name: 'Amazon',
+        name: 'Kuzzoi',
         logo: '/api/placeholder/24/24'
       },
       competitors: {
-        cheapest: '-',
-        avg: '-',
-        highest: '-',
-        cheapestColor: 'gray' as const
+        cheapest: '€ 65.90',
+        avg: '€ 72.50',
+        highest: '€ 79.90',
+        cheapestColor: 'green' as const
       },
-      triggeredRule: 'test new price adjust'
+      triggeredRule: 'price optimization active'
     },
     {
       id: '6',
-      name: 'Button-up shirt',
-      sku: 'tshirt-test-demo1',
-      image: '/api/placeholder/32/32',
+      name: 'Ohrstecker Quadrat | Zirkonia',
+      sku: '0303152725',
+      image: 'https://cdn.shopify.com/s/files/1/0760/3893/0739/files/92562-image-squared-1-1744878360.jpg?v=1746632950',
       cost: '-',
-      price: '€ 16.49',
+      price: '€ 39.90',
       minPrice: '-',
       maxPrice: '-',
       brand: {
-        name: 'Ebay',
+        name: 'Kuzzoi',
         logo: '/api/placeholder/24/24'
       },
       competitors: {
-        cheapest: '-',
-        avg: '-',
-        highest: '-',
-        cheapestColor: 'gray' as const
+        cheapest: '€ 35.90',
+        avg: '€ 42.30',
+        highest: '€ 48.90',
+        cheapestColor: 'green' as const
       },
-      triggeredRule: 'test new price adjust'
+      triggeredRule: 'price optimization active'
     },
     {
       id: '7',
-      name: 'Polo shirt',
-      sku: 'tshirt-test-demo1',
-      image: '/api/placeholder/32/32',
+      name: 'Zodiac Birthstone Ring 24k Gold',
+      sku: '0604181025_49',
+      image: 'https://cdn.shopify.com/s/files/1/0016/4380/6833/files/VERMIL_GIF_BIRTHSTONES_2025_46d08e6a-0bcd-41f2-bd14-25c7356ea3f6.gif?v=1747302625',
       cost: '-',
-      price: '€ 16.99',
+      price: '€ 120.00',
       minPrice: '-',
       maxPrice: '-',
       brand: {
-        name: 'Etsy',
+        name: 'Stilnest',
         logo: '/api/placeholder/24/24'
       },
       competitors: {
-        cheapest: '-',
-        avg: '-',
-        highest: '-',
-        cheapestColor: 'gray' as const
+        cheapest: '€ 110.00',
+        avg: '€ 125.50',
+        highest: '€ 140.00',
+        cheapestColor: 'green' as const
       },
-      triggeredRule: 'test new price adjust'
+      triggeredRule: 'price optimization active'
     },
     {
       id: '8',
-      name: 'Polo shirt',
-      sku: 'tshirt-test-demo1',
-      image: '/api/placeholder/32/32',
+      name: 'Zodiac Birthstone Ring 925 Silber',
+      sku: '0604871025_49',
+      image: 'https://cdn.shopify.com/s/files/1/0016/4380/6833/files/Virgo_sn-10048150-66-v_Main_Default_Up.jpg?v=1747302625',
       cost: '-',
-      price: '€ 20.98',
+      price: '€ 120.00',
       minPrice: '-',
       maxPrice: '-',
       brand: {
-        name: 'Shopify',
-        logo: null // Will use Shopify icon
+        name: 'Stilnest',
+        logo: '/api/placeholder/24/24'
       },
       competitors: {
-        cheapest: '-',
-        avg: '-',
-        highest: '-',
-        cheapestColor: 'gray' as const
+        cheapest: '€ 110.00',
+        avg: '€ 125.50',
+        highest: '€ 140.00',
+        cheapestColor: 'green' as const
       },
-      triggeredRule: 'test new price adjust'
+      triggeredRule: 'price optimization active'
+    },
+    {
+      id: '9',
+      name: 'Grüner Quarz Drop Double Ring',
+      sku: 'gruner-quarz-drop-ring-585-gold',
+      image: 'https://cdn.shopify.com/s/files/1/0016/4380/6833/files/Drop-Double-Ring_Green-Quartz_Vermeil_02.jpg?v=1737530673',
+      cost: '-',
+      price: '€ 150.00',
+      minPrice: '-',
+      maxPrice: '-',
+      brand: {
+        name: 'Stilnest',
+        logo: '/api/placeholder/24/24'
+      },
+      competitors: {
+        cheapest: '€ 135.00',
+        avg: '€ 155.50',
+        highest: '€ 175.00',
+        cheapestColor: 'green' as const
+      },
+      triggeredRule: 'price optimization active'
+    },
+    {
+      id: '10',
+      name: 'Roter Granat Drop Double Ring',
+      sku: 'roter-granat-drop-double-ring-585-gold',
+      image: 'https://cdn.shopify.com/s/files/1/0016/4380/6833/files/Drop-Double-Ring_Red-Garnet_Vermeil_02.jpg?v=1737467551',
+      cost: '-',
+      price: '€ 150.00',
+      minPrice: '-',
+      maxPrice: '-',
+      brand: {
+        name: 'Stilnest',
+        logo: '/api/placeholder/24/24'
+      },
+      competitors: {
+        cheapest: '€ 135.00',
+        avg: '€ 155.50',
+        highest: '€ 175.00',
+        cheapestColor: 'green' as const
+      },
+      triggeredRule: 'price optimization active'
     }
   ];
 
@@ -204,7 +246,7 @@ const CatalogContent = () => {
         <CatalogHeader 
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
-          productCount={5}
+          productCount={products.length}
         />
         
         <ProductTable 
