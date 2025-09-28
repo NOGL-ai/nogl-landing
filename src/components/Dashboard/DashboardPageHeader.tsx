@@ -81,12 +81,10 @@ export const DashboardPageHeader: React.FC<DashboardPageHeaderProps> = ({
               onClick={onEditWidgets}
               className="flex w-auto sm:w-[131px] h-8 p-1.5 px-2.5 justify-center items-center gap-0.5 rounded-[5px] border border-[#E2E4E9] dark:border-gray-600 bg-white dark:bg-gray-700 shadow-[0_1px_2px_0_rgba(20,21,26,0.05)] hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
             >
-              <div className="flex w-4 h-4 p-[1.333px] justify-center items-center flex-shrink-0 relative">
-                <div className="flex w-[13px] h-[13px] justify-center items-center flex-shrink-0 absolute left-[1px] top-[1px]">
-                  <CustomizeIcon />
-                </div>
+              <div className="flex w-4 h-4 p-[1.333px] justify-center items-center flex-shrink-0">
+                <CustomizeIcon />
               </div>
-              <div className="hidden sm:flex p-0 px-1 justify-center items-center gap-0 relative">
+              <div className="hidden sm:flex px-1 justify-center items-center">
                 <span className="text-[#14151A] dark:text-white text-center font-inter text-sm font-medium leading-5 tracking-[-0.07px]">
                   Edit Widgets
                 </span>
