@@ -2,6 +2,7 @@ import React from 'react';
 import DashboardPageClient from '@/components/Dashboard/DashboardPageClient';
 import { getDictionary } from '@/libs/dictionary';
 import { Locale } from '@/i18n';
+import GlassParticlePage from '@/components/layouts/GlassParticlePage';
 
 export default async function DashboardPage({
   params: { lang },
@@ -79,14 +80,25 @@ export default async function DashboardPage({
   ];
 
   return (
-    <DashboardPageClient
-      dict={dict}
-      priceChangesData={priceChangesData}
-      pieChartData={pieChartData}
-      competitorColumns={competitorColumns}
-      competitorData={competitorData}
-      stockColumns={stockColumns}
-      stockData={stockData}
-    />
+    <GlassParticlePage
+      className="min-h-screen"
+      particlesProps={{
+        quantity: 3000,
+        color: "#4F46E5", // Indigo color
+        size: 0.5,
+        ease: 70,
+        staticity: 40
+      }}
+    >
+      <DashboardPageClient
+        dict={dict}
+        priceChangesData={priceChangesData}
+        pieChartData={pieChartData}
+        competitorColumns={competitorColumns}
+        competitorData={competitorData}
+        stockColumns={stockColumns}
+        stockData={stockData}
+      />
+    </GlassParticlePage>
   );
 }

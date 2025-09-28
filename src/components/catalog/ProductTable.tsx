@@ -127,7 +127,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
   return (
     <div className="flex w-full max-w-[1120px] flex-col items-start flex-shrink-0 rounded-xl border border-[#DEE0E3] bg-white mb-5 overflow-hidden">
       {/* Table */}
-      <div className="flex items-start self-stretch bg-white overflow-x-auto">
+      <div className="flex items-start self-stretch bg-white">
         {/* Product Name Column - 240px */}
         <div className="flex w-[240px] min-h-[750px] flex-col items-start flex-shrink-0">
           {/* Header */}
@@ -353,18 +353,6 @@ const ProductTable: React.FC<ProductTableProps> = ({
         </div>
       </div>
 
-      {/* Horizontal Scrollbar - Only show when content overflows */}
-      <div className="w-full h-[17px] bg-[#F1F1F1] relative bottom-1 overflow-x-auto">
-        <div className="w-[1120px] h-full flex items-center justify-between px-2">
-          <svg width="7" height="7" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5 8.74228e-08L5 7H4V6H3V5H2L2 4H1V3H2V2H3L3 1L4 1V0L5 8.74228e-08Z" fill="#A3A3A3"/>
-          </svg>
-          <div className="flex-1 h-2 bg-[#C1C1C1] mx-2 rounded"></div>
-          <svg width="7" height="7" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2 8.74228e-08L2 7H3V6H4V5H5L5 4H6V3H5V2H4L4 1L3 1V0L2 8.74228e-08Z" fill="#505050"/>
-          </svg>
-        </div>
-      </div>
     </div>
   );
 };

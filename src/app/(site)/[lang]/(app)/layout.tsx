@@ -1,5 +1,7 @@
 import React from 'react';
 import SidebarLayout from '@/components/Sidebar/SidebarLayout';
+import Particles from '@/components/ui/particles';
+import BgGlassmorphism from '@/components/BgGlassmorphism';
 
 export default function AppLayout({
   children,
@@ -14,8 +16,19 @@ export default function AppLayout({
 
   return (
     <SidebarLayout user={user}>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        {children}
+      <div className="min-h-screen relative overflow-hidden">
+        <Particles
+          className="absolute inset-0 -z-10"
+          quantity={3000}
+          ease={50}
+          size={0.3}
+          staticity={30}
+          color="#4F46E5"
+        />
+        <BgGlassmorphism />
+        <main className="flex-1 relative z-10">
+          {children}
+        </main>
       </div>
     </SidebarLayout>
   );
