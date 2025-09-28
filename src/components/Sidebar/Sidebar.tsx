@@ -15,11 +15,12 @@ const Sidebar: React.FC<SidebarProps> = ({
   onToggleCollapse,
   user = defaultUserProfile,
   onLogout,
+  isHovered = false,
+  onHoverChange,
   className = '',
 }) => {
   const pathname = usePathname();
   const [showSupportCard, setShowSupportCard] = useState(true);
-  const [isHovered, setIsHovered] = useState(false);
 
   const handleDismissSupport = () => {
     setShowSupportCard(false);
@@ -27,13 +28,15 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   // Handle hover with slight delay to prevent accidental triggers
   const handleMouseEnter = () => {
-    if (isCollapsed) {
-      setIsHovered(true);
+    if (isCollapsed && onHoverChange) {
+      onHoverChange(true);
     }
   };
 
   const handleMouseLeave = () => {
-    setIsHovered(false);
+    if (onHoverChange) {
+      onHoverChange(false);
+    }
   };
 
   // Determine if sidebar should show expanded content

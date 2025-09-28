@@ -21,9 +21,11 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
   const {
     isCollapsed,
     isMobileOpen,
+    isHovered,
     toggleCollapse,
     openMobile,
     closeMobile,
+    setHovered,
   } = useSidebar();
 
   const [showSupportCard, setShowSupportCard] = useState(true);
@@ -51,6 +53,8 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
           onToggleCollapse={toggleCollapse}
           user={user}
           onLogout={handleLogout}
+          isHovered={isHovered}
+          onHoverChange={setHovered}
         />
       </div>
 
@@ -65,7 +69,9 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
       />
 
       {/* Main Content */}
-      <div className={`flex flex-1 flex-col overflow-hidden ${isCollapsed ? 'lg:ml-[80px]' : 'lg:ml-[272px]'} transition-all duration-300`}>
+      <div className={`flex flex-1 flex-col overflow-hidden transition-all duration-300 ease-in-out ${
+        isCollapsed && !isHovered ? 'lg:ml-[80px]' : 'lg:ml-[272px]'
+      }`}>
         {/* Mobile header */}
         <div className="lg:hidden">
           <div className="flex items-center justify-between bg-white border-b border-gray-200 px-4 py-3">

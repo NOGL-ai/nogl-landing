@@ -29,5 +29,7 @@ export interface SidebarProps {
   onToggleCollapse: () => void;
   user?: UserProfile;
   onLogout?: () => void;
+  isHovered?: boolean;
+  onHoverChange?: (hovered: boolean) => void;
   className?: string;
 }
