@@ -43,7 +43,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
   };
 
   return (
-    <div className={`flex h-screen bg-gray-50 dark:bg-gray-900 ${className}`}>
+    <div className={`flex h-screen ${className}`}>
       {/* Desktop Sidebar */}
       <div className="hidden lg:block fixed left-0 top-0 z-50">
         <Sidebar
@@ -99,7 +99,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
         </div>
 
         {/* Page content */}
-        <main className="flex-1 overflow-y-auto bg-white dark:bg-gray-800 sidebar-scroll">
+        <main className="flex-1 overflow-y-auto sidebar-scroll">
           {children}
         </main>
       </div>

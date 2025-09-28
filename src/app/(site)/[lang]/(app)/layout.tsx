@@ -20,9 +20,9 @@ export default function AppLayout({
         <Particles
           className="absolute inset-0 -z-10"
           quantity={3000}
-          ease={50}
-          size={0.3}
-          staticity={30}
+          ease={70}
+          size={0.5}
+          staticity={40}
           color="#4F46E5"
         />
         <BgGlassmorphism />
