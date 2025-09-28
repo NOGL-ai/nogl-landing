@@ -125,11 +125,11 @@ const ProductTable: React.FC<ProductTableProps> = ({
   };
 
   return (
-    <div className="flex w-[1120px] h-[810px] flex-col items-start flex-shrink-0 rounded-xl border border-[#DEE0E3] bg-white mb-5">
+    <div className="flex w-full max-w-[1120px] flex-col items-start flex-shrink-0 rounded-xl border border-[#DEE0E3] bg-white mb-5 overflow-hidden">
       {/* Table */}
-      <div className="flex items-start self-stretch bg-white">
+      <div className="flex items-start self-stretch bg-white overflow-x-auto">
         {/* Product Name Column - 240px */}
-        <div className="flex w-[240px] h-[750px] flex-col items-start">
+        <div className="flex w-[240px] min-h-[750px] flex-col items-start flex-shrink-0">
           {/* Header */}
           <div className="flex h-10 px-3 items-center gap-3 flex-shrink-0 self-stretch bg-[#F7F7F8]">
             <div className="w-4 h-4">
@@ -181,7 +181,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
         </div>
 
         {/* Matches Suggested Column - 139px */}
-        <div className="flex w-[139px] h-[750px] flex-col items-start">
+        <div className="flex w-[139px] min-h-[750px] flex-col items-start flex-shrink-0">
           {/* Header */}
           <div className="flex h-10 px-3 items-center gap-3 flex-shrink-0 self-stretch bg-[#F7F7F8]">
             <div className="flex px-0 items-center gap-0.5">
@@ -222,7 +222,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
         </div>
 
         {/* Cost Column - 84px */}
-        <div className="flex w-[84px] h-[750px] flex-col items-start">
+        <div className="flex w-[84px] min-h-[750px] flex-col items-start flex-shrink-0">
           {/* Header */}
           <div className="flex h-10 px-3 items-center gap-3 flex-shrink-0 self-stretch bg-[#F7F7F8]">
             <div className="flex px-0 items-center gap-0.5">
@@ -243,7 +243,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
         </div>
 
         {/* Price Column - 100px */}
-        <div className="flex w-[100px] h-[750px] flex-col items-start">
+        <div className="flex w-[100px] min-h-[750px] flex-col items-start flex-shrink-0">
           {/* Header */}
           <div className="flex h-10 px-3 items-center gap-3 flex-shrink-0 self-stretch bg-[#F7F7F8]">
             <div className="flex px-0 items-center gap-0.5">
@@ -264,7 +264,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
         </div>
 
         {/* Min/Max Price Column - 152px */}
-        <div className="flex w-[152px] h-[750px] flex-col items-start">
+        <div className="flex w-[152px] min-h-[750px] flex-col items-start flex-shrink-0">
           {/* Header */}
           <div className="flex h-10 px-3 items-center gap-3 flex-shrink-0 self-stretch bg-[#F7F7F8]">
             <div className="flex px-0 items-center gap-0.5">
@@ -290,7 +290,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
         </div>
 
         {/* Brand Column - 132px */}
-        <div className="flex w-[132px] h-[750px] flex-col items-start">
+        <div className="flex w-[132px] min-h-[750px] flex-col items-start flex-shrink-0">
           {/* Header */}
           <div className="flex h-10 px-3 items-center gap-3 flex-shrink-0 self-stretch bg-[#F7F7F8]">
             <div className="flex px-0 items-center gap-0.5">
@@ -312,7 +312,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
         </div>
 
         {/* Competitors Prices Column - 212px */}
-        <div className="flex w-[212px] h-[750px] flex-col items-start">
+        <div className="flex w-[212px] min-h-[750px] flex-col items-start flex-shrink-0">
           {/* Header */}
           <div className="flex h-10 px-3 items-center gap-3 flex-shrink-0 self-stretch bg-[#F7F7F8]">
             <div className="flex px-0 items-center gap-0.5">
@@ -329,7 +329,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
         </div>
 
         {/* Triggered Rule Column - 182px */}
-        <div className="flex w-[182px] h-[750px] flex-col items-start">
+        <div className="flex w-[182px] min-h-[750px] flex-col items-start flex-shrink-0">
           {/* Header */}
           <div className="flex h-10 px-3 items-center gap-3 flex-shrink-0 self-stretch bg-[#F7F7F8]">
             <div className="flex px-0 items-center gap-0.5">
@@ -353,15 +353,17 @@ const ProductTable: React.FC<ProductTableProps> = ({
         </div>
       </div>
 
-      {/* Scrollbar */}
-      <div className="w-[1120px] h-[17px] bg-[#F1F1F1] relative bottom-1">
-        <svg width="7" height="7" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute left-1.5 top-1.25">
-          <path d="M5 8.74228e-08L5 7H4V6H3V5H2L2 4H1V3H2V2H3L3 1L4 1V0L5 8.74228e-08Z" fill="#A3A3A3"/>
-        </svg>
-        <svg width="7" height="7" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute right-1.5 top-1.25">
-          <path d="M2 8.74228e-08L2 7H3V6H4V5H5L5 4H6V3H5V2H4L4 1L3 1V0L2 8.74228e-08Z" fill="#505050"/>
-        </svg>
-        <div className="w-3.25 h-6.25 bg-[#C1C1C1] absolute left-3.75 top-0.5 transform -rotate-90"></div>
+      {/* Horizontal Scrollbar - Only show when content overflows */}
+      <div className="w-full h-[17px] bg-[#F1F1F1] relative bottom-1 overflow-x-auto">
+        <div className="w-[1120px] h-full flex items-center justify-between px-2">
+          <svg width="7" height="7" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 8.74228e-08L5 7H4V6H3V5H2L2 4H1V3H2V2H3L3 1L4 1V0L5 8.74228e-08Z" fill="#A3A3A3"/>
+          </svg>
+          <div className="flex-1 h-2 bg-[#C1C1C1] mx-2 rounded"></div>
+          <svg width="7" height="7" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 8.74228e-08L2 7H3V6H4V5H5L5 4H6V3H5V2H4L4 1L3 1V0L2 8.74228e-08Z" fill="#505050"/>
+          </svg>
+        </div>
       </div>
     </div>
   );

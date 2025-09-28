@@ -14,7 +14,7 @@ const CatalogPagination: React.FC<CatalogPaginationProps> = ({
   totalPages = 100
 }) => {
   return (
-    <div className="flex w-[1120px] justify-center items-center gap-2 h-10">
+    <div className="flex w-full max-w-[1120px] justify-center items-center gap-2 h-10">
       {/* Previous Button */}
       <div className="flex px-2.5 py-2.5 justify-center items-center gap-1 rounded-xl bg-transparent">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
