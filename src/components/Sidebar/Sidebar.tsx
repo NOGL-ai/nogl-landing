@@ -61,7 +61,9 @@ const Sidebar: React.FC<SidebarProps> = ({
     >
       <div className="flex flex-col w-full">
         {/* Header */}
-        <div className="flex items-center justify-between h-[84px] px-3 border-b border-[#E2E4E9]/20">
+        <div className={`flex items-center h-[84px] px-3 border-b border-[#E2E4E9]/20 ${
+          shouldShowExpandedContent ? 'justify-between' : 'justify-center'
+        }`}>
           <div className="flex items-center gap-2">
             {/* Logo */}
             <div className="w-[30px] h-[30px] relative">
@@ -101,6 +103,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               </button>
             </div>
           )}
+          
         </div>
 
         {/* Content */}
