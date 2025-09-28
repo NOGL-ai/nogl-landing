@@ -166,9 +166,9 @@ const Sidebar: React.FC<SidebarProps> = ({
           <div className="flex-1"></div>
 
           {/* Support Card (only visible when expanded and not dismissed) */}
-          {shouldShowExpandedContent && showSupportCard && (
+          {/* {shouldShowExpandedContent && showSupportCard && (
             <SupportCard onDismiss={handleDismissSupport} />
-          )}
+          )} */}
 
           {/* Support Icon (only visible when collapsed) */}
           {!shouldShowExpandedContent && (

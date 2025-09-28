@@ -159,9 +159,9 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({
                     <div className="flex-1"></div>
 
                     {/* Support Card */}
-                    {showSupportCard && (
+                    {/* {showSupportCard && (
                       <SupportCard onDismiss={onDismissSupport || (() => {})} />
-                    )}
+                    )} */}
 
                     {/* Version Info */}
                     <div className="flex items-center gap-2 py-2 px-3">
