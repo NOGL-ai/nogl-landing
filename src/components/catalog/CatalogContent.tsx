@@ -183,7 +183,7 @@ const CatalogContent = () => {
     {
       id: '9',
       name: 'Grüner Quarz Drop Double Ring',
-      sku: 'gruner-quarz-drop-ring-585-gold',
+      sku: '0612752424_49',
       image: 'https://cdn.shopify.com/s/files/1/0016/4380/6833/files/Drop-Double-Ring_Green-Quartz_Vermeil_02.jpg?v=1737530673',
       cost: '-',
       price: '€ 150.00',
@@ -204,7 +204,7 @@ const CatalogContent = () => {
     {
       id: '10',
       name: 'Roter Granat Drop Double Ring',
-      sku: 'roter-granat-drop-double-ring-585-gold',
+      sku: '0612132424_49',
       image: 'https://cdn.shopify.com/s/files/1/0016/4380/6833/files/Drop-Double-Ring_Red-Garnet_Vermeil_02.jpg?v=1737467551',
       cost: '-',
       price: '€ 150.00',
