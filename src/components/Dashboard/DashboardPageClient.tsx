@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import StatWidget from '@/components/Dashboard/StatWidget';
 import StackedBarChart from '@/components/Dashboard/StackedBarChart';
 import PieChart from '@/components/Dashboard/PieChart';
@@ -8,6 +8,7 @@ import DataTable from '@/components/Dashboard/DataTable';
 import LoadingChart from '@/components/Dashboard/LoadingChart';
 import DashboardPageHeader from '@/components/Dashboard/DashboardPageHeader';
 import DashboardWidgetGrid, { DashboardSection } from '@/components/Dashboard/DashboardWidgetGrid';
+import ColorWidget from '@/components/Dashboard/ColorWidget';
 
 interface DashboardPageClientProps {
   dict: any;
@@ -28,9 +29,21 @@ export default function DashboardPageClient({
   stockColumns,
   stockData,
 }: DashboardPageClientProps) {
+  const [isColorWidgetOpen, setIsColorWidgetOpen] = useState(false);
+  const [selectedColor, setSelectedColor] = useState<string>('');
+
   const handleColorToggle = () => {
-    console.log('Color toggle clicked');
-    // Add your color toggle logic here
+    setIsColorWidgetOpen(true);
+  };
+
+  const handleColorWidgetClose = () => {
+    setIsColorWidgetOpen(false);
+  };
+
+  const handleColorSelect = (color: string) => {
+    setSelectedColor(color);
+    console.log('Selected color:', color);
+    // Add your color selection logic here
   };
 
   const handleFullscreenToggle = () => {
@@ -44,7 +57,8 @@ export default function DashboardPageClient({
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-4 lg:p-6 space-y-6">
+    <>
+      <div className="max-w-7xl mx-auto p-4 lg:p-6 space-y-6">
         {/* Page Header */}
         <DashboardPageHeader
           title={dict.dashboard.title}
@@ -140,6 +154,14 @@ export default function DashboardPageClient({
             />
           </div>
         </DashboardSection>
-    </div>
+      </div>
+      
+      {/* Color Widget Modal */}
+      <ColorWidget
+        isOpen={isColorWidgetOpen}
+        onClose={handleColorWidgetClose}
+        onColorSelect={handleColorSelect}
+      />
+    </>
   );
 }
