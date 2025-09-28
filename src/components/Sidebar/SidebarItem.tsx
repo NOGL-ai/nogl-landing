@@ -13,13 +13,18 @@ interface SidebarItemProps {
 
 const SidebarItem: React.FC<SidebarItemProps> = ({ item, isActive, isCollapsed }) => {
   const [showTooltip, setShowTooltip] = useState(false);
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+  const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
+
+  const hasSubmenu = item.submenu && item.submenu.length > 0;
 
   const baseClasses = clsx(
     'flex items-center gap-2 px-3 py-2 rounded-[5px] transition-all duration-200 relative',
     'font-inter text-[14px] font-medium leading-5 tracking-[-0.084px]',
+    'cursor-pointer', // Ensure cursor indicates clickability
     isActive
-      ? 'bg-[#375DFB] text-white'
-      : 'text-[#9293A9] hover:bg-[#375DFB]/10 hover:text-[#375DFB]'
+      ? 'bg-[#375DFB] text-white shadow-sm'
+      : 'text-[#9293A9] hover:bg-[#375DFB]/10 hover:text-[#375DFB] hover:shadow-sm'
   );
 
   const iconClasses = clsx(
@@ -27,13 +32,58 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ item, isActive, isCollapsed }
     isActive ? 'text-white' : 'text-[#9293A9]'
   );
 
+  const submenuItemClasses = (subItem: NavigationItem) => clsx(
+    'flex items-center gap-2 px-3 py-2 rounded-[5px] transition-all duration-200 relative ml-6',
+    'font-inter text-[14px] font-medium leading-5 tracking-[-0.084px]',
+    'hover:scale-[1.02] transform-gpu', // Subtle scale effect on hover
+    subItem.isActive
+      ? 'bg-[#375DFB] text-white shadow-sm'
+      : 'text-[#9293A9] hover:bg-[#375DFB]/10 hover:text-[#375DFB] hover:shadow-sm'
+  );
+
+  const handleItemClick = () => {
+    if (hasSubmenu && !isCollapsed) {
+      setIsSubmenuOpen(!isSubmenuOpen);
+    }
+  };
+
+  const handleMouseEnter = () => {
+    // Clear any existing timeout
+    if (hoverTimeout) {
+      clearTimeout(hoverTimeout);
+      setHoverTimeout(null);
+    }
+    
+    if (hasSubmenu && !isCollapsed) {
+      setIsSubmenuOpen(true);
+    }
+    if (isCollapsed) {
+      setShowTooltip(true);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    // Add delay before closing to prevent accidental closures
+    if (hasSubmenu && !isCollapsed) {
+      const timeout = setTimeout(() => {
+        setIsSubmenuOpen(false);
+      }, 300); // 300ms delay - industry standard for dropdowns
+      setHoverTimeout(timeout);
+    }
+    setShowTooltip(false);
+  };
+
+
   return (
-    <div className="relative">
-      <Link
-        href={item.path as any}
+    <div 
+      className="relative group"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* Main item */}
+      <div
         className={baseClasses}
-        onMouseEnter={() => isCollapsed && setShowTooltip(true)}
-        onMouseLeave={() => setShowTooltip(false)}
+        onClick={handleItemClick}
       >
         {/* Icon */}
         <div className={iconClasses}>
@@ -60,7 +110,41 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ item, isActive, isCollapsed }
             {item.badge.text}
           </div>
         )}
-      </Link>
+
+        {/* Submenu arrow (only visible when expanded and has submenu) */}
+        {!isCollapsed && hasSubmenu && (
+          <div className={clsx(
+            'w-4 h-4 transition-all duration-200 ease-in-out',
+            isSubmenuOpen ? 'rotate-90 text-[#375DFB]' : 'rotate-0'
+          )}>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+        )}
+      </div>
+
+      {/* Submenu items */}
+      {!isCollapsed && hasSubmenu && isSubmenuOpen && (
+        <div 
+          className="mt-1 space-y-1 transition-all duration-200 ease-in-out animate-in slide-in-from-top-1"
+        >
+          {item.submenu!.map((subItem) => (
+            <Link
+              key={subItem.id}
+              href={subItem.path as any}
+              className={submenuItemClasses(subItem)}
+            >
+              <span className="flex-1">
+                {subItem.title}
+              </span>
+              {subItem.isActive && (
+                <div className="absolute right-0 top-2 bottom-2 w-1 bg-[#375DFB] rounded-l-[4px]" />
+              )}
+            </Link>
+          ))}
+        </div>
+      )}
 
       {/* Tooltip for collapsed state */}
       {isCollapsed && showTooltip && (

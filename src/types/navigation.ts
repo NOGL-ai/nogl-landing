@@ -10,6 +10,7 @@ export interface NavigationItem {
     text: string;
     variant: 'new' | 'soon' | 'default';
   };
+  submenu?: NavigationItem[];
 }
 
 export interface NavigationSection {
