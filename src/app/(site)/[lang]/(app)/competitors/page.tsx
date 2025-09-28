@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import GlassParticlePage from "@/components/layouts/GlassParticlePage";
 
 export const metadata: Metadata = {
   title: "Competitors | Nogl",
@@ -14,19 +13,24 @@ export const metadata: Metadata = {
 
 export default function CompetitorsPage() {
   return (
-    <GlassParticlePage>
-      <div className="container mx-auto px-4 py-24">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="mb-16">
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-              Competitors
-            </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-              Stay ahead of the competition with comprehensive market analysis and competitor insights.
-            </p>
-          </div>
+    <div className="container mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            Competitors
+          </h1>
+          <p className="text-lg text-gray-600 dark:text-gray-300">
+            Stay ahead of the competition with comprehensive market analysis and competitor insights.
+          </p>
+        </div>
+        
+        {/* Placeholder for competitors content */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+          <p className="text-gray-500 dark:text-gray-400 text-center">
+            Competitor analysis features coming soon...
+          </p>
         </div>
       </div>
-    </GlassParticlePage>
+    </div>
   );
 }
