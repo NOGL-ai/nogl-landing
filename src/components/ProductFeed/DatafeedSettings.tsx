@@ -30,9 +30,9 @@ const DatafeedSettings: React.FC<DatafeedSettingsProps> = ({ className = "" }) =
   };
 
   return (
-    <div className={`w-full ${className}`}>
+    <div className="w-full max-w-7xl mx-auto p-4 lg:p-6 space-y-6 transition-all duration-300">
       {/* Page Header */}
-      <div className="flex items-center gap-3 p-5 md:p-8 bg-white dark:bg-gray-900 border-b border-stroke-soft-200 dark:border-gray-700">
+      <div className="flex items-center gap-3 p-5 md:p-8 bg-white dark:bg-gray-900 border border-[#F2F2F2] dark:border-gray-700 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
         <div className="flex items-center justify-center w-12 h-12 bg-bg-weak-100 dark:bg-gray-800 rounded-full">
           <DocumentTextIcon className="w-6 h-6 text-text-sub-500 dark:text-gray-400" />
         </div>
@@ -47,7 +47,7 @@ const DatafeedSettings: React.FC<DatafeedSettingsProps> = ({ className = "" }) =
       </div>
 
       {/* Main Widgets Section */}
-      <div className="p-5 md:p-8 bg-white dark:bg-gray-900">
+      <div className="p-5 md:p-8 bg-white dark:bg-gray-900 border border-[#F2F2F2] dark:border-gray-700 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
         <div className="flex flex-col lg:flex-row gap-6 mb-8">
           {/* Bigcommerce Connection Widget */}
           <Card className="flex-1 border border-stroke-soft-200 dark:border-gray-700 shadow-sm dark:bg-gray-800">

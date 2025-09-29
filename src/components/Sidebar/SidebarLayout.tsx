@@ -63,7 +63,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 
       {/* Main Content */}
       <div className={`flex flex-1 flex-col overflow-hidden transition-all duration-300 ease-in-out ${
-        isCollapsed && !isHovered ? 'lg:ml-[80px]' : 'lg:ml-[272px]'
+        isCollapsed && !isHovered ? 'lg:ml-[96px]' : 'lg:ml-[288px]'
       }`}>
         {/* Mobile header */}
         <div className="lg:hidden">

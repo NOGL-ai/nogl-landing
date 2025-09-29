@@ -241,26 +241,24 @@ const CatalogContent = () => {
   };
 
   return (
-    <div className="w-full h-full bg-gray-1 dark:bg-gray-900">
-      <div className="w-full max-w-[1168px] mx-auto p-6">
-        <CatalogHeader 
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          productCount={products.length}
-        />
-        
-        <ProductTable 
-          products={products}
-          selectedProducts={selectedProducts}
-          onProductSelect={handleProductSelect}
-          onSelectAll={handleSelectAll}
-        />
-        
-        <CatalogPagination 
-          currentPage={currentPage}
-          onPageChange={setCurrentPage}
-        />
-      </div>
+    <div className="w-full max-w-7xl mx-auto p-4 lg:p-6 space-y-6 transition-all duration-300">
+      <CatalogHeader 
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        productCount={products.length}
+      />
+      
+      <ProductTable 
+        products={products}
+        selectedProducts={selectedProducts}
+        onProductSelect={handleProductSelect}
+        onSelectAll={handleSelectAll}
+      />
+      
+      <CatalogPagination 
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 };
