@@ -206,7 +206,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
     const jaccard = (a: Set<string>, b: Set<string>) => {
       if (a.size === 0 && b.size === 0) return 1;
       let inter = 0;
-      for (const t of a) if (b.has(t)) inter++;
+      Array.from(a).forEach(t => { if (b.has(t)) inter++; });
       const uni = a.size + b.size - inter;
       return uni === 0 ? 0 : inter / uni;
     };
@@ -295,8 +295,8 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
           const sku = row.getValue('sku') as string;
           return (
             <div className="space-y-1">
-              <div className="font-medium text-sm">{name}</div>
-              <div className="text-xs text-gray-500">SKU: {sku}</div>
+              <div className="font-medium text-sm text-gray-900 dark:text-gray-100">{name}</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">SKU: {sku}</div>
             </div>
           );
         },
@@ -421,8 +421,8 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
           const v = row.getValue('minMaxPrice') as { min: number | null; max: number | null };
           return (
             <div className="text-right space-y-0.5">
-              <div className="text-xs text-gray-500">Low: {formatEuro(v?.min ?? null)}</div>
-              <div className="text-xs text-gray-500">High: {formatEuro(v?.max ?? null)}</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">Low: {formatEuro(v?.min ?? null)}</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">High: {formatEuro(v?.max ?? null)}</div>
             </div>
           );
         },
@@ -506,9 +506,9 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
           const highest = parseEuro(competitors?.highest ?? null);
           return (
             <div className="space-y-1 text-right">
-              <div className="text-xs text-gray-500">Cheapest: {formatEuro(cheapest)}</div>
-              <div className="text-xs text-gray-500">Avg: {formatEuro(avg)}</div>
-              <div className="text-xs text-gray-500">Highest: {formatEuro(highest)}</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">Cheapest: {formatEuro(cheapest)}</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">Avg: {formatEuro(avg)}</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">Highest: {formatEuro(highest)}</div>
             </div>
           );
         },
@@ -639,7 +639,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
         <div className="flex items-center space-x-2">
           <div className="relative">
             <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 transition-colors ${
-              globalFilter ? 'text-blue-500' : 'text-gray-400'
+              globalFilter ? 'text-blue-500 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'
             }`} />
             <Input
               placeholder="Search products..."
@@ -648,8 +648,8 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
                 setGlobalFilter(e.target.value);
                 debouncedSetGlobalFilter(e.target.value);
               }}
-              className={`pl-10 w-80 transition-colors ${
-                globalFilter ? 'border-blue-300 focus:border-blue-500' : ''
+              className={`pl-10 w-80 transition-colors bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 ${
+                globalFilter ? 'border-blue-300 dark:border-blue-500 focus:border-blue-500 dark:focus:border-blue-400' : ''
               }`}
             />
           </div>
@@ -657,18 +657,22 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
           <Button
             variant="outline"
             onClick={() => setShowFilters(!showFilters)}
-            className="relative"
+            className="relative border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
           >
             <Filter className="mr-2 h-4 w-4" />
             Filters
             {activeFiltersCount > 0 && (
-              <Badge variant="secondary" className="ml-2 h-5 w-5 rounded-full p-0 text-xs bg-blue-100 text-blue-700 border-blue-200 flex items-center justify-center">
+              <Badge variant="secondary" className="ml-2 h-5 w-5 rounded-full p-0 text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-700 flex items-center justify-center">
                 {activeFiltersCount}
               </Badge>
             )}
           </Button>
 
-          <Button variant="outline" onClick={clearAllFilters}>
+          <Button 
+            variant="outline" 
+            onClick={clearAllFilters}
+            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+          >
             <FilterX className="mr-2 h-4 w-4" />
             Clear All
           </Button>
@@ -680,6 +684,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
               variant={viewMode === 'table' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setViewMode('table')}
+              className={viewMode === 'table' ? '' : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'}
             >
               <List className="h-4 w-4" />
             </Button>
@@ -687,6 +692,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
               variant={viewMode === 'grid' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setViewMode('grid')}
+              className={viewMode === 'grid' ? '' : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'}
             >
               <Grid3X3 className="h-4 w-4" />
             </Button>
@@ -694,7 +700,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline">
+              <Button variant="outline" className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
                 <Columns className="mr-2 h-4 w-4" />
                 Columns
                 <ChevronDown className="ml-2 h-4 w-4" />
@@ -824,24 +830,24 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
 
       {/* Selection Info */}
       {selectedRows.length > 0 && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <CheckCircle className="h-4 w-4 text-blue-600" />
-              <span className="text-sm font-medium text-blue-800">
+              <CheckCircle className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+              <span className="text-sm font-medium text-blue-800 dark:text-blue-200">
                 {selectedRows.length} product{selectedRows.length !== 1 ? 's' : ''} selected
               </span>
             </div>
             <div className="flex items-center space-x-2">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
                 <Download className="mr-2 h-4 w-4" />
                 Export
               </Button>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
                 <Edit className="mr-2 h-4 w-4" />
                 Bulk Edit
               </Button>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
                 <Trash2 className="mr-2 h-4 w-4" />
                 Delete
               </Button>
@@ -851,7 +857,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
       )}
 
       {/* Table */}
-      <div className="rounded-md border">
+      <div className="rounded-md border border-gray-200 dark:border-gray-700">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -892,7 +898,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="h-24 text-center text-gray-500 dark:text-gray-400"
                 >
                   No results found.
                 </TableCell>
@@ -904,39 +910,39 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
 
       {/* Pagination */}
       <div className="flex items-center justify-between space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
+        <div className="flex-1 text-sm text-muted-foreground dark:text-gray-400">
           {table.getFilteredSelectedRowModel().rows.length} of{' '}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
         <div className="flex items-center space-x-6 lg:space-x-8">
           <div className="flex items-center space-x-2">
-            <p className="text-sm font-medium">Rows per page</p>
+            <p className="text-sm font-medium text-gray-900 dark:text-gray-100">Rows per page</p>
             <Select
               value={`${table.getState().pagination.pageSize}`}
               onValueChange={(value) => {
                 table.setPageSize(Number(value));
               }}
             >
-              <SelectTrigger className="h-8 w-[70px]">
+              <SelectTrigger className="h-8 w-[70px] bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100">
                 <SelectValue placeholder={table.getState().pagination.pageSize} />
               </SelectTrigger>
-              <SelectContent side="top">
+              <SelectContent side="top" className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600">
                 {[10, 20, 30, 40, 50].map((pageSize) => (
-                  <SelectItem key={pageSize} value={`${pageSize}`}>
+                  <SelectItem key={pageSize} value={`${pageSize}`} className="text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700">
                     {pageSize}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
-          <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+          <div className="flex w-[100px] items-center justify-center text-sm font-medium text-gray-900 dark:text-gray-100">
             Page {table.getState().pagination.pageIndex + 1} of{' '}
             {table.getPageCount()}
           </div>
           <div className="flex items-center space-x-2">
             <Button
               variant="outline"
-              className="hidden h-8 w-8 p-0 lg:flex"
+              className="hidden h-8 w-8 p-0 lg:flex border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
             >
@@ -945,7 +951,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
             </Button>
             <Button
               variant="outline"
-              className="h-8 w-8 p-0"
+              className="h-8 w-8 p-0 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
             >
@@ -954,7 +960,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
             </Button>
             <Button
               variant="outline"
-              className="h-8 w-8 p-0"
+              className="h-8 w-8 p-0 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
             >
@@ -963,7 +969,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
             </Button>
             <Button
               variant="outline"
-              className="hidden h-8 w-8 p-0 lg:flex"
+              className="hidden h-8 w-8 p-0 lg:flex border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
               onClick={() => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
             >
