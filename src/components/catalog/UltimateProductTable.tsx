@@ -206,7 +206,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
     const jaccard = (a: Set<string>, b: Set<string>) => {
       if (a.size === 0 && b.size === 0) return 1;
       let inter = 0;
-      for (const t of Array.from(a)) if (b.has(t)) inter++;
+      for (const t of a) if (b.has(t)) inter++;
       const uni = a.size + b.size - inter;
       return uni === 0 ? 0 : inter / uni;
     };
@@ -725,11 +725,11 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
 
       {/* Advanced Filters Panel */}
       {showFilters && (
-        <div className="bg-gray-50 rounded-lg p-4 space-y-4">
+        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 space-y-4 border border-gray-200 dark:border-gray-700">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Price Range Filter */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">Price Range</label>
+              <label className="text-sm font-medium text-gray-900 dark:text-gray-100">Price Range</label>
               <div className="px-3">
                 <Slider
                   value={filters.priceRange}
@@ -739,7 +739,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
                   step={10}
                   className="w-full"
                 />
-                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
                   <span>€{filters.priceRange[0]}</span>
                   <span>€{filters.priceRange[1]}</span>
                 </div>
@@ -748,7 +748,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
 
             {/* Brand Filter */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">Brands</label>
+              <label className="text-sm font-medium text-gray-900 dark:text-gray-100">Brands</label>
               <div className="space-y-1">
                 {['Ellijewelry', 'Nenalina', 'Kuzzoi', 'Stilnest'].map((brand) => (
                   <div key={brand} className="flex items-center space-x-2">
@@ -757,7 +757,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
                       checked={filters.brands.includes(brand)}
                       onCheckedChange={(checked) => handleBrandFilter(brand, !!checked)}
                     />
-                    <label htmlFor={`brand-${brand}`} className="text-sm">
+                    <label htmlFor={`brand-${brand}`} className="text-sm text-gray-700 dark:text-gray-300">
                       {brand}
                     </label>
                   </div>
@@ -767,7 +767,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
 
             {/* Quick Filters */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">Quick Filters</label>
+              <label className="text-sm font-medium text-gray-900 dark:text-gray-100">Quick Filters</label>
               <div className="grid grid-cols-2 gap-2">
                 <Button
                   variant="outline"
@@ -776,6 +776,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
                     handlePriceRangeChange([0, 50]);
                     setFilters(prev => ({ ...prev, categories: ['Rings'] }));
                   }}
+                  className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                 >
                   <Minus className="mr-1 h-3 w-3" />
                   Under €50
@@ -787,6 +788,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
                     handlePriceRangeChange([100, 1000]);
                     setFilters(prev => ({ ...prev, featured: true }));
                   }}
+                  className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                 >
                   <Star className="mr-1 h-3 w-3" />
                   Premium
@@ -797,6 +799,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
                   onClick={() => {
                     setFilters(prev => ({ ...prev, hasCompetitorData: true }));
                   }}
+                  className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                 >
                   <TrendingUp className="mr-1 h-3 w-3" />
                   With Data
@@ -808,6 +811,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
                     handleBrandFilter('Stilnest', true);
                     setFilters(prev => ({ ...prev, categories: ['Rings'] }));
                   }}
+                  className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                 >
                   <Target className="mr-1 h-3 w-3" />
                   Stilnest
