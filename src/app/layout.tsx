@@ -16,13 +16,16 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             __html: `
               (function() {
                 try {
-                  if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+                  if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+                    // Set default dark theme immediately to prevent flash
+                    document.documentElement.classList.add('dark');
+                    
+                    // Then check localStorage and update accordingly
                     var theme = localStorage.getItem('theme');
-                    if (!theme || theme === 'dark') {
-                      document.documentElement.classList.add('dark');
-                      localStorage.setItem('theme', 'dark');
-                    } else {
+                    if (theme === 'light') {
                       document.documentElement.classList.remove('dark');
+                    } else if (!theme) {
+                      localStorage.setItem('theme', 'dark');
                     }
                   }
                 } catch (e) {}
