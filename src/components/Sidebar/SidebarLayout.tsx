@@ -28,11 +28,6 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
     setHovered,
   } = useSidebar();
 
-  const [showSupportCard, setShowSupportCard] = useState(true);
-
-  const handleDismissSupport = () => {
-    setShowSupportCard(false);
-  };
 
   const handleLogout = () => {
     if (onLogout) {
@@ -64,8 +59,6 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
         onClose={closeMobile}
         user={user}
         onLogout={handleLogout}
-        showSupportCard={showSupportCard}
-        onDismissSupport={handleDismissSupport}
       />
 
       {/* Main Content */}

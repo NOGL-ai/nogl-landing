@@ -6,14 +6,11 @@ import { usePathname } from 'next/navigation';
 import { SidebarProps } from '@/types/navigation';
 import { mainNavigationItems, otherNavigationItems, versionInfo, defaultUserProfile } from '@/data/sidebarNavigation';
 import SidebarItem from './SidebarItem';
-import SupportCard from './SupportCard';
 import UserProfile from './UserProfile';
 
 interface MobileSidebarProps extends Omit<SidebarProps, 'isCollapsed' | 'onToggleCollapse'> {
   isOpen: boolean;
   onClose: () => void;
-  showSupportCard?: boolean;
-  onDismissSupport?: () => void;
 }
 
 const MobileSidebar: React.FC<MobileSidebarProps> = ({
@@ -21,8 +18,6 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({
   onClose,
   user = defaultUserProfile,
   onLogout,
-  showSupportCard = true,
-  onDismissSupport,
   className = '',
 }) => {
   const pathname = usePathname();
@@ -158,10 +153,6 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({
                     {/* Spacer to push footer content down */}
                     <div className="flex-1"></div>
 
-                    {/* Support Card */}
-                    {/* {showSupportCard && (
-                      <SupportCard onDismiss={onDismissSupport || (() => {})} />
-                    )} */}
 
                     {/* Version Info */}
                     <div className="flex items-center gap-2 py-2 px-3">
