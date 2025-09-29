@@ -3,12 +3,15 @@
 import React, { useState } from 'react';
 import CatalogHeader from './CatalogHeader';
 import ProductTable from './ProductTable';
+import EnhancedProductTable from './EnhancedProductTable';
+import AdvancedProductTable from './AdvancedProductTable';
 import CatalogPagination from './CatalogPagination';
 
 const CatalogContent = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(57);
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
+  const [tableType, setTableType] = useState<'advanced' | 'enhanced' | 'original'>('advanced');
 
   // German jewelry brands data from Shopify stores
   const products = [
@@ -248,17 +251,66 @@ const CatalogContent = () => {
         productCount={products.length}
       />
       
-      <ProductTable 
-        products={products}
-        selectedProducts={selectedProducts}
-        onProductSelect={handleProductSelect}
-        onSelectAll={handleSelectAll}
-      />
+      {/* Table Toggle */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-2">
+          <button
+            onClick={() => setTableType('advanced')}
+            className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+              tableType === 'advanced'
+                ? 'bg-green-100 text-green-700 border border-green-200' 
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            🚀 Advanced Table
+          </button>
+          <button
+            onClick={() => setTableType('enhanced')}
+            className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+              tableType === 'enhanced'
+                ? 'bg-blue-100 text-blue-700 border border-blue-200' 
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            Enhanced Table
+          </button>
+          <button
+            onClick={() => setTableType('original')}
+            className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+              tableType === 'original'
+                ? 'bg-blue-100 text-blue-700 border border-blue-200' 
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            Original Table
+          </button>
+        </div>
+        <div className="text-sm text-gray-500">
+          {tableType === 'advanced' && '🏆 Best Performance + Features'}
+          {tableType === 'enhanced' && 'Powered by TanStack Table'}
+          {tableType === 'original' && 'Custom Implementation'}
+        </div>
+      </div>
       
-      <CatalogPagination 
-        currentPage={currentPage}
-        onPageChange={setCurrentPage}
-      />
+      {tableType === 'advanced' ? (
+        <AdvancedProductTable products={products} />
+      ) : tableType === 'enhanced' ? (
+        <EnhancedProductTable products={products} />
+      ) : (
+        <>
+          <ProductTable 
+            products={products}
+            selectedProducts={selectedProducts}
+            onProductSelect={handleProductSelect}
+            onSelectAll={handleSelectAll}
+          />
+          
+          <CatalogPagination 
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+          />
+        </>
+      )}
     </div>
   );
 };
