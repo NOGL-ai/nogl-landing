@@ -4,10 +4,11 @@ import { getDictionary } from '@/libs/dictionary';
 import { Locale } from '@/i18n';
 
 export default async function DashboardPage({
-  params: { lang },
+  params,
 }: {
-  params: { lang: Locale };
+  params: Promise<{ lang: Locale }>;
 }) {
+  const { lang } = await params;
   const dict = await getDictionary(lang);
 
   // Sample data for widgets

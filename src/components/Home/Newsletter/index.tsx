@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic'
 import toast from "react-hot-toast";
 import axios from "axios";
 import { AnimatedSubscribeButton } from "@/components/ui/animated-subscribe-button";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 // Add this type declaration at the top of your file
 declare global {
@@ -30,7 +31,7 @@ interface NewsletterProps {
 }
 
 const World = dynamic(
-  () => import('@/components/ui/globe').then(mod => mod.World),
+  () => import('@/components/ui/globe').then(mod => ({ default: mod.World })),
   { 
     ssr: false,
     loading: () => (
@@ -556,7 +557,16 @@ export default function Newsletter({ dictionary }: NewsletterProps) {
           {/* Right side - Globe */}
           <div className="w-full lg:w-1/2 h-[300px] sm:h-[400px] md:h-[450px] lg:h-[500px]">
             <div className="w-full h-full max-w-[600px] mx-auto">
-              <World globeConfig={globeConfig} data={sampleData} />
+              <ErrorBoundary fallback={
+                <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-800 rounded-lg">
+                  <div className="text-center">
+                    <div className="text-gray-500 dark:text-gray-400 mb-2">🌍</div>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">Interactive Globe</p>
+                  </div>
+                </div>
+              }>
+                <World globeConfig={globeConfig} data={sampleData} />
+              </ErrorBoundary>
             </div>
           </div>
         </div>
