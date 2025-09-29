@@ -2,7 +2,7 @@ import { NavigationSection } from '@/types/navigation';
 
 export const mainNavigationItems: NavigationSection = {
   id: 'main',
-  title: 'MAIN',
+  title: '',
   items: [
     {
       id: 'dashboard',
@@ -107,7 +107,7 @@ export const mainNavigationItems: NavigationSection = {
 
 export const otherNavigationItems: NavigationSection = {
   id: 'other',
-  title: 'OTHER',
+  title: '',
   items: [
     {
       id: 'settings',
