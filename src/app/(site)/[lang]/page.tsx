@@ -24,10 +24,11 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage({
-	params: { lang },
+	params,
 }: {
-	params: { lang: Locale };
+	params: Promise<{ lang: Locale }>;
 }) {
+	const { lang } = await params;
 	const dict = await getDictionary(lang);
 
 	return (

@@ -36,6 +36,7 @@ export default async function DashboardPage({
   const competitorColumns = [
     { id: 'product', label: dict.dashboard.product, sortable: true, width: '300px' },
     { id: 'competitor', label: dict.dashboard.competitor, sortable: true, width: '180px' },
+    { id: 'currency', label: 'Currency', sortable: true, width: '80px' },
     { id: 'change', label: dict.dashboard.change, sortable: true, width: '180px' },
     { id: 'time', label: dict.dashboard.time, sortable: true, width: '100px' },
   ];
@@ -51,7 +52,8 @@ export default async function DashboardPage({
         name: 'deloox.com',
         logo: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=32&h=32&fit=crop&auto=format'
       },
-      change: { from: '$110.49', to: '$99.49' },
+      currency: 'USD',
+      change: { from: '110.49', to: '99.49' },
       time: `3 ${dict.dashboard.daysAgo}`
     },
   ];

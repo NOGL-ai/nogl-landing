@@ -207,7 +207,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
         accessorKey: 'image',
         header: 'Image',
         cell: ({ row }) => (
-          <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-100">
+          <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
             <img
               src={row.getValue('image')}
               alt={row.getValue('name')}
@@ -243,8 +243,8 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
           const sku = row.getValue('sku') as string;
           return (
             <div className="space-y-1">
-              <div className="font-medium text-sm">{name}</div>
-              <div className="text-xs text-gray-500">SKU: {sku}</div>
+              <div className="font-medium text-sm text-gray-900 dark:text-gray-100">{name}</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">SKU: {sku}</div>
             </div>
           );
         },
@@ -264,7 +264,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
                   className="w-5 h-5 rounded"
                 />
               )}
-              <span className="text-sm font-medium">{brand.name}</span>
+              <span className="text-sm font-medium text-gray-900 dark:text-gray-100">{brand.name}</span>
             </div>
           );
         },
@@ -295,7 +295,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
           const price = row.getValue('price') as string;
           return (
             <div className="text-right">
-              <div className="font-semibold text-green-600">{price}</div>
+              <div className="font-semibold text-green-600 dark:text-green-400">{price}</div>
             </div>
           );
         },
@@ -308,9 +308,9 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
           const competitors = row.getValue('competitors') as Product['competitors'];
           return (
             <div className="space-y-1 text-right">
-              <div className="text-xs text-gray-500">Cheapest: {competitors.cheapest}</div>
-              <div className="text-xs text-gray-500">Avg: {competitors.avg}</div>
-              <div className="text-xs text-gray-500">Highest: {competitors.highest}</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">Cheapest: {competitors.cheapest}</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">Avg: {competitors.avg}</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">Highest: {competitors.highest}</div>
             </div>
           );
         },
@@ -527,11 +527,11 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
 
       {/* Advanced Filters Panel */}
       {showFilters && (
-        <div className="bg-gray-50 rounded-lg p-4 space-y-4">
+        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Price Range Filter */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">Price Range</label>
+              <label className="text-sm font-medium text-gray-900 dark:text-gray-100">Price Range</label>
               <div className="px-3">
                 <Slider
                   value={filters.priceRange}
@@ -541,7 +541,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
                   step={10}
                   className="w-full"
                 />
-                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
                   <span>€{filters.priceRange[0]}</span>
                   <span>€{filters.priceRange[1]}</span>
                 </div>
@@ -550,7 +550,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
 
             {/* Brand Filter */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">Brands</label>
+              <label className="text-sm font-medium text-gray-900 dark:text-gray-100">Brands</label>
               <div className="space-y-1">
                 {['Ellijewelry', 'Nenalina', 'Kuzzoi', 'Stilnest'].map((brand) => (
                   <div key={brand} className="flex items-center space-x-2">
@@ -559,7 +559,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
                       checked={filters.brands.includes(brand)}
                       onCheckedChange={(checked) => handleBrandFilter(brand, !!checked)}
                     />
-                    <label htmlFor={`brand-${brand}`} className="text-sm">
+                    <label htmlFor={`brand-${brand}`} className="text-sm text-gray-900 dark:text-gray-100">
                       {brand}
                     </label>
                   </div>
@@ -569,7 +569,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
 
             {/* Quick Filters */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">Quick Filters</label>
+              <label className="text-sm font-medium text-gray-900 dark:text-gray-100">Quick Filters</label>
               <div className="grid grid-cols-2 gap-2">
                 <Button
                   variant="outline"
@@ -622,11 +622,11 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
 
       {/* Selection Info */}
       {selectedRows.length > 0 && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <CheckCircle className="h-4 w-4 text-blue-600" />
-              <span className="text-sm font-medium text-blue-800">
+              <CheckCircle className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+              <span className="text-sm font-medium text-blue-800 dark:text-blue-200">
                 {selectedRows.length} product{selectedRows.length !== 1 ? 's' : ''} selected
               </span>
             </div>
@@ -649,7 +649,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
       )}
 
       {/* Table */}
-      <div className="rounded-md border">
+      <div className="rounded-md border border-gray-200 dark:border-gray-700">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -702,13 +702,13 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
 
       {/* Pagination */}
       <div className="flex items-center justify-between space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
+        <div className="flex-1 text-sm text-muted-foreground dark:text-gray-400">
           {table.getFilteredSelectedRowModel().rows.length} of{' '}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
         <div className="flex items-center space-x-6 lg:space-x-8">
           <div className="flex items-center space-x-2">
-            <p className="text-sm font-medium">Rows per page</p>
+            <p className="text-sm font-medium text-gray-900 dark:text-gray-100">Rows per page</p>
             <Select
               value={`${table.getState().pagination.pageSize}`}
               onValueChange={(value) => {
@@ -727,7 +727,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
               </SelectContent>
             </Select>
           </div>
-          <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+          <div className="flex w-[100px] items-center justify-center text-sm font-medium text-gray-900 dark:text-gray-100">
             Page {table.getState().pagination.pageIndex + 1} of{' '}
             {table.getPageCount()}
           </div>

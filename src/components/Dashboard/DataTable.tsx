@@ -56,7 +56,7 @@ export const DataTable: React.FC<DataTableProps> = ({
           </div>
           <div className="flex flex-col justify-center items-start gap-0.5 flex-1">
             <div 
-              className="text-[#14151A] dark:text-gray-200 font-medium text-sm leading-5 truncate max-w-full"
+              className="text-[#14151A] dark:text-gray-100 font-medium text-sm leading-5 truncate max-w-full"
               style={{
                 fontFamily: 'Inter',
                 fontSize: '14px',
@@ -92,7 +92,7 @@ export const DataTable: React.FC<DataTableProps> = ({
           />
           <div className="flex flex-col justify-center items-start gap-0.5 flex-1">
             <div 
-              className="text-[#14151A] dark:text-gray-200 font-normal text-sm leading-5"
+              className="text-[#14151A] dark:text-gray-100 font-normal text-sm leading-5"
               style={{
                 fontFamily: 'Inter',
                 fontSize: '14px',
@@ -107,6 +107,24 @@ export const DataTable: React.FC<DataTableProps> = ({
       );
     }
     
+    if (column.id === 'currency') {
+      return (
+        <div className="flex flex-col justify-center items-center gap-0.5 flex-1">
+          <span 
+            className="text-[#14151A] dark:text-gray-100 font-medium text-sm leading-5"
+            style={{
+              fontFamily: 'Inter',
+              fontSize: '14px',
+              lineHeight: '20px',
+              letterSpacing: '-0.07px'
+            }}
+          >
+            {value}
+          </span>
+        </div>
+      );
+    }
+    
     if (column.id === 'change') {
       return (
         <div className="flex items-center gap-3">
@@ -117,7 +135,7 @@ export const DataTable: React.FC<DataTableProps> = ({
               fontSize: '14px',
               lineHeight: '20px',
               letterSpacing: '-0.07px',
-              color: value.from.includes('$') ? '#FB3748' : '#1FC16B'
+              color: '#FB3748'
             }}
           >
             {value.from}
@@ -130,7 +148,7 @@ export const DataTable: React.FC<DataTableProps> = ({
               fontSize: '14px',
               lineHeight: '20px',
               letterSpacing: '-0.07px',
-              color: value.to.includes('$') ? '#1FC16B' : '#FB3748'
+              color: '#1FC16B'
             }}
           >
             {value.to}
@@ -170,7 +188,7 @@ export const DataTable: React.FC<DataTableProps> = ({
           <div className="flex items-center gap-3 flex-shrink-0">
             <StockIcon inStock={value.from === 'In stock'} />
             <span
-              className="text-[#14151A] font-normal text-sm leading-5 whitespace-nowrap"
+              className="text-[#14151A] dark:text-gray-100 font-normal text-sm leading-5 whitespace-nowrap"
               style={{
                 fontFamily: 'Inter',
                 fontSize: '14px',
@@ -187,7 +205,7 @@ export const DataTable: React.FC<DataTableProps> = ({
           <div className="flex items-center gap-3 flex-shrink-0">
             <StockIcon inStock={isInStock} />
             <span
-              className="text-[#14151A] font-normal text-sm leading-5 whitespace-nowrap"
+              className="text-[#14151A] dark:text-gray-100 font-normal text-sm leading-5 whitespace-nowrap"
               style={{
                 fontFamily: 'Inter',
                 fontSize: '14px',
@@ -206,7 +224,7 @@ export const DataTable: React.FC<DataTableProps> = ({
       return (
         <div className="flex flex-col justify-center items-start gap-0.5 flex-1">
           <span 
-            className="text-[#14151A] dark:text-gray-200 font-normal text-sm leading-5"
+            className="text-[#14151A] dark:text-gray-100 font-normal text-sm leading-5"
             style={{
               fontFamily: 'Inter',
               fontSize: '14px',
@@ -220,7 +238,7 @@ export const DataTable: React.FC<DataTableProps> = ({
       );
     }
     
-    return <span className="text-[#14151A] dark:text-gray-200 text-sm">{value}</span>;
+    return <span className="text-[#14151A] dark:text-gray-100 text-sm">{value}</span>;
   };
 
   return (
@@ -228,7 +246,7 @@ export const DataTable: React.FC<DataTableProps> = ({
       {/* Title */}
       <div className="mb-5">
         <h3 
-          className="text-[#111827] dark:text-white font-medium text-base leading-6"
+          className="text-[#111827] dark:text-gray-100 font-medium text-base leading-6"
           style={{
             fontFamily: 'Inter',
             fontSize: '16px',
@@ -262,7 +280,7 @@ export const DataTable: React.FC<DataTableProps> = ({
                 <div className="flex items-center justify-between gap-3 px-3 py-2.5 bg-[#F7F7F8] dark:bg-gray-700 border-b border-[#E9EAEC] dark:border-gray-600 h-10 flex-shrink-0">
                   <div className="flex items-center gap-0.5">
                     <span
-                      className="text-[#0F1324] dark:text-gray-300 font-normal text-sm leading-5 opacity-60"
+                      className="text-[#0F1324] dark:text-gray-200 font-normal text-sm leading-5 opacity-60"
                       style={{
                         fontFamily: 'Inter',
                         fontSize: '14px',
