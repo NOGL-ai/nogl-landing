@@ -139,9 +139,24 @@ const globalFilterFn = (row: any, _columnId: string, value: string) => {
   });
 };
 
-const priceRangeFilter: FilterFn<any> = (row, columnId, value) => {
-  const price = parseFloat((row.getValue('price') as string).replace(/[€,]/g, ''));
-  const [min, max] = value;
+const parseEuro = (input: string | number | null | undefined): number | null => {
+  if (input === null || input === undefined) return null;
+  if (typeof input === 'number') return isFinite(input) ? input : null;
+  const cleaned = input.replace(/[^0-9.,-]/g, '').replace(/,(?=\d{3}\b)/g, '');
+  const normalized = cleaned.replace(',', '.');
+  const n = parseFloat(normalized);
+  return isNaN(n) ? null : n;
+};
+
+const formatEuro = (n: number | null | undefined) => {
+  if (n === null || n === undefined || !isFinite(n)) return '—';
+  return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(n);
+};
+
+const priceRangeFilter: FilterFn<any> = (row, _columnId, value) => {
+  const [min, max] = value as [number, number];
+  const raw = (row.original?.price ?? row.getValue('price')) as string | number | undefined;
+  const price = parseEuro(raw ?? null) ?? 0;
   return price >= min && price <= max;
 };
 
@@ -180,6 +195,43 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
     featured: null as boolean | null,
     highMargin: null as boolean | null,
   });
+
+  // Compute suggested matches based on name similarity and SKU equality
+  const suggestedMatchesById = useMemo(() => {
+    const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+    const tokenize = (s: string) => {
+      const tokens = normalize(s).split(' ').filter(t => t.length >= 3);
+      return new Set(tokens);
+    };
+    const jaccard = (a: Set<string>, b: Set<string>) => {
+      if (a.size === 0 && b.size === 0) return 1;
+      let inter = 0;
+      for (const t of Array.from(a)) if (b.has(t)) inter++;
+      const uni = a.size + b.size - inter;
+      return uni === 0 ? 0 : inter / uni;
+    };
+
+    const tokensById = new Map<string, Set<string>>();
+    for (const p of products) tokensById.set(p.id, tokenize(p.name));
+
+    const counts: Record<string, number> = Object.create(null);
+    for (const p of products) counts[p.id] = 0;
+
+    const threshold = 0.5;
+    for (let i = 0; i < products.length; i++) {
+      for (let j = i + 1; j < products.length; j++) {
+        const a = products[i];
+        const b = products[j];
+        const sameSku = a.sku && b.sku && a.sku === b.sku;
+        const sim = jaccard(tokensById.get(a.id)!, tokensById.get(b.id)!);
+        if (sameSku || sim >= threshold) {
+          counts[a.id]++;
+          counts[b.id]++;
+        }
+      }
+    }
+    return counts;
+  }, [products]);
 
   // Column definitions
   const columns: ColumnDef<Product>[] = useMemo(
@@ -251,6 +303,136 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
         filterFn: 'includesString',
       },
       {
+        id: 'suggestedMatches',
+        accessorFn: (row) => suggestedMatchesById[row.id] ?? 0,
+        header: ({ column }) => (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            className="h-8 px-2 lg:px-3"
+          >
+            Suggested matches
+            {column.getIsSorted() === 'asc' ? (
+              <ArrowUp className="ml-2 h-4 w-4" />
+            ) : column.getIsSorted() === 'desc' ? (
+              <ArrowDown className="ml-2 h-4 w-4" />
+            ) : (
+              <ArrowUpDown className="ml-2 h-4 w-4" />
+            )}
+          </Button>
+        ),
+        cell: ({ row }) => {
+          const count = row.getValue('suggestedMatches') as number;
+          return (
+            <div className="flex items-center justify-center">
+              <div className="h-7 w-7 rounded-full bg-blue-50 text-blue-700 border border-blue-200 flex items-center justify-center text-xs font-semibold">
+                {count}
+              </div>
+            </div>
+          );
+        },
+      },
+      {
+        id: 'cost',
+        accessorFn: (row) => parseEuro(row.cost) ?? null,
+        header: ({ column }) => (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            className="h-8 px-2 lg:px-3"
+          >
+            Cost
+            {column.getIsSorted() === 'asc' ? (
+              <ArrowUp className="ml-2 h-4 w-4" />
+            ) : column.getIsSorted() === 'desc' ? (
+              <ArrowDown className="ml-2 h-4 w-4" />
+            ) : (
+              <ArrowUpDown className="ml-2 h-4 w-4" />
+            )}
+          </Button>
+        ),
+        cell: ({ row }) => (
+          <div className="text-right">
+            <div className="text-sm">{formatEuro(row.getValue('cost') as number | null)}</div>
+          </div>
+        ),
+        sortingFn: (a, b, _id) => {
+          const av = (a.getValue('cost') as number | null) ?? -Infinity;
+          const bv = (b.getValue('cost') as number | null) ?? -Infinity;
+          return (av as number) - (bv as number);
+        },
+      },
+      {
+        id: 'price',
+        accessorFn: (row) => parseEuro(row.price) ?? null,
+        header: ({ column }) => (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            className="h-8 px-2 lg:px-3"
+          >
+            <DollarSign className="mr-2 h-4 w-4" />
+            Price
+            {column.getIsSorted() === 'asc' ? (
+              <ArrowUp className="ml-2 h-4 w-4" />
+            ) : column.getIsSorted() === 'desc' ? (
+              <ArrowDown className="ml-2 h-4 w-4" />
+            ) : (
+              <ArrowUpDown className="ml-2 h-4 w-4" />
+            )}
+          </Button>
+        ),
+        cell: ({ row }) => (
+          <div className="text-right">
+            <div className="font-semibold text-green-600">{formatEuro(row.getValue('price') as number | null)}</div>
+          </div>
+        ),
+        filterFn: priceRangeFilter,
+        sortingFn: (a, b, _id) => {
+          const av = (a.getValue('price') as number | null) ?? -Infinity;
+          const bv = (b.getValue('price') as number | null) ?? -Infinity;
+          return (av as number) - (bv as number);
+        },
+      },
+      {
+        id: 'minMaxPrice',
+        accessorFn: (row) => {
+          const min = parseEuro(row.minPrice) ?? parseEuro(row.competitors?.cheapest ?? null);
+          const max = parseEuro(row.maxPrice) ?? parseEuro(row.competitors?.highest ?? null);
+          return { min, max };
+        },
+        header: ({ column }) => (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            className="h-8 px-2 lg:px-3"
+          >
+            Min/Max Price
+            {column.getIsSorted() === 'asc' ? (
+              <ArrowUp className="ml-2 h-4 w-4" />
+            ) : column.getIsSorted() === 'desc' ? (
+              <ArrowDown className="ml-2 h-4 w-4" />
+            ) : (
+              <ArrowUpDown className="ml-2 h-4 w-4" />
+            )}
+          </Button>
+        ),
+        cell: ({ row }) => {
+          const v = row.getValue('minMaxPrice') as { min: number | null; max: number | null };
+          return (
+            <div className="text-right space-y-0.5">
+              <div className="text-xs text-gray-500">Low: {formatEuro(v?.min ?? null)}</div>
+              <div className="text-xs text-gray-500">High: {formatEuro(v?.max ?? null)}</div>
+            </div>
+          );
+        },
+        sortingFn: (a, b, _id) => {
+          const av = (a.getValue('minMaxPrice') as { min: number | null; max: number | null })?.min ?? -Infinity;
+          const bv = (b.getValue('minMaxPrice') as { min: number | null; max: number | null })?.min ?? -Infinity;
+          return (av as number) - (bv as number);
+        },
+      },
+      {
         accessorKey: 'brand',
         header: 'Brand',
         cell: ({ row }) => {
@@ -271,46 +453,62 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
         filterFn: multiSelectFilter,
       },
       {
-        accessorKey: 'price',
-        header: ({ column }) => {
-          return (
-            <Button
-              variant="ghost"
-              onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-              className="h-8 px-2 lg:px-3"
-            >
-              <DollarSign className="mr-2 h-4 w-4" />
-              Price
-              {column.getIsSorted() === 'asc' ? (
-                <ArrowUp className="ml-2 h-4 w-4" />
-              ) : column.getIsSorted() === 'desc' ? (
-                <ArrowDown className="ml-2 h-4 w-4" />
-              ) : (
-                <ArrowUpDown className="ml-2 h-4 w-4" />
-              )}
-            </Button>
-          );
+        id: 'pricePosition',
+        accessorFn: (row) => {
+          const price = parseEuro(row.price) ?? null;
+          const offers: number[] = Array.isArray((row as any).competitorOffers)
+            ? ((row as any).competitorOffers as any[])
+                .map((v) => parseEuro(v as any))
+                .filter((n): n is number => n !== null)
+            : [
+                parseEuro(row.competitors?.cheapest ?? null),
+                parseEuro(row.competitors?.avg ?? null),
+                parseEuro(row.competitors?.highest ?? null),
+              ].filter((n): n is number => n !== null) as number[];
+          let lower = 0, equal = 0, higher = 0;
+          if (price !== null && offers.length > 0) {
+            const tol = Math.max(0.02, price * 0.005);
+            for (const cp of offers) {
+              const diff = cp - price;
+              if (Math.abs(diff) <= tol) equal++;
+              else if (diff > 0) higher++;
+              else lower++;
+            }
+          }
+          const avgOffer = offers.length ? offers.reduce((a, b) => a + b, 0) / offers.length : null;
+          const netDiff = price !== null && avgOffer !== null ? price - avgOffer : null;
+          return { lower, equal, higher, netDiff };
         },
+        header: 'Price Position',
         cell: ({ row }) => {
-          const price = row.getValue('price') as string;
+          const v = row.getValue('pricePosition') as { lower: number; equal: number; higher: number };
           return (
-            <div className="text-right">
-              <div className="font-semibold text-green-600">{price}</div>
+            <div className="flex items-center justify-end gap-2 text-xs">
+              <span className="text-green-600">{v.lower} Lower</span>
+              <span className="text-gray-600">{v.equal} Equal</span>
+              <span className="text-red-600">{v.higher} Higher</span>
             </div>
           );
         },
-        filterFn: priceRangeFilter,
+        sortingFn: (a, b, _id) => {
+          const av = (a.getValue('pricePosition') as any)?.netDiff ?? 0;
+          const bv = (b.getValue('pricePosition') as any)?.netDiff ?? 0;
+          return av - bv;
+        },
       },
       {
         accessorKey: 'competitors',
-        header: 'Competitors',
+        header: 'Competitor Prices',
         cell: ({ row }) => {
           const competitors = row.getValue('competitors') as Product['competitors'];
+          const cheapest = parseEuro(competitors?.cheapest ?? null);
+          const avg = parseEuro(competitors?.avg ?? null);
+          const highest = parseEuro(competitors?.highest ?? null);
           return (
             <div className="space-y-1 text-right">
-              <div className="text-xs text-gray-500">Cheapest: {competitors.cheapest}</div>
-              <div className="text-xs text-gray-500">Avg: {competitors.avg}</div>
-              <div className="text-xs text-gray-500">Highest: {competitors.highest}</div>
+              <div className="text-xs text-gray-500">Cheapest: {formatEuro(cheapest)}</div>
+              <div className="text-xs text-gray-500">Avg: {formatEuro(avg)}</div>
+              <div className="text-xs text-gray-500">Highest: {formatEuro(highest)}</div>
             </div>
           );
         },
