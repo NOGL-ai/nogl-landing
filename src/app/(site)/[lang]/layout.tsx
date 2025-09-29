@@ -1,4 +1,4 @@
-import "@/styles/satoshi.css";
+import "@/styles/satoshi.scss";
 import "react-quill/dist/quill.snow.css";
 import "@/fonts/line-awesome-1.3.0/css/line-awesome.css";
 import "@/styles/index.scss";

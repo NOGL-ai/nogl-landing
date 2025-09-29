@@ -2,10 +2,7 @@
 
 const nextConfig = {
 	reactStrictMode: true,
-	swcMinify: true,
-	experimental: {
-	  typedRoutes: true,
-	},
+	typedRoutes: true,
 	webpack: (config, { isServer }) => {
 	  // Modify PostCSS loader configuration
 	  const rules = config.module.rules;

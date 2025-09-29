@@ -1,7 +1,7 @@
-@import "./__theme_colors";
-@import "./__theme_custom";
-@import "./__dates_picker";
+@use "./__theme_colors";
+@use "./__theme_custom";
+@use "./__dates_picker";
 //
-@import "./header";
-@import "./globals";
-@import "./satoshi";
+@use "./header";
+@use "./globals";
+@use "./satoshi";
