@@ -69,9 +69,9 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
             <div className="hidden lg:block self-center h-10 border-l border-neutral-300 dark:border-neutral-500"></div>
             <div className="hidden lg:flex items-center space-x-4">
               <Link
-                href="/price-intelligence"
+                href="/dashboard"
                 className={`text-sm font-medium ${
-                  isActive("/price-intelligence")
+                  isActive("/dashboard")
                     ? "bg-primary/5 text-primary dark:bg-white/5 dark:text-white"
                     : "text-black hover:bg-primary/5 hover:text-primary dark:text-gray-5 dark:hover:bg-white/5 dark:hover:text-white"
                 }`}
@@ -269,10 +269,10 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
           <ul className="flex flex-col gap-4">
             <li>
               <Link
-                href="/price-intelligence"
+                href="/dashboard"
                 onClick={() => setNavbarOpen(false)}
                 className={`text-sm font-medium ${
-                  isActive("/price-intelligence")
+                  isActive("/dashboard")
                     ? "bg-primary/5 text-primary dark:bg-white/5 dark:text-white"
                     : "text-black hover:bg-primary/5 hover:text-primary dark:text-gray-5 dark:hover:bg-white/5 dark:hover:text-white"
                 }`}

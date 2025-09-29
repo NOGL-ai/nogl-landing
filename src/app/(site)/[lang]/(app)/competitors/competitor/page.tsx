@@ -123,6 +123,31 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
   );
 };
 
+interface ChannelBadgeProps {
+  channel: string;
+}
+
+const ChannelBadge: React.FC<ChannelBadgeProps> = ({ channel }) => {
+  const styles = channel === 'Marketplace'
+    ? { bg: 'bg-blue-50', border: 'border-blue-200', dot: 'bg-blue-500', text: 'text-blue-700' }
+    : channel === 'Shopping'
+      ? { bg: 'bg-purple-50', border: 'border-purple-200', dot: 'bg-purple-500', text: 'text-purple-700' }
+      : { bg: 'bg-gray-50', border: 'border-gray-200', dot: 'bg-gray-500', text: 'text-gray-700' };
+  return (
+    <div className={`inline-flex items-center px-2.5 py-1 rounded-full ${styles.bg} border ${styles.border}`}>
+      <div className={`w-2 h-2 rounded-full mr-1.5 ${styles.dot}`}></div>
+      <span className={`text-xs font-medium ${styles.text}`}>{channel}</span>
+    </div>
+  );
+};
+
+const getChannel = (name: string): string => {
+  const n = name.toLowerCase();
+  if (n.includes('amazon')) return 'Marketplace';
+  if (n.includes('google shopping')) return 'Shopping';
+  return 'E-commerce';
+};
+
 export default function CompetitorsPage() {
   const [competitors, setCompetitors] = useState(competitorsData);
   const [searchTerm, setSearchTerm] = useState('');
@@ -255,13 +280,16 @@ export default function CompetitorsPage() {
               <div className="px-1 py-3 w-[200px]">
                 <span className="text-xs text-gray-600 font-normal">Competitor Domain</span>
               </div>
-              <div className="px-1 py-3 w-[154px]">
+              <div className="px-1 py-3 w-[114px]">
                 <span className="text-xs text-gray-600 font-normal">Monitored URLs</span>
               </div>
-              <div className="px-1 py-3 w-[205px]">
+              <div className="px-1 py-3 w-[165px]">
                 <span className="text-xs text-gray-600 font-normal">Competitor Discovery</span>
               </div>
-              <div className="px-1 py-3 w-[297px]">
+              <div className="px-1 py-3 w-[140px]">
+                <span className="text-xs text-gray-600 font-normal">Channel</span>
+              </div>
+              <div className="px-1 py-3 w-[237px]">
                 <span className="text-xs text-gray-600 font-normal">Price Position</span>
               </div>
               <div className="px-1 py-3 w-[81px]">
@@ -304,7 +332,7 @@ export default function CompetitorsPage() {
                   </div>
 
                   {/* Monitored URLs */}
-                  <div className="px-1 py-4 w-[154px]">
+                  <div className="px-1 py-4 w-[114px]">
                     <div className="flex items-center gap-3">
                       <CircularProgress
                         value={competitor.monitoredUrls}
@@ -318,7 +346,7 @@ export default function CompetitorsPage() {
                   </div>
 
                   {/* Competitor Discovery */}
-                  <div className="px-1 py-4 w-[205px]">
+                  <div className="px-1 py-4 w-[165px]">
                     <div className="flex items-center gap-3">
                       <div className="relative w-10 h-10">
                         <div className="w-10 h-10 rounded-full border-4 border-purple-300 flex items-center justify-center">
@@ -331,8 +359,13 @@ export default function CompetitorsPage() {
                     </div>
                   </div>
 
+                  {/* Channel */}
+                  <div className="px-1 py-4 w-[140px]">
+                    <ChannelBadge channel={getChannel(competitor.domain.name)} />
+                  </div>
+
                   {/* Price Position */}
-                  <div className="px-1 py-4 w-[297px]">
+                  <div className="px-1 py-4 w-[237px]">
                     <div className="flex flex-col gap-1">
                       <div className="text-xs text-gray-600 font-normal">
                         {competitor.pricePosition.lower} Lower / {competitor.pricePosition.equal} Equal / {competitor.pricePosition.higher} Higher

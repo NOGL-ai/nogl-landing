@@ -196,21 +196,23 @@ export default function AddEcommerceCompetitorPage() {
       <div className="relative z-10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header Section */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-3 mb-6 px-6 py-3 bg-white rounded-full shadow-lg border border-gray-200">
-              <h1 className="text-xl sm:text-2xl font-semibold text-gray-800">
-                Competitor's Product URL
-              </h1>
-              <Component1 variant="26" />
+          <div className="w-full max-w-5xl mx-auto mb-8">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-6 bg-white rounded-xl shadow-lg border border-gray-200">
+              <div className="flex items-center gap-3">
+                <h1 className="text-lg sm:text-xl font-semibold text-gray-800">
+                  Competitor's Product URL
+                </h1>
+                <Component1 variant="26" />
+              </div>
               <a 
                 href="https://help.pricefy.io/how-to-add-a-new-competitor/" 
-                className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors duration-200 px-3 py-1 rounded-md hover:bg-blue-50"
+                className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors duration-200 px-3 py-2 rounded-md hover:bg-blue-50 whitespace-nowrap"
               >
                 How it works
               </a>
             </div>
             
-            <p className="text-gray-600 text-sm sm:text-base max-w-3xl mx-auto leading-relaxed">
+            <p className="text-center text-gray-600 text-sm sm:text-base mt-4 max-w-2xl mx-auto leading-relaxed">
               Please enter a page of your competitor's store which contains product information
             </p>
           </div>
