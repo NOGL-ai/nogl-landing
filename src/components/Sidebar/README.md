@@ -20,21 +20,27 @@ A comprehensive sidebar navigation component with collapsible functionality, mob
 ## Components
 
 ### `Sidebar`
+
 Main sidebar component for desktop view with collapse functionality.
 
 ### `MobileSidebar`
+
 Mobile drawer component using Headless UI.
 
 ### `SidebarItem`
+
 Individual navigation item component.
 
 ### `SupportCard`
+
 Dismissible support card component.
 
 ### `UserProfile`
+
 User profile section in the footer.
 
 ### `SidebarLayout`
+
 Complete layout wrapper with both desktop and mobile sidebars.
 
 ## Quick Start
@@ -50,7 +56,7 @@ import { useSidebar } from '@/hooks/useSidebar';
 export default function DashboardPage() {
   const user = {
     name: 'Emon Pixels',
-    email: 'emon683@pricefy.io',
+    email: 'emon683@nogl.io',
     avatar: '/api/placeholder/40/40',
   };
 
@@ -217,24 +223,28 @@ const {
 The sidebar includes intelligent hover-to-expand functionality:
 
 ### **🖱️ Hover to Expand**
+
 - When collapsed, hover over the sidebar to temporarily expand it
 - Shows all navigation items and labels
 - Smooth 300ms transitions
 - Visual feedback with subtle shadow
 
 ### **💡 Tooltips**
+
 - In collapsed mode, hover over navigation icons to see tooltips
 - Shows navigation item names and badges
 - Positioned to the right of the sidebar
 - Includes arrow pointer for clear association
 
 ### **🎨 Visual Feedback**
+
 - Collapsed sidebar gains shadow on hover
 - Smooth width transitions
 - All content scales appropriately
 - Maintains design consistency
 
 ### **⚡ Smart Interactions**
+
 - Hover state only activates when sidebar is collapsed
 - No interference with click interactions
 - Proper cleanup on mouse leave

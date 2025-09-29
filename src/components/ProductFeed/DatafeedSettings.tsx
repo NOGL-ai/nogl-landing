@@ -250,7 +250,7 @@ const DatafeedSettings: React.FC<DatafeedSettingsProps> = ({ className = "" }) =
                 Category Filter
               </h3>
               <p className="text-xs text-text-sub-500 dark:text-gray-400 leading-4">
-                Using this option, only products with selected category names will be imported in Pricefy.
+                Using this option, only products with selected category names will be imported in NOGL.
               </p>
             </div>
             <div className="w-80">

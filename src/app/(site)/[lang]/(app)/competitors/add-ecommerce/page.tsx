@@ -205,7 +205,7 @@ export default function AddEcommerceCompetitorPage() {
                 <Component1 variant="26" />
               </div>
               <a 
-                href="https://help.pricefy.io/how-to-add-a-new-competitor/" 
+                href="https://help.nogl.io/how-to-add-a-new-competitor/" 
                 className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors duration-200 px-3 py-2 rounded-md hover:bg-blue-50 whitespace-nowrap"
               >
                 How it works
@@ -293,7 +293,7 @@ export default function AddEcommerceCompetitorPage() {
                       <Component1 variant="28" />
                     </div>
                     <a 
-                      href="https://help.pricefy.io/how-to-add-a-new-competitor/" 
+                      href="https://help.nogl.io/how-to-add-a-new-competitor/" 
                       className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors duration-200 px-3 py-1 rounded-lg hover:bg-blue-50"
                     >
                       How it works

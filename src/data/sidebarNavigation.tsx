@@ -147,6 +147,6 @@ export const versionInfo = {
 
 export const defaultUserProfile = {
   name: 'Emon Pixels',
-  email: 'emon683@pricefy.io',
+  email: 'emon683@nogl.io',
   avatar: '/api/placeholder/40/40',
 };

@@ -781,7 +781,7 @@ export default function SignupPageLayout() {
               </div>
             </div>
             <p className="text-blue-100 text-sm leading-relaxed">
-              "Pricefy has revolutionized how we track competitor pricing. The insights have helped us increase our market share by 25%."
+              "NOGL has revolutionized how we track competitor pricing. The insights have helped us increase our market share by 25%."
             </p>
           </div>
         </div>

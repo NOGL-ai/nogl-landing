@@ -10,7 +10,7 @@ export default function AppLayout({
 }) {
   const user = {
     name: 'Emon Pixels',
-    email: 'emon683@pricefy.io',
+    email: 'emon683@nogl.io',
     avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face&auto=format',
   };
 
