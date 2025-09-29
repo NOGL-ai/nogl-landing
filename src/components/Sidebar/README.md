@@ -253,6 +253,7 @@ The sidebar includes intelligent hover-to-expand functionality:
 ## Styling
 
 The sidebar uses Tailwind CSS with custom colors from the design:
+
 - Background: `#111729`
 - Text colors: `#FFF`, `#9293A9`, `#D7E0F4`
 - Active color: `#375DFB`
