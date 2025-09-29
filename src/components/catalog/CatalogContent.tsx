@@ -225,8 +225,6 @@ const CatalogContent = () => {
   return (
     <div className="w-full max-w-7xl mx-auto p-4 lg:p-6 space-y-6 transition-all duration-300">
       <CatalogHeader 
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
         productCount={products.length}
       />
       
