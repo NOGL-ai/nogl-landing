@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import ModalCloseButton from "./ModalCloseButton";
 
 interface AddCompetitorModalProps {
@@ -14,6 +15,8 @@ export default function AddCompetitorModal({
   onMarketplaceClick,
   onEcommerceClick,
 }: AddCompetitorModalProps) {
+  const router = useRouter();
+  
   // ===== click outside of dropdown =====
   const divRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
@@ -100,7 +103,10 @@ export default function AddCompetitorModal({
 
                 {/* eCommerce Website Panel */}
                 <div
-                  onClick={onEcommerceClick}
+                  onClick={() => {
+                    setShowModal(false);
+                    router.push('/en/competitors/add-ecommerce');
+                  }}
                   className="flex flex-col items-center justify-center p-8 bg-blue-50 hover:bg-blue-100 rounded-lg cursor-pointer transition-colors group dark:bg-blue-900/20 dark:hover:bg-blue-900/30"
                 >
                   <h3 className="text-lg font-semibold text-gray-900 mb-6 text-center dark:text-white">
