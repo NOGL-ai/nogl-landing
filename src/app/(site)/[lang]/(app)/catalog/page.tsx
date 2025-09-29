@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import SidebarLayout from "@/components/Sidebar/SidebarLayout";
 import CatalogContent from "@/components/catalog/CatalogContent";
 
 export const metadata: Metadata = {
@@ -15,8 +14,6 @@ export const metadata: Metadata = {
 
 export default function CatalogPage() {
       return (
-        <SidebarLayout>
-          <CatalogContent />
-        </SidebarLayout>
+        <CatalogContent />
       );
 }
