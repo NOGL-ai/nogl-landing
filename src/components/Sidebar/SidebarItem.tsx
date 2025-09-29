@@ -81,48 +81,78 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ item, isActive, isCollapsed }
       onMouseLeave={handleMouseLeave}
     >
       {/* Main item */}
-      <div
-        className={baseClasses}
-        onClick={handleItemClick}
-      >
-        {/* Icon */}
-        <div className={iconClasses}>
-          {item.icon}
+      {hasSubmenu ? (
+        <div
+          className={baseClasses}
+          onClick={handleItemClick}
+        >
+          {/* Icon */}
+          <div className={iconClasses}>
+            {item.icon}
+          </div>
+
+          {/* Title (only visible when expanded) */}
+          {!isCollapsed && (
+            <span className="flex-1">
+              {item.title}
+            </span>
+          )}
+
+          {/* Badge (only visible when expanded and badge exists) */}
+          {!isCollapsed && item.badge && (
+            <div className={clsx(
+              'px-1.5 py-0.5 rounded text-[12px] font-medium leading-3',
+              item.badge.variant === 'new' && 'bg-[#DF1C41] text-white',
+              item.badge.variant === 'soon' && isActive
+                ? 'bg-white/10 text-white'
+                : 'bg-[#375DFB]/10 text-[#375DFB]',
+              item.badge.variant === 'default' && 'bg-gray-100 text-gray-700'
+            )}>
+              {item.badge.text}
+            </div>
+          )}
+
+          {/* Submenu arrow (only visible when expanded and has submenu) */}
+          {!isCollapsed && hasSubmenu && (
+            <div className={clsx(
+              'w-4 h-4 transition-all duration-200 ease-in-out',
+              isSubmenuOpen ? 'rotate-90 text-[#375DFB]' : 'rotate-0'
+            )}>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+          )}
         </div>
-
-        {/* Title (only visible when expanded) */}
-        {!isCollapsed && (
-          <span className="flex-1">
-            {item.title}
-          </span>
-        )}
-
-        {/* Badge (only visible when expanded and badge exists) */}
-        {!isCollapsed && item.badge && (
-          <div className={clsx(
-            'px-1.5 py-0.5 rounded text-[12px] font-medium leading-3',
-            item.badge.variant === 'new' && 'bg-[#DF1C41] text-white',
-            item.badge.variant === 'soon' && isActive
-              ? 'bg-white/10 text-white'
-              : 'bg-[#375DFB]/10 text-[#375DFB]',
-            item.badge.variant === 'default' && 'bg-gray-100 text-gray-700'
-          )}>
-            {item.badge.text}
+      ) : (
+        <Link href={item.path as any} className={baseClasses}>
+          {/* Icon */}
+          <div className={iconClasses}>
+            {item.icon}
           </div>
-        )}
 
-        {/* Submenu arrow (only visible when expanded and has submenu) */}
-        {!isCollapsed && hasSubmenu && (
-          <div className={clsx(
-            'w-4 h-4 transition-all duration-200 ease-in-out',
-            isSubmenuOpen ? 'rotate-90 text-[#375DFB]' : 'rotate-0'
-          )}>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-        )}
-      </div>
+          {/* Title (only visible when expanded) */}
+          {!isCollapsed && (
+            <span className="flex-1">
+              {item.title}
+            </span>
+          )}
+
+          {/* Badge (only visible when expanded and badge exists) */}
+          {!isCollapsed && item.badge && (
+            <div className={clsx(
+              'px-1.5 py-0.5 rounded text-[12px] font-medium leading-3',
+              item.badge.variant === 'new' && 'bg-[#DF1C41] text-white',
+              item.badge.variant === 'soon' && isActive
+                ? 'bg-white/10 text-white'
+                : 'bg-[#375DFB]/10 text-[#375DFB]',
+              item.badge.variant === 'default' && 'bg-gray-100 text-gray-700'
+            )}>
+              {item.badge.text}
+            </div>
+          )}
+        </Link>
+      )}
 
       {/* Submenu items */}
       {!isCollapsed && hasSubmenu && isSubmenuOpen && (
