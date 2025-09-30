@@ -89,15 +89,29 @@ import {
   Plus
 } from 'lucide-react';
 import { debounce } from 'lodash';
+import { 
+  SiShopify, 
+  SiWoocommerce, 
+  SiBigcommerce, 
+  SiEbay, 
+  SiAmazon, 
+  SiEtsy, 
+  SiWix, 
+  SiSquarespace,
+  SiPrestashop,
+  SiMagento
+} from 'react-icons/si';
 
 // Types
-interface Product {
+export interface Product {
   id: string;
   name: string;
   sku: string;
   image: string;
+  productUrl?: string; // Product page URL
   cost: string;
   price: string;
+  currency?: string;
   minPrice: string;
   maxPrice: string;
   brand: {
@@ -111,6 +125,7 @@ interface Product {
     cheapestColor: 'green' | 'red' | 'gray';
   };
   triggeredRule: string;
+  channel?: string;
   category?: string;
   status?: 'active' | 'inactive' | 'draft';
   featured?: boolean;
@@ -121,6 +136,9 @@ interface Product {
 
 interface UltimateProductTableProps {
   products: Product[];
+  enableInfiniteScroll?: boolean;
+  onInfiniteScrollToggle?: (enabled: boolean) => void;
+  infiniteScrollProps?: any;
 }
 
 // Custom filter functions
@@ -169,11 +187,57 @@ const multiSelectFilter: FilterFn<any> = (row, columnId, value) => {
   return value.includes(cellValue);
 };
 
+// Channel helpers using react-icons
+const CHANNEL_ICONS: Record<string, { icon: React.ComponentType<any>; title: string; color: string }> = {
+  shopify: { icon: SiShopify, title: 'Shopify', color: '#96BF48' },
+  magento: { icon: SiMagento, title: 'Magento', color: '#EE672F' },
+  woocommerce: { icon: SiWoocommerce, title: 'WooCommerce', color: '#96588A' },
+  bigcommerce: { icon: SiBigcommerce, title: 'BigCommerce', color: '#121118' },
+  ebay: { icon: SiEbay, title: 'eBay', color: '#E53238' },
+  amazon: { icon: SiAmazon, title: 'Amazon', color: '#FF9900' },
+  etsy: { icon: SiEtsy, title: 'Etsy', color: '#F16521' },
+  wix: { icon: SiWix, title: 'Wix', color: '#0C6EFC' },
+  squarespace: { icon: SiSquarespace, title: 'Squarespace', color: '#000000' },
+  prestashop: { icon: SiPrestashop, title: 'PrestaShop', color: '#DF0067' },
+};
+
+const normalizeChannel = (ch?: string | null) => (ch || '').toLowerCase().trim();
+
+const inferChannelFromProduct = (p: Product): string | undefined => {
+  if (p.channel) return normalizeChannel(p.channel);
+  const src = p.image || '';
+  if (src.includes('shopify.com')) return 'shopify';
+  return undefined;
+};
+
+const renderChannel = (ch?: string) => {
+  const key = normalizeChannel(ch);
+  const channelData = CHANNEL_ICONS[key];
+  if (!channelData) return null;
+  const IconComponent = channelData.icon;
+  return (
+    <div className="flex items-center gap-2">
+      <IconComponent 
+        className="w-5 h-5" 
+        style={{ color: channelData.color }}
+        aria-label={channelData.title}
+      />
+      <span className="text-sm capitalize hidden sm:inline">{channelData.title}</span>
+    </div>
+  );
+};
+
 const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products }) => {
   // State management
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    compare: false,
+    minMaxPrice: false,
+    pricePosition: false,
+    competitors: false,
+    currency: false,
+  });
   const [rowSelection, setRowSelection] = useState({});
   const [globalFilter, setGlobalFilter] = useState('');
   const [viewMode, setViewMode] = useState<'table' | 'grid'>('table');
@@ -194,10 +258,11 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
     hasCompetitorData: null as boolean | null,
     featured: null as boolean | null,
     highMargin: null as boolean | null,
+    currencies: [] as string[],
   });
 
-  // Compute suggested matches based on name similarity and SKU equality
-  const suggestedMatchesById = useMemo(() => {
+  // Compute compare matches based on name similarity and SKU equality
+  const compareById = useMemo(() => {
     const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
     const tokenize = (s: string) => {
       const tokens = normalize(s).split(' ').filter(t => t.length >= 3);
@@ -233,6 +298,14 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
     return counts;
   }, [products]);
 
+  const uniqueCurrencies = useMemo(() => {
+    const set = new Set<string>();
+    for (const p of products) {
+      if (p.currency) set.add(p.currency);
+    }
+    return Array.from(set);
+  }, [products]);
+
   // Column definitions
   const columns: ColumnDef<Product>[] = useMemo(
     () => [
@@ -254,21 +327,52 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
         ),
         enableSorting: false,
         enableHiding: false,
+        size: 50,
+        minSize: 50,
+        maxSize: 50,
       },
       {
         accessorKey: 'image',
         header: 'Image',
-        cell: ({ row }) => (
-          <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-100">
-            <img
-              src={row.getValue('image')}
-              alt={row.getValue('name')}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        ),
+        cell: ({ row }) => {
+          const product = row.original;
+          const imageUrl = row.getValue('image') as string;
+          const productUrl = product.productUrl || `/products/${product.id}`;
+          
+          return (
+            <a
+              href={productUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg overflow-hidden bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 block"
+              title={`View product: ${product.name}`}
+            >
+              <img
+                src={imageUrl}
+                alt={product.name}
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
+              />
+            </a>
+          );
+        },
         enableSorting: false,
         enableHiding: false,
+        size: 80,
+        minSize: 60,
+        maxSize: 100,
+      },
+      {
+        id: 'channel',
+        accessorFn: (row) => inferChannelFromProduct(row) || 'unknown',
+        header: 'Channel',
+        cell: ({ row }) => {
+          const p = row.original as Product;
+          const ch = inferChannelFromProduct(p);
+          return renderChannel(ch) || <span className="text-xs text-gray-500">—</span>;
+        },
+        size: 120,
+        minSize: 100,
+        maxSize: 150,
       },
       {
         accessorKey: 'name',
@@ -294,24 +398,27 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
           const name = row.getValue('name') as string;
           const sku = row.getValue('sku') as string;
           return (
-            <div className="space-y-1">
+            <div className="space-y-1 min-w-[200px]">
               <div className="font-medium text-sm text-gray-900 dark:text-gray-100">{name}</div>
               <div className="text-xs text-gray-500 dark:text-gray-400">SKU: {sku}</div>
             </div>
           );
         },
         filterFn: 'includesString',
+        size: 250,
+        minSize: 200,
+        maxSize: 400,
       },
       {
-        id: 'suggestedMatches',
-        accessorFn: (row) => suggestedMatchesById[row.id] ?? 0,
+        id: 'compare',
+        accessorFn: (row) => compareById[row.id] ?? 0,
         header: ({ column }) => (
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             className="h-8 px-2 lg:px-3"
           >
-            Suggested matches
+            Compare
             {column.getIsSorted() === 'asc' ? (
               <ArrowUp className="ml-2 h-4 w-4" />
             ) : column.getIsSorted() === 'desc' ? (
@@ -322,7 +429,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
           </Button>
         ),
         cell: ({ row }) => {
-          const count = row.getValue('suggestedMatches') as number;
+          const count = row.getValue('compare') as number;
           return (
             <div className="flex items-center justify-center">
               <div className="h-7 w-7 rounded-full bg-blue-50 text-blue-700 border border-blue-200 flex items-center justify-center text-xs font-semibold">
@@ -352,7 +459,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
           </Button>
         ),
         cell: ({ row }) => (
-          <div className="text-right">
+          <div className="text-right min-w-[80px]">
             <div className="text-sm">{formatEuro(row.getValue('cost') as number | null)}</div>
           </div>
         ),
@@ -361,6 +468,9 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
           const bv = (b.getValue('cost') as number | null) ?? -Infinity;
           return (av as number) - (bv as number);
         },
+        size: 100,
+        minSize: 80,
+        maxSize: 120,
       },
       {
         id: 'price',
@@ -371,7 +481,6 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             className="h-8 px-2 lg:px-3"
           >
-            <DollarSign className="mr-2 h-4 w-4" />
             Price
             {column.getIsSorted() === 'asc' ? (
               <ArrowUp className="ml-2 h-4 w-4" />
@@ -383,7 +492,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
           </Button>
         ),
         cell: ({ row }) => (
-          <div className="text-right">
+          <div className="text-right min-w-[80px]">
             <div className="font-semibold text-green-600">{formatEuro(row.getValue('price') as number | null)}</div>
           </div>
         ),
@@ -393,6 +502,34 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
           const bv = (b.getValue('price') as number | null) ?? -Infinity;
           return (av as number) - (bv as number);
         },
+        size: 100,
+        minSize: 80,
+        maxSize: 120,
+      },
+      {
+        accessorKey: 'currency',
+        header: ({ column }) => (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            className="h-8 px-2 lg:px-3"
+          >
+            Currency
+            {column.getIsSorted() === 'asc' ? (
+              <ArrowUp className="ml-2 h-4 w-4" />
+            ) : column.getIsSorted() === 'desc' ? (
+              <ArrowDown className="ml-2 h-4 w-4" />
+            ) : (
+              <ArrowUpDown className="ml-2 h-4 w-4" />
+            )}
+          </Button>
+        ),
+        cell: ({ row }) => (
+          <div className="text-right">
+            <div className="text-sm">{(row.getValue('currency') as string) || '—'}</div>
+          </div>
+        ),
+        filterFn: multiSelectFilter,
       },
       {
         id: 'minMaxPrice',
@@ -573,6 +710,9 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
             </DropdownMenu>
           );
         },
+        size: 60,
+        minSize: 60,
+        maxSize: 60,
       },
     ],
     []
@@ -592,6 +732,12 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
     onRowSelectionChange: setRowSelection,
     onGlobalFilterChange: setGlobalFilter,
     globalFilterFn,
+    columnResizeMode: 'onChange',
+    defaultColumn: {
+      size: 150,
+      minSize: 50,
+      maxSize: 500,
+    },
     state: {
       sorting,
       columnFilters,
@@ -615,6 +761,14 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
     table.getColumn('brand')?.setFilterValue(newBrands.length > 0 ? newBrands : undefined);
   };
 
+  const handleCurrencyFilter = (currency: string, checked: boolean) => {
+    const newCurrencies = checked
+      ? [...filters.currencies, currency]
+      : filters.currencies.filter(c => c !== currency);
+    setFilters(prev => ({ ...prev, currencies: newCurrencies }));
+    table.getColumn('currency')?.setFilterValue(newCurrencies.length > 0 ? newCurrencies : undefined);
+  };
+
   const clearAllFilters = () => {
     setGlobalFilter('');
     setColumnFilters([]);
@@ -626,6 +780,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
       hasCompetitorData: null,
       featured: null,
       highMargin: null,
+      currencies: [],
     });
   };
 
@@ -635,9 +790,9 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
   return (
     <div className="w-full space-y-4">
       {/* Header Controls */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <div className="relative">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full sm:w-auto">
+          <div className="relative w-full sm:w-80">
             <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 transition-colors ${
               globalFilter ? 'text-blue-500 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'
             }`} />
@@ -648,37 +803,39 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
                 setGlobalFilter(e.target.value);
                 debouncedSetGlobalFilter(e.target.value);
               }}
-              className={`pl-10 w-80 transition-colors bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 ${
+              className={`pl-10 w-full transition-colors bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 ${
                 globalFilter ? 'border-blue-300 dark:border-blue-500 focus:border-blue-500 dark:focus:border-blue-400' : ''
               }`}
             />
           </div>
           
-          <Button
-            variant="outline"
-            onClick={() => setShowFilters(!showFilters)}
-            className="relative border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
-          >
-            <Filter className="mr-2 h-4 w-4" />
-            Filters
-            {activeFiltersCount > 0 && (
-              <Badge variant="secondary" className="ml-2 h-5 w-5 rounded-full p-0 text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-700 flex items-center justify-center">
-                {activeFiltersCount}
-              </Badge>
-            )}
-          </Button>
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <Button
+              variant="outline"
+              onClick={() => setShowFilters(!showFilters)}
+              className="relative border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 flex-1 sm:flex-none"
+            >
+              <Filter className="mr-2 h-4 w-4" />
+              Filters
+              {activeFiltersCount > 0 && (
+                <Badge variant="secondary" className="ml-2 h-5 w-5 rounded-full p-0 text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-700 flex items-center justify-center">
+                  {activeFiltersCount}
+                </Badge>
+              )}
+            </Button>
 
-          <Button 
-            variant="outline" 
-            onClick={clearAllFilters}
-            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
-          >
-            <FilterX className="mr-2 h-4 w-4" />
-            Clear All
-          </Button>
+            <Button 
+              variant="outline" 
+              onClick={clearAllFilters}
+              className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 flex-1 sm:flex-none"
+            >
+              <FilterX className="mr-2 h-4 w-4" />
+              Clear All
+            </Button>
+          </div>
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center gap-2 w-full sm:w-auto">
           <div className="flex items-center space-x-1">
             <Button
               variant={viewMode === 'table' ? 'default' : 'outline'}
@@ -771,6 +928,25 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
               </div>
             </div>
 
+            {/* Currency Filter */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-900 dark:text-gray-100">Currency</label>
+              <div className="space-y-1">
+                {uniqueCurrencies.map((currency) => (
+                  <div key={currency} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={`currency-${currency}`}
+                      checked={filters.currencies.includes(currency)}
+                      onCheckedChange={(checked) => handleCurrencyFilter(currency, !!checked)}
+                    />
+                    <label htmlFor={`currency-${currency}`} className="text-sm text-gray-700 dark:text-gray-300">
+                      {currency}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {/* Quick Filters */}
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-900 dark:text-gray-100">Quick Filters</label>
@@ -857,26 +1033,32 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
       )}
 
       {/* Table */}
-      <div className="rounded-md border border-gray-200 dark:border-gray-700">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
+      <div className="-mx-4 sm:-mx-6 lg:-mx-8">
+        <div className="overflow-x-auto px-4 sm:px-6 lg:px-8">
+          <div className="rounded-md border border-gray-200 dark:border-gray-700">
+            <Table className="min-w-full">
+              <TableHeader className="sticky top-0 bg-white dark:bg-gray-800 z-10">
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => {
+                      return (
+                        <TableHead 
+                          key={header.id}
+                          className="whitespace-nowrap"
+                          style={{ width: header.getSize() }}
+                        >
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </TableHead>
+                      );
+                    })}
+                  </TableRow>
+                ))}
+              </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
@@ -885,7 +1067,11 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
                   data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell 
+                      key={cell.id}
+                      className="whitespace-nowrap"
+                      style={{ width: cell.column.getSize() }}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -904,17 +1090,19 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({ products })
                 </TableCell>
               </TableRow>
             )}
-          </TableBody>
-        </Table>
+            </TableBody>
+          </Table>
+        </div>
       </div>
+    </div>
 
       {/* Pagination */}
-      <div className="flex items-center justify-between space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground dark:text-gray-400">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-4">
+        <div className="text-sm text-muted-foreground dark:text-gray-400 text-center sm:text-left">
           {table.getFilteredSelectedRowModel().rows.length} of{' '}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        <div className="flex items-center space-x-6 lg:space-x-8">
+        <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
           <div className="flex items-center space-x-2">
             <p className="text-sm font-medium text-gray-900 dark:text-gray-100">Rows per page</p>
             <Select

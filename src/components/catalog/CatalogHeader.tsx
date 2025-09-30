@@ -12,10 +12,10 @@ const CatalogHeader: React.FC<CatalogHeaderProps> = ({
   return (
     <div className="mb-5">
       {/* Top Page Header */}
-      <div className="flex w-full items-start gap-3 border border-[#F2F2F2] rounded-xl bg-white mb-5 h-[61px]">
+      <div className="flex w-full flex-col md:flex-row items-start md:items-center gap-3 border border-[#F2F2F2] rounded-xl bg-white mb-5 p-4 md:h-[61px]">
         <div className="flex items-start gap-1.5 flex-1 px-6 py-4">
           <div className="flex flex-col items-start gap-1 flex-1">
-            <div className="flex justify-between items-center self-stretch">
+            <div className="flex flex-col gap-2 md:flex-row justify-between items-start md:items-center self-stretch">
               <div className="flex items-center gap-3">
                 <h1 className="text-[#14151A] font-inter text-2xl font-semibold leading-8 tracking-[-0.336px]">
                   My Catalog

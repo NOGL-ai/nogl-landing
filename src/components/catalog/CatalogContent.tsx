@@ -2,10 +2,12 @@
 
 import React, { useState } from 'react';
 import CatalogHeader from './CatalogHeader';
-import UltimateProductTable from './UltimateProductTable';
+import UltimateProductTable, { Product } from './UltimateProductTable';
+import { createApiDataFetcher } from '@/utils/infiniteScrollUtils';
 
 const CatalogContent = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [enableInfiniteScroll, setEnableInfiniteScroll] = useState(false);
 
   // German jewelry brands data from Shopify stores
   const products = [
@@ -18,6 +20,8 @@ const CatalogContent = () => {
       price: '€ 49.90',
       minPrice: '-',
       maxPrice: '-',
+      currency: 'EUR',
+      channel: 'shopify',
       brand: {
         name: 'Ellijewelry',
         logo: '/api/placeholder/24/24'
@@ -39,6 +43,8 @@ const CatalogContent = () => {
       price: '€ 69.90',
       minPrice: '-',
       maxPrice: '-',
+      currency: 'EUR',
+      channel: 'shopify',
       brand: {
         name: 'Ellijewelry',
         logo: '/api/placeholder/24/24'
@@ -60,6 +66,8 @@ const CatalogContent = () => {
       price: '€ 99.00',
       minPrice: '-',
       maxPrice: '-',
+      currency: 'EUR',
+      channel: 'shopify',
       brand: {
         name: 'Nenalina',
         logo: '/api/placeholder/24/24'
@@ -81,6 +89,8 @@ const CatalogContent = () => {
       price: '€ 49.90',
       minPrice: '-',
       maxPrice: '-',
+      currency: 'EUR',
+      channel: 'shopify',
       brand: {
         name: 'Kuzzoi',
         logo: '/api/placeholder/24/24'
@@ -102,6 +112,8 @@ const CatalogContent = () => {
       price: '€ 69.90',
       minPrice: '-',
       maxPrice: '-',
+      currency: 'EUR',
+      channel: 'shopify',
       brand: {
         name: 'Kuzzoi',
         logo: '/api/placeholder/24/24'
@@ -123,6 +135,8 @@ const CatalogContent = () => {
       price: '€ 39.90',
       minPrice: '-',
       maxPrice: '-',
+      currency: 'EUR',
+      channel: 'shopify',
       brand: {
         name: 'Kuzzoi',
         logo: '/api/placeholder/24/24'
@@ -144,6 +158,8 @@ const CatalogContent = () => {
       price: '€ 120.00',
       minPrice: '-',
       maxPrice: '-',
+      currency: 'EUR',
+      channel: 'shopify',
       brand: {
         name: 'Stilnest',
         logo: '/api/placeholder/24/24'
@@ -165,6 +181,8 @@ const CatalogContent = () => {
       price: '€ 120.00',
       minPrice: '-',
       maxPrice: '-',
+      currency: 'EUR',
+      channel: 'shopify',
       brand: {
         name: 'Stilnest',
         logo: '/api/placeholder/24/24'
@@ -186,6 +204,8 @@ const CatalogContent = () => {
       price: '€ 150.00',
       minPrice: '-',
       maxPrice: '-',
+      currency: 'EUR',
+      channel: 'shopify',
       brand: {
         name: 'Stilnest',
         logo: '/api/placeholder/24/24'
@@ -207,6 +227,8 @@ const CatalogContent = () => {
       price: '€ 150.00',
       minPrice: '-',
       maxPrice: '-',
+      currency: 'EUR',
+      channel: 'shopify',
       brand: {
         name: 'Stilnest',
         logo: '/api/placeholder/24/24'
@@ -221,14 +243,30 @@ const CatalogContent = () => {
     }
   ];
 
+  // Infinite scroll configuration
+  const infiniteScrollProps = {
+    queryKey: ['products'] as (string | number | boolean)[],
+    queryFn: createApiDataFetcher<Product>('/api/products', 20),
+    fetchSize: 20
+  };
+
+  const handleInfiniteScrollToggle = (enabled: boolean) => {
+    setEnableInfiniteScroll(enabled);
+    console.log('Infinite scroll mode:', enabled ? 'enabled' : 'disabled');
+  };
 
   return (
-    <div className="w-full max-w-7xl mx-auto p-4 lg:p-6 space-y-6 transition-all duration-300">
+    <div className="w-full px-4 lg:px-6 py-6 space-y-6 transition-all duration-300">
       <CatalogHeader 
         productCount={products.length}
       />
       
-            <UltimateProductTable products={products} />
+      <UltimateProductTable 
+        products={products}
+        enableInfiniteScroll={enableInfiniteScroll}
+        onInfiniteScrollToggle={handleInfiniteScrollToggle}
+        infiniteScrollProps={infiniteScrollProps}
+      />
     </div>
   );
 };
