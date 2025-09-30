@@ -6,7 +6,13 @@ import { authOptions } from "@/libs/auth";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { expertise, experience, linkedinProfile, portfolio } = body;
+    const { 
+      name, username, bio, expertise, yearsOfExperience, languages, 
+      expertCategories, hourlyRate, cancellationPolicy, companyType, 
+      companyName, registrationNumber, businessAddress, vatId, taxId, 
+      ustIdNr, steuernummer, payoutMethod, bankAccountHolder, iban, bic, 
+      socialLinks, businessDocuments 
+    } = body;
 
     const session = await getServerSession(authOptions);
 
@@ -20,12 +26,29 @@ export async function POST(request: Request) {
       },
       data: {
         role: "EXPERT",
-        expertise,
-        experience,
-        socialLinks: {
-          linkedin: linkedinProfile,
-          portfolio
-        }
+        name: name || session.user.name,
+        username: username || session.user.username,
+        bio: bio || session.user.bio,
+        expertise: expertise || [],
+        experience: yearsOfExperience || "",
+        languages: languages || [],
+        expertCategories: expertCategories || [],
+        hourlyRate: hourlyRate ? parseFloat(hourlyRate) : null,
+        cancellationPolicy: cancellationPolicy || "",
+        companyType: companyType || "",
+        companyName: companyName || "",
+        registrationNumber: registrationNumber || "",
+        businessAddress: businessAddress || {},
+        vatId: vatId || "",
+        taxId: taxId || "",
+        ustIdNr: ustIdNr || "",
+        steuernummer: steuernummer || "",
+        payoutMethod: payoutMethod || "SEPA",
+        bankAccountHolder: bankAccountHolder || "",
+        iban: iban || "",
+        bic: bic || "",
+        socialLinks: socialLinks || {},
+        businessDocuments: businessDocuments || {}
       },
     });
 
