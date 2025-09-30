@@ -8,7 +8,7 @@ export const pricingData: Price[] = [
 		description: "Start your learning journey today",
 		subtitle: "Perfect for exploring",
 		includes: [
-			"Starter Pack: 3 demand-sensed trend reports ($297 value)",
+			"Starter Pack: 3 demand-sensed trend reports (€273 value)",
 			"Insights Vault: Access curated forecast highlights",
 			"AI Forecast Assistant: Experience smart insights preview",
 		],
@@ -21,7 +21,7 @@ export const pricingData: Price[] = [
 		description: "Transform your merchandising with forecasting & AI insights",
 		subtitle: "For ambitious learners",
 		includes: [
-			"Weekly Forecasts: Demand and trend drops ($997/month value)",
+			"Weekly Forecasts: Demand and trend drops (€917/month value)",
 			"AI Merchandising Coach: Summaries & action plans from forecasts",
 			"Members-only insights from category specialists",
 		],
