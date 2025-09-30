@@ -298,6 +298,9 @@ export default function CompetitorsPage() {
               <div className="px-1 py-3 w-[115px]">
                 <span className="text-xs text-gray-600 font-normal">Status</span>
               </div>
+              <div className="px-1 py-3 w-[110px]">
+                <span className="text-xs text-gray-600 font-normal">Compare</span>
+              </div>
               <div className="px-1 py-3 w-[79px] text-center">
                 <span className="text-xs text-gray-600 font-normal">Actions</span>
               </div>
@@ -384,6 +387,19 @@ export default function CompetitorsPage() {
                   {/* Status */}
                   <div className="px-1 py-4 w-[115px]">
                     <StatusBadge status={competitor.status} />
+                  </div>
+
+                  {/* Compare */}
+                  <div className="px-1 py-4 w-[110px] flex items-center">
+                    {/* Derive a compare percentage from available data if present */}
+                    {(() => {
+                      const total = (competitor.pricePosition.lower + competitor.pricePosition.equal + competitor.pricePosition.higher);
+                      const derived = total > 0 ? Math.round((competitor.pricePosition.equal / total) * 100) : undefined;
+                      const percentage = Number.isFinite(derived) ? derived : (typeof (competitor as any).compare === 'number' ? Math.max(0, Math.min(100, (competitor as any).compare)) : 0);
+                      return (
+                        <CircularProgress value={percentage} max={100} color="#3F83F8" />
+                      );
+                    })()}
                   </div>
 
                   {/* Actions */}
