@@ -48,7 +48,7 @@ export const dataStats: DataStats[] = [
 	{
 		id: 2,
 		content: "Total Revenue",
-		value: "$42.2K",
+		value: "€38.7K",
 		isIncrease: true,
 		percents: "4.35%",
 		color: "#FF9C55",
@@ -155,21 +155,21 @@ export const overviewData: OverviewData[] = [
 	{
 		id: 1,
 		title: "Monthly Recurring Revenue",
-		value: "$9.1",
+		value: "€8.4",
 		percents: "(+4%)",
 		isIncrease: true,
 	},
 	{
 		id: 2,
 		title: "Revenue",
-		value: "$32.9",
+		value: "€30.3",
 		percents: "(+4%)",
 		isIncrease: true,
 	},
 	{
 		id: 3,
 		title: "Fees",
-		value: "$0.5",
+		value: "€0.5",
 		percents: "(+4%)",
 		isIncrease: true,
 	},

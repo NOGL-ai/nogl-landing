@@ -14,7 +14,7 @@ export default function GraphCard({ data }: { data: OverviewData }) {
 						Monthly Recurring Revenue
 					</p>
 					<h5 className='font-satoshi text-heading-5 font-bold text-dark dark:text-white'>
-						$9.1
+						€8.4
 					</h5>
 				</div>
 				<div>
