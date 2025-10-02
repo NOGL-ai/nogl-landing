@@ -1,3 +1,5 @@
+// COMMENTED OUT - Uses removed ExpertSession model
+/*
 "use server";
 import { prisma } from "@/libs/prismaDb";
 
@@ -20,4 +22,13 @@ export async function getExpertSessions() {
     console.error("Error fetching expert sessions:", error);
     return [];
   }
+}
+*/
+
+"use server";
+
+// Temporary replacement - returns empty array for removed functionality
+export async function getExpertSessions() {
+  console.warn("ExpertSession functionality has been removed");
+  return [];
 }

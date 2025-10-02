@@ -1,3 +1,5 @@
+// COMMENTED OUT - Uses removed ExpertSession model
+/*
 import { prisma } from "@/libs/prismaDb";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/libs/auth";
@@ -148,4 +150,15 @@ export async function POST(req: Request) {
       headers: { 'Content-Type': 'application/json' }
     });
   }
+}
+*/
+
+// Temporary replacement - returns error for removed functionality
+export async function POST(req: Request) {
+  return new Response(JSON.stringify({ 
+    error: "ExpertSession functionality has been removed" 
+  }), {
+    status: 501,
+    headers: { 'Content-Type': 'application/json' }
+  });
 }

@@ -1,3 +1,5 @@
+// COMMENTED OUT - Uses removed ExpertSession model
+/*
 // src/utils/fetchSessionById.ts
 
 import { prisma } from "@/libs/prismaDb";
@@ -59,5 +61,15 @@ export const fetchSessionById = async (
     console.error("Fetch session error:", error);
     throw error;
   }
+};
+*/
+
+import { SessionWithExpert } from "@/types/session";
+
+// Temporary replacement - throws error for removed functionality
+export const fetchSessionById = async (
+  sessionId: string
+): Promise<SessionWithExpert> => {
+  throw new Error("ExpertSession functionality has been removed");
 };
 

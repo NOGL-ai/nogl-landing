@@ -1,3 +1,5 @@
+// COMMENTED OUT - Uses removed Booking model
+/*
 export const dynamic = 'force-dynamic';
 
 import { NextResponse } from 'next/server';
@@ -52,4 +54,16 @@ export async function POST(request: Request) {
       details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
+}
+*/
+
+import { NextResponse } from 'next/server';
+
+export const dynamic = 'force-dynamic';
+
+// Temporary replacement - returns error for removed functionality
+export async function POST(request: Request) {
+  return NextResponse.json({ 
+    error: 'Booking functionality has been removed'
+  }, { status: 501 });
 } 

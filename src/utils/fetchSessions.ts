@@ -1,3 +1,5 @@
+// COMMENTED OUT - Uses removed ExpertSession model
+/*
 import { prisma } from "@/libs/prismaDb";
 import { SessionWithExpert } from "@/types/session";
 import { processSessionData } from "./processSessionData";
@@ -72,4 +74,13 @@ export const fetchSessions = async (): Promise<SessionWithExpert[]> => {
     console.error("Fetch sessions error:", error);
     throw error;
   }
+};
+*/
+
+import { SessionWithExpert } from "@/types/session";
+
+// Temporary replacement - returns empty array for removed functionality
+export const fetchSessions = async (): Promise<SessionWithExpert[]> => {
+  console.warn("ExpertSession functionality has been removed");
+  return [];
 };

@@ -1,3 +1,5 @@
+// COMMENTED OUT - Uses removed ApiKey model
+/*
 import { prisma } from "@/libs/prismaDb";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
@@ -21,4 +23,12 @@ export async function GET() {
 	} catch (error) {
 		return new NextResponse("Something went wrong", { status: 500 });
 	}
+}
+*/
+
+import { NextResponse } from "next/server";
+
+// Temporary replacement - returns error for removed functionality
+export async function GET() {
+	return new NextResponse("ApiKey functionality has been removed", { status: 501 });
 }

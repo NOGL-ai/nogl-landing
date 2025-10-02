@@ -1,3 +1,5 @@
+// COMMENTED OUT - Uses removed ExpertSession model
+/*
 import { prisma } from "@/libs/prismaDb";
 import { SessionWithExpert } from "@/types/session";
 import { SessionType } from "@prisma/client";
@@ -84,4 +86,21 @@ export const fetchSessionsByExpertId = async ({
     console.error("Fetch sessions error:", error);
     throw error;
   }
+};
+*/
+
+import { SessionWithExpert } from "@/types/session";
+
+interface FetchSessionsParams {
+  expertId: string;
+  sessionType?: any; // Removed SessionType import
+}
+
+// Temporary replacement - returns empty array for removed functionality
+export const fetchSessionsByExpertId = async ({ 
+  expertId, 
+  sessionType 
+}: FetchSessionsParams): Promise<SessionWithExpert[]> => {
+  console.warn("ExpertSession functionality has been removed");
+  return [];
 };

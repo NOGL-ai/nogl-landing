@@ -1,3 +1,5 @@
+// COMMENTED OUT - Uses removed ApiKey model
+/*
 "use server";
 import { prisma } from "@/libs/prismaDb";
 import bcrypt from "bcrypt";
@@ -46,4 +48,20 @@ export async function deleteApiKey(id: string) {
 
 	revalidatePath("/admin/api");
 	return res;
+}
+*/
+
+"use server";
+
+// Temporary replacements - return errors for removed functionality
+export async function getApiKeys() {
+	throw new Error("ApiKey functionality has been removed");
+}
+
+export async function createApiKey(keyName: string) {
+	throw new Error("ApiKey functionality has been removed");
+}
+
+export async function deleteApiKey(id: string) {
+	throw new Error("ApiKey functionality has been removed");
 }

@@ -1,3 +1,5 @@
+// COMMENTED OUT - Uses removed ApiKey model
+/*
 import { NextResponse } from "next/server";
 // import crypto from "crypto";
 import { prisma } from "@/libs/prismaDb";
@@ -42,4 +44,12 @@ export async function POST(request: Request) {
 	} catch (error) {
 		return new NextResponse("Something went wrong", { status: 500 });
 	}
+}
+*/
+
+import { NextResponse } from "next/server";
+
+// Temporary replacement - returns error for removed functionality
+export async function POST(request: Request) {
+	return new NextResponse("ApiKey functionality has been removed", { status: 501 });
 }
