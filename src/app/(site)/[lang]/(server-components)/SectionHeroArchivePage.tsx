@@ -1,43 +1,28 @@
-import React, { FC, ReactNode } from "react";
-import HeroSearchForm, { SearchTab } from "../../(site)/(client-components)/(HeroSearchForm)/HeroSearchForm";
+import React from "react";
 
-export interface SectionHeroArchivePageProps {
+interface SectionHeroArchivePageProps {
 	className?: string;
-	listingType?: ReactNode;
-	currentPage: "Stays" | "Experiences" | "Cars" | "Flights" | "Sessions" | "Experts"; // Update these to reflect your platform categories if necessary
-	currentTab: SearchTab;
+	listingType?: any;
+	currentPage?: string;
+	currentTab?: string;
 }
 
-const SectionHeroArchivePage: FC<SectionHeroArchivePageProps> = ({
+const SectionHeroArchivePage: React.FC<SectionHeroArchivePageProps> = ({
 	className = "",
 	listingType,
 	currentPage,
 	currentTab,
 }) => {
 	return (
-		<div
-			className={`nc-SectionHeroArchivePage relative flex flex-col ${className}`}
-			data-nc-id="SectionHeroArchivePage"
-		>
-			<div className="flex flex-col items-start space-y-4 pb-4 lg:w-full lg:space-y-6 lg:pb-6">
-				<h2 className="text-4xl font-medium leading-[110%] md:text-5xl xl:text-7xl">
-					Get Smarter for Less - Tap into Expert Insights Directly
-				</h2>
-				<p className="text-neutral-500 dark:text-neutral-400 md:text-lg">
-					Expand your knowledge and skills by booking sessions with industry leaders.
-				</p>
-				<div className="flex items-center text-base text-neutral-500 dark:text-neutral-400 md:text-lg">
-					<i className="las la-globe text-2xl" aria-label="Global Reach"></i>
-					<span className="ml-2.5">Global Availability</span>
-					<span className="mx-5"></span>
-					{listingType ? (
-						listingType
-					) : (
-						<>
-							<i className="las la-graduation-cap text-2xl" aria-label="Sessions"></i>
-							<span className="ml-2.5">1200+ Experts</span>
-						</>
-					)}
+		<div className={`nc-SectionHeroArchivePage flex flex-col relative ${className}`}>
+			<div className="flex flex-col lg:flex-row lg:items-center">
+				<div className="flex-shrink-0 lg:w-1/2 flex flex-col items-start space-y-6 lg:space-y-10 pb-14 lg:pb-64 xl:pb-80 xl:pr-14 lg:mr-10 xl:mr-0">
+					<h2 className="font-medium text-4xl md:text-5xl xl:text-7xl !leading-[114%] ">
+						Archive Page
+					</h2>
+					<span className="text-base md:text-lg text-neutral-500 dark:text-neutral-400">
+						Browse through our collection
+					</span>
 				</div>
 			</div>
 		</div>

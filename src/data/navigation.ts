@@ -8,42 +8,10 @@ export const NAVIGATION_DEMO: NavItemType[] = [
 		href: "/",
 	},
 	{
-		id: "sessions",
-		name: "Sessions",
-		href: "/listing-session",
-		children: [
-			{
-				id: "browse-sessions",
-				name: "Browse Sessions",
-				href: "/listing-session",
-			},
-			{
-				id: "featured-experts",
-				name: "Featured Experts (Coming Soon)",
-				href: "/",
-			},
-			{
-				id: "upcoming-sessions",
-				name: "Upcoming Sessions (Coming Soon)",
-				href: "/",
-			}
-		],
-	},
-	{
 		id: "account",
 		name: "Account",
 		href: "#",
 		children: [
-			{
-				id: "my-bookings",
-				name: "My Bookings",
-				href: "/account-bookings",
-			},
-			{
-				id: "saved-sessions",
-				name: "Saved Sessions",
-				href: "/account-savelists",
-			},
 			{
 				id: "profile",
 				name: "Profile Settings",

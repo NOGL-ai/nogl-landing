@@ -4,7 +4,6 @@ import Logo from "@/shared/Logo";
 import SocialsList1 from "@/shared/SocialsList1";
 import { CustomLink } from "@/data/types";
 import React from "react";
-import FooterNav from "./FooterNav";
 
 export interface WidgetFooterMenu {
 	id: string;
@@ -18,9 +17,7 @@ const getWidgetMenus = (lang: string): WidgetFooterMenu[] => [
 		title: "Product",
 		menus: [
 			{ href: "/about", label: "How it works" },
-			{ href: "/listing-session", label: "Trend Forecasts" },
 			{ href: "/#pricing", label: "Pricing" },
-			{ href: "/become-expert", label: "For Teams" },
 		],
 	},
 	{
@@ -83,8 +80,6 @@ const Footer: React.FC<{ lang?: string }> = ({ lang = 'en' }) => {
 
 	return (
 		<>
-			<FooterNav />
-
 			<div className='nc-Footer relative border-t border-neutral-200 py-24 dark:border-neutral-700 lg:py-28'>
 				<div className='container grid grid-cols-2 gap-x-5 gap-y-10 sm:gap-x-8 md:grid-cols-4 lg:grid-cols-5 lg:gap-x-10 '>
 					<div className='col-span-2 grid grid-cols-4 gap-5 md:col-span-4 lg:md:col-span-1 lg:flex lg:flex-col'>

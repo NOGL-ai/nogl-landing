@@ -1,1 +1,0 @@
-export type BookingState = 'PAST' | 'READY_TO_JOIN' | 'UPCOMING' | 'AVAILABLE' | 'BOOKED'; 
