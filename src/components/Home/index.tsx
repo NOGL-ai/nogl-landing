@@ -11,7 +11,6 @@ import Blog from "./Blog";
 import Newsletter from "./Newsletter";
 import BgGlassmorphism from "@/components/BgGlassmorphism";
 import SectionSliderNewCategories from "@/components/SectionSliderNewCategories";
-import SectionGridFeaturePlaces from "@/components/SectionGridFeaturePlaces";
 import SectionGridAuthorBox from "@/components/SectionGridAuthorBox";
 import BackgroundSection from "@/components/BackgroundSection";
 import Logos from "@/components/logos";
@@ -19,7 +18,7 @@ import Particles from "@/components/ui/particles";
 import Problem from "./Problem";
 import  Solution  from "./Solution";
 import FeaturesHorizontal from "./FeaturesHorizantal";
-import { FeatureScroll } from "./Features/FeatureScroll";
+import FeatureScroll from "./Features/FeatureScroll";
 
 interface HomeProps {
   dictionary: any; // Type this based on your dictionary structure

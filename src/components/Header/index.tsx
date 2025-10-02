@@ -10,7 +10,7 @@ import ShimmerButton from "@/components/ui/shimmer-button";
 import GlobalSearchModal from "../GlobalSearch";
 import SwitchDarkMode from "@/shared/SwitchDarkMode";
 import { usePathname } from "next/navigation";
-import { onScroll } from "@/libs/scrollActive";
+import { onScroll } from "@/lib/scrollActive";
 import { useSession } from "next-auth/react";
 import { Route } from "@/routers/types";
 
