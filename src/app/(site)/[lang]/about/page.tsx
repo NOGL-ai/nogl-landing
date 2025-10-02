@@ -20,9 +20,9 @@ const PageAbout: FC<PageAboutProps> = () => {
         {/* Hero Section */}
         <SectionHero
           rightImg={rightImg}
-          heading="AI Fashion Intelligence for Trend & Demand"
+          heading="About Our Platform"
           btnText="Join Our Mission"
-          subHeading={`We help fashion teams predict trends, forecast new-product demand, and optimize localized assortments using demand‑sensing AI. Reduce markdowns, increase turns, and lift full‑price sell‑through.`}
+          subHeading={`We help teams optimize their operations and improve efficiency through our comprehensive platform solutions.`}
         />
 
         {/* Founder Section */}

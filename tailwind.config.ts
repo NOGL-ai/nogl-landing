@@ -18,7 +18,10 @@ const config: Config = {
   theme: {
   	fontFamily: {
   		satoshi: ["Satoshi", "sans-serif"],
-  		inter: ["Inter", "sans-serif"]
+  		inter: ["Inter", "sans-serif"],
+  		body: ["var(--font-body)", "Inter", "sans-serif"],
+  		display: ["var(--font-display)", "Inter", "sans-serif"],
+  		mono: ["var(--font-mono)", "ui-monospace", "monospace"]
   	},
   	container: {
   		center: true,
@@ -165,7 +168,14 @@ const config: Config = {
   			'heading-5': ["28px", "40px"],
   			'heading-6': ["24px", "30px"],
   			'custom-2xl': ["22px", "30px"],
-  			'custom-3xl': ["32px", "40px"]
+  			'custom-3xl': ["32px", "40px"],
+  			// Untitled UI text sizes
+  			'display-xs': ["var(--text-display-xs)", { lineHeight: "var(--text-display-xs--line-height)" }],
+  			'display-sm': ["var(--text-display-sm)", { lineHeight: "var(--text-display-sm--line-height)" }],
+  			'display-md': ["var(--text-display-md)", { lineHeight: "var(--text-display-md--line-height)", letterSpacing: "var(--text-display-md--letter-spacing)" }],
+  			'display-lg': ["var(--text-display-lg)", { lineHeight: "var(--text-display-lg--line-height)", letterSpacing: "var(--text-display-lg--letter-spacing)" }],
+  			'display-xl': ["var(--text-display-xl)", { lineHeight: "var(--text-display-xl--line-height)", letterSpacing: "var(--text-display-xl--letter-spacing)" }],
+  			'display-2xl': ["var(--text-display-2xl)", { lineHeight: "var(--text-display-2xl--line-height)", letterSpacing: "var(--text-display-2xl--letter-spacing)" }]
   		},
   		spacing: {
   			'10': '2.5rem',
@@ -483,6 +493,31 @@ const config: Config = {
     require("@tailwindcss/typography"),
     require("@tailwindcss/forms"),
     require("@tailwindcss/aspect-ratio"),
+    function({ addVariant, addUtilities }: { addVariant: any; addUtilities: any }) {
+      // Custom variants
+      addVariant('dark', '&:where(.dark-mode, .dark-mode *)');
+      addVariant('label', '& [data-label]');
+      addVariant('focus-input-within', '&:has(input:focus)');
+      
+      // Custom utilities
+      addUtilities({
+        '.scrollbar-hide': {
+          /* For Webkit-based browsers (Chrome, Safari and Opera) */
+          '&::-webkit-scrollbar': {
+            display: 'none',
+            '-webkit-appearance': 'none',
+          },
+          /* For IE, Edge and Firefox */
+          '-ms-overflow-style': 'none', /* IE and Edge */
+          'scrollbar-width': 'none', /* Firefox */
+        },
+        '.transition-inherit-all': {
+          'transition-property': 'inherit',
+          'transition-duration': 'inherit',
+          'transition-timing-function': 'inherit',
+        },
+      });
+    },
   ],
 };
 

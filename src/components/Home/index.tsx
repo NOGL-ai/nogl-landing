@@ -5,7 +5,7 @@ import FeatureSlideshow from "./FeatureSlideshow";
 import Counter from "./Counter";
 import { CallToAction } from './CallToAction';
 import Testimonials from "@/components/testimonials";
-import Pricing from "./Pricing";
+// import Pricing from "./Pricing";
 import FAQ from "./FAQ";
 import Blog from "./Blog";
 import Newsletter from "./Newsletter";
@@ -18,7 +18,7 @@ import Particles from "@/components/ui/particles";
 import Problem from "./Problem";
 import  Solution  from "./Solution";
 import FeaturesHorizontal from "./FeaturesHorizantal";
-import FeatureScroll from "./Features/FeatureScroll";
+// import FeatureScroll from "./Features/FeatureScroll";
 
 interface HomeProps {
   dictionary: any; // Type this based on your dictionary structure
@@ -41,7 +41,7 @@ const Home: React.FC<HomeProps> = ({ dictionary }) => {
       {/* <Problem dictionary={dictionary} /> */}
       {/* <Solution dictionary={dictionary} /> */}
       <Counter dictionary={dictionary} />
-      <FeatureScroll dictionary={dictionary} />
+      {/* <FeatureScroll dictionary={dictionary} /> */}
       {/* <FeaturesHorizontal /> */}
       {/* <Features />
       <FeaturesWithImage />
@@ -82,7 +82,7 @@ const Home: React.FC<HomeProps> = ({ dictionary }) => {
       {/* <div className="relative py-16">
         <Testimonials />
       </div> */}
-      <Pricing dictionary={dictionary} />
+      {/* <Pricing dictionary={dictionary} /> */}
       <FAQ dictionary={dictionary} />
       <div id="newsletter">
         <Newsletter dictionary={dictionary} />

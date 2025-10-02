@@ -1,6 +1,45 @@
+/* stylelint-disable-next-line at-rule-no-unknown */
 @tailwind base;
+/* stylelint-disable-next-line at-rule-no-unknown */
 @tailwind components;
+/* stylelint-disable-next-line at-rule-no-unknown */
 @tailwind utilities;
+
+@import "./theme.css";
+
+html,
+body {
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-variant-ligatures: contextual;
+  font-variant-ligatures: contextual;
+  -webkit-font-kerning: normal;
+  font-kerning: normal;
+}
+
+/* Hide the default expand arrow on Safari.  */
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Hide default arrows from number inputs. */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+/* Hide the default clear button (X) from search inputs. */
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
 
 @layer base {
   :root {
@@ -71,9 +110,11 @@
 
 @layer base {
   * {
+    /* stylelint-disable-next-line at-rule-no-unknown */
     @apply border-border;
   }
   body {
+    /* stylelint-disable-next-line at-rule-no-unknown */
     @apply bg-background text-foreground;
     margin: 0;
     padding: 0;
@@ -94,6 +135,28 @@
     height: 100%;
     margin: 0;
     padding: 0;
+  }
+}
+
+@layer utilities {
+  /* Custom scrollbar hide utility */
+  .scrollbar-hide {
+    /* For Webkit-based browsers (Chrome, Safari and Opera) */
+    &::-webkit-scrollbar {
+      display: none;
+      -webkit-appearance: none;
+    }
+
+    /* For IE, Edge and Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  /* Custom transition utility */
+  .transition-inherit-all {
+    transition-property: inherit;
+    transition-duration: inherit;
+    transition-timing-function: inherit;
   }
 }
 
@@ -125,11 +188,13 @@
 }
 
 .nc-header-bg {
+  /* stylelint-disable-next-line at-rule-no-unknown */
   @apply bg-white/90 dark:bg-neutral-900/90 backdrop-blur-sm;
 }
 
 /* Optional: Add this if you want a smoother shadow transition */
 .shadow-transition {
+  /* stylelint-disable-next-line at-rule-no-unknown */
   @apply transition-shadow duration-300;
 }
 

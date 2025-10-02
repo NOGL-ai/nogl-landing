@@ -3,30 +3,36 @@ import { Inter } from 'next/font/google';
 import Script from 'next/script';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import ClientLayout from './ClientLayout';
+import { RouteProvider } from '@/components/providers/RouteProvider';
+import { ThemeProvider } from '@/components/providers/ThemeProvider';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html lang="en" suppressHydrationWarning={true}>
+    <html lang="en" className={`${inter.variable} scroll-smooth`} suppressHydrationWarning={true}>
       <head>
         {/* Theme initialization script to prevent flash of light mode */}
-        <script
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
                 try {
-                  if (typeof window !== 'undefined' && typeof document !== 'undefined') {
-                    // Set default dark theme immediately to prevent flash
-                    document.documentElement.classList.add('dark');
-                    
-                    // Then check localStorage and update accordingly
-                    var theme = localStorage.getItem('theme');
-                    if (theme === 'light') {
-                      document.documentElement.classList.remove('dark');
-                    } else if (!theme) {
-                      localStorage.setItem('theme', 'dark');
-                    }
+                  // Set default dark theme immediately to prevent flash
+                  document.documentElement.classList.add('dark');
+                  
+                  // Then check localStorage and update accordingly
+                  var theme = localStorage.getItem('theme');
+                  if (theme === 'light') {
+                    document.documentElement.classList.remove('dark');
+                  } else if (!theme) {
+                    localStorage.setItem('theme', 'dark');
                   }
                 } catch (e) {}
               })();
@@ -41,10 +47,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 					src="https://cdn-cookieyes.com/client_data/4b51d26e7c5cf7c0c591c9b4/script.js"
 				/> */}
 
-
         {/* Mailchimp Connected Site Script */}
-        <script
+        <Script
           id="mcjs"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `!function(c,h,i,m,p){m=c.createElement(h),
             p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,
@@ -64,26 +70,28 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
-              if (typeof window !== 'undefined') {
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_TAG_ID}', {
-                  page_path: window.location.pathname,
-                  'consent': 'default'
-                });
-              }
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_TAG_ID}', {
+                page_path: window.location.pathname,
+                'consent': 'default'
+              });
             `,
           }}
         />
       </head>
       <body
         suppressHydrationWarning={true}
-        className={`${inter.className} flex min-h-screen flex-col bg-gray-50 dark:bg-gray-900 dark:text-white`}
+        className="bg-primary antialiased"
       >
-        <ClientLayout>
-          {children}
-        </ClientLayout>
+        <RouteProvider>
+          <ThemeProvider>
+            <ClientLayout>
+              {children}
+            </ClientLayout>
+          </ThemeProvider>
+        </RouteProvider>
         <SpeedInsights />
         {/* Videoask widget temporarily disabled
         <Script

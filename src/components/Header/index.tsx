@@ -4,7 +4,6 @@ import MenuBar from "@/shared/MenuBar";
 import LangDropdown from "@/app/(site)/[lang]/(client-components)/(Header)/LangDropdown";
 import NotifyDropdown from "@/app/(site)/[lang]/(client-components)/(Header)/NotifyDropdown";
 import AvatarDropdown from "@/app/(site)/[lang]/(client-components)/(Header)/AvatarDropdown";
-import HeroSearchForm2MobileFactory from "@/app/(site)/[lang]/(client-components)/(HeroSearchForm2Mobile)/HeroSearchForm2MobileFactory";
 import Link from "next/link";
 import ShimmerButton from "@/components/ui/shimmer-button";
 import GlobalSearchModal from "../GlobalSearch";
