@@ -7,12 +7,12 @@ export const metadata: Metadata = {
 	description: `Users Description`,
 };
 
-export default function UsersPage({
+export default async function UsersPage({
 	searchParams,
 }: {
-	searchParams: { filter: string; search: string };
+	searchParams: Promise<{ filter: string; search: string }>;
 }) {
-	const { filter, search } = searchParams;
+	const { filter, search } = await searchParams;
 	const validFilter =
 		filter === "USER" || filter === "ADMIN" ? filter : undefined;
 

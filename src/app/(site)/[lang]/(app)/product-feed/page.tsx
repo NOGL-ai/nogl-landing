@@ -15,10 +15,11 @@ export const metadata: Metadata = {
 };
 
 export default async function ProductFeedPage({
-  params: { lang },
+  params,
 }: {
-  params: { lang: Locale };
+  params: Promise<{ lang: Locale }>;
 }) {
+  const { lang } = await params;
   const dict = await getDictionary(lang);
 
   return <DatafeedSettings />;

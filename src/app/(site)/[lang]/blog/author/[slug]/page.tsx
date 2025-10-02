@@ -1,18 +1,18 @@
 import { getPostsByAuthor, getAuthorBySlug } from "@/ghost/ghost-utils";
 import BlogItem from "@/components/Blog/BlogItem";
 import Breadcrumbs from "@/components/Common/Breadcrumbs";
-import { Author } from "@/types/blog";
+import { Author, Blog } from "@/types/blog";
 import Image from "next/image";
 import { imageBuilder } from "@/ghost/ghost-utils";
 
 type Props = {
-	params: {
+	params: Promise<{
 		slug: string;
-	};
+	}>;
 };
 
 export async function generateMetadata({ params }: Props) {
-	const { slug } = params;
+	const { slug } = await params;
 	const author = (await getAuthorBySlug(slug)) as Author;
 	const siteURL = process.env.SITE_URL;
 	const authorName = process.env.AUTHOR_NAME;
@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: Props) {
 				siteName: authorName,
 				images: [
 					{
-						url: imageBuilder(author.image).url(),
+						url: author.profile_image ? imageBuilder(author.profile_image).url() : '/images/placeholder-avatar.png',
 						width: 343,
 						height: 343,
 						alt: author.name,
@@ -54,7 +54,7 @@ export async function generateMetadata({ params }: Props) {
 				description: `${author.bio?.slice(0, 136)}...`,
 				creator: `@${authorName}`,
 				site: `@${authorName}`,
-				images: [imageBuilder(author.image).url()],
+				images: [author.profile_image ? imageBuilder(author.profile_image).url() : '/images/placeholder-avatar.png'],
 				url: `${siteURL}/blog/author/${slug}`,
 			},
 		};
@@ -67,7 +67,7 @@ export async function generateMetadata({ params }: Props) {
 }
 
 const BlogGrid = async ({ params }: Props) => {
-	const { slug } = params;
+	const { slug } = await params;
 
 	const posts = await getPostsByAuthor(slug);
 	const author = (await getAuthorBySlug(slug)) as Author;
@@ -101,7 +101,7 @@ const BlogGrid = async ({ params }: Props) => {
 					<div className='grid grid-cols-1 gap-x-7.5 gap-y-10 sm:grid-cols-2 lg:grid-cols-3'>
 						{/* Blog Item */}
 						{posts?.length > 0 ? (
-							posts?.map((item, key) => <BlogItem key={key} blog={item} />)
+							posts?.map((item: Blog, key: number) => <BlogItem key={key} blog={item} />)
 						) : (
 							<p>No posts available!</p>
 						)}

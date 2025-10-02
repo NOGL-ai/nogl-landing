@@ -25,7 +25,7 @@
       "@/*": ["./src/*"]  // This alias maps `@/` to `src/`, simplifying imports
     },
     "typeRoots": ["./node_modules/@types"],
-    "types": []
+    "types": ["react", "react-dom"]
   },
   "include": [
     "next-env.d.ts",

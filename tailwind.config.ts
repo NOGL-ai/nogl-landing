@@ -42,69 +42,73 @@ const config: Config = {
   		...defaultTheme.screens
   	},
   	extend: {
-  		colors: {
-  			border: 'hsl(var(--border))',
-  			input: 'hsl(var(--input))',
-  			ring: 'hsl(var(--ring))',
-  			background: 'hsl(var(--background))',
-  			foreground: 'hsl(var(--foreground))',
-  			primary: {
-  				'50': '#f0f5ff',
-  				'100': '#e0eaff',
-  				'200': '#c2d4ff',
-  				'300': '#a3bfff',
-  				'400': '#85aaff',
-  				'500': '#6694ff',
-  				'600': '#4d7ae6',
-  				'700': '#3b5fbf',
-  				'800': '#2a4699',
-  				'900': '#1a2e73',
-  				DEFAULT: 'hsl(var(--primary))',
-  				foreground: 'hsl(var(--primary-foreground))',
-  				dark: '#3E22E9'
-  			},
-  			secondary: {
-  				'50': '#f0f5ff',
-  				'100': '#e0eaff',
-  				'200': '#c2d4ff',
-  				'300': '#a3bfff',
-  				'400': '#85aaff',
-  				'500': '#6694ff',
-  				'600': '#4d7ae6',
-  				'700': '#3b5fbf',
-  				'800': '#2a4699',
-  				'900': '#1a2e73',
-  				DEFAULT: 'hsl(var(--secondary))',
-  				foreground: 'hsl(var(--secondary-foreground))'
-  			},
-  			neutral: {
-  				'50': '#f8f9fa',
-  				'100': '#f1f3f5',
-  				'200': '#e9ecef',
-  				'300': '#dee2e6',
-  				'400': '#ced4da',
-  				'500': '#adb5bd',
-  				'600': '#868e96',
-  				'700': '#495057',
-  				'800': '#343a40',
-  				'900': '#212529'
-  			},
-  			accent: {
-  				DEFAULT: 'hsl(var(--accent))',
-  				foreground: 'hsl(var(--accent-foreground))'
-  			},
-  			destructive: {
-  				DEFAULT: 'hsl(var(--destructive))',
-  				foreground: 'hsl(var(--destructive-foreground))'
-  			},
-  			popover: {
-  				DEFAULT: 'hsl(var(--popover))',
-  				foreground: 'hsl(var(--popover-foreground))'
-  			},
-  			card: {
-  				DEFAULT: 'hsl(var(--card))',
-  				foreground: 'hsl(var(--card-foreground))'
-  			},
+		colors: {
+			border: 'hsl(var(--border))',
+			input: 'hsl(var(--input))',
+			ring: 'hsl(var(--ring))',
+			background: 'hsl(var(--background))',
+			foreground: 'hsl(var(--foreground))',
+			primary: {
+				'50': 'var(--color-brand-50)',
+				'100': 'var(--color-brand-100)',
+				'200': 'var(--color-brand-200)',
+				'300': 'var(--color-brand-300)',
+				'400': 'var(--color-brand-400)',
+				'500': 'var(--color-brand-500)',
+				'600': 'var(--color-brand-600)',
+				'700': 'var(--color-brand-700)',
+				'800': 'var(--color-brand-800)',
+				'900': 'var(--color-brand-900)',
+				DEFAULT: 'hsl(var(--primary))',
+				foreground: 'hsl(var(--primary-foreground))',
+				dark: '#3E22E9'
+			},
+			secondary: {
+				'50': 'var(--color-gray-50)',
+				'100': 'var(--color-gray-100)',
+				'200': 'var(--color-gray-200)',
+				'300': 'var(--color-gray-300)',
+				'400': 'var(--color-gray-400)',
+				'500': 'var(--color-gray-500)',
+				'600': 'var(--color-gray-600)',
+				'700': 'var(--color-gray-700)',
+				'800': 'var(--color-gray-800)',
+				'900': 'var(--color-gray-900)',
+				DEFAULT: 'hsl(var(--secondary))',
+				foreground: 'hsl(var(--secondary-foreground))'
+			},
+			neutral: {
+				'50': 'var(--color-gray-neutral-50)',
+				'100': 'var(--color-gray-neutral-100)',
+				'200': 'var(--color-gray-neutral-200)',
+				'300': 'var(--color-gray-neutral-300)',
+				'400': 'var(--color-gray-neutral-400)',
+				'500': 'var(--color-gray-neutral-500)',
+				'600': 'var(--color-gray-neutral-600)',
+				'700': 'var(--color-gray-neutral-700)',
+				'800': 'var(--color-gray-neutral-800)',
+				'900': 'var(--color-gray-neutral-900)'
+			},
+			accent: {
+				DEFAULT: 'hsl(var(--accent))',
+				foreground: 'hsl(var(--accent-foreground))'
+			},
+			destructive: {
+				DEFAULT: 'hsl(var(--destructive))',
+				foreground: 'hsl(var(--destructive-foreground))'
+			},
+			popover: {
+				DEFAULT: 'hsl(var(--popover))',
+				foreground: 'hsl(var(--popover-foreground))'
+			},
+			card: {
+				DEFAULT: 'hsl(var(--card))',
+				foreground: 'hsl(var(--card-foreground))'
+			},
+			muted: {
+				DEFAULT: 'hsl(var(--muted))',
+				foreground: 'hsl(var(--muted-foreground))'
+			},
   			dark: {
   				'2': '#495270',
   				'3': '#606882',
@@ -112,47 +116,47 @@ const config: Config = {
   				'5': '#BBBEC9',
   				DEFAULT: '#1C274C'
   			},
-  			gray: {
-  				'1': '#F9FAFB',
-  				'2': '#F3F4F6',
-  				'3': '#E5E7EB',
-  				'4': '#D1D5DB',
-  				'5': '#9CA3AF',
-  				'6': '#6B7280',
-  				'7': '#374151',
-  				DEFAULT: '#F3F5F6',
-  				dark: '#272E40'
-  			},
-  			red: {
-  				...colors.red,
-  				DEFAULT: '#F23030',
-  				light: '#F56060',
-  				'light-5': '#FEEBEB',
-  				'light-6': '#FEF3F3'
-  			},
-  			green: {
-  				...colors.green,
-  				DEFAULT: '#00BC55'
-  			},
-  			'bg-white-0': 'var(--bg-white-0)',
-  			'bg-weak-100': 'var(--bg-weak-100)',
-  			'text-main-900': 'var(--text-main-900)',
-  			'text-sub-500': 'var(--text-sub-500)',
-  			'stroke-soft-200': 'var(--stroke-soft-200)',
-  			'red-lighter': 'var(--red-lighter)',
-  			'red-base': 'var(--red-base)',
-  			'state-information': 'var(--state-information)',
-  			'blue-base': 'var(--blue-base)',
-  			'text-soft-400': 'var(--text-soft-400)',
-  			'Alerts-Success-0': 'var(--Alerts-Success-0)',
-  			'Alerts-Success-200': 'var(--Alerts-Success-200)',
-  			'Greyscale-400': 'var(--Greyscale-400)',
-  			'colorblack-70': 'var(--colorblack-70)',
-  			'primary-dark': 'var(--primary-dark)',
-  			'primary-base': 'var(--primary-base)',
-  			'stroke-white-0': 'var(--stroke-white-0)',
-  			'neutral-300': 'var(--neutral-300)',
-  			'bg-soft-200': 'var(--bg-soft-200)'
+			gray: {
+				'1': 'var(--color-gray-50)',
+				'2': 'var(--color-gray-100)',
+				'3': 'var(--color-gray-200)',
+				'4': 'var(--color-gray-300)',
+				'5': 'var(--color-gray-400)',
+				'6': 'var(--color-gray-500)',
+				'7': 'var(--color-gray-600)',
+				DEFAULT: 'var(--color-gray-100)',
+				dark: 'var(--color-gray-800)'
+			},
+			red: {
+				...colors.red,
+				DEFAULT: 'var(--color-error-500)',
+				light: 'var(--color-error-400)',
+				'light-5': 'var(--color-error-50)',
+				'light-6': 'var(--color-error-100)'
+			},
+			green: {
+				...colors.green,
+				DEFAULT: 'var(--color-success-500)'
+			},
+			'bg-white-0': 'var(--color-white)',
+			'bg-weak-100': 'var(--color-gray-100)',
+			'text-main-900': 'var(--color-text-primary)',
+			'text-sub-500': 'var(--color-text-tertiary)',
+			'stroke-soft-200': 'var(--color-border-secondary)',
+			'red-lighter': 'var(--color-error-300)',
+			'red-base': 'var(--color-error-500)',
+			'state-information': 'var(--color-blue-500)',
+			'blue-base': 'var(--color-blue-500)',
+			'text-soft-400': 'var(--color-text-quaternary)',
+			'Alerts-Success-0': 'var(--color-success-50)',
+			'Alerts-Success-200': 'var(--color-success-200)',
+			'Greyscale-400': 'var(--color-gray-400)',
+			'colorblack-70': 'var(--color-gray-700)',
+			'primary-dark': 'var(--color-brand-800)',
+			'primary-base': 'var(--color-brand-500)',
+			'stroke-white-0': 'var(--color-white)',
+			'neutral-300': 'var(--color-gray-neutral-300)',
+			'bg-soft-200': 'var(--color-gray-200)'
   		},
   		borderRadius: {
   			'10': '10px',
@@ -501,16 +505,6 @@ const config: Config = {
       
       // Custom utilities
       addUtilities({
-        '.scrollbar-hide': {
-          /* For Webkit-based browsers (Chrome, Safari and Opera) */
-          '&::-webkit-scrollbar': {
-            display: 'none',
-            '-webkit-appearance': 'none',
-          },
-          /* For IE, Edge and Firefox */
-          '-ms-overflow-style': 'none', /* IE and Edge */
-          'scrollbar-width': 'none', /* Firefox */
-        },
         '.transition-inherit-all': {
           'transition-property': 'inherit',
           'transition-duration': 'inherit',

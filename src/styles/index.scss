@@ -3,5 +3,5 @@
 @use "./__dates_picker";
 //
 @use "./_header";
-@use "./globals";
+// @use "./globals"; // REMOVED - globals.scss is imported in src/app/layout.tsx to avoid duplication
 @use "./satoshi";

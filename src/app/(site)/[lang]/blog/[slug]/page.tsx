@@ -8,13 +8,13 @@ import CopyToClipboard from "@/components/Common/CopyToClipboard";
 import SocialShare from "@/components/Blog/SocialShare";
 
 type Props = {
-	params: {
+	params: Promise<{
 		slug: string;
-	};
+	}>;
 };
 
 export async function generateMetadata({ params }: Props) {
-	const { slug } = params;
+	const { slug } = await params;
 	const post = await getPostBySlug(slug);
 	const siteURL = process.env.SITE_URL;
 	const authorName = process.env.AUTHOR_NAME;
@@ -83,7 +83,7 @@ export async function generateMetadata({ params }: Props) {
 }
 
 const SingleBlog = async ({ params }: Props) => {
-	const { slug } = params;
+	const { slug } = await params;
 	const post = await getPostBySlug(slug);
 	const postURL = `${process.env.SITE_URL}blog/${post?.slug?.current}`;
 
