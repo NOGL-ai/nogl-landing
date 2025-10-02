@@ -1,7 +1,7 @@
 import "@/styles/satoshi.scss";
 import "react-quill/dist/quill.snow.css";
 import "@/fonts/line-awesome-1.3.0/css/line-awesome.css";
-import "@/styles/index.scss";
+import "@/styles/globals.scss";
 import { Providers } from "./providers";
 import NextTopLoader from "nextjs-toploader";
 import Loader from "@/components/Common/PreLoader";
