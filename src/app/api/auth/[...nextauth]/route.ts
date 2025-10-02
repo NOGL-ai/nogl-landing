@@ -2,8 +2,8 @@ import NextAuth from "next-auth/next";
 import type { NextAuthOptions } from "next-auth";
 import type { JWT } from "next-auth/jwt";
 import type { Session, User } from "next-auth";
-import { authOptions } from "@/libs/auth";
-import { prisma } from "@/libs/prismaDb";
+import { authOptions } from "@/lib/auth";
+import { prisma } from "@/lib/prismaDb";
 
 const extendedAuthOptions: NextAuthOptions = {
   ...authOptions,

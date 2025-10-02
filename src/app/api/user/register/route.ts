@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt";
-import { prisma } from "@/libs/prismaDb";
+import { prisma } from "@/lib/prismaDb";
 import { NextResponse } from "next/server";
 import crypto from 'crypto';
-import { sendVerificationEmail, formatEmail, isValidEmail } from "@/libs/email";
+import { sendVerificationEmail, formatEmail, isValidEmail } from "@/lib/email";
 
 export async function POST(request: Request) {
   try {

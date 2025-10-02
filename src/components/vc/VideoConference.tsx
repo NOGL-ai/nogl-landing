@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { jitsiConfig } from '@/libs/jitsiConfig'; // Adjust the import path if needed
+import { jitsiConfig } from '@/lib/jitsiConfig'; // Adjust the import path if needed
 
 const VideoConferencePage = ({ params }: { params: { roomId: string } }) => {
   // Commented out VideoConference component to prevent performance issues

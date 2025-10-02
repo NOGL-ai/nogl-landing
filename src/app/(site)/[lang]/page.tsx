@@ -1,6 +1,6 @@
 import Home from "@/components/Home";
 import { Metadata } from "next";
-import { getDictionary } from "@/libs/dictionary";
+import { getDictionary } from "@/lib/dictionary";
 import { Locale } from "@/i18n";
 
 // Updated metadata to align with your platform's unique features and target audience

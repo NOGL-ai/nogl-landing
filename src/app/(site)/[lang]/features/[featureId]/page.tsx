@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { getDictionary } from "@/libs/dictionary";
+import { getDictionary } from "@/lib/dictionary";
 import { Locale } from "@/i18n";
 import featuresData from "@/components/Home/Features/featuresData";
 import Image from "next/image";

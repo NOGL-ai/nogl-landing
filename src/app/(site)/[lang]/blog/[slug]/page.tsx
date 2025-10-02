@@ -3,7 +3,7 @@ import { getPostBySlug, imageBuilder } from "@/ghost/ghost-utils";
 import RenderBodyContent from "@/components/Blog/RenderBodyContent";
 import Link from "next/link";
 import Image from "next/image";
-import { structuredAlgoliaHtmlData } from "@/libs/crawlIndex";
+import { structuredAlgoliaHtmlData } from "@/lib/crawlIndex";
 import CopyToClipboard from "@/components/Common/CopyToClipboard";
 import SocialShare from "@/components/Blog/SocialShare";
 

@@ -1,7 +1,7 @@
 import React from "react";
 import PurchaseEmptyState from "./PurchaseEmptyState";
 import PurchaseTable from "./PurchaseTable";
-import { isAuthorized } from "@/libs/isAuthorized";
+import { isAuthorized } from "@/lib/isAuthorized";
 import { pricingData } from "@/pricing/pricingData";
 
 const PurchaseHistory = async () => {

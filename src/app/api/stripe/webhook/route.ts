@@ -1,8 +1,8 @@
-import { prisma } from "@/libs/prismaDb";
-import { stripe } from "@/libs/stripe";
-import { sendEmail } from "@/libs/email";
-import { getBookingConfirmationEmail } from "@/libs/emailTemplates/bookingConfirmationEmail";
-import { getBookingInvitationEmail } from "@/libs/emailTemplates/bookingInvitationEmail";
+import { prisma } from "@/lib/prismaDb";
+import { stripe } from "@/lib/stripe";
+import { sendEmail } from "@/lib/email";
+import { getBookingConfirmationEmail } from "@/lib/emailTemplates/bookingConfirmationEmail";
+import { getBookingInvitationEmail } from "@/lib/emailTemplates/bookingInvitationEmail";
 import { createHash, randomBytes } from "crypto";
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";

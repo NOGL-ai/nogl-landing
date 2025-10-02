@@ -4,7 +4,7 @@ import FormButton from "../Common/Dashboard/FormButton";
 import InputGroup from "../Common/Dashboard/InputGroup";
 import toast from "react-hot-toast";
 import { signIn } from "next-auth/react";
-import validateEmail from "@/libs/validateEmail";
+import validateEmail from "@/lib/validateEmail";
 import Loader from "../Common/Loader";
 
 export default function SigninWithMagicLink() {

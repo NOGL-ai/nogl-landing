@@ -1,6 +1,6 @@
 // return hello world
 import { NextResponse, NextRequest } from "next/server";
-import isValidKey from "@/libs/isValidAPIKey";
+import isValidKey from "@/lib/isValidAPIKey";
 
 export async function GET(req: NextRequest) {
 	const apiKey = req.headers.get("Authorization") as string;

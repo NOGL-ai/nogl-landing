@@ -1,5 +1,5 @@
 import React from 'react';
-import { getSEOTags, renderSchemaTags } from '@/libs/seo';
+import { getSEOTags, renderSchemaTags } from '@/lib/seo';
 import Breadcrumb from '@/components/Common/Breadcrumb';
 import Section from '@/components/section';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';

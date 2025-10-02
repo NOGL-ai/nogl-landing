@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import DatafeedSettings from "@/components/ProductFeed/DatafeedSettings";
-import { getDictionary } from '@/libs/dictionary';
+import { getDictionary } from '@/lib/dictionary';
 import { Locale } from '@/i18n';
 
 export const metadata: Metadata = {

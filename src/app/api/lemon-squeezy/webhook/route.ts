@@ -1,6 +1,6 @@
 import crypto from "crypto";
-import { prisma } from "@/libs/prismaDb";
-import formatPassword from "@/libs/formatPassword";
+import { prisma } from "@/lib/prismaDb";
+import formatPassword from "@/lib/formatPassword";
 
 export async function POST(req: Request) {
 	try {

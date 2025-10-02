@@ -1,6 +1,6 @@
 "use server";
-import { prisma } from "@/libs/prismaDb";
-import { isAuthorized } from "@/libs/isAuthorized";
+import { prisma } from "@/lib/prismaDb";
+import { isAuthorized } from "@/lib/isAuthorized";
 
 export async function getUsers(filter: any) {
 	const currentUser = await isAuthorized();

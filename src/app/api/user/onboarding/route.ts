@@ -4,8 +4,8 @@ const R2_BUCKET_URL = "https://13e9f73c8bdfbd5ad59f51c1dd20f5eb.r2.cloudflaresto
 
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/libs/auth";
-import { prisma } from "@/libs/prismaDb";
+import { authOptions } from "@/lib/auth";
+import { prisma } from "@/lib/prismaDb";
 import { Prisma, UserRole } from "@prisma/client";
 
 export async function POST(req: NextRequest) {

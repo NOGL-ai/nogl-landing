@@ -1,4 +1,4 @@
-import { prisma } from "@/libs/prismaDb";
+import { prisma } from "@/lib/prismaDb";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { type NextAuthOptions, DefaultSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -9,9 +9,9 @@ import { getServerSession } from "next-auth";
 import bcrypt from "bcrypt";
 import { User } from "@prisma/client";
 import { createTransport } from "nodemailer";
-import { getMagicLinkEmail } from "@/libs/emailTemplates/magicLinkEmail";
-import { getBookingConfirmationEmail } from '@/libs/emailTemplates/bookingConfirmationEmail';
-import { sendEmail } from '@/libs/email';
+import { getMagicLinkEmail } from "@/lib/emailTemplates/magicLinkEmail";
+import { getBookingConfirmationEmail } from '@/lib/emailTemplates/bookingConfirmationEmail';
+import { sendEmail } from '@/lib/email';
 
 declare module "next-auth" {
     interface User {
@@ -126,8 +126,11 @@ export const authOptions: NextAuthOptions = {
                 }
 
                 return {
-                    ...user,
-                    role: user.role, // Ensure role is non-nullable
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    emailVerified: user.emailVerified,
+                    image: user.image,
                 };
             },
         }),

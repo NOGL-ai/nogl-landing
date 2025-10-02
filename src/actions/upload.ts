@@ -1,7 +1,7 @@
 "use server";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { isAuthorized } from "@/libs/isAuthorized";
+import { isAuthorized } from "@/lib/isAuthorized";
 
 const s3Client = new S3Client({
 	region: "auto",

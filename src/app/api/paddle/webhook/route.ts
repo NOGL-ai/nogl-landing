@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createHmac } from "crypto";
 import axios from "axios";
-import { prisma } from "@/libs/prismaDb";
+import { prisma } from "@/lib/prismaDb";
 
 async function captureRawBody(req: NextRequest) {
 	const rawBody = await req.text(); // Capture the raw body as text

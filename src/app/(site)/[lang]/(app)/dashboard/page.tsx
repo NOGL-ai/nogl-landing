@@ -1,6 +1,6 @@
 import React from 'react';
 import DashboardPageClient from '@/components/Dashboard/DashboardPageClient';
-import { getDictionary } from '@/libs/dictionary';
+import { getDictionary } from '@/lib/dictionary';
 import { Locale } from '@/i18n';
 
 export default async function DashboardPage({

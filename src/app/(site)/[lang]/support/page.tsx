@@ -1,7 +1,7 @@
 import React from "react";
 import Support from "@/components/Support";
 import Link from "next/link";
-import { getSEOTags, renderSchemaTags } from "@/libs/seo"; // Ensure renderSchemaTags is imported
+import { getSEOTags, renderSchemaTags } from "@/lib/seo"; // Ensure renderSchemaTags is imported
 import { Metadata } from "next";
 
 const siteName = process.env.SITE_NAME || "Nogl";

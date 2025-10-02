@@ -6,7 +6,7 @@ import FormButton from "@/components/Common/Dashboard/FormButton";
 import InputGroup from "@/components/Common/Dashboard/InputGroup";
 import axios from "axios";
 import { FaEnvelope, FaSpinner } from "react-icons/fa";
-import validateEmail from "@/libs/validateEmail";
+import validateEmail from "@/lib/validateEmail";
 
 export default function ForgotPassword() {
 	const [email, setEmail] = useState("");
