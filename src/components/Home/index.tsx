@@ -4,7 +4,7 @@ import { CallToAction } from "./CallToAction";
 import FAQ from "./FAQ";
 import Blog from "./Blog";
 import Newsletter from "./Newsletter";
-import BgGlassmorphism from "@/components/BgGlassmorphism";
+import { GlassmorphismBackground } from "@/components/atoms";
 import Particles from "@/components/ui/particles";
 
 interface HomeProps {
@@ -76,7 +76,7 @@ const Home: React.FC<HomeProps> = ({ dictionary }) => {
 				staticity={40}
 				color={"#4F46E5"}
 			/>
-			<BgGlassmorphism />
+			<GlassmorphismBackground />
 			<Hero dictionary={dictionary} />
 			<Counter dictionary={dictionary} />
 

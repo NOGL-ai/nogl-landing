@@ -2,8 +2,8 @@ import React, { FC } from "react";
 import SectionHero from "./SectionHero";
 import SectionFounder from "./SectionFounder";
 import SectionStatistic from "./SectionStatistic";
-import SectionSubscribe2 from "@/components/SectionSubscribe2";
-import BgGlassmorphism from "@/components/BgGlassmorphism";
+import { SectionSubscribe2 } from "@/components/organisms";
+import { GlassmorphismBackground } from "@/components/atoms";
 
 import rightImg from "@/images/about-hero-right.png";
 

@@ -1,7 +1,7 @@
 import React, { FC } from "react";
-import GallerySlider from "@/components/GallerySlider";
+import { GallerySlider } from "@/components/molecules";
 import { ExpertDataType } from "@/data/types"; // Change the data type to ExpertDataType
-import BtnLikeIcon from "@/components/BtnLikeIcon";
+import { LikeButton } from "@/components/atoms";
 import Badge from "@/shared/Badge";
 import Link from "next/link";
 import ButtonPrimary from "@/shared/ButtonPrimary";
@@ -41,7 +41,7 @@ const ExpertCard: FC<ExpertCardProps> = ({
 					galleryImgs={galleryImgs}
 					imageClass='rounded-lg'
 				/>
-				<BtnLikeIcon isLiked={like} className='absolute right-3 top-3 z-[1]' />
+				<LikeButton isLiked={like} className='absolute right-3 top-3 z-[1]' />
 			</div>
 		);
 	};

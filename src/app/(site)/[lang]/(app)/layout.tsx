@@ -1,7 +1,7 @@
 import React from "react";
 import SidebarLayout from "@/components/Sidebar/SidebarLayout";
 import Particles from "@/components/ui/particles";
-import BgGlassmorphism from "@/components/BgGlassmorphism";
+import { GlassmorphismBackground } from "@/components/atoms";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
 	const user = {
@@ -22,7 +22,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 					staticity={40}
 					color='#4F46E5'
 				/>
-				<BgGlassmorphism />
+				<GlassmorphismBackground />
 				<main className='relative z-10 flex-1'>{children}</main>
 			</div>
 		</SidebarLayout>

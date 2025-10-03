@@ -1,6 +1,6 @@
 import React from "react";
 import Particles from "@/components/ui/particles";
-import BgGlassmorphism from "@/components/BgGlassmorphism";
+import { GlassmorphismBackground } from "@/components/atoms";
 import { cn } from "@/lib/utils";
 
 export interface GlassParticlePageProps {
@@ -43,7 +43,7 @@ export default function GlassParticlePage({
 				staticity={staticity}
 				color={color}
 			/>
-			<BgGlassmorphism />
+			<GlassmorphismBackground />
 
 			{/* Content layer */}
 			<div className='relative z-10'>{children}</div>

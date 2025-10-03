@@ -1,3 +1,5 @@
+"use client";
+
 import algoliasearch from "algoliasearch";
 import React, { useEffect } from "react";
 import { Hits, InstantSearch } from "react-instantsearch";

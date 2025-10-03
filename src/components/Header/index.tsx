@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect, FC } from "react";
 import Logo from "@/shared/Logo";
 import MenuBar from "@/shared/MenuBar";

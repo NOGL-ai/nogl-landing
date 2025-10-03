@@ -1,4 +1,4 @@
-import Label from "@/components/Label";
+import { Label } from "../atoms";
 import React, { ReactNode } from "react";
 import { FC } from "react";
 

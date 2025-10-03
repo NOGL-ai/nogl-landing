@@ -1,7 +1,7 @@
 import React, { FC } from "react";
-import SectionSubscribe2 from "@/components/SectionSubscribe2";
+import { SectionSubscribe2 } from "@/components/organisms";
 import SocialsList from "@/shared/SocialsList";
-import Label from "@/components/Label";
+import { Label } from "@/components/atoms";
 import Input from "@/shared/Input";
 import Textarea from "@/shared/Textarea";
 import ButtonPrimary from "@/shared/ButtonPrimary";

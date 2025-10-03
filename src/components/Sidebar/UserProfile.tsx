@@ -1,3 +1,5 @@
+"use client";
+
 import React, { Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import Avatar from "@/shared/Avatar";
