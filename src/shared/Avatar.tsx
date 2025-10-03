@@ -1,4 +1,4 @@
-import { avatarColors } from "@/constants/contains/constants";
+import { avatarColors } from "@/constants/constants";
 import React, { FC } from "react";
 import avatar1 from "@/images/avatars/Image-1.png";
 import Image, { StaticImageData } from "next/image";
