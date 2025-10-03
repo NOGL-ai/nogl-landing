@@ -13,7 +13,7 @@ const DEFAULT_FORM_VALUES = {
 	website: "",
 	portfolio: "",
 };
-const R2_BUCKET_URL = "https://pub-beabd1ed711d4df3bbda9b37465d8b04.r2.dev";
+// const R2_BUCKET_URL = "https://pub-beabd1ed711d4df3bbda9b37465d8b04.r2.dev";
 const VALIDATION_MESSAGES = {
 	displayName: {
 		required: "Display name is required",

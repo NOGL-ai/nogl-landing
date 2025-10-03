@@ -49,7 +49,7 @@ const signupSchema = yup.object().shape({
 type FormData = yup.InferType<typeof signupSchema>;
 
 // NOGL Logo Component
-const NoglLogo = () => (
+const _NoglLogo = () => (
 	<svg
 		width='220'
 		height='32'
@@ -151,7 +151,7 @@ const MagicLinkSignup = () => {
 			} else {
 				toast.error("Something went wrong. Please try again.");
 			}
-		} catch (error) {
+		} catch {
 			toast.error("Failed to send magic link");
 		} finally {
 			setLoading(false);
@@ -391,12 +391,12 @@ export default function SignupPageLayout() {
 	const [showPassword, setShowPassword] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [recaptchaVerified, setRecaptchaVerified] = useState(false);
-	const [passwordStrength, setPasswordStrength] = useState(0);
-	const [showSocialLogin, setShowSocialLogin] = useState(true);
+	const [_passwordStrength, setPasswordStrength] = useState(0);
+	const [_showSocialLogin, setShowSocialLogin] = useState(true);
 	const [signupMethod, setSignupMethod] = useState<"form" | "magic-link">(
 		"form"
 	);
-	const router = useRouter();
+	// const router = useRouter();
 
 	const {
 		register,
@@ -447,13 +447,13 @@ export default function SignupPageLayout() {
 					callbackUrl: `${window.location.origin}/onboarding`,
 				});
 			}
-		} catch (error: any) {
+		} catch (error: unknown) {
 			console.error("Registration error:", error);
-			const errorMessage = error.response?.data
-				? typeof error.response.data === "string"
-					? error.response.data
-					: JSON.stringify(error.response.data)
-				: "An error occurred during registration";
+			const errorMessage = (error as any).response?.data
+				? typeof (error as any).response.data === "string"
+					? (error as any).response.data
+					: JSON.stringify((error as any).response.data)
+				: (error as any).message || "Registration failed. Please try again.";
 			toast.error(errorMessage);
 		} finally {
 			setLoading(false);

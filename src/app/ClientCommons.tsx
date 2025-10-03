@@ -28,10 +28,12 @@ const ClientCommons = () => {
 				newBodyClass = "theme-cyan-blueGrey";
 			}
 
-			newBodyClass && $body.classList.add(newBodyClass);
-			return () => {
-				newBodyClass && $body.classList.remove(newBodyClass);
-			};
+			if (newBodyClass) {
+				$body.classList.add(newBodyClass);
+				return () => {
+					$body.classList.remove(newBodyClass);
+				};
+			}
 		}
 	}, [pathname]);
 

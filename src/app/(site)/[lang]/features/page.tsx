@@ -21,7 +21,7 @@ export default async function FeaturesPage({
 	params: Promise<{ lang: Locale }>;
 }) {
 	const { lang } = await params;
-	const dict = await getDictionary(lang);
+	// const dict = await getDictionary(lang);
 
 	return (
 		<main>

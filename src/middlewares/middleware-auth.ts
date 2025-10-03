@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 
 import { getToken } from "next-auth/jwt";

@@ -26,7 +26,7 @@ export default async function ProductFeedPage({
 	params: Promise<{ lang: Locale }>;
 }) {
 	const { lang } = await params;
-	const dict = await getDictionary(lang);
+	// const dict = await getDictionary(lang);
 
 	return <DatafeedSettings />;
 }

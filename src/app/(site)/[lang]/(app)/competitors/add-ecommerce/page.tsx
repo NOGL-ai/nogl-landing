@@ -140,8 +140,8 @@ export default function AddEcommerceCompetitorPage() {
 		url: string
 	): { isValid: boolean; error: string; cleanUrl: string } => {
 		const urlPatterns = [
-			/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/,
-			/^(https?:\/\/)?(www\.)?[\w-]+(\.[\w-]+)+([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])?$/,
+			/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/,
+			/^(https?:\/\/)?(www\.)?[\w-]+(\.[\w-]+)+([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?$/,
 		];
 
 		let cleanUrl = url.trim();
@@ -186,7 +186,7 @@ export default function AddEcommerceCompetitorPage() {
 	};
 
 	// Mock product data extraction
-	const extractProductData = async (url: string): Promise<ProductData> => {
+	const extractProductData = async (_url: string): Promise<ProductData> => {
 		await new Promise((resolve) => setTimeout(resolve, 2000));
 		return {
 			title: "Charm Bundle",
@@ -231,7 +231,7 @@ export default function AddEcommerceCompetitorPage() {
 				setIsValid(true);
 				setShowProduct(true);
 			}
-		} catch (error) {
+		} catch {
 			setUrlError("Error processing URL. Please try again.");
 			setIsValid(false);
 		} finally {

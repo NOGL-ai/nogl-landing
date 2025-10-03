@@ -43,7 +43,6 @@ const GlobalSearchModal = (props: Props) => {
 					<div className='modal-content relative w-full max-w-[600px] overflow-y-auto rounded-xl bg-white shadow-lg dark:bg-black'>
 						<div>
 							<InstantSearch
-								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 								// @ts-ignore
 								insights={false}
 								searchClient={algoliaClient}

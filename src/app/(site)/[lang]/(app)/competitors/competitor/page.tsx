@@ -360,7 +360,7 @@ export default function CompetitorsPage() {
 
 						{/* Table Body */}
 						<div className='bg-white'>
-							{competitors.map((competitor, index) => (
+							{competitors.map((competitor, _index) => (
 								<div
 									key={competitor.id}
 									className='flex items-center border-b border-gray-100 last:border-b-0'

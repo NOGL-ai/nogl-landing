@@ -15,7 +15,7 @@ import {
 	Link as LinkIcon,
 	Globe,
 	AlertTriangle,
-	Clock,
+	// Clock,
 	Building,
 	Phone,
 	MapPin,

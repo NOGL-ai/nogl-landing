@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { userMenuData, adminMenuData } from "@/staticData/sidebarData";

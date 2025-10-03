@@ -36,7 +36,7 @@ export default async function FeatureDetailPage({
 	params: Promise<{ lang: Locale; featureId: string }>;
 }) {
 	const { lang, featureId } = await params;
-	const dict = await getDictionary(lang);
+	// const dict = await getDictionary(lang);
 	const feature = featuresData.find((f) => f.id.toString() === featureId);
 
 	if (!feature) {

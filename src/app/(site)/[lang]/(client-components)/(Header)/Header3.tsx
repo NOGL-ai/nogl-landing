@@ -51,7 +51,6 @@ const Header3: FC<Header3Props> = ({ className = "" }) => {
 		return () => {
 			window.removeEventListener("scroll", handleEvent);
 		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const handleEvent = () => {
@@ -79,11 +78,7 @@ const Header3: FC<Header3Props> = ({ className = "" }) => {
 	const renderHeroSearch = () => {
 		return (
 			<div
-				className={`absolute inset-x-0 top-0 transition-all will-change-[transform,opacity] ${
-					false // showHeroSearch
-						? "visible"
-						: "pointer-events-none invisible -translate-x-0 -translate-y-[90px] scale-x-[0.395] scale-y-[0.6] opacity-0"
-				}`}
+				className={`pointer-events-none invisible absolute inset-x-0 top-0 -translate-x-0 -translate-y-[90px] scale-x-[0.395] scale-y-[0.6] opacity-0 transition-all will-change-[transform,opacity]`}
 			>
 				<div className={`mx-auto w-full max-w-4xl pb-6`}>
 					{/* <HeroSearchFormSmall
@@ -99,11 +94,7 @@ const Header3: FC<Header3Props> = ({ className = "" }) => {
 	const renderButtonOpenHeroSearch = () => {
 		return (
 			<div
-				className={`dark:border-neutral-6000 relative flex w-full items-center justify-between rounded-full border border-neutral-200 shadow transition-all hover:shadow-md ${
-					false // showHeroSearch
-						? "pointer-events-none invisible -translate-x-0 translate-y-20 scale-x-[2.55] scale-y-[1.8] opacity-0"
-						: "visible"
-				}`}
+				className={`dark:border-neutral-6000 visible relative flex w-full items-center justify-between rounded-full border border-neutral-200 shadow transition-all hover:shadow-md`}
 			>
 				<div className='flex items-center text-sm font-medium'>
 					<span
@@ -151,24 +142,14 @@ const Header3: FC<Header3Props> = ({ className = "" }) => {
 	return (
 		<>
 			<div
-				className={`nc-Header nc-Header-3 fixed inset-0 top-0 z-40 bg-black/30 transition-opacity will-change-[opacity] dark:bg-black/50 ${
-					false // showHeroSearch
-						? "visible"
-						: "pointer-events-none invisible opacity-0"
-				}`}
+				className={`nc-Header nc-Header-3 pointer-events-none invisible fixed inset-0 top-0 z-40 bg-black/30 opacity-0 transition-opacity will-change-[opacity] dark:bg-black/50`}
 			></div>
-			{false /* showHeroSearch */ && <div id='nc-Header-3-anchor'></div>}
+			{/* {false showHeroSearch && <div id='nc-Header-3-anchor'></div>} */}
 			<header ref={headerInnerRef} className={`sticky top-0 z-40 ${className}`}>
 				<div
 					className={`absolute inset-x-0 top-0 h-full bg-white transition-transform will-change-[transform,opacity] dark:bg-neutral-900
-          ${false /* showHeroSearch */ ? "duration-75" : ""} 
-          ${
-						false // showHeroSearch
-							? false // currentTab === "Cars" || currentTab === "Flights"
-								? "scale-y-[4.4]"
-								: "scale-y-[3.4]"
-							: ""
-					}`}
+          ${""} 
+          ${""}`}
 				></div>
 				<div className='relative flex h-[88px] px-4 lg:container'>
 					<div className='flex flex-1 justify-between'>

@@ -56,7 +56,7 @@ export interface SectionHeroProps {
 const SectionHero: FC<SectionHeroProps> = ({
 	className = "",
 	rightImg,
-	heading,
+	heading: _heading,
 	subHeading,
 	btnText,
 	btnLink = "/signup",

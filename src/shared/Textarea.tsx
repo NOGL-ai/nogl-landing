@@ -1,6 +1,5 @@
 import React, { TextareaHTMLAttributes } from "react";
 
-// eslint-disable-next-line react/display-name
 const Textarea = React.forwardRef<
 	HTMLTextAreaElement,
 	TextareaHTMLAttributes<HTMLTextAreaElement>

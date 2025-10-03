@@ -6,7 +6,6 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	rounded?: string;
 }
 
-// eslint-disable-next-line react/display-name
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
 	(
 		{

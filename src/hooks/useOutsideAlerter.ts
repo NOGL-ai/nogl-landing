@@ -25,7 +25,7 @@ function useOutsideAlerter(
 			// Unbind the event listener on clean up
 			document.removeEventListener("mousedown", handleClickOutside);
 		};
-	}, [ref]); // eslint-disable-line react-hooks/exhaustive-deps
+	}, [ref]);
 }
 
 export default useOutsideAlerter;

@@ -38,7 +38,6 @@ export default function ResetPassword({ token }: { token: string }) {
 		};
 
 		verifyToken();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [token]);
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

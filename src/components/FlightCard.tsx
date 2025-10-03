@@ -90,7 +90,7 @@ const FlightCard: FC<FlightCardProps> = ({ className = "", data }) => {
      p-4 transition-shadow hover:shadow-lg sm:p-6 dark:border-neutral-800 dark:bg-neutral-900 ${className}`}
 		>
 			<div className={` relative sm:pr-20  ${className}`}>
-				{/*  eslint-disable-next-line jsx-a11y/anchor-has-content */}
+				{}
 				<a href='##' className='absolute inset-0' />
 
 				<span

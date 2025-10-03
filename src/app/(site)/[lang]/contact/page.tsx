@@ -23,7 +23,7 @@ const info = [
 	},
 ];
 
-const PageContact: FC<PageContactProps> = ({}) => {
+const PageContact: FC<PageContactProps> = () => {
 	return (
 		<div className={`nc-PageContact overflow-hidden`}>
 			<div className='mb-24 lg:mb-32'>
