@@ -24,10 +24,10 @@ export async function generateMetadata({ params }: Props) {
 			title: `${
 				post.title || "Single Post Page"
 			} | ${authorName} - Next.js SaaS Starter Kit`,
-			description: `${post.metadata?.slice(0, 136)}...`,
+			description: `${post.excerpt?.slice(0, 136) || post.title?.slice(0, 136) || "Read more about this post"}...`,
 			author: authorName,
 			alternates: {
-				canonical: `${siteURL}/blog/${post?.slug?.current}`,
+				canonical: `${siteURL}/blog/${post?.slug}`,
 				languages: {
 					"en-US": "/en-US",
 					"de-DE": "/de-DE",
@@ -49,12 +49,12 @@ export async function generateMetadata({ params }: Props) {
 
 			openGraph: {
 				title: `${post.title} | ${authorName}`,
-				description: post.metadata,
-				url: `${siteURL}/blog/${post?.slug?.current}`,
+				description: post.excerpt || post.title || "Read more about this post",
+				url: `${siteURL}/blog/${post?.slug}`,
 				siteName: authorName,
 				images: [
 					{
-						url: imageBuilder(post.mainImage).url(),
+						url: imageBuilder(post.feature_image || '').url(),
 						width: 1800,
 						height: 1600,
 						alt: post.title,
@@ -67,11 +67,11 @@ export async function generateMetadata({ params }: Props) {
 			twitter: {
 				card: "summary_large_image",
 				title: `${post.title} | ${authorName}`,
-				description: `${post.metadata?.slice(0, 136)}...`,
+				description: `${post.excerpt?.slice(0, 136) || post.title?.slice(0, 136) || "Read more about this post"}...`,
 				creator: `@${authorName}`,
 				site: `@${authorName}`,
-				images: [imageBuilder(post?.mainImage).url()],
-				url: `${siteURL}/blog/${post?.slug?.current}`,
+				images: [imageBuilder(post?.feature_image || '').url()],
+				url: `${siteURL}/blog/${post?.slug}`,
 			},
 		};
 	} else {
@@ -184,13 +184,13 @@ const SingleBlog = async ({ params }: Props) => {
 							{post.title}
 						</h2>
 
-						<p className='dark:text-gray-5'>{post.metadata}</p>
+						<p className='dark:text-gray-5'>{post.excerpt || post.title}</p>
 					</div>
 
 					<div className='mb-12.5 overflow-hidden rounded-[15px]'>
 						<Image
 							className='rounded-[15px]'
-							src={imageBuilder(post.mainImage).url() as string}
+							src={imageBuilder(post.feature_image || '').url() as string}
 							alt={post.title}
 							width={1170}
 							height={540}

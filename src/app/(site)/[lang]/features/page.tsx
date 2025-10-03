@@ -23,7 +23,7 @@ export default async function FeaturesPage({
 
 	return (
 		<main>
-			<Features dictionary={dict} />
+			<Features />
 		</main>
 	);
 }

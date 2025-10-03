@@ -7,7 +7,6 @@ const siteName = process.env.SITE_NAME || "Nogl";
 export const metadata: Metadata = {
   title: `Allgemeine Geschäftsbedingungen | ${process.env.SITE_NAME}`,
   description: 'Allgemeine Geschäftsbedingungen für die Nutzung der Nogl Professional Services Platform.',
-  canonicalUrlRelative: "/agb",
 };
 
 const AGBPage = () => {

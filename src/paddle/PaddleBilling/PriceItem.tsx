@@ -38,7 +38,7 @@ const PriceItem = ({ plan, isBilling }: Props) => {
 		try {
 			const response = await axios.post(`/api/paddle/change-plan`, {
 				priceId: plan.priceId,
-				subscriptionId: user?.subscriptionId,
+				subscriptionId: (user as any)?.subscriptionId,
 			});
 
 			await update({

@@ -395,7 +395,7 @@ export default function CompetitorsPage() {
                     {(() => {
                       const total = (competitor.pricePosition.lower + competitor.pricePosition.equal + competitor.pricePosition.higher);
                       const derived = total > 0 ? Math.round((competitor.pricePosition.equal / total) * 100) : undefined;
-                      const percentage = Number.isFinite(derived) ? derived : (typeof (competitor as any).compare === 'number' ? Math.max(0, Math.min(100, (competitor as any).compare)) : 0);
+                      const percentage = Number.isFinite(derived) ? (derived ?? 0) : (typeof (competitor as any).compare === 'number' ? Math.max(0, Math.min(100, (competitor as any).compare)) : 0);
                       return (
                         <CircularProgress value={percentage} max={100} color="#3F83F8" />
                       );

@@ -13,7 +13,7 @@ const CardCategory4: FC<CardCategory4Props> = ({
 	className = "",
 	taxonomy,
 }) => {
-	const { count, name, href = "/", thumbnail, listingType } = taxonomy;
+	const { count, name, href = "/", thumbnail } = taxonomy;
 	return (
 		<Link
 			href={href}
@@ -41,11 +41,7 @@ const CardCategory4: FC<CardCategory4Props> = ({
 				<span
 					className={`text-neutral-6000 mt-2 block text-sm dark:text-neutral-400`}
 				>
-					{convertNumbThousand(count || 0)}
-					{` `}
-					{(!listingType || listingType === "stay") && "sessions"}
-					{listingType === "car" && "cars"}
-					{listingType === "experiences" && "experiences"}
+					{convertNumbThousand(count || 0)} sessions
 				</span>
 			</div>
 		</Link>

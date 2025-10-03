@@ -28,6 +28,8 @@ export interface InfiniteScrollData<T> {
     totalRowCount: number;
     hasNextPage: boolean;
     currentPage: number;
+    processingTime?: number;
+    cached?: boolean;
   };
 }
 

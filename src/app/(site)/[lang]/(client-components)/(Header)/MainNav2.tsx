@@ -5,7 +5,7 @@ import LangDropdown from "./LangDropdown";
 import NotifyDropdown from "./NotifyDropdown";
 import AvatarDropdown from "./AvatarDropdown";
 import DropdownTravelers from "./DropdownTravelers";
-import HeroSearchForm2MobileFactory from "../(HeroSearchForm2Mobile)/HeroSearchForm2MobileFactory";
+// import HeroSearchForm2MobileFactory from "../(HeroSearchForm2Mobile)/HeroSearchForm2MobileFactory";
 import Link from "next/link";
 import TemplatesDropdown from "./TemplatesDropdown";
 import { Route } from "@/routers/types";
@@ -27,7 +27,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
 				</div>
 
 				<div className='!mx-auto max-w-lg flex-[3] self-center md:px-3 lg:hidden'>
-					<HeroSearchForm2MobileFactory />
+					{/* <HeroSearchForm2MobileFactory /> */}
 				</div>
 
 				<div className='hidden flex-1 flex-shrink-0 justify-end text-neutral-700 dark:text-neutral-100 md:flex lg:flex-none'>

@@ -41,7 +41,7 @@ const BlogGrid = async () => {
 					<div className='grid grid-cols-1 gap-x-7.5 gap-y-10 sm:grid-cols-2 lg:grid-cols-3'>
 						{/* Blog Item */}
 						{posts?.length > 0 ? (
-							posts?.map((item, key) => <BlogItem key={key} blog={item} />)
+							posts?.map((item: any, key: number) => <BlogItem key={key} blog={item} />)
 						) : (
 							<p>No posts available!</p>
 						)}

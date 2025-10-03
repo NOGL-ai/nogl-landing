@@ -5,8 +5,9 @@ import SearchDropdown from "./SearchDropdown";
 import ButtonPrimary from "@/shared/ButtonPrimary";
 import MenuBar from "@/shared/MenuBar";
 import SwitchDarkMode from "@/shared/SwitchDarkMode";
-import HeroSearchForm2MobileFactory from "../(HeroSearchForm2Mobile)/HeroSearchForm2MobileFactory";
+// import HeroSearchForm2MobileFactory from "../(HeroSearchForm2Mobile)/HeroSearchForm2MobileFactory";
 import LangDropdown from "./LangDropdown";
+import { Route } from "@/routers/types";
 
 export interface MainNav1Props {
 	className?: string;
@@ -23,7 +24,7 @@ const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
 
 				<div className='!mx-auto flex max-w-lg flex-[3] md:px-3 lg:hidden '>
 					<div className='flex-1 self-center'>
-						<HeroSearchForm2MobileFactory />
+						{/* <HeroSearchForm2MobileFactory /> */}
 					</div>
 				</div>
 
@@ -32,7 +33,7 @@ const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
 						<SwitchDarkMode />
 						<SearchDropdown className='flex items-center' />
 						<div className='px-1' />
-						<ButtonPrimary className='self-center' href='/login'>
+						<ButtonPrimary className='self-center' href={'/login' as Route<string>}>
 							Sign up
 						</ButtonPrimary>
 					</div>

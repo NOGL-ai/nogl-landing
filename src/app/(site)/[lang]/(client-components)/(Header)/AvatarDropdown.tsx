@@ -326,16 +326,14 @@ export default function AvatarDropdown({ className = "" }: Props) {
                       <>
                         {/* Sign In Link */}
                         <Link
-                          // @ts-expect-error - TypedRoutes experimental feature
-                          href="/auth/signin"
+                          href={"/auth/signin" as Route<string>}
                           className='px-5 py-2 font-satoshi font-medium text-black dark:text-white'
                         >
                           Sign In
                         </Link>
                         {/* Sign Up Link */}
                         <Link
-                          // @ts-expect-error - TypedRoutes experimental feature
-                          href="/auth/signup"
+                          href={"/auth/signup" as Route<string>}
                           className='rounded-full bg-primary-500 px-5 py-2 font-satoshi font-medium text-white hover:bg-primary-600 shadow-lg border-2 border-primary-400'
                         >
                           Sign Up

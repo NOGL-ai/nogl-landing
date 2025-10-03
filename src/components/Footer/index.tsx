@@ -1,6 +1,8 @@
 import React from "react";
 import Logo from "@/shared/Logo";
 import { Route } from "@/routers/types";
+import Link from "next/link";
+import Image from "next/image";
 
 const Footer = ({ lang = 'en' }: { lang?: string }) => {
 	return (

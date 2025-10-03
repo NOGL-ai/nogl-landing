@@ -40,7 +40,6 @@ const ExpertCard: FC<ExpertCardProps> = ({
           ratioClass="aspect-w-12 aspect-h-11"
           galleryImgs={galleryImgs}
           imageClass="rounded-lg"
-          href={href}
         />
         <BtnLikeIcon isLiked={like} className="absolute right-3 top-3 z-[1]" />
       </div>

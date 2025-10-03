@@ -6,12 +6,13 @@ import useOutsideAlerter from "@/hooks/useOutsideAlerter";
 import NotifyDropdown from "./NotifyDropdown";
 import AvatarDropdown from "./AvatarDropdown";
 import MenuBar from "@/shared/MenuBar";
-import { SearchTab } from "../(HeroSearchForm)/HeroSearchForm";
-import HeroSearchForm2MobileFactory from "../(HeroSearchForm2Mobile)/HeroSearchForm2MobileFactory";
+import { Route } from "@/routers/types";
+// import { SearchTab } from "../(HeroSearchForm)/HeroSearchForm";
+// import HeroSearchForm2MobileFactory from "../(HeroSearchForm2Mobile)/HeroSearchForm2MobileFactory";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import HeroSearchFormSmall from "../(HeroSearchFormSmall)/HeroSearchFormSmall";
-import { StaySearchFormFields } from "../type";
+// import HeroSearchFormSmall from "../(HeroSearchFormSmall)/HeroSearchFormSmall";
+// import { StaySearchFormFields } from "../type";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 interface Header3Props {
@@ -26,22 +27,22 @@ if (typeof window !== "undefined") {
 const Header3: FC<Header3Props> = ({ className = "" }) => {
 	const headerInnerRef = useRef<HTMLDivElement>(null);
 	//
-	const [showHeroSearch, setShowHeroSearch] =
-		useState<StaySearchFormFields | null>();
+	// const [showHeroSearch, setShowHeroSearch] =
+	// 	useState<StaySearchFormFields | null>();
 	//
-	const [currentTab, setCurrentTab] = useState<SearchTab>("Stays");
+	// const [currentTab, setCurrentTab] = useState<SearchTab>("Stays");
 
 	//
 	useOutsideAlerter(headerInnerRef, () => {
-		setShowHeroSearch(null);
-		setCurrentTab("Stays");
+		// setShowHeroSearch(null);
+		// setCurrentTab("Stays");
 	});
 
 	const pathname = usePathname();
 	//
 
 	useEffect(() => {
-		setShowHeroSearch(null);
+		// setShowHeroSearch(null);
 	}, [pathname]);
 
 	// HIDDEN WHEN SCROLL EVENT
@@ -67,7 +68,7 @@ const Header3: FC<Header3Props> = ({ className = "" }) => {
 			WIN_PREV_POSITION - currentScrollPos > 100 ||
 			WIN_PREV_POSITION - currentScrollPos < -100
 		) {
-			setShowHeroSearch(null);
+			// setShowHeroSearch(null);
 		} else {
 			return;
 		}
@@ -79,17 +80,17 @@ const Header3: FC<Header3Props> = ({ className = "" }) => {
 		return (
 			<div
 				className={`absolute inset-x-0 top-0 transition-all will-change-[transform,opacity] ${
-					showHeroSearch
+					false // showHeroSearch
 						? "visible"
 						: "pointer-events-none invisible -translate-x-0 -translate-y-[90px] scale-x-[0.395] scale-y-[0.6] opacity-0"
 				}`}
 			>
 				<div className={`mx-auto w-full max-w-4xl pb-6`}>
-					<HeroSearchFormSmall
+					{/* <HeroSearchFormSmall
 						defaultFieldFocus={showHeroSearch || undefined}
 						onTabChange={setCurrentTab}
 						defaultTab={currentTab}
-					/>
+					/> */}
 				</div>
 			</div>
 		);
@@ -99,21 +100,21 @@ const Header3: FC<Header3Props> = ({ className = "" }) => {
 		return (
 			<div
 				className={`dark:border-neutral-6000 relative flex w-full items-center justify-between rounded-full border border-neutral-200 shadow transition-all hover:shadow-md ${
-					showHeroSearch
+					false // showHeroSearch
 						? "pointer-events-none invisible -translate-x-0 translate-y-20 scale-x-[2.55] scale-y-[1.8] opacity-0"
 						: "visible"
 				}`}
 			>
 				<div className='flex items-center text-sm font-medium'>
 					<span
-						onClick={() => setShowHeroSearch("location")}
+						onClick={() => {/* setShowHeroSearch("location") */}}
 						className='block cursor-pointer py-3 pl-5 pr-4'
 					>
 						Location
 					</span>
 					<span className='h-5 w-[1px] bg-neutral-300 dark:bg-neutral-700'></span>
 					<span
-						onClick={() => setShowHeroSearch("dates")}
+						onClick={() => {/* setShowHeroSearch("dates") */}}
 						className='block cursor-pointer px-4 py-3 '
 					>
 						Check In
@@ -121,7 +122,7 @@ const Header3: FC<Header3Props> = ({ className = "" }) => {
 					<span className='h-5 w-[1px] bg-neutral-300 dark:bg-neutral-700'></span>
 					<span
 						onClick={() => {
-							setShowHeroSearch("guests");
+							// setShowHeroSearch("guests");
 						}}
 						className='block cursor-pointer px-4 py-3 font-normal'
 					>
@@ -131,7 +132,7 @@ const Header3: FC<Header3Props> = ({ className = "" }) => {
 
 				<div
 					className='ml-auto flex-shrink-0 cursor-pointer pr-2'
-					onClick={() => setShowHeroSearch("location")}
+					onClick={() => {/* setShowHeroSearch("location") */}}
 				>
 					<span className='bg-primary-6000 flex h-8 w-8 items-center justify-center rounded-full  text-white'>
 						<MagnifyingGlassIcon className='h-5 w-5' />
@@ -145,17 +146,18 @@ const Header3: FC<Header3Props> = ({ className = "" }) => {
 		<>
 			<div
 				className={`nc-Header nc-Header-3 fixed inset-0 top-0 z-40 bg-black/30 transition-opacity will-change-[opacity] dark:bg-black/50 ${
-					showHeroSearch ? "visible" : "pointer-events-none invisible opacity-0"
+					false // showHeroSearch
+						? "visible" : "pointer-events-none invisible opacity-0"
 				}`}
 			></div>
-			{showHeroSearch && <div id='nc-Header-3-anchor'></div>}
+			{false /* showHeroSearch */ && <div id='nc-Header-3-anchor'></div>}
 			<header ref={headerInnerRef} className={`sticky top-0 z-40 ${className}`}>
 				<div
 					className={`absolute inset-x-0 top-0 h-full bg-white transition-transform will-change-[transform,opacity] dark:bg-neutral-900
-          ${showHeroSearch ? "duration-75" : ""} 
+          ${false /* showHeroSearch */ ? "duration-75" : ""} 
           ${
-						showHeroSearch
-							? currentTab === "Cars" || currentTab === "Flights"
+						false // showHeroSearch
+							? false // currentTab === "Cars" || currentTab === "Flights"
 								? "scale-y-[4.4]"
 								: "scale-y-[3.4]"
 							: ""
@@ -182,7 +184,7 @@ const Header3: FC<Header3Props> = ({ className = "" }) => {
 						<div className='relative z-10 hidden flex-1 justify-end text-neutral-700 dark:text-neutral-100 md:flex'>
 							<div className=' flex space-x-1'>
 								<Link
-									href={"/add-listing/1"}
+									href={"/add-listing/1" as Route<string>}
 									className='hidden items-center self-center rounded-full border border-neutral-300 px-4 py-2 text-sm font-medium text-gray-700 hover:border-neutral-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 dark:border-neutral-700 dark:text-neutral-300 xl:inline-flex'
 								>
 									List your property

@@ -107,8 +107,8 @@ export function useOptimizedTable<TData>({
             return filterValue.includes(value);
           }
           
-          if (typeof filterValue === 'object' && filterValue.min !== undefined) {
-            return value >= filterValue.min && value <= filterValue.max;
+          if (typeof filterValue === 'object' && filterValue !== null && 'min' in filterValue && 'max' in filterValue) {
+            return value >= (filterValue as any).min && value <= (filterValue as any).max;
           }
           
           return true;
@@ -135,7 +135,9 @@ export function useOptimizedTable<TData>({
     // Cache the result
     if (cacheRef.current.size >= maxCacheSize) {
       const firstKey = cacheRef.current.keys().next().value;
-      cacheRef.current.delete(firstKey);
+      if (firstKey !== undefined) {
+        cacheRef.current.delete(firstKey);
+      }
     }
     cacheRef.current.set(cacheKey, filtered);
     lastUpdateRef.current = Date.now();

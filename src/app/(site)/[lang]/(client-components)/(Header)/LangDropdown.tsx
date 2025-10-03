@@ -41,6 +41,7 @@ const LangDropdown: FC<LangDropdownProps> = ({
 	const router = useRouter();
 
 	const switchLanguage = (locale: string) => {
+		if (!pathname) return;
 		const segments = pathname.split("/");
 		segments[1] = locale;
 		router.push(segments.join("/") as any);
@@ -57,7 +58,7 @@ const LangDropdown: FC<LangDropdownProps> = ({
 							close();
 						}}
 						className={`-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-gray-100 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 dark:hover:bg-gray-700 ${
-							pathname.startsWith(`/${item.id}`)
+							pathname?.startsWith(`/${item.id}`)
 								? "bg-gray-100 dark:bg-gray-700"
 								: "opacity-80"
 						}`}

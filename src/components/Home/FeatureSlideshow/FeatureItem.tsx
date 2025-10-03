@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { FeatureSlideshow } from "@/types/featureSlideshow";
-import { Accordion, AccordionItem, AccordionButton, AccordionPanel } from 'magic-ui'; // Adjust import based on Magic UI
+// import { Accordion, AccordionItem, AccordionButton, AccordionPanel } from 'magic-ui'; // Adjust import based on Magic UI
 import { motion } from 'framer-motion';
 
 type FeatureItemProps = {
@@ -23,7 +23,7 @@ const FeatureItem: React.FC<FeatureItemProps> = ({
   const { title, description } = data;
 
   return (
-    <AccordionItem>
+    <div>
       <div
         className={`relative mb-8 last:mb-0 ${
           linePosition === 'right' ? 'text-right' : 'text-left'
@@ -41,17 +41,17 @@ const FeatureItem: React.FC<FeatureItemProps> = ({
           ></div>
         </div>
 
-        <AccordionButton onClick={onClick} className="text-xl font-bold">
+        <button onClick={onClick} className="text-xl font-bold">
           {title}
-        </AccordionButton>
+        </button>
 
         {isActive && (
-          <AccordionPanel>
+          <div>
             <p>{description}</p>
-          </AccordionPanel>
+          </div>
         )}
       </div>
-    </AccordionItem>
+    </div>
   );
 };
 

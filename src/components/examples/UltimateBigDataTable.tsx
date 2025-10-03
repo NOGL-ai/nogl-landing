@@ -210,7 +210,7 @@ export function UltimateBigDataTable() {
   const [pageSize, setPageSize] = useState(50);
 
   // Create data fetcher based on selected source
-  const dataFetcher = useMemo(() => {
+  const baseDataFetcher = useMemo(() => {
     switch (dataSource) {
       case 'mock':
         return createRealisticMockGenerator(
@@ -248,6 +248,9 @@ export function UltimateBigDataTable() {
         return createRealisticMockGenerator(generateProduct, totalRecords, pageSize);
     }
   }, [dataSource, totalRecords, pageSize]);
+
+  // Wrap the fetcher to match the expected signature
+  const dataFetcher = (pageParam: number) => baseDataFetcher({ page: pageParam, pageSize });
 
   // Column definitions
   const columns = useMemo(() => createProductColumns(), []);

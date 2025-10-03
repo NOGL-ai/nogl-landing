@@ -12,12 +12,13 @@ import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 
 // Utility function for class names
-const cn = (...classes) => classes.filter(Boolean).join(" ");
+const cn = (...classes: any[]) => classes.filter(Boolean).join(" ");
 
 // AccordionItem Component
-const AccordionItem = forwardRef(
-  ({ children, className, ...props }, forwardedRef) => (
+const AccordionItem = forwardRef<any, any>(
+  ({ children, className, value, ...props }, forwardedRef) => (
     <Accordion.Item
+      value={value || "item"}
       className={cn(
         "mt-px overflow-hidden focus-within:relative focus-within:z-10",
         className
@@ -31,7 +32,7 @@ const AccordionItem = forwardRef(
 );
 
 // AccordionTrigger Component
-const AccordionTrigger = forwardRef(
+const AccordionTrigger = forwardRef<any, any>(
   ({ children, className, ...props }, forwardedRef) => (
     <Accordion.Header className="flex">
       <Accordion.Trigger
@@ -49,7 +50,7 @@ const AccordionTrigger = forwardRef(
 );
 
 // AccordionContent Component
-const AccordionContent = forwardRef(
+const AccordionContent = forwardRef<any, any>(
   ({ children, className, ...props }, forwardedRef) => (
     <Accordion.Content
       className={cn(
@@ -99,8 +100,8 @@ const Feature = ({
   linePosition = "left",
 }) => {
   const [currentIndex, setCurrentIndex] = useState(-1);
-  const carouselRef = useRef(null);
-  const ref = useRef(null);
+  const carouselRef = useRef<HTMLUListElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, {
     once: true,
     amount: 0.5,
@@ -118,20 +119,20 @@ const Feature = ({
     return () => clearTimeout(timer);
   }, [isInView]);
 
-  const scrollToIndex = (index) => {
+  const scrollToIndex = (index: number) => {
     if (carouselRef.current) {
-      const cards = carouselRef.current.querySelectorAll(".card");
-      const card = cards[index];
+      const cards = (carouselRef.current as HTMLElement).querySelectorAll(".card");
+      const card = cards[index] as HTMLElement;
       if (card) {
         const cardRect = card.getBoundingClientRect();
-        const carouselRect = carouselRef.current.getBoundingClientRect();
+        const carouselRect = (carouselRef.current as HTMLElement).getBoundingClientRect();
         const offset =
           cardRect.left -
           carouselRect.left -
           (carouselRect.width - cardRect.width) / 2;
 
-        carouselRef.current.scrollTo({
-          left: carouselRef.current.scrollLeft + offset,
+        (carouselRef.current as HTMLElement).scrollTo({
+          left: (carouselRef.current as HTMLElement).scrollLeft + offset,
           behavior: "smooth",
         });
       }
@@ -165,7 +166,7 @@ const Feature = ({
     if (carousel) {
       const handleScroll = () => {
         const scrollLeft = carousel.scrollLeft;
-        const cardWidth = carousel.querySelector(".card")?.clientWidth || 0;
+        const cardWidth = (carousel.querySelector(".card") as HTMLElement)?.clientWidth || 0;
         const newIndex = Math.min(
           Math.floor(scrollLeft / cardWidth),
           cardData.length - 1
@@ -252,15 +253,6 @@ const Feature = ({
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.98 }}
                   transition={{ duration: 0.25, ease: "easeOut" }}
-                />
-              ) : cardData[currentIndex]?.video ? (
-                <video
-                  preload="auto"
-                  src={cardData[currentIndex].video}
-                  className="aspect-auto h-full w-full rounded-lg object-cover"
-                  autoPlay
-                  loop
-                  muted
                 />
               ) : (
                 <div className="aspect-auto h-full w-full rounded-xl border border-neutral-300/50 bg-gray-200 p-1"></div>

@@ -6,7 +6,6 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nogl.tech";
 export const metadata: Metadata = {
   title: `Impressum | ${process.env.SITE_NAME}`,
   description: 'Impressum und rechtliche Angaben gemäß § 5 TMG für Nogl - Professional Services Platform.',
-  canonicalUrlRelative: "/impressum",
 };
 
 const ImpressumPage = () => {

@@ -4,7 +4,7 @@ import {
 	Map,
 	MapControl,
 } from "@vis.gl/react-google-maps";
-import AnyReactComponent from "@/components/AnyReactComponent/AnyReactComponent";
+// import AnyReactComponent from "@/components/AnyReactComponent/AnyReactComponent";
 import { FC } from "react";
 import Checkbox from "@/shared/Checkbox";
 import { CarDataType, ExperiencesDataType, StayDataType } from "@/data/types";
@@ -49,21 +49,14 @@ const MapContainer: FC<MapContainerProps> = ({
 						clickable
 						onClick={() => console.log("clicked")}
 					>
-						<AnyReactComponent
-							isSelected={currentHoverID === item.id}
+						<div
 							key={item.id}
-							lat={item.map.lat}
-							lng={item.map.lng}
-							car={listingType === "car" ? (item as CarDataType) : undefined}
-							experiences={
-								listingType === "experiences"
-									? (item as ExperiencesDataType)
-									: undefined
-							}
-							listing={
-								listingType === "stay" ? (item as StayDataType) : undefined
-							}
-						/>
+							className={`p-2 rounded-lg border ${
+								currentHoverID === item.id ? 'bg-blue-500 text-white' : 'bg-white'
+							}`}
+						>
+							{item.title}
+						</div>
 					</AdvancedMarker>
 				))}
 			</Map>

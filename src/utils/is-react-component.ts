@@ -13,6 +13,6 @@ export function isReactElement(value: unknown): value is ReactElement {
 export function isReactComponent(value: unknown): value is React.ComponentType<any> {
   return (
     typeof value === "function" &&
-    (value.prototype?.isReactComponent || value.$$typeof)
+    (value.prototype?.isReactComponent || (value as any).$$typeof)
   );
 }

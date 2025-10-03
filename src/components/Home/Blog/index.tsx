@@ -28,7 +28,7 @@ const Blog = async ({ dictionary }: BlogProps) => {
 			<div className='mx-auto w-full max-w-[1170px] px-4 sm:px-8 xl:px-0'>
 				{posts?.length > 0 ? (
 					<div className='grid grid-cols-1 gap-7.5 sm:grid-cols-2 lg:grid-cols-3'>
-						{posts.slice(0, 3).map((item, key: number) => (
+						{posts.slice(0, 3).map((item: any, key: number) => (
 							<div key={key} className="bg-white/5 backdrop-blur-sm border border-gray-800 rounded-lg">
 								<BlogItem blog={item} />
 							</div>

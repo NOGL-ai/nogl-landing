@@ -28,7 +28,7 @@ const HomePricing = ({ dictionary }: HomePricingProps) => {
 
 	return (
 		<div id="pricing">
-			<Pricing isBilling={false} dictionary={dictionary} />
+			<Pricing isBilling={false} />
 		</div>
 	);
 };

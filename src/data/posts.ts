@@ -7,7 +7,7 @@ import { DEMO_AUTHORS } from "./authors";
 const DEMO_POSTS = __posts.map((post): PostDataType => {
 	//  ##########  GET CATEGORY BY CAT ID ######## //
 	const categories = post.categoriesId.map(
-		(id) => DEMO_CATEGORIES.filter((taxonomy) => taxonomy.id === id)[0]
+		(id) => DEMO_CATEGORIES.filter((taxonomy) => taxonomy.id === id.toString())[0]
 	);
 
 	return {

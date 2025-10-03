@@ -50,7 +50,7 @@ export const useSidebar = (options: UseSidebarOptions = {}): UseSidebarReturn =>
 
   // Toggle collapsed state
   const toggleCollapse = useCallback(() => {
-    setIsCollapsed(prev => !prev);
+    setIsCollapsed((prev: boolean) => !prev);
   }, []);
 
   // Mobile sidebar controls
