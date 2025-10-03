@@ -1,4 +1,4 @@
-import CardCategoryBox1 from "@/components/CardCategoryBox1";
+import { CategoryCard } from "@/components/molecules";
 import Heading from "@/shared/Heading";
 import { TaxonomyType } from "@/data/types";
 import React from "react";

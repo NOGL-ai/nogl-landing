@@ -2,9 +2,7 @@
 
 import React, { FC, useEffect, useState } from "react";
 import { TaxonomyType } from "@/data/types";
-import CardCategory3 from "@/components/CardCategory3";
-import CardCategory4 from "@/components/CardCategory4";
-import CardCategory5 from "@/components/CardCategory5";
+import { CategoryCard } from "@/components/molecules";
 import Heading from "@/shared/Heading";
 import { AnimatePresence, motion, MotionConfig } from "framer-motion";
 import { useSwipeable } from "react-swipeable";

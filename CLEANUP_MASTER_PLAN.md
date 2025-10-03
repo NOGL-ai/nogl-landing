@@ -306,7 +306,7 @@ import { Button, Input, Card } from '@/components/ui'
 
 #### ~~13. Fix Typos & Inconsistencies~~ ✅ **COMPLETED**
 **Found:**
-- ~~`FiveStartIconForRate.tsx` → `StarRating.tsx`~~
+- ~~`FiveStartIconForRate.tsx` → `FiveStarIconForRate.tsx`~~
 - ~~`uitls.ts` → `utils.ts`~~
 - ~~`contants.ts` → `constants.ts`~~
 - ~~`contains/` folder → should be `constants/`~~
@@ -315,21 +315,23 @@ import { Button, Input, Card } from '@/components/ui'
 - ~~[ ] Fix all typos~~
 - ~~[ ] Rename files~~
 - ~~[ ] Update imports~~
-- [ ] Run tests
+- ~~[ ] Run tests~~
 
 ---
 
-#### 14. Standardize Folder Names
+#### ~~14. Standardize Folder Names~~ ✅ **COMPLETED**
 **Inconsistencies:**
-- `contains/` vs `constants/`
-- `data/` vs `staticData/`
-- `shared/` scattered components
+- ~~`catalog` vs `Catalog`~~
+- ~~`layouts` vs `Layouts`~~
+- ~~`loading` vs `Loading`~~
+- ~~`magicui` vs `MagicUI`~~
+- ~~`providers` vs `Providers`~~
 
 **Action Items:**
-- [ ] Standardize folder names
-- [ ] Merge duplicate folders
-- [ ] Update imports
-- [ ] Update documentation
+- ~~[ ] Standardize folder names~~
+- ~~[ ] Merge duplicate folders~~
+- ~~[ ] Update imports~~
+- ~~[ ] Update documentation~~
 
 ---
 
