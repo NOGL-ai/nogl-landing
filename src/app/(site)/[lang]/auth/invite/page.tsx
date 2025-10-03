@@ -1,5 +1,5 @@
 import React from "react";
-import InvitedSignin from "@/components/Auth/InvitedSignin";
+import InvitedSignin from "@/components/molecules/InvitedSignin";
 
 const InvitedSigninPage = () => {
 	return (

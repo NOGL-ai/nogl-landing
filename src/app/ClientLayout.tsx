@@ -3,7 +3,7 @@
 
 import React from "react";
 import { LoadingProvider } from "@/context/LoadingContext";
-import LoadingScreen from "@/components/Common/LoadingScreen";
+import LoadingScreen from "@/components/molecules/LoadingScreen";
 
 interface ClientLayoutProps {
 	children: React.ReactNode;

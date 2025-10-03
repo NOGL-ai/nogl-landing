@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import DatafeedSettings from "@/components/ProductFeed/DatafeedSettings";
+import DatafeedSettings from "@/components/organisms/DatafeedSettings";
 import { getDictionary } from "@/lib/dictionary";
 import { Locale } from "@/i18n";
 

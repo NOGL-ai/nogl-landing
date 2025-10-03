@@ -1,5 +1,5 @@
-import SendNewsletterCard from "@/components/Admin/SendNewsletter/SendNewsletterCard";
-import Breadcrumb from "@/components/Common/Dashboard/Breadcrumb";
+import SendNewsletterCard from "@/components/molecules/SendNewsletterCard";
+import Breadcrumb from "@/components/atoms/DashboardBreadcrumb";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

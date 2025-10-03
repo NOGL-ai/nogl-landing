@@ -1,5 +1,5 @@
-import UsersListContainer from "@/components/Admin/Users";
-import Breadcrumb from "@/components/Common/Dashboard/Breadcrumb";
+import UsersListContainer from "@/components/organisms/UsersListContainer";
+import Breadcrumb from "@/components/atoms/DashboardBreadcrumb";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

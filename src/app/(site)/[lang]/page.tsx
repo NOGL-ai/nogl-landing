@@ -1,4 +1,4 @@
-import Home from "@/components/Home";
+import Home from "@/components/templates/HomePage";
 import { Metadata } from "next";
 import { getDictionary } from "@/lib/dictionary";
 import { Locale } from "@/i18n";

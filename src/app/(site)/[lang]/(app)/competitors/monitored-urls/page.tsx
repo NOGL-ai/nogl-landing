@@ -1,5 +1,5 @@
 import React from "react";
-import MonitoredUrlsTable from "@/components/Competitors/MonitoredUrlsTable";
+import MonitoredUrlsTable from "@/components/organisms/MonitoredUrlsTable";
 
 export const metadata = {
 	title: "Monitored URLs",

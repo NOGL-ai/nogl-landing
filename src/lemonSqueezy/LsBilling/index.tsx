@@ -2,7 +2,7 @@
 import { pricingData } from "@/pricing/pricingData";
 import PriceItem from "./Pricing";
 import CancelSubscription from "./CancelSubscription";
-import SectionHeader from "@/components/Common/SectionHeader";
+import SectionHeader from "@/components/molecules/SectionHeader";
 
 const Pricing = ({ isBilling }: { isBilling?: boolean }) => {
 	return (

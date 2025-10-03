@@ -1,6 +1,6 @@
-import DataStatsCard from "@/components/Admin/Dashboard/DataStatsCard";
-import GraphCard from "@/components/Admin/Dashboard/GraphCard";
-import Breadcrumb from "@/components/Common/Dashboard/Breadcrumb";
+import DataStatsCard from "@/components/atoms/DataStatsCard";
+import GraphCard from "@/components/molecules/GraphCard";
+import Breadcrumb from "@/components/atoms/DashboardBreadcrumb";
 import { dataStats, overviewData } from "@/staticData/statsData";
 import { Metadata } from "next";
 

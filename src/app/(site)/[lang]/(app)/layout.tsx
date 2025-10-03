@@ -1,5 +1,5 @@
 import React from "react";
-import SidebarLayout from "@/components/Sidebar/SidebarLayout";
+import SidebarLayout from "@/components/templates/SidebarLayout";
 import Particles from "@/components/ui/particles";
 import { GlassmorphismBackground } from "@/components/atoms";
 

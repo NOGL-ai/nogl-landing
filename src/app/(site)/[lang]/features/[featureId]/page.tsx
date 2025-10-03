@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { getDictionary } from "@/lib/dictionary";
 import { Locale } from "@/i18n";
-import featuresData from "@/components/Home/Features/featuresData";
+import featuresData from "@/data/featuresData";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -49,7 +49,7 @@ export default async function FeatureDetailPage({
 			<div className='mb-12 text-center'>
 				<div className='mb-6'>
 					<Image
-						src={feature.icon}
+						src={feature.image}
 						alt={feature.title}
 						width={80}
 						height={80}

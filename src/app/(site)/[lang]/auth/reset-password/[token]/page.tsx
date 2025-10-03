@@ -1,5 +1,5 @@
 import React from "react";
-import ResetPassword from "@/components/Auth/ResetPassword";
+import ResetPassword from "@/components/molecules/ResetPassword";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

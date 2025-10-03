@@ -1,6 +1,6 @@
-import Breadcrumb from "@/components/Common/Dashboard/Breadcrumb";
-import CreateToken from "@/components/User/Api/CreateToken";
-import TokenList from "@/components/User/Api/TokenList";
+import Breadcrumb from "@/components/atoms/DashboardBreadcrumb";
+import CreateToken from "@/components/molecules/CreateToken";
+import TokenList from "@/components/organisms/TokenList";
 import { Metadata } from "next";
 import { getApiKeys } from "@/actions/api-key";
 

@@ -3,9 +3,9 @@ import "react-quill/dist/quill.snow.css";
 import "@/fonts/line-awesome-1.3.0/css/line-awesome.css";
 import { Providers } from "./providers";
 import NextTopLoader from "nextjs-toploader";
-import Loader from "@/components/Common/PreLoader";
-import FooterWrapper from "@/components/Footer/FooterWrapper";
-import { HeaderWrapper } from "@/components/Header/HeaderWrapper";
+import Loader from "@/components/molecules/PreLoader";
+import FooterWrapper from "@/components/molecules/FooterWrapper";
+import { HeaderWrapper } from "@/components/molecules/HeaderWrapper";
 // import AuthCheck from "./AuthCheck";
 import { Metadata } from "next";
 

@@ -1,7 +1,7 @@
 "use client";
-import Card from "@/components/Common/Dashboard/Card";
-import FormButton from "@/components/Common/Dashboard/FormButton";
-import InputGroup from "@/components/Common/Dashboard/InputGroup";
+import Card from "@/components/atoms/Card";
+import FormButton from "@/components/atoms/FormButton";
+import InputGroup from "@/components/molecules/InputGroup";
 import { createApiKey } from "@/actions/api-key";
 import { useRef } from "react";
 import toast from "react-hot-toast";

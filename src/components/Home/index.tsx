@@ -5,7 +5,7 @@ import FAQ from "./FAQ";
 import Blog from "./Blog";
 import Newsletter from "./Newsletter";
 import { GlassmorphismBackground } from "@/components/atoms";
-import Particles from "@/components/ui/particles";
+import { Particles } from "@/components/ui";
 
 interface HomeProps {
 	dictionary: {

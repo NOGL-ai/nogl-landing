@@ -1,5 +1,5 @@
 import React from "react";
-import Support from "@/components/Support";
+import Support from "@/components/organisms/Support";
 import Link from "next/link";
 import { getSEOTags, renderSchemaTags } from "@/lib/seo"; // Ensure renderSchemaTags is imported
 import { Metadata } from "next";

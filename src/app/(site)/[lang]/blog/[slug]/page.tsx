@@ -1,11 +1,11 @@
 import React from "react";
 import { getPostBySlug, imageBuilder } from "@/ghost/ghost-utils";
-import RenderBodyContent from "@/components/Blog/RenderBodyContent";
+import RenderBodyContent from "@/components/atoms/RenderBodyContent";
 import Link from "next/link";
 import Image from "next/image";
 import { structuredAlgoliaHtmlData } from "@/lib/crawlIndex";
-import CopyToClipboard from "@/components/Common/CopyToClipboard";
-import SocialShare from "@/components/Blog/SocialShare";
+import CopyToClipboard from "@/components/atoms/CopyToClipboard";
+import SocialShare from "@/components/atoms/SocialShare";
 
 type Props = {
 	params: Promise<{

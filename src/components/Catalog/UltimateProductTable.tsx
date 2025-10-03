@@ -37,7 +37,7 @@ import {
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "@/components/ui/select";
+} from "@/components/ui";
 import { Badge } from "@/components/ui/badge";
 import {
 	Popover,
@@ -902,7 +902,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 
 					<div className='flex w-full items-center gap-2 sm:w-auto'>
 						<Button
-							variant='outline'
+							variant='secondary'
 							onClick={() => setShowFilters(!showFilters)}
 							className='relative flex-1 border-gray-300 text-gray-700 hover:bg-gray-50 sm:flex-none dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
 						>
@@ -919,7 +919,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 						</Button>
 
 						<Button
-							variant='outline'
+							variant='secondary'
 							onClick={clearAllFilters}
 							className='flex-1 border-gray-300 text-gray-700 hover:bg-gray-50 sm:flex-none dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
 						>
@@ -932,7 +932,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 				<div className='flex w-full items-center gap-2 sm:w-auto'>
 					<div className='flex items-center space-x-1'>
 						<Button
-							variant={viewMode === "table" ? "default" : "outline"}
+							variant={viewMode === "table" ? "primary" : "secondary"}
 							size='sm'
 							onClick={() => setViewMode("table")}
 							className={
@@ -944,7 +944,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 							<List className='h-4 w-4' />
 						</Button>
 						<Button
-							variant={viewMode === "grid" ? "default" : "outline"}
+							variant={viewMode === "grid" ? "primary" : "secondary"}
 							size='sm'
 							onClick={() => setViewMode("grid")}
 							className={
@@ -960,7 +960,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<Button
-								variant='outline'
+								variant='secondary'
 								className='border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
 							>
 								<Columns className='mr-2 h-4 w-4' />
@@ -1077,7 +1077,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 							</label>
 							<div className='grid grid-cols-2 gap-2'>
 								<Button
-									variant='outline'
+									variant='secondary'
 									size='sm'
 									onClick={() => {
 										handlePriceRangeChange([0, 50]);
@@ -1089,7 +1089,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 									Under €50
 								</Button>
 								<Button
-									variant='outline'
+									variant='secondary'
 									size='sm'
 									onClick={() => {
 										handlePriceRangeChange([100, 1000]);
@@ -1101,7 +1101,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 									Premium
 								</Button>
 								<Button
-									variant='outline'
+									variant='secondary'
 									size='sm'
 									onClick={() => {
 										setFilters((prev) => ({
@@ -1115,7 +1115,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 									With Data
 								</Button>
 								<Button
-									variant='outline'
+									variant='secondary'
 									size='sm'
 									onClick={() => {
 										handleBrandFilter("Stilnest", true);
@@ -1145,7 +1145,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 						</div>
 						<div className='flex items-center space-x-2'>
 							<Button
-								variant='outline'
+								variant='secondary'
 								size='sm'
 								className='border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
 							>
@@ -1153,7 +1153,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 								Export
 							</Button>
 							<Button
-								variant='outline'
+								variant='secondary'
 								size='sm'
 								className='border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
 							>
@@ -1161,7 +1161,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 								Bulk Edit
 							</Button>
 							<Button
-								variant='outline'
+								variant='secondary'
 								size='sm'
 								className='border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
 							>
@@ -1256,11 +1256,10 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 						>
 							<SelectTrigger className='h-8 w-[70px] border-gray-300 bg-white text-gray-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100'>
 								<SelectValue
-									placeholder={table.getState().pagination.pageSize}
+									placeholder={`${table.getState().pagination.pageSize}`}
 								/>
 							</SelectTrigger>
 							<SelectContent
-								side='top'
 								className='border-gray-300 bg-white dark:border-gray-600 dark:bg-gray-800'
 							>
 								{[10, 20, 30, 40, 50].map((pageSize) => (
@@ -1281,7 +1280,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 					</div>
 					<div className='flex items-center space-x-2'>
 						<Button
-							variant='outline'
+							variant='secondary'
 							className='hidden h-8 w-8 border-gray-300 p-0 text-gray-700 hover:bg-gray-50 lg:flex dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
 							onClick={() => table.setPageIndex(0)}
 							disabled={!table.getCanPreviousPage()}
@@ -1290,7 +1289,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 							<ArrowUp className='h-4 w-4' />
 						</Button>
 						<Button
-							variant='outline'
+							variant='secondary'
 							className='h-8 w-8 border-gray-300 p-0 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
 							onClick={() => table.previousPage()}
 							disabled={!table.getCanPreviousPage()}
@@ -1299,7 +1298,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 							<ArrowUp className='h-4 w-4' />
 						</Button>
 						<Button
-							variant='outline'
+							variant='secondary'
 							className='h-8 w-8 border-gray-300 p-0 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
 							onClick={() => table.nextPage()}
 							disabled={!table.getCanNextPage()}
@@ -1308,7 +1307,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 							<ArrowDown className='h-4 w-4' />
 						</Button>
 						<Button
-							variant='outline'
+							variant='secondary'
 							className='hidden h-8 w-8 border-gray-300 p-0 text-gray-700 hover:bg-gray-50 lg:flex dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
 							onClick={() => table.setPageIndex(table.getPageCount() - 1)}
 							disabled={!table.getCanNextPage()}

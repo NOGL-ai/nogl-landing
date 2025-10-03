@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import RepricingRules from "@/components/Repricing/RepricingRules";
+import RepricingRules from "@/components/organisms/RepricingRules";
 
 export const metadata: Metadata = {
 	title: "Auto Repricing Rules | Nogl",

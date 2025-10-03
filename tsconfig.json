@@ -34,5 +34,5 @@
 		".next/types/**/*.ts",
 		"middleware.ts"
 	],
-	"exclude": ["node_modules", "src/pages"]
+	"exclude": ["node_modules", "src/pages", "docs"]
 }

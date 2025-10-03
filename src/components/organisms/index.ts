@@ -1,11 +1,10 @@
 // Atomic Design - Organisms
 // Complex UI components made of groups of molecules and/or atoms
 
-export { default as Header } from "../Header";
-export { default as Footer } from "./Footer";
-export { default as Sidebar } from "../Sidebar";
-export { default as GlobalSearch } from "../GlobalSearch";
-// TabSection component not found - removed
+export { default as Header } from "./Header";
+export { default as Footer } from "./MainFooter";
+export { default as Sidebar } from "./Sidebar";
+export { default as GlobalSearch } from "./GlobalSearchModal";
 export { default as Features } from "./Features";
 export { default as Section } from "./section";
 export { default as BackgroundSection } from "./BackgroundSection";
@@ -19,7 +18,44 @@ export { default as SectionOurFeatures } from "./SectionOurFeatures";
 export { default as SectionSliderNewCategories } from "./SectionSliderNewCategories";
 export { default as SectionSubscribe2 } from "./SectionSubscribe2";
 export { default as SectionVideos } from "./SectionVideos";
-// TrendCard component not found - removed
-// TrendSection component not found - removed
 export { default as ErrorBoundary } from "./ErrorBoundary";
 export { default as Testimonials } from "./testimonials";
+export { default as FAQ } from "./FAQ";
+export { default as Pricing } from "./Pricing";
+export { default as HomeTestimonials } from "./Testimonials";
+export { default as AccountMenu } from "./AccountMenu";
+export { default as DashboardHeader } from "./DashboardHeader";
+export { default as CommunitySection } from "./CommunitySection";
+export { default as HomeBlog } from "./HomeBlog";
+export { default as HomeCallToAction } from "./HomeCallToAction";
+export { default as HomeCounter } from "./HomeCounter";
+export { default as HomeFeatureSlideshow } from "./HomeFeatureSlideshow";
+export { default as HomeHero } from "./HomeHero";
+export { default as HomeNewsletter } from "./HomeNewsletter";
+export { default as HomeProblem } from "./HomeProblem";
+export { default as HomeSolution } from "./HomeSolution";
+export { default as UserProfile } from "./UserProfile";
+export { default as MobileSidebar } from "./MobileSidebar";
+export { default as Sidebar } from "./Sidebar";
+export { default as Header } from "./Header";
+export { default as MainFooter } from "./MainFooter";
+export { default as GlobalSearchModal } from "./GlobalSearchModal";
+export { default as UltimateProductTable } from "./UltimateProductTable";
+export { default as CatalogContent } from "./CatalogContent";
+export { default as NotFound } from "./NotFound";
+export { default as MonitoredUrlsTable } from "./MonitoredUrlsTable";
+export { default as DatafeedSettings } from "./DatafeedSettings";
+export { default as Support } from "./Support";
+export { default as RepricingRules } from "./RepricingRules";
+export { default as Signin } from "./Signin";
+export { default as Signup } from "./Signup";
+export { default as SignupPageLayout } from "./SignupPageLayout";
+export { default as AccountSettings } from "./AccountSettings";
+export { default as TokenList } from "./TokenList";
+export { default as APIKey } from "./APIKey";
+export { default as Billing } from "./Billing";
+export { default as PurchaseHistory } from "./PurchaseHistory";
+export { default as AiIntegration } from "./AiIntegration";
+export { default as UsersListContainer } from "./UsersListContainer";
+export { default as DashboardPageClient } from "./DashboardPageClient";
+export { default as DashboardWidgetGrid } from "./DashboardWidgetGrid";

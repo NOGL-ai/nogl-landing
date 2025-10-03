@@ -1,5 +1,5 @@
 import React from "react";
-import Signin from "@/components/Auth/Signin";
+import Signin from "@/components/organisms/Signin";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

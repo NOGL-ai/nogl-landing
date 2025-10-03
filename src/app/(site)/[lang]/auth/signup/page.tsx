@@ -1,4 +1,4 @@
-import SignupPageLayout from "@/components/Auth/Signup/SignupPageLayout";
+import SignupPageLayout from "@/components/organisms/SignupPageLayout";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

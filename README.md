@@ -25,11 +25,27 @@ A full-stack SaaS landing page and application built with Next.js, featuring mod
 - **CMS**: Ghost
 - **Deployment**: Vercel
 
+## 📚 Documentation
+
+**📖 [Complete Documentation Hub](./docs/README.md)**
+
+This project includes comprehensive documentation organized for optimal developer and AI assistant navigation:
+
+- **🏗️ Architecture**: Component structure, design patterns, and system architecture
+- **📖 Guides**: Setup guides, implementation guides, and best practices  
+- **💻 Examples**: Code examples and usage patterns
+
+### Quick Links
+- [Component Architecture](./docs/architecture/README.md) - Component structure overview
+- [Quick Start Guide](./docs/guides/QUICK_START.md) - Get started quickly
+- [Environment Setup](./docs/guides/ENV_SETUP_GUIDE.md) - Environment configuration
+- [Code Examples](./docs/examples/IMPORT_EXAMPLES.tsx) - Import/export patterns
+
 ## 📦 Installation
 
 1. Clone the repository
 2. Install dependencies: `npm install`
-3. Set up environment variables
+3. Set up environment variables (see [Environment Setup Guide](./docs/guides/ENV_SETUP_GUIDE.md))
 4. Run database migrations: `npx prisma migrate dev`
 5. Start the development server: `npm run dev`
 

@@ -1,4 +1,4 @@
-import Marquee from "@/components/MagicUI/marquee";
+import Marquee from "@/components/atoms/marquee";
 import Image from "next/image";
 
 const companies = [

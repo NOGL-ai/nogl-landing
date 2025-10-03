@@ -10,7 +10,7 @@ import {
 	InformationCircleIcon,
 	EllipsisHorizontalIcon,
 } from "@heroicons/react/24/outline";
-import AddCompetitorModal from "@/components/Common/Modals/AddCompetitorModal";
+import AddCompetitorModal from "@/components/molecules/AddCompetitorModal";
 
 // This would normally be fetched from an API
 const competitorsData = [

@@ -1,6 +1,6 @@
 import { getPostsByAuthor, getAuthorBySlug } from "@/ghost/ghost-utils";
-import BlogItem from "@/components/Blog/BlogItem";
-import Breadcrumbs from "@/components/Common/Breadcrumbs";
+import BlogItem from "@/components/atoms/BlogItem";
+import Breadcrumbs from "@/components/atoms/Breadcrumbs";
 import { Author, Blog } from "@/types/blog";
 import Image from "next/image";
 import { imageBuilder } from "@/ghost/ghost-utils";

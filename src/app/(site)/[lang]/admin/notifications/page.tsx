@@ -1,4 +1,4 @@
-import Breadcrumb from "@/components/Common/Dashboard/Breadcrumb";
+import Breadcrumb from "@/components/atoms/DashboardBreadcrumb";
 import React from "react";
 import { Metadata } from "next";
 import Notification from "@/components/Common/Notification";

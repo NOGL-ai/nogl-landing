@@ -1,30 +1,55 @@
 "use client";
 
-import * as React from "react";
-import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
-import { Check } from "lucide-react";
+import React from 'react';
+import { cn } from '@/lib/utils';
 
-import { cn } from "@/lib/utils";
+export interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+  description?: string;
+  error?: string;
+  onCheckedChange?: (checked: boolean) => void;
+}
 
-const Checkbox = React.forwardRef<
-	React.ElementRef<typeof CheckboxPrimitive.Root>,
-	React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>
->(({ className, ...props }, ref) => (
-	<CheckboxPrimitive.Root
-		ref={ref}
-		className={cn(
-			"border-primary ring-offset-background focus-visible:ring-ring data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground peer h-4 w-4 shrink-0 rounded-sm border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-			className
-		)}
-		{...props}
-	>
-		<CheckboxPrimitive.Indicator
-			className={cn("flex items-center justify-center text-current")}
-		>
-			<Check className='h-4 w-4' />
-		</CheckboxPrimitive.Indicator>
-	</CheckboxPrimitive.Root>
-));
-Checkbox.displayName = CheckboxPrimitive.Root.displayName;
+const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
+  ({ className, label, description, error, onCheckedChange, onChange, ...props }, ref) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      onCheckedChange?.(e.target.checked);
+      onChange?.(e);
+    };
+
+    return (
+      <div className="flex items-start space-x-3">
+        <div className="flex items-center h-5">
+          <input
+            type="checkbox"
+            className={cn(
+              "w-4 h-4 text-gray-600 bg-gray-100 border-gray-300 rounded focus:ring-gray-500 focus:ring-2",
+              error && "border-red-500 focus:ring-red-500",
+              className
+            )}
+            ref={ref}
+            onChange={handleChange}
+            {...props}
+          />
+        </div>
+        <div className="text-sm">
+          {label && (
+            <label className="font-medium text-gray-900 dark:text-gray-100">
+              {label}
+            </label>
+          )}
+          {description && (
+            <p className="text-gray-500 dark:text-gray-400">{description}</p>
+          )}
+          {error && (
+            <p className="text-red-600 dark:text-red-400">{error}</p>
+          )}
+        </div>
+      </div>
+    );
+  }
+);
+
+Checkbox.displayName = 'Checkbox';
 
 export { Checkbox };

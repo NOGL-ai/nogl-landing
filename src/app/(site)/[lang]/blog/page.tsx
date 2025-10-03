@@ -1,6 +1,6 @@
 import { getPosts } from "@/ghost/ghost-utils";
-import BlogItem from "@/components/Blog/BlogItem";
-import Breadcrumbs from "@/components/Common/Breadcrumbs";
+import BlogItem from "@/components/atoms/BlogItem";
+import Breadcrumbs from "@/components/atoms/Breadcrumbs";
 import Image from "next/image";
 import { Metadata } from "next";
 import { Blog } from "@/types/blog";
