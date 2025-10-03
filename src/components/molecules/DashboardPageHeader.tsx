@@ -6,6 +6,8 @@ import {
 	CustomizeIcon,
 	PaintBucketIcon,
 } from "../atoms/DashboardIcons";
+import { useTheme } from "next-themes";
+import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
 
 interface DashboardPageHeaderProps {
 	title?: string;
@@ -23,6 +25,17 @@ export const DashboardPageHeader: React.FC<DashboardPageHeaderProps> = ({
 	className = "",
 }) => {
 	const [isFullscreen, setIsFullscreen] = useState(false);
+	const { theme, setTheme } = useTheme();
+	const [mounted, setMounted] = useState(false);
+
+	// Ensure component is mounted before rendering theme-dependent content
+	React.useEffect(() => {
+		setMounted(true);
+	}, []);
+
+	const handleThemeToggle = () => {
+		setTheme(theme === "dark" ? "light" : "dark");
+	};
 
 	const handleFullscreenToggle = () => {
 		setIsFullscreen(!isFullscreen);
@@ -52,6 +65,26 @@ export const DashboardPageHeader: React.FC<DashboardPageHeaderProps> = ({
 				</div>
 
 				<div className='relative flex items-center gap-2 sm:gap-[5px]'>
+					{/* Dark Theme Toggle Button */}
+					<div className='relative hidden items-center gap-[4.375px] sm:flex'>
+						<button
+							onClick={handleThemeToggle}
+							className='flex h-8 w-8 items-center justify-center rounded-[5px] bg-[rgba(10,15,41,0.04)] transition-colors hover:bg-[rgba(10,15,41,0.08)] dark:bg-gray-700 dark:hover:bg-gray-600'
+							title={mounted ? (theme === "dark" ? "Switch to light mode" : "Switch to dark mode") : "Theme toggle"}
+							aria-label={mounted ? (theme === "dark" ? "Switch to light mode" : "Switch to dark mode") : "Theme toggle"}
+						>
+							{mounted ? (
+								theme === "dark" ? (
+									<SunIcon className="h-4 w-4 text-yellow-500" />
+								) : (
+									<MoonIcon className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+								)
+							) : (
+								<MoonIcon className="h-4 w-4 text-gray-600" />
+							)}
+						</button>
+					</div>
+
 					{/* Color Button */}
 					<div className='relative hidden items-center gap-[4.375px] sm:flex'>
 						<div className='relative flex h-3.5 w-3.5 items-center justify-center'>

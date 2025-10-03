@@ -7,6 +7,11 @@ const config = {
 	],
 	theme: {
 		extend: {
+			fontFamily: {
+				sans: ["Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Arial", "sans-serif"],
+				mono: ["JetBrains Mono", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"],
+				serif: ["Georgia", "Times New Roman", "serif"],
+			},
 			animation: {
 				"shimmer-slide":
 					"shimmer-slide var(--speed) ease-in-out infinite alternate",

@@ -50,19 +50,20 @@ export const PieChart: React.FC<PieChartProps> = ({
 		const startAngleRad = (startAngle - 90) * (Math.PI / 180);
 		const endAngleRad = (endAngle - 90) * (Math.PI / 180);
 
-		const x1 = centerX + radius * Math.cos(startAngleRad);
-		const y1 = centerY + radius * Math.sin(startAngleRad);
-		const x2 = centerX + radius * Math.cos(endAngleRad);
-		const y2 = centerY + radius * Math.sin(endAngleRad);
+		// Round to 6 decimal places to ensure consistent precision between server and client
+		const x1 = Math.round((centerX + radius * Math.cos(startAngleRad)) * 1000000) / 1000000;
+		const y1 = Math.round((centerY + radius * Math.sin(startAngleRad)) * 1000000) / 1000000;
+		const x2 = Math.round((centerX + radius * Math.cos(endAngleRad)) * 1000000) / 1000000;
+		const y2 = Math.round((centerY + radius * Math.sin(endAngleRad)) * 1000000) / 1000000;
 
 		const largeArcFlag = endAngle - startAngle > 180 ? 1 : 0;
 
 		return `M ${centerX} ${centerY} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2} Z`;
 	};
 
-	const centerX = size / 2;
-	const centerY = size / 2;
-	const radius = (size - 20) / 2; // Leave some margin
+	const centerX = Math.round((size / 2) * 1000000) / 1000000;
+	const centerY = Math.round((size / 2) * 1000000) / 1000000;
+	const radius = Math.round(((size - 20) / 2) * 1000000) / 1000000; // Leave some margin
 
 	return (
 		<div

@@ -174,7 +174,7 @@ export const NavAccountCard = ({
     }
 
     return (
-        <div ref={triggerRef} className="relative flex items-center gap-3 rounded-xl p-3 ring-1 ring-secondary ring-inset">
+        <div ref={triggerRef} className="relative flex items-center gap-2 rounded-[12px] p-3 bg-[#181d27] border border-[#252b37]">
             <AvatarLabelGroup
                 size="md"
                 src={selectedAccount.avatar}
@@ -183,9 +183,9 @@ export const NavAccountCard = ({
                 status={selectedAccount.status}
             />
 
-            <div className="absolute top-1.5 right-1.5">
+            <div className="absolute top-2 right-2">
                 <AriaDialogTrigger>
-                    <AriaButton className="flex cursor-pointer items-center justify-center rounded-md p-1.5 text-fg-quaternary outline-focus-ring transition duration-100 ease-linear hover:bg-primary_hover hover:text-fg-quaternary_hover focus-visible:outline-2 focus-visible:outline-offset-2 pressed:bg-primary_hover pressed:text-fg-quaternary_hover">
+                    <AriaButton className="flex cursor-pointer items-center justify-center rounded-[8px] p-1.5 text-[#717680] outline-focus-ring transition duration-100 ease-linear hover:bg-[#252b37] hover:text-[#a4a7ae] focus-visible:outline-2 focus-visible:outline-offset-2 pressed:bg-[#252b37] pressed:text-[#a4a7ae]">
                         <ChevronSelectorVertical className="size-4 shrink-0" />
                     </AriaButton>
                     <AriaPopover

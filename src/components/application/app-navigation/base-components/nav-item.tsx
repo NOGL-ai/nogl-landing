@@ -6,9 +6,18 @@ import { Link as AriaLink } from "react-aria-components";
 import { Badge } from "@/components/base/badges/badges";
 import { cx, sortCx } from "@/utils/cx";
 
-const styles = sortCx({
-    root: "group relative flex w-full cursor-pointer items-center rounded-md bg-primary outline-focus-ring transition duration-100 ease-linear select-none hover:bg-primary_hover focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-2",
-    rootSelected: "bg-active hover:bg-secondary_hover",
+const getStyles = (theme: 'light' | 'dark') => sortCx({
+    root: `group relative flex w-full cursor-pointer items-center rounded-[6px] ${
+        theme === 'dark' 
+            ? "bg-[#0a0d12] hover:bg-[#252b37]" 
+            : "bg-white hover:bg-gray-50"
+    } outline-focus-ring transition-all duration-200 ease-in-out select-none focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-2`,
+    rootSelected: theme === 'dark' ? "bg-[#252b37] hover:bg-[#252b37]" : "bg-gray-100 hover:bg-gray-100",
+    content: `bg-white box-border content-stretch flex flex-[1_0_0] gap-[12px] items-center min-h-px min-w-px px-[12px] py-[8px] relative rounded-[6px] shrink-0`,
+    textAndIcon: `content-stretch flex flex-[1_0_0] gap-[8px] items-center min-h-px min-w-px relative shrink-0`,
+    avatar: `border-[0.417px] border-[rgba(0,0,0,0.08)] border-solid relative rounded-[200px] shrink-0 size-[20px]`,
+    badge: `bg-white border border-[#d5d7da] border-solid box-border content-stretch flex items-center px-[6px] py-[2px] relative rounded-[6px] shrink-0`,
+    chevron: `overflow-clip relative shrink-0 size-[16px]`,
 });
 
 interface NavItemBaseProps {
@@ -21,7 +30,7 @@ interface NavItemBaseProps {
     /** Type of the nav item. */
     type: "link" | "collapsible" | "collapsible-child";
     /** Icon component to display. */
-    icon?: FC<HTMLAttributes<HTMLOrSVGElement>>;
+    icon?: FC<HTMLAttributes<HTMLOrSVGElement>> | (() => ReactNode);
     /** Badge to display. */
     badge?: ReactNode;
     /** Whether the nav item is currently active. */
@@ -29,33 +38,52 @@ interface NavItemBaseProps {
     /** Whether to truncate the label text. */
     truncate?: boolean;
     /** Handler for click events. */
-    onClick?: MouseEventHandler;
+    onClick?: MouseEventHandler<HTMLAnchorElement>;
     /** Content to display. */
     children?: ReactNode;
+    /** Theme for styling */
+    theme?: 'light' | 'dark';
 }
 
-export const NavItemBase = ({ current, type, badge, href, icon: Icon, children, truncate = true, onClick }: NavItemBaseProps) => {
-    const iconElement = Icon && <Icon aria-hidden="true" className="mr-2 size-5 shrink-0 text-fg-quaternary transition-inherit-all" />;
+export const NavItemBase = ({ current, type, badge, href, icon: Icon, children, truncate = true, onClick, theme = 'dark' }: NavItemBaseProps) => {
+    const styles = getStyles(theme);
+    
+    // Try to call the icon first to see if it returns JSX (for Avatar-based icons)
+    const iconElement = Icon && (() => {
+        try {
+            const result = Icon();
+            // If it returns a valid React element, use it directly (Avatar case)
+            if (result) {
+                return result;
+            }
+        } catch {
+            // If calling without props fails, it's a regular icon component
+        }
+        // Regular icon component - pass the required props
+        return <Icon aria-hidden="true" className={`mr-2 size-5 shrink-0 ${
+            theme === 'dark' ? 'text-[#717680]' : 'text-[#a4a7ae]'
+        } transition-inherit-all`} />;
+    })();
 
     const badgeElement =
         badge && (typeof badge === "string" || typeof badge === "number") ? (
-            <Badge className="ml-3" color="gray" type="pill-color" size="sm">
-                {badge}
-            </Badge>
+            <div className={styles.badge}>
+                <p className={`font-['Inter:Medium',_sans-serif] font-medium leading-[18px] not-italic relative shrink-0 text-[#414651] text-[12px] text-center`}>
+                    {badge}
+                </p>
+            </div>
         ) : (
             badge
         );
 
     const labelElement = (
-        <span
-            className={cx(
-                "flex-1 text-md font-semibold text-secondary transition-inherit-all group-hover:text-secondary_hover",
-                truncate && "truncate",
-                current && "text-secondary_hover",
-            )}
-        >
+        <p className={`font-['Inter:Semi_Bold',_sans-serif] font-semibold leading-[24px] not-italic relative shrink-0 text-[#414651] text-[16px] ${
+            theme === 'dark' 
+                ? "text-[#d5d7da] group-hover:text-[#e9eaeb]" 
+                : "text-[#414651] group-hover:text-[#717680]"
+        } ${truncate ? "truncate" : ""}`}>
             {children}
-        </span>
+        </p>
     );
 
     const isExternal = href && href.startsWith("http");
@@ -63,14 +91,21 @@ export const NavItemBase = ({ current, type, badge, href, icon: Icon, children, 
 
     if (type === "collapsible") {
         return (
-            <summary className={cx("px-3 py-2", styles.root, current && styles.rootSelected)} onClick={onClick}>
-                {iconElement}
-
-                {labelElement}
-
-                {badgeElement}
-
-                <ChevronDown aria-hidden="true" className="ml-3 size-4 shrink-0 stroke-[2.5px] text-fg-quaternary in-open:-scale-y-100" />
+            <summary className={cx("px-0 py-[2px]", styles.root, current && styles.rootSelected)} onClick={onClick}>
+                <div className={styles.content}>
+                    <div className={styles.textAndIcon}>
+                        <div className={styles.avatar}>
+                            {iconElement}
+                        </div>
+                        {labelElement}
+                    </div>
+                    {badgeElement}
+                    <div className={styles.chevron}>
+                        <ChevronDown aria-hidden="true" className={`absolute bottom-1/4 left-[37.5%] right-[37.5%] top-1/4 size-4 ${
+                            theme === 'dark' ? 'text-[#717680]' : 'text-[#a4a7ae]'
+                        } in-open:-scale-y-100`} />
+                    </div>
+                </div>
             </summary>
         );
     }
@@ -97,14 +132,24 @@ export const NavItemBase = ({ current, type, badge, href, icon: Icon, children, 
             href={href!}
             target={isExternal ? "_blank" : "_self"}
             rel="noopener noreferrer"
-            className={cx("px-3 py-2", styles.root, current && styles.rootSelected)}
+            className={cx("px-0 py-[2px]", styles.root, current && styles.rootSelected)}
             onClick={onClick}
             aria-current={current ? "page" : undefined}
         >
-            {iconElement}
-            {labelElement}
-            {externalIcon}
-            {badgeElement}
+            <div className={styles.content}>
+                <div className={styles.textAndIcon}>
+                    <div className={styles.avatar}>
+                        {iconElement}
+                    </div>
+                    {labelElement}
+                </div>
+                {badgeElement}
+                {externalIcon && (
+                    <div className={styles.chevron}>
+                        {externalIcon}
+                    </div>
+                )}
+            </div>
         </AriaLink>
     );
 };

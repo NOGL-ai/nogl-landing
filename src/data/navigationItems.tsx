@@ -1,10 +1,18 @@
-import { BarChartSquare02, Package, SearchMd, RefreshCw01, FileX01, LayersThree01, Settings01, User01 } from "@untitledui/icons";
+import { 
+    BarChartSquare02, 
+    Package, 
+    SearchMd, 
+    RefreshCw01, 
+    FileX01, 
+    LayersThree01,
+    Tag01
+} from "@untitledui/icons";
 import type { NavItemType } from "@/components/application/app-navigation/config";
-import { Badge } from "@/components/base/badges/badges";
+import { SidebarNavigationSectionsSubheadings } from "@/components/application/app-navigation/sidebar-navigation/sidebar-sections-subheadings";
 
 const navItemsWithSectionsSubheadings: Array<{ label: string; items: NavItemType[] }> = [
     {
-        label: "Main",
+        label: "Analytics",
         items: [
             {
                 label: "Dashboard",
@@ -12,97 +20,74 @@ const navItemsWithSectionsSubheadings: Array<{ label: string; items: NavItemType
                 icon: BarChartSquare02,
             },
             {
-                label: "My Catalog",
-                href: "/catalog",
-                icon: Package,
-            },
-            {
-                label: "Competitors",
+                label: "Competitor Intelligence",
                 href: "/competitors",
                 icon: SearchMd,
-                badge: (
-                    <Badge size="sm" type="modern">
-                        2
-                    </Badge>
-                ),
-            },
-            {
-                label: "Repricing",
-                href: "/repricing",
-                icon: RefreshCw01,
-                badge: (
-                    <Badge size="sm" type="modern">
-                        3
-                    </Badge>
-                ),
             },
             {
                 label: "Reports",
                 href: "/reports",
                 icon: FileX01,
             },
+        ],
+    },
+    {
+        label: "Data Management",
+        items: [
             {
-                label: "Product Feed",
+                label: "Product Catalog",
+                href: "/catalog",
+                icon: Package,
+            },
+            {
+                label: "Data Feeds",
                 href: "/product-feed",
                 icon: LayersThree01,
             },
-        ],
-    },
-    {
-        label: "Competitors",
-        items: [
             {
-                label: "Competitor",
-                href: "/competitors/competitor",
-                icon: SearchMd,
-            },
-            {
-                label: "Monitored URLs",
-                href: "/competitors/monitored-urls",
-                icon: SearchMd,
-            },
-        ],
-    },
-    {
-        label: "Repricing",
-        items: [
-            {
-                label: "Auto Repricing Rules",
-                href: "/repricing/auto-rules",
-                icon: RefreshCw01,
-            },
-            {
-                label: "Auto Repricing Overview",
-                href: "/repricing/auto-overview",
-                icon: RefreshCw01,
-            },
-            {
-                label: "Auto Repricing History",
-                href: "/repricing/auto-history",
+                label: "Price Rules",
+                href: "/repricing",
                 icon: RefreshCw01,
             },
         ],
     },
     {
-        label: "Settings",
+        label: "Your Brands",
         items: [
             {
-                label: "Settings",
-                href: "/settings",
-                icon: Settings01,
+                label: "Elli",
+                href: "/brands/elli",
+                icon: Tag01,
             },
             {
-                label: "My Account",
-                href: "/account",
-                icon: User01,
+                label: "Stilnest",
+                href: "/brands/stilnest",
+                icon: Tag01,
+            },
+            {
+                label: "Kuzzoi",
+                href: "/brands/kuzzoi",
+                icon: Tag01,
+            },
+            {
+                label: "Haze and Glory",
+                href: "/brands/haze-and-glory",
+                icon: Tag01,
+            },
+            {
+                label: "Samapura",
+                href: "/brands/samapura",
+                icon: Tag01,
             },
         ],
     },
 ];
 
-export const SidebarNavigationSectionsSubheadingsDemo = () => {
-    // This will be replaced with the actual sidebar component
-    return null;
-};
+export const SidebarNavigationSectionsSubheadingsDemo = () => (
+    <SidebarNavigationSectionsSubheadings 
+        activeUrl="/" 
+        items={navItemsWithSectionsSubheadings} 
+    />
+);
 
 export { navItemsWithSectionsSubheadings };

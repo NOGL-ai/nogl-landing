@@ -18,6 +18,7 @@ interface DashboardPageClientProps {
 	competitorData: any[];
 	stockColumns: any[];
 	stockData: any[];
+	theme?: 'light' | 'dark';
 }
 
 export default function DashboardPageClient({
@@ -28,6 +29,7 @@ export default function DashboardPageClient({
 	competitorData,
 	stockColumns,
 	stockData,
+	theme = 'light',
 }: DashboardPageClientProps) {
 	const [isColorWidgetOpen, setIsColorWidgetOpen] = useState(false);
 	const [selectedColor, setSelectedColor] = useState<string>("");
@@ -101,14 +103,22 @@ export default function DashboardPageClient({
 				{/* Charts Section */}
 				<DashboardSection>
 					<div className='grid grid-cols-1 gap-4 lg:gap-6 xl:grid-cols-[2fr_1fr]'>
-						<div className='rounded-xl border border-[#F2F2F2] bg-white shadow-sm transition-shadow duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800'>
+						<div className={`rounded-xl border shadow-sm transition-shadow duration-200 hover:shadow-md ${
+							theme === 'dark' 
+								? 'border-[#252b37] bg-[#181d27]' 
+								: 'border-[#F2F2F2] bg-white'
+						}`}>
 							<StackedBarChart
 								data={priceChangesData}
 								title={dict.dashboard.priceChangesSummary}
 								className='h-[442px]'
 							/>
 						</div>
-						<div className='rounded-xl border border-[#F2F2F2] bg-white shadow-sm transition-shadow duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800'>
+						<div className={`rounded-xl border shadow-sm transition-shadow duration-200 hover:shadow-md ${
+							theme === 'dark' 
+								? 'border-[#252b37] bg-[#181d27]' 
+								: 'border-[#F2F2F2] bg-white'
+						}`}>
 							<PieChart
 								data={pieChartData}
 								centerValue='1263'
@@ -123,14 +133,22 @@ export default function DashboardPageClient({
 				{/* Analysis Section */}
 				<DashboardSection>
 					<div className='grid grid-cols-1 gap-4 lg:gap-6 xl:grid-cols-[1fr_2fr]'>
-						<div className='rounded-xl border border-[#F2F2F2] bg-white shadow-sm transition-shadow duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800'>
+						<div className={`rounded-xl border shadow-sm transition-shadow duration-200 hover:shadow-md ${
+							theme === 'dark' 
+								? 'border-[#252b37] bg-[#181d27]' 
+								: 'border-[#F2F2F2] bg-white'
+						}`}>
 							<LoadingChart
 								title={dict.dashboard.profitStatus}
 								height='412px'
 								className='w-full'
 							/>
 						</div>
-						<div className='rounded-xl border border-[#F2F2F2] bg-white shadow-sm transition-shadow duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800'>
+						<div className={`rounded-xl border shadow-sm transition-shadow duration-200 hover:shadow-md ${
+							theme === 'dark' 
+								? 'border-[#252b37] bg-[#181d27]' 
+								: 'border-[#F2F2F2] bg-white'
+						}`}>
 							<DataTable
 								columns={competitorColumns}
 								data={competitorData}
@@ -143,7 +161,11 @@ export default function DashboardPageClient({
 
 				{/* Stock Changes Section */}
 				<DashboardSection>
-					<div className='rounded-xl border border-[#F2F2F2] bg-white shadow-sm transition-shadow duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800'>
+					<div className={`rounded-xl border shadow-sm transition-shadow duration-200 hover:shadow-md ${
+						theme === 'dark' 
+							? 'border-[#252b37] bg-[#181d27]' 
+							: 'border-[#F2F2F2] bg-white'
+					}`}>
 						<DataTable
 							columns={stockColumns}
 							data={stockData}

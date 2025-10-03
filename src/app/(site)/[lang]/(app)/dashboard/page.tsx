@@ -1,5 +1,5 @@
 import React from "react";
-import DashboardPageClient from "@/components/organisms/DashboardPageClient";
+import DashboardThemeWrapper from "@/components/organisms/DashboardThemeWrapper";
 import { getDictionary } from "@/lib/dictionary";
 import { Locale } from "@/i18n";
 
@@ -192,7 +192,7 @@ export default async function DashboardPage({
 	];
 
 	return (
-		<DashboardPageClient
+		<DashboardThemeWrapper
 			dict={dict}
 			priceChangesData={priceChangesData}
 			pieChartData={pieChartData}

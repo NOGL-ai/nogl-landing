@@ -1,0 +1,170 @@
+/* Sidebar Animation Classes */
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToLeft {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Sidebar specific animations */
+.sidebar-slide-in {
+  animation: slideInFromLeft 0.3s ease-out;
+}
+
+.sidebar-slide-out {
+  animation: slideOutToLeft 0.3s ease-in;
+}
+
+.sidebar-fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.sidebar-fade-out {
+  animation: fadeOut 0.2s ease-in;
+}
+
+.sidebar-scale-in {
+  animation: scaleIn 0.2s ease-out;
+}
+
+.sidebar-pulse {
+  animation: pulse 2s infinite;
+}
+
+/* Smooth transitions for sidebar width changes */
+.sidebar-width-transition {
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth transitions for sidebar content */
+.sidebar-content-transition {
+  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+/* Hover effects */
+.sidebar-hover-effect {
+  transition: all 0.2s ease-in-out;
+}
+
+.sidebar-hover-effect:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Focus ring animations */
+.sidebar-focus-ring {
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.sidebar-focus-ring:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+}
+
+/* Loading state animations */
+.sidebar-loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.sidebar-loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Mobile sidebar backdrop */
+.sidebar-backdrop {
+  backdrop-filter: blur(4px);
+  transition: backdrop-filter 0.3s ease-in-out;
+}
+
+/* Responsive animations */
+@media (prefers-reduced-motion: reduce) {
+  .sidebar-slide-in,
+  .sidebar-slide-out,
+  .sidebar-fade-in,
+  .sidebar-fade-out,
+  .sidebar-scale-in,
+  .sidebar-pulse {
+    animation: none;
+  }
+  
+  .sidebar-width-transition,
+  .sidebar-content-transition,
+  .sidebar-hover-effect,
+  .sidebar-focus-ring {
+    transition: none;
+  }
+}

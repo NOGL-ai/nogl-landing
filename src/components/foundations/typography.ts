@@ -2,8 +2,8 @@
 // Font scales and text styles following Untitled UI design system
 
 export const fontFamily = {
-	sans: ["Inter", "system-ui", "sans-serif"],
-	mono: ["JetBrains Mono", "Menlo", "Monaco", "monospace"],
+	sans: ["Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Arial", "sans-serif"],
+	mono: ["JetBrains Mono", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"],
 	serif: ["Georgia", "Times New Roman", "serif"],
 } as const;
 
