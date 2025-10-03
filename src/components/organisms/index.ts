@@ -28,7 +28,7 @@ export { default as AccountMenu } from "./AccountMenu";
 export { default as DashboardHeader } from "./DashboardHeader";
 export { default as CommunitySection } from "./CommunitySection";
 export { default as HomeBlog } from "./HomeBlog";
-export { CallToAction as HomeCallToAction } from "./HomeCallToAction";
+export { default as HomeCallToAction } from "./HomeCallToAction";
 export { default as HomeCounter } from "./HomeCounter";
 export { default as HomeFeatureSlideshow } from "./HomeFeatureSlideshow";
 export { default as HomeHero } from "./HomeHero";
