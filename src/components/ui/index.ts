@@ -73,6 +73,7 @@ export { default as Particles } from "./particles";
 // Additional UI components
 export { Slider } from "./slider";
 export { AnimatedSubscribeButton } from "./animated-subscribe-button";
+export { default as ShimmerButton } from "./shimmer-button";
 
 // Add more Untitled UI components as you create them
 // export { Dropdown } from './dropdown';
