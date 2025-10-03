@@ -188,7 +188,7 @@ const SignupWithPassword = () => {
 					callbackUrl: `${window.location.origin}`,
 				});
 			}
-		} catch (error: any) {
+		} catch (error: unknown) {
 			console.error("Registration error:", error);
 			const errorMessage = error.response?.data
 				? typeof error.response.data === "string"

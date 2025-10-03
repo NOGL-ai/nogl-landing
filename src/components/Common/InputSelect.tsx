@@ -15,7 +15,7 @@ const arrowIcon = (
 	</svg>
 );
 
-export default function InputSelect(props: any) {
+export default function InputSelect(props: unknown) {
 	const { name, label, options, onChange, value, required } = props;
 	return (
 		<div>
@@ -37,7 +37,7 @@ export default function InputSelect(props: any) {
 					<option value='Select Option' className='dark:bg-dark'>
 						Select option
 					</option>
-					{options?.map((option: any) => (
+					{options?.map((option: unknown) => (
 						<option
 							key={option?.value}
 							value={option?.value}

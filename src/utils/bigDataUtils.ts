@@ -144,7 +144,9 @@ export function createOptimizedDataFetcher<TData = unknown>(
 			if (cache.size >= defaultConfig.maxCacheSize) {
 				// Remove oldest entries
 				const oldestKey = cache.keys().next().value;
-				cache.delete(oldestKey);
+				if (oldestKey) {
+					cache.delete(oldestKey);
+				}
 			}
 			cache.set(cacheKey, { data: responseData, timestamp: now });
 
@@ -228,7 +230,9 @@ export function createOptimizedPrismaFetcher<TData>(
 /**
  * Builds Prisma where clause from filters
  */
-function buildWhereClause(filters: Record<string, unknown>): Record<string, unknown> {
+function buildWhereClause(
+	filters: Record<string, unknown>
+): Record<string, unknown> {
 	const where: Record<string, unknown> = {};
 
 	Object.entries(filters).forEach(([key, value]) => {
@@ -247,12 +251,12 @@ function buildWhereClause(filters: Record<string, unknown>): Record<string, unkn
 			};
 		} else if (
 			typeof value === "object" &&
-			value.min !== undefined &&
-			value.max !== undefined
+			(value as any).min !== undefined &&
+			(value as any).max !== undefined
 		) {
 			where[key] = {
-				gte: value.min,
-				lte: value.max,
+				gte: (value as any).min,
+				lte: (value as any).max,
 			};
 		}
 	});

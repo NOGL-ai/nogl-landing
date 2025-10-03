@@ -3,7 +3,7 @@ import { Blog } from "@/types/blog";
 import Image from "next/image";
 
 // Barebones lazy-loaded image component
-const SampleImageComponent = ({ value, isInline }: any) => {
+const SampleImageComponent = ({ value, isInline }: unknown) => {
 	return (
 		<div className='my-10 overflow-hidden rounded-[15px]'>
 			<Image

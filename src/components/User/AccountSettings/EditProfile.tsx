@@ -20,7 +20,7 @@ export default function EditProfile() {
 	const [loading, setLoading] = useState(false);
 	const isDemo = session?.user?.email?.includes("demo-");
 
-	const handleChange = (e: any) => {
+	const handleChange = (e: unknown) => {
 		if (e.target.name === "profilePhoto") {
 			const file = e.target?.files[0];
 			setData({
@@ -36,7 +36,7 @@ export default function EditProfile() {
 		}
 	};
 
-	const handleFileUpload = async (file: any) => {
+	const handleFileUpload = async (file: unknown) => {
 		if (!file) {
 			return null;
 		}
@@ -76,7 +76,7 @@ export default function EditProfile() {
 		return null;
 	};
 
-	const updateUserProfile = async (data: any, uploadedImageUrl: string) => {
+	const updateUserProfile = async (data: unknown, uploadedImageUrl: string) => {
 		try {
 			const requestBody = {
 				name: data.name,
@@ -109,7 +109,7 @@ export default function EditProfile() {
 				setLoading(false);
 				toast.error("Failed to update profile");
 			}
-		} catch (error: any) {
+		} catch (error: unknown) {
 			setLoading(false);
 			toast.error(error?.response?.data);
 		}

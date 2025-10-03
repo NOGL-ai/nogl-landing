@@ -10,7 +10,7 @@ interface SolutionItem {
 	name: string;
 	description: string;
 	href: PathName;
-	icon: any;
+	icon: React.ComponentType;
 	active?: boolean;
 }
 

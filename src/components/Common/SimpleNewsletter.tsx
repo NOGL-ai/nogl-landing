@@ -57,7 +57,7 @@ const SimpleNewsletter: React.FC<SimpleNewsletterProps> = ({
 				toast.success("Successfully subscribed to newsletter!");
 				setEmail("");
 			}
-		} catch (error: any) {
+		} catch (error: unknown) {
 			toast.error(
 				error.response?.data?.message ||
 					"Failed to subscribe. Please try again."

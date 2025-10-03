@@ -65,7 +65,7 @@ const AiIntegration = ({ APIKey }: { APIKey: string }) => {
 				}
 			);
 			setGeneratedData(response.data);
-		} catch (error: any) {
+		} catch (error: unknown) {
 			setGeneratedData(error?.response?.data);
 			toast.error(error?.response?.data.substr(0, 32));
 		}

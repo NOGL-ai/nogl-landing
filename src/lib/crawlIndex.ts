@@ -36,7 +36,9 @@ export const structuredAlgoliaHtmlData = async ({
 	}
 };
 
-export const batchIndexToAlgolia = async (records: Record<string, unknown>[]) => {
+export const batchIndexToAlgolia = async (
+	records: Record<string, unknown>[]
+) => {
 	try {
 		const result = await index.saveObjects(records);
 		console.log(`Successfully indexed ${records.length} objects!`);

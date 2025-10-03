@@ -39,7 +39,7 @@ const InvitedSignin = () => {
 				setLoading(false);
 				router.push("/auth/signin");
 			}
-		} catch (error: any) {
+		} catch (error: unknown) {
 			toast.error(error.response.data);
 			setPassword("");
 			setLoading(false);

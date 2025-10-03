@@ -24,7 +24,7 @@ const arrowIcon = (
 	</svg>
 );
 
-export default function UserAction({ user }: any) {
+export default function UserAction({ user }: unknown) {
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [role, setRole] = useState(user.role);
 	const [loading, setLodading] = useState(false);
@@ -40,7 +40,7 @@ export default function UserAction({ user }: any) {
 			toast.success("User deleted successfully!");
 			router.refresh();
 			setLodading(false);
-		} catch (error: any) {
+		} catch (error: unknown) {
 			toast.error(error.message);
 			setShowDeleteModal(false);
 		}
@@ -58,7 +58,7 @@ export default function UserAction({ user }: any) {
 
 			toast.success("User Role updated successfully!");
 			router.refresh();
-		} catch (error: any) {
+		} catch (error: unknown) {
 			toast.error(error.message);
 		}
 	};

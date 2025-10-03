@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function SetApiKeyModal(props: any) {
+export default function SetApiKeyModal(props: unknown) {
 	const { showModal, setShowModal } = props;
 	const [apiKey, setApiKey] = useState("");
 	// const [isDisabled, setIsDisabled] = useState(true);
@@ -15,7 +15,7 @@ export default function SetApiKeyModal(props: any) {
 	// ===== click outside of dropdown =====
 	const divRef = useRef<HTMLDivElement | null>(null);
 
-	const handleSubmit = (e: any) => {
+	const handleSubmit = (e: unknown) => {
 		e.preventDefault();
 
 		if (apiKey && typeof window !== "undefined") {

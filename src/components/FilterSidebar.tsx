@@ -5,7 +5,7 @@ import { StarIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { motion } from "framer-motion";
 
 interface FilterSidebarProps {
-	onFilterChange: (filters: any) => void;
+	onFilterChange: (filters: unknown) => void;
 	categories: string[];
 	languages: string[];
 	onClose?: () => void;

@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 type Props = {
 	plan: Price;
 	isBilling?: boolean;
-	subscriptionPlan?: any;
+	subscriptionPlan?: unknown;
 };
 
 const PriceItem = ({ plan, isBilling }: Props) => {
@@ -16,7 +16,7 @@ const PriceItem = ({ plan, isBilling }: Props) => {
 
 	// stripe payment
 	const handleSubscription = async () => {
-		let subsProp: any = {
+		let subsProp: unknown = {
 			priceId: plan.priceId,
 		};
 

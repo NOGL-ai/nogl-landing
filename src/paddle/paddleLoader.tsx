@@ -7,7 +7,10 @@ declare global {
 	interface Window {
 		Paddle: {
 			Environment: { set: (env: string) => void };
-			Initialize: (config: { token?: string; eventCallback: (event: unknown) => void }) => void;
+			Initialize: (config: {
+				token?: string;
+				eventCallback: (event: unknown) => void;
+			}) => void;
 		};
 	}
 }

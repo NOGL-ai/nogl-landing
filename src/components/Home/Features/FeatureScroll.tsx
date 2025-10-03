@@ -3,7 +3,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 interface FeatureScrollProps {
-	dictionary: any;
+	dictionary: unknown;
 }
 
 const FeatureScroll: React.FC<FeatureScrollProps> = ({ dictionary }) => {

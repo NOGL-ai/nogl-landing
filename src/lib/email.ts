@@ -67,7 +67,9 @@ export const sendEmail = async (data: EmailPayload) => {
 		console.error("Error sending email:", error);
 		// throw new Error('Failed to send email');
 		// Commented out generic error
-		throw new Error(`Failed to send email: ${error instanceof Error ? error.message : 'Unknown error'}`);
+		throw new Error(
+			`Failed to send email: ${error instanceof Error ? error.message : "Unknown error"}`
+		);
 	}
 };
 

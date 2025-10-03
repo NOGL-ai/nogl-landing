@@ -2,7 +2,7 @@
 import { prisma } from "@/lib/prismaDb";
 import { isAuthorized } from "@/lib/isAuthorized";
 
-export async function getUsers(filter: any) {
+export async function getUsers(filter: unknown) {
 	const currentUser = await isAuthorized();
 
 	const res = await prisma.user.findMany({
@@ -19,7 +19,7 @@ export async function getUsers(filter: any) {
 	return filtredUsers;
 }
 
-export async function updateUser(data: any) {
+export async function updateUser(data: unknown) {
 	const { email } = data;
 	return await prisma.user.update({
 		where: {
@@ -32,7 +32,7 @@ export async function updateUser(data: any) {
 	});
 }
 
-export async function deleteUser(user: any) {
+export async function deleteUser(user: unknown) {
 	if (user?.email?.includes("demo-")) {
 		return new Error("Can't delete demo user");
 	}

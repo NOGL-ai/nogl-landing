@@ -10,7 +10,7 @@ const Dropdown = ({
 }: {
 	stickyMenu: boolean;
 	item: Menu;
-	setNavbarOpen: any;
+	setNavbarOpen: unknown;
 }) => {
 	const [dropdown, setDropdown] = useState(false);
 	const pathname = usePathname();

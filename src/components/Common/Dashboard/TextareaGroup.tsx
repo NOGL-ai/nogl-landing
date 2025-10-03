@@ -1,6 +1,6 @@
 "use client";
 
-export default function TextareaGroup(props: any) {
+export default function TextareaGroup(props: unknown) {
 	const { name, label, value, placeholder, handleChange, rows } = props;
 
 	return (

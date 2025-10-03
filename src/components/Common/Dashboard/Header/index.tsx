@@ -3,7 +3,7 @@ import Notifications from "./NotificationMenu/Notifications";
 import ThemeToggler from "./ThemeToggler";
 import { useSession } from "next-auth/react";
 
-export default function Header({ openSidebar, setOpenSidebar }: any) {
+export default function Header({ openSidebar, setOpenSidebar }: unknown) {
 	const { data: session } = useSession();
 
 	return (

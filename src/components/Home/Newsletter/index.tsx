@@ -11,8 +11,8 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 // Add this type declaration at the top of your file
 declare global {
 	interface Window {
-		dojoRequire: any;
-		mcjs: any; // Add this if you're using other Mailchimp features
+		dojoRequire: unknown;
+		mcjs: unknown; // Add this if you're using other Mailchimp features
 	}
 }
 
@@ -47,8 +47,8 @@ export default function Newsletter({ dictionary }: NewsletterProps) {
 
 	// Add Mailchimp popup script
 	useEffect(() => {
-		if (!hasSeenPopup && typeof window.dojoRequire !== "undefined") {
-			window.dojoRequire(["mojo/signup-forms/Loader"], function (L: any) {
+		if (!hasSeenPopup && window.dojoRequire) {
+			window.dojoRequire(["mojo/signup-forms/Loader"], function (L: unknown) {
 				L.start({
 					baseUrl: "us16.list-manage.com",
 					uuid: "730e2a5d4570de0714aa9bc71",
@@ -59,7 +59,7 @@ export default function Newsletter({ dictionary }: NewsletterProps) {
 		}
 	}, [hasSeenPopup]);
 
-	const handleSubmit = async (e: any) => {
+	const handleSubmit = async (e: unknown) => {
 		e.preventDefault();
 		setIsLoading(true);
 
@@ -88,7 +88,13 @@ export default function Newsletter({ dictionary }: NewsletterProps) {
 				setEmail("");
 			}
 		} catch (error: any) {
-			toast.error(error.response?.data || dictionary.newsletter.errorMessage);
+			// Fix: handle error object safely and show appropriate error message
+			const errorMessage =
+				error?.response?.data?.title ||
+				error?.response?.data?.message ||
+				error?.response?.data ||
+				dictionary.newsletter.errorMessage;
+			toast.error(errorMessage);
 		} finally {
 			setIsLoading(false);
 		}

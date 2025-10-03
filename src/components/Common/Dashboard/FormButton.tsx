@@ -1,4 +1,4 @@
-export default function FormButton({ height, children }: any) {
+export default function FormButton({ height, children }: unknown) {
 	return (
 		<button
 			type='submit'

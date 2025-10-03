@@ -1,7 +1,7 @@
 import React from "react";
 import Card from "@/components/Common/Dashboard/Card";
 
-const DeleteAccount = ({ setShowDeleteModal, showDeleteModal }: any) => {
+const DeleteAccount = ({ setShowDeleteModal, showDeleteModal }: unknown) => {
 	return (
 		<div className='w-full max-w-[525px]'>
 			<Card>

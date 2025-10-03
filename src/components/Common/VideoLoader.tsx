@@ -8,7 +8,7 @@ const BLOCK_SIZE = 32;
 const DURATION_IN_MS = 175;
 const DURATION_IN_SECS = DURATION_IN_MS * 0.001;
 
-const TRANSITION: any = {
+const TRANSITION: unknown = {
 	ease: "easeInOut",
 	duration: DURATION_IN_SECS,
 };

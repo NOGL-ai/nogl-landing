@@ -13,7 +13,7 @@ import DashboardWidgetGrid, {
 import ColorWidget from "@/components/Dashboard/ColorWidget";
 
 interface DashboardPageClientProps {
-	dict: any;
+	dict: unknown;
 	priceChangesData: any[];
 	pieChartData: any[];
 	competitorColumns: any[];

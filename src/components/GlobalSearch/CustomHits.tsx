@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Highlight } from "react-instantsearch";
 
-function CustomHits(props: any) {
+function CustomHits(props: unknown) {
 	const { hit, setSearchModalOpen } = props;
 	return (
 		<>

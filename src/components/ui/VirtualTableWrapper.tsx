@@ -20,12 +20,12 @@ interface VirtualTableWrapperProps {
 	className?: string;
 	enableVirtualization?: boolean;
 	threshold?: number; // Minimum number of rows to enable virtualization
-	onRowClick?: (row: any, index: number) => void;
-	onRowDoubleClick?: (row: any, index: number) => void;
+	onRowClick?: (row: unknown, index: number) => void;
+	onRowDoubleClick?: (row: unknown, index: number) => void;
 	selectedRows?: Set<number>;
 	onRowSelect?: (index: number, selected: boolean) => void;
 	renderRow?: (props: {
-		row: any;
+		row: unknown;
 		index: number;
 		style: React.CSSProperties;
 		isSelected: boolean;

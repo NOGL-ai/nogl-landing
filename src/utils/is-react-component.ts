@@ -15,6 +15,7 @@ export function isReactComponent(
 ): value is React.ComponentType<unknown> {
 	return (
 		typeof value === "function" &&
-		(value.prototype?.isReactComponent || (value as { $$typeof?: unknown }).$$typeof)
+		(value.prototype?.isReactComponent ||
+			(value as { $$typeof?: unknown }).$$typeof)
 	);
 }

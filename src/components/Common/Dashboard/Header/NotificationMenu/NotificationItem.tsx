@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function Notification({ link }: any) {
+export default function Notification({ link }: unknown) {
 	return (
 		<div className='hover:bg-gray dark:bg-gray-dark dark:hover:bg-dark mb-3 flex cursor-pointer gap-5 rounded-md bg-white px-2 py-2 '>
 			<div className='h-10.5 w-10.5 bg-primary hidden items-center justify-center rounded-full text-white md:flex'>

@@ -33,10 +33,7 @@ const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
 						<SwitchDarkMode />
 						<SearchDropdown className='flex items-center' />
 						<div className='px-1' />
-						<ButtonPrimary
-							className='self-center'
-							href={"/login" as Route}
-						>
+						<ButtonPrimary className='self-center' href={"/login" as Route}>
 							Sign up
 						</ButtonPrimary>
 					</div>

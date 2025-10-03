@@ -31,7 +31,7 @@ export default function ResetPassword({ token }: { token: string }) {
 						email: res.data.email,
 					});
 				}
-			} catch (error: any) {
+			} catch (error: unknown) {
 				toast.error(error.response.data);
 				router.push("/auth/forgot-password");
 			}
@@ -66,7 +66,7 @@ export default function ResetPassword({ token }: { token: string }) {
 				setData({ newPassword: "", ReNewPassword: "" });
 				router.push("/auth/signin");
 			}
-		} catch (error: any) {
+		} catch (error: unknown) {
 			toast.error(error.response.data);
 		}
 	};

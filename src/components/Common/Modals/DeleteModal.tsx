@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import ModalCloseButton from "./ModalCloseButton";
 import Loader from "../Loader";
 
-export default function DeleteModal(props: any) {
+export default function DeleteModal(props: unknown) {
 	const {
 		showDeleteModal,
 		setShowDeleteModal,

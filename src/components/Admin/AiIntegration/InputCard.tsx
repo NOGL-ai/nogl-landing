@@ -44,7 +44,11 @@ const contentTypes = [
 	},
 ];
 
-export default function InputCard({ data, handleChange, handleSubmit }: any) {
+export default function InputCard({
+	data,
+	handleChange,
+	handleSubmit,
+}: unknown) {
 	return (
 		<Card>
 			<div className='mb-6'>

@@ -29,7 +29,7 @@ interface LangDropdownProps {
 	className?: string;
 }
 
-function classNames(...classes: any) {
+function classNames(...classes: unknown) {
 	return classes.filter(Boolean).join(" ");
 }
 

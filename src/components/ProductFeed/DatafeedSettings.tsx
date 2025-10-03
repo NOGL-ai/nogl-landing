@@ -31,7 +31,7 @@ const DatafeedSettings: React.FC<DatafeedSettingsProps> = ({
 		categoryFilter: "",
 	});
 
-	const handleSettingChange = (key: string, value: any) => {
+	const handleSettingChange = (key: string, value: unknown) => {
 		setSettings((prev) => ({ ...prev, [key]: value }));
 	};
 

@@ -25,7 +25,7 @@ const AccountSettings = () => {
 			toast.success("Account deleted successfully");
 			setLoading(false);
 			window.location.href = "/";
-		} catch (error: any) {
+		} catch (error: unknown) {
 			setLoading(false);
 			toast.error(error.response.data);
 		}

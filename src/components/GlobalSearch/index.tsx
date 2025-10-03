@@ -21,7 +21,7 @@ const GlobalSearchModal = (props: Props) => {
 
 	useEffect(() => {
 		// closing modal while clicking outside
-		function handleClickOutside(event: any) {
+		function handleClickOutside(event: unknown) {
 			if (!event.target.closest(".modal-content")) {
 				setSearchModalOpen(false);
 			}
@@ -51,7 +51,7 @@ const GlobalSearchModal = (props: Props) => {
 								<SearchBox />
 								<EmptyState />
 								<Hits
-									hitComponent={(props: any) => (
+									hitComponent={(props: unknown) => (
 										<CustomHits
 											{...props}
 											setSearchModalOpen={setSearchModalOpen}

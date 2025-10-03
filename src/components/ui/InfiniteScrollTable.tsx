@@ -168,7 +168,7 @@ export function InfiniteScrollTable<TData>({
 
 	// Memoized row renderer
 	const renderRow = useCallback(
-		(virtualRow: any) => {
+		(virtualRow: unknown) => {
 			const row = rows[virtualRow.index] as Row<TData>;
 			if (!row) return null;
 

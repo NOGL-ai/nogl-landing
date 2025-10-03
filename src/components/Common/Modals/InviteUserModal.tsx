@@ -7,7 +7,7 @@ import FormButton from "../Dashboard/FormButton";
 import toast from "react-hot-toast";
 import axios from "axios";
 
-export default function InviteUserModal(props: any) {
+export default function InviteUserModal(props: unknown) {
 	const { showModal, setShowModal, text } = props;
 	const [data, setData] = useState({
 		email: "",
@@ -16,7 +16,7 @@ export default function InviteUserModal(props: any) {
 
 	const [loading, setLoading] = useState(false);
 
-	const handleSubmit = async (e: any) => {
+	const handleSubmit = async (e: unknown) => {
 		e.preventDefault();
 		setLoading(true);
 		if (!data.email || !data.role) {
@@ -28,7 +28,7 @@ export default function InviteUserModal(props: any) {
 			const invite = await axios.post("/api/user/invite/send", data);
 			toast.success(invite.data);
 			setLoading(false);
-		} catch (error: any) {
+		} catch (error: unknown) {
 			toast.error(error?.response.data);
 			setLoading(false);
 		}
@@ -77,7 +77,7 @@ export default function InviteUserModal(props: any) {
 									value={data.email}
 									placeholder={"jhon@gmail.com"}
 									required={true}
-									handleChange={(e: any) =>
+									handleChange={(e: unknown) =>
 										setData({ ...data, email: e.target.value })
 									}
 								/>
@@ -97,7 +97,7 @@ export default function InviteUserModal(props: any) {
 									placeholder='Select Role'
 									value={data.role}
 									required={true}
-									onChange={(e: any) =>
+									onChange={(e: unknown) =>
 										setData({ ...data, role: e.target.value })
 									}
 								/>

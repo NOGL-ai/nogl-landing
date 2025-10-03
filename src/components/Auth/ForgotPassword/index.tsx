@@ -52,7 +52,7 @@ export default function ForgotPassword() {
 				setLoading(false);
 				setEmail("");
 			}
-		} catch (error: any) {
+		} catch (error: unknown) {
 			setLoading(false);
 			toast.error(
 				error.response?.data || "An error occurred. Please try again."

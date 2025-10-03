@@ -32,7 +32,7 @@ async function POST(req: NextRequest) {
 			{ message: "Subscription canceled successfully", data },
 			{ status: 200 }
 		);
-	} catch (error: any) {
+	} catch (error: unknown) {
 		// console.log(error.response.data.error.detail);
 		return NextResponse.json(
 			{ error: error.response.data.error.detail },

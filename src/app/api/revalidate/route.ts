@@ -16,8 +16,12 @@ export async function POST(req: NextRequest) {
 			now: Date.now(),
 			body,
 		});
-	} catch (error: any) {
+	} catch (error: unknown) {
 		console.error(error);
-		return new Response(error.message, { status: 500 });
+		const message =
+			typeof error === "object" && error !== null && "message" in error
+				? String((error as { message: unknown }).message)
+				: "Internal Server Error";
+		return new Response(message, { status: 500 });
 	}
 }

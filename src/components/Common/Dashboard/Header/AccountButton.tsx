@@ -1,6 +1,6 @@
 import AccountMenu from "../../AccountMenu";
 
-export default function AccountButton({ user }: any) {
+export default function AccountButton({ user }: unknown) {
 	const profilePic = user?.image
 		? user.image.includes("http")
 			? user.image

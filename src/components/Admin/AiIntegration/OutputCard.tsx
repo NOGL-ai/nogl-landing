@@ -1,7 +1,7 @@
 import Card from "@/components/Common/Dashboard/Card";
 import CopyToClipboard from "@/components/Common/CopyToClipboard";
 
-export default function OutputCard({ generated }: any) {
+export default function OutputCard({ generated }: unknown) {
 	return (
 		<div className='w-3/4'>
 			<Card>

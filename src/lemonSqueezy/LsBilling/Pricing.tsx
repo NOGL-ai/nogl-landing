@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 type Props = {
 	plan: Price;
 	isBilling?: boolean;
-	subscriptionPlan?: any;
+	subscriptionPlan?: unknown;
 };
 
 const PriceItem = ({ plan, isBilling }: Props) => {
@@ -22,7 +22,7 @@ const PriceItem = ({ plan, isBilling }: Props) => {
 			if (response.data.checkoutUrl) {
 				window.open(response.data.checkoutUrl, "_blank");
 			}
-		} catch (error: any) {
+		} catch (error: unknown) {
 			console.error(error.message);
 		}
 	};

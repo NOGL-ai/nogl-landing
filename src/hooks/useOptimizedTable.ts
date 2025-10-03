@@ -204,12 +204,12 @@ export function useOptimizedTable<TData>({
 		cacheRef.current.clear();
 	}, []);
 
-	const updateSorting = useCallback((updater: any) => {
+	const updateSorting = useCallback((updater: unknown) => {
 		setSorting(updater);
 	}, []);
 
 	const updateColumnFilters = useCallback(
-		(updater: any) => {
+		(updater: unknown) => {
 			if (enableDebouncing) {
 				debouncedSetColumnFilters(updater);
 			} else {
@@ -230,7 +230,7 @@ export function useOptimizedTable<TData>({
 		[enableDebouncing, debouncedSetGlobalFilter]
 	);
 
-	const updateRowSelection = useCallback((updater: any) => {
+	const updateRowSelection = useCallback((updater: unknown) => {
 		setRowSelection(updater);
 	}, []);
 

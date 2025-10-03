@@ -137,7 +137,7 @@ export default function UserTopbar() {
 								type='search'
 								placeholder='Search user'
 								className='border-stroke bg-gray-1 pr-4.5 focus:shadow-input focus:ring-primary/20 dark:border-stroke-dark h-11 w-full rounded-lg border pl-11 outline-none ring-offset-1 duration-300 focus:ring-2 dark:bg-transparent dark:focus:border-transparent'
-								onChange={(e: any) => setSearch(e.target.value)}
+								onChange={(e: unknown) => setSearch(e.target.value)}
 							/>
 
 							<span className='left-4.5 text-dark absolute top-1/2 -translate-y-1/2 dark:text-white'>

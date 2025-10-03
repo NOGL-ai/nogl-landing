@@ -21,7 +21,61 @@ import FeaturesHorizontal from "./FeaturesHorizantal";
 // import FeatureScroll from "./Features/FeatureScroll";
 
 interface HomeProps {
-	dictionary: any; // Type this based on your dictionary structure
+	dictionary: {
+		hero: {
+			introducing: string;
+			title: string[];
+			description: string;
+			buttonText: string;
+		};
+		counter: {
+			title: string;
+			stats: {
+				value: string;
+				label: string;
+			}[];
+			heading: string;
+			aboutButton: string;
+		};
+		callToAction: {
+			title: string;
+			description: string;
+			buttonText: string;
+			buttonUrl: string;
+			testimonial: {
+				heading: string;
+				subheading: string;
+				quote: string;
+				author: string;
+				role: string;
+				waitlistButton: string;
+			};
+		};
+		faq: {
+			title: string;
+			description: string;
+			items: {
+				id: number;
+				question: string;
+				answer: string;
+			}[];
+		};
+		newsletter: {
+			title: string;
+			description: string;
+			emailPlaceholder: string;
+			buttonText: string;
+			successMessage: string;
+			errorMessage: string;
+			invalidEmailMessage: string;
+		};
+		blog: {
+			title: string;
+			description: string;
+			viewAllText: string;
+			noPostsText: string;
+		};
+	};
 }
 
 const Home: React.FC<HomeProps> = ({ dictionary }) => {

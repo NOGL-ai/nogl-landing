@@ -31,7 +31,7 @@ const CancelSubscription = () => {
 				},
 			});
 			toast.success("Subscription canceled successfully");
-		} catch (error: any) {
+		} catch (error: unknown) {
 			// console.log(error.response.data.error);
 			toast.error(error.response.data.error);
 		}

@@ -22,7 +22,7 @@ export async function POST(req: Request) {
 		const generatedContent = chatCompletion.choices[0].message?.content;
 
 		return new Response(JSON.stringify(generatedContent));
-	} catch (error: any) {
+	} catch (error: unknown) {
 		return new Response(JSON.stringify(error.error.message), { status: 500 });
 	}
 }

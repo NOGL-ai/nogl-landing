@@ -134,19 +134,19 @@ interface UltimateProductTableProps {
 	products: Product[];
 	enableInfiniteScroll?: boolean;
 	onInfiniteScrollToggle?: (enabled: boolean) => void;
-	infiniteScrollProps?: any;
+	infiniteScrollProps?: unknown;
 }
 
 // Custom filter functions
 const globalFilterFn = (row: any, _columnId: string, value: string) => {
 	const search = value.toLowerCase();
-	return Object.values(row.original).some((cell: any) => {
+	return Object.values(row.original).some((cell: unknown) => {
 		if (typeof cell === "string") {
 			return cell.toLowerCase().includes(search);
 		}
 		if (typeof cell === "object" && cell !== null) {
 			return Object.values(cell).some(
-				(nestedValue: any) =>
+				(nestedValue: unknown) =>
 					typeof nestedValue === "string" &&
 					nestedValue.toLowerCase().includes(search)
 			);

@@ -7,7 +7,7 @@ export default function Sidebar({
 	sidebarOthersData,
 	sidebarData,
 	sidebarRef,
-}: any) {
+}: unknown) {
 	const pathname = usePathname();
 
 	return (
@@ -25,7 +25,7 @@ export default function Sidebar({
 					</p>
 					<ul className='space-y-2'>
 						{sidebarData &&
-							sidebarData?.map((item: any, key: number) => (
+							sidebarData?.map((item: unknown, key: number) => (
 								<li key={key}>
 									<Link
 										href={`${item?.path}`}
@@ -61,7 +61,7 @@ export default function Sidebar({
 							Others
 						</p>
 						<ul className='space-y-2'>
-							{sidebarOthersData?.map((item: any) => (
+							{sidebarOthersData?.map((item: unknown) => (
 								<li key={item?.id}>
 									<Link
 										href={`${item?.path}`}

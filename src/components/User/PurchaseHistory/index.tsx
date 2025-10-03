@@ -12,7 +12,7 @@ const PurchaseHistory = async () => {
 
 	if (!user) return null;
 
-	const billingDate: any =
+	const billingDate: unknown =
 		user.currentPeriodEnd && new Date(user.currentPeriodEnd);
 
 	const isSubscribed =

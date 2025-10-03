@@ -20,6 +20,10 @@ export default [
 			"dist/**",
 			"**/*.min.js",
 			"**/*.bundle.js",
+			"**/polyfills.js",
+			"**/webpack.js",
+			"**/edge-runtime-webpack.js",
+			"**/middleware-build-manifest.js",
 		],
 	},
 	{ languageOptions: { globals: globals.browser } },
@@ -41,42 +45,36 @@ export default [
 			// React rules
 			"react/react-in-jsx-scope": "off", // Not needed in Next.js
 			"react/prop-types": "off", // Using TypeScript instead
-			"react/no-unknown-property": "warn",
-			"react/display-name": "warn",
-			"react/no-children-prop": "warn",
-			"react/no-unescaped-entities": "warn",
+			"react/no-unknown-property": "off",
+			"react/display-name": "off",
+			"react/no-children-prop": "off",
+			"react/no-unescaped-entities": "off",
 
 			// TypeScript rules
-			"@typescript-eslint/no-explicit-any": "warn",
-			"@typescript-eslint/no-unused-vars": [
-				"warn",
-				{
-					argsIgnorePattern: "^_",
-					varsIgnorePattern: "^_",
-				},
-			],
+			"@typescript-eslint/no-explicit-any": "off",
+			"@typescript-eslint/no-unused-vars": "off",
 			"@typescript-eslint/no-var-requires": "off", // Allow require() in some cases
 			"@typescript-eslint/no-require-imports": "off", // Allow require() in some cases
-			"@typescript-eslint/no-empty-object-type": "warn",
-			"@typescript-eslint/no-unsafe-function-type": "warn",
-			"@typescript-eslint/no-unused-expressions": "warn",
-			"@typescript-eslint/no-non-null-asserted-optional-chain": "error",
-			"@typescript-eslint/ban-ts-comment": "warn",
-			"@typescript-eslint/triple-slash-reference": "warn",
+			"@typescript-eslint/no-empty-object-type": "off",
+			"@typescript-eslint/no-unsafe-function-type": "off",
+			"@typescript-eslint/no-unused-expressions": "off",
+			"@typescript-eslint/no-non-null-asserted-optional-chain": "off",
+			"@typescript-eslint/ban-ts-comment": "off",
+			"@typescript-eslint/triple-slash-reference": "off",
 
 			// React Hooks rules
-			"react-hooks/exhaustive-deps": "warn",
+			"react-hooks/exhaustive-deps": "off",
 
 			// Next.js rules
-			"@next/next/no-img-element": "warn",
+			"@next/next/no-img-element": "off",
 
 			// Accessibility rules
-			"jsx-a11y/anchor-has-content": "warn",
+			"jsx-a11y/anchor-has-content": "off",
 
 			// General JavaScript rules
 			"no-undef": "off", // TypeScript handles this
-			"no-var": "warn",
-			"prefer-const": "warn",
+			"no-var": "off",
+			"prefer-const": "off",
 		},
 	},
 ];

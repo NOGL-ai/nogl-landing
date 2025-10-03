@@ -3,6 +3,7 @@ import BlogItem from "@/components/Blog/BlogItem";
 import Breadcrumbs from "@/components/Common/Breadcrumbs";
 import Image from "next/image";
 import { Metadata } from "next";
+import { Blog } from "@/types/blog";
 
 export const metadata: Metadata = {
 	title: `Blog - ${process.env.SITE_NAME}`,
@@ -41,7 +42,7 @@ const BlogGrid = async () => {
 					<div className='gap-x-7.5 grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-3'>
 						{/* Blog Item */}
 						{posts?.length > 0 ? (
-							posts?.map((item: any, key: number) => (
+							posts.map((item: Blog, key: number) => (
 								<BlogItem key={key} blog={item} />
 							))
 						) : (

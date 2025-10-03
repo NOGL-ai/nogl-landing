@@ -1,6 +1,6 @@
 // import { Price } from "@/types/priceItem";
 
-export default function PurchaseTable({ data }: any) {
+export default function PurchaseTable({ data }: unknown) {
 	return (
 		<div className='rounded-10 shadow-1 dark:bg-gray-dark bg-white'>
 			<div>

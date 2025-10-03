@@ -286,7 +286,7 @@ export function AdvancedVirtualTable<TData>({
 
 	// Memoized row renderer with enhanced performance
 	const renderRow = useCallback(
-		(virtualRow: any) => {
+		(virtualRow: unknown) => {
 			const row = rows[virtualRow.index] as Row<TData>;
 			if (!row) return null;
 

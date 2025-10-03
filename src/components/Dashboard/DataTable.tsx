@@ -11,7 +11,7 @@ interface TableColumn {
 }
 
 interface TableRow {
-	[key: string]: any;
+	[key: string]: unknown;
 }
 
 interface DataTableProps {

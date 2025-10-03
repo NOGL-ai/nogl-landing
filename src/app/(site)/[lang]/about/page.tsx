@@ -7,7 +7,9 @@ import BgGlassmorphism from "@/components/BgGlassmorphism";
 
 import rightImg from "@/images/about-hero-right.png";
 
-export interface PageAboutProps {}
+export interface PageAboutProps {
+	[key: string]: unknown;
+}
 
 const PageAbout: FC<PageAboutProps> = () => {
 	return (

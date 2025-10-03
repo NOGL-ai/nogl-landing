@@ -3,7 +3,7 @@ import { signOut } from "next-auth/react";
 import { userMenuData, adminMenuData } from "@/staticData/sidebarData";
 import { usePathname } from "next/navigation";
 
-const AccountMenu = ({ user }: any) => {
+const AccountMenu = ({ user }: unknown) => {
 	const pathname = usePathname();
 	const sidebarData = user?.role === "USER" ? userMenuData : adminMenuData;
 
@@ -33,7 +33,7 @@ const AccountMenu = ({ user }: any) => {
 			{/* px-2.5 */}
 			<div>
 				<ul className=''>
-					{sidebarData?.map((item: any) => (
+					{sidebarData?.map((item: unknown) => (
 						<li key={item?.id} className='mx-2.5 mb-1'>
 							<Link
 								href={`${item?.path}`}

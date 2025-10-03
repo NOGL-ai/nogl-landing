@@ -19,14 +19,14 @@ export default function PasswordChange() {
 
 	const { data: session } = useSession();
 
-	const handleChange = (e: any) => {
+	const handleChange = (e: unknown) => {
 		setData({
 			...data,
 			[e.target.name]: e.target.value,
 		});
 	};
 
-	const handleSubmit = async (e: any) => {
+	const handleSubmit = async (e: unknown) => {
 		e.preventDefault();
 
 		setLoading(true);
@@ -50,7 +50,7 @@ export default function PasswordChange() {
 				reTypeNewPassword: "",
 			});
 			setLoading(false);
-		} catch (error: any) {
+		} catch (error: unknown) {
 			setLoading(false);
 			toast.error(error?.response?.data);
 		}

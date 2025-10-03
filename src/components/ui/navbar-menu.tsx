@@ -110,7 +110,7 @@ export const ProductItem = ({
 	);
 };
 
-export const HoveredLink = ({ children, ...rest }: any) => {
+export const HoveredLink = ({ children, ...rest }: unknown) => {
 	return (
 		<Link
 			{...rest}

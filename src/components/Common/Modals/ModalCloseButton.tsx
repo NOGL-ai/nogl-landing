@@ -1,4 +1,4 @@
-export default function ModalCloseButton({ closeModal }: any) {
+export default function ModalCloseButton({ closeModal }: unknown) {
 	return (
 		<button
 			onClick={() => closeModal(false)}

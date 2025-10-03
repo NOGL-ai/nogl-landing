@@ -6,7 +6,9 @@ import Input from "@/shared/Input";
 import Textarea from "@/shared/Textarea";
 import ButtonPrimary from "@/shared/ButtonPrimary";
 
-export interface PageContactProps {}
+export interface PageContactProps {
+	[key: string]: unknown;
+}
 
 const info = [
 	{
