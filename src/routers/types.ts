@@ -5,8 +5,8 @@ import { ComponentType } from "react";
 export type Route = NextRoute;
 export type PathName = Route;
 
-export interface Page {
+export interface Page<T = any> {
 	path: PathName;
 	exact?: boolean;
-	component: ComponentType<object>;
+	component: ComponentType<T>;
 }

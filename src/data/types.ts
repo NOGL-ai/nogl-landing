@@ -4,7 +4,7 @@ import { StaticImageData } from "next/image";
 //  ######  CustomLink  ######## //
 export interface CustomLink {
 	label: string;
-	href: Route<string> | string;
+	href: Route | string;
 	targetBlank?: boolean;
 }
 
@@ -14,7 +14,7 @@ export interface TaxonomyType {
 	href: string;
 	name: string;
 	taxonomy: string;
-	count: number;
+	count?: number;
 	thumbnail: string;
 }
 
@@ -29,7 +29,7 @@ export interface AuthorType {
 	count: number;
 	desc: string;
 	jobName: string;
-	href: Route<string>;
+	href: Route;
 	starRating?: number;
 }
 
@@ -37,7 +37,7 @@ export interface PostDataType {
 	id: string | number;
 	author: AuthorType;
 	date: string;
-	href: Route<string>;
+	href: Route;
 	categories: TaxonomyType[];
 	title: string;
 	featuredImage: StaticImageData | string;
@@ -63,7 +63,7 @@ export interface StayDataType {
 	id: string | number;
 	author: AuthorType;
 	date: string;
-	href: Route<string>;
+	href: Route;
 	title: string;
 	featuredImage: StaticImageData | string;
 	commentCount: number;
@@ -91,7 +91,7 @@ export interface ExperiencesDataType {
 	id: string | number;
 	author: AuthorType;
 	date: string;
-	href: Route<string>;
+	href: Route;
 	title: string;
 	featuredImage: StaticImageData | string;
 	commentCount: number;
@@ -117,7 +117,7 @@ export interface CarDataType {
 	id: string | number;
 	author: AuthorType;
 	date: string;
-	href: Route<string>;
+	href: Route;
 	title: string;
 	featuredImage: StaticImageData | string;
 	commentCount: number;
@@ -199,7 +199,7 @@ export interface ExpertDataType {
 	additionalResources: string[];
 	eventLink: string;
 	contactSupport: string;
-	href: Route<string>;
+	href: Route;
 	sessions: SessionDataType[];
 	expertise: string[];
 	rating: number;

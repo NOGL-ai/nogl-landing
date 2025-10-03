@@ -39,7 +39,7 @@ const Logo: React.FC<LogoProps> = ({
 
 	return (
 		<Link
-			href={"/" as Route<string>}
+			href={"/" as Route}
 			className={`ttnc-logo inline-flex items-center focus:outline-none focus:ring-0 ${className}`}
 		>
 			<svg

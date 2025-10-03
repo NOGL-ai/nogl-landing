@@ -6,7 +6,7 @@ interface MagicLinkParams {
 }
 
 export function getMagicLinkEmail(params: MagicLinkParams) {
-	const { url, host, name } = params;
+	const { url, host, name, email: _email } = params;
 
 	// Sanitize URL without double-encoding
 	const escapedUrl = url; // Remove encodeURI since the URL is already encoded

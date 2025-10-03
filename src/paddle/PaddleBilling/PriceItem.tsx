@@ -53,7 +53,8 @@ const PriceItem = ({ plan, isBilling }: Props) => {
 
 			toast.success("Subscription changed successfully");
 			window.location.reload();
-		} catch {
+		} catch (error) {
+			console.error("Subscription change error:", error);
 			toast.error("Unable to change subscription");
 		}
 	};

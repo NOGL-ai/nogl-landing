@@ -15,7 +15,7 @@ interface BookingConfirmationParams {
 }
 
 export function getBookingConfirmationEmail(params: BookingConfirmationParams) {
-	const { url, bookingDetails, name } = params;
+	const { url, bookingDetails, name, email: _email } = params;
 
 	// Sanitize URL
 	const escapedUrl = url;

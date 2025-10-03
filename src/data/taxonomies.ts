@@ -8,14 +8,14 @@ const DEMO_CATEGORIES: TaxonomyType[] = __taxonomies.map((item) => ({
 	...item,
 	id: item.id.toString(),
 	taxonomy: "category",
-	href: item.href as Route<string>,
+	href: item.href as Route,
 }));
 
 const DEMO_TAGS: TaxonomyType[] = __taxonomies.map((item) => ({
 	...item,
 	id: item.id.toString(),
 	taxonomy: "tag",
-	href: item.href as Route<string>,
+	href: item.href as Route,
 }));
 
 // Stay categories
@@ -23,7 +23,7 @@ const DEMO_STAY_CATEGORIES: TaxonomyType[] = __stayTaxonomies.map((item) => ({
 	...item,
 	id: item.id.toString(),
 	taxonomy: "category",
-	href: item.href as Route<string>,
+	href: item.href as Route,
 }));
 
 // Experience categories
@@ -32,7 +32,7 @@ const DEMO_EXPERIENCES_CATEGORIES: TaxonomyType[] = __experiencesTaxonomies.map(
 		...item,
 		id: item.id.toString(),
 		taxonomy: "category",
-		href: item.href as Route<string>,
+		href: item.href as Route,
 	})
 );
 

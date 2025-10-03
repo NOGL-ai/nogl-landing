@@ -3,7 +3,7 @@ import React from "react";
 import { Route } from "@/routers/types";
 
 export interface ButtonPrimaryProps extends Omit<ButtonProps, "href"> {
-	href?: Route<string>;
+	href?: Route;
 }
 
 const ButtonPrimary: React.FC<ButtonPrimaryProps> = ({

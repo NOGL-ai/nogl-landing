@@ -16,7 +16,7 @@ interface BookingInvitationParams {
 }
 
 export function getBookingInvitationEmail(params: BookingInvitationParams) {
-	const { url, invitationDetails, name } = params;
+	const { url, invitationDetails, name, email: _email } = params;
 
 	// Sanitize URL
 	const escapedUrl = url;
