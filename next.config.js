@@ -3,6 +3,7 @@
 const nextConfig = {
 	reactStrictMode: true,
 	typedRoutes: true,
+	output: 'standalone',
 	webpack: (config, { isServer }) => {
 		// Modify PostCSS loader configuration
 		const rules = config.module.rules;

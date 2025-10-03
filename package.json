@@ -73,6 +73,7 @@
 		"dotted-map": "^2.2.3",
 		"formidable": "^3.5.4",
 		"framer-motion": "^12.23.22",
+		"lightningcss": "^1.30.0",
 		"lodash": "^4.17.21",
 		"lottie-react": "^2.4.1",
 		"lucide-react": "^0.544.0",
@@ -161,6 +162,10 @@
 		"stylelint-config-standard": "^39.0.0",
 		"typescript": "^5.9.3",
 		"typescript-eslint": "^8.45.0"
+	},
+	"optionalDependencies": {
+		"sharp": "^0.34.4",
+		"lightningcss": "^1.30.0"
 	},
 	"overrides": {
 		"glob": "^10.0.0",
