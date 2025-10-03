@@ -27,7 +27,8 @@ export { default as HomeTestimonials } from "./Testimonials";
 export { default as AccountMenu } from "./AccountMenu";
 export { default as DashboardHeader } from "./DashboardHeader";
 export { default as CommunitySection } from "./CommunitySection";
-export { default as HomeBlog } from "./HomeBlog";
+// Removed HomeBlog from barrel export - it's a server component
+// Use direct import: import HomeBlog from "@/components/organisms/HomeBlog"
 export { default as HomeCallToAction } from "./HomeCallToAction";
 export { default as HomeCounter } from "./HomeCounter";
 export { default as HomeFeatureSlideshow } from "./HomeFeatureSlideshow";
@@ -51,10 +52,13 @@ export { default as Signup } from "./Signup";
 export { default as SignupPageLayout } from "./SignupPageLayout";
 export { default as AccountSettings } from "./AccountSettings";
 export { default as TokenList } from "./TokenList";
-export { default as APIKey } from "./APIKey";
+// Removed APIKey from barrel export - it's a server component
+// Use direct import: import APIKey from "@/components/organisms/APIKey"
 export { default as Billing } from "./Billing";
-export { default as PurchaseHistory } from "./PurchaseHistory";
+// Removed PurchaseHistory from barrel export to prevent client-side bundling
+// Use direct import: import PurchaseHistory from "@/components/organisms/PurchaseHistory"
 export { default as AiIntegration } from "./AiIntegration";
-export { default as UsersListContainer } from "./UsersListContainer";
+// Removed UsersListContainer from barrel export - it's a server component
+// Use direct import: import UsersListContainer from "@/components/organisms/UsersListContainer"
 export { default as DashboardPageClient } from "./DashboardPageClient";
 export { default as DashboardWidgetGrid } from "./DashboardWidgetGrid";

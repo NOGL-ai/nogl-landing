@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { Sidebar, MobileSidebar } from "../organisms";
+import Sidebar from "../organisms/Sidebar";
+import MobileSidebar from "../organisms/MobileSidebar";
 import { useSidebar } from "@/hooks/useSidebar";
 import { UserProfile } from "@/types/navigation";
 

@@ -1,11 +1,12 @@
 import React from "react";
 import PurchaseEmptyState from "../atoms/PurchaseEmptyState";
 import PurchaseTable from "../molecules/PurchaseTable";
-import { isAuthorized } from "@/lib/isAuthorized";
+import { getServerAuthSession } from "@/lib/serverAuth";
 import { pricingData } from "@/pricing/pricingData";
 
 const PurchaseHistory = async () => {
-	const user = await isAuthorized();
+	const session = await getServerAuthSession();
+	const user = session?.user;
 	const purchasedPlan = pricingData.find(
 		(plan) => plan.priceId === user?.priceId
 	);
