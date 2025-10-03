@@ -1,6 +1,6 @@
 import React from "react";
 import Particles from "@/components/ui/particles";
-import { GlassmorphismBackground } from "@/components/atoms";
+import GlassmorphismBackground from "@/components/atoms/GlassmorphismBackground";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

@@ -2,8 +2,8 @@ import React, { FC } from "react";
 import SectionHero from "./SectionHero";
 import SectionFounder from "./SectionFounder";
 import SectionStatistic from "./SectionStatistic";
-import { SectionSubscribe2 } from "@/components/organisms";
-import { GlassmorphismBackground } from "@/components/atoms";
+import SectionSubscribe2 from "@/components/organisms/SectionSubscribe2";
+import GlassmorphismBackground from "@/components/atoms/GlassmorphismBackground";
 
 // Alias for BgGlassmorphism
 const BgGlassmorphism = GlassmorphismBackground;

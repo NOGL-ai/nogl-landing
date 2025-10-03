@@ -1,12 +1,10 @@
-import {
-	HomeHero as Hero,
-	HomeCounter as Counter,
-	HomeCallToAction as CallToAction,
-	FAQ,
-	HomeBlog as Blog,
-	HomeNewsletter,
-} from "@/components/organisms";
-import { GlassmorphismBackground } from "@/components/atoms";
+import HomeHero from "@/components/organisms/HomeHero";
+import HomeCounter from "@/components/organisms/HomeCounter";
+import HomeCallToAction from "@/components/organisms/HomeCallToAction";
+import FAQ from "@/components/organisms/FAQ";
+import HomeBlog from "@/components/organisms/HomeBlog";
+import HomeNewsletter from "@/components/organisms/HomeNewsletter";
+import GlassmorphismBackground from "@/components/atoms/GlassmorphismBackground";
 import { Particles } from "@/components/ui";
 
 interface HomeProps {
@@ -79,15 +77,15 @@ const Home: React.FC<HomeProps> = ({ dictionary }) => {
 				color={"#4F46E5"}
 			/>
 			<GlassmorphismBackground />
-			<Hero dictionary={dictionary} />
-			<Counter dictionary={dictionary} />
+			<HomeHero dictionary={dictionary} />
+			<HomeCounter dictionary={dictionary} />
 
-			<CallToAction dictionary={dictionary} />
+			<HomeCallToAction dictionary={dictionary} />
 			<FAQ dictionary={dictionary} />
 			<div id='newsletter'>
 				<HomeNewsletter dictionary={dictionary} />
 			</div>
-			<Blog dictionary={dictionary} />
+			<HomeBlog dictionary={dictionary} />
 		</main>
 	);
 };

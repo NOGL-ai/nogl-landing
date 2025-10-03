@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { getDictionary } from "@/lib/dictionary";
 import { Locale } from "@/i18n";
-import { Features } from "@/components/organisms";
+import { FeatureSection as Features } from "@/components/organisms/Features";
 
 export const metadata: Metadata = {
 	title: "Features - AI Fashion Intelligence Platform",

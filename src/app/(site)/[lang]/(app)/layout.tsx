@@ -1,7 +1,7 @@
 import React from "react";
 import SidebarLayout from "@/components/templates/SidebarLayout";
 import Particles from "@/components/ui/particles";
-import { GlassmorphismBackground } from "@/components/atoms";
+import GlassmorphismBackground from "@/components/atoms/GlassmorphismBackground";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
 	const user = {

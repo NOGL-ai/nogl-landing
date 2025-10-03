@@ -1,7 +1,7 @@
 "use client";
 
 // import Safari from "@/components/ui/safari";
-import { Section } from "@/components/organisms";
+import Section from "@/components/organisms/section";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 

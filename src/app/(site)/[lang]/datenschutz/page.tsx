@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { getSEOTags, renderSchemaTags } from "@/lib/seo";
 import Breadcrumb from "@/components/atoms/Breadcrumb";
-import { Section } from "@/components/organisms";
+import Section from "@/components/organisms/section";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
 	Shield,
