@@ -15,7 +15,7 @@ import {
 	useTransform,
 } from "framer-motion";
 import type { Route } from "next";
-import ShimmerButton from "@/components/ui/shimmer-button";
+import { Button } from "@/components/ui/button";
 
 interface CounterProps {
 	dictionary: {
@@ -297,11 +297,7 @@ const Counter = ({ dictionary }: CounterProps) => {
 						>
 							<div className='from-primary to-primary/50 absolute -inset-0.5 rounded-lg bg-gradient-to-r opacity-30 blur transition duration-1000 group-hover:opacity-100 group-hover:duration-200'></div>
 							<Link href={"/auth/signup" as Route}>
-								<ShimmerButton
-									shimmerColor='#ffffff33'
-									background='linear-gradient(135deg, #000000, #333333)'
-									className='relative flex items-center gap-2 px-6 py-3 font-medium dark:!text-white'
-								>
+								<Button className='relative flex items-center gap-2 bg-gradient-to-r from-gray-900 to-gray-700 px-6 py-3 font-medium text-white hover:from-gray-800 hover:to-gray-600'>
 									<span>{dictionary.counter.aboutButton}</span>
 									<motion.svg
 										className='h-4 w-4'
@@ -318,7 +314,7 @@ const Counter = ({ dictionary }: CounterProps) => {
 											strokeLinejoin='round'
 										/>
 									</motion.svg>
-								</ShimmerButton>
+								</Button>
 							</Link>
 						</motion.div>
 					</motion.div>

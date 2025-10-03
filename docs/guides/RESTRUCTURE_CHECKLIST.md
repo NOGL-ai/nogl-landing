@@ -33,6 +33,7 @@ Find and replace old imports across your codebase:
 ```
 
 **Files to check:**
+
 - [ ] All pages in `src/app/(site)/[lang]/`
 - [ ] Components that use Button/Input/Checkbox
 - [ ] Form components
@@ -40,13 +41,15 @@ Find and replace old imports across your codebase:
 - [ ] Dashboard components
 
 **Old (Wrong):**
+
 ```tsx
-import { Button } from '@/components/atoms';
+import { Button } from "@/components/atoms";
 ```
 
 **New (Correct):**
+
 ```tsx
-import { Button } from '@/components/ui';
+import { Button } from "@/components/ui";
 ```
 
 ---
@@ -67,25 +70,26 @@ Create these Untitled UI components:
 - [ ] `ui/tabs.tsx` - Tab navigation
 
 **Template for new UI component:**
+
 ```tsx
 "use client";
 
-import React from 'react';
-import { cn } from '@/lib/utils';
+import React from "react";
+import { cn } from "@/lib/utils";
 
 export interface ComponentProps extends React.HTMLAttributes<HTMLElement> {
-  variant?: 'default' | 'primary' | 'secondary';
-  size?: 'sm' | 'md' | 'lg';
+	variant?: "default" | "primary" | "secondary";
+	size?: "sm" | "md" | "lg";
 }
 
 export const Component = React.forwardRef<HTMLElement, ComponentProps>(
-  ({ className, variant = 'default', size = 'md', ...props }, ref) => {
-    // Implementation
-    return <div ref={ref} className={cn(/* classes */)} {...props} />;
-  }
+	({ className, variant = "default", size = "md", ...props }, ref) => {
+		// Implementation
+		return <div ref={ref} className={cn(/* classes */)} {...props} />;
+	}
 );
 
-Component.displayName = 'Component';
+Component.displayName = "Component";
 ```
 
 ---
@@ -95,35 +99,38 @@ Component.displayName = 'Component';
 Create design token files:
 
 - [ ] `foundations/colors.ts` - Color palette
+
 ```tsx
 export const colors = {
-  primary: {
-    50: '#...',
-    100: '#...',
-    // ...
-  },
-  // ...
+	primary: {
+		50: "#...",
+		100: "#...",
+		// ...
+	},
+	// ...
 };
 ```
 
 - [ ] `foundations/typography.ts` - Font scales
+
 ```tsx
 export const typography = {
-  fontSize: {
-    xs: '0.75rem',
-    sm: '0.875rem',
-    // ...
-  },
-  // ...
+	fontSize: {
+		xs: "0.75rem",
+		sm: "0.875rem",
+		// ...
+	},
+	// ...
 };
 ```
 
 - [ ] `foundations/spacing.ts` - Spacing scale
+
 ```tsx
 export const spacing = {
-  0: '0',
-  1: '0.25rem',
-  // ...
+	0: "0",
+	1: "0.25rem",
+	// ...
 };
 ```
 
@@ -136,16 +143,19 @@ export const spacing = {
 Check each component folder:
 
 **Atoms** (Should be simple, single-purpose):
+
 - [ ] Review each atom - is it truly atomic?
 - [ ] Move complex atoms to molecules if needed
 - [ ] Ensure no business logic
 
 **Molecules** (Should combine atoms/UI):
+
 - [ ] Check they use atoms and UI components
 - [ ] Verify they're not too complex (move to organisms if so)
 - [ ] Ensure proper composition
 
 **Organisms** (Can be complex):
+
 - [ ] Verify they contain business logic if needed
 - [ ] Check they're not too simple (move to molecules if so)
 - [ ] Ensure proper use of lower layers
@@ -155,6 +165,7 @@ Check each component folder:
 ## 🔍 How to Find Files Needing Updates
 
 ### Option 1: Using grep/search
+
 ```bash
 # In your project root
 grep -r "from '@/components/atoms'" src/
@@ -163,6 +174,7 @@ grep -r 'from "../../atoms"' src/
 ```
 
 ### Option 2: Using VS Code
+
 1. Press `Ctrl+Shift+F` (Windows) or `Cmd+Shift+F` (Mac)
 2. Search for: `from '@/components/atoms'`
 3. Check each file to see if it imports Button, Input, or Badge
@@ -176,19 +188,19 @@ Keep this handy while refactoring:
 
 ```tsx
 // ✅ Untitled UI components
-import { Button, Input, Checkbox } from '@/components/ui';
+import { Button, Input, Checkbox } from "@/components/ui";
 
 // ✅ Foundations (icons, tokens)
-import { DotIcon } from '@/components/foundations';
+import { DotIcon } from "@/components/foundations";
 
 // ✅ Custom atoms
-import { Avatar, StarRating, Label } from '@/components/atoms';
+import { Avatar, StarRating, Label } from "@/components/atoms";
 
 // ✅ Molecules
-import { UserCard, FormItem } from '@/components/molecules';
+import { UserCard, FormItem } from "@/components/molecules";
 
 // ✅ Organisms
-import { Header, Footer, Features } from '@/components/organisms';
+import { Header, Footer, Features } from "@/components/organisms";
 ```
 
 ---
@@ -196,24 +208,21 @@ import { Header, Footer, Features } from '@/components/organisms';
 ## 🎯 Priority Tasks
 
 **High Priority (Do First):**
+
 1. ✅ Update all imports of Button/Input/Checkbox to use `@/components/ui`
 2. ⬜ Test that all pages still work correctly
 3. ⬜ Fix any TypeScript errors that appear
 
-**Medium Priority:**
-4. ⬜ Add Table, Select, Modal to UI components
-5. ⬜ Create design tokens in foundations
+**Medium Priority:** 4. ⬜ Add Table, Select, Modal to UI components 5. ⬜ Create design tokens in foundations
 
-**Low Priority:**
-6. ⬜ Audit all components for proper placement
-7. ⬜ Add remaining UI components
-8. ⬜ Create more comprehensive documentation
+**Low Priority:** 6. ⬜ Audit all components for proper placement 7. ⬜ Add remaining UI components 8. ⬜ Create more comprehensive documentation
 
 ---
 
 ## 🧪 Testing After Updates
 
 After updating imports, test these areas:
+
 - [ ] Homepage loads correctly
 - [ ] Sign in/Sign up forms work
 - [ ] Dashboard pages render
@@ -226,6 +235,7 @@ After updating imports, test these areas:
 ## 📚 Documentation Files
 
 Your new documentation:
+
 1. **`src/components/README.md`** - Start here! Quick reference guide
 2. **`src/components/COMPONENT_STRUCTURE.md`** - Detailed architecture
 3. **`src/components/IMPORT_EXAMPLES.tsx`** - Code examples
@@ -237,18 +247,23 @@ Your new documentation:
 ## ⚠️ Common Issues & Solutions
 
 ### Issue: "Module has no exported member 'Button'"
+
 **Solution:** You're trying to import Button from atoms. Change to:
+
 ```tsx
-import { Button } from '@/components/ui';
+import { Button } from "@/components/ui";
 ```
 
 ### Issue: "Cannot find module '@/components/ui'"
+
 **Solution:** Check that `ui/index.ts` exports the component:
+
 ```tsx
-export { Button } from './button';
+export { Button } from "./button";
 ```
 
 ### Issue: TypeScript errors in components
+
 **Solution:** Components may need props updated. Check the new Button/Input interfaces.
 
 ---
@@ -256,6 +271,7 @@ export { Button } from './button';
 ## 🎉 When You're Done
 
 You'll have:
+
 - ✅ Clean separation of UI vs custom components
 - ✅ Clear import patterns
 - ✅ Scalable architecture
@@ -269,9 +285,9 @@ Your codebase will be more maintainable and easier to understand! 🚀
 ## 💡 Need Help?
 
 Refer to:
+
 - `src/components/README.md` for quick answers
 - `src/components/COMPONENT_STRUCTURE.md` for detailed guidance
 - `src/components/IMPORT_EXAMPLES.tsx` for code examples
 
 Good luck with the restructuring! 🎯
-

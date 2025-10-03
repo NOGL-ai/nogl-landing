@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import RepricingPreview from "@/components/Dashboard/RepricingPreview";
+import RepricingPreview from "@/components/molecules/RepricingPreview";
 
 export const metadata: Metadata = {
 	title: "Auto Repricing Overview | Nogl",

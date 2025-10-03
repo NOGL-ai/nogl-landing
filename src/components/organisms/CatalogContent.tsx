@@ -2,7 +2,9 @@
 
 import React, { useState } from "react";
 import CatalogHeader from "../atoms/CatalogHeader";
-import UltimateProductTable, { Product } from "../organisms/UltimateProductTable";
+import UltimateProductTable, {
+	Product,
+} from "../organisms/UltimateProductTable";
 import { createApiDataFetcher } from "@/utils/infiniteScrollUtils";
 
 const CatalogContent = () => {
@@ -262,7 +264,6 @@ const CatalogContent = () => {
 
 	const handleInfiniteScrollToggle = (enabled: boolean) => {
 		setEnableInfiniteScroll(enabled);
-
 	};
 
 	return (

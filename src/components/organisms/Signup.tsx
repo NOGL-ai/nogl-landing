@@ -2,9 +2,9 @@
 import { useState } from "react";
 import Link from "next/link";
 // import GithubSigninButton from "../../atoms/GithubSigninButton";
-import GoogleSigninButton from "../../atoms/GoogleSigninButton";
-import SigninWithMagicLink from "../../molecules/SigninWithMagicLink";
-import SignupWithPassword from "../../molecules/SignupWithPassword";
+import GoogleSigninButton from "../atoms/GoogleSigninButton";
+import SigninWithMagicLink from "../molecules/SigninWithMagicLink";
+import SignupWithPassword from "../molecules/SignupWithPassword";
 import { FaMagic, FaLock } from "react-icons/fa";
 import { IconType } from "react-icons";
 

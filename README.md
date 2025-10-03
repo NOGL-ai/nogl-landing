@@ -32,10 +32,11 @@ A full-stack SaaS landing page and application built with Next.js, featuring mod
 This project includes comprehensive documentation organized for optimal developer and AI assistant navigation:
 
 - **🏗️ Architecture**: Component structure, design patterns, and system architecture
-- **📖 Guides**: Setup guides, implementation guides, and best practices  
+- **📖 Guides**: Setup guides, implementation guides, and best practices
 - **💻 Examples**: Code examples and usage patterns
 
 ### Quick Links
+
 - [Component Architecture](./docs/architecture/README.md) - Component structure overview
 - [Quick Start Guide](./docs/guides/QUICK_START.md) - Get started quickly
 - [Environment Setup](./docs/guides/ENV_SETUP_GUIDE.md) - Environment configuration

@@ -32,7 +32,6 @@ async function POST(req: NextRequest) {
 			{ status: 200 }
 		);
 	} catch (error: unknown) {
-
 		return NextResponse.json(
 			{ error: error.response.data.error.detail },
 			{ status: 500 }

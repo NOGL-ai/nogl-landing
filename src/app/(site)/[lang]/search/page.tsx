@@ -1,4 +1,3 @@
-
 // Placeholder component to prevent build errors
 export default function SearchPage() {
 	return (

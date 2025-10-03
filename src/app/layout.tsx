@@ -89,7 +89,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 			<body suppressHydrationWarning={true} className='bg-primary antialiased'>
 				<RouteProvider>
 					<ThemeProvider>
-						<ClientLayout>{children}</ClientLayout>
+						{children}
 					</ThemeProvider>
 				</RouteProvider>
 				<SpeedInsights />

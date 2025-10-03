@@ -7,7 +7,7 @@ import LangDropdown from "@/app/(site)/[lang]/(client-components)/(Header)/LangD
 import NotifyDropdown from "@/app/(site)/[lang]/(client-components)/(Header)/NotifyDropdown";
 import AvatarDropdown from "@/app/(site)/[lang]/(client-components)/(Header)/AvatarDropdown";
 import Link from "next/link";
-import ShimmerButton from "@/components/ui/shimmer-button";
+import { Button } from "@/components/ui/button";
 import GlobalSearchModal from "./GlobalSearchModal";
 import SwitchDarkMode from "@/shared/SwitchDarkMode";
 import { usePathname } from "next/navigation";
@@ -193,12 +193,12 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
 										href={"/add-session" as Route}
 										onClick={(e) => e.preventDefault()}
 									>
-										<ShimmerButton
-											shimmerColor='#ffffff33'
+										<Button
+											disabled
 											className='cursor-not-allowed font-medium opacity-70 dark:!text-white'
 										>
 											New Forecast
-										</ShimmerButton>
+										</Button>
 									</Link>
 									<span className='bg-primary-500 absolute -right-2 -top-2 inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium text-white'>
 										Soon

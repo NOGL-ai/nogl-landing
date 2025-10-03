@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import RepricingRulesCard, { RepricingRule } from "../molecules/RepricingRulesCard";
+import RepricingRulesCard, {
+	RepricingRule,
+} from "../molecules/RepricingRulesCard";
 import Button from "@/shared/Button";
 import { Plus } from "lucide-react";
 
@@ -90,22 +92,18 @@ const RepricingRules: React.FC = () => {
 	};
 
 	const handleManageRule = (id: string) => {
-
 		// Handle manage action
 	};
 
 	const handleDownloadRule = (id: string) => {
-
 		// Handle download action
 	};
 
 	const handleRunPreview = (id: string) => {
-
 		// Handle run preview action
 	};
 
 	const handleAddReports = () => {
-
 		// Handle add reports action
 	};
 

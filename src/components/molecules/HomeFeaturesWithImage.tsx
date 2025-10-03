@@ -1,6 +1,6 @@
 import { FeatureWithImg } from "@/types/featureWithImg";
-import featureItemData from "./featuresData";
-import FeatureItem from "./FeatureItem";
+import featureItemData from "../../data/featuresData";
+import FeatureItem from "../atoms/FeatureItem";
 import SectionHeader from "@/components/molecules/SectionHeader";
 
 const FeaturesWithImage = () => {

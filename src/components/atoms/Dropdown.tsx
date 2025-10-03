@@ -1,3 +1,5 @@
+"use client";
+
 import { Menu } from "@/types/menu";
 import Link from "next/link";
 import { useState } from "react";

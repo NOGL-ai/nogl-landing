@@ -163,13 +163,13 @@ Here's how a complete page uses all layers:
 
 ## ✅ Import Rules Summary
 
-| What you need | Import from | Example |
-|---------------|-------------|---------|
-| Button, Input, Checkbox | `@/components/ui` | `import { Button } from '@/components/ui'` |
-| Avatar, StarRating | `@/components/atoms` | `import { Avatar } from '@/components/atoms'` |
-| UserCard, FormItem | `@/components/molecules` | `import { UserCard } from '@/components/molecules'` |
-| Header, Footer | `@/components/organisms` | `import { Header } from '@/components/organisms'` |
-| DotIcon, design tokens | `@/components/foundations` | `import { DotIcon } from '@/components/foundations'` |
+| What you need           | Import from                | Example                                              |
+| ----------------------- | -------------------------- | ---------------------------------------------------- |
+| Button, Input, Checkbox | `@/components/ui`          | `import { Button } from '@/components/ui'`           |
+| Avatar, StarRating      | `@/components/atoms`       | `import { Avatar } from '@/components/atoms'`        |
+| UserCard, FormItem      | `@/components/molecules`   | `import { UserCard } from '@/components/molecules'`  |
+| Header, Footer          | `@/components/organisms`   | `import { Header } from '@/components/organisms'`    |
+| DotIcon, design tokens  | `@/components/foundations` | `import { DotIcon } from '@/components/foundations'` |
 
 ---
 
@@ -212,15 +212,16 @@ import { Button } from '@/components/ui';
 
 Current state of your project:
 
-| Layer | Count | Examples |
-|-------|-------|----------|
-| **Organisms** | ~25 | Header, Footer, Features, Testimonials |
-| **Molecules** | ~23 | UserCard, FormItem, GallerySlider |
-| **Atoms** | ~14 | Avatar, StarRating, Label, Badge |
-| **UI** | 3 | Button, Input, Checkbox |
-| **Foundations** | 1 | DotIcon |
+| Layer           | Count | Examples                               |
+| --------------- | ----- | -------------------------------------- |
+| **Organisms**   | ~25   | Header, Footer, Features, Testimonials |
+| **Molecules**   | ~23   | UserCard, FormItem, GallerySlider      |
+| **Atoms**       | ~14   | Avatar, StarRating, Label, Badge       |
+| **UI**          | 3     | Button, Input, Checkbox                |
+| **Foundations** | 1     | DotIcon                                |
 
 **Next steps:**
+
 - Add more UI components (Table, Select, Modal, etc.)
 - Add design tokens to Foundations (colors, typography)
 - Audit existing components for proper layer placement
@@ -232,60 +233,60 @@ Current state of your project:
 ```tsx
 // src/app/(site)/profile/page.tsx
 
-import { Button, Input, Checkbox } from '@/components/ui';
-import { DotIcon } from '@/components/foundations';
-import { Avatar, StarRating, Label } from '@/components/atoms';
-import { UserCard, FormItem } from '@/components/molecules';
-import { Header, Footer, Features } from '@/components/organisms';
+import { Button, Input, Checkbox } from "@/components/ui";
+import { DotIcon } from "@/components/foundations";
+import { Avatar, StarRating, Label } from "@/components/atoms";
+import { UserCard, FormItem } from "@/components/molecules";
+import { Header, Footer, Features } from "@/components/organisms";
 
 export default function ProfilePage() {
-  return (
-    <div className="min-h-screen">
-      {/* Organism: Complex header with navigation */}
-      <Header />
+	return (
+		<div className='min-h-screen'>
+			{/* Organism: Complex header with navigation */}
+			<Header />
 
-      <main className="container mx-auto py-8">
-        {/* Molecule: Composite card component */}
-        <UserCard>
-          {/* Atom: Simple avatar component */}
-          <Avatar src="/user.jpg" alt="User" />
-          
-          <div>
-            <h1 className="text-2xl font-bold">John Doe</h1>
-            
-            {/* Atom: Custom rating component */}
-            <StarRating rating={4.5} />
-          </div>
-          
-          {/* UI: Base button from Untitled UI */}
-          <Button variant="primary">Edit Profile</Button>
-        </UserCard>
+			<main className='container mx-auto py-8'>
+				{/* Molecule: Composite card component */}
+				<UserCard>
+					{/* Atom: Simple avatar component */}
+					<Avatar src='/user.jpg' alt='User' />
 
-        {/* Molecule: Form with label + input */}
-        <FormItem label="Email" error="">
-          {/* UI: Base input from Untitled UI */}
-          <Input type="email" placeholder="john@example.com" />
-        </FormItem>
+					<div>
+						<h1 className='text-2xl font-bold'>John Doe</h1>
 
-        <div className="flex items-center gap-2">
-          {/* UI: Base checkbox from Untitled UI */}
-          <Checkbox />
-          
-          {/* Atom: Custom label */}
-          <Label>Subscribe to newsletter</Label>
-          
-          {/* Foundation: Icon */}
-          <DotIcon />
-        </div>
+						{/* Atom: Custom rating component */}
+						<StarRating rating={4.5} />
+					</div>
 
-        {/* Organism: Complex features section */}
-        <Features />
-      </main>
+					{/* UI: Base button from Untitled UI */}
+					<Button variant='primary'>Edit Profile</Button>
+				</UserCard>
 
-      {/* Organism: Complex footer */}
-      <Footer />
-    </div>
-  );
+				{/* Molecule: Form with label + input */}
+				<FormItem label='Email' error=''>
+					{/* UI: Base input from Untitled UI */}
+					<Input type='email' placeholder='john@example.com' />
+				</FormItem>
+
+				<div className='flex items-center gap-2'>
+					{/* UI: Base checkbox from Untitled UI */}
+					<Checkbox />
+
+					{/* Atom: Custom label */}
+					<Label>Subscribe to newsletter</Label>
+
+					{/* Foundation: Icon */}
+					<DotIcon />
+				</div>
+
+				{/* Organism: Complex features section */}
+				<Features />
+			</main>
+
+			{/* Organism: Complex footer */}
+			<Footer />
+		</div>
+	);
 }
 ```
 
@@ -300,4 +301,3 @@ export default function ProfilePage() {
 5. **foundations/** = Icons, tokens, base utilities
 
 **Golden Rule:** Always import UI components from `@/components/ui`, never through atoms!
-

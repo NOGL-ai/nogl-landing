@@ -52,7 +52,6 @@ const testimonialData: Testimonial[][] = [
 			image: "/images/testimonial/author-06.png",
 		},
 	],
-
 ];
 
 export default testimonialData;

@@ -1,11 +1,8 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import GoogleSigninButton from "../../atoms/GoogleSigninButton";
-// import GithubSigninButton from "../../atoms/GithubSigninButton";
-import SigninWithMagicLink from "../../molecules/SigninWithMagicLink";
-import SigninWithPassword from "../../molecules/SigninWithPassword";
-import DemoSignin from "../../atoms/DemoSignin";
+import { GoogleSigninButton, DemoSignin } from "../atoms";
+import { SigninWithMagicLink, SigninWithPassword } from "../molecules";
 import { FaMagic, FaLock } from "react-icons/fa";
 import { IconType } from "react-icons";
 

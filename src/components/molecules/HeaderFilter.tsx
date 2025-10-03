@@ -5,7 +5,7 @@ import Heading from "@/shared/Heading";
 import Nav from "@/shared/Nav";
 import ButtonSecondary from "@/shared/ButtonSecondary";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import RippleButton from "@/components/ui/ripple-button";
+import { Button } from "@/components/ui/button";
 
 export interface HeaderFilterProps {
 	tabActive: string;
@@ -42,10 +42,10 @@ const HeaderFilter: FC<HeaderFilterProps> = ({
 					containerClassName='relative flex w-full overflow-x-auto text-sm md:text-base hiddenScrollbar'
 				>
 					{tabs.map((item, index) => (
-						<RippleButton
+						<Button
 							key={index}
 							onClick={() => handleClickTab(item)}
-							rippleColor={tabActiveState === item ? "#ffffff" : "#666666"}
+							variant={tabActiveState === item ? "default" : "ghost"}
 							className={`m-1 min-w-fit border-0 transition-colors ${
 								tabActiveState === item
 									? "bg-black text-white hover:bg-neutral-800"
@@ -53,7 +53,7 @@ const HeaderFilter: FC<HeaderFilterProps> = ({
 							}`}
 						>
 							{item}
-						</RippleButton>
+						</Button>
 					))}
 				</Nav>
 				<span className='hidden flex-shrink-0 sm:block'>

@@ -1,10 +1,10 @@
-import { 
+import {
 	HomeHero as Hero,
 	HomeCounter as Counter,
 	HomeCallToAction as CallToAction,
 	FAQ,
 	HomeBlog as Blog,
-	HomeNewsletter
+	HomeNewsletter,
 } from "@/components/organisms";
 import { GlassmorphismBackground } from "@/components/atoms";
 import { Particles } from "@/components/ui";
@@ -81,9 +81,6 @@ const Home: React.FC<HomeProps> = ({ dictionary }) => {
 			<GlassmorphismBackground />
 			<Hero dictionary={dictionary} />
 			<Counter dictionary={dictionary} />
-
-
-
 
 			<CallToAction dictionary={dictionary} />
 			<FAQ dictionary={dictionary} />

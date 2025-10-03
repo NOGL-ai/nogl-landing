@@ -5,6 +5,9 @@ import SectionStatistic from "./SectionStatistic";
 import { SectionSubscribe2 } from "@/components/organisms";
 import { GlassmorphismBackground } from "@/components/atoms";
 
+// Alias for BgGlassmorphism
+const BgGlassmorphism = GlassmorphismBackground;
+
 import rightImg from "@/images/about-hero-right.png";
 
 export interface PageAboutProps {

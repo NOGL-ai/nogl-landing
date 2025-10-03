@@ -2,6 +2,7 @@
 import { useState } from "react";
 // import Sidebar from "@/components/Common/Dashboard/Sidebar"; // TODO: Fix sidebar import
 import Header from "@/components/organisms/DashboardHeader";
+import Sidebar from "@/components/organisms/Sidebar";
 import { userSidebarData } from "@/staticData/sidebarData";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {

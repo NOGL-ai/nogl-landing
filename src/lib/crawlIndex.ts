@@ -15,25 +15,20 @@ export const structuredAlgoliaHtmlData = async ({
 	type = "",
 	imageURL = "",
 }) => {
-	try {
-		const $ = loadHTML(htmlString);
-		const textContent = $("body").text() || "";
+	const $ = loadHTML(htmlString);
+	const textContent = $("body").text() || "";
 
-		const data = {
-			objectID: pageUrl,
-			title: title,
-			url: pageUrl,
-			content: textContent.slice(0, 7000),
-			type: type,
-			imageURL: imageURL,
-			updatedAt: new Date().toISOString(),
-		};
+	const data = {
+		objectID: pageUrl,
+		title: title,
+		url: pageUrl,
+		content: textContent.slice(0, 7000),
+		type: type,
+		imageURL: imageURL,
+		updatedAt: new Date().toISOString(),
+	};
 
-		return data;
-	} catch (error) {
-
-		throw error;
-	}
+	return data;
 };
 
 export const batchIndexToAlgolia = async (

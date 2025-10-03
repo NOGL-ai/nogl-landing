@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import ChartDropdown from "./ChartDropdown";
+import ChartDropdown from "../atoms/ChartDropdown";
 
 interface StackedBarData {
 	month: string;

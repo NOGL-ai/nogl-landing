@@ -1,16 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import StatWidget from "@/components/Dashboard/StatWidget";
-import StackedBarChart from "@/components/Dashboard/StackedBarChart";
-import PieChart from "@/components/Dashboard/PieChart";
-import DataTable from "@/components/Dashboard/DataTable";
-import LoadingChart from "@/components/Dashboard/LoadingChart";
-import DashboardPageHeader from "@/components/Dashboard/DashboardPageHeader";
-import DashboardWidgetGrid, {
-	DashboardSection,
-} from "@/components/Dashboard/DashboardWidgetGrid";
-import ColorWidget from "@/components/Dashboard/ColorWidget";
+import StatWidget from "../atoms/StatWidget";
+import StackedBarChart from "../molecules/StackedBarChart";
+import PieChart from "../molecules/PieChart";
+import DataTable from "../molecules/DataTable";
+import LoadingChart from "../atoms/LoadingChart";
+import DashboardPageHeader from "../molecules/DashboardPageHeader";
+import DashboardWidgetGrid, { DashboardSection } from "./DashboardWidgetGrid";
+import ColorWidget from "../molecules/ColorWidget";
 
 interface DashboardPageClientProps {
 	dict: unknown;
@@ -49,12 +47,10 @@ export default function DashboardPageClient({
 	};
 
 	const handleFullscreenToggle = () => {
-
 		// Add your fullscreen toggle logic here
 	};
 
 	const handleEditWidgets = () => {
-
 		// Add your edit widgets logic here
 	};
 

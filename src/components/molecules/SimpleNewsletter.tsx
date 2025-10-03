@@ -126,12 +126,13 @@ const SimpleNewsletter: React.FC<SimpleNewsletterProps> = ({
 						className={`focus:ring-primary-500 flex-1 rounded-lg border px-4 py-3 transition-colors focus:border-transparent focus:outline-none focus:ring-2 ${styles.input}`}
 						required
 					/>
-					<AnimatedSubscribeButton
-						isLoading={isLoading}
-						className='bg-primary-600 hover:bg-primary-700 whitespace-nowrap rounded-lg px-6 py-3 font-medium text-white transition-colors duration-200'
+					<button
+						type='submit'
+						disabled={isLoading}
+						className='bg-primary-600 hover:bg-primary-700 whitespace-nowrap rounded-lg px-6 py-3 font-medium text-white transition-colors duration-200 disabled:opacity-50'
 					>
 						{buttonText}
-					</AnimatedSubscribeButton>
+					</button>
 				</form>
 			</div>
 		</div>

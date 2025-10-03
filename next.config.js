@@ -30,6 +30,14 @@ const nextConfig = {
 				...config.resolve.fallback,
 				stream: require.resolve("stream-browserify"),
 				buffer: require.resolve("buffer/"),
+				fs: false,
+				net: false,
+				dns: false,
+				child_process: false,
+				tls: false,
+				os: false,
+				path: false,
+				crypto: false,
 			};
 		}
 		return config;

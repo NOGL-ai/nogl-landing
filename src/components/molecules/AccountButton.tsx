@@ -1,4 +1,4 @@
-import AccountMenu from "../../../organisms/AccountMenu";
+import AccountMenu from "../organisms/AccountMenu";
 
 export default function AccountButton({ user }: unknown) {
 	const profilePic = user?.image

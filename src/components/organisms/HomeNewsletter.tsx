@@ -11,7 +11,12 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 // Add this type declaration at the top of your file
 declare global {
 	interface Window {
-		dojoRequire: ((modules: string[], callback: (loader: MailchimpLoader) => void) => void) | undefined;
+		dojoRequire:
+			| ((
+					modules: string[],
+					callback: (loader: MailchimpLoader) => void
+			  ) => void)
+			| undefined;
 		mcjs: unknown; // Add this if you're using other Mailchimp features
 	}
 }
@@ -154,9 +159,10 @@ export default function Newsletter({ dictionary }: NewsletterProps) {
 								aria-label={dictionary.newsletter.emailPlaceholder}
 							/>
 							<div className='absolute right-1 top-1'>
-								<AnimatedSubscribeButton
-									isLoading={isLoading}
-									className='h-10 min-w-[90px] bg-black text-sm text-white hover:bg-gray-800 sm:min-w-[100px] sm:text-base dark:bg-white dark:text-black dark:hover:bg-gray-100'
+								<button
+									type='submit'
+									disabled={isLoading}
+									className='h-10 min-w-[90px] bg-black text-sm text-white hover:bg-gray-800 disabled:opacity-50 sm:min-w-[100px] sm:text-base dark:bg-white dark:text-black dark:hover:bg-gray-100'
 								>
 									<span className='hidden sm:inline'>
 										{dictionary.newsletter.buttonText}
@@ -164,7 +170,7 @@ export default function Newsletter({ dictionary }: NewsletterProps) {
 									<span className='sm:hidden'>
 										{dictionary.newsletter.buttonText}
 									</span>
-								</AnimatedSubscribeButton>
+								</button>
 							</div>
 						</form>
 					</div>

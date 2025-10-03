@@ -21,7 +21,6 @@ export async function POST(request: Request) {
 			signature,
 			process.env.STRIPE_WEBHOOK_SECRET || ""
 		);
-
 	} catch (err) {
 		console.error("Webhook Error:", err);
 		const message = err instanceof Error ? err.message : String(err);
@@ -44,12 +43,10 @@ async function processWebhookEvent(event: Stripe.Event) {
 	const email = session.customer_details?.email?.toLowerCase();
 
 	if (!email) {
-
 		return;
 	}
 
 	if (event.type === "checkout.session.completed") {
-
 		try {
 			// Your existing booking creation code
 			// const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://nogl.ai:3000";
@@ -92,7 +89,6 @@ async function processWebhookEvent(event: Stripe.Event) {
 			const participantEmails = participantEmailsString
 				.split(",")
 				.map((e) => e.trim().toLowerCase());
-
 
 			// Assume the first email is the primary participant
 			const primaryEmail = participantEmails[0];
@@ -151,7 +147,6 @@ async function processWebhookEvent(event: Stripe.Event) {
 							bookingDetails,
 						});
 					}
-
 
 					// Send the email
 					await sendEmail({

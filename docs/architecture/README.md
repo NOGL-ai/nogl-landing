@@ -41,52 +41,55 @@ src/components/
 ## 📥 Import Patterns
 
 ### ✅ **Correct Import Pattern**
+
 ```tsx
 // Untitled UI components - ALWAYS import directly
-import { Button, Input, Checkbox } from '@/components/ui';
+import { Button, Input, Checkbox } from "@/components/ui";
 
 // Design foundations (icons, tokens, utilities)
-import { DotIcon } from '@/components/foundations';
+import { DotIcon } from "@/components/foundations";
 
 // Custom atomic components
-import { Avatar, StarRating, Label } from '@/components/atoms';
+import { Avatar, StarRating, Label } from "@/components/atoms";
 
 // Composite components
-import { UserCard, FormItem, SearchBar } from '@/components/molecules';
+import { UserCard, FormItem, SearchBar } from "@/components/molecules";
 
 // Complex components with business logic
-import { Header, Footer, Features } from '@/components/organisms';
+import { Header, Footer, Features } from "@/components/organisms";
 ```
 
 ### ❌ **Anti-Patterns to Avoid**
+
 ```tsx
 // ❌ DON'T: Re-export UI components through atoms
-import { Button } from '@/components/atoms';
+import { Button } from "@/components/atoms";
 
 // ❌ DON'T: Use nested paths when barrel exports exist
-import Button from '@/components/ui/button';
+import Button from "@/components/ui/button";
 
 // ❌ DON'T: Mix relative and absolute imports
-import { Button } from '../components/ui';
+import { Button } from "../components/ui";
 ```
 
 ---
 
 ## 🎯 Component Layer Guide
 
-| Layer | Purpose | Examples | Dependencies | When to Use |
-|-------|---------|----------|--------------|-------------|
-| **ui/** | Untitled UI design system | Button, Input, Table, Modal | foundations only | Always for base UI elements |
-| **foundations/** | Design tokens & utilities | Icons, colors, spacing | none | For design system constants |
-| **atoms/** | Custom smallest units | Avatar, StarRating, Badge | ui + foundations | Single-purpose components |
-| **molecules/** | Component combinations | UserCard, FormItem, SearchBar | atoms + ui + foundations | 2-5 component compositions |
-| **organisms/** | Complex features | Header, Footer, Hero | molecules + atoms + ui + foundations | Business logic & large sections |
+| Layer            | Purpose                   | Examples                      | Dependencies                         | When to Use                     |
+| ---------------- | ------------------------- | ----------------------------- | ------------------------------------ | ------------------------------- |
+| **ui/**          | Untitled UI design system | Button, Input, Table, Modal   | foundations only                     | Always for base UI elements     |
+| **foundations/** | Design tokens & utilities | Icons, colors, spacing        | none                                 | For design system constants     |
+| **atoms/**       | Custom smallest units     | Avatar, StarRating, Badge     | ui + foundations                     | Single-purpose components       |
+| **molecules/**   | Component combinations    | UserCard, FormItem, SearchBar | atoms + ui + foundations             | 2-5 component compositions      |
+| **organisms/**   | Complex features          | Header, Footer, Hero          | molecules + atoms + ui + foundations | Business logic & large sections |
 
 ---
 
 ## 🏛️ Architecture Principles
 
 ### 1. **Unidirectional Dependencies**
+
 ```
 Organisms → Molecules → Atoms → UI → Foundations
     ↓         ↓         ↓      ↓        ↓
@@ -95,6 +98,7 @@ Organisms → Molecules → Atoms → UI → Foundations
 ```
 
 ### 2. **Clear Separation of Concerns**
+
 - **UI Layer**: Pure Untitled UI components (no custom logic)
 - **Foundations**: Design tokens and utilities (no dependencies)
 - **Atoms**: Single-purpose custom components
@@ -102,6 +106,7 @@ Organisms → Molecules → Atoms → UI → Foundations
 - **Organisms**: Complex features with business logic
 
 ### 3. **Import Rules**
+
 1. **Always import UI components from `ui/`** - Never re-export
 2. **Use barrel exports** - Import from `index.ts` files
 3. **No circular dependencies** - Keep one-way imports
@@ -112,6 +117,7 @@ Organisms → Molecules → Atoms → UI → Foundations
 ## 🚀 Quick Start Guide
 
 ### Creating a New UI Component
+
 ```bash
 # 1. Create the component file
 touch src/components/ui/select.tsx
@@ -121,6 +127,7 @@ echo "export { Select } from './select';" >> src/components/ui/index.ts
 ```
 
 ### Creating a Custom Atom
+
 ```bash
 # 1. Create the component
 touch src/components/atoms/NewAtom.tsx
@@ -130,26 +137,27 @@ echo "export { default as NewAtom } from './NewAtom';" >> src/components/atoms/i
 ```
 
 ### Using Components in Pages
+
 ```tsx
-import { Button, Input } from '@/components/ui';
-import { Avatar, StarRating } from '@/components/atoms';
-import { UserCard } from '@/components/molecules';
-import { Header, Footer } from '@/components/organisms';
+import { Button, Input } from "@/components/ui";
+import { Avatar, StarRating } from "@/components/atoms";
+import { UserCard } from "@/components/molecules";
+import { Header, Footer } from "@/components/organisms";
 
 export default function ProfilePage() {
-  return (
-    <>
-      <Header />
-      <main>
-        <UserCard>
-          <Avatar src="/user.jpg" />
-          <StarRating rating={4.5} />
-          <Button variant="primary">Edit Profile</Button>
-        </UserCard>
-      </main>
-      <Footer />
-    </>
-  );
+	return (
+		<>
+			<Header />
+			<main>
+				<UserCard>
+					<Avatar src='/user.jpg' />
+					<StarRating rating={4.5} />
+					<Button variant='primary'>Edit Profile</Button>
+				</UserCard>
+			</main>
+			<Footer />
+		</>
+	);
 }
 ```
 
@@ -158,30 +166,35 @@ export default function ProfilePage() {
 ## ⚡ Performance Considerations
 
 ### Barrel Exports: Pros & Cons
+
 **✅ Pros:**
+
 - Cleaner import statements
 - Encapsulated module internals
 - Easier refactoring
 - Better developer experience
 
 **⚠️ Cons:**
+
 - Potential bundle size impact
 - Tree-shaking challenges
 - Circular dependency risks
 
 **💡 Best Practices:**
+
 - Use specific imports when possible: `import { Button } from '@/components/ui/button'`
 - Monitor bundle size with tools like `webpack-bundle-analyzer`
 - Avoid deep barrel export chains
 
 ### Bundle Optimization
+
 ```tsx
 // ✅ Good: Specific imports for better tree-shaking
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 // ⚠️ Acceptable: Barrel imports (monitor bundle size)
-import { Button, Input } from '@/components/ui';
+import { Button, Input } from "@/components/ui";
 ```
 
 ---
@@ -189,6 +202,7 @@ import { Button, Input } from '@/components/ui';
 ## 🔧 Maintenance & Scalability
 
 ### Component Audit Checklist
+
 - [ ] **Atoms**: Are they truly atomic? Single responsibility?
 - [ ] **Molecules**: Do they combine 2-5 components? No business logic?
 - [ ] **Organisms**: Do they contain business logic? Are they too complex?
@@ -196,6 +210,7 @@ import { Button, Input } from '@/components/ui';
 - [ ] **Foundations**: Are they design tokens/utilities only?
 
 ### Scaling Guidelines
+
 1. **Start Simple**: Begin with atoms, build up to organisms
 2. **Composition Over Inheritance**: Favor component composition
 3. **Single Responsibility**: Each component should do one thing well
@@ -206,16 +221,18 @@ import { Button, Input } from '@/components/ui';
 ## 🚨 Common Pitfalls & Solutions
 
 ### Pitfall 1: Re-exporting UI Components
+
 ```tsx
 // ❌ DON'T: Re-export UI through atoms
 // atoms/index.ts
-export { Button } from '@/components/ui/button';
+export { Button } from "@/components/ui/button";
 
 // ✅ DO: Import UI directly
-import { Button } from '@/components/ui';
+import { Button } from "@/components/ui";
 ```
 
 ### Pitfall 2: Circular Dependencies
+
 ```tsx
 // ❌ DON'T: Create circular imports
 // molecule imports organism that imports the molecule
@@ -225,18 +242,19 @@ import { Button } from '@/components/ui';
 ```
 
 ### Pitfall 3: Mixing Concerns
+
 ```tsx
 // ❌ DON'T: Put business logic in atoms
 const Avatar = ({ user, onEdit }) => {
-  const handleEdit = () => {
-    // Business logic in atom
-    userService.updateUser(user.id);
-  };
+	const handleEdit = () => {
+		// Business logic in atom
+		userService.updateUser(user.id);
+	};
 };
 
 // ✅ DO: Keep atoms pure
 const Avatar = ({ src, alt, onClick }) => {
-  return <img src={src} alt={alt} onClick={onClick} />;
+	return <img src={src} alt={alt} onClick={onClick} />;
 };
 ```
 
@@ -244,13 +262,13 @@ const Avatar = ({ src, alt, onClick }) => {
 
 ## 📚 Documentation Structure
 
-| File | Purpose | When to Use |
-|------|---------|-------------|
-| **README.md** | Quick reference & overview | Start here for basic understanding |
-| **COMPONENT_STRUCTURE.md** | Detailed architecture guide | Deep dive into patterns & principles |
-| **IMPORT_EXAMPLES.tsx** | Code examples & patterns | Copy-paste examples for development |
+| File                        | Purpose                      | When to Use                           |
+| --------------------------- | ---------------------------- | ------------------------------------- |
+| **README.md**               | Quick reference & overview   | Start here for basic understanding    |
+| **COMPONENT_STRUCTURE.md**  | Detailed architecture guide  | Deep dive into patterns & principles  |
+| **IMPORT_EXAMPLES.tsx**     | Code examples & patterns     | Copy-paste examples for development   |
 | **ARCHITECTURE_DIAGRAM.md** | Visual diagrams & flowcharts | Understanding component relationships |
-| **QUICK_START.md** | Getting started guide | New team members or quick setup |
+| **QUICK_START.md**          | Getting started guide        | New team members or quick setup       |
 
 ---
 
@@ -291,9 +309,8 @@ Creating a new component?
 ✅ **Type Safe**: Proper TypeScript support throughout  
 ✅ **Discoverable**: Barrel exports make components easy to find  
 ✅ **Performance**: Optimized for tree-shaking and bundle splitting  
-✅ **Team Friendly**: Clear patterns for new developers  
+✅ **Team Friendly**: Clear patterns for new developers
 
 ---
 
-*This architecture balances the power of Untitled UI's design system with the flexibility of custom atomic components, creating a maintainable and scalable component library.*
-
+_This architecture balances the power of Untitled UI's design system with the flexibility of custom atomic components, creating a maintainable and scalable component library._

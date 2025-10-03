@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import Breadcrumb from "@/components/Common/Breadcrumb";
+import Breadcrumb from "@/components/atoms/Breadcrumb";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nogl.tech";
 
@@ -51,7 +51,7 @@ const ImpressumPage = () => {
 						</p>
 					</div>
 
-					<div className='prose prose-lg dark:prose-invert max-w-none'>
+					<div className='prose prose-lg max-w-none dark:prose-invert'>
 						<div className='mb-8'>
 							<h2 className='mb-4 text-2xl font-semibold'>Anbieter</h2>
 							<p>

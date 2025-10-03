@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 // import Image from "next/image";
-import GoogleSigninButton from "../../atoms/GoogleSigninButton";
+import GoogleSigninButton from "../atoms/GoogleSigninButton";
 
 // Validation schema
 const signupSchema = yup.object().shape({

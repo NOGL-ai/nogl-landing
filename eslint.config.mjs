@@ -8,10 +8,10 @@ import pluginJsxA11y from "eslint-plugin-jsx-a11y";
 
 export default [
 	{
-		files: ["src/**/*.{js,mjs,cjs,ts,jsx,tsx}", "*.{js,mjs,cjs,ts,jsx,tsx}"],
 		ignores: [
 			".next/**",
-			"next-env.d.ts",
+			"**/.next/**",
+			"**/out/**",
 			"node_modules/**",
 			"yarn.lock",
 			"package-lock.json",
@@ -24,7 +24,11 @@ export default [
 			"**/webpack.js",
 			"**/edge-runtime-webpack.js",
 			"**/middleware-build-manifest.js",
+			"next-env.d.ts",
 		],
+	},
+	{
+		files: ["src/**/*.{js,mjs,cjs,ts,jsx,tsx}"],
 	},
 	{ languageOptions: { globals: globals.browser } },
 	pluginJs.configs.recommended,

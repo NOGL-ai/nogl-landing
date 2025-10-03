@@ -42,7 +42,7 @@ const BlogGrid = async () => {
 					<div className='gap-x-7.5 grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-3'>
 						{/* Blog Item */}
 						{posts?.length > 0 ? (
-							posts.map((item: Blog, key: number) => (
+							posts.map((item: any, key: number) => (
 								<BlogItem key={key} blog={item} />
 							))
 						) : (

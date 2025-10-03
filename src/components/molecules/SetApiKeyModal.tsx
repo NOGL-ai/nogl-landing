@@ -1,3 +1,5 @@
+"use client";
+
 import FormButton from "../atoms/FormButton";
 import InputGroup from "./InputGroup";
 import ModalCloseButton from "../atoms/ModalCloseButton";

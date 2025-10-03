@@ -3,7 +3,7 @@ import { ExpertDataType } from "@/data/types";
 import Link from "next/link";
 import Image from "next/image";
 import { StarIcon, CheckBadgeIcon, EyeIcon } from "@heroicons/react/24/solid";
-import ShimmerButton from "@/components/ui/shimmer-button";
+import { Button } from "@/components/ui/button";
 
 export interface ExperiencesCardProps {
 	className?: string;
@@ -119,15 +119,12 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
 							</span>
 						</div>
 						<Link href={{ pathname: href }}>
-							<ShimmerButton
-								className='w-full font-medium text-white transition-transform 
-									hover:scale-[1.02] active:scale-[0.98]'
-								background='linear-gradient(135deg, #FF4B2B, #FF416C)'
-								shimmerColor='rgba(255, 255, 255, 0.3)'
-								shimmerDuration='2.5s'
+							<Button
+								className='w-full bg-gradient-to-r from-red-500 to-pink-500 
+									font-medium text-white transition-transform hover:scale-[1.02] active:scale-[0.98]'
 							>
 								View Profile <EyeIcon className='ml-2 inline-block h-5 w-5' />
-							</ShimmerButton>
+							</Button>
 						</Link>
 					</div>
 				</div>

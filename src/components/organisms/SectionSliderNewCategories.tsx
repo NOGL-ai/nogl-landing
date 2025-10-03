@@ -3,6 +3,11 @@
 import React, { FC, useEffect, useState } from "react";
 import { TaxonomyType } from "@/data/types";
 import { CategoryCard } from "@/components/molecules";
+
+// Alias for CardCategory components
+const CardCategory3 = CategoryCard;
+const CardCategory4 = CategoryCard;
+const CardCategory5 = CategoryCard;
 import Heading from "@/shared/Heading";
 import { AnimatePresence, motion, MotionConfig } from "framer-motion";
 import { useSwipeable } from "react-swipeable";

@@ -1,10 +1,13 @@
 import { UserCard } from "@/components/molecules";
+
+// Alias for CardAuthorBox components
+const CardAuthorBox = UserCard;
+const CardAuthorBox2 = UserCard;
 import Heading from "@/shared/Heading";
 import { DEMO_AUTHORS } from "@/data/authors";
 import { AuthorType } from "@/data/types";
 import React, { FC } from "react";
-import PulsatingButton from "@/components/ui/pulsating-button";
-import RipplingButton from "@/components/ui/ripple-button";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export interface SectionGridAuthorBoxProps {
@@ -65,20 +68,21 @@ const SectionGridAuthorBox: FC<SectionGridAuthorBoxProps> = ({
 				</div>
 				<div className='mt-8 flex flex-row items-center justify-center gap-4 sm:mt-10 sm:gap-6 md:gap-8 lg:mt-12'>
 					<Link href='/author'>
-						<RipplingButton
+						<Button
+							variant='outline'
 							className='px-3 py-2.5 text-sm transition-transform hover:scale-105 hover:transform sm:px-6 sm:text-base'
 							disabled
 						>
 							Discover Specialists
-						</RipplingButton>
+						</Button>
 					</Link>
 					<Link href='/author'>
-						<PulsatingButton
+						<Button
 							className='px-3 py-2.5 text-sm transition-transform hover:scale-105 hover:transform sm:px-6 sm:text-base'
 							disabled
 						>
 							Join as Specialist
-						</PulsatingButton>
+						</Button>
 					</Link>
 				</div>
 			</div>

@@ -1,7 +1,7 @@
 import Image, { StaticImageData } from "next/image";
 import React, { FC, ReactNode } from "react";
 import ButtonPrimary from "@/shared/ButtonPrimary";
-import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
+// // import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 
 // Define featured leaders data
 const FEATURED_EXPERTS = [
@@ -92,7 +92,19 @@ const SectionHero: FC<SectionHeroProps> = ({
 					<div className='flex flex-col space-y-6'>
 						<div className='flex items-center space-x-4'>
 							<div className='flex items-center'>
-								<AnimatedTooltip items={FEATURED_EXPERTS} />
+								{/* <AnimatedTooltip items={FEATURED_EXPERTS} /> */}
+								<div className='flex space-x-2'>
+									{FEATURED_EXPERTS.map((expert) => (
+										<Image
+											key={expert.id}
+											src={expert.image}
+											alt={expert.name}
+											width={40}
+											height={40}
+											className='rounded-full border-2 border-white shadow-md'
+										/>
+									))}
+								</div>
 							</div>
 							<span className='text-sm text-neutral-500 dark:text-neutral-400'>
 								Trusted by industry leaders

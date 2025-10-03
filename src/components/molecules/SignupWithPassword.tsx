@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import FormButton from "@/components/atoms/FormButton";
 import InputGroup from "@/components/molecules/InputGroup";

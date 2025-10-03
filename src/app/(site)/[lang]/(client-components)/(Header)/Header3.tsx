@@ -27,7 +27,6 @@ if (typeof window !== "undefined") {
 const Header3: FC<Header3Props> = ({ className = "" }) => {
 	const headerInnerRef = useRef<HTMLDivElement>(null);
 
-
 	//
 	useOutsideAlerter(headerInnerRef, () => {
 		// setShowHeroSearch(null);

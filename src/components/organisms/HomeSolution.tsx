@@ -1,7 +1,7 @@
 "use client";
 
-import Safari from "@/components/ui/safari";
-import Section from "@/components/section";
+// import Safari from "@/components/ui/safari";
+import { Section } from "@/components/organisms";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 
@@ -44,15 +44,19 @@ export default function Component({ dictionary }: SolutionProps) {
 		className: `${extraClasses[index]} transition-all duration-500 ease-out`,
 		content: (
 			<>
-				<Safari
-					src={images[index]}
-					url='https://www.nogl.ai/'
+				<div
 					className={
 						index === 2
 							? "-mb-48 ml-12 mt-16 h-full select-none px-4 drop-shadow-[0_0_28px_rgba(0,0,0,.1)] transition-all duration-300 group-hover:translate-x-[-10px]"
 							: "-mb-32 mt-4 max-h-64 w-full select-none px-4 drop-shadow-[0_0_28px_rgba(0,0,0,.1)] transition-all duration-300 group-hover:translate-y-[-10px]"
 					}
-				/>
+				>
+					<img
+						src={images[index]}
+						alt='Feature preview'
+						className='h-full w-full rounded-lg object-cover'
+					/>
+				</div>
 			</>
 		),
 	}));

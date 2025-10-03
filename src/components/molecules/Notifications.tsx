@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import Notification from "./NotificationItem";
+import { NotificationItem as Notification } from "../atoms";
 import Link from "next/link";
 export default function Notifications({ role }: { role: string }) {
 	const [showNotification, setShowNotification] = useState(false);

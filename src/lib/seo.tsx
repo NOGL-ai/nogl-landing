@@ -179,7 +179,6 @@ export const renderSchemaTags = (customSchema?: Record<string, unknown>) => {
 			ratingValue: "4.8",
 			ratingCount: "12",
 		},
-
 	};
 
 	const schemaData = customSchema || defaultSchema;

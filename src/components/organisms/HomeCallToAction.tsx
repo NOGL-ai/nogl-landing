@@ -2,7 +2,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import ShimmerButton from "@/components/ui/shimmer-button";
 import Link from "next/link";
-import { ContainerScroll } from "@/components/ui/container-scroll-animation";
+// import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import type { FC } from "react";
 import type { Route } from "next";
 

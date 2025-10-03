@@ -1,9 +1,11 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
-import ModalCloseButton from "./ModalCloseButton";
-import Loader from "../Loader";
-import InputGroup from "../../molecules/InputGroup";
-import InputSelect from "../../atoms/InputSelect";
-import FormButton from "../../atoms/FormButton";
+import ModalCloseButton from "../atoms/ModalCloseButton";
+import Loader from "../atoms/Loader";
+import InputGroup from "./InputGroup";
+import InputSelect from "../atoms/InputSelect";
+import FormButton from "../atoms/FormButton";
 import toast from "react-hot-toast";
 import axios from "axios";
 

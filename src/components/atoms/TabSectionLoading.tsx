@@ -1,11 +1,14 @@
-import { Skeleton } from "@/components/ui/skeleton";
+// import { Skeleton } from "@/components/ui/skeleton";
 
 export const TabSectionLoading = () => (
 	<div className='space-y-4'>
-		<Skeleton className='h-12 w-full rounded-xl' />
+		<div className='h-12 w-full animate-pulse rounded-xl bg-gray-200' />
 		<div className='grid grid-cols-3 gap-4'>
 			{[1, 2, 3].map((i) => (
-				<Skeleton key={i} className='h-[400px] rounded-xl' />
+				<div
+					key={i}
+					className='h-[400px] animate-pulse rounded-xl bg-gray-200'
+				/>
 			))}
 		</div>
 	</div>

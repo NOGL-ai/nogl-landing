@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { CheckIcon } from "lucide-react";
-import ShimmerButton from "@/components/ui/shimmer-button";
+import { Button } from "@/components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -98,14 +98,14 @@ const PlanCard = ({
 						</li>
 					))}
 				</ul>
-				<ShimmerButton
-					className='w-full text-white dark:text-white'
+				<Button
+					className='w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 dark:text-white'
 					onClick={() => (window.location.href = "/auth/signup")}
 				>
 					{plan.unit_amount === 0
 						? "Start Your Journey Free →"
 						: "Start Growing Today →"}
-				</ShimmerButton>
+				</Button>
 			</CardContent>
 		</Card>
 	);
@@ -146,14 +146,14 @@ export function Pricing({ isBilling = false }: { isBilling?: boolean }) {
 							<CardDescription className='mb-6'>
 								{expertPlan.description}
 							</CardDescription>
-							<ShimmerButton
-								className='text-white dark:text-white'
+							<Button
+								className='bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 dark:text-white'
 								onClick={() =>
 									(window.location.href = "https://empowhernetwork.de")
 								}
 							>
 								Join Our Community →
-							</ShimmerButton>
+							</Button>
 						</CardContent>
 						<div className="relative isolate hidden h-[240px] w-full before:absolute before:left-32 before:top-0 before:z-[-1] before:h-full before:w-full before:skew-x-[-45deg] before:border-l before:border-gray-200 before:bg-gray-100 before:content-[''] md:block lg:w-2/3 dark:before:border-gray-800 dark:before:bg-gray-900">
 							<div className='ml-12 flex h-full w-full flex-col items-center justify-center gap-y-0.5'>

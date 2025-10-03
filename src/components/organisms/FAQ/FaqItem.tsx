@@ -1,4 +1,3 @@
-
 type PropsType = {
 	faq: {
 		id: number | string;

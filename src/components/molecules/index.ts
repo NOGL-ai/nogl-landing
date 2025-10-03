@@ -43,7 +43,7 @@ export { default as HomeFeaturesHorizontal } from "./HomeFeaturesHorizontal";
 export { default as HomeFeaturesWithImage } from "./HomeFeaturesWithImage";
 export { default as SidebarItem } from "./SidebarItem";
 export { default as Account } from "./Account";
-export { default as HeaderWrapper } from "./HeaderWrapper";
+export { HeaderWrapper } from "./HeaderWrapper";
 export { default as FooterWrapper } from "./FooterWrapper";
 export { default as RepricingRulesCard } from "./RepricingRulesCard";
 export { default as SigninWithMagicLink } from "./SigninWithMagicLink";

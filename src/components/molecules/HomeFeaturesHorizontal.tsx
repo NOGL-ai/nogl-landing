@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Image from "next/image";
-import Features from "@/components/ui/features-horizontal";
-import Section from "@/components/section";
+import { Features } from "@/components/organisms";
+import { Section } from "@/components/organisms";
 import { Users, BookOpen, MessageSquare, Sliders } from "lucide-react";
 import { cn } from "@/lib/utils";
 

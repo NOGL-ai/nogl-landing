@@ -1,3 +1,5 @@
+"use client";
+
 // CountUp.tsx
 import React, { useEffect, useState, useRef } from "react";
 

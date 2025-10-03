@@ -65,7 +65,7 @@ export default async function FeatureDetailPage({
 			</div>
 
 			{/* Feature Content */}
-			<div className='prose prose-lg dark:prose-invert max-w-none'>
+			<div className='prose prose-lg max-w-none dark:prose-invert'>
 				<div className='mb-8 rounded-lg bg-white p-8 shadow-lg dark:bg-gray-800'>
 					<h2 className='mb-4 text-2xl font-semibold text-gray-900 dark:text-white'>
 						How It Works

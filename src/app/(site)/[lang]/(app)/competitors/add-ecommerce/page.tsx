@@ -255,7 +255,6 @@ export default function AddEcommerceCompetitorPage() {
 
 	const handleSave = () => {
 		if (productData) {
-
 			alert("Competitor product saved successfully!");
 
 			if (typeof window !== "undefined") {

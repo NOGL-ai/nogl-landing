@@ -81,7 +81,6 @@ export const sendVerificationEmail = async ({
 	const sanitizedVerificationUrl = validator.escape(verificationUrl);
 	const sanitizedName = validator.escape(name);
 
-
 	const emailContent = {
 		to,
 		subject: "Verify your Nogl Account",
@@ -174,7 +173,6 @@ export const sendBookingConfirmationEmail = async ({
 	signInUrl: string;
 }) => {
 	// Add debug logging
-
 
 	// Sanitize inputs
 	const sanitizedEmail = validator.escape(to);

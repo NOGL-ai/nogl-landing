@@ -24,8 +24,16 @@ const LoadingScreen = () => {
 	const lottieRef = useRef<LottieRefCurrentProps>(null);
 
 	// Safely get loading state with fallback
-	const loadingContext = useContext(LoadingContext);
-	const isLoading = loadingContext?.isLoading ?? false;
+	let loadingContext;
+	let isLoading = false;
+	
+	try {
+		loadingContext = useContext(LoadingContext);
+		isLoading = loadingContext?.isLoading ?? false;
+	} catch (error) {
+		// Context not available (server-side rendering)
+		isLoading = false;
+	}
 
 	useEffect(() => {
 		setMounted(true);

@@ -66,3 +66,4 @@ export { default as SlideshowContent } from "./SlideshowContent";
 export { default as SlideshowItem } from "./SlideshowItem";
 export { default as SlideshowTrigger } from "./SlideshowTrigger";
 export { default as Graphics } from "./Graphics";
+export { default as Section } from "./Section";

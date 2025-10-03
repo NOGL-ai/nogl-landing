@@ -1,6 +1,6 @@
-import AccountButton from "../../molecules/AccountButton";
-import Notifications from "../../molecules/Notifications";
-import ThemeToggler from "../../atoms/ThemeToggler";
+import AccountButton from "../molecules/AccountButton";
+import Notifications from "../molecules/Notifications";
+import ThemeToggler from "../atoms/ThemeToggler";
 import { useSession } from "next-auth/react";
 
 export default function Header({ openSidebar, setOpenSidebar }: unknown) {

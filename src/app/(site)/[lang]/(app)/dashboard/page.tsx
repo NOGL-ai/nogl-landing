@@ -1,5 +1,5 @@
 import React from "react";
-import DashboardPageClient from "@/components/Dashboard/DashboardPageClient";
+import DashboardPageClient from "@/components/organisms/DashboardPageClient";
 import { getDictionary } from "@/lib/dictionary";
 import { Locale } from "@/i18n";
 

@@ -1,6 +1,8 @@
+"use client";
+
 import { useEffect, useRef } from "react";
-import ModalCloseButton from "./ModalCloseButton";
-import Loader from "../Loader";
+import ModalCloseButton from "../atoms/ModalCloseButton";
+import Loader from "../atoms/Loader";
 
 export default function DeleteModal(props: unknown) {
 	const {

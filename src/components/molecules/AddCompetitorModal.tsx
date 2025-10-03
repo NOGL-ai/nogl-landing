@@ -1,6 +1,8 @@
+"use client";
+
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import ModalCloseButton from "./ModalCloseButton";
+import ModalCloseButton from "../atoms/ModalCloseButton";
 
 interface AddCompetitorModalProps {
 	showModal: boolean;

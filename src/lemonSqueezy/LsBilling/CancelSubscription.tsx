@@ -32,7 +32,6 @@ const CancelSubscription = () => {
 			});
 			toast.success("Subscription canceled successfully");
 		} catch (error: unknown) {
-
 			toast.error(error.response.data.error);
 		}
 	};

@@ -34,15 +34,15 @@ src/components/
 
 ```tsx
 // Untitled UI components - ALWAYS import from here
-import { Button, Input, Checkbox } from '@/components/ui';
+import { Button, Input, Checkbox } from "@/components/ui";
 
 // Design foundations
-import { DotIcon } from '@/components/foundations';
+import { DotIcon } from "@/components/foundations";
 
 // Your custom components
-import { Avatar, StarRating } from '@/components/atoms';
-import { UserCard, FormItem } from '@/components/molecules';
-import { Header, Footer } from '@/components/organisms';
+import { Avatar, StarRating } from "@/components/atoms";
+import { UserCard, FormItem } from "@/components/molecules";
+import { Header, Footer } from "@/components/organisms";
 ```
 
 ---
@@ -54,16 +54,19 @@ Some files are still importing Button/Input from the wrong place!
 ### Find & Replace:
 
 **OLD (Wrong):**
+
 ```tsx
-import { Button, Input } from '@/components/atoms';
+import { Button, Input } from "@/components/atoms";
 ```
 
 **NEW (Correct):**
+
 ```tsx
-import { Button, Input } from '@/components/ui';
+import { Button, Input } from "@/components/ui";
 ```
 
 ### Search in your project for:
+
 - `from '@/components/atoms'` → Check if it imports Button/Input/Checkbox
 - Update those to use `from '@/components/ui'`
 
@@ -92,4 +95,3 @@ import { Button, Input } from '@/components/ui';
 ## ✅ You're All Set!
 
 Your component structure is now organized and ready to use with Untitled UI! 🎉
-

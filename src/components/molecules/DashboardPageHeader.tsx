@@ -5,7 +5,7 @@ import {
 	FullscreenIcon,
 	CustomizeIcon,
 	PaintBucketIcon,
-} from "./DashboardIcons";
+} from "../atoms/DashboardIcons";
 
 interface DashboardPageHeaderProps {
 	title?: string;

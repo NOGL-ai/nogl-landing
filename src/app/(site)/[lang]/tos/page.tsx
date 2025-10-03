@@ -1,6 +1,6 @@
 import React from "react";
 import { getSEOTags, renderSchemaTags } from "@/lib/seo";
-import Breadcrumb from "@/components/Common/Breadcrumb";
+import Breadcrumb from "@/components/atoms/Breadcrumb";
 import { Section } from "@/components/organisms";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {

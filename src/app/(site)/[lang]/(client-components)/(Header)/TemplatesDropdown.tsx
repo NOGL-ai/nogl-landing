@@ -4,7 +4,7 @@ import { Fragment } from "react";
 import { NAVIGATION_DEMO_2 } from "@/data/navigation";
 import { NavItemType } from "@/shared/Navigation/NavigationItem";
 import Link from "next/link";
-import Collection from "@/components/Collection";
+import Collection from "@/components/molecules/Collection";
 
 export default function TemplatesDropdown() {
 	const renderMegaMenuNavlink = (
