@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import CatalogContent from "@/components/catalog/CatalogContent";
+import CatalogContent from "@/components/Catalog/CatalogContent";
 
 export const metadata: Metadata = {
 	title: "My Catalog | NOGL",

@@ -6,7 +6,7 @@ import React, {
 	useMemo,
 	useRef,
 } from "react";
-import { NumberTicker } from "@/components/magicui/number-ticker";
+import { NumberTicker } from "@/components/MagicUI/number-ticker";
 import Link from "next/link";
 import {
 	motion,

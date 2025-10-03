@@ -3,8 +3,8 @@ import { Inter } from "next/font/google";
 import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import ClientLayout from "./ClientLayout";
-import { RouteProvider } from "@/components/providers/RouteProvider";
-import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { RouteProvider } from "@/components/Providers/RouteProvider";
+import { ThemeProvider } from "@/components/Providers/ThemeProvider";
 
 const inter = Inter({
 	subsets: ["latin"],

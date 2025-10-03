@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import GlassParticlePage from "@/components/layouts/GlassParticlePage";
+import GlassParticlePage from "@/components/Layouts/GlassParticlePage";
 
 export const metadata: Metadata = {
 	title: "Account Settings | Nogl",

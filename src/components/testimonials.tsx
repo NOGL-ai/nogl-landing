@@ -1,6 +1,6 @@
 "use client";
 
-import Marquee from "@/components/magicui/marquee";
+import Marquee from "@/components/MagicUI/marquee";
 import Section from "@/components/section";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
