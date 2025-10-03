@@ -4,13 +4,13 @@ import { StarIcon } from "@heroicons/react/24/solid";
 import React, { FC, useEffect } from "react";
 import { useState } from "react";
 
-export interface FiveStartIconForRateProps {
+export interface FiveStarIconForRateProps {
 	className?: string;
 	iconClass?: string;
 	defaultPoint?: number;
 }
 
-const FiveStartIconForRate: FC<FiveStartIconForRateProps> = ({
+const FiveStarIconForRate: FC<FiveStarIconForRateProps> = ({
 	className = "",
 	iconClass = "w-4 h-4",
 	defaultPoint = 5,
@@ -24,8 +24,8 @@ const FiveStartIconForRate: FC<FiveStartIconForRateProps> = ({
 
 	return (
 		<div
-			className={`nc-FiveStartIconForRate flex items-center text-neutral-300 ${className}`}
-			data-nc-id='FiveStartIconForRate'
+			className={`nc-FiveStarIconForRate flex items-center text-neutral-300 ${className}`}
+			data-nc-id='FiveStarIconForRate'
 		>
 			{[1, 2, 3, 4, 5].map((item) => {
 				return (
@@ -44,4 +44,4 @@ const FiveStartIconForRate: FC<FiveStartIconForRateProps> = ({
 	);
 };
 
-export default FiveStartIconForRate;
+export default FiveStarIconForRate;

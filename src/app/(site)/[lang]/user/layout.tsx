@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import Sidebar from "@/components/Common/Dashboard/Sidebar";
+// import Sidebar from "@/components/Common/Dashboard/Sidebar"; // TODO: Fix sidebar import
 import Header from "@/components/Common/Dashboard/Header";
 import { userSidebarData } from "@/staticData/sidebarData";
 

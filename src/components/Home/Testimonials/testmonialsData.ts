@@ -52,22 +52,7 @@ const testimonialData: Testimonial[][] = [
 			image: "/images/testimonial/author-06.png",
 		},
 	],
-	// [
-	// 	{
-	// 		id: 7,
-	// 		name: "Emily Richards",
-	// 		role: "Marketing Professional",
-	// 		text: "I’ve learned so much from the experts on this platform. The sessions are tailored to my needs, and the AI-powered tools help me keep track of everything we discuss.",
-	// 		image: "/images/testimonial/author-07.png",
-	// 	},
-	// 	{
-	// 		id: 8,
-	// 		name: "Chris Thompson",
-	// 		role: "Freelancer",
-	// 		text: "The expert guidance I received here was exactly what I needed. The platform’s ease of use and the quality of the sessions have made it my go-to for professional development.",
-	// 		image: "/images/testimonial/author-08.png",
-	// 	},
-	// ],
+
 ];
 
 export default testimonialData;

@@ -26,11 +26,7 @@ if (typeof window !== "undefined") {
 
 const Header3: FC<Header3Props> = ({ className = "" }) => {
 	const headerInnerRef = useRef<HTMLDivElement>(null);
-	//
-	// const [showHeroSearch, setShowHeroSearch] =
-	// 	useState<StaySearchFormFields | null>();
-	//
-	// const [currentTab, setCurrentTab] = useState<SearchTab>("Stays");
+
 
 	//
 	useOutsideAlerter(headerInnerRef, () => {

@@ -179,17 +179,7 @@ export const renderSchemaTags = (customSchema?: Record<string, unknown>) => {
 			ratingValue: "4.8",
 			ratingCount: "12",
 		},
-		// Offers can be adjusted based on your pricing model
-		// offers: [
-		//   {
-		//     '@type': 'Offer',
-		//     price: '9.00',
-		//     priceCurrency: 'USD',
-		//     availability: 'https://schema.org/InStock',
-		//     url: defaultSiteUrl,
-		//     validFrom: new Date().toISOString(),
-		//   },
-		// ],
+
 	};
 
 	const schemaData = customSchema || defaultSchema;
