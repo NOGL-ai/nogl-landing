@@ -1,11 +1,12 @@
-/* stylelint-disable-next-line at-rule-no-unknown */
-@tailwind base;
-/* stylelint-disable-next-line at-rule-no-unknown */
-@tailwind components;
-/* stylelint-disable-next-line at-rule-no-unknown */
-@tailwind utilities;
-
+@import "tailwindcss";
 @import "./theme.css";
+
+@plugin "tailwindcss-animate";
+@plugin "tailwindcss-react-aria-components";
+
+@custom-variant dark (&:where(.dark-mode, .dark-mode *));
+@custom-variant label (& [data-label]);
+@custom-variant focus-input-within (&:has(input:focus));
 
 html,
 body {
@@ -16,6 +17,25 @@ body {
     font-variant-ligatures: contextual;
     -webkit-font-kerning: normal;
     font-kerning: normal;
+}
+
+/* Utility classes */
+.scrollbar-hide {
+    /* For Webkit-based browsers (Chrome, Safari and Opera) */
+    &::-webkit-scrollbar {
+        display: none;
+        -webkit-appearance: none;
+    }
+
+    /* For IE, Edge and Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.transition-inherit-all {
+    transition-property: inherit;
+    transition-duration: inherit;
+    transition-timing-function: inherit;
 }
 
 /* Hide the default expand arrow on Safari.  */
@@ -57,11 +77,12 @@ body.video-conference-active {
 @layer base {
   * {
     /* stylelint-disable-next-line at-rule-no-unknown */
-    @apply border-border;
+    border-color: hsl(var(--border));
   }
   body {
     /* stylelint-disable-next-line at-rule-no-unknown */
-    @apply bg-background text-foreground;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
     margin: 0;
     padding: 0;
   }
@@ -126,14 +147,19 @@ body.video-conference-active {
 }
 
 .nc-header-bg {
-  /* stylelint-disable-next-line at-rule-no-unknown */
-  @apply bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm;
+  background-color: rgb(255 255 255 / 0.9);
+  backdrop-filter: blur(4px);
+}
+
+.dark .nc-header-bg {
+  background-color: rgb(17 24 39 / 0.9);
 }
 
 /* Optional: Add this if you want a smoother shadow transition */
 .shadow-transition {
-  /* stylelint-disable-next-line at-rule-no-unknown */
-  @apply transition-shadow duration-300;
+  transition-property: box-shadow;
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes fadeIn {

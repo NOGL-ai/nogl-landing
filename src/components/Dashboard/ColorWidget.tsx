@@ -48,7 +48,7 @@ const ColorWidget: React.FC<ColorWidgetProps> = ({ isOpen, onClose, onColorSelec
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-[var(--background/surface/default,#ffffff)] box-border content-stretch flex flex-col gap-[30px] items-start p-[12px] relative rounded-[8px] w-[163px]">
+      <div className="bg-[var(--color-bg-primary)] box-border content-stretch flex flex-col gap-[30px] items-start p-[12px] relative rounded-[8px] w-[163px]">
         <div aria-hidden="true" className="absolute border border-[#e9eaec] border-solid inset-0 pointer-events-none rounded-[8px] shadow-[0px_54px_74px_0px_rgba(0,0,0,0.14)]" />
         <div className="content-start flex flex-col gap-[8px] items-start relative shrink-0 w-[139px]">
           {/* Primary Theme Row */}
@@ -56,7 +56,7 @@ const ColorWidget: React.FC<ColorWidgetProps> = ({ isOpen, onClose, onColorSelec
             {/* Theme Selection Indicator */}
             <button
               onClick={() => handleThemeClick('primary')}
-              className={`bg-[var(--bg/white-0,#ffffff)] box-border content-stretch flex gap-[2px] h-[32px] items-center justify-center p-[6px] relative rounded-[8px] shrink-0 w-[26px] transition-all ${
+              className={`bg-[var(--color-white)] box-border content-stretch flex gap-[2px] h-[32px] items-center justify-center p-[6px] relative rounded-[8px] shrink-0 w-[26px] transition-all ${
                 activeTheme === 'primary' ? 'ring-2 ring-blue-500' : ''
               }`}
             >
@@ -70,9 +70,9 @@ const ColorWidget: React.FC<ColorWidgetProps> = ({ isOpen, onClose, onColorSelec
             </button>
             
             {/* Primary Theme Colors */}
-            <div className="bg-[var(--bg/white-0,#ffffff)] box-border content-stretch flex gap-[2px] items-center justify-center px-[2px] py-[6px] relative rounded-[5px] shrink-0">
+            <div className="bg-[var(--color-white)] box-border content-stretch flex gap-[2px] items-center justify-center px-[2px] py-[6px] relative rounded-[5px] shrink-0">
               <div aria-hidden="true" className="absolute border-[0.6px] border-[rgba(206,212,218,0.3)] border-solid inset-0 pointer-events-none rounded-[5px] shadow-[0px_1px_2px_0px_rgba(10,13,20,0.03)]" />
-              <div className="box-border content-stretch flex gap-[var(--spacing/8,8px)] h-[20px] items-center p-[var(--spacing/0,0px)] relative shrink-0">
+              <div className="box-border content-stretch flex gap-2 h-[20px] items-center p-0 relative shrink-0">
                 {colorThemes.primary.colors.map((color, index) => (
                   <div key={index} className="content-stretch flex gap-[7px] items-center relative shrink-0">
                     <div className="overflow-clip relative shrink-0 size-[28px]">
@@ -98,7 +98,7 @@ const ColorWidget: React.FC<ColorWidgetProps> = ({ isOpen, onClose, onColorSelec
             {/* Theme Selection Indicator */}
             <button
               onClick={() => handleThemeClick('secondary')}
-              className={`bg-[var(--bg/white-0,#ffffff)] box-border content-stretch flex gap-[2px] h-[32px] items-center justify-center p-[6px] relative rounded-[8px] shrink-0 w-[26px] transition-all ${
+              className={`bg-[var(--color-white)] box-border content-stretch flex gap-[2px] h-[32px] items-center justify-center p-[6px] relative rounded-[8px] shrink-0 w-[26px] transition-all ${
                 activeTheme === 'secondary' ? 'ring-2 ring-blue-500' : ''
               }`}
             >
@@ -112,9 +112,9 @@ const ColorWidget: React.FC<ColorWidgetProps> = ({ isOpen, onClose, onColorSelec
             </button>
             
             {/* Secondary Theme Colors */}
-            <div className="bg-[var(--bg/white-0,#ffffff)] box-border content-stretch flex gap-[2px] items-center justify-center px-[2px] py-[6px] relative rounded-[5px] shrink-0">
+            <div className="bg-[var(--color-white)] box-border content-stretch flex gap-[2px] items-center justify-center px-[2px] py-[6px] relative rounded-[5px] shrink-0">
               <div aria-hidden="true" className="absolute border-[0.6px] border-[rgba(206,212,218,0.3)] border-solid inset-0 pointer-events-none rounded-[5px] shadow-[0px_1px_2px_0px_rgba(10,13,20,0.03)]" />
-              <div className="box-border content-stretch flex gap-[var(--spacing/8,8px)] h-[20px] items-center p-[var(--spacing/0,0px)] relative shrink-0">
+              <div className="box-border content-stretch flex gap-2 h-[20px] items-center p-0 relative shrink-0">
                 {colorThemes.secondary.colors.map((color, index) => (
                   <div key={index} className="content-stretch flex gap-[7px] items-center relative shrink-0">
                     <div className="overflow-clip relative shrink-0 size-[28px]">
