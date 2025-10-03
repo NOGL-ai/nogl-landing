@@ -131,7 +131,7 @@
 	},
 	"hero": {
 		"introducing": "Willkommen bei Nogl.ai",
-		"title": ["KI-gestützte Mode-Trendprognosen", "& Nachfragevorhersage"],
+		"title": "KI-gestützte Mode-Trendprognosen & Nachfragevorhersage",
 		"description": "Prognostizieren Sie Trends, sagen Sie die Nachfrage für neue Produkte voraus und optimieren Sie lokale Sortimente mit Demand-Sensing-KI.",
 		"buttonText": "Jetzt Prognosen starten"
 	},
