@@ -7,12 +7,27 @@ import pluginNext from "@next/eslint-plugin-next";
 import pluginJsxA11y from "eslint-plugin-jsx-a11y";
 
 export default [
-	{ files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"] },
+	{ 
+		files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
+		ignores: [
+			".next/**",
+			"next-env.d.ts",
+			"node_modules/**",
+			"yarn.lock",
+			"package-lock.json",
+			"public/**"
+		]
+	},
 	{ languageOptions: { globals: globals.browser } },
 	pluginJs.configs.recommended,
 	...tseslint.configs.recommended,
 	pluginReact.configs.flat.recommended,
 	{
+		settings: {
+			react: {
+				version: "detect"
+			}
+		},
 		plugins: {
 			"react-hooks": pluginReactHooks,
 			"@next/next": pluginNext,
