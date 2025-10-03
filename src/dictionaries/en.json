@@ -136,13 +136,13 @@
 		"description": "Join our platform today and connect with experts who can help you grow",
 		"buttonText": "Start Learning Now",
 		"buttonUrl": "#newsletter",
-		"_testimonial": {
-			"_heading": "Success Stories from",
-			"_subheading": "Industry Leaders",
-			"_quote": "In just one Content Creation Strategy session, I went from struggling with content to tripling my engagement and leads. This is the blueprint I needed for authentic social media success!",
-			"_author": "Viola Weller",
-			"_role": "Founder of VLACE",
-			"_waitlistButton": "Join the Waitlist"
+		"testimonial": {
+			"heading": "Success Stories from",
+			"subheading": "Industry Leaders",
+			"quote": "In just one Content Creation Strategy session, I went from struggling with content to tripling my engagement and leads. This is the blueprint I needed for authentic social media success!",
+			"author": "Viola Weller",
+			"role": "Founder of VLACE",
+			"waitlistButton": "Join the Waitlist"
 		}
 	},
 	"pricing": {

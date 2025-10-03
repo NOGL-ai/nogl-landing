@@ -55,7 +55,7 @@ const DropdownMenuTrigger: React.FC<DropdownMenuTriggerProps> = ({
 }) => {
 	if (asChild && React.isValidElement(children)) {
 		return React.cloneElement(children as React.ReactElement<any>, {
-			className: cn(children.props.className, className),
+			className: cn((children as React.ReactElement<any>).props.className, className),
 		});
 	}
 

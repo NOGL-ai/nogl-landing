@@ -738,7 +738,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 					const rule = row.getValue("triggeredRule") as string;
 					const isActive = rule.includes("active");
 					return (
-						<Badge variant={isActive ? "primary" : "secondary"}>
+						<Badge variant={isActive ? "success" : "secondary"}>
 							{isActive ? (
 								<CheckCircle className='mr-1 h-3 w-3' />
 							) : (
@@ -1255,12 +1255,11 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 							}}
 						>
 							<SelectTrigger className='h-8 w-[70px] border-gray-300 bg-white text-gray-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100'>
-								<SelectValue
-									placeholder={table.getState().pagination.pageSize}
-								/>
+							<SelectValue
+								placeholder={`${table.getState().pagination.pageSize}`}
+							/>
 							</SelectTrigger>
 							<SelectContent
-								side='top'
 								className='border-gray-300 bg-white dark:border-gray-600 dark:bg-gray-800'
 							>
 								{[10, 20, 30, 40, 50].map((pageSize) => (
