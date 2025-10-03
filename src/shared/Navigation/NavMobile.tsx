@@ -10,7 +10,7 @@ import SocialsList from "@/shared/SocialsList";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import SwitchDarkMode from "@/shared/SwitchDarkMode";
 import Link from "next/link";
-import LangDropdown from "@/components/molecules";
+import { LangDropdown } from "@/components/molecules";
 import ShimmerButton from "@/components/ui/shimmer-button";
 import { Route } from "@/routers/types";
 import { useSession } from "next-auth/react";
