@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, Fragment, useEffect, FC } from "react";
 import {
 	Transition,
