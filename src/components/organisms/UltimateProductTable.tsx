@@ -37,7 +37,7 @@ import {
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "@/components/ui";
+} from "@/components/ui/select-new";
 import { Badge } from "@/components/ui/badge";
 import {
 	Popover,

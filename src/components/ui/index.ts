@@ -24,13 +24,14 @@ export {
 
 // Select
 export { Select as SelectSimple } from "./select";
-export {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "./select-new";
+// Removed select-new from barrel export to prevent SSR issues with createContext
+// export {
+// 	Select,
+// 	SelectContent,
+// 	SelectItem,
+// 	SelectTrigger,
+// 	SelectValue,
+// } from "./select-new";
 
 // Modal
 export { Modal, ModalHeader, ModalBody, ModalFooter } from "./modal";
@@ -60,8 +61,8 @@ export {
 	DropdownMenuSeparator,
 } from "./dropdown-menu";
 
-// Popover
-export { Popover, PopoverTrigger, PopoverContent } from "./popover";
+// Removed popover from barrel export to prevent SSR issues with createContext
+// export { Popover, PopoverTrigger, PopoverContent } from "./popover";
 
 // Alert
 export { Alert } from "./alert";

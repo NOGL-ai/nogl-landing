@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, FC } from "react";
+import dynamic from "next/dynamic";
 import Logo from "@/shared/Logo";
 import MenuBar from "@/shared/MenuBar";
 import LangDropdown from "@/app/(site)/[lang]/(client-components)/(Header)/LangDropdown";
@@ -8,12 +9,17 @@ import NotifyDropdown from "@/app/(site)/[lang]/(client-components)/(Header)/Not
 import AvatarDropdown from "@/app/(site)/[lang]/(client-components)/(Header)/AvatarDropdown";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import GlobalSearchModal from "./GlobalSearchModal";
 import SwitchDarkMode from "@/shared/SwitchDarkMode";
 import { usePathname } from "next/navigation";
 import { onScroll } from "@/lib/scrollActive";
 import { useSession } from "next-auth/react";
 import { Route } from "@/routers/types";
+
+// Dynamically import GlobalSearchModal to prevent SSR issues with react-instantsearch
+const GlobalSearchModal = dynamic(() => import("./GlobalSearchModal"), {
+	ssr: false,
+	loading: () => null,
+});
 
 export interface MainNav2Props {
 	className?: string;

@@ -4,6 +4,7 @@
 import React from "react";
 import { LoadingProvider } from "@/context/LoadingContext";
 import LoadingScreen from "@/components/molecules/LoadingScreen";
+import { RouteProvider } from "@/components/atoms/RouteProvider";
 
 interface ClientLayoutProps {
 	children: React.ReactNode;
@@ -11,10 +12,12 @@ interface ClientLayoutProps {
 
 const ClientLayout: React.FC<ClientLayoutProps> = ({ children }) => {
 	return (
-		<LoadingProvider>
-			<LoadingScreen />
-			{children}
-		</LoadingProvider>
+		<RouteProvider>
+			<LoadingProvider>
+				<LoadingScreen />
+				{children}
+			</LoadingProvider>
+		</RouteProvider>
 	);
 };
 

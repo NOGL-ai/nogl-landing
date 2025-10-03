@@ -14,7 +14,7 @@ Our component architecture is built on **five core principles**:
 
 ## 📁 Detailed Folder Structure
 
-```
+```text
 src/components/
 │
 ├── 🎨 ui/                          # Untitled UI Design System
@@ -146,7 +146,7 @@ Button.displayName = "Button";
 
 **📁 Planned Structure:**
 
-```
+```text
 foundations/
 ├── icons/
 │   ├── dot-icon.tsx
@@ -512,7 +512,7 @@ import { Button } from "../components/ui";
 
 ### **Unidirectional Dependency Flow**
 
-```
+```text
 ┌──────────────────────────────────────────────────────────┐
 │  Level 5: ORGANISMS                                      │
 │  Can import: Molecules, Atoms, UI, Foundations           │
@@ -646,14 +646,14 @@ echo "export { NewMolecule } from './NewMolecule';" >> src/components/molecules/
 
 ### **Barrel Exports: Pros & Cons**
 
-**✅ Pros:**
+### ✅ Pros
 
 - **Cleaner imports**: `import { Button, Input } from '@/components/ui'`
 - **Encapsulated internals**: Hide implementation details
 - **Easier refactoring**: Change internal structure without breaking imports
 - **Better developer experience**: IntelliSense and autocomplete
 
-**⚠️ Cons:**
+### ⚠️ Cons
 
 - **Bundle size impact**: May include unused code
 - **Tree-shaking challenges**: Bundlers might not optimize as well
@@ -698,7 +698,7 @@ npx webpack-bundle-analyzer build/static/js/*.js
 
 ### **Component Audit Checklist**
 
-**Monthly Review:**
+### Monthly Review
 
 - [ ] **Atoms**: Are they truly atomic? Single responsibility?
 - [ ] **Molecules**: Do they combine 2-5 components? No business logic?
@@ -706,7 +706,7 @@ npx webpack-bundle-analyzer build/static/js/*.js
 - [ ] **UI Components**: Are they pure Untitled UI components?
 - [ ] **Foundations**: Are they design tokens/utilities only?
 
-**Quarterly Review:**
+### Quarterly Review
 
 - [ ] **Bundle size**: Monitor with webpack-bundle-analyzer
 - [ ] **Import patterns**: Check for anti-patterns
@@ -718,7 +718,7 @@ npx webpack-bundle-analyzer build/static/js/*.js
 
 **1. Start Simple, Build Up**
 
-```
+```text
 Foundations → UI → Atoms → Molecules → Organisms
 ```
 

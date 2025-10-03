@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import ClientLayout from "./ClientLayout";
-import { RouteProvider } from "@/components/atoms/RouteProvider";
 import { ThemeProvider } from "@/components/atoms/ThemeProvider";
 import "@/styles/globals.css";
 
@@ -87,11 +86,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 				/>
 			</head>
 			<body suppressHydrationWarning={true} className='bg-primary antialiased'>
-				<RouteProvider>
-					<ThemeProvider>
-						{children}
-					</ThemeProvider>
-				</RouteProvider>
+				<ThemeProvider>
+					{children}
+				</ThemeProvider>
 				<SpeedInsights />
 				{/* Videoask widget temporarily disabled
         <Script

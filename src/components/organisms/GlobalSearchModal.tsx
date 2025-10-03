@@ -1,17 +1,18 @@
 "use client";
 
-import algoliasearch from "algoliasearch";
+import { algoliasearch } from "algoliasearch";
 import React, { useEffect } from "react";
 import { Hits, InstantSearch } from "react-instantsearch";
 import CustomHits from "../atoms/CustomHits";
 import SearchBox from "../atoms/CustomSearchBox";
 import EmptyState from "../atoms/EmptyState";
 
-const appID = process.env.NEXT_PUBLIC_ALGOLIA_PROJECT_ID as string;
-const apiKEY = process.env.NEXT_PUBLIC_ALGOLIA_API_KEY as string;
-const INDEX = process.env.NEXT_PUBLIC_ALGOLIA_INDEX as string;
+const appID = process.env.NEXT_PUBLIC_ALGOLIA_PROJECT_ID || "";
+const apiKEY = process.env.NEXT_PUBLIC_ALGOLIA_API_KEY || "";
+const INDEX = process.env.NEXT_PUBLIC_ALGOLIA_INDEX || "";
 
-const algoliaClient = algoliasearch(appID, apiKEY);
+// Only initialize Algolia client if credentials are provided
+const algoliaClient = appID && apiKEY ? algoliasearch(appID, apiKEY) : null;
 
 type Props = {
 	searchModalOpen: boolean;
@@ -37,6 +38,11 @@ const GlobalSearchModal = (props: Props) => {
 			document.removeEventListener("mousedown", handleClickOutside);
 		};
 	}, [searchModalOpen, setSearchModalOpen]);
+
+	// Don't render if Algolia is not configured
+	if (!algoliaClient) {
+		return null;
+	}
 
 	return (
 		<>

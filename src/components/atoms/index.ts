@@ -24,7 +24,8 @@ export { default as DashboardBreadcrumb } from "./DashboardBreadcrumb";
 export { default as Card } from "./Card";
 export { default as FormButton } from "./FormButton";
 export { default as TextareaGroup } from "./TextareaGroup";
-export { default as SearchBox } from "./SearchBox";
+// Removed react-instantsearch components from barrel export to prevent SSR issues
+// export { default as SearchBox } from "./SearchBox";
 export { default as ThemeToggler } from "./ThemeToggler";
 export { default as NotificationItem } from "./NotificationItem";
 export { default as ModalCloseButton } from "./ModalCloseButton";
@@ -34,13 +35,15 @@ export { default as FeatureWithImageItem } from "./FeatureWithImageItem";
 export { default as SupportCard } from "./SupportCard";
 export { default as Dropdown } from "./Dropdown";
 export { default as ThemeSwitcher } from "./ThemeSwitcher";
-export { default as CustomHits } from "./CustomHits";
-export { default as CustomSearchBox } from "./CustomSearchBox";
-export { default as EmptyState } from "./EmptyState";
+// Removed react-instantsearch components from barrel export to prevent SSR issues
+// export { default as CustomHits } from "./CustomHits";
+// export { default as CustomSearchBox } from "./CustomSearchBox";
+// export { default as EmptyState } from "./EmptyState";
 export { default as CatalogHeader } from "./CatalogHeader";
 export { default as LocationMarker } from "./LocationMarker";
 export { QueryClientProvider } from "./QueryClientProvider";
-export { RouteProvider } from "./RouteProvider";
+// Removed RouteProvider from barrel export to prevent SSR issues
+// export { RouteProvider } from "./RouteProvider";
 export { ThemeProvider } from "./ThemeProvider";
 export { default as Marquee } from "./marquee";
 export { NumberTicker } from "./number-ticker";

@@ -4,7 +4,8 @@
 export { default as Header } from "./Header";
 export { default as Footer } from "./MainFooter";
 export { default as Sidebar } from "./Sidebar";
-export { default as GlobalSearch } from "./GlobalSearchModal";
+// Removed from barrel export to prevent SSR issues with react-instantsearch
+// export { default as GlobalSearch } from "./GlobalSearchModal";
 export { FeatureSection as Features } from "./Features";
 export { default as BackgroundSection } from "./BackgroundSection";
 export { default as BioSection } from "./BioSection";
@@ -36,7 +37,8 @@ export { default as HomeProblem } from "./HomeProblem";
 export { default as HomeSolution } from "./HomeSolution";
 export { default as UserProfile } from "./UserProfile";
 export { default as MobileSidebar } from "./MobileSidebar";
-export { default as GlobalSearchModal } from "./GlobalSearchModal";
+// Removed from barrel export to prevent SSR issues with react-instantsearch
+// export { default as GlobalSearchModal } from "./GlobalSearchModal";
 export { default as UltimateProductTable } from "./UltimateProductTable";
 export { default as CatalogContent } from "./CatalogContent";
 export { default as NotFound } from "./NotFound";

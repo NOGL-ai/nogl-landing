@@ -1,12 +1,13 @@
-import algoliasearch from "algoliasearch";
+import { algoliasearch } from "algoliasearch";
 import { load as loadHTML } from "cheerio";
 
 const appID = process.env.NEXT_PUBLIC_ALGOLIA_PROJECT_ID ?? "";
 const apiKEY = process.env.NEXT_PUBLIC_ALGOLIA_API_KEY ?? "";
 const INDEX = process.env.NEXT_PUBLIC_ALGOLIA_INDEX ?? "";
 
-const client = algoliasearch(appID, apiKEY);
-const index = client.initIndex(INDEX);
+// Only initialize Algolia client if credentials are provided
+const client = appID && apiKEY ? algoliasearch(appID, apiKEY) : null;
+const index = client ? client.initIndex(INDEX) : null;
 
 export const structuredAlgoliaHtmlData = async ({
 	pageUrl = "",
@@ -34,6 +35,12 @@ export const structuredAlgoliaHtmlData = async ({
 export const batchIndexToAlgolia = async (
 	records: Record<string, unknown>[]
 ) => {
+	// Skip if Algolia is not configured
+	if (!index) {
+		console.warn("Algolia is not configured. Skipping batch indexing.");
+		return null;
+	}
+
 	try {
 		const result = await index.saveObjects(records);
 

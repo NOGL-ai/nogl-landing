@@ -26,7 +26,8 @@ export { default as Logos } from "./logos";
 export { default as CategoryBadgeList } from "./CategoryBadgeList";
 export { default as InfoTags } from "./InfoTags";
 export { default as TopicTags } from "./TopicTags";
-export { default as LoadingScreen } from "./LoadingScreen";
+// Removed LoadingScreen from barrel export to prevent SSR issues with createContext
+// export { default as LoadingScreen } from "./LoadingScreen";
 export { default as PreLoader } from "./PreLoader";
 export { default as SimpleNewsletter } from "./SimpleNewsletter";
 export { default as SectionHeader } from "./SectionHeader";
