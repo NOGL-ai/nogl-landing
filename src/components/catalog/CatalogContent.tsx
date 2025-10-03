@@ -262,7 +262,7 @@ const CatalogContent = () => {
 
 	const handleInfiniteScrollToggle = (enabled: boolean) => {
 		setEnableInfiniteScroll(enabled);
-		console.log("Infinite scroll mode:", enabled ? "enabled" : "disabled");
+
 	};
 
 	return (

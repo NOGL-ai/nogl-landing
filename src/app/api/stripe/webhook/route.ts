@@ -21,7 +21,7 @@ export async function POST(request: Request) {
 			signature,
 			process.env.STRIPE_WEBHOOK_SECRET || ""
 		);
-		console.log("Webhook event received:", event.type);
+
 	} catch (err) {
 		console.error("Webhook Error:", err);
 		const message = err instanceof Error ? err.message : String(err);
@@ -44,12 +44,11 @@ async function processWebhookEvent(event: Stripe.Event) {
 	const email = session.customer_details?.email?.toLowerCase();
 
 	if (!email) {
-		console.log("No email found in session");
+
 		return;
 	}
 
 	if (event.type === "checkout.session.completed") {
-		console.log("Processing checkout session:", session.id);
 
 		try {
 			// Your existing booking creation code
@@ -94,8 +93,6 @@ async function processWebhookEvent(event: Stripe.Event) {
 				.split(",")
 				.map((e) => e.trim().toLowerCase());
 
-			console.log("Participant Emails:", participantEmails);
-			console.log("Booking Details:", bookingDetails);
 
 			// Assume the first email is the primary participant
 			const primaryEmail = participantEmails[0];
@@ -155,8 +152,6 @@ async function processWebhookEvent(event: Stripe.Event) {
 						});
 					}
 
-					console.log("Sending email to:", participantEmail);
-					console.log("Email Content:", emailContent);
 
 					// Send the email
 					await sendEmail({

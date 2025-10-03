@@ -31,7 +31,7 @@ export const structuredAlgoliaHtmlData = async ({
 
 		return data;
 	} catch (error) {
-		console.log("error in structuredAlgoliaHtmlData", error);
+
 		throw error;
 	}
 };
@@ -41,7 +41,7 @@ export const batchIndexToAlgolia = async (
 ) => {
 	try {
 		const result = await index.saveObjects(records);
-		console.log(`Successfully indexed ${records.length} objects!`);
+
 		return result;
 	} catch (error) {
 		console.error("Error in batchIndexToAlgolia:", error);

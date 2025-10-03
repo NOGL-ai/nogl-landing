@@ -56,7 +56,6 @@ export async function getSignedURL(type: string, size: number) {
 	let url;
 	try {
 		url = await getSignedUrl(s3Client, putObjectCommand, { expiresIn: 60 });
-		console.log("Generated Signed URL:", url);
 	} catch (error) {
 		console.error("Error generating signed URL:", error);
 		return { failure: "Error generating signed URL" };

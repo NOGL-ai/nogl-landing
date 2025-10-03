@@ -78,7 +78,7 @@ export async function POST(req: NextRequest) {
 		const customer = await getCustomer(customer_id);
 
 		// Process the webhook data
-		// console.log(body.event_type);
+
 		if (body.event_type === "subscription.canceled") {
 			const user = await prisma.user.findUnique({
 				where: {

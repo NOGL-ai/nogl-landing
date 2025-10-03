@@ -31,11 +31,9 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 	const handleLogout = () => {
 		if (onLogout) {
 			onLogout();
-		} else {
-			console.log("User logout clicked");
-			// Add your logout logic here
-			// For example: signOut(), redirect to login page, etc.
 		}
+		// Add your logout logic here
+		// For example: signOut(), redirect to login page, etc.
 	};
 
 	return (

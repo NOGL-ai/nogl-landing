@@ -90,22 +90,22 @@ const RepricingRules: React.FC = () => {
 	};
 
 	const handleManageRule = (id: string) => {
-		console.log("Manage rule:", id);
+
 		// Handle manage action
 	};
 
 	const handleDownloadRule = (id: string) => {
-		console.log("Download rule:", id);
+
 		// Handle download action
 	};
 
 	const handleRunPreview = (id: string) => {
-		console.log("Run preview for rule:", id);
+
 		// Handle run preview action
 	};
 
 	const handleAddReports = () => {
-		console.log("Add reports clicked");
+
 		// Handle add reports action
 	};
 

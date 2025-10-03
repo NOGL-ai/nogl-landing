@@ -61,7 +61,6 @@ export const sendEmail = async (data: EmailPayload) => {
 			...data,
 		});
 
-		console.log("Email sent:", result.messageId);
 		return { success: true, messageId: result.messageId };
 	} catch (error: unknown) {
 		console.error("Error sending email:", error);
@@ -182,8 +181,7 @@ export const sendBookingConfirmationEmail = async ({
 	signInUrl: string;
 }) => {
 	// Add debug logging
-	console.log("Attempting to send booking confirmatio   n to:", to);
-	console.log("Booking details:", bookingDetails);
+
 
 	// Sanitize inputs
 	const sanitizedEmail = validator.escape(to);
@@ -195,8 +193,6 @@ export const sendBookingConfirmationEmail = async ({
 		email: sanitizedParticipantName,
 		bookingDetails,
 	});
-
-	console.log("Generated email content:", emailContent);
 
 	const emailPayload = {
 		to: sanitizedEmail,

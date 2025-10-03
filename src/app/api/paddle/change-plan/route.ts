@@ -34,7 +34,6 @@ export async function POST(request: Request) {
 			),
 		};
 
-		// console.log(newData);
 		return new NextResponse(JSON.stringify(newData), { status: 200 });
 	} catch (error) {
 		console.error(error);

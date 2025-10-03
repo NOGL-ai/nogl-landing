@@ -204,13 +204,13 @@ export default function CompetitorsPage() {
 	const handleMarketplaceClick = () => {
 		setShowAddModal(false);
 		// TODO: Add marketplace-specific logic here
-		console.log("Marketplace competitor selected");
+
 	};
 
 	const handleEcommerceClick = () => {
 		setShowAddModal(false);
 		// TODO: Add ecommerce-specific logic here
-		console.log("Ecommerce competitor selected");
+
 	};
 
 	return (

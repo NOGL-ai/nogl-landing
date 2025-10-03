@@ -118,7 +118,7 @@ export default function Newsletter({ dictionary }: NewsletterProps) {
           strategy="afterInteractive"
           src="https://chimpstatic.com/mcjs-connected/js/users/730e2a5d4570de0714aa9bc71/c2b0a256050dd1866548b97fd.js"
           onLoad={() => {
-            console.log('Mailchimp script loaded');
+
           }}
           onError={(e) => {
             console.error('Error loading Mailchimp script:', e);

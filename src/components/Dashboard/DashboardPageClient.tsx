@@ -44,17 +44,17 @@ export default function DashboardPageClient({
 
 	const handleColorSelect = (color: string) => {
 		setSelectedColor(color);
-		console.log("Selected color:", color);
+
 		// Add your color selection logic here
 	};
 
 	const handleFullscreenToggle = () => {
-		console.log("Fullscreen toggle clicked");
+
 		// Add your fullscreen toggle logic here
 	};
 
 	const handleEditWidgets = () => {
-		console.log("Edit widgets clicked");
+
 		// Add your edit widgets logic here
 	};
 
