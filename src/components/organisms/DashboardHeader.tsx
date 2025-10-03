@@ -1,3 +1,5 @@
+"use client";
+
 import AccountButton from "../molecules/AccountButton";
 import Notifications from "../molecules/Notifications";
 import ThemeToggler from "../atoms/ThemeToggler";
