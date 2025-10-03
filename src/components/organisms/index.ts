@@ -2,6 +2,10 @@
 // Complex UI components made of groups of molecules and/or atoms
 
 export { default as Header } from "./Header";
+export { default as Header3 } from "./Header3";
+export { default as MainNav1 } from "./MainNav1";
+export { default as MainNav2 } from "./MainNav2";
+export { default as SiteHeader } from "./SiteHeader";
 export { default as Footer } from "./MainFooter";
 export { default as Sidebar } from "./Sidebar";
 // Removed from barrel export to prevent SSR issues with react-instantsearch
@@ -23,7 +27,6 @@ export { default as Testimonials } from "./Testimonials";
 export { default as Section } from "./section";
 export { default as FAQ } from "./FAQ";
 export { default as Pricing } from "./Pricing";
-export { default as HomeTestimonials } from "./Testimonials";
 export { default as AccountMenu } from "./AccountMenu";
 export { default as DashboardHeader } from "./DashboardHeader";
 export { default as CommunitySection } from "./CommunitySection";

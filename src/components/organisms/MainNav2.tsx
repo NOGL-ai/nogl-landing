@@ -1,13 +1,9 @@
 import React, { FC } from "react";
 import Logo from "@/shared/Logo";
 import MenuBar from "@/shared/MenuBar";
-import LangDropdown from "./LangDropdown";
-import NotifyDropdown from "./NotifyDropdown";
-import AvatarDropdown from "./AvatarDropdown";
-import DropdownTravelers from "./DropdownTravelers";
+import { LangDropdown, NotifyDropdown, AvatarDropdown, DropdownTravelers, TemplatesDropdown } from "@/components/molecules";
 // import HeroSearchForm2MobileFactory from "../(HeroSearchForm2Mobile)/HeroSearchForm2MobileFactory";
 import Link from "next/link";
-import TemplatesDropdown from "./TemplatesDropdown";
 import { Route } from "@/routers/types";
 
 export interface MainNav2Props {

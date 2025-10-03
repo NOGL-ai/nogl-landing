@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import Logo from "@/shared/Logo";
 import Navigation from "@/shared/Navigation/Navigation";
-import SearchDropdown from "./SearchDropdown";
+import { SearchDropdown } from "@/components/molecules";
 import ButtonPrimary from "@/shared/ButtonPrimary";
 import MenuBar from "@/shared/MenuBar";
 import SwitchDarkMode from "@/shared/SwitchDarkMode";

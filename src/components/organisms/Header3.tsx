@@ -3,8 +3,7 @@
 import React, { FC, useEffect, useRef } from "react";
 import Logo from "@/shared/Logo";
 import useOutsideAlerter from "@/hooks/useOutsideAlerter";
-import NotifyDropdown from "./NotifyDropdown";
-import AvatarDropdown from "./AvatarDropdown";
+import { NotifyDropdown, AvatarDropdown } from "@/components/molecules";
 import MenuBar from "@/shared/MenuBar";
 import { Route } from "@/routers/types";
 // import { SearchTab } from "../(HeroSearchForm)/HeroSearchForm";
