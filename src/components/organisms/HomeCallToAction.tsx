@@ -25,7 +25,7 @@ interface CallToActionProps {
 	};
 }
 
-export const CallToAction = ({ dictionary }: CallToActionProps) => {
+export default function HomeCallToAction({ dictionary }: CallToActionProps) {
 	// Commented out Success Stories from Industry Leaders section to prevent performance issues
 	return null;
 
@@ -78,4 +78,4 @@ export const CallToAction = ({ dictionary }: CallToActionProps) => {
     </section>
   );
   */
-};
+}
