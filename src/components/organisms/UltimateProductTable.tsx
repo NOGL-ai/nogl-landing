@@ -427,7 +427,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 				},
 				cell: ({ row }) => {
 					const name = row.getValue("name") as string;
-					const sku = row.getValue("sku") as string;
+					const sku = row.original.sku as string;
 					return (
 						<div className='min-w-[200px] space-y-1'>
 							<div className='text-sm font-medium text-gray-900 dark:text-gray-100'>

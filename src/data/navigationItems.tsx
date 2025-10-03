@@ -51,36 +51,36 @@ const navItemsWithSectionsSubheadings: Array<{ label: string; items: NavItemType
             },
         ],
     },
-    {
-        label: "Your Brands",
-        items: [
-            {
-                label: "Elli",
-                href: "/brands/elli",
-                icon: Tag01,
-            },
-            {
-                label: "Stilnest",
-                href: "/brands/stilnest",
-                icon: Tag01,
-            },
-            {
-                label: "Kuzzoi",
-                href: "/brands/kuzzoi",
-                icon: Tag01,
-            },
-            {
-                label: "Haze and Glory",
-                href: "/brands/haze-and-glory",
-                icon: Tag01,
-            },
-            {
-                label: "Samapura",
-                href: "/brands/samapura",
-                icon: Tag01,
-            },
-        ],
-    },
+    // {
+    //     label: "Your Brands",
+    //     items: [
+    //         {
+    //             label: "Elli",
+    //             href: "/brands/elli",
+    //             icon: Tag01,
+    //         },
+    //         {
+    //             label: "Stilnest",
+    //             href: "/brands/stilnest",
+    //             icon: Tag01,
+    //         },
+    //         {
+    //             label: "Kuzzoi",
+    //             href: "/brands/kuzzoi",
+    //             icon: Tag01,
+    //         },
+    //         {
+    //             label: "Haze and Glory",
+    //             href: "/brands/haze-and-glory",
+    //             icon: Tag01,
+    //         },
+    //         {
+    //             label: "Samapura",
+    //             href: "/brands/samapura",
+    //             icon: Tag01,
+    //         },
+    //     ],
+    // },
 ];
 
 export const SidebarNavigationSectionsSubheadingsDemo = () => (

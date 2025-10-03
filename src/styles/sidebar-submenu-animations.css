@@ -1,0 +1,153 @@
+/* Submenu Panel Animations */
+
+@keyframes submenu-fade-in {
+  from {
+    opacity: 0;
+    transform: translateX(-8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes submenu-fade-out {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-8px) scale(0.98);
+  }
+}
+
+@keyframes submenu-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes submenu-slide-out {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+}
+
+/* Submenu Panel Classes */
+.submenu-panel {
+  animation: submenu-fade-in 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: left center;
+}
+
+.submenu-panel.closing {
+  animation: submenu-fade-out 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Icon Button Hover Effects */
+.icon-button-hover {
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.icon-button-hover:hover {
+  transform: scale(1.05);
+  background-color: #fafafa;
+}
+
+.icon-button-hover.active {
+  background-color: #fafafa;
+  transform: scale(1.02);
+}
+
+/* Dark mode icon button hover */
+.dark .icon-button-hover:hover {
+  background-color: #252b37;
+}
+
+.dark .icon-button-hover.active {
+  background-color: #252b37;
+}
+
+/* Submenu Item Animations */
+.submenu-item {
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.submenu-item:hover {
+  transform: translateX(2px);
+}
+
+/* Staggered animation for submenu items */
+.submenu-item:nth-child(1) { animation-delay: 0ms; }
+.submenu-item:nth-child(2) { animation-delay: 20ms; }
+.submenu-item:nth-child(3) { animation-delay: 40ms; }
+.submenu-item:nth-child(4) { animation-delay: 60ms; }
+.submenu-item:nth-child(5) { animation-delay: 80ms; }
+.submenu-item:nth-child(6) { animation-delay: 100ms; }
+.submenu-item:nth-child(7) { animation-delay: 120ms; }
+.submenu-item:nth-child(8) { animation-delay: 140ms; }
+
+/* Focus ring animations */
+.submenu-panel:focus-within {
+  box-shadow: 0 0 0 2px #3b82f6, 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Smooth transitions for theme changes */
+.submenu-panel,
+.icon-button-hover,
+.submenu-item {
+  transition: background-color 200ms ease-in-out, 
+              border-color 200ms ease-in-out, 
+              color 200ms ease-in-out,
+              box-shadow 200ms ease-in-out;
+}
+
+/* Loading state animation */
+.submenu-loading {
+  animation: submenu-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes submenu-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Mobile responsive animations */
+@media (max-width: 768px) {
+  .submenu-panel {
+    animation: submenu-slide-in 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .submenu-panel.closing {
+    animation: submenu-slide-out 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .submenu-panel,
+  .icon-button-hover,
+  .submenu-item {
+    animation: none;
+    transition: none;
+  }
+  
+  .submenu-panel {
+    opacity: 1;
+    transform: none;
+  }
+}

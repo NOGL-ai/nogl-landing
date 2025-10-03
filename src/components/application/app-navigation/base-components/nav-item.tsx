@@ -6,17 +6,13 @@ import { Link as AriaLink } from "react-aria-components";
 import { Badge } from "@/components/base/badges/badges";
 import { cx, sortCx } from "@/utils/cx";
 
-const getStyles = (theme: 'light' | 'dark') => sortCx({
-    root: `group relative flex w-full cursor-pointer items-center rounded-[6px] ${
-        theme === 'dark' 
-            ? "bg-[#0a0d12] hover:bg-[#252b37]" 
-            : "bg-white hover:bg-gray-50"
-    } outline-focus-ring transition-all duration-200 ease-in-out select-none focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-2`,
-    rootSelected: theme === 'dark' ? "bg-[#252b37] hover:bg-[#252b37]" : "bg-gray-100 hover:bg-gray-100",
-    content: `bg-white box-border content-stretch flex flex-[1_0_0] gap-[12px] items-center min-h-px min-w-px px-[12px] py-[8px] relative rounded-[6px] shrink-0`,
+const getStyles = () => sortCx({
+    root: `group relative flex w-full cursor-pointer items-center rounded-[6px] bg-white hover:bg-gray-50 dark:bg-[#0a0d12] dark:hover:bg-[#252b37] outline-focus-ring transition-all duration-200 ease-in-out select-none focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-2`,
+    rootSelected: "bg-gray-100 hover:bg-gray-100 dark:bg-[#252b37] dark:hover:bg-[#252b37]",
+    content: `bg-transparent box-border content-stretch flex flex-[1_0_0] gap-[12px] items-center min-h-px min-w-px px-[12px] py-[8px] relative rounded-[6px] shrink-0`,
     textAndIcon: `content-stretch flex flex-[1_0_0] gap-[8px] items-center min-h-px min-w-px relative shrink-0`,
-    avatar: `border-[0.417px] border-[rgba(0,0,0,0.08)] border-solid relative rounded-[200px] shrink-0 size-[20px]`,
-    badge: `bg-white border border-[#d5d7da] border-solid box-border content-stretch flex items-center px-[6px] py-[2px] relative rounded-[6px] shrink-0`,
+    avatar: `border-[0.417px] border-[rgba(0,0,0,0.08)] dark:border-[rgba(255,255,255,0.06)] border-solid relative rounded-[200px] shrink-0 size-[20px]`,
+    badge: `bg-white dark:bg-transparent border border-[#d5d7da] dark:border-[#252b37] border-solid box-border content-stretch flex items-center px-[6px] py-[2px] relative rounded-[6px] shrink-0`,
     chevron: `overflow-clip relative shrink-0 size-[16px]`,
 });
 
@@ -45,8 +41,8 @@ interface NavItemBaseProps {
     theme?: 'light' | 'dark';
 }
 
-export const NavItemBase = ({ current, type, badge, href, icon: Icon, children, truncate = true, onClick, theme = 'dark' }: NavItemBaseProps) => {
-    const styles = getStyles(theme);
+export const NavItemBase = ({ current, type, badge, href, icon: Icon, children, truncate = true, onClick }: NavItemBaseProps) => {
+    const styles = getStyles();
     
     // Try to call the icon first to see if it returns JSX (for Avatar-based icons)
     const iconElement = Icon && (() => {
@@ -60,15 +56,13 @@ export const NavItemBase = ({ current, type, badge, href, icon: Icon, children, 
             // If calling without props fails, it's a regular icon component
         }
         // Regular icon component - pass the required props
-        return <Icon aria-hidden="true" className={`mr-2 size-5 shrink-0 ${
-            theme === 'dark' ? 'text-[#717680]' : 'text-[#a4a7ae]'
-        } transition-inherit-all`} />;
+        return <Icon aria-hidden="true" className={"mr-2 size-5 shrink-0 text-[#a4a7ae] dark:text-[#717680] transition-inherit-all"} />;
     })();
 
     const badgeElement =
         badge && (typeof badge === "string" || typeof badge === "number") ? (
             <div className={styles.badge}>
-                <p className={`font-['Inter:Medium',_sans-serif] font-medium leading-[18px] not-italic relative shrink-0 text-[#414651] text-[12px] text-center`}>
+                <p className={"font-['Inter:Medium',_sans-serif] font-medium leading-[18px] not-italic relative shrink-0 text-[#414651] dark:text-[#d5d7da] text-[12px] text-center"}>
                     {badge}
                 </p>
             </div>
@@ -77,11 +71,7 @@ export const NavItemBase = ({ current, type, badge, href, icon: Icon, children, 
         );
 
     const labelElement = (
-        <p className={`font-['Inter:Semi_Bold',_sans-serif] font-semibold leading-[24px] not-italic relative shrink-0 text-[#414651] text-[16px] ${
-            theme === 'dark' 
-                ? "text-[#d5d7da] group-hover:text-[#e9eaeb]" 
-                : "text-[#414651] group-hover:text-[#717680]"
-        } ${truncate ? "truncate" : ""}`}>
+        <p className={`font-['Inter:Semi_Bold',_sans-serif] font-semibold leading-[24px] not-italic relative shrink-0 text-[16px] text-[#414651] group-hover:text-[#717680] dark:text-[#d5d7da] dark:group-hover:text-[#e9eaeb] ${truncate ? "truncate" : ""}`}>
             {children}
         </p>
     );
@@ -101,9 +91,7 @@ export const NavItemBase = ({ current, type, badge, href, icon: Icon, children, 
                     </div>
                     {badgeElement}
                     <div className={styles.chevron}>
-                        <ChevronDown aria-hidden="true" className={`absolute bottom-1/4 left-[37.5%] right-[37.5%] top-1/4 size-4 ${
-                            theme === 'dark' ? 'text-[#717680]' : 'text-[#a4a7ae]'
-                        } in-open:-scale-y-100`} />
+                        <ChevronDown aria-hidden="true" className={"absolute bottom-1/4 left-[37.5%] right-[37.5%] top-1/4 size-4 text-[#a4a7ae] dark:text-[#717680] in-open:-scale-y-100"} />
                     </div>
                 </div>
             </summary>

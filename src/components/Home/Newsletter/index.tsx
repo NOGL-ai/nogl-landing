@@ -53,9 +53,9 @@ export default function Newsletter({ dictionary }: NewsletterProps) {
 		}
 	}, []);
 
-	// Add Mailchimp popup script
+	// Add Mailchimp popup script - Only in production
 	useEffect(() => {
-		if (!hasSeenPopup && window.dojoRequire) {
+		if (!hasSeenPopup && window.dojoRequire && process.env.NODE_ENV === 'production') {
 			window.dojoRequire(["mojo/signup-forms/Loader"], function (L) {
 				L.start({
 					baseUrl: "us16.list-manage.com",

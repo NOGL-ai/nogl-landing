@@ -57,17 +57,11 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
   if (!mounted) {
     return (
       <div className={`w-full ${className}`}>
-        <div className={`${
-          isDarkMode 
-            ? "bg-[#0a0d12] border-[#414651]" 
-            : "bg-white border-[#d5d7da]"
-        } border rounded-[8px] w-full`}>
+        <div className={"border rounded-[8px] w-full bg-white border-[#d5d7da] dark:bg-[#0a0d12] dark:border-[#414651]"}>
           <div className="flex gap-2 items-center px-3 py-2 w-full">
             <div className="flex flex-1 gap-2 items-center min-h-0 min-w-0">
               <div className="shrink-0 w-5 h-5">
-                <SearchMd className={`w-5 h-5 ${
-                  isDarkMode ? "text-[#717680]" : "text-[#a4a7ae]"
-                }`} />
+                <SearchMd className="w-5 h-5 text-[#a4a7ae] dark:text-[#717680]" />
               </div>
               <input
                 ref={inputRef}
@@ -76,21 +70,11 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
                 placeholder={placeholder}
-                className={`flex-1 bg-transparent border-none outline-none text-base font-normal leading-6 min-h-0 min-w-0 overflow-ellipsis whitespace-nowrap ${
-                  isDarkMode 
-                    ? "text-[#717680] placeholder:text-[#717680]" 
-                    : "text-[#717680] placeholder:text-[#717680]"
-                }`}
+                className="flex-1 bg-transparent border-none outline-none text-base font-normal leading-6 min-h-0 min-w-0 overflow-ellipsis whitespace-nowrap text-[#717680] placeholder:text-[#717680]"
               />
             </div>
-            <div className={`border rounded px-1 py-0.5 shrink-0 ${
-              isDarkMode 
-                ? "border-[#252b37]" 
-                : "border-[#e9eaeb] mix-blend-multiply"
-            }`}>
-              <span className={`text-xs font-medium leading-[18px] ${
-                isDarkMode ? "text-[#717680]" : "text-[#a4a7ae]"
-              }`}>
+            <div className="border rounded px-1 py-0.5 shrink-0 border-[#e9eaeb] mix-blend-multiply dark:border-[#252b37]">
+              <span className="text-xs font-medium leading-[18px] text-[#a4a7ae] dark:text-[#717680]">
                 ⌘K
               </span>
             </div>
@@ -102,17 +86,11 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
 
   return (
     <div className={`w-full ${className}`}>
-      <div className={`${
-        isDarkMode 
-          ? "bg-[#0a0d12] border-[#414651]" 
-          : "bg-white border-[#d5d7da]"
-      } border rounded-[8px] w-full`}>
+      <div className={"border rounded-[8px] w-full bg-white border-[#d5d7da] dark:bg-[#0a0d12] dark:border-[#414651]"}>
         <div className="flex gap-2 items-center px-3 py-2 w-full">
           <div className="flex flex-1 gap-2 items-center min-h-0 min-w-0">
             <div className="shrink-0 w-5 h-5">
-              <SearchMd className={`w-5 h-5 ${
-                isDarkMode ? "text-[#717680]" : "text-[#a4a7ae]"
-              }`} />
+              <SearchMd className="w-5 h-5 text-[#a4a7ae] dark:text-[#717680]" />
             </div>
             <input
               ref={inputRef}
@@ -121,21 +99,11 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
               placeholder={placeholder}
-              className={`flex-1 bg-transparent border-none outline-none text-base font-normal leading-6 min-h-0 min-w-0 overflow-ellipsis whitespace-nowrap ${
-                isDarkMode 
-                  ? "text-[#717680] placeholder:text-[#717680]" 
-                  : "text-[#717680] placeholder:text-[#717680]"
-              }`}
+              className="flex-1 bg-transparent border-none outline-none text-base font-normal leading-6 min-h-0 min-w-0 overflow-ellipsis whitespace-nowrap text-[#717680] placeholder:text-[#717680]"
             />
           </div>
-          <div className={`border rounded px-1 py-0.5 shrink-0 ${
-            isDarkMode 
-              ? "border-[#252b37]" 
-              : "border-[#e9eaeb] mix-blend-multiply"
-          }`}>
-            <span className={`text-xs font-medium leading-[18px] ${
-              isDarkMode ? "text-[#717680]" : "text-[#a4a7ae]"
-            }`}>
+          <div className="border rounded px-1 py-0.5 shrink-0 border-[#e9eaeb] mix-blend-multiply dark:border-[#252b37]">
+            <span className="text-xs font-medium leading-[18px] text-[#a4a7ae] dark:text-[#717680]">
               ⌘K
             </span>
           </div>

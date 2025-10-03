@@ -45,9 +45,7 @@ export const SidebarNavigationSectionsSubheadings = ({
                 <div key={section.label} className={cx(sectionIndex > 0 && "mt-8")}>
                     {/* Section Label */}
                     <div className="px-5 mb-1">
-                        <h3 className={`text-[10px] font-bold uppercase tracking-wider ${
-                            theme === 'dark' ? 'text-[#d5d7da]' : 'text-[#717680]'
-                        }`}>
+                        <h3 className={"text-[10px] font-bold uppercase tracking-wider text-[#717680] dark:text-[#d5d7da]"}>
                             {section.label}
                         </h3>
                     </div>
@@ -76,7 +74,7 @@ export const SidebarNavigationSectionsSubheadings = ({
                                             badge={item.badge} 
                                             icon={item.icon} 
                                             type="collapsible"
-                                            theme={theme}
+                                            
                                         >
                                             {item.label}
                                         </NavItemBase>
@@ -90,7 +88,7 @@ export const SidebarNavigationSectionsSubheadings = ({
                                                             badge={childItem.badge}
                                                             type="collapsible-child"
                                                             current={activeUrl === childItem.href}
-                                                            theme={theme}
+                                                            
                                                         >
                                                             {childItem.label}
                                                         </NavItemBase>
@@ -111,7 +109,7 @@ export const SidebarNavigationSectionsSubheadings = ({
                                         href={item.href}
                                         current={currentItem?.href === item.href || activeUrl === item.href}
                                         open={open && currentItem?.href === item.href}
-                                        theme={theme}
+                                        
                                     >
                                         {item.label}
                                     </NavItemBase>
@@ -124,4 +122,3 @@ export const SidebarNavigationSectionsSubheadings = ({
         </nav>
     );
 };
-

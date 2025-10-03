@@ -48,15 +48,16 @@ const extendedAuthOptions: NextAuthOptions = {
 			session: Session;
 			token: JWT & { emailError?: string };
 		}) {
+			const safeUser = (session?.user ?? {}) as Record<string, any>;
 			return {
 				...session,
 				user: {
-					...session.user,
-					id: token.id as string,
-					email: token.email as string,
-					onboardingCompleted: token.onboardingCompleted as boolean,
-					role: token.role as string,
-					emailError: token.emailError,
+					...safeUser,
+					id: (token?.id as string | undefined) ?? safeUser.id,
+					email: (token?.email as string | undefined) ?? safeUser.email,
+					onboardingCompleted: (token as any)?.onboardingCompleted ?? (safeUser as any)?.onboardingCompleted,
+					role: (token as any)?.role ?? (safeUser as any)?.role,
+					emailError: (token as any)?.emailError,
 				},
 			};
 		},
