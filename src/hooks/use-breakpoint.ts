@@ -1,77 +1,36 @@
+"use client";
+
 import { useEffect, useState } from "react";
 
-type Breakpoint = "xxs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
-
-const breakpoints: Record<Breakpoint, number> = {
-	xxs: 320,
-	xs: 600,
-	sm: 640,
-	md: 768,
-	lg: 1024,
-	xl: 1280,
-	"2xl": 1536,
-	"3xl": 2000,
+const screens = {
+    sm: "640px",
+    md: "768px",
+    lg: "1024px",
+    xl: "1280px",
+    "2xl": "1536px",
 };
 
-export function useBreakpoint(breakpoint: Breakpoint): boolean {
-	const [matches, setMatches] = useState(false);
+/**
+ * Checks whether a particular Tailwind CSS viewport size applies.
+ *
+ * @param size The size to check, which must either be included in Tailwind CSS's
+ * list of default screen sizes, or added to the Tailwind CSS config file.
+ *
+ * @returns A boolean indicating whether the viewport size applies.
+ */
+export const useBreakpoint = (size: "sm" | "md" | "lg" | "xl" | "2xl") => {
+    const [matches, setMatches] = useState(typeof window !== "undefined" ? window.matchMedia(`(min-width: ${screens[size]})`).matches : true);
 
-	useEffect(() => {
-		const mediaQuery = window.matchMedia(
-			`(min-width: ${breakpoints[breakpoint]}px)`
-		);
+    useEffect(() => {
+        const breakpoint = window.matchMedia(`(min-width: ${screens[size]})`);
 
-		const handleChange = (e: MediaQueryListEvent) => {
-			setMatches(e.matches);
-		};
+        setMatches(breakpoint.matches);
 
-		// Set initial value
-		setMatches(mediaQuery.matches);
+        const handleChange = (value: MediaQueryListEvent) => setMatches(value.matches);
 
-		// Listen for changes
-		mediaQuery.addEventListener("change", handleChange);
+        breakpoint.addEventListener("change", handleChange);
+        return () => breakpoint.removeEventListener("change", handleChange);
+    }, [size]);
 
-		return () => {
-			mediaQuery.removeEventListener("change", handleChange);
-		};
-	}, [breakpoint]);
-
-	return matches;
-}
-
-export function useBreakpoints() {
-	const [currentBreakpoint, setCurrentBreakpoint] = useState<Breakpoint>("xs");
-
-	useEffect(() => {
-		const updateBreakpoint = () => {
-			const width = window.innerWidth;
-
-			if (width >= breakpoints["3xl"]) {
-				setCurrentBreakpoint("3xl");
-			} else if (width >= breakpoints["2xl"]) {
-				setCurrentBreakpoint("2xl");
-			} else if (width >= breakpoints.xl) {
-				setCurrentBreakpoint("xl");
-			} else if (width >= breakpoints.lg) {
-				setCurrentBreakpoint("lg");
-			} else if (width >= breakpoints.md) {
-				setCurrentBreakpoint("md");
-			} else if (width >= breakpoints.sm) {
-				setCurrentBreakpoint("sm");
-			} else if (width >= breakpoints.xs) {
-				setCurrentBreakpoint("xs");
-			} else {
-				setCurrentBreakpoint("xxs");
-			}
-		};
-
-		updateBreakpoint();
-		window.addEventListener("resize", updateBreakpoint);
-
-		return () => {
-			window.removeEventListener("resize", updateBreakpoint);
-		};
-	}, []);
-
-	return currentBreakpoint;
-}
+    return matches;
+};
