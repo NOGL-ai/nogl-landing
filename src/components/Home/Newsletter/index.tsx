@@ -11,9 +11,18 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 // Add this type declaration at the top of your file
 declare global {
 	interface Window {
-		dojoRequire: unknown;
+		dojoRequire: ((modules: string[], callback: (loader: MailchimpLoader) => void) => void) | undefined;
 		mcjs: unknown; // Add this if you're using other Mailchimp features
 	}
+}
+
+interface MailchimpLoader {
+	start: (config: {
+		baseUrl: string;
+		uuid: string;
+		lid: string;
+		uniqueMethods: boolean;
+	}) => void;
 }
 
 interface NewsletterProps {
@@ -48,7 +57,7 @@ export default function Newsletter({ dictionary }: NewsletterProps) {
 	// Add Mailchimp popup script
 	useEffect(() => {
 		if (!hasSeenPopup && window.dojoRequire) {
-			window.dojoRequire(["mojo/signup-forms/Loader"], function (L: unknown) {
+			window.dojoRequire(["mojo/signup-forms/Loader"], function (L) {
 				L.start({
 					baseUrl: "us16.list-manage.com",
 					uuid: "730e2a5d4570de0714aa9bc71",
@@ -59,7 +68,7 @@ export default function Newsletter({ dictionary }: NewsletterProps) {
 		}
 	}, [hasSeenPopup]);
 
-	const handleSubmit = async (e: unknown) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setIsLoading(true);
 
