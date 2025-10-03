@@ -2,11 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { useThemeMode } from "@/utils/useThemeMode";
 
 const ClientCommons = () => {
 	const [mounted, setMounted] = useState(false);
-	useThemeMode();
 
 	const pathname = usePathname();
 

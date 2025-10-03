@@ -3,7 +3,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import Header3 from "./Header3";
 import { usePathname } from "next/navigation";
-import { useThemeMode } from "@/utils/useThemeMode";
 import _ from "lodash";
 
 export type SiteHeaders = "Header 1" | "Header 2" | "Header 3";
@@ -18,8 +17,6 @@ const SiteHeader = () => {
 	const [shouldShowHeader, setShouldShowHeader] = useState(true);
 	const [lastScrollY, setLastScrollY] = useState(0);
 	const pathname = usePathname();
-
-	useThemeMode();
 
 	// Handle scroll events
 	const handleScroll = useCallback(() => {
