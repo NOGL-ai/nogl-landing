@@ -51,8 +51,10 @@ const MapContainer: FC<MapContainerProps> = ({
 					>
 						<div
 							key={item.id}
-							className={`p-2 rounded-lg border ${
-								currentHoverID === item.id ? 'bg-blue-500 text-white' : 'bg-white'
+							className={`rounded-lg border p-2 ${
+								currentHoverID === item.id
+									? "bg-blue-500 text-white"
+									: "bg-white"
 							}`}
 						>
 							{item.title}

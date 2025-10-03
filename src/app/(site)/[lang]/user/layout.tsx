@@ -9,9 +9,9 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 
 	return (
 		<>
-			<main className='min-h-screen bg-gray-2 dark:bg-[#151F34]'>
+			<main className='bg-gray-2 min-h-screen dark:bg-[#151F34]'>
 				<aside
-					className={`fixed left-0 top-0 z-[999] h-screen w-[290px] overflow-y-auto bg-white duration-300 dark:bg-gray-dark ${
+					className={`dark:bg-gray-dark fixed left-0 top-0 z-[999] h-screen w-[290px] overflow-y-auto bg-white duration-300 ${
 						openSidebar ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
 					}`}
 				>
@@ -19,7 +19,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 				</aside>
 				<div
 					onClick={() => setOpenSidebar(false)}
-					className={`fixed inset-0 z-[99] h-screen w-full bg-dark/80 lg:hidden ${
+					className={`bg-dark/80 fixed inset-0 z-[99] h-screen w-full lg:hidden ${
 						openSidebar ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
 					}`}
 				></div>

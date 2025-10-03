@@ -53,7 +53,7 @@ export async function POST(request: Request) {
 		});
 
 		return NextResponse.json("Password Updated", { status: 200 });
-	} catch (error) {
+	} catch {
 		return new NextResponse("Something went wrong", { status: 500 });
 	}
 }

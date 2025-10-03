@@ -25,7 +25,7 @@ const Checkbox: FC<CheckboxProps> = ({
 				id={name}
 				name={name}
 				type='checkbox'
-				className='focus:ring-action-primary text-primary-500 dark:checked:bg-primary-500 focus:ring-primary-500 h-6 w-6 rounded border-neutral-500 border-primary  bg-white dark:bg-neutral-700'
+				className='focus:ring-action-primary text-primary-500 dark:checked:bg-primary-500 focus:ring-primary-500 border-primary h-6 w-6 rounded border-neutral-500  bg-white dark:bg-neutral-700'
 				defaultChecked={defaultChecked}
 				onChange={(e) => onChange && onChange(e.target.checked)}
 			/>

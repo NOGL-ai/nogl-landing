@@ -16,7 +16,7 @@ const AccountMenu = ({ user }: any) => {
 
 	return (
 		<>
-			<div className='mb-2 flex items-center border-b border-stroke px-6 pb-3.5 dark:border-stroke-dark'>
+			<div className='border-stroke dark:border-stroke-dark mb-2 flex items-center border-b px-6 pb-3.5'>
 				<div className='mr-3'>
 					<img
 						src={profilePic}
@@ -25,10 +25,10 @@ const AccountMenu = ({ user }: any) => {
 					/>
 				</div>
 				<div>
-					<p className='font-satoshi text-base font-medium text-dark dark:text-white'>
+					<p className='font-satoshi text-dark text-base font-medium dark:text-white'>
 						{user?.name}
 					</p>
-					<p className='text-sm text-body dark:text-gray-5'>{user?.email}</p>
+					<p className='text-body dark:text-gray-5 text-sm'>{user?.email}</p>
 				</div>
 			</div>
 			{/* px-2.5 */}
@@ -38,7 +38,7 @@ const AccountMenu = ({ user }: any) => {
 						<li key={item?.id} className='mx-2.5 mb-1'>
 							<Link
 								href={`${item?.path}`}
-								className={`flex w-full items-center gap-2 rounded-lg px-3.5 py-2.5 font-satoshi font-medium text-body hover:bg-gray-2 hover:text-dark dark:hover:bg-primary dark:hover:text-white ${
+								className={`font-satoshi text-body hover:bg-gray-2 hover:text-dark dark:hover:bg-primary flex w-full items-center gap-2 rounded-lg px-3.5 py-2.5 font-medium dark:hover:text-white ${
 									pathname === item?.path
 										? "bg-gray-2 text-dark dark:bg-primary dark:text-white"
 										: ""
@@ -49,9 +49,9 @@ const AccountMenu = ({ user }: any) => {
 							</Link>
 						</li>
 					))}
-					<li className='mt-2.5 border-t border-stroke pt-2.5 dark:border-stroke-dark'>
+					<li className='border-stroke dark:border-stroke-dark mt-2.5 border-t pt-2.5'>
 						<button className='mx-2.5 w-[92%]' onClick={() => signOut()}>
-							<span className='flex w-full items-center gap-2 rounded-lg px-3.5 py-2 font-satoshi font-medium text-body hover:bg-gray-2 hover:text-dark dark:hover:bg-primary dark:hover:text-white'>
+							<span className='font-satoshi text-body hover:bg-gray-2 hover:text-dark dark:hover:bg-primary flex w-full items-center gap-2 rounded-lg px-3.5 py-2 font-medium dark:hover:text-white'>
 								<span>
 									<svg
 										width='18'

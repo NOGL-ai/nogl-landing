@@ -86,12 +86,12 @@ export default function FaqItem({
 
 	return (
 		<>
-			<div className='rounded-lg bg-white shadow-1 dark:bg-gray-dark'>
+			<div className='shadow-1 dark:bg-gray-dark rounded-lg bg-white'>
 				<button
 					onClick={() => {
 						handleFaqToggle(id);
 					}}
-					className={`text-medium flex w-full items-center justify-between px-6 py-4 text-left text-lg text-dark dark:text-white md:text-xl`}
+					className={`text-medium text-dark flex w-full items-center justify-between px-6 py-4 text-left text-lg md:text-xl dark:text-white`}
 				>
 					{question}
 
@@ -123,7 +123,7 @@ export default function FaqItem({
 				>
 					<div className={`overflow-hidden transition-all duration-300`}>
 						<p
-							className={`border-t border-stroke px-6 py-7 dark:border-stroke-dark`}
+							className={`border-stroke dark:border-stroke-dark border-t px-6 py-7`}
 						>
 							{answer}
 						</p>

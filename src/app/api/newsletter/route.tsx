@@ -26,7 +26,7 @@ export async function POST(req: Request) {
 		});
 		const received = await response.json();
 		return NextResponse.json(received);
-	} catch (error) {
+	} catch {
 		return NextResponse.json(
 			{ error: "Something went wrong" },
 			{ status: 500 }

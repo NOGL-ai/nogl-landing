@@ -6,8 +6,8 @@ const NotFound = () => {
 	return (
 		<section className='py-17.5 lg:py-22.5 xl:py-27.5 2xl:py-37.5'>
 			<div className='mx-auto w-full max-w-[575px] px-4 sm:px-8 xl:px-0'>
-				<div className='relative z-1 pt-[187px]'>
-					<div className='absolute left-0 top-0 -z-1'>
+				<div className='z-1 relative pt-[187px]'>
+					<div className='-z-1 absolute left-0 top-0'>
 						<Image
 							src='/images/support/grid-404.svg'
 							alt='grid'
@@ -18,7 +18,7 @@ const NotFound = () => {
 					</div>
 
 					<div className='text-center'>
-						<div className='mx-auto mb-10 flex h-22.5 w-full max-w-[90px] items-center justify-center rounded-full border border-stroke bg-white shadow-error'>
+						<div className='h-22.5 border-stroke shadow-error mx-auto mb-10 flex w-full max-w-[90px] items-center justify-center rounded-full border bg-white'>
 							<svg
 								width='50'
 								height='51'
@@ -43,7 +43,7 @@ const NotFound = () => {
 							</svg>
 						</div>
 
-						<h1 className='mb-5 font-satoshi text-heading-4 font-bold -tracking-[1.6px] text-black dark:text-white lg:text-heading-2'>
+						<h1 className='font-satoshi text-heading-4 lg:text-heading-2 mb-5 font-bold -tracking-[1.6px] text-black dark:text-white'>
 							Page not found
 						</h1>
 
@@ -55,7 +55,7 @@ const NotFound = () => {
 						<div className='flex flex-wrap items-center justify-center gap-3'>
 							<Link
 								href='/'
-								className='inline-flex items-center gap-2 rounded-full border border-stroke bg-white px-6 py-3 font-satoshi font-medium text-black duration-200 ease-out hover:bg-gray'
+								className='border-stroke font-satoshi hover:bg-gray inline-flex items-center gap-2 rounded-full border bg-white px-6 py-3 font-medium text-black duration-200 ease-out'
 							>
 								<svg
 									className='fill-current'
@@ -76,7 +76,7 @@ const NotFound = () => {
 
 							<Link
 								href='/'
-								className='inline-flex rounded-full bg-primary px-7 py-3 font-satoshi font-medium text-white hover:bg-primary-dark'
+								className='bg-primary font-satoshi hover:bg-primary-dark inline-flex rounded-full px-7 py-3 font-medium text-white'
 							>
 								Take me home
 							</Link>

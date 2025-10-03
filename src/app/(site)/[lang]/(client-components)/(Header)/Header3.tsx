@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useRef } from "react";
 import Logo from "@/shared/Logo";
 import useOutsideAlerter from "@/hooks/useOutsideAlerter";
 import NotifyDropdown from "./NotifyDropdown";
@@ -21,7 +21,7 @@ interface Header3Props {
 
 let WIN_PREV_POSITION = 0;
 if (typeof window !== "undefined") {
-	WIN_PREV_POSITION = (window as any).pageYOffset;
+	WIN_PREV_POSITION = window.pageYOffset;
 }
 
 const Header3: FC<Header3Props> = ({ className = "" }) => {
@@ -107,14 +107,18 @@ const Header3: FC<Header3Props> = ({ className = "" }) => {
 			>
 				<div className='flex items-center text-sm font-medium'>
 					<span
-						onClick={() => {/* setShowHeroSearch("location") */}}
+						onClick={() => {
+							/* setShowHeroSearch("location") */
+						}}
 						className='block cursor-pointer py-3 pl-5 pr-4'
 					>
 						Location
 					</span>
 					<span className='h-5 w-[1px] bg-neutral-300 dark:bg-neutral-700'></span>
 					<span
-						onClick={() => {/* setShowHeroSearch("dates") */}}
+						onClick={() => {
+							/* setShowHeroSearch("dates") */
+						}}
 						className='block cursor-pointer px-4 py-3 '
 					>
 						Check In
@@ -132,7 +136,9 @@ const Header3: FC<Header3Props> = ({ className = "" }) => {
 
 				<div
 					className='ml-auto flex-shrink-0 cursor-pointer pr-2'
-					onClick={() => {/* setShowHeroSearch("location") */}}
+					onClick={() => {
+						/* setShowHeroSearch("location") */
+					}}
 				>
 					<span className='bg-primary-6000 flex h-8 w-8 items-center justify-center rounded-full  text-white'>
 						<MagnifyingGlassIcon className='h-5 w-5' />
@@ -147,7 +153,8 @@ const Header3: FC<Header3Props> = ({ className = "" }) => {
 			<div
 				className={`nc-Header nc-Header-3 fixed inset-0 top-0 z-40 bg-black/30 transition-opacity will-change-[opacity] dark:bg-black/50 ${
 					false // showHeroSearch
-						? "visible" : "pointer-events-none invisible opacity-0"
+						? "visible"
+						: "pointer-events-none invisible opacity-0"
 				}`}
 			></div>
 			{false /* showHeroSearch */ && <div id='nc-Header-3-anchor'></div>}
@@ -181,11 +188,11 @@ const Header3: FC<Header3Props> = ({ className = "" }) => {
 						</div>
 
 						{/* NAV */}
-						<div className='relative z-10 hidden flex-1 justify-end text-neutral-700 dark:text-neutral-100 md:flex'>
+						<div className='relative z-10 hidden flex-1 justify-end text-neutral-700 md:flex dark:text-neutral-100'>
 							<div className=' flex space-x-1'>
 								<Link
 									href={"/add-listing/1" as Route<string>}
-									className='hidden items-center self-center rounded-full border border-neutral-300 px-4 py-2 text-sm font-medium text-gray-700 hover:border-neutral-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 dark:border-neutral-700 dark:text-neutral-300 xl:inline-flex'
+									className='hidden items-center self-center rounded-full border border-neutral-300 px-4 py-2 text-sm font-medium text-gray-700 hover:border-neutral-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 xl:inline-flex dark:border-neutral-700 dark:text-neutral-300'
 								>
 									List your property
 								</Link>

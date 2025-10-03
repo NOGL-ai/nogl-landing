@@ -57,8 +57,8 @@ const FlightCard: FC<FlightCardProps> = ({ className = "", data }) => {
 							</div>
 						</div>
 					</div>
-					<div className='border-l border-neutral-200 dark:border-neutral-700 md:mx-6 lg:mx-10'></div>
-					<ul className='space-y-1 text-sm text-neutral-500 dark:text-neutral-400 md:space-y-2'>
+					<div className='border-l border-neutral-200 md:mx-6 lg:mx-10 dark:border-neutral-700'></div>
+					<ul className='space-y-1 text-sm text-neutral-500 md:space-y-2 dark:text-neutral-400'>
 						<li>Trip time: 7 hours 45 minutes</li>
 						<li>ANA · Business class · Boeing 787 · NH 847</li>
 					</ul>
@@ -70,11 +70,11 @@ const FlightCard: FC<FlightCardProps> = ({ className = "", data }) => {
 	const renderDetail = () => {
 		if (!isOpen) return null;
 		return (
-			<div className='rounded-2xl border border-neutral-200 p-4 dark:border-neutral-700 md:p-8 '>
+			<div className='rounded-2xl border border-neutral-200 p-4 md:p-8 dark:border-neutral-700 '>
 				{renderDetailTop()}
 				<div className='my-7 space-y-5 md:my-10 md:pl-24'>
 					<div className='border-t border-neutral-200 dark:border-neutral-700' />
-					<div className='text-sm text-neutral-700 dark:text-neutral-300 md:text-base'>
+					<div className='text-sm text-neutral-700 md:text-base dark:text-neutral-300'>
 						Transit time: 15 hours 45 minutes - Bangkok (BKK)
 					</div>
 					<div className='border-t border-neutral-200 dark:border-neutral-700' />
@@ -87,14 +87,14 @@ const FlightCard: FC<FlightCardProps> = ({ className = "", data }) => {
 	return (
 		<div
 			className={`nc-FlightCardgroup relative space-y-6 overflow-hidden rounded-2xl border border-neutral-100 bg-white
-     p-4 transition-shadow hover:shadow-lg dark:border-neutral-800 dark:bg-neutral-900 sm:p-6 ${className}`}
+     p-4 transition-shadow hover:shadow-lg sm:p-6 dark:border-neutral-800 dark:bg-neutral-900 ${className}`}
 		>
 			<div className={` relative sm:pr-20  ${className}`}>
 				{/*  eslint-disable-next-line jsx-a11y/anchor-has-content */}
 				<a href='##' className='absolute inset-0' />
 
 				<span
-					className={`absolute bottom-0 right-0 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-neutral-50 dark:bg-neutral-800 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 ${
+					className={`absolute bottom-0 right-0 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-neutral-50 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 dark:bg-neutral-800 ${
 						isOpen ? "-rotate-180 transform" : ""
 					}`}
 					onClick={() => setIsOpen(!isOpen)}

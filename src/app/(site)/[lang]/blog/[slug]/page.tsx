@@ -54,7 +54,7 @@ export async function generateMetadata({ params }: Props) {
 				siteName: authorName,
 				images: [
 					{
-						url: imageBuilder(post.feature_image || '').url(),
+						url: imageBuilder(post.feature_image || "").url(),
 						width: 1800,
 						height: 1600,
 						alt: post.title,
@@ -70,7 +70,7 @@ export async function generateMetadata({ params }: Props) {
 				description: `${post.excerpt?.slice(0, 136) || post.title?.slice(0, 136) || "Read more about this post"}...`,
 				creator: `@${authorName}`,
 				site: `@${authorName}`,
-				images: [imageBuilder(post?.feature_image || '').url()],
+				images: [imageBuilder(post?.feature_image || "").url()],
 				url: `${siteURL}/blog/${post?.slug}`,
 			},
 		};
@@ -98,10 +98,10 @@ const SingleBlog = async ({ params }: Props) => {
 	return (
 		<main>
 			{/* <!-- ===== Blog Details Section Start ===== --> */}
-			<section className='lg:ub-pb-22.5 relative z-1 overflow-hidden pb-17.5 pt-35 xl:pb-27.5'>
+			<section className='lg:ub-pb-22.5 z-1 pb-17.5 pt-35 xl:pb-27.5 relative overflow-hidden'>
 				{/* <!-- bg shapes --> */}
 				<div>
-					<div className='absolute left-0 top-0 -z-1'>
+					<div className='-z-1 absolute left-0 top-0'>
 						<Image
 							src='/images/blog/blog-shape-01.svg'
 							alt='shape'
@@ -109,7 +109,7 @@ const SingleBlog = async ({ params }: Props) => {
 							height={680}
 						/>
 					</div>
-					<div className='absolute right-0 top-0 -z-1'>
+					<div className='-z-1 absolute right-0 top-0'>
 						<Image
 							src='/images/blog/blog-shape-02.svg'
 							alt='shape'
@@ -120,11 +120,11 @@ const SingleBlog = async ({ params }: Props) => {
 				</div>
 
 				<div className='mx-auto w-full max-w-[1170px] px-4 sm:px-8 xl:px-0'>
-					<div className='mx-auto mb-12.5 w-full max-w-[770px] text-center'>
+					<div className='mb-12.5 mx-auto w-full max-w-[770px] text-center'>
 						<div className='mb-5 flex flex-wrap items-center justify-center gap-6'>
 							<Link
 								href={`/blog/author/${post?.author?.slug?.current}`}
-								className='flex items-center gap-2 font-satoshi font-medium -tracking-[0.2px] text-black dark:text-gray-5'
+								className='font-satoshi dark:text-gray-5 flex items-center gap-2 font-medium -tracking-[0.2px] text-black'
 							>
 								<svg
 									className='fill-current'
@@ -151,7 +151,7 @@ const SingleBlog = async ({ params }: Props) => {
 
 							<Link
 								href={`/blog/author/${post?.author?.slug?.current}`}
-								className='flex items-center gap-2 font-satoshi font-medium -tracking-[0.2px] text-black dark:text-gray-5'
+								className='font-satoshi dark:text-gray-5 flex items-center gap-2 font-medium -tracking-[0.2px] text-black'
 							>
 								<svg
 									className='fill-current'
@@ -180,7 +180,7 @@ const SingleBlog = async ({ params }: Props) => {
 									.join(" ")}
 							</Link>
 						</div>
-						<h2 className='mb-5.5 font-satoshi text-3xl font-bold -tracking-[1.6px] text-black dark:text-white lg:text-heading-4 xl:text-heading-3'>
+						<h2 className='mb-5.5 font-satoshi lg:text-heading-4 xl:text-heading-3 text-3xl font-bold -tracking-[1.6px] text-black dark:text-white'>
 							{post.title}
 						</h2>
 
@@ -190,7 +190,7 @@ const SingleBlog = async ({ params }: Props) => {
 					<div className='mb-12.5 overflow-hidden rounded-[15px]'>
 						<Image
 							className='rounded-[15px]'
-							src={imageBuilder(post.feature_image || '').url() as string}
+							src={imageBuilder(post.feature_image || "").url() as string}
 							alt={post.title}
 							width={1170}
 							height={540}
@@ -202,7 +202,7 @@ const SingleBlog = async ({ params }: Props) => {
 							<RenderBodyContent post={post as any} />
 						</div>
 
-						<div className='mt-10 flex flex-wrap items-center justify-between gap-10 border-t border-stroke pt-9 dark:border-stroke-dark'>
+						<div className='border-stroke dark:border-stroke-dark mt-10 flex flex-wrap items-center justify-between gap-10 border-t pt-9'>
 							<div className='flex items-center gap-5'>
 								<div className='h-15 w-full max-w-[60px] overflow-hidden rounded-full'>
 									<Link href={`/blog/author/${post?.author?.slug?.current}`}>
@@ -218,11 +218,11 @@ const SingleBlog = async ({ params }: Props) => {
 								<div className='w-full'>
 									<Link
 										href={`/blog/author/${post?.author?.slug?.current}`}
-										className='block font-satoshi text-lg font-medium capitalize text-black dark:text-white'
+										className='font-satoshi block text-lg font-medium capitalize text-black dark:text-white'
 									>
 										{post?.author?.name}
 									</Link>
-									<span className='block dark:text-gray-5'>
+									<span className='dark:text-gray-5 block'>
 										{" "}
 										{post?.author?.bio}{" "}
 									</span>

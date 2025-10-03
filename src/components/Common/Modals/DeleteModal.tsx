@@ -31,7 +31,7 @@ export default function DeleteModal(props: any) {
 		<>
 			{showDeleteModal && (
 				<div
-					className={`py-7.6 fixed left-0 top-0 z-99999 flex h-screen w-full items-center justify-center bg-black/90 px-4 dark:bg-dark/70 sm:px-8 `}
+					className={`py-7.6 z-99999 dark:bg-dark/70 fixed left-0 top-0 flex h-screen w-full items-center justify-center bg-black/90 px-4 sm:px-8 `}
 				>
 					<div
 						ref={divRef}
@@ -39,8 +39,8 @@ export default function DeleteModal(props: any) {
 					>
 						<ModalCloseButton closeModal={setShowDeleteModal} />
 
-						<div className='flex flex-wrap gap-5.5 border-b border-stroke p-4 dark:border-stroke-dark sm:p-7.5 xl:p-10'>
-							<div className='flex h-16.5 w-16.5 items-center justify-center rounded-lg bg-red-light-6'>
+						<div className='gap-5.5 border-stroke dark:border-stroke-dark sm:p-7.5 flex flex-wrap border-b p-4 xl:p-10'>
+							<div className='h-16.5 w-16.5 bg-red-light-6 flex items-center justify-center rounded-lg'>
 								<svg
 									width='38'
 									height='39'
@@ -58,7 +58,7 @@ export default function DeleteModal(props: any) {
 							</div>
 
 							<div className='text-left'>
-								<h2 className='mb-2 text-xl font-bold text-black dark:text-white sm:text-heading-6'>
+								<h2 className='sm:text-heading-6 mb-2 text-xl font-bold text-black dark:text-white'>
 									{/* Delete Template */}
 									{deleteText}
 								</h2>
@@ -68,10 +68,10 @@ export default function DeleteModal(props: any) {
 							</div>
 						</div>
 
-						<div className='flex items-center justify-end gap-3 p-4 sm:p-4.5'>
+						<div className='sm:p-4.5 flex items-center justify-end gap-3 p-4'>
 							<button
 								onClick={handleDelete}
-								className='bg-input inline-flex items-center rounded-lg border border-stroke px-7 py-2 font-medium duration-200 ease-out hover:bg-slate-100 dark:border-stroke-dark dark:bg-white/40 dark:text-white dark:hover:bg-white/35'
+								className='bg-input border-stroke dark:border-stroke-dark inline-flex items-center rounded-lg border px-7 py-2 font-medium duration-200 ease-out hover:bg-slate-100 dark:bg-white/40 dark:text-white dark:hover:bg-white/35'
 							>
 								<svg
 									width='16'
@@ -112,7 +112,7 @@ export default function DeleteModal(props: any) {
 							</button>
 							<button
 								onClick={() => setShowDeleteModal(false)}
-								className=' inline-flex items-center rounded-lg bg-black px-7 py-2 font-medium text-white duration-200 ease-out hover:bg-slate-700 dark:bg-white dark:text-dark dark:hover:bg-white/90'
+								className=' dark:text-dark inline-flex items-center rounded-lg bg-black px-7 py-2 font-medium text-white duration-200 ease-out hover:bg-slate-700 dark:bg-white dark:hover:bg-white/90'
 							>
 								<svg
 									width='20'

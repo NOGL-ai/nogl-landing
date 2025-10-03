@@ -76,16 +76,16 @@ export default function ResetPassword({ token }: { token: string }) {
 		<>
 			<div className='mx-auto w-full max-w-[400px] pb-20 pt-40'>
 				<div className='mb-7.5 text-center'>
-					<h3 className='mb-4 font-satoshi text-heading-5 font-bold text-dark dark:text-white'>
+					<h3 className='font-satoshi text-heading-5 text-dark mb-4 font-bold dark:text-white'>
 						Create New Password
 					</h3>
-					<p className='text-base dark:text-gray-5'>
+					<p className='dark:text-gray-5 text-base'>
 						Create new password to save your account
 					</p>
 				</div>
 
 				<form onSubmit={handleSubmit}>
-					<div className='mb-5 space-y-4.5'>
+					<div className='space-y-4.5 mb-5'>
 						<InputGroup
 							label='New password'
 							placeholder='Password'
@@ -108,11 +108,11 @@ export default function ResetPassword({ token }: { token: string }) {
 						<FormButton height='50px'>Create Password</FormButton>
 					</div>
 
-					<p className='text-center font-satoshi text-base font-medium text-dark dark:text-white'>
+					<p className='font-satoshi text-dark text-center text-base font-medium dark:text-white'>
 						Already have an account?{" "}
 						<Link
 							href='/auth/signin'
-							className='ml-1 inline-block text-primary'
+							className='text-primary ml-1 inline-block'
 						>
 							Sign In →
 						</Link>

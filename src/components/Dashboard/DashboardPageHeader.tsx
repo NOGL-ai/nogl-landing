@@ -1,98 +1,100 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { 
-  FullscreenIcon, 
-  CustomizeIcon, 
-  PaintBucketIcon 
-} from './DashboardIcons';
+import React, { useState } from "react";
+import {
+	FullscreenIcon,
+	CustomizeIcon,
+	PaintBucketIcon,
+} from "./DashboardIcons";
 
 interface DashboardPageHeaderProps {
-  title?: string;
-  onColorToggle?: () => void;
-  onFullscreenToggle?: () => void;
-  onEditWidgets?: () => void;
-  className?: string;
+	title?: string;
+	onColorToggle?: () => void;
+	onFullscreenToggle?: () => void;
+	onEditWidgets?: () => void;
+	className?: string;
 }
 
 export const DashboardPageHeader: React.FC<DashboardPageHeaderProps> = ({
-  title = 'Dashboard',
-  onColorToggle,
-  onFullscreenToggle,
-  onEditWidgets,
-  className = '',
+	title = "Dashboard",
+	onColorToggle,
+	onFullscreenToggle,
+	onEditWidgets,
+	className = "",
 }) => {
-  const [isFullscreen, setIsFullscreen] = useState(false);
+	const [isFullscreen, setIsFullscreen] = useState(false);
 
-  const handleFullscreenToggle = () => {
-    setIsFullscreen(!isFullscreen);
-    if (onFullscreenToggle) {
-      onFullscreenToggle();
-    }
-    
-    // Native fullscreen API
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
-    } else {
-      document.exitFullscreen();
-    }
-  };
+	const handleFullscreenToggle = () => {
+		setIsFullscreen(!isFullscreen);
+		if (onFullscreenToggle) {
+			onFullscreenToggle();
+		}
 
-  return (
-    <div className={`flex flex-col justify-center items-start gap-6 w-full min-h-14 ${className}`}>
-      <div className="flex flex-col sm:flex-row p-3 sm:items-center gap-3 self-stretch rounded-xl border border-[#F2F2F2] bg-white dark:bg-gray-800 dark:border-gray-700 relative">
-        <div className="flex items-start gap-1.5 flex-1 relative">
-          <div className="flex flex-col items-start gap-1 flex-1 relative">
-            <h1 className="self-stretch text-[#14151A] dark:text-white font-inter text-xl sm:text-2xl font-semibold leading-7 sm:leading-8 tracking-[-0.336px] relative">
-              {title}
-            </h1>
-          </div>
-        </div>
-        
-        <div className="flex items-center gap-2 sm:gap-[5px] relative">
-          {/* Color Button */}
-          <div className="hidden sm:flex items-center gap-[4.375px] relative">
-            <div className="flex w-3.5 h-3.5 justify-center items-center relative">
-              <div className="flex w-4 h-4 justify-center items-center flex-shrink-0 absolute left-[-1px] top-[-1px]">
-                <PaintBucketIcon />
-              </div>
-            </div>
-            <button
-              onClick={onColorToggle}
-              className="text-[#14151A] dark:text-white text-center font-inter text-sm font-medium leading-5 tracking-[-0.07px] hover:opacity-70 transition-opacity"
-            >
-              Color
-            </button>
-          </div>
+		// Native fullscreen API
+		if (!document.fullscreenElement) {
+			document.documentElement.requestFullscreen();
+		} else {
+			document.exitFullscreen();
+		}
+	};
 
-          {/* Actions Container */}
-          <div className="flex items-start gap-2 relative">
-            {/* Fullscreen Button */}
-            <button
-              onClick={handleFullscreenToggle}
-              className="flex p-2 px-2.5 justify-center items-center gap-0.5 rounded-[5px] bg-[rgba(10,15,41,0.04)] dark:bg-gray-700 hover:bg-[rgba(10,15,41,0.08)] dark:hover:bg-gray-600 transition-colors"
-              title="Toggle Fullscreen"
-            >
-              <FullscreenIcon />
-            </button>
+	return (
+		<div
+			className={`flex min-h-14 w-full flex-col items-start justify-center gap-6 ${className}`}
+		>
+			<div className='relative flex flex-col gap-3 self-stretch rounded-xl border border-[#F2F2F2] bg-white p-3 sm:flex-row sm:items-center dark:border-gray-700 dark:bg-gray-800'>
+				<div className='relative flex flex-1 items-start gap-1.5'>
+					<div className='relative flex flex-1 flex-col items-start gap-1'>
+						<h1 className='font-inter relative self-stretch text-xl font-semibold leading-7 tracking-[-0.336px] text-[#14151A] sm:text-2xl sm:leading-8 dark:text-white'>
+							{title}
+						</h1>
+					</div>
+				</div>
 
-            {/* Edit Widgets Button */}
-            <button
-              onClick={onEditWidgets}
-              className="flex w-auto sm:w-[131px] h-8 p-1.5 px-2.5 justify-center items-center gap-0.5 rounded-[5px] border border-[#E2E4E9] dark:border-gray-600 bg-white dark:bg-gray-700 shadow-[0_1px_2px_0_rgba(20,21,26,0.05)] hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
-            >
-              <div className="flex w-4 h-4 p-[1.333px] justify-center items-center flex-shrink-0">
-                <CustomizeIcon />
-              </div>
-              <span className="hidden sm:inline text-[#14151A] dark:text-white text-center font-inter text-sm font-medium leading-5 tracking-[-0.07px]">
-                Edit Widgets
-              </span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+				<div className='relative flex items-center gap-2 sm:gap-[5px]'>
+					{/* Color Button */}
+					<div className='relative hidden items-center gap-[4.375px] sm:flex'>
+						<div className='relative flex h-3.5 w-3.5 items-center justify-center'>
+							<div className='absolute left-[-1px] top-[-1px] flex h-4 w-4 flex-shrink-0 items-center justify-center'>
+								<PaintBucketIcon />
+							</div>
+						</div>
+						<button
+							onClick={onColorToggle}
+							className='font-inter text-center text-sm font-medium leading-5 tracking-[-0.07px] text-[#14151A] transition-opacity hover:opacity-70 dark:text-white'
+						>
+							Color
+						</button>
+					</div>
+
+					{/* Actions Container */}
+					<div className='relative flex items-start gap-2'>
+						{/* Fullscreen Button */}
+						<button
+							onClick={handleFullscreenToggle}
+							className='flex items-center justify-center gap-0.5 rounded-[5px] bg-[rgba(10,15,41,0.04)] p-2 px-2.5 transition-colors hover:bg-[rgba(10,15,41,0.08)] dark:bg-gray-700 dark:hover:bg-gray-600'
+							title='Toggle Fullscreen'
+						>
+							<FullscreenIcon />
+						</button>
+
+						{/* Edit Widgets Button */}
+						<button
+							onClick={onEditWidgets}
+							className='flex h-8 w-auto items-center justify-center gap-0.5 rounded-[5px] border border-[#E2E4E9] bg-white p-1.5 px-2.5 shadow-[0_1px_2px_0_rgba(20,21,26,0.05)] transition-colors hover:bg-gray-50 sm:w-[131px] dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600'
+						>
+							<div className='flex h-4 w-4 flex-shrink-0 items-center justify-center p-[1.333px]'>
+								<CustomizeIcon />
+							</div>
+							<span className='font-inter hidden text-center text-sm font-medium leading-5 tracking-[-0.07px] text-[#14151A] sm:inline dark:text-white'>
+								Edit Widgets
+							</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
 };
 
 export default DashboardPageHeader;

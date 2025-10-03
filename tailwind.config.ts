@@ -1,14 +1,14 @@
 const config = {
-  content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/styles/**/*.{css,scss}',
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-}
+	content: [
+		"./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+		"./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+		"./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+		"./src/styles/**/*.{css,scss}",
+	],
+	theme: {
+		extend: {},
+	},
+	plugins: [],
+};
 
-export default config
+export default config;

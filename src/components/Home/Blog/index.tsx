@@ -18,7 +18,10 @@ const Blog = async ({ dictionary }: BlogProps) => {
 	const posts = await getPosts();
 
 	return (
-		<section className='overflow-hidden py-17.5 lg:py-22.5 xl:py-27.5 backdrop-blur-sm' id='blog'>
+		<section
+			className='py-17.5 lg:py-22.5 xl:py-27.5 overflow-hidden backdrop-blur-sm'
+			id='blog'
+		>
 			{/* <!-- section title --> */}
 			<SectionHeader
 				title={dictionary.blog.title}
@@ -27,9 +30,12 @@ const Blog = async ({ dictionary }: BlogProps) => {
 
 			<div className='mx-auto w-full max-w-[1170px] px-4 sm:px-8 xl:px-0'>
 				{posts?.length > 0 ? (
-					<div className='grid grid-cols-1 gap-7.5 sm:grid-cols-2 lg:grid-cols-3'>
+					<div className='gap-7.5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'>
 						{posts.slice(0, 3).map((item: any, key: number) => (
-							<div key={key} className="bg-white/5 backdrop-blur-sm border border-gray-800 rounded-lg">
+							<div
+								key={key}
+								className='rounded-lg border border-gray-800 bg-white/5 backdrop-blur-sm'
+							>
 								<BlogItem blog={item} />
 							</div>
 						))}
@@ -40,10 +46,10 @@ const Blog = async ({ dictionary }: BlogProps) => {
 			</div>
 
 			{posts?.length > 3 && (
-				<div className='text-center mt-10'>
+				<div className='mt-10 text-center'>
 					<a
 						href='/blog'
-						className='inline-flex items-center justify-center rounded-full bg-primary px-7 py-3 font-satoshi text-base font-medium text-white duration-300 hover:bg-primary-dark'
+						className='bg-primary font-satoshi hover:bg-primary-dark inline-flex items-center justify-center rounded-full px-7 py-3 text-base font-medium text-white duration-300'
 					>
 						{dictionary.blog.viewAllText}
 					</a>

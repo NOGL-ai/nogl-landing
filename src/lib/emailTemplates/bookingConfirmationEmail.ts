@@ -1,37 +1,40 @@
 interface BookingDetails {
-  date: string;
-  includeRecording: boolean;
-  recordingCount: number;
-  sessionName: string;
-  participants: number;
-  totalAmount: number;
+	date: string;
+	includeRecording: boolean;
+	recordingCount: number;
+	sessionName: string;
+	participants: number;
+	totalAmount: number;
 }
 
 interface BookingConfirmationParams {
-  url: string;
-  email: string;
-  bookingDetails: BookingDetails;
-  name?: string;
+	url: string;
+	email: string;
+	bookingDetails: BookingDetails;
+	name?: string;
 }
 
 export function getBookingConfirmationEmail(params: BookingConfirmationParams) {
-  const { url, email, bookingDetails, name } = params;
+	const { url, bookingDetails, name } = params;
 
-  // Sanitize URL
-  const escapedUrl = url;
-  const userName = name ? name.trim() : "";
-  const bookingDate = new Date(bookingDetails.date).toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  });
+	// Sanitize URL
+	const escapedUrl = url;
+	const userName = name ? name.trim() : "";
+	const bookingDate = new Date(bookingDetails.date).toLocaleDateString(
+		"en-US",
+		{
+			weekday: "long",
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+			hour: "2-digit",
+			minute: "2-digit",
+		}
+	);
 
-  return {
-    subject: `🎉 Booking Confirmation - Your Session is Confirmed!`,
-    html: `
+	return {
+		subject: `🎉 Booking Confirmation - Your Session is Confirmed!`,
+		html: `
       <div style="max-width:600px;margin:0 auto;padding:20px;font-family:Arial,sans-serif;color:#333;">
         <h1 style="color:#333;text-align:center;">Booking Confirmed${userName ? `, ${userName}` : ""}! 🎉</h1>
         
@@ -44,8 +47,8 @@ export function getBookingConfirmationEmail(params: BookingConfirmationParams) {
           <p style="margin:5px 0;"><strong>Session:</strong> ${bookingDetails.sessionName}</p>
           <p style="margin:5px 0;"><strong>Date & Time:</strong> ${bookingDate}</p>
           <p style="margin:5px 0;"><strong>Participants:</strong> ${bookingDetails.participants}</p>
-          ${bookingDetails.includeRecording ? `<p style="margin:5px 0;"><strong>Recording:</strong> Included (${bookingDetails.recordingCount} recording${bookingDetails.recordingCount !== 1 ? 's' : ''})</p>` : ''}
-          ${bookingDetails.totalAmount > 0 ? `<p style="margin:5px 0;"><strong>Total Amount:</strong> $${bookingDetails.totalAmount.toFixed(2)}</p>` : ''}
+          ${bookingDetails.includeRecording ? `<p style="margin:5px 0;"><strong>Recording:</strong> Included (${bookingDetails.recordingCount} recording${bookingDetails.recordingCount !== 1 ? "s" : ""})</p>` : ""}
+          ${bookingDetails.totalAmount > 0 ? `<p style="margin:5px 0;"><strong>Total Amount:</strong> $${bookingDetails.totalAmount.toFixed(2)}</p>` : ""}
         </div>
         
         <div style="text-align:center;margin:30px 0;">
@@ -63,7 +66,7 @@ export function getBookingConfirmationEmail(params: BookingConfirmationParams) {
             <li>You'll receive a reminder email 24 hours before your session</li>
             <li>Make sure to test your camera and microphone beforehand</li>
             <li>Join the session using the link above at the scheduled time</li>
-            ${bookingDetails.includeRecording ? '<li>Your session recording will be available after completion</li>' : ''}
+            ${bookingDetails.includeRecording ? "<li>Your session recording will be available after completion</li>" : ""}
           </ul>
         </div>
         
@@ -88,13 +91,13 @@ export function getBookingConfirmationEmail(params: BookingConfirmationParams) {
         </footer>
       </div>
     `,
-    text: `Booking Confirmation - Your Session is Confirmed!
+		text: `Booking Confirmation - Your Session is Confirmed!
 
 Session: ${bookingDetails.sessionName}
 Date & Time: ${bookingDate}
 Participants: ${bookingDetails.participants}
-${bookingDetails.includeRecording ? `Recording: Included (${bookingDetails.recordingCount} recording${bookingDetails.recordingCount !== 1 ? 's' : ''})` : ''}
-${bookingDetails.totalAmount > 0 ? `Total Amount: $${bookingDetails.totalAmount.toFixed(2)}` : ''}
+${bookingDetails.includeRecording ? `Recording: Included (${bookingDetails.recordingCount} recording${bookingDetails.recordingCount !== 1 ? "s" : ""})` : ""}
+${bookingDetails.totalAmount > 0 ? `Total Amount: $${bookingDetails.totalAmount.toFixed(2)}` : ""}
 
 Access your session: ${url}
 
@@ -102,11 +105,11 @@ What's Next?
 - You'll receive a reminder email 24 hours before your session
 - Make sure to test your camera and microphone beforehand
 - Join the session using the link above at the scheduled time
-${bookingDetails.includeRecording ? '- Your session recording will be available after completion' : ''}
+${bookingDetails.includeRecording ? "- Your session recording will be available after completion" : ""}
 
 If you need to reschedule or have any questions, please contact us at info@nogl.tech.
 
 © ${new Date().getFullYear()} Nogl.ai . All rights reserved.
 🇩🇪 Made in Germany`,
-  };
+	};
 }

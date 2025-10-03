@@ -44,17 +44,26 @@ const getWidgetMenus = (lang: string): WidgetFooterMenu[] => [
 		id: "4",
 		title: "Legal",
 		menus: [
-			{ href: lang === 'de' ? "/datenschutz" : "/privacy-policy", label: lang === 'de' ? "Datenschutzerklärung" : "Privacy Policy" },
-			{ href: lang === 'de' ? "/agb" : "/tos", label: lang === 'de' ? "Allgemeine Geschäftsbedingungen" : "Terms of Service" },
-			...(lang === 'de' ? [{ href: "/impressum", label: "Impressum" }] : []),
+			{
+				href: lang === "de" ? "/datenschutz" : "/privacy-policy",
+				label: lang === "de" ? "Datenschutzerklärung" : "Privacy Policy",
+			},
+			{
+				href: lang === "de" ? "/agb" : "/tos",
+				label:
+					lang === "de"
+						? "Allgemeine Geschäftsbedingungen"
+						: "Terms of Service",
+			},
+			...(lang === "de" ? [{ href: "/impressum", label: "Impressum" }] : []),
 			{ href: "/support", label: "Help Center" },
 		],
 	},
 ];
 
-const Footer: React.FC<{ lang?: string }> = ({ lang = 'en' }) => {
+const Footer: React.FC<{ lang?: string }> = ({ lang = "en" }) => {
 	const widgetMenus = getWidgetMenus(lang);
-	
+
 	const renderWidgetMenuItem = (menu: WidgetFooterMenu, index: number) => {
 		return (
 			<div key={index} className='text-sm'>
@@ -80,7 +89,7 @@ const Footer: React.FC<{ lang?: string }> = ({ lang = 'en' }) => {
 
 	return (
 		<>
-			<div className='nc-Footer relative border-t border-neutral-200 py-24 dark:border-neutral-700 lg:py-28'>
+			<div className='nc-Footer relative border-t border-neutral-200 py-24 lg:py-28 dark:border-neutral-700'>
 				<div className='container grid grid-cols-2 gap-x-5 gap-y-10 sm:gap-x-8 md:grid-cols-4 lg:grid-cols-5 lg:gap-x-10 '>
 					<div className='col-span-2 grid grid-cols-4 gap-5 md:col-span-4 lg:md:col-span-1 lg:flex lg:flex-col'>
 						<div className='col-span-2 md:col-span-1'>

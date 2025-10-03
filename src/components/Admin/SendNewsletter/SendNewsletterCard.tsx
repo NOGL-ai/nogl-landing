@@ -24,7 +24,7 @@ export default function SendNewsletterCard() {
 			<Card>
 				<div className='mb-6 items-end justify-between sm:flex'>
 					<div className='mb-6 sm:mb-0'>
-						<h3 className='mb-1.5 font-satoshi text-custom-2xl font-bold tracking-[-.5px] text-dark dark:text-white'>
+						<h3 className='font-satoshi text-custom-2xl text-dark mb-1.5 font-bold tracking-[-.5px] dark:text-white'>
 							Newsletter Content
 						</h3>
 						<p className='text-body dark:text-gray-4'>
@@ -34,7 +34,7 @@ export default function SendNewsletterCard() {
 					<div className='flex items-center justify-end gap-3.5'>
 						<label
 							htmlFor=''
-							className='flex items-center text-dark dark:text-white'
+							className='text-dark flex items-center dark:text-white'
 						>
 							<span className='pr-2'>
 								<svg
@@ -52,7 +52,7 @@ export default function SendNewsletterCard() {
 									/>
 								</svg>
 							</span>
-							<span className='mr-3 font-satoshi text-base font-medium tracking-[-.2px]'>
+							<span className='font-satoshi mr-3 text-base font-medium tracking-[-.2px]'>
 								Send to:
 							</span>
 
@@ -61,7 +61,7 @@ export default function SendNewsletterCard() {
 									<select
 										name='name'
 										id='select'
-										className='relative h-12 w-full appearance-none rounded-md border border-stroke bg-gray-1 pl-4 pr-10 text-dark outline-none ring-offset-1 duration-300 focus:shadow-input focus:ring-2 focus:ring-primary/20 dark:border-stroke-dark dark:bg-white/5 dark:text-white dark:focus:border-transparent'
+										className='border-stroke bg-gray-1 text-dark focus:shadow-input focus:ring-primary/20 dark:border-stroke-dark relative h-12 w-full appearance-none rounded-md border pl-4 pr-10 outline-none ring-offset-1 duration-300 focus:ring-2 dark:bg-white/5 dark:text-white dark:focus:border-transparent'
 									>
 										<option value='all-users' className='dark:bg-dark'>
 											All Users
@@ -80,7 +80,7 @@ export default function SendNewsletterCard() {
 							</div>
 						</label>
 
-						<button className='flex h-12 items-center justify-center gap-2 rounded-lg bg-primary px-5 font-satoshi text-base font-medium tracking-[-.2px] text-white duration-300 hover:bg-primary-dark'>
+						<button className='bg-primary font-satoshi hover:bg-primary-dark flex h-12 items-center justify-center gap-2 rounded-lg px-5 text-base font-medium tracking-[-.2px] text-white duration-300'>
 							Send
 							<span>
 								<svg

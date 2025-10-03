@@ -3,33 +3,33 @@ import { Card, CardContent } from "@/components/ui/card";
 import ShimmerButton from "@/components/ui/shimmer-button";
 import Link from "next/link";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
-import type { FC } from 'react';
-import type { Route } from 'next';
+import type { FC } from "react";
+import type { Route } from "next";
 
 interface CallToActionProps {
-  dictionary: {
-    callToAction: {
-      title: string;
-      description: string;
-      buttonText: string;
-      buttonUrl: string;
-      testimonial: {
-        heading: string;
-        subheading: string;
-        quote: string;
-        author: string;
-        role: string;
-        waitlistButton: string;
-      };
-    };
-  };
+	dictionary: {
+		callToAction: {
+			title: string;
+			description: string;
+			buttonText: string;
+			buttonUrl: string;
+			testimonial: {
+				heading: string;
+				subheading: string;
+				quote: string;
+				author: string;
+				role: string;
+				waitlistButton: string;
+			};
+		};
+	};
 }
 
 export const CallToAction = ({ dictionary }: CallToActionProps) => {
-  // Commented out Success Stories from Industry Leaders section to prevent performance issues
-  return null;
-  
-  /* Original implementation commented out:
+	// Commented out Success Stories from Industry Leaders section to prevent performance issues
+	return null;
+
+	/* Original implementation commented out:
   if (!dictionary?.callToAction) {
     return null;
   }

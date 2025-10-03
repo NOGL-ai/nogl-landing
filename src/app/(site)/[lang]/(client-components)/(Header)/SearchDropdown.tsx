@@ -23,7 +23,7 @@ const SearchDropdown: FC<Props> = ({ className = "" }) => {
 
 					return (
 						<>
-							<Popover.Button className='flex h-12 w-12 items-center justify-center rounded-full text-2xl text-neutral-700 hover:bg-neutral-100 focus:outline-none dark:text-neutral-300 dark:hover:bg-neutral-800 md:text-[28px]'>
+							<Popover.Button className='flex h-12 w-12 items-center justify-center rounded-full text-2xl text-neutral-700 hover:bg-neutral-100 focus:outline-none md:text-[28px] dark:text-neutral-300 dark:hover:bg-neutral-800'>
 								<i className='las la-search'></i>
 							</Popover.Button>
 

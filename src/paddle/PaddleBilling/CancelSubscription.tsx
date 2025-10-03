@@ -38,7 +38,7 @@ const CancelSubscription = () => {
 	};
 
 	return (
-		<div className='mt-7 flex flex-wrap items-center justify-between gap-2 rounded-lg bg-white p-8 dark:bg-gray-dark'>
+		<div className='dark:bg-gray-dark mt-7 flex flex-wrap items-center justify-between gap-2 rounded-lg bg-white p-8'>
 			<div className='flex gap-5'>
 				<p>
 					Current Plan:
@@ -53,7 +53,7 @@ const CancelSubscription = () => {
 			</div>
 			<button
 				onClick={handleCancel}
-				className='rounded-full border border-[#FDD8D8] bg-[#FEF3F3] px-4 py-2 text-red hover:bg-[#FEEBEB]'
+				className='text-red rounded-full border border-[#FDD8D8] bg-[#FEF3F3] px-4 py-2 hover:bg-[#FEEBEB]'
 			>
 				Cancel Subscription
 			</button>

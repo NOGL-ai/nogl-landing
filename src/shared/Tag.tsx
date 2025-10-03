@@ -12,7 +12,7 @@ export interface TagProps {
 const Tag: FC<TagProps> = ({ className = "", tag, hideCount = false }) => {
 	return (
 		<Link
-			className={`nc-Tag text-neutral-6000 dark:hover:border-neutral-6000 inline-block rounded-lg border border-neutral-100 bg-white px-3 py-2 text-sm hover:border-neutral-200 dark:border-neutral-700 dark:bg-neutral-700 dark:text-neutral-300 md:px-4 md:py-2.5 ${className}`}
+			className={`nc-Tag text-neutral-6000 dark:hover:border-neutral-6000 inline-block rounded-lg border border-neutral-100 bg-white px-3 py-2 text-sm hover:border-neutral-200 md:px-4 md:py-2.5 dark:border-neutral-700 dark:bg-neutral-700 dark:text-neutral-300 ${className}`}
 			href={tag.href as Route}
 		>
 			{`${tag.name}`}

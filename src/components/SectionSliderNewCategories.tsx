@@ -12,8 +12,7 @@ import PrevBtn from "./PrevBtn";
 import NextBtn from "./NextBtn";
 import { variants } from "@/utils/animationVariants";
 import { useWindowSize } from "react-use";
-import { Route } from 'next';
-
+import { Route } from "next";
 
 export interface SectionSliderNewCategoriesProps {
 	className?: string;
@@ -27,72 +26,71 @@ export interface SectionSliderNewCategoriesProps {
 }
 
 const DEMO_CATS: TaxonomyType[] = [
-    {
-        id: "1",
-        href: "/listing-stay-map" as Route,
-        name: "Email Marketing",
-        taxonomy: "category" as const,
-        count: 17288,
-        thumbnail: "/images/SectionSliderNewCategories/email_marketing.jpeg",
-    },
-    {
-        id: "2",
-        href: "/listing-stay-map" as Route,
-        name: "Meta Ads",
-        taxonomy: "category" as const,
-        count: 2118,
-        thumbnail: "/images/SectionSliderNewCategories/meta_ads.jpeg",
-    },
-    {
-        id: "3",
-        href: "/listing-stay-map" as Route,
-        name: "How to Pitch",
-        taxonomy: "category" as const,
-        count: 36612,
-        thumbnail: "/images/SectionSliderNewCategories/how_to_pitch.jpeg",
-    },
-    {
-        id: "4",
-        href: "/listing-session" as Route,
-        name: "B2B Sales",
-        taxonomy: "category" as const,
-        count: 181,
-        thumbnail: "/images/SectionSliderNewCategories/b2b_sales.jpeg",
-    },
-    {
-        id: "5",
-        href: "/listing-session" as Route,
-        name: "SEO/SEA",
-        taxonomy: "category" as const,
-        count: 222,
-        thumbnail: "/images/SectionSliderNewCategories/seo.jpeg",
-    },
-    {
-        id: "6",
-        href: "/listing-session" as Route,
-        name: "Content Marketing",
-        taxonomy: "category" as const,
-        count: 188,
-        thumbnail: "/images/SectionSliderNewCategories/content_marketing.jpeg",
-    },
-    {
-        id: "7",
-        href: "/listing-session" as Route,
-        name: "Social Media Advertising",
-        taxonomy: "category" as const,
-        count: 211,
-        thumbnail: "/images/SectionSliderNewCategories/social_media_marketing.jpg",
-    },
-    {
-        id: "8",
-        href: "/listing-stay-map" as Route,
-        name: "Lead Generation",
-        taxonomy: "category" as const,
-        count: 515,
-        thumbnail: "/images/SectionSliderNewCategories/leads_generation.jpg",
-    },
+	{
+		id: "1",
+		href: "/listing-stay-map" as Route,
+		name: "Email Marketing",
+		taxonomy: "category" as const,
+		count: 17288,
+		thumbnail: "/images/SectionSliderNewCategories/email_marketing.jpeg",
+	},
+	{
+		id: "2",
+		href: "/listing-stay-map" as Route,
+		name: "Meta Ads",
+		taxonomy: "category" as const,
+		count: 2118,
+		thumbnail: "/images/SectionSliderNewCategories/meta_ads.jpeg",
+	},
+	{
+		id: "3",
+		href: "/listing-stay-map" as Route,
+		name: "How to Pitch",
+		taxonomy: "category" as const,
+		count: 36612,
+		thumbnail: "/images/SectionSliderNewCategories/how_to_pitch.jpeg",
+	},
+	{
+		id: "4",
+		href: "/listing-session" as Route,
+		name: "B2B Sales",
+		taxonomy: "category" as const,
+		count: 181,
+		thumbnail: "/images/SectionSliderNewCategories/b2b_sales.jpeg",
+	},
+	{
+		id: "5",
+		href: "/listing-session" as Route,
+		name: "SEO/SEA",
+		taxonomy: "category" as const,
+		count: 222,
+		thumbnail: "/images/SectionSliderNewCategories/seo.jpeg",
+	},
+	{
+		id: "6",
+		href: "/listing-session" as Route,
+		name: "Content Marketing",
+		taxonomy: "category" as const,
+		count: 188,
+		thumbnail: "/images/SectionSliderNewCategories/content_marketing.jpeg",
+	},
+	{
+		id: "7",
+		href: "/listing-session" as Route,
+		name: "Social Media Advertising",
+		taxonomy: "category" as const,
+		count: 211,
+		thumbnail: "/images/SectionSliderNewCategories/social_media_marketing.jpg",
+	},
+	{
+		id: "8",
+		href: "/listing-stay-map" as Route,
+		name: "Lead Generation",
+		taxonomy: "category" as const,
+		count: 515,
+		thumbnail: "/images/SectionSliderNewCategories/leads_generation.jpg",
+	},
 ];
-
 
 const SectionSliderNewCategories: FC<SectionSliderNewCategoriesProps> = ({
 	heading = "Suggestions for discovery",

@@ -19,7 +19,7 @@ const Dropdown = ({
 		<div className='group relative'>
 			<button
 				onClick={() => setDropdown(!dropdown)}
-				className='flex w-full items-center justify-between gap-1.5 rounded-full px-[14px] py-[3px] font-satoshi font-medium text-dark group-hover:bg-primary/5 group-hover:text-primary dark:text-gray-5 dark:group-hover:bg-white/5 dark:group-hover:text-white'
+				className='font-satoshi text-dark group-hover:bg-primary/5 group-hover:text-primary dark:text-gray-5 flex w-full items-center justify-between gap-1.5 rounded-full px-[14px] py-[3px] font-medium dark:group-hover:bg-white/5 dark:group-hover:text-white'
 			>
 				Pages
 				<svg
@@ -54,7 +54,7 @@ const Dropdown = ({
 									setNavbarOpen(false);
 								}}
 								href={item?.path}
-								className={`flex rounded-[5px] px-4.5 py-[11px] text-dark duration-300 hover:bg-primary hover:text-white dark:text-gray-5 dark:hover:text-white ${
+								className={`px-4.5 text-dark hover:bg-primary dark:text-gray-5 flex rounded-[5px] py-[11px] duration-300 hover:text-white dark:hover:text-white ${
 									pathname === item?.path
 										? "bg-primary text-white dark:text-white"
 										: ""

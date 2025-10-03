@@ -18,8 +18,8 @@ const Loader = () => {
 	return (
 		<>
 			{loading && (
-				<div className='fixed left-0 top-0 z-999999 flex h-screen w-screen items-center justify-center bg-white'>
-					<div className='h-16 w-16 animate-spin rounded-full border-4 border-solid border-primary border-t-transparent'></div>
+				<div className='z-999999 fixed left-0 top-0 flex h-screen w-screen items-center justify-center bg-white'>
+					<div className='border-primary h-16 w-16 animate-spin rounded-full border-4 border-solid border-t-transparent'></div>
 				</div>
 			)}
 		</>

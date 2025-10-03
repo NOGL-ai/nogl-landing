@@ -32,8 +32,7 @@ export const pricingData: Price[] = [
 		priceId: "price_1QJh25C8DkZnisvUpcObIKgI",
 		unit_amount: 0, // Flexible pricing determined by the expert
 		nickname: "Community Access",
-		description:
-			"Join our community of data-driven fashion teams",
+		description: "Join our community of data-driven fashion teams",
 		subtitle: "For occasional learners",
 		includes: [
 			"One-time access to a category forecast",

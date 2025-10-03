@@ -1,88 +1,97 @@
-import nodemailer from 'nodemailer';
+import nodemailer from "nodemailer";
 // Removed DOMPurify import - using validator for sanitization instead
-import validator from 'validator';
-import { getBookingConfirmationEmail } from './emailTemplates/bookingConfirmationEmail';
+import validator from "validator";
+import { getBookingConfirmationEmail } from "./emailTemplates/bookingConfirmationEmail";
 
 // Validate required environment variables at startup
-const requiredEnvVars = ['EMAIL_SERVER_HOST', 'EMAIL_SERVER_USER', 'EMAIL_SERVER_PASSWORD', 'EMAIL_FROM'];
+const requiredEnvVars = [
+	"EMAIL_SERVER_HOST",
+	"EMAIL_SERVER_USER",
+	"EMAIL_SERVER_PASSWORD",
+	"EMAIL_FROM",
+];
 
 requiredEnvVars.forEach((varName) => {
-    if (!process.env[varName]) {
-        console.error(`Environment variable ${varName} is not set.`);
-        process.exit(1);
-    }
+	if (!process.env[varName]) {
+		console.error(`Environment variable ${varName} is not set.`);
+		process.exit(1);
+	}
 });
 
 type EmailPayload = {
-    to: string;
-    subject: string;
-    html: string;
-    text?: string;
+	to: string;
+	subject: string;
+	html: string;
+	text?: string;
 };
 
 type VerificationEmailProps = {
-    to: string;
-    name: string;
-    verificationUrl: string;
+	to: string;
+	name: string;
+	verificationUrl: string;
 };
 
 const smtpOptions = {
-    host: process.env.EMAIL_SERVER_HOST || 'smtp.ionos.de',
-    port: parseInt(process.env.EMAIL_SERVER_PORT || '587'),
-    secure: false, // Set to true if using port 465
-    auth: {
-        user: process.env.EMAIL_SERVER_USER,
-        pass: process.env.EMAIL_SERVER_PASSWORD,
-    },
-    requireTLS: true, // Enforce TLS
-    tls: {
-        rejectUnauthorized: false,
-        ciphers: 'SSLv3'
-    }
-    // Commented out insecure TLS options
+	host: process.env.EMAIL_SERVER_HOST || "smtp.ionos.de",
+	port: parseInt(process.env.EMAIL_SERVER_PORT || "587"),
+	secure: false, // Set to true if using port 465
+	auth: {
+		user: process.env.EMAIL_SERVER_USER,
+		pass: process.env.EMAIL_SERVER_PASSWORD,
+	},
+	requireTLS: true, // Enforce TLS
+	tls: {
+		rejectUnauthorized: false,
+		ciphers: "SSLv3",
+	},
+	// Commented out insecure TLS options
 };
 
 export const sendEmail = async (data: EmailPayload) => {
-    try {
-        const transporter = nodemailer.createTransport({
-            ...smtpOptions,
-        });
+	try {
+		const transporter = nodemailer.createTransport({
+			...smtpOptions,
+		});
 
-        const result = await transporter.sendMail({
-            from: {
-                name: 'Nogl',
-                address: process.env.EMAIL_FROM || 'noreply@nogl.tech',
-            },
-            ...data,
-        });
+		const result = await transporter.sendMail({
+			from: {
+				name: "Nogl",
+				address: process.env.EMAIL_FROM || "noreply@nogl.tech",
+			},
+			...data,
+		});
 
-        console.log('Email sent:', result.messageId);
-        return { success: true, messageId: result.messageId };
-    } catch (error: any) {
-        console.error('Error sending email:', error);
-        // throw new Error('Failed to send email');
-        // Commented out generic error
-        throw new Error(`Failed to send email: ${error.message}`);
-    }
+		console.log("Email sent:", result.messageId);
+		return { success: true, messageId: result.messageId };
+	} catch (error: any) {
+		console.error("Error sending email:", error);
+		// throw new Error('Failed to send email');
+		// Commented out generic error
+		throw new Error(`Failed to send email: ${error.message}`);
+	}
 };
 
-export const sendVerificationEmail = async ({ to, name, verificationUrl }: VerificationEmailProps) => {
-    // Sanitize user inputs
-    const sanitizedVerificationUrl = validator.escape(verificationUrl);
-    const sanitizedName = validator.escape(name);
+export const sendVerificationEmail = async ({
+	to,
+	name,
+	verificationUrl,
+}: VerificationEmailProps) => {
+	// Sanitize user inputs
+	const sanitizedVerificationUrl = validator.escape(verificationUrl);
+	const sanitizedName = validator.escape(name);
 
-    // const emailContent = {
-    //     to,
-    //     subject: "Verify your Nogl account",
-    //     html: `
-    //         <!-- Original email content -->
-    //     `
-    // };
+	// const emailContent = {
+	//     to,
+	//     subject: "Verify your Nogl account",
+	//     html: `
+	//         <!-- Original email content -->
+	//     `
+	// };
 
-    const emailContent = {
-        to,
-        subject: 'Verify your Nogl Account',
-        html: `
+	const emailContent = {
+		to,
+		subject: "Verify your Nogl Account",
+		html: `
 <!DOCTYPE html>
 <html>
 <head>
@@ -121,7 +130,7 @@ export const sendVerificationEmail = async ({ to, name, verificationUrl }: Verif
 </body>
 </html>
         `,
-        text: `
+		text: `
 Welcome to Nogl, ${sanitizedName}!
 
 Thank you for joining Nogl. Please confirm your email address to get started.
@@ -136,63 +145,63 @@ If you did not sign up for this account, you can ignore this email.
 
 © ${new Date().getFullYear()} Nogl. All rights reserved.
         `,
-    };
+	};
 
-    return sendEmail(emailContent);
+	return sendEmail(emailContent);
 };
 
 export const formatEmail = (email: string) => {
-    return email.replace(/\s+/g, '').toLowerCase().trim();
+	return email.replace(/\s+/g, "").toLowerCase().trim();
 };
 
 export const isValidEmail = (email: string): boolean => {
-    // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    // return emailRegex.test(email);
-    // Commented out the old regex validation
-    return validator.isEmail(email);
+	// const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	// return emailRegex.test(email);
+	// Commented out the old regex validation
+	return validator.isEmail(email);
 };
 
 export const sendBookingConfirmationEmail = async ({
-  to,
-  participantName,
-  bookingDetails,
-  signInUrl,
+	to,
+	participantName,
+	bookingDetails,
+	signInUrl,
 }: {
-  to: string;
-  participantName: string;
-  bookingDetails: {
-    date: string;
-    includeRecording: boolean;
-    recordingCount: number;
-    sessionName: string;
-    participants: number;
-    totalAmount: number;
-  };
-  signInUrl: string;
+	to: string;
+	participantName: string;
+	bookingDetails: {
+		date: string;
+		includeRecording: boolean;
+		recordingCount: number;
+		sessionName: string;
+		participants: number;
+		totalAmount: number;
+	};
+	signInUrl: string;
 }) => {
-  // Add debug logging
-  console.log('Attempting to send booking confirmatio   n to:', to);
-  console.log('Booking details:', bookingDetails);
+	// Add debug logging
+	console.log("Attempting to send booking confirmatio   n to:", to);
+	console.log("Booking details:", bookingDetails);
 
-  // Sanitize inputs
-  const sanitizedEmail = validator.escape(to);
-  const sanitizedParticipantName = validator.escape(participantName);
-  const sanitizedSignInUrl = validator.escape(signInUrl);
+	// Sanitize inputs
+	const sanitizedEmail = validator.escape(to);
+	const sanitizedParticipantName = validator.escape(participantName);
+	const sanitizedSignInUrl = validator.escape(signInUrl);
 
-  const emailContent = getBookingConfirmationEmail({
-    url: sanitizedSignInUrl,
-    email: sanitizedParticipantName,
-    bookingDetails,
-  });
+	const emailContent = getBookingConfirmationEmail({
+		url: sanitizedSignInUrl,
+		email: sanitizedParticipantName,
+		bookingDetails,
+	});
 
-  console.log('Generated email content:', emailContent);
+	console.log("Generated email content:", emailContent);
 
-  const emailPayload = {
-    to: sanitizedEmail,
-    subject: emailContent.subject,
-    html: emailContent.html,
-    text: emailContent.text,
-  };
+	const emailPayload = {
+		to: sanitizedEmail,
+		subject: emailContent.subject,
+		html: emailContent.html,
+		text: emailContent.text,
+	};
 
-  return sendEmail(emailPayload);
+	return sendEmail(emailPayload);
 };

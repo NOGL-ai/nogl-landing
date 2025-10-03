@@ -1,11 +1,11 @@
 export interface EmailTemplate {
-  subject: string;
-  html: string;
-  text: string;
+	subject: string;
+	html: string;
+	text: string;
 }
 
 export interface MagicLinkEmailParams {
-  url: string;
-  host: string;
-  email: string;
-} 
+	url: string;
+	host: string;
+	email: string;
+}

@@ -7,7 +7,7 @@ import {
 import { FC, Fragment } from "react";
 import { headerCurrency } from "./CurrencyDropdown";
 import { usePathname, useRouter } from "next/navigation";
-import { i18n } from "@/i18n";
+// import { i18n } from "@/i18n";
 
 export const headerLanguage = [
 	{
@@ -103,7 +103,7 @@ const LangDropdown: FC<LangDropdownProps> = ({
 						<Popover.Button
 							className={`
                 ${open ? "" : "text-opacity-80"}
-             group inline-flex h-10 items-center self-center px-3 py-1.5 text-sm font-medium text-gray-800 hover:text-opacity-100 focus:outline-none dark:text-neutral-200 sm:h-12 `}
+             group inline-flex h-10 items-center self-center px-3 py-1.5 text-sm font-medium text-gray-800 hover:text-opacity-100 focus:outline-none sm:h-12 dark:text-neutral-200 `}
 						>
 							<GlobeAltIcon className='h-5 w-5 opacity-80' />
 							<span className='mx-1'>/</span>
@@ -124,7 +124,7 @@ const LangDropdown: FC<LangDropdownProps> = ({
 							leaveTo='opacity-0 translate-y-1'
 						>
 							<Popover.Panel className={`absolute z-20  ${panelClassName}`}>
-								<div className='rounded-2xl bg-white p-3 shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-neutral-800 sm:p-6'>
+								<div className='rounded-2xl bg-white p-3 shadow-lg ring-1 ring-black ring-opacity-5 sm:p-6 dark:bg-neutral-800'>
 									<Tab.Group>
 										<Tab.List className='flex space-x-1 rounded-full bg-gray-100 p-1 dark:bg-slate-700'>
 											{["Language", "Currency"].map((category) => (

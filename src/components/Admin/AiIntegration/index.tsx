@@ -51,7 +51,8 @@ const AiIntegration = ({ APIKey }: { APIKey: string }) => {
 		];
 
 		//for the demo
-		const apiKey = typeof window !== 'undefined' ? localStorage.getItem("apiKey") : null;
+		const apiKey =
+			typeof window !== "undefined" ? localStorage.getItem("apiKey") : null;
 
 		try {
 			const response = await axios.post(

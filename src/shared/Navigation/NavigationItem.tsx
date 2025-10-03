@@ -255,7 +255,7 @@ const NavigationItem: FC<NavigationItemWithRouterProps> = ({ menuItem }) => {
 		return (
 			<Link
 				rel='noopener noreferrer'
-				className='inline-flex items-center rounded-full px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-neutral-200 xl:px-5 xl:text-base'
+				className='inline-flex items-center rounded-full px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 xl:px-5 xl:text-base dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-neutral-200'
 				href={item.href || "/"}
 			>
 				{item.name}

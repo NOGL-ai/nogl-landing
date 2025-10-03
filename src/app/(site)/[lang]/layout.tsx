@@ -6,8 +6,8 @@ import NextTopLoader from "nextjs-toploader";
 import Loader from "@/components/Common/PreLoader";
 import FooterWrapper from "@/components/Footer/FooterWrapper";
 import { HeaderWrapper } from "@/components/Header/HeaderWrapper";
-import AuthCheck from "./AuthCheck";
-import { Metadata } from 'next';
+// import AuthCheck from "./AuthCheck";
+import { Metadata } from "next";
 
 export default function RootLayout({
 	children,
@@ -19,15 +19,15 @@ export default function RootLayout({
 			<Loader />
 			<Providers>
 				{/* <AuthCheck> */}
-					<NextTopLoader
-						color='#635BFF'
-						crawlSpeed={300}
-						showSpinner={false}
-						shadow='none'
-					/>
-					<HeaderWrapper />
-					{children}
-					<FooterWrapper />
+				<NextTopLoader
+					color='#635BFF'
+					crawlSpeed={300}
+					showSpinner={false}
+					shadow='none'
+				/>
+				<HeaderWrapper />
+				{children}
+				<FooterWrapper />
 				{/* </AuthCheck> */}
 			</Providers>
 		</>
@@ -35,6 +35,8 @@ export default function RootLayout({
 }
 
 export const metadata: Metadata = {
-	    metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://nogl.ai:3000'),
+	metadataBase: new URL(
+		process.env.NEXT_PUBLIC_APP_URL || "http://nogl.ai:3000"
+	),
 	// ... other metadata
 };

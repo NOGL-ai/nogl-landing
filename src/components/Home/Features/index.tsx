@@ -8,7 +8,7 @@ const Features = () => {
 	return (
 		<section
 			id='features'
-			className='relative z-1 overflow-hidden bg-gray-1 py-17.5 dark:bg-black dark:text-white lg:py-22.5 xl:py-27.5'
+			className='z-1 bg-gray-1 py-17.5 lg:py-22.5 xl:py-27.5 relative overflow-hidden dark:bg-black dark:text-white'
 		>
 			{/* <!-- section title --> */}
 			<SectionHeader
@@ -18,8 +18,8 @@ const Features = () => {
 				description='Discover demand-sensed trends, predict new-product demand, and optimize assortments.'
 			/>
 
-			<div className='relative z-1 mx-auto w-full max-w-[1170px] px-4 sm:px-8 xl:px-0'>
-				<div className='grid grid-cols-1 gap-7.5 sm:grid-cols-2 lg:grid-cols-3'>
+			<div className='z-1 relative mx-auto w-full max-w-[1170px] px-4 sm:px-8 xl:px-0'>
+				<div className='gap-7.5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'>
 					{/* <!-- features item --> */}
 					{featuresData?.map((item, key) => (
 						<FeatureItem data={item} key={key} />
@@ -28,7 +28,7 @@ const Features = () => {
 
 				{/* <!-- Features Bg Shapes --> */}
 				<div className='hidden sm:block'>
-					<div className='absolute left-0 top-1/2 -z-1 -translate-y-1/2'>
+					<div className='-z-1 absolute left-0 top-1/2 -translate-y-1/2'>
 						<Image
 							src='/images/features/features-shape-01.svg'
 							alt='shape'
@@ -36,7 +36,7 @@ const Features = () => {
 							height={600}
 						/>
 					</div>
-					<div className='absolute right-0 top-1/2 -z-1 -translate-y-1/2'>
+					<div className='-z-1 absolute right-0 top-1/2 -translate-y-1/2'>
 						<Image
 							src='/images/features/features-shape-02.svg'
 							alt='shape'

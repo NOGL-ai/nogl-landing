@@ -5,7 +5,7 @@ import SectionHeader from "@/components/Common/SectionHeader";
 
 const FeaturesWithImage = () => {
 	return (
-		<section className='overflow-hidden py-17.5 lg:py-22.5 xl:py-27.5'>
+		<section className='py-17.5 lg:py-22.5 xl:py-27.5 overflow-hidden'>
 			{/* <!-- section title --> */}
 			<SectionHeader
 				title={"Empower Your Expertise"}

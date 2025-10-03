@@ -45,7 +45,7 @@ const NotifyDropdown: FC<Props> = ({ className = "" }) => {
 						<Popover.Button
 							className={` ${
 								open ? "" : "text-opacity-90"
-							} group relative inline-flex h-10 w-10 items-center justify-center self-center rounded-full text-base font-medium hover:bg-gray-100 hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 dark:hover:bg-neutral-800 sm:h-12 sm:w-12`}
+							} group relative inline-flex h-10 w-10 items-center justify-center self-center rounded-full text-base font-medium hover:bg-gray-100 hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 sm:h-12 sm:w-12 dark:hover:bg-neutral-800`}
 						>
 							<span className='absolute right-2 top-2 h-2 w-2 rounded-full bg-blue-500'></span>
 							<BellIcon className='h-6 w-6' />
@@ -77,7 +77,7 @@ const NotifyDropdown: FC<Props> = ({ className = "" }) => {
 													<p className='text-sm font-medium text-gray-900 dark:text-gray-200'>
 														{item.name}
 													</p>
-													<p className='text-xs text-gray-500 dark:text-gray-400 sm:text-sm'>
+													<p className='text-xs text-gray-500 sm:text-sm dark:text-gray-400'>
 														{item.description}
 													</p>
 													<p className='text-xs text-gray-400 dark:text-gray-400'>

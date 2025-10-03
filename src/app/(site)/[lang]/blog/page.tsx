@@ -14,10 +14,10 @@ const BlogGrid = async () => {
 
 	return (
 		<main>
-			<section className='lg:ub-pb-22.5 relative z-1 overflow-hidden pb-17.5 pt-35 xl:pb-27.5'>
+			<section className='lg:ub-pb-22.5 z-1 pb-17.5 pt-35 xl:pb-27.5 relative overflow-hidden'>
 				{/* <!-- bg shapes --> */}
 				<div>
-					<div className='absolute left-0 top-0 -z-1'>
+					<div className='-z-1 absolute left-0 top-0'>
 						<Image
 							src='/images/blog/blog-shape-01.svg'
 							alt='shape'
@@ -25,7 +25,7 @@ const BlogGrid = async () => {
 							height={680}
 						/>
 					</div>
-					<div className='absolute right-0 top-0 -z-1'>
+					<div className='-z-1 absolute right-0 top-0'>
 						<Image
 							src='/images/blog/blog-shape-02.svg'
 							alt='shape'
@@ -38,10 +38,12 @@ const BlogGrid = async () => {
 				<Breadcrumbs title='Blog' pages={["Home", "Blog Grids"]} />
 
 				<div className='mx-auto w-full max-w-[1170px] px-4 sm:px-8 xl:px-0'>
-					<div className='grid grid-cols-1 gap-x-7.5 gap-y-10 sm:grid-cols-2 lg:grid-cols-3'>
+					<div className='gap-x-7.5 grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-3'>
 						{/* Blog Item */}
 						{posts?.length > 0 ? (
-							posts?.map((item: any, key: number) => <BlogItem key={key} blog={item} />)
+							posts?.map((item: any, key: number) => (
+								<BlogItem key={key} blog={item} />
+							))
 						) : (
 							<p>No posts available!</p>
 						)}

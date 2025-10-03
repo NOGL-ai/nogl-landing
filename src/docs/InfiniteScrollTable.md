@@ -41,9 +41,9 @@ A high-performance, infinite scrolling table component built with TanStack Table
 
 ```json
 {
-  "@tanstack/react-table": "^8.21.3",
-  "@tanstack/react-virtual": "^3.13.12",
-  "@tanstack/react-query": "^5.x.x"
+	"@tanstack/react-table": "^8.21.3",
+	"@tanstack/react-virtual": "^3.13.12",
+	"@tanstack/react-query": "^5.x.x"
 }
 ```
 
@@ -86,71 +86,69 @@ Wrap your app with the QueryClientProvider:
 
 ```tsx
 // app/layout.tsx or your root component
-import { QueryClientProvider } from '@/components/providers/QueryClientProvider';
+import { QueryClientProvider } from "@/components/providers/QueryClientProvider";
 
 export default function RootLayout({ children }) {
-  return (
-    <html>
-      <body>
-        <QueryClientProvider>
-          {children}
-        </QueryClientProvider>
-      </body>
-    </html>
-  );
+	return (
+		<html>
+			<body>
+				<QueryClientProvider>{children}</QueryClientProvider>
+			</body>
+		</html>
+	);
 }
 ```
 
 ### 2. Basic Usage
 
 ```tsx
-import { InfiniteScrollTable } from '@/components/ui/InfiniteScrollTable';
-import { ColumnDef } from '@tanstack/react-table';
+import { InfiniteScrollTable } from "@/components/ui/InfiniteScrollTable";
+import { ColumnDef } from "@tanstack/react-table";
 
 interface Person {
-  id: number;
-  name: string;
-  email: string;
+	id: number;
+	name: string;
+	email: string;
 }
 
 const columns: ColumnDef<Person>[] = [
-  {
-    accessorKey: 'id',
-    header: 'ID',
-  },
-  {
-    accessorKey: 'name',
-    header: 'Name',
-  },
-  {
-    accessorKey: 'email',
-    header: 'Email',
-  },
+	{
+		accessorKey: "id",
+		header: "ID",
+	},
+	{
+		accessorKey: "name",
+		header: "Name",
+	},
+	{
+		accessorKey: "email",
+		header: "Email",
+	},
 ];
 
 const fetchData = async (pageParam: number) => {
-  const response = await fetch(`/api/people?page=${pageParam}&limit=50`);
-  const data = await response.json();
-  
-  return {
-    data: data.items,
-    meta: {
-      totalRowCount: data.total,
-      hasNextPage: data.hasNextPage,
-      currentPage: pageParam,
-    },
-  };
+	const response = await fetch(`/api/people?page=${pageParam}&limit=50`);
+	const data = await response.json();
+
+	return {
+		data: data.items,
+		meta: {
+			totalRowCount: data.total,
+			hasNextPage: data.hasNextPage,
+			currentPage: pageParam,
+		},
+	};
 };
 
 export default function MyTable() {
-  return (
-    <InfiniteScrollTable
-      queryKey={['people']}
-      queryFn={fetchData}
-      columns={columns}
-      height={600}
-    />
-  );
+	return (
+		<InfiniteScrollTable
+			queryKey={["people"]}
+			queryFn={fetchData}
+			columns={columns}
+			height={600}
+		/>
+	);
 }
 ```
 
@@ -158,46 +156,46 @@ export default function MyTable() {
 
 ### InfiniteScrollTable Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `queryKey` | `(string \| number \| boolean)[]` | - | React Query key for caching |
-| `queryFn` | `(pageParam: number) => Promise<InfiniteScrollData<TData>>` | - | Function to fetch data |
-| `columns` | `ColumnDef<TData>[]` | - | Table column definitions |
-| `height` | `number` | `600` | Table container height in pixels |
-| `rowHeight` | `number` | `50` | Estimated row height for virtualization |
-| `className` | `string` | - | Additional CSS classes |
-| `enableVirtualization` | `boolean` | `true` | Enable virtual scrolling |
-| `overscan` | `number` | `5` | Number of items to render outside viewport |
-| `threshold` | `number` | `500` | Distance from bottom to trigger fetch |
-| `enableSorting` | `boolean` | `true` | Enable column sorting |
-| `sorting` | `SortingState` | `[]` | Current sorting state |
-| `onSortingChange` | `(updater) => void` | - | Sorting change handler |
-| `onRowClick` | `(row) => void` | - | Row click handler |
-| `onRowDoubleClick` | `(row) => void` | - | Row double-click handler |
-| `enableSelection` | `boolean` | `false` | Enable row selection |
-| `selectedRows` | `Set<string>` | `new Set()` | Currently selected rows |
-| `onRowSelect` | `(rowId, selected) => void` | - | Row selection handler |
-| `loading` | `boolean` | `false` | External loading state |
-| `emptyState` | `React.ReactNode` | - | Custom empty state component |
+| Prop                   | Type                                                        | Default     | Description                                |
+| ---------------------- | ----------------------------------------------------------- | ----------- | ------------------------------------------ |
+| `queryKey`             | `(string \| number \| boolean)[]`                           | -           | React Query key for caching                |
+| `queryFn`              | `(pageParam: number) => Promise<InfiniteScrollData<TData>>` | -           | Function to fetch data                     |
+| `columns`              | `ColumnDef<TData>[]`                                        | -           | Table column definitions                   |
+| `height`               | `number`                                                    | `600`       | Table container height in pixels           |
+| `rowHeight`            | `number`                                                    | `50`        | Estimated row height for virtualization    |
+| `className`            | `string`                                                    | -           | Additional CSS classes                     |
+| `enableVirtualization` | `boolean`                                                   | `true`      | Enable virtual scrolling                   |
+| `overscan`             | `number`                                                    | `5`         | Number of items to render outside viewport |
+| `threshold`            | `number`                                                    | `500`       | Distance from bottom to trigger fetch      |
+| `enableSorting`        | `boolean`                                                   | `true`      | Enable column sorting                      |
+| `sorting`              | `SortingState`                                              | `[]`        | Current sorting state                      |
+| `onSortingChange`      | `(updater) => void`                                         | -           | Sorting change handler                     |
+| `onRowClick`           | `(row) => void`                                             | -           | Row click handler                          |
+| `onRowDoubleClick`     | `(row) => void`                                             | -           | Row double-click handler                   |
+| `enableSelection`      | `boolean`                                                   | `false`     | Enable row selection                       |
+| `selectedRows`         | `Set<string>`                                               | `new Set()` | Currently selected rows                    |
+| `onRowSelect`          | `(rowId, selected) => void`                                 | -           | Row selection handler                      |
+| `loading`              | `boolean`                                                   | `false`     | External loading state                     |
+| `emptyState`           | `React.ReactNode`                                           | -           | Custom empty state component               |
 
 ### useInfiniteScroll Hook
 
 ```tsx
 const {
-  data,           // Flattened array of all loaded data
-  totalRowCount,  // Total number of rows in database
-  totalFetched,   // Number of rows currently loaded
-  hasNextPage,    // Whether more data is available
-  isLoading,      // Initial loading state
-  isFetching,     // Any fetching state
-  isFetchingNextPage, // Next page fetching state
-  error,          // Error object if any
-  fetchNextPage,  // Function to fetch next page
-  refetch,        // Function to refetch all data
+	data, // Flattened array of all loaded data
+	totalRowCount, // Total number of rows in database
+	totalFetched, // Number of rows currently loaded
+	hasNextPage, // Whether more data is available
+	isLoading, // Initial loading state
+	isFetching, // Any fetching state
+	isFetchingNextPage, // Next page fetching state
+	error, // Error object if any
+	fetchNextPage, // Function to fetch next page
+	refetch, // Function to refetch all data
 } = useInfiniteScroll({
-  queryKey: ['people'],
-  queryFn: fetchData,
-  fetchSize: 50,
+	queryKey: ["people"],
+	queryFn: fetchData,
+	fetchSize: 50,
 });
 ```
 
@@ -208,12 +206,12 @@ const {
 Creates a mock data generator for testing:
 
 ```tsx
-import { createMockDataGenerator } from '@/utils/infiniteScrollUtils';
+import { createMockDataGenerator } from "@/utils/infiniteScrollUtils";
 
 const fetchData = createMockDataGenerator(
-  (index) => ({ id: index, name: `Item ${index}` }),
-  10000, // total count
-  50     // page size
+	(index) => ({ id: index, name: `Item ${index}` }),
+	10000, // total count
+	50 // page size
 );
 ```
 
@@ -222,12 +220,12 @@ const fetchData = createMockDataGenerator(
 Creates an API data fetcher with pagination:
 
 ```tsx
-import { createApiDataFetcher } from '@/utils/infiniteScrollUtils';
+import { createApiDataFetcher } from "@/utils/infiniteScrollUtils";
 
 const fetchData = createApiDataFetcher(
-  '/api/people',
-  50, // page size
-  { status: 'active' } // additional params
+	"/api/people",
+	50, // page size
+	{ status: "active" } // additional params
 );
 ```
 
@@ -236,18 +234,18 @@ const fetchData = createApiDataFetcher(
 Creates a Prisma-based data fetcher:
 
 ```tsx
-import { createPrismaDataFetcher } from '@/utils/infiniteScrollUtils';
-import { prisma } from '@/libs/prismaDb';
+import { createPrismaDataFetcher } from "@/utils/infiniteScrollUtils";
+import { prisma } from "@/libs/prismaDb";
 
 const fetchData = createPrismaDataFetcher(
-  async ({ skip, take }) => {
-    const [data, total] = await Promise.all([
-      prisma.user.findMany({ skip, take }),
-      prisma.user.count(),
-    ]);
-    return { data, total };
-  },
-  50 // page size
+	async ({ skip, take }) => {
+		const [data, total] = await Promise.all([
+			prisma.user.findMany({ skip, take }),
+			prisma.user.count(),
+		]);
+		return { data, total };
+	},
+	50 // page size
 );
 ```
 
@@ -257,8 +255,8 @@ The component uses Tailwind CSS classes and supports dark mode:
 
 ```tsx
 <InfiniteScrollTable
-  className="rounded-lg border-2 border-blue-200"
-  // ... other props
+	className='rounded-lg border-2 border-blue-200'
+	// ... other props
 />
 ```
 
@@ -276,16 +274,16 @@ You can customize the appearance by:
 
 ```tsx
 const columns: ColumnDef<Person>[] = [
-  {
-    accessorKey: 'name',
-    header: 'Name',
-    cell: ({ row }) => (
-      <div className="flex items-center space-x-2">
-        <Avatar src={row.original.avatar} />
-        <span>{row.original.name}</span>
-      </div>
-    ),
-  },
+	{
+		accessorKey: "name",
+		header: "Name",
+		cell: ({ row }) => (
+			<div className='flex items-center space-x-2'>
+				<Avatar src={row.original.avatar} />
+				<span>{row.original.name}</span>
+			</div>
+		),
+	},
 ];
 ```
 
@@ -295,39 +293,40 @@ const columns: ColumnDef<Person>[] = [
 const [sorting, setSorting] = useState<SortingState>([]);
 
 const fetchData = async (pageParam: number) => {
-  const sortParam = sorting.length > 0 
-    ? `&sort=${sorting[0].id}&order=${sorting[0].desc ? 'desc' : 'asc'}`
-    : '';
-    
-  const response = await fetch(
-    `/api/people?page=${pageParam}&limit=50${sortParam}`
-  );
-  return response.json();
+	const sortParam =
+		sorting.length > 0
+			? `&sort=${sorting[0].id}&order=${sorting[0].desc ? "desc" : "asc"}`
+			: "";
+
+	const response = await fetch(
+		`/api/people?page=${pageParam}&limit=50${sortParam}`
+	);
+	return response.json();
 };
 
 <InfiniteScrollTable
-  queryKey={['people', sorting]}
-  queryFn={fetchData}
-  sorting={sorting}
-  onSortingChange={setSorting}
-  // ... other props
-/>
+	queryKey={["people", sorting]}
+	queryFn={fetchData}
+	sorting={sorting}
+	onSortingChange={setSorting}
+	// ... other props
+/>;
 ```
 
 ### Error Handling
 
 ```tsx
 const fetchData = async (pageParam: number) => {
-  try {
-    const response = await fetch(`/api/people?page=${pageParam}`);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return response.json();
-  } catch (error) {
-    console.error('Fetch error:', error);
-    throw error;
-  }
+	try {
+		const response = await fetch(`/api/people?page=${pageParam}`);
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
+		return response.json();
+	} catch (error) {
+		console.error("Fetch error:", error);
+		throw error;
+	}
 };
 ```
 
@@ -354,8 +353,8 @@ Enable debug mode to see table state:
 
 ```tsx
 <InfiniteScrollTable
-  // ... props
-  debugTable={true}
+	// ... props
+	debugTable={true}
 />
 ```
 

@@ -5,7 +5,7 @@ export default function DataStatsCard({ data }: { data: DataStats }) {
 	const { icon, value, content, color, isIncrease, percents } = data;
 
 	return (
-		<div className='rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark'>
+		<div className='rounded-10 shadow-1 dark:bg-gray-dark bg-white p-6'>
 			<div
 				className='mb-6 flex aspect-square w-[58px] items-center justify-center rounded-full text-white'
 				style={{ background: color }}
@@ -14,17 +14,17 @@ export default function DataStatsCard({ data }: { data: DataStats }) {
 			</div>
 
 			<div>
-				<h3 className='font-satoshi text-2xl font-bold text-dark dark:text-white'>
+				<h3 className='font-satoshi text-dark text-2xl font-bold dark:text-white'>
 					{value}
 				</h3>
 
 				<div className='flex items-center justify-between'>
-					<p className='font-satoshi text-sm font-medium text-body dark:text-gray-4'>
+					<p className='font-satoshi text-body dark:text-gray-4 text-sm font-medium'>
 						{content}
 					</p>
 
 					<p
-						className={`flex items-center gap-1.5 font-satoshi text-sm font-medium ${
+						className={`font-satoshi flex items-center gap-1.5 text-sm font-medium ${
 							isIncrease ? "text-[#00BC55]" : "text-red"
 						}`}
 					>

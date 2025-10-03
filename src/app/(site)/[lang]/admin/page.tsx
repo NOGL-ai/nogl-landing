@@ -14,7 +14,7 @@ export default function AdminDashboard() {
 		<>
 			<Breadcrumb pageTitle='Dashboard' />
 
-			<div className='mb-11 grid grid-cols-1 gap-7.5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-4'>
+			<div className='gap-7.5 mb-11 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-4'>
 				{dataStats.map((data) => (
 					<DataStatsCard key={data?.id} data={data} />
 				))}
@@ -22,16 +22,16 @@ export default function AdminDashboard() {
 
 			<div>
 				<div className='mb-7.5'>
-					<h3 className='mb-2 font-satoshi text-heading-5 font-bold tracking-[-.5px] text-dark dark:text-white'>
+					<h3 className='font-satoshi text-heading-5 text-dark mb-2 font-bold tracking-[-.5px] dark:text-white'>
 						Overview
 					</h3>
-					<p className='font-satoshi font-medium tracking-[-.2px] text-body dark:text-gray-4'>
+					<p className='font-satoshi text-body dark:text-gray-4 font-medium tracking-[-.2px]'>
 						An overview of your organization’s activity and performance across
 						all your projects.
 					</p>
 				</div>
 
-				<div className='grid gap-7.5 md:grid-cols-2 xl:grid-cols-3'>
+				<div className='gap-7.5 grid md:grid-cols-2 xl:grid-cols-3'>
 					{overviewData.map((data) => (
 						<GraphCard key={data?.id} data={data} />
 					))}

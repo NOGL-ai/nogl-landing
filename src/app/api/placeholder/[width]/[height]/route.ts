@@ -1,21 +1,21 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ width: string; height: string }> }
+	request: NextRequest,
+	{ params }: { params: Promise<{ width: string; height: string }> }
 ) {
-  const { width, height } = await params;
-  
-  // Validate width and height
-  const w = parseInt(width);
-  const h = parseInt(height);
-  
-  if (isNaN(w) || isNaN(h) || w <= 0 || h <= 0 || w > 2000 || h > 2000) {
-    return new NextResponse('Invalid dimensions', { status: 400 });
-  }
+	const { width, height } = await params;
 
-  // Create a simple SVG placeholder
-  const svg = `
+	// Validate width and height
+	const w = parseInt(width);
+	const h = parseInt(height);
+
+	if (isNaN(w) || isNaN(h) || w <= 0 || h <= 0 || w > 2000 || h > 2000) {
+		return new NextResponse("Invalid dimensions", { status: 400 });
+	}
+
+	// Create a simple SVG placeholder
+	const svg = `
     <svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
       <rect width="100%" height="100%" fill="#f3f4f6"/>
       <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="14" 
@@ -25,10 +25,10 @@ export async function GET(
     </svg>
   `;
 
-  return new NextResponse(svg, {
-    headers: {
-      'Content-Type': 'image/svg+xml',
-      'Cache-Control': 'public, max-age=31536000', // Cache for 1 year
-    },
-  });
+	return new NextResponse(svg, {
+		headers: {
+			"Content-Type": "image/svg+xml",
+			"Cache-Control": "public, max-age=31536000", // Cache for 1 year
+		},
+	});
 }

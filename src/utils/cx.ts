@@ -1,15 +1,22 @@
 import { extendTailwindMerge } from "tailwind-merge";
 
 const twMerge = extendTailwindMerge({
-  extend: {
-    classGroups: {
-      "font-size": [
-        {
-          text: ["display-xs", "display-sm", "display-md", "display-lg", "display-xl", "display-2xl"],
-        },
-      ],
-    },
-  },
+	extend: {
+		classGroups: {
+			"font-size": [
+				{
+					text: [
+						"display-xs",
+						"display-sm",
+						"display-md",
+						"display-lg",
+						"display-xl",
+						"display-2xl",
+					],
+				},
+			],
+		},
+	},
 });
 
 /**
@@ -23,6 +30,13 @@ export const cx = twMerge;
  * sort the classes inside style objects which is not supported
  * by the Tailwind IntelliSense by default.
  */
-export function sortCx<T extends Record<string, string | number | Record<string, string | number | Record<string, string | number>>>>(classes: T): T {
-  return classes;
+export function sortCx<
+	T extends Record<
+		string,
+		| string
+		| number
+		| Record<string, string | number | Record<string, string | number>>
+	>,
+>(classes: T): T {
+	return classes;
 }

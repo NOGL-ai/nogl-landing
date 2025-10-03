@@ -21,7 +21,7 @@ export default function InputSelect(props: any) {
 		<div>
 			<label
 				htmlFor={name}
-				className='mb-2.5 block font-satoshi text-base font-medium text-dark dark:text-white'
+				className='font-satoshi text-dark mb-2.5 block text-base font-medium dark:text-white'
 			>
 				{label}
 			</label>
@@ -32,7 +32,7 @@ export default function InputSelect(props: any) {
 					value={value}
 					onChange={onChange}
 					required={required}
-					className='relative z-20 h-[52px] w-full appearance-none rounded-lg border border-gray-3 bg-transparent py-3 pl-5.5 text-dark outline-none ring-offset-1 duration-300 focus:shadow-input  focus:ring-primary/20 dark:border-stroke-dark dark:text-white dark:focus:border-transparent'
+					className='border-gray-3 pl-5.5 text-dark focus:shadow-input focus:ring-primary/20 dark:border-stroke-dark relative z-20 h-[52px] w-full appearance-none rounded-lg border bg-transparent py-3 outline-none  ring-offset-1 duration-300 dark:text-white dark:focus:border-transparent'
 				>
 					<option value='Select Option' className='dark:bg-dark'>
 						Select option
@@ -47,7 +47,7 @@ export default function InputSelect(props: any) {
 						</option>
 					))}
 				</select>
-				<span className='absolute right-5.5 top-1/2 z-10 -translate-y-1/2'>
+				<span className='right-5.5 absolute top-1/2 z-10 -translate-y-1/2'>
 					{arrowIcon}
 				</span>
 			</div>

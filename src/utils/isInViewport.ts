@@ -1,6 +1,6 @@
 export default function isInViewport(element: HTMLElement) {
 	// Check if we're on the client side
-	if (typeof window === 'undefined') {
+	if (typeof window === "undefined") {
 		return false;
 	}
 

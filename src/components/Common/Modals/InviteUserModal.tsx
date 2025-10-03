@@ -56,7 +56,7 @@ export default function InviteUserModal(props: any) {
 		<>
 			{showModal && (
 				<div
-					className={`py-7.6 fixed left-0 top-0 z-99999 flex h-screen w-full items-center justify-center bg-black/90 px-4 dark:bg-dark/70 sm:px-8 `}
+					className={`py-7.6 z-99999 dark:bg-dark/70 fixed left-0 top-0 flex h-screen w-full items-center justify-center bg-black/90 px-4 sm:px-8 `}
 				>
 					<div
 						ref={divRef}
@@ -64,8 +64,8 @@ export default function InviteUserModal(props: any) {
 					>
 						<ModalCloseButton closeModal={setShowModal} />
 
-						<div className='flex flex-wrap gap-5.5 border-b border-stroke p-4 dark:border-stroke-dark sm:p-7.5 xl:p-10'>
-							<h3 className='mb-1.5 font-satoshi text-custom-2xl font-bold tracking-[-.5px] text-dark dark:text-white'>
+						<div className='gap-5.5 border-stroke dark:border-stroke-dark sm:p-7.5 flex flex-wrap border-b p-4 xl:p-10'>
+							<h3 className='font-satoshi text-custom-2xl text-dark mb-1.5 font-bold tracking-[-.5px] dark:text-white'>
 								Add New User
 							</h3>
 

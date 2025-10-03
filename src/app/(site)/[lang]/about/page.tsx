@@ -10,34 +10,34 @@ import rightImg from "@/images/about-hero-right.png";
 export interface PageAboutProps {}
 
 const PageAbout: FC<PageAboutProps> = () => {
-  return (
-    <div className="nc-PageAbout relative overflow-hidden">
-      {/* Background Effects */}
-      <BgGlassmorphism />
+	return (
+		<div className='nc-PageAbout relative overflow-hidden'>
+			{/* Background Effects */}
+			<BgGlassmorphism />
 
-      {/* Main Content */}
-      <div className="container mx-auto space-y-16 py-16 lg:space-y-28 lg:py-28">
-        {/* Hero Section */}
-        <SectionHero
-          rightImg={rightImg}
-          heading="About Our Platform"
-          btnText="Join Our Mission"
-          subHeading={`We help teams optimize their operations and improve efficiency through our comprehensive platform solutions.`}
-        />
+			{/* Main Content */}
+			<div className='container mx-auto space-y-16 py-16 lg:space-y-28 lg:py-28'>
+				{/* Hero Section */}
+				<SectionHero
+					rightImg={rightImg}
+					heading='About Our Platform'
+					btnText='Join Our Mission'
+					subHeading={`We help teams optimize their operations and improve efficiency through our comprehensive platform solutions.`}
+				/>
 
-        {/* Founder Section */}
-        <SectionFounder />
+				{/* Founder Section */}
+				<SectionFounder />
 
-        {/* Statistics Section */}
-        <div className="relative py-16">
-          <SectionStatistic />
-        </div>
+				{/* Statistics Section */}
+				<div className='relative py-16'>
+					<SectionStatistic />
+				</div>
 
-        {/* Subscription Section */}
-        <SectionSubscribe2 />
-      </div>
-    </div>
-  );
+				{/* Subscription Section */}
+				<SectionSubscribe2 />
+			</div>
+		</div>
+	);
 };
 
 export default PageAbout;

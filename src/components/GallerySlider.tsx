@@ -70,7 +70,9 @@ export default function GallerySlider({
 			>
 				{/* Main image */}
 				<div className={`w-full overflow-hidden ${galleryClass}`}>
-					<div className={`relative flex items-center justify-center ${ratioClass}`}>
+					<div
+						className={`relative flex items-center justify-center ${ratioClass}`}
+					>
 						<AnimatePresence initial={false} custom={direction}>
 							<motion.div
 								key={index}

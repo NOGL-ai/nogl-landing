@@ -9,13 +9,13 @@ const ClientCommons = () => {
 	useThemeMode();
 
 	const pathname = usePathname();
-	
+
 	//  CUSTOM THEME STYLE
 	useEffect(() => {
 		setMounted(true);
-		
+
 		// Only access document on client-side
-		if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+		if (typeof window !== "undefined" && typeof document !== "undefined") {
 			const $body = document.querySelector("body");
 			if (!$body) return;
 

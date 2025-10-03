@@ -53,9 +53,8 @@ const PriceItem = ({ plan, isBilling }: Props) => {
 
 			toast.success("Subscription changed successfully");
 			window.location.reload();
-		} catch (error) {
+		} catch {
 			toast.error("Unable to change subscription");
-			// console.log(error);
 		}
 	};
 
@@ -71,13 +70,13 @@ const PriceItem = ({ plan, isBilling }: Props) => {
 
 	return (
 		<div
-			className={`relative  rounded-[20px] p-10 shadow-dropdown ${
-				active && !isBilling ? "bg-primary" : "bg-white dark:bg-gray-dark"
+			className={`shadow-dropdown  relative rounded-[20px] p-10 ${
+				active && !isBilling ? "bg-primary" : "dark:bg-gray-dark bg-white"
 			}`}
 		>
 			{active && (
 				<span
-					className={`absolute right-4.5 top-4.5 inline-flex rounded-[5px] px-3 py-[5px] font-satoshi font-medium  ${
+					className={`right-4.5 top-4.5 font-satoshi absolute inline-flex rounded-[5px] px-3 py-[5px] font-medium  ${
 						isBilling
 							? "bg-primary/10 text-primary dark:bg-white/10 dark:text-white"
 							: "bg-white/10 text-white"
@@ -89,7 +88,7 @@ const PriceItem = ({ plan, isBilling }: Props) => {
 
 			<div className='mb-7 flex items-center gap-5'>
 				<div
-					className={`flex h-18 w-full max-w-[72px] items-center justify-center rounded-2xl ${
+					className={`h-18 flex w-full max-w-[72px] items-center justify-center rounded-2xl ${
 						active && !isBilling ? "bg-white/10" : "bg-primary/10"
 					}`}
 				>
@@ -111,7 +110,7 @@ const PriceItem = ({ plan, isBilling }: Props) => {
 				</div>
 				<div>
 					<span
-						className={`block text-lg font-medium dark:text-gray-4 ${
+						className={`dark:text-gray-4 block text-lg font-medium ${
 							active && !isBilling && "text-white"
 						}`}
 					>
@@ -139,7 +138,7 @@ const PriceItem = ({ plan, isBilling }: Props) => {
 			></div>
 
 			<h4
-				className={`mb-4.5 font-satoshi text-heading-4 font-bold leading-[1.22] lg:text-heading-2 xl:text-[54px] ${
+				className={`mb-4.5 font-satoshi text-heading-4 lg:text-heading-2 font-bold leading-[1.22] xl:text-[54px] ${
 					active && !isBilling ? "text-white" : "text-[#170F49] dark:text-white"
 				}`}
 			>
@@ -200,7 +199,7 @@ const PriceItem = ({ plan, isBilling }: Props) => {
 
 			<button
 				onClick={handler}
-				className={`mt-9 flex w-full justify-center rounded-full  p-3.5 font-satoshi font-medium ${
+				className={`font-satoshi mt-9 flex w-full justify-center  rounded-full p-3.5 font-medium ${
 					isSubscribed && isBilling
 						? "bg-gray-3 text-dark hover:bg-gray-4"
 						: activeStyle

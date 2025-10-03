@@ -61,7 +61,7 @@ const SectionVideos: FC<SectionVideosProps> = ({
 		const video: VideoType = videos[currentVideo];
 		return (
 			<div
-				className='aspect-w-16 aspect-h-16 sm:aspect-h-9 group overflow-hidden rounded-3xl border-4 border-white bg-neutral-800 will-change-transform dark:border-neutral-900 sm:rounded-[50px] sm:border-[10px]'
+				className='aspect-w-16 aspect-h-16 sm:aspect-h-9 group overflow-hidden rounded-3xl border-4 border-white bg-neutral-800 will-change-transform sm:rounded-[50px] sm:border-[10px] dark:border-neutral-900'
 				title={video.title}
 			>
 				{isPlay ? (
@@ -135,7 +135,7 @@ const SectionVideos: FC<SectionVideosProps> = ({
 			</Heading>
 
 			<div className='relative flex flex-col sm:py-4 sm:pr-4 md:py-6 md:pr-6 lg:flex-row xl:py-14 xl:pr-14'>
-				<div className='bg-primary-100 absolute -bottom-4 -right-4 -top-4 z-0 w-2/3 rounded-3xl bg-opacity-40 dark:bg-neutral-800 dark:bg-opacity-40 sm:rounded-[50px] md:bottom-0 md:right-0 md:top-0 xl:w-1/2'></div>
+				<div className='bg-primary-100 absolute -bottom-4 -right-4 -top-4 z-0 w-2/3 rounded-3xl bg-opacity-40 sm:rounded-[50px] md:bottom-0 md:right-0 md:top-0 xl:w-1/2 dark:bg-neutral-800 dark:bg-opacity-40'></div>
 				<div className='relative flex-grow pb-2 sm:pb-4 lg:pb-0 lg:pr-5 xl:pr-6'>
 					{renderMainVideo()}
 				</div>

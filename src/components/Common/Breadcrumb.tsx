@@ -5,16 +5,16 @@ export default function Breadcrumb({ pageTitle }: { pageTitle: string }) {
 		<section className='relative z-10 overflow-x-clip pb-[70px] pt-[140px]'>
 			<div className='container mx-auto w-full max-w-[1170px]'>
 				<div className='text-center'>
-					<h2 className='mb-4.5 font-satoshi text-3xl font-bold tracking-[-1px] text-dark dark:text-white'>
+					<h2 className='mb-4.5 font-satoshi text-dark text-3xl font-bold tracking-[-1px] dark:text-white'>
 						{pageTitle}
 					</h2>
 					<ol className='flex items-center justify-center'>
 						<li>
-							<Link href='/' className='text-base text-body dark:text-gray-5'>
+							<Link href='/' className='text-body dark:text-gray-5 text-base'>
 								Home
 							</Link>
 						</li>
-						<li className='relative text-base text-body before:mx-2 before:inline-block before:px-2 before:content-["/"] dark:text-gray-5'>
+						<li className='text-body dark:text-gray-5 relative text-base before:mx-2 before:inline-block before:px-2 before:content-["/"]'>
 							{pageTitle}
 						</li>
 					</ol>

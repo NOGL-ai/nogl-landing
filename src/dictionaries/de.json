@@ -1,402 +1,402 @@
 {
-  "locale": "de",
-  "navigation": {
-    "main": [
-      {
-        "id": 1,
-        "title": "Funktionen",
-        "newTab": false,
-        "path": "#features"
-      },
-      {
-        "id": 2,
-        "title": "Preise",
-        "newTab": false,
-        "path": "#pricing"
-      },
-      {
-        "id": 3,
-        "title": "Blog",
-        "newTab": false,
-        "path": "/blog"
-      }
-    ],
-    "dropdown": {
-      "title": "Mehr",
-      "items": [
-        {
-          "id": 1,
-          "title": "Blog",
-          "path": "/blog",
-          "newTab": false
-        },
-        {
-          "id": 2,
-          "title": "Anmelden",
-          "path": "/auth/signin",
-          "newTab": false
-        },
-        {
-          "id": 3,
-          "title": "Registrieren",
-          "path": "/auth/signup",
-          "newTab": false
-        },
-        {
-          "id": 4,
-          "title": "Unterstützung",
-          "path": "/support",
-          "newTab": false
-        }
-      ]
-    },
-    "buttons": {
-      "signIn": "Anmelden",
-      "signUp": "Registrieren",
-      "getStarted": "Jetzt starten",
-      "buyNow": "Jetzt kaufen ↗"
-    }
-  },
-  "header": [
-    {
-      "id": 1,
-      "title": "Funktionen",
-      "newTab": false,
-      "path": "#features"
-    },
-    {
-      "id": 2,
-      "title": "Preise",
-      "newTab": false,
-      "path": "#pricing"
-    },
-    {
-      "id": 2,
-      "title": "Blog",
-      "newTab": false,
-      "path": "/blog"
-    },
-    {
-      "id": 2,
-      "title": "Seiten",
-      "newTab": false,
-      "submenu": [
-        {
-          "id": 301,
-          "title": "Blog",
-          "newTab": false,
-          "path": "/blog"
-        },
-        {
-          "id": 304,
-          "title": "Anmelden",
-          "newTab": false,
-          "path": "/auth/signin"
-        },
-        {
-          "id": 305,
-          "title": "Registrieren",
-          "newTab": false,
-          "path": "/auth/signup"
-        },
-        {
-          "id": 306,
-          "title": "404 Fehler",
-          "newTab": false,
-          "path": "/error"
-        },
-        {
-          "id": 303,
-          "title": "Unterstützung",
-          "newTab": false,
-          "path": "/support"
-        },
-        {
-          "id": 301,
-          "title": "Blog Details",
-          "newTab": false,
-          "path": "/blog/proin-ac-ipsum-et-neque-tincidunt-aliquam-ut-ut-ex-in-viverra"
-        }
-      ]
-    },
-    {
-      "id": 4,
-      "title": "Jetzt kaufen ↗",
-      "newTab": true,
-      "path": "#pricing"
-    }
-  ],
-  "Home": {
-    "title": "Halo dunia!"
-  },
-  "hero": {
-    "introducing": "Willkommen bei Nogl.ai",
-    "title": ["KI-gestützte Mode-Trendprognosen", "& Nachfragevorhersage"],
-    "description": "Prognostizieren Sie Trends, sagen Sie die Nachfrage für neue Produkte voraus und optimieren Sie lokale Sortimente mit Demand-Sensing-KI.",
-    "buttonText": "Jetzt Prognosen starten"
-  },
-  "problem": {
-    "title": "Die Herausforderung",
-    "subtitle": "Subjektive, angebotsgetriebene Modeentscheidungen",
-    "description": "Traditionelle Trendprognosen sind meinungsgetrieben und verrauscht – das führt zu Überproduktion, Abschriften und verpasster Nachfrage.",
-    "challenges": [
-      {
-        "title": "Subjektive Trendwetten",
-        "description": "Entscheidungen ohne echte Nachfragesignale"
-      },
-      {
-        "title": "Abschriften",
-        "description": "Überbestand durch schlechte Nachfragevorhersage"
-      },
-      {
-        "title": "Geringe Time-to-Market",
-        "description": "Lange Zyklen ohne schnelle Validierung"
-      }
-    ]
-  },
-  "solution": {
-    "title": "Unsere Lösung",
-    "subtitle": "True-Demand‑getriebene Modeintelligenz",
-    "description": "Demand-Sensing‑KI für Trendprognosen, neue Produktnachfrage und lokale Sortimentsoptimierung",
-    "features": [
-      {
-        "title": "Demand‑gesensete Trends",
-        "description": "Erkennen Sie Verbraucherwünsche nach Kategorie und Markt – mit weniger Rauschen."
-      },
-      {
-        "title": "Nachfragevorhersage für Neuprodukte",
-        "description": "Prognose mit visuellen + Attributsignalen und Verbraucherdaten."
-      },
-      {
-        "title": "Lokalisierte Sortimentsoptimierung",
-        "description": "Breite und Tiefe über Stores und Regionen ausbalancieren, um Sell‑through zu steigern."
-      },
-      {
-        "title": "KI‑Zusammenfassungen & Aktionen",
-        "description": "Automatisierte Insights mit nächsten Schritten für Ihr Team."
-      }
-    ]
-  },
-  "counter": {
-    "title": "Demand‑gesensete Modeintelligenz",
-    "stats": [
-      {
-        "value": "+60%",
-        "label": "Umsatz-/Revenue‑Velocity"
-      },
-      {
-        "value": "+30%",
-        "label": "Inventory Turns"
-      },
-      {
-        "value": "+20%",
-        "label": "Full‑Price Sell‑through"
-      },
-      {
-        "value": "100+",
-        "label": "Marken und Händler"
-      }
-    ],
-    "heading": "Modeintelligenz freischalten: Trendprognosen & Nachfragevorhersage",
-    "aboutButton": "Starten Sie Ihre Reise"
-  },
-  "callToAction": {
-    "title": "Bereit loszulegen?",
-    "description": "Treten Sie noch heute unserer Plattform bei und vernetzen Sie sich mit Experten, die Ihnen beim Wachsen helfen können",
-    "buttonText": "Jetzt mit dem Lernen beginnen",
-    "buttonUrl": "#newsletter",
-    "_testimonial": {
-      "_heading": "Erfolgsgeschichten von",
-      "_subheading": "Branchenführern",
-      "_quote": "In nur einer Content-Creation-Strategy-Sitzung habe ich es geschafft, von Schwierigkeiten mit Content zu einer Verdreifachung meines Engagements und meiner Leads zu kommen. Das war der Fahrplan, den ich für authentischen Social-Media-Erfolg brauchte!",
-      "_author": "Viola Weller",
-      "_role": "Gründerin von VLACE",
-      "_waitlistButton": "Der Warteliste beitreten"
-    }
-  },
-  "common": {
-    "comingSoon": "Demnächst verfügbar"
-  },
-  "pricing": {
-    "title": "Einfache, transparente Preise",
-    "subtitle": "Wählen Sie den Plan, der zu Ihnen passt",
-    "description": "Beginnen Sie mit unserer kostenlosen Version und erweitern Sie nach Bedarf",
-    "plans": [
-      {
-        "name": "Kostenlos",
-        "price": "0",
-        "description": "Perfekt für den Einstieg",
-        "features": [
-          "Zugang zu Gruppensitzungen",
-          "Basis KI-Chat-Unterstützung",
-          "Zugang zum Community-Forum",
-          "E-Mail-Support"
-        ],
-        "buttonText": "Jetzt starten"
-      },
-      {
-        "name": "Pro",
-        "price": "29",
-        "description": "Ideal für Profis",
-        "features": [
-          "Alle kostenlosen Funktionen",
-          "Vorrangiger Zugang zu Sitzungen",
-          "Erweiterte KI-Tools",
-          "Prioritäts-Support"
-        ],
-        "buttonText": "Pro-Plan starten",
-        "popular": true
-      },
-      {
-        "name": "Enterprise",
-        "price": "Individuell",
-        "description": "Für große Organisationen",
-        "features": [
-          "Alle Pro-Funktionen",
-          "Individuelle Integrationen",
-          "Dedizierter Support",
-          "Maßgeschneiderte KI-Modelle"
-        ],
-        "buttonText": "Vertrieb kontaktieren"
-      }
-    ]
-  },
-  "faq": {
-    "title": "Häufig gestellte Fragen",
-    "description": "Brauchen Sie Hilfe? Hier sind einige der häufigsten Fragen, die wir erhalten.",
-    "items": [
-      {
-        "id": 1,
-        "question": "Gibt es eine kostenlose Testversion?",
-        "answer": "Ja. Starten Sie eine kostenlose Testphase mit Zugriff auf Trend‑Briefings, Beispiel‑Forecasts und KI‑Insights. Testen Sie ohne Verpflichtung und sehen Sie den Effekt auf Nachfrageprognosen und Sortimentsentscheidungen."
-      },
-      {
-        "id": 2,
-        "question": "Wie greifen Teams auf Forecasts und Reports zu?",
-        "answer": "Durchsuchen Sie Kategorien, wählen Sie Märkte und öffnen Sie On‑Demand‑Forecasts sowie Deep‑Dive‑Reports. Filtern Sie nach Saison, Kategorie, Preissegment und exportieren Sie Insights für Ihre Workflows."
-      },
-      {
-        "id": 3,
-        "question": "Können wir die Ausgaben auf unsere Taxonomie anpassen?",
-        "answer": "Ja. Richten Sie Kategorien, Attribute und KPIs auf Ihre interne Taxonomie aus. Mappen Sie Größen, Farben, Preisklassen und Hierarchieebenen für konsistente Planung und Berichte."
-      },
-      {
-        "id": 4,
-        "question": "Wie werden meine Daten auf der Plattform geschützt?",
-        "answer": "Wir nutzen Verschlüsselung während der Übertragung und im Ruhezustand, rollenbasierte Zugriffe und auditierte Infrastruktur. Für Enterprise bieten wir Datenresidenz und SSO (SAML/OIDC)."
-      }
-    ]
-  },
-  "newsletter": {
-    "title": "Voraus sein mit Mode‑Trendprognosen",
-    "description": "Werden Sie Teil einer Community aus Merchandisern, Designern und Einkäufern. Erhalten Sie Demand‑gesensete Trend‑Briefings, Forecast‑Insights und Best Practices zur Sortimentsgestaltung direkt in Ihr Postfach.",
-    "emailPlaceholder": "E-Mail eingeben",
-    "buttonText": "Forecasts erhalten",
-    "successMessage": "Danke für Ihre Anmeldung!",
-    "errorMessage": "Bitte geben Sie Ihre E-Mail-Adresse ein.",
-    "invalidEmailMessage": "Bitte geben Sie eine gültige E-Mail-Adresse ein."
-  },
-  "blog": {
-    "title": "Forecasting‑Einblicke & Updates",
-    "description": "Trendprognosen, Demand‑Sensing und Merchandising‑Insights, um Abschriften zu reduzieren und Sortimente zu optimieren.",
-    "viewAllText": "Alle anzeigen",
-    "noPostsText": "Keine Beiträge gefunden"
-  },
-  "_features": {
-    "_title": "KI-gestützte Kommunikation",
-    "_description": "Überwinden Sie Sprachbarrieren mit KI-Echtzeit-Übersetzung und Stimmklonen",
-    "_learnMore": "Mehr erfahren",
-    "_cards": [
-      {
-        "_id": 1,
-        "_title": "KI-Übersetzung",
-        "_content": "Echtzeit-Übersetzung während Videoanrufen mit Unterstützung für über 100 Sprachen",
-        "_video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/jywpgkr3vpwyj9hdbthz.mp4",
-        "_thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/jywpgkr3vpwyj9hdbthz.jpg",
-        "_url": "/features/ai-translate"
-      },
-      {
-        "_id": 2,
-        "_title": "Auto-Übersetzung",
-        "_content": "Automatische Untertitel-Übersetzung für aufgezeichnete Sitzungen",
-        "_video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129913/jjpzskulirmmasd0fzo0.mp4",
-        "_thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129913/jjpzskulirmmasd0fzo0.jpg",
-        "_url": "/features/auto-translate"
-      },
-      {
-        "_id": 3,
-        "_title": "KI-Stimmklonen",
-        "_content": "Klonen Sie Ihre Stimme für nahtlose mehrsprachige Kommunikation",
-        "_video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/uhk3nuqrglo1haxnvkzg.mp4",
-        "_thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/uhk3nuqrglo1haxnvkzg.jpg",
-        "_url": "/features/voice-cloning"
-      }
-    ]
-  },
-  "privacy": {
-    "title": "Datenschutzerklärung",
-    "description": "Erfahren Sie, wie Nogl Ihre persönlichen Daten schützt, wie wir sie verwenden und welche Datenschutzrechte Sie haben.",
-    "effectiveDate": "Gültig ab: 12. November 2024",
-    "lastUpdated": "Letzte Aktualisierung",
-    "breadcrumb": "Datenschutzerklärung"
-  },
-  "footer": {
-    "privacyPolicy": "Datenschutzerklärung",
-    "termsOfService": "Nutzungsbedingungen",
-    "impressum": "Impressum",
-    "agb": "Allgemeine Geschäftsbedingungen"
-  },
-  "dashboard": {
-    "title": "Dashboard",
-    "color": "Farbe",
-    "editWidgets": "Widgets bearbeiten",
-    "overpricedProduct": "Überteuerte Produkte",
-    "samePriceProducts": "Gleiche Preisprodukte",
-    "competitiveProducts": "Wettbewerbsfähige Produkte",
-    "priceChangesSummary": "Preisänderungsübersicht",
-    "priceGroups": "Preisgruppen",
-    "products": "Produkte",
-    "profitStatus": "Gewinnstatus",
-    "competitorPriceChanges": "Konkurrentenpreisänderungen",
-    "keyVendorInsights": "Wichtige Anbieter-Insights",
-    "inventoryValue": "Inventarwert",
-    "historicalPriceLeaders": "Historische Preisführer",
-    "historicalIndex": "Historischer Index",
-    "vendorStockChanges": "Anbieter-Bestandsänderungen",
-    "product": "Produkt",
-    "competitor": "Konkurrent",
-    "change": "Änderung",
-    "time": "Zeit",
-    "stockChange": "Änderung",
-    "brand": "Marke",
-    "daysAgo": "Tage her",
-    "inStock": "Auf Lager",
-    "outOfStock": "Nicht auf Lager",
-    "months": {
-      "jan": "Jan",
-      "feb": "Feb",
-      "mar": "Mär", 
-      "apr": "Apr",
-      "may": "Mai",
-      "jun": "Jun",
-      "jul": "Jul",
-      "aug": "Aug",
-      "sep": "Sep",
-      "oct": "Okt",
-      "nov": "Nov",
-      "dec": "Dez"
-    },
-    "pieChartLabels": {
-      "overpriced": "Überteuert",
-      "samePrice": "Gleicher Preis",
-      "competitive": "Wettbewerbsfähig"
-    },
-    "logoutClicked": "Abmelden geklickt"
-  },
-  "productFeed": {
-    "title": "Produkt-Feed",
-    "description": "Verwalten und optimieren Sie Ihre Produkt-Feeds für bessere Marktreichweite",
-    "metaTitle": "Produkt-Feed | Nogl",
-    "metaDescription": "Verwalten und optimieren Sie Ihre Produkt-Feeds für bessere Marktreichweite"
-  }
+	"locale": "de",
+	"navigation": {
+		"main": [
+			{
+				"id": 1,
+				"title": "Funktionen",
+				"newTab": false,
+				"path": "#features"
+			},
+			{
+				"id": 2,
+				"title": "Preise",
+				"newTab": false,
+				"path": "#pricing"
+			},
+			{
+				"id": 3,
+				"title": "Blog",
+				"newTab": false,
+				"path": "/blog"
+			}
+		],
+		"dropdown": {
+			"title": "Mehr",
+			"items": [
+				{
+					"id": 1,
+					"title": "Blog",
+					"path": "/blog",
+					"newTab": false
+				},
+				{
+					"id": 2,
+					"title": "Anmelden",
+					"path": "/auth/signin",
+					"newTab": false
+				},
+				{
+					"id": 3,
+					"title": "Registrieren",
+					"path": "/auth/signup",
+					"newTab": false
+				},
+				{
+					"id": 4,
+					"title": "Unterstützung",
+					"path": "/support",
+					"newTab": false
+				}
+			]
+		},
+		"buttons": {
+			"signIn": "Anmelden",
+			"signUp": "Registrieren",
+			"getStarted": "Jetzt starten",
+			"buyNow": "Jetzt kaufen ↗"
+		}
+	},
+	"header": [
+		{
+			"id": 1,
+			"title": "Funktionen",
+			"newTab": false,
+			"path": "#features"
+		},
+		{
+			"id": 2,
+			"title": "Preise",
+			"newTab": false,
+			"path": "#pricing"
+		},
+		{
+			"id": 2,
+			"title": "Blog",
+			"newTab": false,
+			"path": "/blog"
+		},
+		{
+			"id": 2,
+			"title": "Seiten",
+			"newTab": false,
+			"submenu": [
+				{
+					"id": 301,
+					"title": "Blog",
+					"newTab": false,
+					"path": "/blog"
+				},
+				{
+					"id": 304,
+					"title": "Anmelden",
+					"newTab": false,
+					"path": "/auth/signin"
+				},
+				{
+					"id": 305,
+					"title": "Registrieren",
+					"newTab": false,
+					"path": "/auth/signup"
+				},
+				{
+					"id": 306,
+					"title": "404 Fehler",
+					"newTab": false,
+					"path": "/error"
+				},
+				{
+					"id": 303,
+					"title": "Unterstützung",
+					"newTab": false,
+					"path": "/support"
+				},
+				{
+					"id": 301,
+					"title": "Blog Details",
+					"newTab": false,
+					"path": "/blog/proin-ac-ipsum-et-neque-tincidunt-aliquam-ut-ut-ex-in-viverra"
+				}
+			]
+		},
+		{
+			"id": 4,
+			"title": "Jetzt kaufen ↗",
+			"newTab": true,
+			"path": "#pricing"
+		}
+	],
+	"Home": {
+		"title": "Halo dunia!"
+	},
+	"hero": {
+		"introducing": "Willkommen bei Nogl.ai",
+		"title": ["KI-gestützte Mode-Trendprognosen", "& Nachfragevorhersage"],
+		"description": "Prognostizieren Sie Trends, sagen Sie die Nachfrage für neue Produkte voraus und optimieren Sie lokale Sortimente mit Demand-Sensing-KI.",
+		"buttonText": "Jetzt Prognosen starten"
+	},
+	"problem": {
+		"title": "Die Herausforderung",
+		"subtitle": "Subjektive, angebotsgetriebene Modeentscheidungen",
+		"description": "Traditionelle Trendprognosen sind meinungsgetrieben und verrauscht – das führt zu Überproduktion, Abschriften und verpasster Nachfrage.",
+		"challenges": [
+			{
+				"title": "Subjektive Trendwetten",
+				"description": "Entscheidungen ohne echte Nachfragesignale"
+			},
+			{
+				"title": "Abschriften",
+				"description": "Überbestand durch schlechte Nachfragevorhersage"
+			},
+			{
+				"title": "Geringe Time-to-Market",
+				"description": "Lange Zyklen ohne schnelle Validierung"
+			}
+		]
+	},
+	"solution": {
+		"title": "Unsere Lösung",
+		"subtitle": "True-Demand‑getriebene Modeintelligenz",
+		"description": "Demand-Sensing‑KI für Trendprognosen, neue Produktnachfrage und lokale Sortimentsoptimierung",
+		"features": [
+			{
+				"title": "Demand‑gesensete Trends",
+				"description": "Erkennen Sie Verbraucherwünsche nach Kategorie und Markt – mit weniger Rauschen."
+			},
+			{
+				"title": "Nachfragevorhersage für Neuprodukte",
+				"description": "Prognose mit visuellen + Attributsignalen und Verbraucherdaten."
+			},
+			{
+				"title": "Lokalisierte Sortimentsoptimierung",
+				"description": "Breite und Tiefe über Stores und Regionen ausbalancieren, um Sell‑through zu steigern."
+			},
+			{
+				"title": "KI‑Zusammenfassungen & Aktionen",
+				"description": "Automatisierte Insights mit nächsten Schritten für Ihr Team."
+			}
+		]
+	},
+	"counter": {
+		"title": "Demand‑gesensete Modeintelligenz",
+		"stats": [
+			{
+				"value": "+60%",
+				"label": "Umsatz-/Revenue‑Velocity"
+			},
+			{
+				"value": "+30%",
+				"label": "Inventory Turns"
+			},
+			{
+				"value": "+20%",
+				"label": "Full‑Price Sell‑through"
+			},
+			{
+				"value": "100+",
+				"label": "Marken und Händler"
+			}
+		],
+		"heading": "Modeintelligenz freischalten: Trendprognosen & Nachfragevorhersage",
+		"aboutButton": "Starten Sie Ihre Reise"
+	},
+	"callToAction": {
+		"title": "Bereit loszulegen?",
+		"description": "Treten Sie noch heute unserer Plattform bei und vernetzen Sie sich mit Experten, die Ihnen beim Wachsen helfen können",
+		"buttonText": "Jetzt mit dem Lernen beginnen",
+		"buttonUrl": "#newsletter",
+		"_testimonial": {
+			"_heading": "Erfolgsgeschichten von",
+			"_subheading": "Branchenführern",
+			"_quote": "In nur einer Content-Creation-Strategy-Sitzung habe ich es geschafft, von Schwierigkeiten mit Content zu einer Verdreifachung meines Engagements und meiner Leads zu kommen. Das war der Fahrplan, den ich für authentischen Social-Media-Erfolg brauchte!",
+			"_author": "Viola Weller",
+			"_role": "Gründerin von VLACE",
+			"_waitlistButton": "Der Warteliste beitreten"
+		}
+	},
+	"common": {
+		"comingSoon": "Demnächst verfügbar"
+	},
+	"pricing": {
+		"title": "Einfache, transparente Preise",
+		"subtitle": "Wählen Sie den Plan, der zu Ihnen passt",
+		"description": "Beginnen Sie mit unserer kostenlosen Version und erweitern Sie nach Bedarf",
+		"plans": [
+			{
+				"name": "Kostenlos",
+				"price": "0",
+				"description": "Perfekt für den Einstieg",
+				"features": [
+					"Zugang zu Gruppensitzungen",
+					"Basis KI-Chat-Unterstützung",
+					"Zugang zum Community-Forum",
+					"E-Mail-Support"
+				],
+				"buttonText": "Jetzt starten"
+			},
+			{
+				"name": "Pro",
+				"price": "29",
+				"description": "Ideal für Profis",
+				"features": [
+					"Alle kostenlosen Funktionen",
+					"Vorrangiger Zugang zu Sitzungen",
+					"Erweiterte KI-Tools",
+					"Prioritäts-Support"
+				],
+				"buttonText": "Pro-Plan starten",
+				"popular": true
+			},
+			{
+				"name": "Enterprise",
+				"price": "Individuell",
+				"description": "Für große Organisationen",
+				"features": [
+					"Alle Pro-Funktionen",
+					"Individuelle Integrationen",
+					"Dedizierter Support",
+					"Maßgeschneiderte KI-Modelle"
+				],
+				"buttonText": "Vertrieb kontaktieren"
+			}
+		]
+	},
+	"faq": {
+		"title": "Häufig gestellte Fragen",
+		"description": "Brauchen Sie Hilfe? Hier sind einige der häufigsten Fragen, die wir erhalten.",
+		"items": [
+			{
+				"id": 1,
+				"question": "Gibt es eine kostenlose Testversion?",
+				"answer": "Ja. Starten Sie eine kostenlose Testphase mit Zugriff auf Trend‑Briefings, Beispiel‑Forecasts und KI‑Insights. Testen Sie ohne Verpflichtung und sehen Sie den Effekt auf Nachfrageprognosen und Sortimentsentscheidungen."
+			},
+			{
+				"id": 2,
+				"question": "Wie greifen Teams auf Forecasts und Reports zu?",
+				"answer": "Durchsuchen Sie Kategorien, wählen Sie Märkte und öffnen Sie On‑Demand‑Forecasts sowie Deep‑Dive‑Reports. Filtern Sie nach Saison, Kategorie, Preissegment und exportieren Sie Insights für Ihre Workflows."
+			},
+			{
+				"id": 3,
+				"question": "Können wir die Ausgaben auf unsere Taxonomie anpassen?",
+				"answer": "Ja. Richten Sie Kategorien, Attribute und KPIs auf Ihre interne Taxonomie aus. Mappen Sie Größen, Farben, Preisklassen und Hierarchieebenen für konsistente Planung und Berichte."
+			},
+			{
+				"id": 4,
+				"question": "Wie werden meine Daten auf der Plattform geschützt?",
+				"answer": "Wir nutzen Verschlüsselung während der Übertragung und im Ruhezustand, rollenbasierte Zugriffe und auditierte Infrastruktur. Für Enterprise bieten wir Datenresidenz und SSO (SAML/OIDC)."
+			}
+		]
+	},
+	"newsletter": {
+		"title": "Voraus sein mit Mode‑Trendprognosen",
+		"description": "Werden Sie Teil einer Community aus Merchandisern, Designern und Einkäufern. Erhalten Sie Demand‑gesensete Trend‑Briefings, Forecast‑Insights und Best Practices zur Sortimentsgestaltung direkt in Ihr Postfach.",
+		"emailPlaceholder": "E-Mail eingeben",
+		"buttonText": "Forecasts erhalten",
+		"successMessage": "Danke für Ihre Anmeldung!",
+		"errorMessage": "Bitte geben Sie Ihre E-Mail-Adresse ein.",
+		"invalidEmailMessage": "Bitte geben Sie eine gültige E-Mail-Adresse ein."
+	},
+	"blog": {
+		"title": "Forecasting‑Einblicke & Updates",
+		"description": "Trendprognosen, Demand‑Sensing und Merchandising‑Insights, um Abschriften zu reduzieren und Sortimente zu optimieren.",
+		"viewAllText": "Alle anzeigen",
+		"noPostsText": "Keine Beiträge gefunden"
+	},
+	"_features": {
+		"_title": "KI-gestützte Kommunikation",
+		"_description": "Überwinden Sie Sprachbarrieren mit KI-Echtzeit-Übersetzung und Stimmklonen",
+		"_learnMore": "Mehr erfahren",
+		"_cards": [
+			{
+				"_id": 1,
+				"_title": "KI-Übersetzung",
+				"_content": "Echtzeit-Übersetzung während Videoanrufen mit Unterstützung für über 100 Sprachen",
+				"_video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/jywpgkr3vpwyj9hdbthz.mp4",
+				"_thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/jywpgkr3vpwyj9hdbthz.jpg",
+				"_url": "/features/ai-translate"
+			},
+			{
+				"_id": 2,
+				"_title": "Auto-Übersetzung",
+				"_content": "Automatische Untertitel-Übersetzung für aufgezeichnete Sitzungen",
+				"_video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129913/jjpzskulirmmasd0fzo0.mp4",
+				"_thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129913/jjpzskulirmmasd0fzo0.jpg",
+				"_url": "/features/auto-translate"
+			},
+			{
+				"_id": 3,
+				"_title": "KI-Stimmklonen",
+				"_content": "Klonen Sie Ihre Stimme für nahtlose mehrsprachige Kommunikation",
+				"_video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/uhk3nuqrglo1haxnvkzg.mp4",
+				"_thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/uhk3nuqrglo1haxnvkzg.jpg",
+				"_url": "/features/voice-cloning"
+			}
+		]
+	},
+	"privacy": {
+		"title": "Datenschutzerklärung",
+		"description": "Erfahren Sie, wie Nogl Ihre persönlichen Daten schützt, wie wir sie verwenden und welche Datenschutzrechte Sie haben.",
+		"effectiveDate": "Gültig ab: 12. November 2024",
+		"lastUpdated": "Letzte Aktualisierung",
+		"breadcrumb": "Datenschutzerklärung"
+	},
+	"footer": {
+		"privacyPolicy": "Datenschutzerklärung",
+		"termsOfService": "Nutzungsbedingungen",
+		"impressum": "Impressum",
+		"agb": "Allgemeine Geschäftsbedingungen"
+	},
+	"dashboard": {
+		"title": "Dashboard",
+		"color": "Farbe",
+		"editWidgets": "Widgets bearbeiten",
+		"overpricedProduct": "Überteuerte Produkte",
+		"samePriceProducts": "Gleiche Preisprodukte",
+		"competitiveProducts": "Wettbewerbsfähige Produkte",
+		"priceChangesSummary": "Preisänderungsübersicht",
+		"priceGroups": "Preisgruppen",
+		"products": "Produkte",
+		"profitStatus": "Gewinnstatus",
+		"competitorPriceChanges": "Konkurrentenpreisänderungen",
+		"keyVendorInsights": "Wichtige Anbieter-Insights",
+		"inventoryValue": "Inventarwert",
+		"historicalPriceLeaders": "Historische Preisführer",
+		"historicalIndex": "Historischer Index",
+		"vendorStockChanges": "Anbieter-Bestandsänderungen",
+		"product": "Produkt",
+		"competitor": "Konkurrent",
+		"change": "Änderung",
+		"time": "Zeit",
+		"stockChange": "Änderung",
+		"brand": "Marke",
+		"daysAgo": "Tage her",
+		"inStock": "Auf Lager",
+		"outOfStock": "Nicht auf Lager",
+		"months": {
+			"jan": "Jan",
+			"feb": "Feb",
+			"mar": "Mär",
+			"apr": "Apr",
+			"may": "Mai",
+			"jun": "Jun",
+			"jul": "Jul",
+			"aug": "Aug",
+			"sep": "Sep",
+			"oct": "Okt",
+			"nov": "Nov",
+			"dec": "Dez"
+		},
+		"pieChartLabels": {
+			"overpriced": "Überteuert",
+			"samePrice": "Gleicher Preis",
+			"competitive": "Wettbewerbsfähig"
+		},
+		"logoutClicked": "Abmelden geklickt"
+	},
+	"productFeed": {
+		"title": "Produkt-Feed",
+		"description": "Verwalten und optimieren Sie Ihre Produkt-Feeds für bessere Marktreichweite",
+		"metaTitle": "Produkt-Feed | Nogl",
+		"metaDescription": "Verwalten und optimieren Sie Ihre Produkt-Feeds für bessere Marktreichweite"
+	}
 }

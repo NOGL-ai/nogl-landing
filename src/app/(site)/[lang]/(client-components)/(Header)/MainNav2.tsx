@@ -20,7 +20,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
 			<div className='flex h-20 justify-between px-4 lg:container'>
 				<div className='hidden flex-1 justify-start space-x-3 sm:space-x-8 md:flex lg:space-x-10'>
 					<Logo className='w-24 self-center' />
-					<div className='hidden h-10 self-center border-l border-neutral-300 dark:border-neutral-500 lg:block'></div>
+					<div className='hidden h-10 self-center border-l border-neutral-300 lg:block dark:border-neutral-500'></div>
 					<div className='hidden lg:flex '>
 						<DropdownTravelers />
 					</div>
@@ -30,7 +30,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
 					{/* <HeroSearchForm2MobileFactory /> */}
 				</div>
 
-				<div className='hidden flex-1 flex-shrink-0 justify-end text-neutral-700 dark:text-neutral-100 md:flex lg:flex-none'>
+				<div className='hidden flex-1 flex-shrink-0 justify-end text-neutral-700 md:flex lg:flex-none dark:text-neutral-100'>
 					<div className='hidden space-x-1 lg:flex'>
 						<TemplatesDropdown />
 						<LangDropdown />

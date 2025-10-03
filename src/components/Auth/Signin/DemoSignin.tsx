@@ -51,20 +51,20 @@ const DemoSignin = () => {
 
 	return (
 		<div className='mb-12.5'>
-			<p className='pb-4 text-center font-satoshi text-base font-medium text-dark dark:text-white'>
+			<p className='font-satoshi text-dark pb-4 text-center text-base font-medium dark:text-white'>
 				Or Continue as Demo User, Admin
 			</p>
 
 			<div className='flex items-center justify-center gap-3 text-center'>
 				<button
-					className='flex w-[120px] items-center justify-center gap-2 rounded-md bg-primary px-5 py-2 text-white hover:bg-primary-dark'
+					className='bg-primary hover:bg-primary-dark flex w-[120px] items-center justify-center gap-2 rounded-md px-5 py-2 text-white'
 					onClick={() => handleLogin("user")}
 				>
 					User {loading.user && <Loader style='border-white' />}
 				</button>
 				<button
 					onClick={() => handleLogin("admin")}
-					className='flex w-[120px] items-center justify-center gap-2 rounded-md bg-dark px-5 py-2 text-white hover:bg-dark/90 dark:bg-white dark:text-dark dark:hover:bg-slate-200'
+					className='bg-dark hover:bg-dark/90 dark:text-dark flex w-[120px] items-center justify-center gap-2 rounded-md px-5 py-2 text-white dark:bg-white dark:hover:bg-slate-200'
 				>
 					Admin{" "}
 					{loading.admin && <Loader style='border-white dark:border-dark' />}

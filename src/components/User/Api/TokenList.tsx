@@ -25,24 +25,24 @@ export default function TokenList({ tokens }: { tokens: ApiKey[] }) {
 
 	return (
 		<>
-			<div className='rounded-10 bg-white shadow-1 dark:bg-gray-dark lg:w-3/5'>
+			<div className='rounded-10 shadow-1 dark:bg-gray-dark bg-white lg:w-3/5'>
 				{tokens.length > 0 && (
 					<>
-						<div className='border-b border-stroke px-9 py-5 dark:border-stroke-dark'>
-							<h3 className='font-satoshi text-custom-2xl font-bold tracking-[-.5px] text-dark dark:text-white'>
+						<div className='border-stroke dark:border-stroke-dark border-b px-9 py-5'>
+							<h3 className='font-satoshi text-custom-2xl text-dark font-bold tracking-[-.5px] dark:text-white'>
 								List of active tokens
 							</h3>
 						</div>
 						<table className='w-full'>
-							<thead className='border-b border-stroke dark:border-stroke-dark'>
+							<thead className='border-stroke dark:border-stroke-dark border-b'>
 								<tr>
-									<th className='p-3 pl-9 text-left font-satoshi text-base font-medium text-body dark:text-gray-5'>
+									<th className='font-satoshi text-body dark:text-gray-5 p-3 pl-9 text-left text-base font-medium'>
 										Name
 									</th>
-									<th className='hidden p-3 text-left font-satoshi text-base font-medium text-body dark:text-gray-5 md:table-cell'>
+									<th className='font-satoshi text-body dark:text-gray-5 hidden p-3 text-left text-base font-medium md:table-cell'>
 										Date
 									</th>
-									<th className='p-3 pr-9 text-right font-satoshi text-base font-medium text-body dark:text-gray-5'>
+									<th className='font-satoshi text-body dark:text-gray-5 p-3 pr-9 text-right text-base font-medium'>
 										Action
 									</th>
 								</tr>
@@ -51,9 +51,9 @@ export default function TokenList({ tokens }: { tokens: ApiKey[] }) {
 								{tokens?.map((token) => (
 									<tr
 										key={token?.id}
-										className='border-b border-stroke last-of-type:border-b-0 dark:border-stroke-dark'
+										className='border-stroke dark:border-stroke-dark border-b last-of-type:border-b-0'
 									>
-										<td className='p-4.5 pl-9 text-left tracking-[-.16px] text-dark dark:text-white'>
+										<td className='p-4.5 text-dark pl-9 text-left tracking-[-.16px] dark:text-white'>
 											<span className='text-body dark:text-gray-5 md:hidden'>
 												Name:{" "}
 											</span>
@@ -65,10 +65,10 @@ export default function TokenList({ tokens }: { tokens: ApiKey[] }) {
 												</span>
 											</span>
 										</td>
-										<td className='hidden p-4.5 text-left tracking-[-.16px] text-dark dark:text-white md:table-cell'>
+										<td className='p-4.5 text-dark hidden text-left tracking-[-.16px] md:table-cell dark:text-white'>
 											{new Date(token?.createdAt).toLocaleDateString()}
 										</td>
-										<td className='p-4.5 pr-9 tracking-[-.16px] text-dark dark:text-white'>
+										<td className='p-4.5 text-dark pr-9 tracking-[-.16px] dark:text-white'>
 											<div className='flex items-center justify-end gap-3.5'>
 												{/* <DeleteToken id={token?.id} /> */}
 												<button
@@ -76,7 +76,7 @@ export default function TokenList({ tokens }: { tokens: ApiKey[] }) {
 														setId(token?.id);
 														setShowDeleteModal(true);
 													}}
-													className='flex h-10 items-center justify-center rounded-lg bg-red-light-5 px-3 text-red hover:bg-red hover:text-white dark:bg-red/10 dark:hover:bg-red'
+													className='bg-red-light-5 text-red hover:bg-red dark:bg-red/10 dark:hover:bg-red flex h-10 items-center justify-center rounded-lg px-3 hover:text-white'
 												>
 													<svg
 														width='23'
@@ -117,7 +117,7 @@ export default function TokenList({ tokens }: { tokens: ApiKey[] }) {
 				)}
 				<div>
 					{tokens?.length === 0 && (
-						<p className='flex justify-center px-9 py-20 tracking-[-.16px] text-body dark:text-gray-5'>
+						<p className='text-body dark:text-gray-5 flex justify-center px-9 py-20 tracking-[-.16px]'>
 							No active token available!
 						</p>
 					)}

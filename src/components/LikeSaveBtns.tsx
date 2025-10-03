@@ -6,12 +6,12 @@ interface LikeSaveBtnsProps {
 
 const LikeSaveBtns: FC<LikeSaveBtnsProps> = ({ onShare }) => {
 	return (
-		<div className="flex items-center gap-2">
+		<div className='flex items-center gap-2'>
 			<button
 				onClick={onShare}
-				className="nc-Button relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium pl-4 pr-4 py-2 sm:pl-6 sm:pr-6 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"
+				className='nc-Button focus:ring-primary-6000 relative inline-flex h-auto items-center justify-center rounded-full py-2 pl-4 pr-4 text-sm font-medium transition-colors hover:bg-neutral-100 focus:outline-none focus:ring-2 focus:ring-offset-2 sm:pl-6 sm:pr-6 sm:text-base dark:hover:bg-neutral-800 dark:focus:ring-offset-0'
 			>
-				<i className="las la-share-alt text-lg mr-2"></i>
+				<i className='las la-share-alt mr-2 text-lg'></i>
 				Share
 			</button>
 			<div className='flow-root'>

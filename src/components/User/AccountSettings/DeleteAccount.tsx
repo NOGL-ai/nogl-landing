@@ -5,7 +5,7 @@ const DeleteAccount = ({ setShowDeleteModal, showDeleteModal }: any) => {
 	return (
 		<div className='w-full max-w-[525px]'>
 			<Card>
-				<h3 className='mb-9 flex items-center gap-1 font-satoshi text-custom-2xl font-bold tracking-[-.5px] text-dark dark:text-white'>
+				<h3 className='font-satoshi text-custom-2xl text-dark mb-9 flex items-center gap-1 font-bold tracking-[-.5px] dark:text-white'>
 					<svg
 						width='18'
 						height='18'
@@ -32,7 +32,7 @@ const DeleteAccount = ({ setShowDeleteModal, showDeleteModal }: any) => {
 					Danger Zone
 				</h3>
 
-				<h4 className='pb-2.5 text-base font-medium text-dark dark:text-white'>
+				<h4 className='text-dark pb-2.5 text-base font-medium dark:text-white'>
 					Delete Account
 				</h4>
 				<p>
@@ -41,7 +41,7 @@ const DeleteAccount = ({ setShowDeleteModal, showDeleteModal }: any) => {
 				</p>
 				<button
 					onClick={() => setShowDeleteModal(!showDeleteModal)}
-					className='mt-6 flex items-center justify-center gap-2 rounded-lg bg-dark px-6 py-2.5 font-satoshi text-base font-medium tracking-[-.2px] text-white duration-300 hover:bg-dark/90 dark:bg-white dark:text-dark dark:hover:bg-white/90'
+					className='bg-dark font-satoshi hover:bg-dark/90 dark:text-dark mt-6 flex items-center justify-center gap-2 rounded-lg px-6 py-2.5 text-base font-medium tracking-[-.2px] text-white duration-300 dark:bg-white dark:hover:bg-white/90'
 				>
 					<svg
 						width='16'

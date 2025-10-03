@@ -6,7 +6,7 @@ function CustomHits(props: any) {
 	const { hit, setSearchModalOpen } = props;
 	return (
 		<>
-			<div className='dark:border-strokedark border-t border-stroke bg-black first-of-type:border-0'>
+			<div className='dark:border-strokedark border-stroke border-t bg-black first-of-type:border-0'>
 				<div className='bg-white px-[22px] py-3.5 duration-300 hover:bg-[#F9FAFB] dark:bg-black dark:hover:bg-slate-800'>
 					<Link
 						onClick={() => setSearchModalOpen(false)}

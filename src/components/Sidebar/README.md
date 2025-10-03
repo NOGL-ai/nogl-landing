@@ -48,96 +48,93 @@ Complete layout wrapper with both desktop and mobile sidebars.
 ### 1. Basic Usage
 
 ```tsx
-'use client';
+"use client";
 
-import { SidebarLayout } from '@/components/Sidebar';
-import { useSidebar } from '@/hooks/useSidebar';
+import { SidebarLayout } from "@/components/Sidebar";
+import { useSidebar } from "@/hooks/useSidebar";
 
 export default function DashboardPage() {
-  const user = {
-    name: 'Emon Pixels',
-    email: 'emon683@nogl.io',
-    avatar: '/api/placeholder/40/40',
-  };
+	const user = {
+		name: "Emon Pixels",
+		email: "emon683@nogl.io",
+		avatar: "/api/placeholder/40/40",
+	};
 
-  const handleLogout = () => {
-    // Handle logout logic
-    console.log('Logout clicked');
-  };
+	const handleLogout = () => {
+		// Handle logout logic
+		console.log("Logout clicked");
+	};
 
-  return (
-    <SidebarLayout user={user} onLogout={handleLogout}>
-      <div className="p-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-          Dashboard Content
-        </h1>
-        <p className="mt-2 text-gray-600 dark:text-gray-300">
-          Your main content goes here.
-        </p>
-      </div>
-    </SidebarLayout>
-  );
+	return (
+		<SidebarLayout user={user} onLogout={handleLogout}>
+			<div className='p-6'>
+				<h1 className='text-2xl font-bold text-gray-900 dark:text-white'>
+					Dashboard Content
+				</h1>
+				<p className='mt-2 text-gray-600 dark:text-gray-300'>
+					Your main content goes here.
+				</p>
+			</div>
+		</SidebarLayout>
+	);
 }
 ```
 
 ### 2. Custom Layout Integration
 
 ```tsx
-'use client';
+"use client";
 
-import { Sidebar, MobileSidebar } from '@/components/Sidebar';
-import { useSidebar } from '@/hooks/useSidebar';
+import { Sidebar, MobileSidebar } from "@/components/Sidebar";
+import { useSidebar } from "@/hooks/useSidebar";
 
-export default function CustomLayout({ children }: { children: React.ReactNode }) {
-  const {
-    isCollapsed,
-    isMobileOpen,
-    toggleCollapse,
-    openMobile,
-    closeMobile,
-  } = useSidebar();
+export default function CustomLayout({
+	children,
+}: {
+	children: React.ReactNode;
+}) {
+	const { isCollapsed, isMobileOpen, toggleCollapse, openMobile, closeMobile } =
+		useSidebar();
 
-  const user = {
-    name: 'John Doe',
-    email: 'john@example.com',
-    avatar: '/avatar.jpg',
-  };
+	const user = {
+		name: "John Doe",
+		email: "john@example.com",
+		avatar: "/avatar.jpg",
+	};
 
-  return (
-    <div className="flex h-screen">
-      {/* Desktop Sidebar */}
-      <div className="hidden lg:block">
-        <Sidebar
-          isCollapsed={isCollapsed}
-          onToggleCollapse={toggleCollapse}
-          user={user}
-          onLogout={() => console.log('Logout')}
-        />
-      </div>
+	return (
+		<div className='flex h-screen'>
+			{/* Desktop Sidebar */}
+			<div className='hidden lg:block'>
+				<Sidebar
+					isCollapsed={isCollapsed}
+					onToggleCollapse={toggleCollapse}
+					user={user}
+					onLogout={() => console.log("Logout")}
+				/>
+			</div>
 
-      {/* Mobile Sidebar */}
-      <MobileSidebar
-        isOpen={isMobileOpen}
-        onClose={closeMobile}
-        user={user}
-        onLogout={() => console.log('Logout')}
-      />
+			{/* Mobile Sidebar */}
+			<MobileSidebar
+				isOpen={isMobileOpen}
+				onClose={closeMobile}
+				user={user}
+				onLogout={() => console.log("Logout")}
+			/>
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col">
-        {/* Mobile menu button */}
-        <div className="lg:hidden p-4">
-          <button onClick={openMobile}>
-            <MenuIcon className="h-6 w-6" />
-          </button>
-        </div>
-        
-        <main className="flex-1 overflow-y-auto">
-          {children}
-        </main>
-      </div>
-    </div>
-  );
+			{/* Main Content */}
+			<div className='flex flex-1 flex-col'>
+				{/* Mobile menu button */}
+				<div className='p-4 lg:hidden'>
+					<button onClick={openMobile}>
+						<MenuIcon className='h-6 w-6' />
+					</button>
+				</div>
+
+				<main className='flex-1 overflow-y-auto'>{children}</main>
+			</div>
+		</div>
+	);
 }
 ```
 
@@ -148,22 +145,22 @@ export default function CustomLayout({ children }: { children: React.ReactNode }
 // Navigate to: /hover-demo
 
 // Or test in your own component:
-import { SidebarLayout } from '@/components/Sidebar';
+import { SidebarLayout } from "@/components/Sidebar";
 
 export default function TestPage() {
-  return (
-    <SidebarLayout user={user} onLogout={handleLogout}>
-      <div className="p-8">
-        <h1>Test the sidebar hover functionality!</h1>
-        <ol>
-          <li>Click the collapse button in the sidebar</li>
-          <li>Hover over the collapsed sidebar to see it expand</li>
-          <li>Hover over individual icons to see tooltips</li>
-          <li>Try the profile dropdown in both states</li>
-        </ol>
-      </div>
-    </SidebarLayout>
-  );
+	return (
+		<SidebarLayout user={user} onLogout={handleLogout}>
+			<div className='p-8'>
+				<h1>Test the sidebar hover functionality!</h1>
+				<ol>
+					<li>Click the collapse button in the sidebar</li>
+					<li>Hover over the collapsed sidebar to see it expand</li>
+					<li>Hover over individual icons to see tooltips</li>
+					<li>Try the profile dropdown in both states</li>
+				</ol>
+			</div>
+		</SidebarLayout>
+	);
 }
 ```
 
@@ -173,27 +170,27 @@ Edit `/src/data/sidebarNavigation.tsx`:
 
 ```tsx
 export const mainNavigationItems: NavigationSection = {
-  id: 'main',
-  title: 'MAIN',
-  items: [
-    {
-      id: 'dashboard',
-      title: 'Dashboard',
-      path: '/dashboard',
-      icon: <DashboardIcon />,
-    },
-    {
-      id: 'analytics',
-      title: 'Analytics',
-      path: '/analytics',
-      icon: <AnalyticsIcon />,
-      badge: {
-        text: 'NEW',
-        variant: 'new',
-      },
-    },
-    // Add more items...
-  ],
+	id: "main",
+	title: "MAIN",
+	items: [
+		{
+			id: "dashboard",
+			title: "Dashboard",
+			path: "/dashboard",
+			icon: <DashboardIcon />,
+		},
+		{
+			id: "analytics",
+			title: "Analytics",
+			path: "/analytics",
+			icon: <AnalyticsIcon />,
+			badge: {
+				text: "NEW",
+				variant: "new",
+			},
+		},
+		// Add more items...
+	],
 };
 ```
 
@@ -203,18 +200,18 @@ export const mainNavigationItems: NavigationSection = {
 
 ```tsx
 const {
-  isCollapsed,        // Boolean: sidebar collapsed state
-  isMobileOpen,       // Boolean: mobile sidebar open state
-  isHovered,          // Boolean: hover state for collapsed sidebar
-  toggleCollapse,     // Function: toggle desktop sidebar
-  openMobile,         // Function: open mobile sidebar
-  closeMobile,        // Function: close mobile sidebar
-  toggleMobile,       // Function: toggle mobile sidebar
-  setHovered,         // Function: manually control hover state
+	isCollapsed, // Boolean: sidebar collapsed state
+	isMobileOpen, // Boolean: mobile sidebar open state
+	isHovered, // Boolean: hover state for collapsed sidebar
+	toggleCollapse, // Function: toggle desktop sidebar
+	openMobile, // Function: open mobile sidebar
+	closeMobile, // Function: close mobile sidebar
+	toggleMobile, // Function: toggle mobile sidebar
+	setHovered, // Function: manually control hover state
 } = useSidebar({
-  defaultCollapsed: false,    // Initial collapsed state
-  persistState: true,         // Save state to localStorage
-  storageKey: 'sidebar-collapsed', // localStorage key
+	defaultCollapsed: false, // Initial collapsed state
+	persistState: true, // Save state to localStorage
+	storageKey: "sidebar-collapsed", // localStorage key
 });
 ```
 
@@ -264,12 +261,12 @@ The sidebar uses Tailwind CSS with custom colors from the design:
 All components are fully typed. Import types:
 
 ```tsx
-import { 
-  NavigationItem, 
-  NavigationSection, 
-  UserProfile,
-  SidebarProps 
-} from '@/types/navigation';
+import {
+	NavigationItem,
+	NavigationSection,
+	UserProfile,
+	SidebarProps,
+} from "@/types/navigation";
 ```
 
 ## Accessibility

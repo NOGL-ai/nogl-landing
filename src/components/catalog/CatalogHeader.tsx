@@ -1,51 +1,58 @@
-'use client';
+"use client";
 
-import React from 'react';
+import React from "react";
 
 interface CatalogHeaderProps {
-  productCount: number;
+	productCount: number;
 }
 
-const CatalogHeader: React.FC<CatalogHeaderProps> = ({
-  productCount
-}) => {
-  return (
-    <div className="mb-5">
-      {/* Top Page Header */}
-      <div className="flex w-full flex-col md:flex-row items-start md:items-center gap-3 border border-[#F2F2F2] rounded-xl bg-white mb-5 p-4 md:h-[61px]">
-        <div className="flex items-start gap-1.5 flex-1 px-6 py-4">
-          <div className="flex flex-col items-start gap-1 flex-1">
-            <div className="flex flex-col gap-2 md:flex-row justify-between items-start md:items-center self-stretch">
-              <div className="flex items-center gap-3">
-                <h1 className="text-[#14151A] font-inter text-2xl font-semibold leading-8 tracking-[-0.336px]">
-                  My Catalog
-                </h1>
-                <div className="flex px-3 py-1.5 items-center gap-0.5 rounded bg-[rgba(55,93,251,0.1)]">
-                  <span className="text-[#375DFB] font-inter text-xs font-medium leading-4">
-                    {productCount} Products
-                  </span>
-                </div>
-              </div>
-              <div className="flex px-3 py-2 items-center gap-2 rounded-[5px] bg-[#375DFB]">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-white font-[Roboto_Flex] text-sm font-medium leading-[21px]">
-                    Catalog Functions
-                  </span>
-                </div>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="transform rotate-90">
-                  <path d="M10.0009 11.2958L13.7134 7.58325L14.7739 8.64375L10.0009 13.4168L5.22793 8.64375L6.28843 7.58325L10.0009 11.2958Z" fill="white"/>
-                </svg>
-              </div>
-            </div>
-            <p className="self-stretch text-[rgba(15,19,36,0.6)] font-inter text-sm font-normal leading-5 tracking-[-0.07px]">
-              Import and manage your products
-            </p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  );
+const CatalogHeader: React.FC<CatalogHeaderProps> = ({ productCount }) => {
+	return (
+		<div className='mb-5'>
+			{/* Top Page Header */}
+			<div className='mb-5 flex w-full flex-col items-start gap-3 rounded-xl border border-[#F2F2F2] bg-white p-4 md:h-[61px] md:flex-row md:items-center'>
+				<div className='flex flex-1 items-start gap-1.5 px-6 py-4'>
+					<div className='flex flex-1 flex-col items-start gap-1'>
+						<div className='flex flex-col items-start justify-between gap-2 self-stretch md:flex-row md:items-center'>
+							<div className='flex items-center gap-3'>
+								<h1 className='font-inter text-2xl font-semibold leading-8 tracking-[-0.336px] text-[#14151A]'>
+									My Catalog
+								</h1>
+								<div className='flex items-center gap-0.5 rounded bg-[rgba(55,93,251,0.1)] px-3 py-1.5'>
+									<span className='font-inter text-xs font-medium leading-4 text-[#375DFB]'>
+										{productCount} Products
+									</span>
+								</div>
+							</div>
+							<div className='flex items-center gap-2 rounded-[5px] bg-[#375DFB] px-3 py-2'>
+								<div className='flex items-center gap-1.5'>
+									<span className='text-sm font-[Roboto_Flex] font-medium leading-[21px] text-white'>
+										Catalog Functions
+									</span>
+								</div>
+								<svg
+									width='20'
+									height='20'
+									viewBox='0 0 20 20'
+									fill='none'
+									xmlns='http://www.w3.org/2000/svg'
+									className='rotate-90 transform'
+								>
+									<path
+										d='M10.0009 11.2958L13.7134 7.58325L14.7739 8.64375L10.0009 13.4168L5.22793 8.64375L6.28843 7.58325L10.0009 11.2958Z'
+										fill='white'
+									/>
+								</svg>
+							</div>
+						</div>
+						<p className='font-inter self-stretch text-sm font-normal leading-5 tracking-[-0.07px] text-[rgba(15,19,36,0.6)]'>
+							Import and manage your products
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
 };
 
 export default CatalogHeader;

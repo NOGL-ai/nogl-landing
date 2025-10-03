@@ -26,7 +26,7 @@ export default function SectionTitleH2(props: PropsType) {
 			style={{ maxWidth: width, marginBottom: marginBottom }}
 		>
 			<h2
-				className={`mb-4.5 text-4xl font-black tracking-[-.5px] text-dark dark:text-white md:text-[44px]/[50px]`}
+				className={`mb-4.5 text-dark text-4xl font-black tracking-[-.5px] md:text-[44px]/[50px] dark:text-white`}
 				style={{ maxWidth: titleWidth }}
 			>
 				{title}

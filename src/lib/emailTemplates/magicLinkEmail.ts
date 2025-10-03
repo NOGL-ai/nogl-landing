@@ -1,21 +1,21 @@
 interface MagicLinkParams {
-  url: string;
-  host: string;
-  email: string;
-  name?: string;
+	url: string;
+	host: string;
+	email: string;
+	name?: string;
 }
 
 export function getMagicLinkEmail(params: MagicLinkParams) {
-  const { url, host, email, name } = params;
+	const { url, host, name } = params;
 
-  // Sanitize URL without double-encoding
-  const escapedUrl = url; // Remove encodeURI since the URL is already encoded
-  const escapedHost = host.replace(/\./g, "&#8203;.");
-  const userName = name ? name.trim() : "";
+	// Sanitize URL without double-encoding
+	const escapedUrl = url; // Remove encodeURI since the URL is already encoded
+	const escapedHost = host.replace(/\./g, "&#8203;.");
+	const userName = name ? name.trim() : "";
 
-  return {
-    subject: `🔒 Secure sign-in to Nogl.ai`,
-    html: `
+	return {
+		subject: `🔒 Secure sign-in to Nogl.ai`,
+		html: `
       <div style="max-width:600px;margin:0 auto;padding:20px;font-family:Arial,sans-serif;color:#333;">
         <h1 style="color:#333;text-align:center;">Welcome to Nogl.ai${userName ? `, ${userName}` : ""}!</h1>
         
@@ -54,6 +54,6 @@ export function getMagicLinkEmail(params: MagicLinkParams) {
         </footer>
       </div>
     `,
-    text: `Sign in to ${escapedHost}\n\nClick this link to sign in to your account:\n${url}\n\nIf you didn't request this email, you can safely ignore it.`,
-  };
+		text: `Sign in to ${escapedHost}\n\nClick this link to sign in to your account:\n${url}\n\nIf you didn't request this email, you can safely ignore it.`,
+	};
 }

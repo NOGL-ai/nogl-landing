@@ -18,7 +18,7 @@ export const structuredAlgoliaHtmlData = async ({
 	try {
 		const $ = loadHTML(htmlString);
 		const textContent = $("body").text() || "";
-		
+
 		const data = {
 			objectID: pageUrl,
 			title: title,

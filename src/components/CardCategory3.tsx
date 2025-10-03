@@ -30,16 +30,18 @@ const CardCategory3: FC<CardCategory3Props> = ({
 
 	// Type guard function to check if href is UrlObject
 	const isUrlObject = (href: Href): href is UrlObject => {
-		return typeof href === 'object' && href !== null;
+		return typeof href === "object" && href !== null;
 	};
 
 	// Process href based on its type
-	const processedHref = isUrlObject(href) ? href : {
-		pathname: href
-	} as UrlObject;
+	const processedHref = isUrlObject(href)
+		? href
+		: ({
+				pathname: href,
+			} as UrlObject);
 
 	return (
-		<Link 
+		<Link
 			href={processedHref}
 			className={`nc-CardCategory3 flex flex-col ${className}`}
 		>
@@ -57,7 +59,7 @@ const CardCategory3: FC<CardCategory3Props> = ({
 			</div>
 			<div className='mt-4 truncate'>
 				<h2
-					className={`truncate text-base font-medium text-neutral-900 dark:text-neutral-100 sm:text-lg`}
+					className={`truncate text-base font-medium text-neutral-900 sm:text-lg dark:text-neutral-100`}
 				>
 					{name}
 				</h2>

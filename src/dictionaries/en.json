@@ -1,333 +1,333 @@
 {
-  "locale": "en",
-  "navigation": {
-    "main": [
-      {
-        "id": 1,
-        "title": "Features",
-        "newTab": false,
-        "path": "#features"
-      },
-      {
-        "id": 2,
-        "title": "Pricing",
-        "newTab": false,
-        "path": "#pricing"
-      },
-      {
-        "id": 3,
-        "title": "Blog",
-        "newTab": false,
-        "path": "/blog"
-      }
-    ],
-    "dropdown": {
-      "title": "More",
-      "items": [
-        {
-          "id": 1,
-          "title": "Blog",
-          "path": "/blog",
-          "newTab": false
-        },
-        {
-          "id": 2,
-          "title": "Sign In",
-          "path": "/auth/signin",
-          "newTab": false
-        },
-        {
-          "id": 3,
-          "title": "Sign Up",
-          "path": "/auth/signup",
-          "newTab": false
-        },
-        {
-          "id": 4,
-          "title": "Support",
-          "path": "/support",
-          "newTab": false
-        }
-      ]
-    },
-    "buttons": {
-      "signIn": "Sign In",
-      "signUp": "Sign Up",
-      "getStarted": "Get Started",
-      "buyNow": "Buy Now ↗"
-    }
-  },
-  "Home": {
-    "title": "Hello World!"
-  },
-  "hero": {
-    "introducing": "Introducing Nogl.ai",
-    "title": "AI-Powered Fashion Trend Forecasting & Demand Prediction",
-    "description": "Predict trends, forecast new-product demand, and optimize localized assortments with demand-sensing AI.",
-    "buttonText": "Start Forecasting for free"
-  },
-  "problem": {
-    "title": "The Problem",
-    "subtitle": "Subjective, supply-driven fashion decisions",
-    "description": "Traditional trend forecasts are opinion-led and noisy, causing overproduction, markdowns, and missed demand.",
-    "challenges": [
-      {
-        "title": "Subjective trend bets",
-        "description": "Decisions driven by opinion instead of real demand signals"
-      },
-      {
-        "title": "Markdown wastage",
-        "description": "Overstock from poor demand prediction"
-      },
-      {
-        "title": "Slow speed to market",
-        "description": "Long cycles without rapid validation"
-      }
-    ]
-  },
-  "solution": {
-    "title": "Our Solution",
-    "subtitle": "True Demand–driven fashion intelligence",
-    "description": "Demand-sensing AI for trend forecasting, new-product demand, and localized assortments",
-    "features": [
-      {
-        "title": "Demand-sensed trends",
-        "description": "See what consumers want by category and market with less noise."
-      },
-      {
-        "title": "New product demand prediction",
-        "description": "Forecast performance using visual + attribute signals and consumer data."
-      },
-      {
-        "title": "Localized assortment optimization",
-        "description": "Balance width and depth across stores and regions to lift sell-through."
-      },
-      {
-        "title": "AI summaries and actions",
-        "description": "Auto-summarized insights with next-step recommendations for your team."
-      }
-    ]
-  },
-  "counter": {
-    "title": "Demand-sensed Fashion Intelligence",
-    "stats": [
-      {
-        "value": "+60%",
-        "label": "sales/revenue velocity"
-      },
-      {
-        "value": "+30%",
-        "label": "inventory turns"
-      },
-      {
-        "value": "+20%",
-        "label": "full-price sell-through"
-      },
-      {
-        "value": "100+",
-        "label": "brands and retailers"
-      }
-    ],
-    "heading": "Unlock Fashion Intelligence: Demand‑sensed Trend Forecasting & Demand Prediction",
-    "aboutButton": "Start Your Journey"
-  },
-  "callToAction": {
-    "title": "Ready to Get Started?",
-    "description": "Join our platform today and connect with experts who can help you grow",
-    "buttonText": "Start Learning Now",
-    "buttonUrl": "#newsletter",
-    "_testimonial": {
-      "_heading": "Success Stories from",
-      "_subheading": "Industry Leaders",
-      "_quote": "In just one Content Creation Strategy session, I went from struggling with content to tripling my engagement and leads. This is the blueprint I needed for authentic social media success!",
-      "_author": "Viola Weller",
-      "_role": "Founder of VLACE",
-      "_waitlistButton": "Join the Waitlist"
-    }
-  },
-  "pricing": {
-    "title": "Simple, Transparent Pricing",
-    "subtitle": "Choose the plan that's right for you",
-    "description": "Start with our free tier and upgrade as you grow",
-    "plans": [
-      {
-        "name": "Free",
-        "price": "0",
-        "description": "Perfect for getting started",
-        "features": [
-          "Access to trend briefs",
-          "Basic AI insight support",
-          "Community access",
-          "Email support"
-        ],
-        "buttonText": "Get Started"
-      },
-      {
-        "name": "Pro",
-        "price": "29",
-        "description": "Best for merchandising teams",
-        "features": [
-          "All Free features",
-          "Priority access to forecasts",
-          "Advanced AI tools",
-          "Priority support"
-        ],
-        "buttonText": "Start Pro Plan",
-        "popular": true
-      },
-      {
-        "name": "Enterprise",
-        "price": "Custom",
-        "description": "For large organizations",
-        "features": [
-          "All Pro features",
-          "Custom integrations",
-          "Dedicated support",
-          "Custom AI models"
-        ],
-        "buttonText": "Contact Sales"
-      }
-    ]
-  },
-  "faq": {
-    "title": "Frequently Asked Questions",
-    "description": "Need help with something? Here are some of the most common questions we get.",
-    "items": [
-      {
-        "id": 1,
-        "question": "Is there a free trial available?",
-        "answer": "Yes. Start a free trial to access trend briefs, sample forecasts, and AI insights. Explore the platform without commitment and see the impact on demand prediction and assortment decisions."
-      },
-      {
-        "id": 2,
-        "question": "How do teams access forecasts and reports?",
-        "answer": "Browse categories, choose your markets, and open on‑demand forecasts and deep‑dive reports. You can filter by season, category, price band, and export insights for your workflows."
-      },
-      {
-        "id": 3,
-        "question": "Can we customize outputs to our taxonomy?",
-        "answer": "Yes. Align categories, attributes, and KPIs to your internal taxonomy. Map sizes, colors, price tiers, and hierarchy levels for consistent planning and reporting."
-      },
-      {
-        "id": 4,
-        "question": "How is my data protected on the platform?",
-        "answer": "We use encryption in transit and at rest, scoped access controls, and audited infrastructure. Enterprise options include data residency and SSO (SAML/OIDC)."
-      }
-    ]
-  },
-  "newsletter": {
-    "title": "Stay Ahead with Fashion Trend Forecasts",
-    "description": "Join a community of merchandisers, designers, and buyers. Get demand‑sensed trend briefs, forecasting insights, and assortment best practices delivered to your inbox.",
-    "emailPlaceholder": "Enter your email",
-    "buttonText": "Get Forecasts",
-    "successMessage": "Thanks for signing up!",
-    "errorMessage": "Please enter your email address.",
-    "invalidEmailMessage": "Please enter a valid email address."
-  },
-  "blog": {
-    "title": "Forecasting Insights & Updates",
-    "description": "Trend forecasting, demand sensing, and merchandising insights to help you reduce markdowns and optimize assortments.",
-    "viewAllText": "View All",
-    "noPostsText": "No posts found"
-  },
-  "common": {
-    "comingSoon": "Coming soon"
-  },
-  "_features": {
-    "_title": "AI-Powered Communication",
-    "_description": "Break language barriers with real-time AI translation and voice cloning",
-    "_learnMore": "Learn more",
-    "_cards": [
-      {
-        "_id": 1,
-        "_title": "AI Translate",
-        "_content": "Real-time translation during video calls with support for 100+ languages",
-        "_video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/jywpgkr3vpwyj9hdbthz.mp4",
-        "_thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/jywpgkr3vpwyj9hdbthz.jpg",
-        "_url": "/features/ai-translate"
-      },
-      {
-        "_id": 2,
-        "_title": "Auto Translate",
-        "_content": "Automatic subtitle translation for recorded sessions",
-        "_video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129913/jjpzskulirmmasd0fzo0.mp4",
-        "_thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129913/jjpzskulirmmasd0fzo0.jpg",
-        "_url": "/features/auto-translate"
-      },
-      {
-        "_id": 3,
-        "_title": "AI Voice Cloning",
-        "_content": "Clone your voice for seamless multilingual communication",
-        "_video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/uhk3nuqrglo1haxnvkzg.mp4",
-        "_thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/uhk3nuqrglo1haxnvkzg.jpg",
-        "_url": "/features/voice-cloning"
-      }
-    ]
-  },
-  "privacy": {
-    "title": "Privacy Policy",
-    "description": "Discover how Nogl safeguards your personal information, the ways we use it, and your privacy rights in our comprehensive privacy policy.",
-    "effectiveDate": "Effective Date: November 12, 2024",
-    "lastUpdated": "Last updated",
-    "breadcrumb": "Privacy Policy"
-  },
-  "footer": {
-    "privacyPolicy": "Privacy Policy",
-    "termsOfService": "Terms of Service",
-    "impressum": "Impressum",
-    "agb": "Terms of Service"
-  },
-  "dashboard": {
-    "title": "Dashboard",
-    "color": "Color",
-    "editWidgets": "Edit Widgets",
-    "overpricedProduct": "Overpriced Product",
-    "samePriceProducts": "Same Price Products",
-    "competitiveProducts": "Competitive Products",
-    "priceChangesSummary": "Price changes summary",
-    "priceGroups": "Price groups",
-    "products": "Products",
-    "profitStatus": "Profit status",
-    "competitorPriceChanges": "Competitor price changes",
-    "keyVendorInsights": "Key vendor insights",
-    "inventoryValue": "Inventory Value",
-    "historicalPriceLeaders": "Historical price leaders",
-    "historicalIndex": "Historical index",
-    "vendorStockChanges": "Vendor Stock changes",
-    "product": "Product",
-    "competitor": "Competitor",
-    "change": "Change",
-    "time": "Time",
-    "stockChange": "Change",
-    "brand": "Brand",
-    "daysAgo": "days ago",
-    "inStock": "In stock",
-    "outOfStock": "Out of stock",
-    "months": {
-      "jan": "Jan",
-      "feb": "Feb", 
-      "mar": "Mar",
-      "apr": "Apr",
-      "may": "May",
-      "jun": "Jun",
-      "jul": "Jul",
-      "aug": "Aug",
-      "sep": "Sep",
-      "oct": "Oct",
-      "nov": "Nov",
-      "dec": "Dec"
-    },
-    "pieChartLabels": {
-      "overpriced": "Overpriced",
-      "samePrice": "Same Price", 
-      "competitive": "Competitive"
-    },
-    "logoutClicked": "Logout clicked"
-  },
-  "productFeed": {
-    "title": "Product Feed",
-    "description": "Manage and optimize your product feeds for better market reach",
-    "metaTitle": "Product Feed | Nogl",
-    "metaDescription": "Manage and optimize your product feeds for better market reach"
-  }
+	"locale": "en",
+	"navigation": {
+		"main": [
+			{
+				"id": 1,
+				"title": "Features",
+				"newTab": false,
+				"path": "#features"
+			},
+			{
+				"id": 2,
+				"title": "Pricing",
+				"newTab": false,
+				"path": "#pricing"
+			},
+			{
+				"id": 3,
+				"title": "Blog",
+				"newTab": false,
+				"path": "/blog"
+			}
+		],
+		"dropdown": {
+			"title": "More",
+			"items": [
+				{
+					"id": 1,
+					"title": "Blog",
+					"path": "/blog",
+					"newTab": false
+				},
+				{
+					"id": 2,
+					"title": "Sign In",
+					"path": "/auth/signin",
+					"newTab": false
+				},
+				{
+					"id": 3,
+					"title": "Sign Up",
+					"path": "/auth/signup",
+					"newTab": false
+				},
+				{
+					"id": 4,
+					"title": "Support",
+					"path": "/support",
+					"newTab": false
+				}
+			]
+		},
+		"buttons": {
+			"signIn": "Sign In",
+			"signUp": "Sign Up",
+			"getStarted": "Get Started",
+			"buyNow": "Buy Now ↗"
+		}
+	},
+	"Home": {
+		"title": "Hello World!"
+	},
+	"hero": {
+		"introducing": "Introducing Nogl.ai",
+		"title": "AI-Powered Fashion Trend Forecasting & Demand Prediction",
+		"description": "Predict trends, forecast new-product demand, and optimize localized assortments with demand-sensing AI.",
+		"buttonText": "Start Forecasting for free"
+	},
+	"problem": {
+		"title": "The Problem",
+		"subtitle": "Subjective, supply-driven fashion decisions",
+		"description": "Traditional trend forecasts are opinion-led and noisy, causing overproduction, markdowns, and missed demand.",
+		"challenges": [
+			{
+				"title": "Subjective trend bets",
+				"description": "Decisions driven by opinion instead of real demand signals"
+			},
+			{
+				"title": "Markdown wastage",
+				"description": "Overstock from poor demand prediction"
+			},
+			{
+				"title": "Slow speed to market",
+				"description": "Long cycles without rapid validation"
+			}
+		]
+	},
+	"solution": {
+		"title": "Our Solution",
+		"subtitle": "True Demand–driven fashion intelligence",
+		"description": "Demand-sensing AI for trend forecasting, new-product demand, and localized assortments",
+		"features": [
+			{
+				"title": "Demand-sensed trends",
+				"description": "See what consumers want by category and market with less noise."
+			},
+			{
+				"title": "New product demand prediction",
+				"description": "Forecast performance using visual + attribute signals and consumer data."
+			},
+			{
+				"title": "Localized assortment optimization",
+				"description": "Balance width and depth across stores and regions to lift sell-through."
+			},
+			{
+				"title": "AI summaries and actions",
+				"description": "Auto-summarized insights with next-step recommendations for your team."
+			}
+		]
+	},
+	"counter": {
+		"title": "Demand-sensed Fashion Intelligence",
+		"stats": [
+			{
+				"value": "+60%",
+				"label": "sales/revenue velocity"
+			},
+			{
+				"value": "+30%",
+				"label": "inventory turns"
+			},
+			{
+				"value": "+20%",
+				"label": "full-price sell-through"
+			},
+			{
+				"value": "100+",
+				"label": "brands and retailers"
+			}
+		],
+		"heading": "Unlock Fashion Intelligence: Demand‑sensed Trend Forecasting & Demand Prediction",
+		"aboutButton": "Start Your Journey"
+	},
+	"callToAction": {
+		"title": "Ready to Get Started?",
+		"description": "Join our platform today and connect with experts who can help you grow",
+		"buttonText": "Start Learning Now",
+		"buttonUrl": "#newsletter",
+		"_testimonial": {
+			"_heading": "Success Stories from",
+			"_subheading": "Industry Leaders",
+			"_quote": "In just one Content Creation Strategy session, I went from struggling with content to tripling my engagement and leads. This is the blueprint I needed for authentic social media success!",
+			"_author": "Viola Weller",
+			"_role": "Founder of VLACE",
+			"_waitlistButton": "Join the Waitlist"
+		}
+	},
+	"pricing": {
+		"title": "Simple, Transparent Pricing",
+		"subtitle": "Choose the plan that's right for you",
+		"description": "Start with our free tier and upgrade as you grow",
+		"plans": [
+			{
+				"name": "Free",
+				"price": "0",
+				"description": "Perfect for getting started",
+				"features": [
+					"Access to trend briefs",
+					"Basic AI insight support",
+					"Community access",
+					"Email support"
+				],
+				"buttonText": "Get Started"
+			},
+			{
+				"name": "Pro",
+				"price": "29",
+				"description": "Best for merchandising teams",
+				"features": [
+					"All Free features",
+					"Priority access to forecasts",
+					"Advanced AI tools",
+					"Priority support"
+				],
+				"buttonText": "Start Pro Plan",
+				"popular": true
+			},
+			{
+				"name": "Enterprise",
+				"price": "Custom",
+				"description": "For large organizations",
+				"features": [
+					"All Pro features",
+					"Custom integrations",
+					"Dedicated support",
+					"Custom AI models"
+				],
+				"buttonText": "Contact Sales"
+			}
+		]
+	},
+	"faq": {
+		"title": "Frequently Asked Questions",
+		"description": "Need help with something? Here are some of the most common questions we get.",
+		"items": [
+			{
+				"id": 1,
+				"question": "Is there a free trial available?",
+				"answer": "Yes. Start a free trial to access trend briefs, sample forecasts, and AI insights. Explore the platform without commitment and see the impact on demand prediction and assortment decisions."
+			},
+			{
+				"id": 2,
+				"question": "How do teams access forecasts and reports?",
+				"answer": "Browse categories, choose your markets, and open on‑demand forecasts and deep‑dive reports. You can filter by season, category, price band, and export insights for your workflows."
+			},
+			{
+				"id": 3,
+				"question": "Can we customize outputs to our taxonomy?",
+				"answer": "Yes. Align categories, attributes, and KPIs to your internal taxonomy. Map sizes, colors, price tiers, and hierarchy levels for consistent planning and reporting."
+			},
+			{
+				"id": 4,
+				"question": "How is my data protected on the platform?",
+				"answer": "We use encryption in transit and at rest, scoped access controls, and audited infrastructure. Enterprise options include data residency and SSO (SAML/OIDC)."
+			}
+		]
+	},
+	"newsletter": {
+		"title": "Stay Ahead with Fashion Trend Forecasts",
+		"description": "Join a community of merchandisers, designers, and buyers. Get demand‑sensed trend briefs, forecasting insights, and assortment best practices delivered to your inbox.",
+		"emailPlaceholder": "Enter your email",
+		"buttonText": "Get Forecasts",
+		"successMessage": "Thanks for signing up!",
+		"errorMessage": "Please enter your email address.",
+		"invalidEmailMessage": "Please enter a valid email address."
+	},
+	"blog": {
+		"title": "Forecasting Insights & Updates",
+		"description": "Trend forecasting, demand sensing, and merchandising insights to help you reduce markdowns and optimize assortments.",
+		"viewAllText": "View All",
+		"noPostsText": "No posts found"
+	},
+	"common": {
+		"comingSoon": "Coming soon"
+	},
+	"_features": {
+		"_title": "AI-Powered Communication",
+		"_description": "Break language barriers with real-time AI translation and voice cloning",
+		"_learnMore": "Learn more",
+		"_cards": [
+			{
+				"_id": 1,
+				"_title": "AI Translate",
+				"_content": "Real-time translation during video calls with support for 100+ languages",
+				"_video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/jywpgkr3vpwyj9hdbthz.mp4",
+				"_thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/jywpgkr3vpwyj9hdbthz.jpg",
+				"_url": "/features/ai-translate"
+			},
+			{
+				"_id": 2,
+				"_title": "Auto Translate",
+				"_content": "Automatic subtitle translation for recorded sessions",
+				"_video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129913/jjpzskulirmmasd0fzo0.mp4",
+				"_thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129913/jjpzskulirmmasd0fzo0.jpg",
+				"_url": "/features/auto-translate"
+			},
+			{
+				"_id": 3,
+				"_title": "AI Voice Cloning",
+				"_content": "Clone your voice for seamless multilingual communication",
+				"_video": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/uhk3nuqrglo1haxnvkzg.mp4",
+				"_thumbnail": "https://res.cloudinary.com/dpbmolbme/video/upload/v1739129915/uhk3nuqrglo1haxnvkzg.jpg",
+				"_url": "/features/voice-cloning"
+			}
+		]
+	},
+	"privacy": {
+		"title": "Privacy Policy",
+		"description": "Discover how Nogl safeguards your personal information, the ways we use it, and your privacy rights in our comprehensive privacy policy.",
+		"effectiveDate": "Effective Date: November 12, 2024",
+		"lastUpdated": "Last updated",
+		"breadcrumb": "Privacy Policy"
+	},
+	"footer": {
+		"privacyPolicy": "Privacy Policy",
+		"termsOfService": "Terms of Service",
+		"impressum": "Impressum",
+		"agb": "Terms of Service"
+	},
+	"dashboard": {
+		"title": "Dashboard",
+		"color": "Color",
+		"editWidgets": "Edit Widgets",
+		"overpricedProduct": "Overpriced Product",
+		"samePriceProducts": "Same Price Products",
+		"competitiveProducts": "Competitive Products",
+		"priceChangesSummary": "Price changes summary",
+		"priceGroups": "Price groups",
+		"products": "Products",
+		"profitStatus": "Profit status",
+		"competitorPriceChanges": "Competitor price changes",
+		"keyVendorInsights": "Key vendor insights",
+		"inventoryValue": "Inventory Value",
+		"historicalPriceLeaders": "Historical price leaders",
+		"historicalIndex": "Historical index",
+		"vendorStockChanges": "Vendor Stock changes",
+		"product": "Product",
+		"competitor": "Competitor",
+		"change": "Change",
+		"time": "Time",
+		"stockChange": "Change",
+		"brand": "Brand",
+		"daysAgo": "days ago",
+		"inStock": "In stock",
+		"outOfStock": "Out of stock",
+		"months": {
+			"jan": "Jan",
+			"feb": "Feb",
+			"mar": "Mar",
+			"apr": "Apr",
+			"may": "May",
+			"jun": "Jun",
+			"jul": "Jul",
+			"aug": "Aug",
+			"sep": "Sep",
+			"oct": "Oct",
+			"nov": "Nov",
+			"dec": "Dec"
+		},
+		"pieChartLabels": {
+			"overpriced": "Overpriced",
+			"samePrice": "Same Price",
+			"competitive": "Competitive"
+		},
+		"logoutClicked": "Logout clicked"
+	},
+	"productFeed": {
+		"title": "Product Feed",
+		"description": "Manage and optimize your product feeds for better market reach",
+		"metaTitle": "Product Feed | Nogl",
+		"metaDescription": "Manage and optimize your product feeds for better market reach"
+	}
 }

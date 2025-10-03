@@ -18,7 +18,7 @@ const CopyToClipboard = ({ text, label }: { text: string; label: string }) => {
 				navigator.clipboard.writeText(text);
 				setCopied(true);
 			}}
-			className={`flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 font-satoshi font-medium text-white duration-200 ease-in hover:bg-primary-dark
+			className={`bg-primary font-satoshi hover:bg-primary-dark flex items-center justify-center gap-2 rounded-lg px-4 py-2 font-medium text-white duration-200 ease-in
 			`}
 		>
 			<svg

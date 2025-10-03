@@ -4,23 +4,23 @@ import { Route } from "@/routers/types";
 import Link from "next/link";
 import Image from "next/image";
 
-const Footer = ({ lang = 'en' }: { lang?: string }) => {
+const Footer = ({ lang = "en" }: { lang?: string }) => {
 	return (
-		<footer className='relative z-1 mt-auto overflow-hidden bg-black py-17.5 lg:py-22.5 xl:py-27.5'>
+		<footer className='z-1 py-17.5 lg:py-22.5 xl:py-27.5 relative mt-auto overflow-hidden bg-black'>
 			<div className='mx-auto max-w-[1170px] px-4 sm:px-8 xl:px-0'>
 				{/* <!-- footer menu start --> */}
 				<div className='flex flex-wrap gap-10 lg:justify-between xl:flex-nowrap xl:gap-20'>
-            <div className='w-full max-w-[275px]'>
-						<Logo variant="dark" size="lg" />
-						<p className='mt-5 text-gray-5'>
+					<div className='w-full max-w-[275px]'>
+						<Logo variant='dark' size='lg' />
+						<p className='text-gray-5 mt-5'>
 							© Nogl- Professional Services Platform
 						</p>
 
-            <ul className='mt-11 flex items-center gap-2'>
+						<ul className='mt-11 flex items-center gap-2'>
 							<li>
 								<a
-                  href='https://twitter.com/noglai'
-                  aria-label='Twitter'
+									href='https://twitter.com/noglai'
+									aria-label='Twitter'
 									className='flex duration-200 ease-out hover:text-white'
 								>
 									<svg
@@ -38,8 +38,8 @@ const Footer = ({ lang = 'en' }: { lang?: string }) => {
 
 							<li>
 								<a
-                  href='https://facebook.com/noglai'
-                  aria-label='Facebook'
+									href='https://facebook.com/noglai'
+									aria-label='Facebook'
 									className='flex duration-200 ease-out hover:text-white'
 								>
 									<svg
@@ -55,48 +55,48 @@ const Footer = ({ lang = 'en' }: { lang?: string }) => {
 								</a>
 							</li>
 
-              <li>
-                <a
-                  href='https://youtube.com/@noglai'
-                  aria-label='YouTube'
-                  className='flex duration-200 ease-out hover:text-white'
-                >
-                  <svg
-                    className='fill-current'
-                    width='32'
-                    height='32'
-                    viewBox='0 0 32 32'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <path d='M27 12.3c-.2-1.6-1.6-2.9-3.2-3.1C21.6 9 16 9 16 9s-5.6 0-7.8.2C6.6 9.4 5.2 10.7 5 12.3 4.8 14.3 4.8 18 4.8 18s0 3.7.2 5.7c.2 1.6 1.6 2.9 3.2 3.1C10.4 27 16 27 16 27s5.6 0 7.8-.2c1.6-.2 3-1.5 3.2-3.1.2-2 .2-5.7.2-5.7s0-3.7-.2-5.7zM14 21v-6l6 3-6 3z' />
-                  </svg>
-                </a>
-              </li>
-              <li>
-                <a
-                  href='https://instagram.com/noglai'
-                  aria-label='Instagram'
-                  className='flex duration-200 ease-out hover:text-white'
-                >
-                  <svg
-                    className='fill-current'
-                    width='32'
-                    height='32'
-                    viewBox='0 0 32 32'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <path d='M20 8H12C9.8 8 8 9.8 8 12V20C8 22.2 9.8 24 12 24H20C22.2 24 24 22.2 24 20V12C24 9.8 22.2 8 20 8ZM22 20C22 21.1 21.1 22 20 22H12C10.9 22 10 21.1 10 20V12C10 10.9 10.9 10 12 10H20C21.1 10 22 10.9 22 12V20ZM21 12.5C21 12.8 20.8 13 20.5 13H19.5C19.2 13 19 12.8 19 12.5V11.5C19 11.2 19.2 11 19.5 11H20.5C20.8 11 21 11.2 21 11.5V12.5ZM16 12C13.8 12 12 13.8 12 16C12 18.2 13.8 20 16 20C18.2 20 20 18.2 20 16C20 13.8 18.2 12 16 12ZM16 18.5C14.6 18.5 13.5 17.4 13.5 16C13.5 14.6 14.6 13.5 16 13.5C17.4 13.5 18.5 14.6 18.5 16C18.5 17.4 17.4 18.5 16 18.5Z' />
-                  </svg>
-                </a>
-              </li>
+							<li>
+								<a
+									href='https://youtube.com/@noglai'
+									aria-label='YouTube'
+									className='flex duration-200 ease-out hover:text-white'
+								>
+									<svg
+										className='fill-current'
+										width='32'
+										height='32'
+										viewBox='0 0 32 32'
+										fill='none'
+										xmlns='http://www.w3.org/2000/svg'
+									>
+										<path d='M27 12.3c-.2-1.6-1.6-2.9-3.2-3.1C21.6 9 16 9 16 9s-5.6 0-7.8.2C6.6 9.4 5.2 10.7 5 12.3 4.8 14.3 4.8 18 4.8 18s0 3.7.2 5.7c.2 1.6 1.6 2.9 3.2 3.1C10.4 27 16 27 16 27s5.6 0 7.8-.2c1.6-.2 3-1.5 3.2-3.1.2-2 .2-5.7.2-5.7s0-3.7-.2-5.7zM14 21v-6l6 3-6 3z' />
+									</svg>
+								</a>
+							</li>
+							<li>
+								<a
+									href='https://instagram.com/noglai'
+									aria-label='Instagram'
+									className='flex duration-200 ease-out hover:text-white'
+								>
+									<svg
+										className='fill-current'
+										width='32'
+										height='32'
+										viewBox='0 0 32 32'
+										fill='none'
+										xmlns='http://www.w3.org/2000/svg'
+									>
+										<path d='M20 8H12C9.8 8 8 9.8 8 12V20C8 22.2 9.8 24 12 24H20C22.2 24 24 22.2 24 20V12C24 9.8 22.2 8 20 8ZM22 20C22 21.1 21.1 22 20 22H12C10.9 22 10 21.1 10 20V12C10 10.9 10.9 10 12 10H20C21.1 10 22 10.9 22 12V20ZM21 12.5C21 12.8 20.8 13 20.5 13H19.5C19.2 13 19 12.8 19 12.5V11.5C19 11.2 19.2 11 19.5 11H20.5C20.8 11 21 11.2 21 11.5V12.5ZM16 12C13.8 12 12 13.8 12 16C12 18.2 13.8 20 16 20C18.2 20 20 18.2 20 16C20 13.8 18.2 12 16 12ZM16 18.5C14.6 18.5 13.5 17.4 13.5 16C13.5 14.6 14.6 13.5 16 13.5C17.4 13.5 18.5 14.6 18.5 16C18.5 17.4 17.4 18.5 16 18.5Z' />
+									</svg>
+								</a>
+							</li>
 						</ul>
 					</div>
 
 					<div className='flex w-full flex-col justify-between gap-10 sm:w-auto sm:flex-row xl:gap-20'>
 						<div className='w-full sm:w-auto'>
-							<h2 className='mb-5 font-satoshi text-lg font-bold -tracking-[0.2px] text-white'>
+							<h2 className='font-satoshi mb-5 text-lg font-bold -tracking-[0.2px] text-white'>
 								Products
 							</h2>
 
@@ -137,7 +137,7 @@ const Footer = ({ lang = 'en' }: { lang?: string }) => {
 						</div>
 
 						<div className='w-full sm:w-auto'>
-							<h2 className='mb-5 font-satoshi text-lg font-bold -tracking-[0.2px] text-white'>
+							<h2 className='font-satoshi mb-5 text-lg font-bold -tracking-[0.2px] text-white'>
 								Resources
 							</h2>
 
@@ -178,7 +178,7 @@ const Footer = ({ lang = 'en' }: { lang?: string }) => {
 						</div>
 
 						<div className='w-full sm:w-auto'>
-							<h2 className='mb-5 font-satoshi text-lg font-bold -tracking-[0.2px] text-white'>
+							<h2 className='font-satoshi mb-5 text-lg font-bold -tracking-[0.2px] text-white'>
 								Products
 							</h2>
 
@@ -219,7 +219,7 @@ const Footer = ({ lang = 'en' }: { lang?: string }) => {
 						</div>
 
 						<div className='w-full sm:w-auto'>
-							<h2 className='mb-5 font-satoshi text-lg font-bold -tracking-[0.2px] text-white'>
+							<h2 className='font-satoshi mb-5 text-lg font-bold -tracking-[0.2px] text-white'>
 								Company
 							</h2>
 
@@ -252,31 +252,33 @@ const Footer = ({ lang = 'en' }: { lang?: string }) => {
 						</div>
 
 						<div className='w-full sm:w-auto'>
-							<h2 className='mb-5 font-satoshi text-lg font-bold -tracking-[0.2px] text-white'>
+							<h2 className='font-satoshi mb-5 text-lg font-bold -tracking-[0.2px] text-white'>
 								Legal
 							</h2>
 
 							<ul className='flex flex-col gap-3'>
 								<li>
 									<Link
-										href={lang === 'de' ? "/datenschutz" : "/privacy-policy"}
+										href={lang === "de" ? "/datenschutz" : "/privacy-policy"}
 										className='text-gray-5 duration-200 ease-out hover:text-white'
 									>
-										{lang === 'de' ? 'Datenschutzerklärung' : 'Privacy Policy'}
+										{lang === "de" ? "Datenschutzerklärung" : "Privacy Policy"}
 									</Link>
 								</li>
 								<li>
 									<Link
-										href={lang === 'de' ? "/agb" : "/tos"}
+										href={lang === "de" ? "/agb" : "/tos"}
 										className='text-gray-5 duration-200 ease-out hover:text-white'
 									>
-										{lang === 'de' ? 'Allgemeine Geschäftsbedingungen' : 'Terms of Service'}
+										{lang === "de"
+											? "Allgemeine Geschäftsbedingungen"
+											: "Terms of Service"}
 									</Link>
 								</li>
-								{lang === 'de' && (
+								{lang === "de" && (
 									<li>
 										<Link
-											href="/impressum"
+											href='/impressum'
 											className='text-gray-5 duration-200 ease-out hover:text-white'
 										>
 											Impressum
@@ -292,7 +294,7 @@ const Footer = ({ lang = 'en' }: { lang?: string }) => {
 
 			{/* <!-- bg shapes --> */}
 			<div className='hidden sm:block'>
-				<div className='absolute bottom-0 left-0 -z-1'>
+				<div className='-z-1 absolute bottom-0 left-0'>
 					<Image
 						src='/images/footer/footer-grid-01.svg'
 						alt='grid'
@@ -300,7 +302,7 @@ const Footer = ({ lang = 'en' }: { lang?: string }) => {
 						height={305}
 					/>
 				</div>
-				<div className='absolute right-0 top-0 -z-1'>
+				<div className='-z-1 absolute right-0 top-0'>
 					<Image
 						src='/images/footer/footer-grid-02.svg'
 						alt='grid'

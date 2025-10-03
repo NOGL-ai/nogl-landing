@@ -16,7 +16,7 @@ export default function AccountButton({ user }: any) {
 					alt='profile name'
 					className='h-[48px] w-[48px] overflow-hidden rounded-full'
 				/>
-				<p className='font-satoshi text-base font-medium capitalize text-dark dark:text-white'>
+				<p className='font-satoshi text-dark text-base font-medium capitalize dark:text-white'>
 					{user?.name}
 				</p>
 
@@ -37,7 +37,7 @@ export default function AccountButton({ user }: any) {
 				</svg>
 			</div>
 
-			<div className='shadow-3 border-[.5px]border-stroke invisible absolute right-0 top-15 z-999 w-[280px] rounded-lg bg-white pb-2.5 pt-3.5 opacity-0 shadow-md duration-500 group-hover:visible group-hover:translate-y-2 group-hover:opacity-100 dark:bg-gray-dark'>
+			<div className='shadow-3 border-[.5px]border-stroke top-15 z-999 dark:bg-gray-dark invisible absolute right-0 w-[280px] rounded-lg bg-white pb-2.5 pt-3.5 opacity-0 shadow-md duration-500 group-hover:visible group-hover:translate-y-2 group-hover:opacity-100'>
 				<AccountMenu user={user} />
 			</div>
 		</div>

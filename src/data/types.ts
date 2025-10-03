@@ -18,7 +18,6 @@ export interface TaxonomyType {
 	thumbnail: string;
 }
 
-
 export interface AuthorType {
 	id: string | number;
 	firstName: string;

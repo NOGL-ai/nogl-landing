@@ -12,7 +12,7 @@ const Comment: FC<CommentProps> = ({ isSmall }) => {
 			<div className='pt-1'>
 				<Avatar sizeClass={`w-6 h-6 ${!isSmall ? "sm:h-8 sm:w-8 " : ""}`} />
 			</div>
-			<div className='ml-2 flex flex-grow flex-col rounded-xl border border-neutral-200 p-4 text-sm dark:border-neutral-700 sm:ml-3 sm:text-base'>
+			<div className='ml-2 flex flex-grow flex-col rounded-xl border border-neutral-200 p-4 text-sm sm:ml-3 sm:text-base dark:border-neutral-700'>
 				<div className='relative flex items-center pr-6'>
 					<a
 						className='flex-shrink-0 font-semibold text-neutral-800 dark:text-neutral-100'
@@ -21,11 +21,11 @@ const Comment: FC<CommentProps> = ({ isSmall }) => {
 						Foulcher Nathanil
 					</a>
 					<span className='mx-2'>·</span>
-					<span className='line-clamp-1 text-xs text-neutral-500 dark:text-neutral-400 sm:text-sm'>
+					<span className='line-clamp-1 text-xs text-neutral-500 sm:text-sm dark:text-neutral-400'>
 						May 20, 2021
 					</span>
 				</div>
-				<span className='mb-3 mt-2 block text-neutral-700 dark:text-neutral-300 sm:mb-4 sm:mt-3'>
+				<span className='mb-3 mt-2 block text-neutral-700 sm:mb-4 sm:mt-3 dark:text-neutral-300'>
 					In sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at,
 					feugiat non, pretium quis, lectus. Suspendisse potenti. In eleifend
 					quam a odio. In hac habitasse platea dictumst.

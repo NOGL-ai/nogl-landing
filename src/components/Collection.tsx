@@ -19,7 +19,10 @@ const Collection: FC<CollectionProps> = ({
 	color,
 }) => {
 	return (
-		<Link href={"/listing-session"} className={`nc-Collection block ${className}`}>
+		<Link
+			href={"/listing-session"}
+			className={`nc-Collection block ${className}`}
+		>
 			<div
 				className={`aspect-w-16 aspect-h-11 sm:aspect-h-10 group relative h-0 w-full overflow-hidden rounded-2xl ${color}`}
 			>

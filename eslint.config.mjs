@@ -7,7 +7,7 @@ import pluginNext from "@next/eslint-plugin-next";
 import pluginJsxA11y from "eslint-plugin-jsx-a11y";
 
 export default [
-	{ 
+	{
 		files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
 		ignores: [
 			".next/**",
@@ -15,8 +15,8 @@ export default [
 			"node_modules/**",
 			"yarn.lock",
 			"package-lock.json",
-			"public/**"
-		]
+			"public/**",
+		],
 	},
 	{ languageOptions: { globals: globals.browser } },
 	pluginJs.configs.recommended,
@@ -25,8 +25,8 @@ export default [
 	{
 		settings: {
 			react: {
-				version: "detect"
-			}
+				version: "detect",
+			},
 		},
 		plugins: {
 			"react-hooks": pluginReactHooks,
@@ -39,8 +39,8 @@ export default [
 			"@typescript-eslint/no-unused-vars": [
 				"error",
 				{
-					"argsIgnorePattern": "^_"
-				}
+					argsIgnorePattern: "^_",
+				},
 			],
 			"@typescript-eslint/no-var-requires": "off",
 			"@typescript-eslint/no-require-imports": "off",
@@ -59,7 +59,7 @@ export default [
 			"jsx-a11y/anchor-has-content": "warn",
 			"no-undef": "off",
 			"no-var": "warn",
-			"prefer-const": "warn"
-		}
-	}
+			"prefer-const": "warn",
+		},
+	},
 ];

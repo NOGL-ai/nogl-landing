@@ -7,7 +7,7 @@ const SampleImageComponent = ({ value, isInline }: any) => {
 	return (
 		<div className='my-10 overflow-hidden rounded-[15px]'>
 			<Image
-				src={value || '/placeholder-image.jpg'}
+				src={value || "/placeholder-image.jpg"}
 				width={800}
 				height={400}
 				alt={"blog image"}
@@ -20,7 +20,7 @@ const SampleImageComponent = ({ value, isInline }: any) => {
 	);
 };
 
-const components = {
+const _components = {
 	types: {
 		image: SampleImageComponent,
 	},
@@ -28,7 +28,10 @@ const components = {
 
 const RenderBodyContent = ({ post }: { post: Blog }) => {
 	return (
-		<div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: post?.html || '' }} />
+		<div
+			className='prose max-w-none'
+			dangerouslySetInnerHTML={{ __html: post?.html || "" }}
+		/>
 	);
 };
 

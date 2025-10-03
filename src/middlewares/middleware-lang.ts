@@ -17,10 +17,10 @@ function getLocale(request: NextRequest): string | undefined {
 	const languages = new Negotiator({ headers: negotiatorHeaders }).languages();
 
 	// Filter out invalid locales and ensure we have valid language codes
-	const validLanguages = languages.filter(lang => {
+	const validLanguages = languages.filter((lang) => {
 		try {
 			// Check if the language code is valid
-			return typeof lang === 'string' && lang.length >= 2 && lang.length <= 5;
+			return typeof lang === "string" && lang.length >= 2 && lang.length <= 5;
 		} catch {
 			return false;
 		}
@@ -36,7 +36,7 @@ function getLocale(request: NextRequest): string | undefined {
 		return locale;
 	} catch (error) {
 		// If locale matching fails, return default locale
-		console.warn('Locale matching failed:', error);
+		console.warn("Locale matching failed:", error);
 		return i18n.defaultLocale;
 	}
 }

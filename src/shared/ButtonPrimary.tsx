@@ -2,7 +2,7 @@ import Button, { ButtonProps } from "./Button";
 import React from "react";
 import { Route } from "@/routers/types";
 
-export interface ButtonPrimaryProps extends Omit<ButtonProps, 'href'> {
+export interface ButtonPrimaryProps extends Omit<ButtonProps, "href"> {
 	href?: Route<string>;
 }
 
@@ -12,11 +12,11 @@ const ButtonPrimary: React.FC<ButtonPrimaryProps> = ({
 }) => {
 	return (
 		<Button
-			className={`ttnc-ButtonPrimary inline-flex items-center justify-center 
-				bg-primary-600 hover:bg-primary-700 
-				text-white dark:text-neutral-50
-				disabled:bg-primary-400 disabled:cursor-not-allowed
+			className={`ttnc-ButtonPrimary bg-primary-600 hover:bg-primary-700 disabled:bg-primary-400 
+				inline-flex items-center 
+				justify-center text-white
 				transition-colors duration-300
+				disabled:cursor-not-allowed dark:text-neutral-50
 				${className}`}
 			{...args}
 		/>

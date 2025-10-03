@@ -29,21 +29,21 @@ const DEMO_DATA = [
 		clientName: "Emily Schomaker",
 		clientAddress: "Hamburg, Germany",
 		content:
-      "The forecast on denim color and silhouette shifts was spot on. Our buys improved and AI-insights made decisions seamless!",
+			"The forecast on denim color and silhouette shifts was spot on. Our buys improved and AI-insights made decisions seamless!",
 	},
 	{
 		id: 2,
 		clientName: "Jane Smith",
 		clientAddress: "London, UK",
 		content:
-      "We validated our new range with demand signals before committing. Game-changing for margin and markdowns.",
+			"We validated our new range with demand signals before committing. Game-changing for margin and markdowns.",
 	},
 	{
 		id: 3,
 		clientName: "Ahmed Khan",
 		clientAddress: "Dubai, UAE",
 		content:
-      "Localized assortment guidance and AI summaries helped our team align fast across regions.",
+			"Localized assortment guidance and AI summaries helped our team align fast across regions.",
 	},
 ];
 

@@ -83,10 +83,10 @@ export default function UserAction({ user }: any) {
 
 	return (
 		<>
-			<div className='mt-2 flex flex-wrap items-center gap-3.5 lsm:ml-auto lsm:justify-end sm:mt-0'>
+			<div className='lsm:ml-auto lsm:justify-end mt-2 flex flex-wrap items-center gap-3.5 sm:mt-0'>
 				<button
 					onClick={hangleLogin}
-					className='flex h-10 items-center justify-center rounded-lg bg-primary p-3 text-white hover:bg-primary-dark'
+					className='bg-primary hover:bg-primary-dark flex h-10 items-center justify-center rounded-lg p-3 text-white'
 				>
 					Log In
 				</button>
@@ -95,7 +95,7 @@ export default function UserAction({ user }: any) {
 					<select
 						onChange={handleUpdate}
 						value={role}
-						className=' h-10 cursor-pointer appearance-none rounded-lg bg-dark px-3 pr-8 text-center text-white'
+						className=' bg-dark h-10 cursor-pointer appearance-none rounded-lg px-3 pr-8 text-center text-white'
 					>
 						{roles.map((role, index) => (
 							<option key={index} value={role} className='cursor-pointer'>
@@ -110,7 +110,7 @@ export default function UserAction({ user }: any) {
 				</div>
 				<button
 					onClick={() => setShowDeleteModal(true)}
-					className='flex h-10 w-10 items-center justify-center rounded-lg bg-red-light-5 text-red duration-300 hover:bg-red hover:text-white dark:bg-red/10 dark:hover:bg-red'
+					className='bg-red-light-5 text-red hover:bg-red dark:bg-red/10 dark:hover:bg-red flex h-10 w-10 items-center justify-center rounded-lg duration-300 hover:text-white'
 				>
 					<svg
 						width='21'

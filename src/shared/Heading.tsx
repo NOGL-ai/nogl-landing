@@ -24,7 +24,7 @@ const Heading: React.FC<HeadingProps> = ({
 					{children || `Section Heading`}
 				</h2>
 				{desc && (
-					<span className='mt-2 block text-base font-normal text-neutral-500 dark:text-neutral-400 sm:text-lg md:mt-3'>
+					<span className='mt-2 block text-base font-normal text-neutral-500 sm:text-lg md:mt-3 dark:text-neutral-400'>
 						{desc}
 					</span>
 				)}

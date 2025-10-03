@@ -4,9 +4,9 @@ export default function SearchBox() {
 			<input
 				type='search'
 				placeholder='Search'
-				className='h-12 w-full rounded-full border border-stroke bg-gray-2 pl-12 pr-5 text-dark outline-none ring-offset-1 duration-300 focus:shadow-input focus:ring-2 focus:ring-primary/20 dark:border-stroke-dark dark:bg-white/5 dark:text-white'
+				className='border-stroke bg-gray-2 text-dark focus:shadow-input focus:ring-primary/20 dark:border-stroke-dark h-12 w-full rounded-full border pl-12 pr-5 outline-none ring-offset-1 duration-300 focus:ring-2 dark:bg-white/5 dark:text-white'
 			/>
-			<span className='absolute left-5 top-1/2 -translate-y-1/2 text-dark dark:text-white'>
+			<span className='text-dark absolute left-5 top-1/2 -translate-y-1/2 dark:text-white'>
 				<svg
 					width='18'
 					height='18'

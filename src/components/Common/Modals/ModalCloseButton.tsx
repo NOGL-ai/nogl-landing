@@ -2,7 +2,7 @@ export default function ModalCloseButton({ closeModal }: any) {
 	return (
 		<button
 			onClick={() => closeModal(false)}
-			className='absolute right-2 top-2 flex h-10 w-10 items-center justify-center rounded-full bg-gray duration-150 ease-in hover:text-black dark:bg-gray-7 dark:hover:text-white sm:right-7.5 sm:top-7.5'
+			className='bg-gray dark:bg-gray-7 sm:right-7.5 sm:top-7.5 absolute right-2 top-2 flex h-10 w-10 items-center justify-center rounded-full duration-150 ease-in hover:text-black dark:hover:text-white'
 		>
 			<svg
 				className='fill-current'

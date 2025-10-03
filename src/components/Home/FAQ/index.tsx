@@ -25,7 +25,7 @@ const FAQ: React.FC<FAQProps> = ({ dictionary }) => {
 	};
 
 	return (
-		<section className='overflow-hidden py-17.5 lg:py-22.5 xl:py-27.5'>
+		<section className='py-17.5 lg:py-22.5 xl:py-27.5 overflow-hidden'>
 			{/* <!-- section title --> */}
 			<SectionHeader
 				title={dictionary.faq.title}
@@ -36,7 +36,10 @@ const FAQ: React.FC<FAQProps> = ({ dictionary }) => {
 				<div className='flex flex-col gap-4'>
 					{/* <!-- Accordion Item --> */}
 					{dictionary.faq.items?.map((faq, key) => (
-						<div key={key} className="bg-white backdrop-blur-sm border border-gray-100 shadow-[0px_5px_15px_0px_rgba(7,10,46,0.04)] rounded-lg dark:bg-white/5 dark:border-gray-800">
+						<div
+							key={key}
+							className='rounded-lg border border-gray-100 bg-white shadow-[0px_5px_15px_0px_rgba(7,10,46,0.04)] backdrop-blur-sm dark:border-gray-800 dark:bg-white/5'
+						>
 							<FaqItem
 								faq={faq}
 								handleFaqToggle={handleFaqToggle}

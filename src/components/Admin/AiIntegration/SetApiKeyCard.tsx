@@ -64,15 +64,15 @@ export default function SetApiKeyCard() {
 							</defs>
 						</svg>
 					</div>
-					<h2 className='mb-3.5 font-satoshi text-heading-5 font-bold tracking-[-.5px] text-dark dark:text-white'>
+					<h2 className='font-satoshi text-heading-5 text-dark mb-3.5 font-bold tracking-[-.5px] dark:text-white'>
 						You need an OpenAI API Key to use AI Tools Template&#39;s features.
 					</h2>
-					<p className='mb-7.5 text-sm tracking-[-.14px] text-body'>
+					<p className='mb-7.5 text-body text-sm tracking-[-.14px]'>
 						So set your API key first and start using...
 					</p>
 					<button
 						onClick={() => setShowModal(true)}
-						className='inline-flex h-[52px] items-center justify-center gap-2 rounded-lg bg-primary px-10 font-satoshi font-medium text-white duration-300 hover:bg-primary-dark'
+						className='bg-primary font-satoshi hover:bg-primary-dark inline-flex h-[52px] items-center justify-center gap-2 rounded-lg px-10 font-medium text-white duration-300'
 					>
 						<span>
 							<svg

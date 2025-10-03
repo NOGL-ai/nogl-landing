@@ -8,9 +8,14 @@ export interface SwitchDarkMode2Props {
 	className?: string;
 }
 const SwitchDarkMode2: React.FC<SwitchDarkMode2Props> = ({
-	className = "",
+	className: _className = "",
 }) => {
-	const { _toogleDarkMode, isDarkMode, toDark, toLight } = useThemeMode();
+	const {
+		_toogleDarkMode,
+		isDarkMode,
+		toDark: _toDark,
+		toLight: _toLight,
+	} = useThemeMode();
 
 	return (
 		<div className='inline-flex'>

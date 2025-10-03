@@ -8,7 +8,7 @@ export default function ThemeSwitcher() {
 			onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
 			className='relative z-10 h-9 w-[36px] cursor-pointer items-center justify-between rounded-lg dark:bg-white/5'
 		>
-			<span className='hidden items-center justify-center text-dark dark:flex dark:text-white'>
+			<span className='text-dark hidden items-center justify-center dark:flex dark:text-white'>
 				<svg
 					width='20'
 					height='20'
@@ -25,7 +25,7 @@ export default function ThemeSwitcher() {
 				</svg>
 			</span>
 
-			<span className='flex items-center justify-center text-dark dark:hidden dark:text-white'>
+			<span className='text-dark flex items-center justify-center dark:hidden dark:text-white'>
 				<svg
 					width='20'
 					height='20'

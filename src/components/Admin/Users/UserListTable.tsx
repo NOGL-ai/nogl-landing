@@ -5,23 +5,23 @@ import UserAction from "./UserAction";
 export default function UserListTable({ users }: { users: User[] }) {
 	return (
 		<>
-			<div className='rounded-10 bg-white shadow-1 dark:bg-gray-dark'>
+			<div className='rounded-10 shadow-1 dark:bg-gray-dark bg-white'>
 				<table className='w-full'>
 					<thead>
-						<tr className='hidden border-b border-stroke dark:border-stroke-dark lsm:table-row'>
-							<th className='min-w-[150px] px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 sm:pl-7.5'>
+						<tr className='border-stroke dark:border-stroke-dark lsm:table-row hidden border-b'>
+							<th className='font-satoshi text-body dark:text-gray-5 sm:pl-7.5 min-w-[150px] px-4 py-5 text-left text-base font-medium tracking-[-.2px]'>
 								Name
 							</th>
-							<th className='hidden px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 xl:table-cell'>
+							<th className='font-satoshi text-body dark:text-gray-5 hidden px-4 py-5 text-left text-base font-medium tracking-[-.2px] xl:table-cell'>
 								Email
 							</th>
-							<th className='hidden px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 xl:table-cell'>
+							<th className='font-satoshi text-body dark:text-gray-5 hidden px-4 py-5 text-left text-base font-medium tracking-[-.2px] xl:table-cell'>
 								Role
 							</th>
-							<th className='hidden px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 md:table-cell'>
+							<th className='font-satoshi text-body dark:text-gray-5 hidden px-4 py-5 text-left text-base font-medium tracking-[-.2px] md:table-cell'>
 								Registered on
 							</th>
-							<th className='hidden px-4 py-5 text-right font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 lsm:table-cell sm:pr-7.5'>
+							<th className='font-satoshi text-body dark:text-gray-5 lsm:table-cell sm:pr-7.5 hidden px-4 py-5 text-right text-base font-medium tracking-[-.2px]'>
 								Action
 							</th>
 						</tr>
@@ -31,9 +31,9 @@ export default function UserListTable({ users }: { users: User[] }) {
 						{users?.map((user) => (
 							<tr
 								key={user?.id}
-								className='border-b border-stroke last-of-type:border-b-0 dark:border-stroke-dark'
+								className='border-stroke dark:border-stroke-dark border-b last-of-type:border-b-0'
 							>
-								<td className='p-4 text-left text-base tracking-[-.16px] text-body dark:text-gray-5 sm:pl-7.5'>
+								<td className='text-body dark:text-gray-5 sm:pl-7.5 p-4 text-left text-base tracking-[-.16px]'>
 									{user?.name}
 
 									{/* <span className='block xl:hidden'>Name: {user?.name}</span> */}
@@ -51,23 +51,23 @@ export default function UserListTable({ users }: { users: User[] }) {
 										Register Date: {user?.createdAt?.toLocaleDateString()}
 									</span>
 
-									<span className='block lsm:hidden'>
+									<span className='lsm:hidden block'>
 										<UserAction user={user} />
 									</span>
 								</td>
 
-								<td className='hidden p-4 text-left text-base tracking-[-.16px] text-body dark:text-gray-5 xl:table-cell'>
+								<td className='text-body dark:text-gray-5 hidden p-4 text-left text-base tracking-[-.16px] xl:table-cell'>
 									{user?.email}
 								</td>
-								<td className='hidden p-4 text-left text-base tracking-[-.16px] text-body dark:text-gray-5 xl:table-cell'>
+								<td className='text-body dark:text-gray-5 hidden p-4 text-left text-base tracking-[-.16px] xl:table-cell'>
 									{user?.role &&
 										user.role.charAt(0).toUpperCase() +
 											user.role.slice(1).toLowerCase()}
 								</td>
-								<td className='hidden p-4 text-left text-base tracking-[-.16px] text-body dark:text-gray-5 md:table-cell'>
+								<td className='text-body dark:text-gray-5 hidden p-4 text-left text-base tracking-[-.16px] md:table-cell'>
 									{user?.createdAt?.toLocaleDateString()}
 								</td>
-								<td className='hidden p-4 text-right text-base tracking-[-.16px] text-body dark:text-gray-5 lsm:table-cell sm:pr-7.5'>
+								<td className='text-body dark:text-gray-5 lsm:table-cell sm:pr-7.5 hidden p-4 text-right text-base tracking-[-.16px]'>
 									<UserAction user={user} />
 								</td>
 							</tr>

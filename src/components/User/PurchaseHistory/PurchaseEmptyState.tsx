@@ -202,15 +202,15 @@ export default function PurchaseEmptyState() {
 							</defs>
 						</svg>
 					</div>
-					<h2 className='mb-3.5 font-satoshi text-2xl font-bold tracking-[-.5px] text-dark dark:text-white'>
+					<h2 className='font-satoshi text-dark mb-3.5 text-2xl font-bold tracking-[-.5px] dark:text-white'>
 						You don’t have any purchase history
 					</h2>
-					<p className='text-sm tracking-[-.14px] text-body dark:text-gray-5'>
+					<p className='text-body dark:text-gray-5 text-sm tracking-[-.14px]'>
 						Please purchase any plan to see the history! Thank you
 					</p>
 
 					<Link
-						className='text-md mt-4 inline-block rounded-md bg-primary px-5.5 py-2 font-satoshi font-medium text-white duration-300 hover:bg-primary-dark'
+						className='text-md bg-primary px-5.5 font-satoshi hover:bg-primary-dark mt-4 inline-block rounded-md py-2 font-medium text-white duration-300'
 						href='/#pricing'
 					>
 						Pricing

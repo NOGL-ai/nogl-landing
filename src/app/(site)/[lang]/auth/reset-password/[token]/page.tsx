@@ -7,9 +7,13 @@ export const metadata: Metadata = {
 	description: `This is Reset Password page for ${process.env.SITE_NAME}`,
 };
 
-const ResetPasswordPage = async ({ params }: { params: Promise<{ token: string }> }) => {
+const ResetPasswordPage = async ({
+	params,
+}: {
+	params: Promise<{ token: string }>;
+}) => {
 	const { token } = await params;
-	
+
 	if (!token) {
 		return <div>Invalid token</div>;
 	}

@@ -22,16 +22,22 @@ interface SubscriptionProps {
 	isSubscribed?: boolean;
 }
 
-const PlanCard = ({ plan, isBilling = false }: { plan: Price; isBilling?: boolean }) => {
+const PlanCard = ({
+	plan,
+	isBilling: _isBilling = false,
+}: {
+	plan: Price;
+	isBilling?: boolean;
+}) => {
 	const { data: session } = useSession();
 	const user = session?.user;
 	const router = useRouter();
 
-	const handleClick = () => {
+	const _handleClick = () => {
 		router.push("/auth/sign-up" as Route);
-	  };
+	};
 
-	const handleSubscription = async () => {
+	const _handleSubscription = async () => {
 		let subsProp: SubscriptionProps = {
 			priceId: plan.priceId,
 		};
@@ -54,20 +60,20 @@ const PlanCard = ({ plan, isBilling = false }: { plan: Price; isBilling?: boolea
 			const res = await axios.post("/api/stripe/payment", subsProp);
 			const checkOutSession = res.data;
 			if (checkOutSession?.url) {
-					window.location.href = checkOutSession.url;
+				window.location.href = checkOutSession.url;
 			}
 		} catch (err) {
 			console.error((err as Error).message);
 		}
 	};
 
-	const isSubscribed = session && user?.priceId === plan.priceId;
+	const _isSubscribed = session && user?.priceId === plan.priceId;
 	const active = plan?.active;
 
 	return (
-		<Card className={`relative ${active ? "border-2 border-primary" : ""}`}>
+		<Card className={`relative ${active ? "border-primary border-2" : ""}`}>
 			{active && (
-				<div className="absolute right-0 top-0 rounded-bl-lg rounded-tr-lg bg-primary px-3 py-1 text-primary-foreground">
+				<div className='bg-primary text-primary-foreground absolute right-0 top-0 rounded-bl-lg rounded-tr-lg px-3 py-1'>
 					Coming Soon
 				</div>
 			)}
@@ -76,28 +82,28 @@ const PlanCard = ({ plan, isBilling = false }: { plan: Price; isBilling?: boolea
 				<CardDescription>{plan.description}</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<div className="mb-6 flex items-baseline">
-					<span className="text-4xl font-bold">
+				<div className='mb-6 flex items-baseline'>
+					<span className='text-4xl font-bold'>
 						{plan.unit_amount === 0 ? "Free" : `$${plan.unit_amount / 100}`}
 					</span>
 					{plan.unit_amount > 0 && (
-						<span className="ml-2 text-sm text-muted-foreground">/month</span>
+						<span className='text-muted-foreground ml-2 text-sm'>/month</span>
 					)}
 				</div>
-				<ul className="mb-8 space-y-2">
+				<ul className='mb-8 space-y-2'>
 					{plan.includes.map((feature, i) => (
-						<li key={i} className="flex items-center">
-							<CheckIcon className="mr-2 h-5 w-5 text-primary" />
-							<span className="font-medium">{feature}</span>
+						<li key={i} className='flex items-center'>
+							<CheckIcon className='text-primary mr-2 h-5 w-5' />
+							<span className='font-medium'>{feature}</span>
 						</li>
 					))}
 				</ul>
-				<ShimmerButton 
-					className="w-full text-white dark:text-white" 
-					onClick={() => window.location.href = "/auth/signup"}
+				<ShimmerButton
+					className='w-full text-white dark:text-white'
+					onClick={() => (window.location.href = "/auth/signup")}
 				>
-					{plan.unit_amount === 0 
-						? "Start Your Journey Free →" 
+					{plan.unit_amount === 0
+						? "Start Your Journey Free →"
 						: "Start Growing Today →"}
 				</ShimmerButton>
 			</CardContent>
@@ -110,44 +116,50 @@ export function Pricing({ isBilling = false }: { isBilling?: boolean }) {
 	const expertPlan = pricingData[2];
 
 	return (
-		<section id="pricing">
+		<section id='pricing'>
 			{!isBilling && (
-				<div className="mx-auto space-y-4 py-6 text-center">
-					<h2 className="font-mono text-[42px] font-medium tracking-tighter text-primary">
+				<div className='mx-auto space-y-4 py-6 text-center'>
+					<h2 className='text-primary font-mono text-[42px] font-medium tracking-tighter'>
 						Start Free, Go Pro, or Join Community
 					</h2>
-					<h4 className="mx-auto mb-2 max-w-3xl text-balance text-[16px] text-muted-foreground font-normal">
-						Choose the plan that suits your learning style. Start for free, subscribe for more features, or purchase individual sessions as needed.
+					<h4 className='text-muted-foreground mx-auto mb-2 max-w-3xl text-balance text-[16px] font-normal'>
+						Choose the plan that suits your learning style. Start for free,
+						subscribe for more features, or purchase individual sessions as
+						needed.
 					</h4>
 				</div>
 			)}
-			<div className="mx-auto flex max-w-5xl flex-col items-center justify-center gap-y-5 py-12 md:py-20">
-				<div className="w-full px-4 md:px-6">
-					<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+			<div className='mx-auto flex max-w-5xl flex-col items-center justify-center gap-y-5 py-12 md:py-20'>
+				<div className='w-full px-4 md:px-6'>
+					<div className='grid grid-cols-1 gap-5 md:grid-cols-2'>
 						{regularPlans.map((plan, index) => (
 							<PlanCard key={index} plan={plan} isBilling={isBilling} />
 						))}
 					</div>
 				</div>
-				<div className="w-full px-4 md:px-6">
-					<Card className="flex items-center justify-between overflow-hidden">
-						<CardContent className="p-6 md:p-8">
-							<CardTitle className="mb-2 text-2xl">{expertPlan.nickname}</CardTitle>
-							<CardDescription className="mb-6">
+				<div className='w-full px-4 md:px-6'>
+					<Card className='flex items-center justify-between overflow-hidden'>
+						<CardContent className='p-6 md:p-8'>
+							<CardTitle className='mb-2 text-2xl'>
+								{expertPlan.nickname}
+							</CardTitle>
+							<CardDescription className='mb-6'>
 								{expertPlan.description}
 							</CardDescription>
-							<ShimmerButton 
-								className="text-white dark:text-white"
-								onClick={() => window.location.href = "https://empowhernetwork.de"}
+							<ShimmerButton
+								className='text-white dark:text-white'
+								onClick={() =>
+									(window.location.href = "https://empowhernetwork.de")
+								}
 							>
-							Join Our Community →
+								Join Our Community →
 							</ShimmerButton>
 						</CardContent>
-						<div className="before:content-[''] relative isolate hidden h-[240px] w-full before:absolute before:left-32 before:top-0 before:z-[-1] before:h-full before:w-full before:skew-x-[-45deg] before:border-l before:border-gray-200 before:bg-gray-100 dark:before:border-gray-800 dark:before:bg-gray-900 md:block lg:w-2/3">
-							<div className="ml-12 flex h-full w-full flex-col items-center justify-center gap-y-0.5">
-								<h1 className="text-4xl font-bold">Join Our Community</h1>
-								<p className="text-center text-gray-500 dark:text-gray-400">
-										Continuous guidance from forecasting specialists 
+						<div className="relative isolate hidden h-[240px] w-full before:absolute before:left-32 before:top-0 before:z-[-1] before:h-full before:w-full before:skew-x-[-45deg] before:border-l before:border-gray-200 before:bg-gray-100 before:content-[''] md:block lg:w-2/3 dark:before:border-gray-800 dark:before:bg-gray-900">
+							<div className='ml-12 flex h-full w-full flex-col items-center justify-center gap-y-0.5'>
+								<h1 className='text-4xl font-bold'>Join Our Community</h1>
+								<p className='text-center text-gray-500 dark:text-gray-400'>
+									Continuous guidance from forecasting specialists
 									<br />
 									in our private WhatsApp community
 								</p>

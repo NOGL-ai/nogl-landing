@@ -82,7 +82,7 @@ const LangDropdown: FC<LangDropdownProps> = ({
 						>
 							<Popover.Panel className={`absolute ${panelClassName}`}>
 								<div className='overflow-hidden rounded-2xl shadow-lg ring-1 ring-black ring-opacity-5'>
-									<div className='relative grid gap-8 bg-white p-7 dark:bg-neutral-800 lg:grid-cols-2'>
+									<div className='relative grid gap-8 bg-white p-7 lg:grid-cols-2 dark:bg-neutral-800'>
 										{headerLanguage.map((item, index) => (
 											<a
 												key={index}

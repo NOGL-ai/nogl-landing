@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
 			},
 		});
 		return new NextResponse(JSON.stringify(user), { status: 200 });
-	} catch (error) {
+	} catch {
 		return new NextResponse("Something went wrong", { status: 500 });
 	}
 }

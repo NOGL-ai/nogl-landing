@@ -54,23 +54,26 @@ export default function ForgotPassword() {
 			}
 		} catch (error: any) {
 			setLoading(false);
-			toast.error(error.response?.data || "An error occurred. Please try again.");
+			toast.error(
+				error.response?.data || "An error occurred. Please try again."
+			);
 		}
 	};
 
 	return (
 		<div className='mx-auto w-full max-w-[400px] py-10'>
 			<div className='mb-7.5 text-center'>
-				<h3 className='mb-4 font-satoshi text-heading-5 font-bold text-dark dark:text-white'>
+				<h3 className='font-satoshi text-heading-5 text-dark mb-4 font-bold dark:text-white'>
 					Forgot Password?
 				</h3>
-				<p className='text-base dark:text-gray-5'>
-					Enter your email address and we'll send you a link to reset your password.
+				<p className='dark:text-gray-5 text-base'>
+					Enter your email address and we'll send you a link to reset your
+					password.
 				</p>
 			</div>
 
 			<form onSubmit={handleSubmit}>
-				<div className='mb-5 space-y-4.5'>
+				<div className='space-y-4.5 mb-5'>
 					<InputGroup
 						label='Email'
 						placeholder='Enter your email'
@@ -79,7 +82,7 @@ export default function ForgotPassword() {
 						height='50px'
 						handleChange={handleChange}
 						value={email}
-						icon={<FaEnvelope className="text-gray-400" aria-hidden="true" />}
+						icon={<FaEnvelope className='text-gray-400' aria-hidden='true' />}
 						ref={emailInputRef}
 					/>
 
@@ -87,7 +90,7 @@ export default function ForgotPassword() {
 						{loading ? (
 							<>
 								Sending
-								<FaSpinner className='animate-spin ml-2' aria-hidden="true" />
+								<FaSpinner className='ml-2 animate-spin' aria-hidden='true' />
 							</>
 						) : (
 							"Send Reset Link"
@@ -95,12 +98,9 @@ export default function ForgotPassword() {
 					</FormButton>
 				</div>
 
-				<p className='text-center font-satoshi text-base font-medium text-dark dark:text-white'>
+				<p className='font-satoshi text-dark text-center text-base font-medium dark:text-white'>
 					Already have an account?{" "}
-					<Link
-						href='/auth/signin'
-						className='ml-1 inline-block text-primary'
-					>
+					<Link href='/auth/signin' className='text-primary ml-1 inline-block'>
 						Sign In →
 					</Link>
 				</p>

@@ -27,7 +27,7 @@ const PageContact: FC<PageContactProps> = ({}) => {
 	return (
 		<div className={`nc-PageContact overflow-hidden`}>
 			<div className='mb-24 lg:mb-32'>
-				<h2 className='my-16 flex items-center justify-center text-3xl font-semibold leading-[115%] text-neutral-900 dark:text-neutral-100 sm:my-20 md:text-5xl md:leading-[115%]'>
+				<h2 className='my-16 flex items-center justify-center text-3xl font-semibold leading-[115%] text-neutral-900 sm:my-20 md:text-5xl md:leading-[115%] dark:text-neutral-100'>
 					Contact
 				</h2>
 				<div className='container mx-auto max-w-7xl'>

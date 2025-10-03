@@ -28,4 +28,3 @@ const featureItemData: FeatureWithImg[] = [
 ];
 
 export default featureItemData;
-

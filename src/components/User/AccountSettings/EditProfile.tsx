@@ -161,7 +161,7 @@ export default function EditProfile() {
 	return (
 		<div className='w-full max-w-[525px]'>
 			<Card>
-				<h3 className='mb-9 font-satoshi text-custom-2xl font-bold tracking-[-.5px] text-dark dark:text-white'>
+				<h3 className='font-satoshi text-custom-2xl text-dark mb-9 font-bold tracking-[-.5px] dark:text-white'>
 					Edit Profile
 				</h3>
 
@@ -169,7 +169,7 @@ export default function EditProfile() {
 					<div className='relative mb-9 flex items-center gap-8'>
 						<label
 							htmlFor='profilePhoto'
-							className='relative flex aspect-square w-[130px] cursor-pointer items-center justify-center rounded-full border border-stroke bg-gray-2 text-dark hover:bg-gray-3 dark:border-stroke-dark dark:bg-white/5 dark:text-white'
+							className='border-stroke bg-gray-2 text-dark hover:bg-gray-3 dark:border-stroke-dark relative flex aspect-square w-[130px] cursor-pointer items-center justify-center rounded-full border dark:bg-white/5 dark:text-white'
 						>
 							{data?.profilePhoto ? (
 								<>

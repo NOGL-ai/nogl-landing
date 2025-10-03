@@ -6,7 +6,7 @@ function CustomSearchBox() {
 		<form
 			action=''
 			role='search'
-			className='sticky top-0 z-[999] border-b border-stroke dark:border-stroke-dark dark:bg-black'
+			className='border-stroke dark:border-stroke-dark sticky top-0 z-[999] border-b dark:bg-black'
 		>
 			<div className='relative'>
 				<input
@@ -15,7 +15,7 @@ function CustomSearchBox() {
 					value={query}
 					onChange={(e) => refine(e.currentTarget.value)}
 					placeholder='Site Search ... (Powered by Algolia)'
-					className='h-[74px] w-full rounded-lg pl-[60px] pr-5 text-black outline-none dark:bg-black dark:text-gray-5'
+					className='dark:text-gray-5 h-[74px] w-full rounded-lg pl-[60px] pr-5 text-black outline-none dark:bg-black'
 				/>
 				<span className='text-waterloo absolute left-0 top-0 flex h-[74px] w-[52px] items-center justify-center'>
 					<svg

@@ -6,12 +6,12 @@ export default function ThemeToggler() {
 	return (
 		<button
 			onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-			className='relative z-10 hidden h-12 w-full max-w-24 cursor-pointer items-center justify-between rounded-3xl bg-gray-3 p-[5px] dark:bg-white/5 sm:flex'
+			className='bg-gray-3 relative z-10 hidden h-12 w-full max-w-24 cursor-pointer items-center justify-between rounded-3xl p-[5px] sm:flex dark:bg-white/5'
 		>
 			<span
-				className={`absolute left-[5px] top-1/2 -z-10 flex h-[38px] w-[38px] -translate-y-1/2 items-center justify-center rounded-full bg-white text-dark transition-all duration-300 dark:translate-x-12 dark:bg-gray-dark dark:text-white`}
+				className={`text-dark dark:bg-gray-dark absolute left-[5px] top-1/2 -z-10 flex h-[38px] w-[38px] -translate-y-1/2 items-center justify-center rounded-full bg-white transition-all duration-300 dark:translate-x-12 dark:text-white`}
 			></span>
-			<span className='flex h-[38px] w-[38px] items-center justify-center text-dark dark:text-white'>
+			<span className='text-dark flex h-[38px] w-[38px] items-center justify-center dark:text-white'>
 				<svg
 					width='20'
 					height='20'
@@ -28,7 +28,7 @@ export default function ThemeToggler() {
 				</svg>
 			</span>
 
-			<span className='flex h-[38px] w-[38px] items-center justify-center text-dark dark:text-white'>
+			<span className='text-dark flex h-[38px] w-[38px] items-center justify-center dark:text-white'>
 				<svg
 					width='20'
 					height='20'

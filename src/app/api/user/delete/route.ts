@@ -40,7 +40,7 @@ export async function DELETE(request: Request) {
 		});
 
 		return new NextResponse("Account Deleted Successfully!", { status: 200 });
-	} catch (error) {
+	} catch {
 		return new NextResponse("Something went wrong", { status: 500 });
 	}
 }

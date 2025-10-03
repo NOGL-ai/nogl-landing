@@ -1,7 +1,7 @@
 export default function Notification() {
 	return (
-		<div className='mb-4 flex gap-5 rounded-10 bg-white px-7.5 py-6 shadow-[0px_1px_3px_0px_rgba(0,0,0,0.08)] dark:bg-gray-dark'>
-			<div className='hidden h-11.5 w-11.5 items-center justify-center rounded-full bg-primary text-white md:flex'>
+		<div className='rounded-10 px-7.5 dark:bg-gray-dark mb-4 flex gap-5 bg-white py-6 shadow-[0px_1px_3px_0px_rgba(0,0,0,0.08)]'>
+			<div className='h-11.5 w-11.5 bg-primary hidden items-center justify-center rounded-full text-white md:flex'>
 				<svg
 					width='20'
 					height='20'
@@ -20,14 +20,14 @@ export default function Notification() {
 				</svg>
 			</div>
 			<div className='w-full md:w-10/12'>
-				<h5 className='font-satoshi text-lg font-bold text-dark dark:text-white'>
+				<h5 className='font-satoshi text-dark text-lg font-bold dark:text-white'>
 					New Update is here!
 				</h5>
-				<p className='tracking-[-.16px] text-body dark:text-gray-4'>
+				<p className='text-body dark:text-gray-4 tracking-[-.16px]'>
 					Lorem Ipsum is simply dummy text of the printing and typesetting
 					industry.
 				</p>
-				<span className='text-sm font-medium text-body dark:text-gray-4'>
+				<span className='text-body dark:text-gray-4 text-sm font-medium'>
 					5 min ago
 				</span>
 			</div>

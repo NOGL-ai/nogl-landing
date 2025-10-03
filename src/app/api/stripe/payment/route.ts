@@ -7,35 +7,39 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 });
 
 async function getBaseUrl() {
-	return process.env.NEXT_PUBLIC_APP_URL || (async () => {
-		const headersList = await headers();
-		  const host = headersList.get("host") || "nogl.ai:3000"
-		const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
-		return `${protocol}://${host}`;
-	})();
+	return (
+		process.env.NEXT_PUBLIC_APP_URL ||
+		(async () => {
+			const headersList = await headers();
+			const host = headersList.get("host") || "nogl.ai:3000";
+			const protocol =
+				process.env.NODE_ENV === "development" ? "http" : "https";
+			return `${protocol}://${host}`;
+		})()
+	);
 }
 
 export async function POST(request: Request) {
 	if (!process.env.STRIPE_SECRET_KEY) {
-		console.error('Missing Stripe secret key');
+		console.error("Missing Stripe secret key");
 		return NextResponse.json(
-			{ error: 'Stripe configuration error' },
+			{ error: "Stripe configuration error" },
 			{ status: 500 }
 		);
 	}
 
 	try {
 		const data = await request.json();
-		const { 
-			stripeCustomerId, 
-			userId, 
-			participantEmails, 
+		const {
+			stripeCustomerId,
+			userId,
+			participantEmails,
 			bookingDetails,
 			isOneTimePayment,
 			basePrice,
 			recordingPrice = 0,
 			recordingCount = 0,
-			participants = 1
+			participants = 1,
 		} = data;
 
 		const baseUrl = await getBaseUrl();
@@ -46,21 +50,23 @@ export async function POST(request: Request) {
 
 		// Calculate total amount in cents
 		const totalAmount = Math.round(
-			((basePrice * participants) + (recordingPrice * recordingCount)) * 100
+			(basePrice * participants + recordingPrice * recordingCount) * 100
 		);
 
 		// Create a Stripe Checkout Session
 		const session = await stripe.checkout.sessions.create({
-			payment_method_types: ['card'],
-			mode: isOneTimePayment ? 'payment' : 'subscription',
+			payment_method_types: ["card"],
+			mode: isOneTimePayment ? "payment" : "subscription",
 			line_items: [
 				{
 					price_data: {
-						currency: 'eur',
+						currency: "eur",
 						product_data: {
-							name: 'Email Marketing Masterclass',
-							description: `Session for ${participants} participant${participants > 1 ? 's' : ''}${
-								recordingCount ? ` with ${recordingCount} recording${recordingCount > 1 ? 's' : ''}` : ''
+							name: "Email Marketing Masterclass",
+							description: `Session for ${participants} participant${participants > 1 ? "s" : ""}${
+								recordingCount
+									? ` with ${recordingCount} recording${recordingCount > 1 ? "s" : ""}`
+									: ""
 							}`,
 						},
 						unit_amount: totalAmount,
@@ -89,35 +95,34 @@ export async function POST(request: Request) {
 				},
 			},
 			allow_promotion_codes: true,
-			billing_address_collection: 'required',
+			billing_address_collection: "required",
 			custom_fields: [
 				{
-					key: 'special_requests',
-					label: { type: 'custom', custom: 'Any special requirements?' },
-					type: 'text',
+					key: "special_requests",
+					label: { type: "custom", custom: "Any special requirements?" },
+					type: "text",
 					optional: true,
 				},
 			],
-			locale: 'auto',
-			expires_at: Math.floor(Date.now() / 1000) + (60 * 60), // Session expires in 1 hour
+			locale: "auto",
+			expires_at: Math.floor(Date.now() / 1000) + 60 * 60, // Session expires in 1 hour
 		});
 
 		return NextResponse.json(
 			{ url: session.url },
-			{ 
+			{
 				status: 200,
 				headers: {
-					'Cache-Control': 'no-store',
-				}
+					"Cache-Control": "no-store",
+				},
 			}
 		);
-
 	} catch (error) {
-		console.error('Stripe session creation error:', error);
+		console.error("Stripe session creation error:", error);
 		return NextResponse.json(
-			{ 
-				error: 'Failed to create checkout session',
-				details: error instanceof Error ? error.message : 'Unknown error'
+			{
+				error: "Failed to create checkout session",
+				details: error instanceof Error ? error.message : "Unknown error",
 			},
 			{ status: 500 }
 		);

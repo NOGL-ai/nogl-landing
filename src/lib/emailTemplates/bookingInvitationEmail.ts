@@ -1,38 +1,41 @@
 interface InvitationDetails {
-  sessionName: string;
-  date: string;
-  inviterName: string;
-  inviterEmail: string;
-  participants: number;
-  sessionDescription?: string;
-  meetingLink?: string;
+	sessionName: string;
+	date: string;
+	inviterName: string;
+	inviterEmail: string;
+	participants: number;
+	sessionDescription?: string;
+	meetingLink?: string;
 }
 
 interface BookingInvitationParams {
-  url: string;
-  email: string;
-  invitationDetails: InvitationDetails;
-  name?: string;
+	url: string;
+	email: string;
+	invitationDetails: InvitationDetails;
+	name?: string;
 }
 
 export function getBookingInvitationEmail(params: BookingInvitationParams) {
-  const { url, email, invitationDetails, name } = params;
+	const { url, invitationDetails, name } = params;
 
-  // Sanitize URL
-  const escapedUrl = url;
-  const userName = name ? name.trim() : "";
-  const invitationDate = new Date(invitationDetails.date).toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  });
+	// Sanitize URL
+	const escapedUrl = url;
+	const userName = name ? name.trim() : "";
+	const invitationDate = new Date(invitationDetails.date).toLocaleDateString(
+		"en-US",
+		{
+			weekday: "long",
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+			hour: "2-digit",
+			minute: "2-digit",
+		}
+	);
 
-  return {
-    subject: `🎯 You're Invited to Join: ${invitationDetails.sessionName}`,
-    html: `
+	return {
+		subject: `🎯 You're Invited to Join: ${invitationDetails.sessionName}`,
+		html: `
       <div style="max-width:600px;margin:0 auto;padding:20px;font-family:Arial,sans-serif;color:#333;">
         <h1 style="color:#333;text-align:center;">You're Invited${userName ? `, ${userName}` : ""}! 🎯</h1>
         
@@ -46,7 +49,7 @@ export function getBookingInvitationEmail(params: BookingInvitationParams) {
           <p style="margin:5px 0;"><strong>Date & Time:</strong> ${invitationDate}</p>
           <p style="margin:5px 0;"><strong>Invited by:</strong> ${invitationDetails.inviterName} (${invitationDetails.inviterEmail})</p>
           <p style="margin:5px 0;"><strong>Participants:</strong> ${invitationDetails.participants}</p>
-          ${invitationDetails.sessionDescription ? `<p style="margin:5px 0;"><strong>Description:</strong> ${invitationDetails.sessionDescription}</p>` : ''}
+          ${invitationDetails.sessionDescription ? `<p style="margin:5px 0;"><strong>Description:</strong> ${invitationDetails.sessionDescription}</p>` : ""}
         </div>
         
         <div style="text-align:center;margin:30px 0;">
@@ -89,7 +92,7 @@ export function getBookingInvitationEmail(params: BookingInvitationParams) {
         </footer>
       </div>
     `,
-    text: `You're Invited to Join: ${invitationDetails.sessionName}
+		text: `You're Invited to Join: ${invitationDetails.sessionName}
 
 ${invitationDetails.inviterName} has invited you to join an upcoming session on Nogl.ai.
 
@@ -98,7 +101,7 @@ Session Details:
 - Date & Time: ${invitationDate}
 - Invited by: ${invitationDetails.inviterName} (${invitationDetails.inviterEmail})
 - Participants: ${invitationDetails.participants}
-${invitationDetails.sessionDescription ? `- Description: ${invitationDetails.sessionDescription}` : ''}
+${invitationDetails.sessionDescription ? `- Description: ${invitationDetails.sessionDescription}` : ""}
 
 Accept invitation and join: ${url}
 
@@ -112,5 +115,5 @@ If you're unable to attend or have any questions, please contact ${invitationDet
 
 © ${new Date().getFullYear()} Nogl.ai . All rights reserved.
 🇩🇪 Made in Germany`,
-  };
+	};
 }

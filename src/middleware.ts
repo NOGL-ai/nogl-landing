@@ -6,14 +6,14 @@ import withI18nMiddleware from "@/middlewares/middleware-lang";
 
 // Create middleware chain
 const middlewareChain = chain([
-	withI18nMiddleware,  // Handle locale first
-	withAuthMiddleware,  // Then handle auth
+	withI18nMiddleware, // Handle locale first
+	withAuthMiddleware, // Then handle auth
 ]);
 
 export async function middleware(request: NextRequest) {
 	// Create a response object to pass down the chain
 	const response = NextResponse.next();
-	
+
 	return middlewareChain(request, {} as any, response);
 }
 

@@ -1,5 +1,5 @@
 import { NavItemType } from "@/shared/Navigation/NavigationItem";
-import { Route } from "@/routers/types";
+// import { Route } from "@/routers/types";
 
 export const NAVIGATION_DEMO: NavItemType[] = [
 	{
@@ -16,14 +16,14 @@ export const NAVIGATION_DEMO: NavItemType[] = [
 				id: "profile",
 				name: "Profile Settings",
 				href: "/user",
-			}
+			},
 		],
 	},
 	{
 		id: "support",
 		name: "Support",
 		href: "/support",
-	}
+	},
 ];
 
 // Secondary navigation for footer or other areas
@@ -52,5 +52,5 @@ export const NAVIGATION_DEMO_2: NavItemType[] = [
 		id: "terms",
 		name: "Terms of Service",
 		href: "/tos",
-	}
+	},
 ];

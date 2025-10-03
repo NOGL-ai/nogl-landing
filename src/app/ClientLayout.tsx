@@ -1,21 +1,21 @@
 // ClientLayout.tsx
-'use client';
+"use client";
 
-import React from 'react';
-import { LoadingProvider } from '@/context/LoadingContext';
-import LoadingScreen from '@/components/Common/LoadingScreen';
+import React from "react";
+import { LoadingProvider } from "@/context/LoadingContext";
+import LoadingScreen from "@/components/Common/LoadingScreen";
 
 interface ClientLayoutProps {
-  children: React.ReactNode;
+	children: React.ReactNode;
 }
 
 const ClientLayout: React.FC<ClientLayoutProps> = ({ children }) => {
-  return (
-    <LoadingProvider>
-      <LoadingScreen />
-      {children}
-    </LoadingProvider>
-  );
+	return (
+		<LoadingProvider>
+			<LoadingScreen />
+			{children}
+		</LoadingProvider>
+	);
 };
 
 export default ClientLayout;

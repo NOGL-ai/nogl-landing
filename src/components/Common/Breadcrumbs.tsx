@@ -4,7 +4,7 @@ import React from "react";
 const Breadcrumbs = ({ title, pages }: { title: string; pages: string[] }) => {
 	return (
 		<div className='pb-17.5 text-center'>
-			<h1 className='mb-4 font-satoshi text-3xl font-bold -tracking-[1px] text-black dark:text-white'>
+			<h1 className='font-satoshi mb-4 text-3xl font-bold -tracking-[1px] text-black dark:text-white'>
 				{title}
 			</h1>
 

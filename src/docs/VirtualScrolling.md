@@ -45,12 +45,12 @@ This project now includes comprehensive virtual scrolling support for handling m
 
 ```typescript
 interface VirtualScrollingConfig {
-  itemCount: number;           // Total number of items
-  itemHeight?: number;         // Height of each row (default: 50px)
-  overscan?: number;           // Items to render outside viewport (default: 5)
-  threshold?: number;          // Minimum items to enable virtualization (default: 1000)
-  enabled?: boolean;           // Force enable/disable virtualization
-  parentRef?: React.RefObject<HTMLElement>; // Custom scroll container
+	itemCount: number; // Total number of items
+	itemHeight?: number; // Height of each row (default: 50px)
+	overscan?: number; // Items to render outside viewport (default: 5)
+	threshold?: number; // Minimum items to enable virtualization (default: 1000)
+	enabled?: boolean; // Force enable/disable virtualization
+	parentRef?: React.RefObject<HTMLElement>; // Custom scroll container
 }
 ```
 
@@ -75,69 +75,65 @@ interface VirtualScrollingConfig {
 ### Basic Usage with Hook
 
 ```tsx
-import { useVirtualScrolling } from '@/hooks/useVirtualScrolling';
+import { useVirtualScrolling } from "@/hooks/useVirtualScrolling";
 
 function MyComponent({ data }) {
-  const {
-    parentRef,
-    shouldVirtualize,
-    virtualItems,
-    totalSize,
-  } = useVirtualScrolling({
-    itemCount: data.length,
-    itemHeight: 60,
-    threshold: 1000,
-  });
+	const { parentRef, shouldVirtualize, virtualItems, totalSize } =
+		useVirtualScrolling({
+			itemCount: data.length,
+			itemHeight: 60,
+			threshold: 1000,
+		});
 
-  return (
-    <div ref={parentRef} style={{ height: '400px', overflow: 'auto' }}>
-      <div style={{ height: `${totalSize}px`, position: 'relative' }}>
-        {virtualItems.map((virtualItem) => (
-          <div
-            key={virtualItem.key}
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: `${virtualItem.size}px`,
-              transform: `translateY(${virtualItem.start}px)`,
-            }}
-          >
-            {data[virtualItem.index].content}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+	return (
+		<div ref={parentRef} style={{ height: "400px", overflow: "auto" }}>
+			<div style={{ height: `${totalSize}px`, position: "relative" }}>
+				{virtualItems.map((virtualItem) => (
+					<div
+						key={virtualItem.key}
+						style={{
+							position: "absolute",
+							top: 0,
+							left: 0,
+							width: "100%",
+							height: `${virtualItem.size}px`,
+							transform: `translateY(${virtualItem.start}px)`,
+						}}
+					>
+						{data[virtualItem.index].content}
+					</div>
+				))}
+			</div>
+		</div>
+	);
 }
 ```
 
 ### Advanced Usage with VirtualDataTable
 
 ```tsx
-import { VirtualDataTable } from '@/components/ui/VirtualDataTable';
+import { VirtualDataTable } from "@/components/ui/VirtualDataTable";
 
 function ProductTable({ products }) {
-  const columns = [
-    { accessorKey: 'name', header: 'Name' },
-    { accessorKey: 'price', header: 'Price' },
-    // ... more columns
-  ];
+	const columns = [
+		{ accessorKey: "name", header: "Name" },
+		{ accessorKey: "price", header: "Price" },
+		// ... more columns
+	];
 
-  return (
-    <VirtualDataTable
-      data={products}
-      columns={columns}
-      height={600}
-      rowHeight={60}
-      threshold={1000}
-      enableSorting={true}
-      enableFiltering={true}
-      enableSelection={true}
-      onRowClick={(row) => console.log('Row clicked:', row)}
-    />
-  );
+	return (
+		<VirtualDataTable
+			data={products}
+			columns={columns}
+			height={600}
+			rowHeight={60}
+			threshold={1000}
+			enableSorting={true}
+			enableFiltering={true}
+			enableSelection={true}
+			onRowClick={(row) => console.log("Row clicked:", row)}
+		/>
+	);
 }
 ```
 
@@ -150,25 +146,25 @@ The virtual scrolling components use consistent CSS classes that can be customiz
 ```css
 /* Virtual table container */
 .virtual-table-container {
-  @apply rounded-md border border-gray-200 dark:border-gray-700;
+	@apply rounded-md border border-gray-200 dark:border-gray-700;
 }
 
 /* Virtual row */
 .virtual-row {
-  @apply flex items-center border-b border-gray-200 dark:border-gray-700;
-  @apply hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer;
+	@apply flex items-center border-b border-gray-200 dark:border-gray-700;
+	@apply cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800;
 }
 
 /* Selected row */
 .virtual-row-selected {
-  @apply bg-blue-50 dark:bg-blue-900/20;
+	@apply bg-blue-50 dark:bg-blue-900/20;
 }
 
 /* Virtual scrolling info */
 .virtual-info {
-  @apply flex items-center justify-between space-x-2 py-2 px-4;
-  @apply text-xs text-gray-600 dark:text-gray-400;
-  @apply border-t border-gray-200 dark:border-gray-700;
+	@apply flex items-center justify-between space-x-2 px-4 py-2;
+	@apply text-xs text-gray-600 dark:text-gray-400;
+	@apply border-t border-gray-200 dark:border-gray-700;
 }
 ```
 
@@ -183,19 +179,19 @@ All components support dark/light theme switching and maintain consistent stylin
 Use the `VirtualDataTable` component for new table implementations:
 
 ```tsx
-import { VirtualDataTable } from '@/components/ui/VirtualDataTable';
+import { VirtualDataTable } from "@/components/ui/VirtualDataTable";
 
 // Define your columns
 const columns = [
-  // ... column definitions
+	// ... column definitions
 ];
 
 // Use the component
 <VirtualDataTable
-  data={yourData}
-  columns={columns}
-  threshold={1000} // Enable virtualization for 1000+ items
-/>
+	data={yourData}
+	columns={columns}
+	threshold={1000} // Enable virtualization for 1000+ items
+/>;
 ```
 
 ### 2. For Existing Components
@@ -203,32 +199,28 @@ const columns = [
 Add virtual scrolling to existing table components:
 
 ```tsx
-import { useVirtualScrolling } from '@/hooks/useVirtualScrolling';
+import { useVirtualScrolling } from "@/hooks/useVirtualScrolling";
 
 // Add to your component
-const {
-  parentRef,
-  shouldVirtualize,
-  virtualItems,
-  totalSize,
-} = useVirtualScrolling({
-  itemCount: data.length,
-  itemHeight: 50,
-  threshold: 1000,
-});
+const { parentRef, shouldVirtualize, virtualItems, totalSize } =
+	useVirtualScrolling({
+		itemCount: data.length,
+		itemHeight: 50,
+		threshold: 1000,
+	});
 
 // Update your render logic
-{shouldVirtualize ? (
-  // Virtual rendering
-  <div ref={parentRef} style={{ height: '400px', overflow: 'auto' }}>
-    {/* Virtual items */}
-  </div>
-) : (
-  // Regular rendering
-  <div>
-    {/* Regular items */}
-  </div>
-)}
+{
+	shouldVirtualize ? (
+		// Virtual rendering
+		<div ref={parentRef} style={{ height: "400px", overflow: "auto" }}>
+			{/* Virtual items */}
+		</div>
+	) : (
+		// Regular rendering
+		<div>{/* Regular items */}</div>
+	);
+}
 ```
 
 ## 📈 Monitoring & Debugging
@@ -240,9 +232,9 @@ The components include built-in performance monitoring:
 ```tsx
 // Enable debug mode
 <VirtualDataTable
-  data={data}
-  columns={columns}
-  debug={true} // Shows performance metrics
+	data={data}
+	columns={columns}
+	debug={true} // Shows performance metrics
 />
 ```
 

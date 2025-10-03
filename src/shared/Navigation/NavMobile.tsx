@@ -11,7 +11,7 @@ import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import SwitchDarkMode from "@/shared/SwitchDarkMode";
 import Link from "next/link";
 import LangDropdown from "@/app/(site)/[lang]/(client-components)/(Header)/LangDropdown";
-import ShimmerButton  from "@/components/ui/shimmer-button";
+import ShimmerButton from "@/components/ui/shimmer-button";
 import { Route } from "@/routers/types";
 import { useSession } from "next-auth/react";
 
@@ -122,9 +122,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
 			<div className='px-5 py-6'>
 				<Logo />
 				<div className='mt-5 flex flex-col text-sm text-neutral-700 dark:text-neutral-300'>
-					<span>
-						Forecast Trends, Predict Demand, Optimize Assortments
-					</span>
+					<span>Forecast Trends, Predict Demand, Optimize Assortments</span>
 
 					<div className='mt-4 flex items-center justify-between'>
 						<SocialsList itemClass='w-9 h-9 flex items-center justify-center rounded-full bg-neutral-100 text-xl dark:bg-neutral-800 dark:text-neutral-300' />
@@ -138,20 +136,23 @@ const NavMobile: React.FC<NavMobileProps> = ({
 				</span>
 			</div>
 			<ul className='flex flex-col space-y-1 px-2 py-6'>
-				{data.map(_renderItem)}
+				{data.map((item, _index) => _renderItem(item, _index))}
 			</ul>
 			<div className='flex items-center justify-between px-5 py-6'>
 				{session && (
-					<div className="relative">
-						<Link href={"/add-session" as Route<string>} onClick={(e) => e.preventDefault()}>
+					<div className='relative'>
+						<Link
+							href={"/add-session" as Route<string>}
+							onClick={(e) => e.preventDefault()}
+						>
 							<ShimmerButton
-								shimmerColor="#ffffff33"
-								className="font-medium dark:!text-white opacity-70 cursor-not-allowed"
+								shimmerColor='#ffffff33'
+								className='cursor-not-allowed font-medium opacity-70 dark:!text-white'
 							>
 								New Forecast
 							</ShimmerButton>
 						</Link>
-						<span className="absolute -right-2 -top-2 inline-flex items-center rounded-full bg-primary-500 px-2 py-0.5 text-[10px] font-medium text-white">
+						<span className='bg-primary-500 absolute -right-2 -top-2 inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium text-white'>
 							Soon
 						</span>
 					</div>

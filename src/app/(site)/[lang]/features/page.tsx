@@ -5,11 +5,13 @@ import Features from "@/components/Home/Features";
 
 export const metadata: Metadata = {
 	title: "Features - AI Fashion Intelligence Platform",
-	description: "Discover our AI-powered features for fashion trend forecasting and demand prediction",
+	description:
+		"Discover our AI-powered features for fashion trend forecasting and demand prediction",
 	openGraph: {
 		type: "website",
 		title: "Features - AI Fashion Intelligence Platform",
-		description: "Discover our AI-powered features for fashion trend forecasting and demand prediction",
+		description:
+			"Discover our AI-powered features for fashion trend forecasting and demand prediction",
 	},
 };
 

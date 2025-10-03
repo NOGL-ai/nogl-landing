@@ -96,7 +96,7 @@ export default function DropdownTravelers() {
 								{/* FOOTER */}
 								<div className='bg-neutral-50 p-4 dark:bg-neutral-700'>
 									<Link
-										href={'/' as PathName}
+										href={"/" as PathName}
 										className='flow-root space-y-0.5 rounded-md px-2 py-2 transition duration-150 ease-in-out focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50'
 									>
 										<span className='flex items-center'>

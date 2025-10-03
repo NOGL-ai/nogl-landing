@@ -6,7 +6,7 @@ import { AuthorType } from "@/data/types";
 import React, { FC } from "react";
 import PulsatingButton from "@/components/ui/pulsating-button";
 import RipplingButton from "@/components/ui/ripple-button";
-import Link from 'next/link';
+import Link from "next/link";
 
 export interface SectionGridAuthorBoxProps {
 	className?: string;
@@ -24,33 +24,33 @@ const SectionGridAuthorBox: FC<SectionGridAuthorBoxProps> = ({
 	gridClassName = "grid-cols-3 gap-3 sm:gap-4 md:gap-6 xl:grid-cols-5",
 }) => {
 	return (
-		<section className="py-6 sm:py-10 lg:py-16 backdrop-blur-sm">
-			<div className="mx-auto max-w-[600px] px-4 sm:px-6 mb-6 sm:mb-8 lg:mb-10">
-				<Heading 
+		<section className='py-6 backdrop-blur-sm sm:py-10 lg:py-16'>
+			<div className='mx-auto mb-6 max-w-[600px] px-4 sm:mb-8 sm:px-6 lg:mb-10'>
+				<Heading
 					desc={
-						<div className="flex flex-col items-center gap-1 sm:gap-2">
-							<span className="text-base sm:text-lg bg-gradient-to-r from-neutral-800 via-neutral-600 to-neutral-800 dark:from-neutral-100 dark:via-neutral-300 dark:to-neutral-100 bg-clip-text text-transparent">
+						<div className='flex flex-col items-center gap-1 sm:gap-2'>
+							<span className='bg-gradient-to-r from-neutral-800 via-neutral-600 to-neutral-800 bg-clip-text text-base text-transparent sm:text-lg dark:from-neutral-100 dark:via-neutral-300 dark:to-neutral-100'>
 								Find & Connect with Industry Leaders
 							</span>
-							<div className="flex items-center gap-2">
-								<span className="text-xs sm:text-sm px-3 py-1 rounded-full bg-gradient-to-r from-primary/60 via-primary to-primary/60 text-transparent bg-clip-text animate-gradient font-semibold border border-primary/20">
+							<div className='flex items-center gap-2'>
+								<span className='from-primary/60 via-primary to-primary/60 animate-gradient border-primary/20 rounded-full border bg-gradient-to-r bg-clip-text px-3 py-1 text-xs font-semibold text-transparent sm:text-sm'>
 									Coming Soon
 								</span>
-								<span className="size-2 animate-pulse bg-primary rounded-full"></span>
+								<span className='bg-primary size-2 animate-pulse rounded-full'></span>
 							</div>
 						</div>
 					}
 					isCenter
 				>
-					<span className="relative">
-						<span className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-primary/80 via-primary to-primary/80 bg-clip-text text-transparent">
+					<span className='relative'>
+						<span className='from-primary/80 via-primary to-primary/80 bg-gradient-to-r bg-clip-text text-xl font-bold text-transparent sm:text-2xl lg:text-3xl'>
 							Fashion Intelligence Directory
 						</span>
-						<span className="absolute -bottom-2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent"></span>
+						<span className='via-primary/50 absolute -bottom-2 left-0 h-[1px] w-full bg-gradient-to-r from-transparent to-transparent'></span>
 					</span>
 				</Heading>
 			</div>
-			<div className="mx-auto max-w-[1200px] px-4 sm:px-6">
+			<div className='mx-auto max-w-[1200px] px-4 sm:px-6'>
 				<div className={`grid ${gridClassName}`}>
 					{authors.map((author, index) =>
 						boxCard === "box2" ? (
@@ -64,18 +64,18 @@ const SectionGridAuthorBox: FC<SectionGridAuthorBoxProps> = ({
 						)
 					)}
 				</div>
-				<div className='mt-8 sm:mt-10 lg:mt-12 flex flex-row items-center justify-center gap-4 sm:gap-6 md:gap-8'>
-					<Link href="/author">
-						<RipplingButton 
-							className="hover:transform hover:scale-105 transition-transform text-sm sm:text-base px-3 sm:px-6 py-2.5"
+				<div className='mt-8 flex flex-row items-center justify-center gap-4 sm:mt-10 sm:gap-6 md:gap-8 lg:mt-12'>
+					<Link href='/author'>
+						<RipplingButton
+							className='px-3 py-2.5 text-sm transition-transform hover:scale-105 hover:transform sm:px-6 sm:text-base'
 							disabled
 						>
 							Discover Specialists
 						</RipplingButton>
 					</Link>
-					<Link href="/author">
-						<PulsatingButton 
-							className="hover:transform hover:scale-105 transition-transform text-sm sm:text-base px-3 sm:px-6 py-2.5"
+					<Link href='/author'>
+						<PulsatingButton
+							className='px-3 py-2.5 text-sm transition-transform hover:scale-105 hover:transform sm:px-6 sm:text-base'
 							disabled
 						>
 							Join as Specialist

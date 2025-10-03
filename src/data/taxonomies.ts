@@ -39,7 +39,7 @@ const DEMO_EXPERIENCES_CATEGORIES: TaxonomyType[] = __experiencesTaxonomies.map(
 // Session categories - removed due to deleted listing files
 // const DEMO_SESSION_CATEGORIES: TaxonomyType[] = [];
 
-// Session types - removed due to deleted listing files  
+// Session types - removed due to deleted listing files
 // const DEMO_SESSION_TYPES: TaxonomyType[] = [];
 
 // Expert categories - removed due to deleted listing files
@@ -47,7 +47,6 @@ const DEMO_EXPERIENCES_CATEGORIES: TaxonomyType[] = __experiencesTaxonomies.map(
 
 // Expert types - removed due to deleted listing files
 // const DEMO_EXPERT_TYPES: TaxonomyType[] = [];
-
 
 export {
 	DEMO_CATEGORIES,

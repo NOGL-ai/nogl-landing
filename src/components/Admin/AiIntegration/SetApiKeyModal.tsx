@@ -18,7 +18,7 @@ export default function SetApiKeyModal(props: any) {
 	const handleSubmit = (e: any) => {
 		e.preventDefault();
 
-		if (apiKey && typeof window !== 'undefined') {
+		if (apiKey && typeof window !== "undefined") {
 			localStorage.setItem("apiKey", apiKey);
 			setShowModal(false);
 			router.refresh();
@@ -43,7 +43,7 @@ export default function SetApiKeyModal(props: any) {
 		<>
 			{showModal && (
 				<div
-					className={`py-7.6 fixed left-0 top-0 z-[9999] flex h-screen w-full items-center justify-center bg-black/90 px-4 dark:bg-dark/70 sm:px-8`}
+					className={`py-7.6 dark:bg-dark/70 fixed left-0 top-0 z-[9999] flex h-screen w-full items-center justify-center bg-black/90 px-4 sm:px-8`}
 				>
 					<div
 						ref={divRef}
@@ -51,7 +51,7 @@ export default function SetApiKeyModal(props: any) {
 					>
 						<ModalCloseButton closeModal={setShowModal} />
 
-						<div className='flex flex-wrap gap-5.5 border-stroke p-4 text-center sm:p-7.5 xl:p-10'>
+						<div className='gap-5.5 border-stroke sm:p-7.5 flex flex-wrap p-4 text-center xl:p-10'>
 							<div className='mx-auto w-full max-w-[450px]'>
 								<div className='mb-6 flex justify-center'>
 									<svg
@@ -109,10 +109,10 @@ export default function SetApiKeyModal(props: any) {
 								</div>
 
 								<div>
-									<h2 className='mb-2 text-xl font-bold text-dark dark:text-white sm:text-heading-6'>
+									<h2 className='text-dark sm:text-heading-6 mb-2 text-xl font-bold dark:text-white'>
 										Enter your OpenAI API Key
 									</h2>
-									<p className='mb-7 text-body'>
+									<p className='text-body mb-7'>
 										To access the capabilities of AI Tools Template, a valid
 										OpenAI API Key is required.
 									</p>
@@ -139,7 +139,7 @@ export default function SetApiKeyModal(props: any) {
 										href='https://platform.openai.com/api-keys'
 										target='_blank'
 										rel='noopener noreferrer'
-										className='tracking-[-.16px] text-body underline underline-offset-1 hover:text-primary'
+										className='text-body hover:text-primary tracking-[-.16px] underline underline-offset-1'
 									>
 										Get your API key from Open AI
 									</Link>
