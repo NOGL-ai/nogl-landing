@@ -4,6 +4,7 @@ import Badge from "@/shared/Badge";
 import convertNumbThousand from "@/utils/convertNumbThousand";
 import Link from "next/link";
 import Image from "next/image";
+import { Route } from "@/routers/types";
 
 export interface CardCategoryBox1Props {
 	className?: string;
@@ -17,7 +18,7 @@ const CardCategoryBox1: FC<CardCategoryBox1Props> = ({
 	const { count, name, thumbnail, href = "/" } = taxonomy;
 	return (
 		<Link
-			href={href}
+			href={href as Route}
 			className={`nc-CardCategoryBox1 [ nc-box-has-hover ] [ nc-dark-box-bg-has-hover ] relative flex items-center p-3 sm:p-6  ${className}`}
 		>
 			<Badge

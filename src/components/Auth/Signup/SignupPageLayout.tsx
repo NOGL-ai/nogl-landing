@@ -715,14 +715,14 @@ export default function SignupPageLayout() {
 													I have read and agreed to the{" "}
 												</span>
 												<Link
-													href={"/tos" as Route<string>}
+													href={"/tos" as Route}
 													className='text-[#212121] hover:underline'
 												>
 													terms of use
 												</Link>
 												<span className='text-[#495057]'>, and </span>
 												<Link
-													href={"/privacy-policy" as Route<string>}
+													href={"/privacy-policy" as Route}
 													className='text-[#212121] hover:underline'
 												>
 													privacy policy
@@ -833,7 +833,7 @@ export default function SignupPageLayout() {
 										Already have an account?{" "}
 									</span>
 									<Link
-										href={"/auth/signin" as Route<string>}
+										href={"/auth/signin" as Route}
 										className='text-[#3B82F6] hover:underline'
 									>
 										Sign In

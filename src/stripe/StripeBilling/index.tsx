@@ -33,11 +33,11 @@ const PlanCard = ({
 	const user = session?.user;
 	const router = useRouter();
 
-	const _handleClick = () => {
+	const handleClick = () => {
 		router.push("/auth/sign-up" as Route);
 	};
 
-	const _handleSubscription = async () => {
+	const handleSubscription = async () => {
 		let subsProp: SubscriptionProps = {
 			priceId: plan.priceId,
 		};
@@ -67,7 +67,7 @@ const PlanCard = ({
 		}
 	};
 
-	const _isSubscribed = session && user?.priceId === plan.priceId;
+	const isSubscribed = session && user?.priceId === plan.priceId;
 	const active = plan?.active;
 
 	return (

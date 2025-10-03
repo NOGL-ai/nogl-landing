@@ -8,13 +8,13 @@ export interface SwitchDarkMode2Props {
 	className?: string;
 }
 const SwitchDarkMode2: React.FC<SwitchDarkMode2Props> = ({
-	className: _className = "",
+	className = "",
 }) => {
 	const {
 		_toogleDarkMode,
 		isDarkMode,
-		toDark: _toDark,
-		toLight: _toLight,
+		toDark,
+		toLight,
 	} = useThemeMode();
 
 	return (

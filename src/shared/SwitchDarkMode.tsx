@@ -11,8 +11,8 @@ const SwitchDarkMode: React.FC<SwitchDarkModeProps> = ({ className = "" }) => {
 	const {
 		_toogleDarkMode,
 		isDarkMode,
-		toDark: _toDark,
-		toLight: _toLight,
+		toDark,
+		toLight,
 	} = useThemeMode();
 
 	return (

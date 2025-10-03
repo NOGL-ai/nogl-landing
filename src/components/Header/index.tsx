@@ -106,7 +106,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
 								</span>
 							</Link>
 							<Link
-								href={"/#pricing" as Route<string>}
+								href={"/#pricing" as Route}
 								className={`relative cursor-not-allowed text-sm font-medium opacity-70 ${
 									isActive("/#pricing")
 										? "bg-primary/5 text-primary dark:bg-white/5 dark:text-white"
@@ -188,7 +188,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
 							{session && (
 								<div className='relative'>
 									<Link
-										href={"/add-session" as Route<string>}
+										href={"/add-session" as Route}
 										onClick={(e) => e.preventDefault()}
 									>
 										<ShimmerButton
@@ -322,7 +322,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
 						</li>
 						<li>
 							<Link
-								href={"/#pricing" as Route<string>}
+								href={"/#pricing" as Route}
 								onClick={(e) => {
 									e.preventDefault();
 									setNavbarOpen(false);

@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { TaxonomyType } from "@/data/types";
 import Link from "next/link";
 import Image from "next/image";
+import { Route } from "@/routers/types";
 
 export interface CardCategory1Props {
 	className?: string;
@@ -17,7 +18,7 @@ const CardCategory1: FC<CardCategory1Props> = ({
 	const { count, name, href = "/", thumbnail } = taxonomy;
 	return (
 		<Link
-			href={href}
+			href={href as Route}
 			className={`nc-CardCategory1 flex items-center ${className}`}
 			data-nc-id='CardCategory1'
 		>

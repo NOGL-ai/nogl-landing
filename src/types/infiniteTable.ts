@@ -40,7 +40,7 @@ export interface InfiniteScrollTableProps<TData> {
 	fetchSize?: number;
 
 	// Table configuration
-	columns: any[]; // ColumnDef<TData>[] from @tanstack/react-table
+	columns: unknown[]; // ColumnDef<TData>[] from @tanstack/react-table
 	height?: number;
 	rowHeight?: number;
 	className?: string;
@@ -52,16 +52,16 @@ export interface InfiniteScrollTableProps<TData> {
 
 	// Sorting
 	enableSorting?: boolean;
-	sorting?: any[]; // SortingState from @tanstack/react-table
-	onSortingChange?: (updater: any) => void;
+	sorting?: unknown[]; // SortingState from @tanstack/react-table
+	onSortingChange?: (updater: unknown) => void;
 
 	// Loading states
 	loading?: boolean;
 	emptyState?: React.ReactNode;
 
 	// Row interactions
-	onRowClick?: (row: any) => void;
-	onRowDoubleClick?: (row: any) => void;
+	onRowClick?: (row: unknown) => void;
+	onRowDoubleClick?: (row: unknown) => void;
 
 	// Selection
 	enableSelection?: boolean;

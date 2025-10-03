@@ -35,7 +35,7 @@ const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
 						<div className='px-1' />
 						<ButtonPrimary
 							className='self-center'
-							href={"/login" as Route<string>}
+							href={"/login" as Route}
 						>
 							Sign up
 						</ButtonPrimary>

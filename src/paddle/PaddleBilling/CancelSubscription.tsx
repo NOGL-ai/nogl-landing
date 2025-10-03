@@ -17,7 +17,7 @@ const CancelSubscription = () => {
 	const handleCancel = async () => {
 		try {
 			await axios.post("/api/paddle/cancel-subscription", {
-				subscriptionId: (user as any).subscriptionId,
+				subscriptionId: (user as { subscriptionId?: string }).subscriptionId,
 			});
 
 			update({

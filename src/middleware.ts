@@ -14,7 +14,7 @@ export async function middleware(request: NextRequest) {
 	// Create a response object to pass down the chain
 	const response = NextResponse.next();
 
-	return middlewareChain(request, {} as any, response);
+	return middlewareChain(request, {} as Record<string, unknown>, response);
 }
 
 export const config = {

@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 type Props = {
 	plan: Price;
 	isBilling?: boolean;
-	subscriptionPlan?: any;
+	subscriptionPlan?: Record<string, unknown>;
 };
 
 const PriceItem = ({ plan, isBilling }: Props) => {

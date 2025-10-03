@@ -20,6 +20,15 @@ model User {
   passwordResetTokenExp DateTime?
   role                  UserRole  @default(USER)
   onboardingCompleted   Boolean   @default(false)
+  bio                   String?
+  isCommunityMember     Boolean   @default(false)
+  userType              String?
+  referralSource        String?
+  otherReferralSource   String?
+  socialLinks           String?
+  expertise             String?
+  subscriptionId        String?
+  currentPeriodEnd      DateTime?
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
   accounts              Account[]

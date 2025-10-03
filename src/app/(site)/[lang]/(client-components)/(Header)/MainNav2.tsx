@@ -35,7 +35,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
 						<TemplatesDropdown />
 						<LangDropdown />
 						<Link
-							href={"/add-listing" as Route<string>}
+							href={"/add-listing" as Route}
 							className='group inline-flex items-center self-center rounded-full border border-neutral-300 px-4 py-2 text-sm font-medium text-gray-700 text-opacity-90 hover:border-neutral-400 hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 dark:border-neutral-700 dark:text-neutral-300'
 						>
 							List your property

@@ -15,6 +15,6 @@ export type Blog = {
 	html: string;
 	feature_image?: string;
 	primary_author?: Author;
-	tags?: any[];
+	tags?: string[];
 	published_at: string;
 };

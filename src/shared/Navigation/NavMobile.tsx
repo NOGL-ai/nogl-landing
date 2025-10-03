@@ -73,7 +73,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
 		);
 	};
 
-	const _renderItem = (item: NavItemType, index: number) => {
+	const _renderItem = (item: NavItemType, _index: number) => {
 		return (
 			<Disclosure
 				key={item.id}
@@ -142,7 +142,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
 				{session && (
 					<div className='relative'>
 						<Link
-							href={"/add-session" as Route<string>}
+							href={"/add-session" as Route}
 							onClick={(e) => e.preventDefault()}
 						>
 							<ShimmerButton

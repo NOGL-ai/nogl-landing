@@ -51,7 +51,7 @@ export interface ServerSideParams {
 	pageSize: number;
 	sortBy?: string;
 	sortOrder?: "asc" | "desc";
-	filters?: Record<string, any>;
+	filters?: Record<string, unknown>;
 	search?: string;
 }
 
@@ -70,7 +70,7 @@ export interface BigDataResponse<T> {
 /**
  * Creates an optimized API data fetcher with advanced caching and prefetching
  */
-export function createOptimizedDataFetcher<TData = any>(
+export function createOptimizedDataFetcher<TData = unknown>(
 	apiEndpoint: string,
 	config: Partial<BigDataConfig> = {}
 ): (params: ServerSideParams) => Promise<InfiniteScrollData<TData>> {
@@ -163,13 +163,13 @@ export function createOptimizedPrismaFetcher<TData>(
 	prismaQuery: (args: {
 		skip: number;
 		take: number;
-		orderBy?: any;
-		where?: any;
-		select?: any;
+		orderBy?: unknown;
+		where?: unknown;
+		select?: unknown;
 	}) => Promise<{ data: TData[]; total: number }>,
 	config: Partial<BigDataConfig> = {}
 ) {
-	const _defaultConfig: BigDataConfig = {
+	const defaultConfig: BigDataConfig = {
 		pageSize: 50,
 		maxCacheSize: 1000,
 		prefetchThreshold: 0.8,
@@ -228,8 +228,8 @@ export function createOptimizedPrismaFetcher<TData>(
 /**
  * Builds Prisma where clause from filters
  */
-function buildWhereClause(filters: Record<string, any>): any {
-	const where: any = {};
+function buildWhereClause(filters: Record<string, unknown>): Record<string, unknown> {
+	const where: Record<string, unknown> = {};
 
 	Object.entries(filters).forEach(([key, value]) => {
 		if (value === null || value === undefined) return;
@@ -269,7 +269,7 @@ export function createRealisticMockGenerator<TData>(
 	pageSize: number = 50,
 	config: Partial<BigDataConfig> = {}
 ) {
-	const _defaultConfig: BigDataConfig = {
+	const defaultConfig: BigDataConfig = {
 		pageSize,
 		maxCacheSize: 1000,
 		prefetchThreshold: 0.8,

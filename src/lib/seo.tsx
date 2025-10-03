@@ -128,7 +128,7 @@ export const getSEOTags = ({
 };
 
 // Function to render structured data (JSON-LD)
-export const renderSchemaTags = (customSchema?: Record<string, any>) => {
+export const renderSchemaTags = (customSchema?: Record<string, unknown>) => {
 	const defaultSiteUrl = process.env.SITE_URL || "https://www.nogl.ai";
 	const defaultSiteName = process.env.SITE_NAME || "Nogl";
 	const defaultImageBaseUrl =

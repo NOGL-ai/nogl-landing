@@ -63,11 +63,11 @@ export const sendEmail = async (data: EmailPayload) => {
 
 		console.log("Email sent:", result.messageId);
 		return { success: true, messageId: result.messageId };
-	} catch (error: any) {
+	} catch (error: unknown) {
 		console.error("Error sending email:", error);
 		// throw new Error('Failed to send email');
 		// Commented out generic error
-		throw new Error(`Failed to send email: ${error.message}`);
+		throw new Error(`Failed to send email: ${error instanceof Error ? error.message : 'Unknown error'}`);
 	}
 };
 

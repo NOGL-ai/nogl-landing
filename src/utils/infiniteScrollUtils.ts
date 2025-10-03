@@ -69,10 +69,10 @@ export function createMockDataGenerator<TData>(
 /**
  * Creates a generic API data fetcher with pagination
  */
-export function createApiDataFetcher<TData = any>(
+export function createApiDataFetcher<TData = unknown>(
 	apiEndpoint: string,
 	pageSize: number = 50,
-	additionalParams: Record<string, any> = {}
+	additionalParams: Record<string, unknown> = {}
 ) {
 	return async (pageParam: number): Promise<InfiniteScrollData<TData>> => {
 		const params = new URLSearchParams({

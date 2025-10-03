@@ -97,7 +97,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ isCollapsed }) => {
 												<div className='w-full border-b border-neutral-200 dark:border-neutral-700' />
 
 												<Link
-													href={"/user" as Route<string>}
+													href={"/user" as Route}
 													className='-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-neutral-100 focus:outline-none dark:hover:bg-neutral-700'
 													onClick={() => close()}
 												>
@@ -131,7 +131,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ isCollapsed }) => {
 												</Link>
 
 												<Link
-													href={"/account-bookings" as Route<string>}
+													href={"/account-bookings" as Route}
 													className='-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-neutral-100 focus:outline-none dark:hover:bg-neutral-700'
 													onClick={() => close()}
 												>
@@ -182,7 +182,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ isCollapsed }) => {
 												</Link>
 
 												<Link
-													href={"/account-savelists" as Route<string>}
+													href={"/account-savelists" as Route}
 													className='-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-neutral-100 focus:outline-none dark:hover:bg-neutral-700'
 													onClick={() => close()}
 												>
@@ -250,7 +250,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ isCollapsed }) => {
 												</div>
 
 												<Link
-													href={"/support" as Route<string>}
+													href={"/support" as Route}
 													className='-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-neutral-100 focus:outline-none dark:hover:bg-neutral-700'
 													onClick={() => close()}
 												>

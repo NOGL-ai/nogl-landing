@@ -333,14 +333,14 @@ export default function AvatarDropdown({ className = "" }: Props) {
 											<>
 												{/* Sign In Link */}
 												<Link
-													href={"/auth/signin" as Route<string>}
+													href={"/auth/signin" as Route}
 													className='font-satoshi px-5 py-2 font-medium text-black dark:text-white'
 												>
 													Sign In
 												</Link>
 												{/* Sign Up Link */}
 												<Link
-													href={"/auth/signup" as Route<string>}
+													href={"/auth/signup" as Route}
 													className='bg-primary-500 font-satoshi hover:bg-primary-600 border-primary-400 rounded-full border-2 px-5 py-2 font-medium text-white shadow-lg'
 												>
 													Sign Up

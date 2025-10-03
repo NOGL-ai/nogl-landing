@@ -172,7 +172,7 @@ const Header3: FC<Header3Props> = ({ className = "" }) => {
 						<div className='relative z-10 hidden flex-1 justify-end text-neutral-700 md:flex dark:text-neutral-100'>
 							<div className=' flex space-x-1'>
 								<Link
-									href={"/add-listing/1" as Route<string>}
+									href={"/add-listing/1" as Route}
 									className='hidden items-center self-center rounded-full border border-neutral-300 px-4 py-2 text-sm font-medium text-gray-700 hover:border-neutral-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 xl:inline-flex dark:border-neutral-700 dark:text-neutral-300'
 								>
 									List your property

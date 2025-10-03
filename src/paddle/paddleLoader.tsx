@@ -5,7 +5,10 @@ import toast from "react-hot-toast";
 
 declare global {
 	interface Window {
-		Paddle: any;
+		Paddle: {
+			Environment: { set: (env: string) => void };
+			Initialize: (config: { token?: string; eventCallback: (event: unknown) => void }) => void;
+		};
 	}
 }
 
@@ -15,7 +18,7 @@ export function PaddleLoader() {
 			window?.Paddle?.Environment.set("sandbox");
 			window.Paddle.Initialize({
 				token: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN,
-				eventCallback: function (event: any) {
+				eventCallback: function (event: unknown) {
 					if (
 						event.name === "checkout.completed" &&
 						event.data.status === "completed"
