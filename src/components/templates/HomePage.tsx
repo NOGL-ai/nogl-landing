@@ -11,7 +11,7 @@ interface HomeProps {
 	dictionary: {
 		hero: {
 			introducing: string;
-			title: string[];
+			title: string;
 			description: string;
 			buttonText: string;
 		};
