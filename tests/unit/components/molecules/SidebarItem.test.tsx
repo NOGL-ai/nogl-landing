@@ -100,28 +100,28 @@ describe('SidebarItem Component', () => {
     it('applies active styles when isActive is true', () => {
       render(<SidebarItem item={mockItem} isActive={true} isCollapsed={false} />);
       
-      const container = screen.getByText('Test Item').closest('div');
-      expect(container).toHaveClass('bg-[#375DFB]', 'text-white');
+      const link = screen.getByRole('link');
+      expect(link).toHaveClass('bg-[#375DFB]', 'text-white');
     });
 
     it('applies inactive styles when isActive is false', () => {
       render(<SidebarItem item={mockItem} isActive={false} isCollapsed={false} />);
       
-      const container = screen.getByText('Test Item').closest('div');
-      expect(container).toHaveClass('text-[#9293A9]');
+      const link = screen.getByRole('link');
+      expect(link).toHaveClass('text-[#9293A9]');
     });
 
     it('shows active indicator when active', () => {
       render(<SidebarItem item={mockItem} isActive={true} isCollapsed={false} />);
       
-      const activeIndicator = screen.getByRole('generic').querySelector('.absolute.bottom-2.right-0.top-2');
+      const activeIndicator = screen.getByTestId('test-icon').closest('.group')?.querySelector('.absolute.bottom-2.right-0.top-2');
       expect(activeIndicator).toBeInTheDocument();
     });
 
     it('hides active indicator when inactive', () => {
       render(<SidebarItem item={mockItem} isActive={false} isCollapsed={false} />);
       
-      const activeIndicator = screen.getByRole('generic').querySelector('.absolute.bottom-2.right-0.top-2');
+      const activeIndicator = screen.getByTestId('test-icon').closest('.group')?.querySelector('.absolute.bottom-2.right-0.top-2');
       expect(activeIndicator).not.toBeInTheDocument();
     });
   });
@@ -142,7 +142,7 @@ describe('SidebarItem Component', () => {
     it('shows tooltip when collapsed and hovered', async () => {
       render(<SidebarItem item={mockItem} isActive={false} isCollapsed={true} />);
       
-      const container = screen.getByText('Test Item').closest('.group');
+      const container = screen.getByTestId('test-icon').closest('.group');
       fireEvent.mouseEnter(container!);
       
       await waitFor(() => {
@@ -153,7 +153,7 @@ describe('SidebarItem Component', () => {
     it('hides tooltip when mouse leaves', async () => {
       render(<SidebarItem item={mockItem} isActive={false} isCollapsed={true} />);
       
-      const container = screen.getByText('Test Item').closest('.group');
+      const container = screen.getByTestId('test-icon').closest('.group');
       fireEvent.mouseEnter(container!);
       
       await waitFor(() => {
@@ -206,7 +206,7 @@ describe('SidebarItem Component', () => {
     it('shows badge in tooltip when collapsed', async () => {
       render(<SidebarItem item={mockItemWithBadge} isActive={false} isCollapsed={true} />);
       
-      const container = screen.getByText('Test Item with Badge').closest('.group');
+      const container = screen.getByTestId('test-icon-badge').closest('.group');
       fireEvent.mouseEnter(container!);
       
       await waitFor(() => {
@@ -219,14 +219,14 @@ describe('SidebarItem Component', () => {
     it('shows submenu arrow when has submenu and not collapsed', () => {
       render(<SidebarItem item={mockItemWithSubmenu} isActive={false} isCollapsed={false} />);
       
-      const arrow = screen.getByRole('generic').querySelector('svg');
+      const arrow = screen.getByTestId('test-icon-submenu').closest('.group')?.querySelector('svg');
       expect(arrow).toBeInTheDocument();
     });
 
     it('hides submenu arrow when collapsed', () => {
       render(<SidebarItem item={mockItemWithSubmenu} isActive={false} isCollapsed={true} />);
       
-      const arrow = screen.getByRole('generic').querySelector('svg');
+      const arrow = screen.getByTestId('test-icon-submenu').closest('.group')?.querySelector('svg');
       expect(arrow).not.toBeInTheDocument();
     });
 
@@ -289,7 +289,7 @@ describe('SidebarItem Component', () => {
     it('does not open submenu on hover when collapsed', () => {
       render(<SidebarItem item={mockItemWithSubmenu} isActive={false} isCollapsed={true} />);
       
-      const container = screen.getByText('Test Item with Submenu').closest('.group');
+      const container = screen.getByTestId('test-icon-submenu').closest('.group');
       fireEvent.mouseEnter(container!);
       
       expect(screen.queryByText('Submenu Item 1')).not.toBeInTheDocument();
@@ -298,7 +298,7 @@ describe('SidebarItem Component', () => {
     it('does not toggle submenu when clicked while collapsed', () => {
       render(<SidebarItem item={mockItemWithSubmenu} isActive={false} isCollapsed={true} />);
       
-      const container = screen.getByText('Test Item with Submenu').closest('div');
+      const container = screen.getByTestId('test-icon-submenu').closest('div');
       fireEvent.click(container!);
       
       expect(screen.queryByText('Submenu Item 1')).not.toBeInTheDocument();
@@ -375,7 +375,7 @@ describe('SidebarItem Component', () => {
     it('shows tooltip with title when collapsed and hovered', async () => {
       render(<SidebarItem item={mockItem} isActive={false} isCollapsed={true} />);
       
-      const container = screen.getByText('Test Item').closest('.group');
+      const container = screen.getByTestId('test-icon').closest('.group');
       fireEvent.mouseEnter(container!);
       
       await waitFor(() => {
@@ -387,7 +387,7 @@ describe('SidebarItem Component', () => {
     it('shows tooltip with badge when collapsed and hovered', async () => {
       render(<SidebarItem item={mockItemWithBadge} isActive={false} isCollapsed={true} />);
       
-      const container = screen.getByText('Test Item with Badge').closest('.group');
+      const container = screen.getByTestId('test-icon-badge').closest('.group');
       fireEvent.mouseEnter(container!);
       
       await waitFor(() => {
@@ -398,7 +398,7 @@ describe('SidebarItem Component', () => {
     it('applies correct badge styles in tooltip', async () => {
       render(<SidebarItem item={mockItemWithBadge} isActive={false} isCollapsed={true} />);
       
-      const container = screen.getByText('Test Item with Badge').closest('.group');
+      const container = screen.getByTestId('test-icon-badge').closest('.group');
       fireEvent.mouseEnter(container!);
       
       await waitFor(() => {
@@ -410,7 +410,7 @@ describe('SidebarItem Component', () => {
     it('shows tooltip arrow', async () => {
       render(<SidebarItem item={mockItem} isActive={false} isCollapsed={true} />);
       
-      const container = screen.getByText('Test Item').closest('.group');
+      const container = screen.getByTestId('test-icon').closest('.group');
       fireEvent.mouseEnter(container!);
       
       await waitFor(() => {
