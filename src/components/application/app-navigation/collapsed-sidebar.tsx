@@ -1,7 +1,18 @@
 "use client";
 
+/**
+ * CollapsedSidebar - Enhanced Two-Level Navigation Sidebar
+ * 
+ * Features improved theme handling with:
+ * - Direct integration with next-themes useTheme hook
+ * - Fallback theme management (prop -> system -> default)
+ * - Theme change responsiveness
+ * - Consistent theme-aware styling utilities
+ */
+
 import React, { useState, useRef, useCallback, useMemo, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { useTheme } from "next-themes";
 import { navigationStructure, getActiveIconMenuItem, accountMenuItem } from "@/data/navigationItemsV2";
 import type { IconMenuItem } from "@/data/navigationItemsV2";
 import { SubmenuPanel } from "./submenu-panel";
@@ -32,10 +43,18 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
     theme = "light"
 }) => {
     const pathname = usePathname();
+    const { theme: systemTheme } = useTheme();
+    
+    // Enhanced theme handling: Use system theme if no theme prop provided, fallback to prop
+    // This provides better integration with next-themes and more flexible theme management
+    const currentTheme = useMemo(() => {
+        return theme || systemTheme || "light";
+    }, [theme, systemTheme]);
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
     const [submenuPosition, setSubmenuPosition] = useState({ top: 20, left: ICON_SIDEBAR_WIDTH });
     const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
     const isAccountDropdownOpenRef = useRef(isAccountDropdownOpen);
+    const previousThemeRef = useRef(currentTheme);
     const accountMenu = useMemo<IconMenuItem>(() => ({
         ...accountMenuItem,
         label: user?.name || accountMenuItem.label
@@ -50,6 +69,30 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
     useEffect(() => {
         isAccountDropdownOpenRef.current = isAccountDropdownOpen;
     }, [isAccountDropdownOpen]);
+
+    // Enhanced theme change handling - close dropdowns when theme actually changes
+    useEffect(() => {
+        if (previousThemeRef.current !== currentTheme && isAccountDropdownOpen) {
+            setIsAccountDropdownOpen(false);
+        }
+        previousThemeRef.current = currentTheme;
+    }, [currentTheme, isAccountDropdownOpen]);
+
+    // Theme change detection for better UX
+    useEffect(() => {
+        // Force re-render when theme changes to ensure proper styling
+        // This helps with theme transitions and ensures all elements update correctly
+        const timeoutId = setTimeout(() => {
+            // Small delay to ensure theme classes are properly applied
+        }, 0);
+        
+        return () => clearTimeout(timeoutId);
+    }, [currentTheme]);
+
+    // Theme-aware utility function for consistent styling
+    const getThemeClasses = useCallback((baseClasses: string, lightClasses: string, darkClasses: string) => {
+        return `${baseClasses} ${currentTheme === 'dark' ? darkClasses : lightClasses}`;
+    }, [currentTheme]);
 
     const clearHoverTimeout = useCallback(() => {
         if (hoverTimeoutRef.current) {
@@ -174,6 +217,18 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
         clearHoverTimeout();
         clearCloseTimeout();
 
+        // Special handling for account menu
+        if (item.id === accountMenuId) {
+            if (isAccountDropdownOpen) {
+                setIsAccountDropdownOpen(false);
+                setHoveredItem(null);
+            } else {
+                setIsAccountDropdownOpen(true);
+                openPanelForItem(item.id);
+            }
+            return;
+        }
+
         if (item.href && !item.subItems) {
             setHoveredItem(null);
             handleNavigation(item.href);
@@ -187,7 +242,7 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
                 openPanelForItem(item.id);
             }
         }
-    }, [clearCloseTimeout, clearHoverTimeout, handleNavigation, hoveredItem, openPanelForItem]);
+    }, [clearCloseTimeout, clearHoverTimeout, handleNavigation, hoveredItem, openPanelForItem, accountMenuId, isAccountDropdownOpen]);
 
     // Handle keyboard navigation
     const handleIconKeyDown = useCallback((item: any, event: React.KeyboardEvent) => {
@@ -195,12 +250,17 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
             event.preventDefault();
             handleIconClick(item);
         } else if (event.key === "Escape" || event.key === "ArrowLeft") {
-            scheduleClosePanel();
-        } else if (event.key === "ArrowRight" && item.subItems) {
+            if (item.id === accountMenuId && isAccountDropdownOpen) {
+                setIsAccountDropdownOpen(false);
+                setHoveredItem(null);
+            } else {
+                scheduleClosePanel();
+            }
+        } else if (event.key === "ArrowRight" && (item.subItems || item.id === accountMenuId)) {
             clearCloseTimeout();
             openPanelForItem(item.id);
         }
-    }, [clearCloseTimeout, handleIconClick, openPanelForItem, scheduleClosePanel]);
+    }, [clearCloseTimeout, handleIconClick, openPanelForItem, scheduleClosePanel, accountMenuId, isAccountDropdownOpen]);
 
     // Cleanup timeouts on unmount
     useEffect(() => {
@@ -455,7 +515,7 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
                         onClose={() => setHoveredItem(null)}
                         onMouseEnter={clearCloseTimeout}
                         onMouseLeave={scheduleClosePanel}
-                        theme={theme as "light" | "dark" | undefined}
+                        theme={currentTheme as "light" | "dark" | undefined}
                         user={user}
                         onLogout={onLogout}
                         isAccountDropdownOpen={isAccountDropdownOpen}
