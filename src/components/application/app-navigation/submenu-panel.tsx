@@ -109,12 +109,11 @@ export const SubmenuPanel: React.FC<SubmenuPanelProps> = ({
                             );
                         }
 
-                        // Check if this item follows a sub-heading for proper indentation
-                        const previousItem = item.subItems?.[index - 1];
-                        const isAfterSubHeading = previousItem?.isSubHeading;
+                        // Check if this item should be indented (comes after any sub-heading)
+                        const hasSubHeadingBefore = item.subItems?.slice(0, index).some(item => item.isSubHeading);
                         
                         return (
-                            <div key={subItem.label} className={`flex py-[2px] items-center self-stretch ${isAfterSubHeading ? 'ml-2' : ''}`}>
+                            <div key={subItem.label} className={`flex py-[2px] items-center self-stretch ${hasSubHeadingBefore ? 'ml-2' : ''}`}>
                                 <NavItemBase
                                     href={subItem.href}
                                     icon={subItem.icon}
