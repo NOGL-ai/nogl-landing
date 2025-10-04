@@ -15,8 +15,9 @@ import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { navigationStructure, getActiveIconMenuItem, accountMenuItem } from "@/data/navigationItemsV2";
 import type { IconMenuItem } from "@/data/navigationItemsV2";
-import { Sun, Moon } from "@untitledui/icons";
+// Removed unused Sun import - Magic UI component handles its own icons
 import { SubmenuPanel } from "./submenu-panel";
+import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 
 interface CollapsedSidebarProps {
     user?: {
@@ -52,13 +53,7 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
         return theme || systemTheme || "light";
     }, [theme, systemTheme]);
 
-    // Theme toggle functionality
-    const toggleTheme = useCallback(() => {
-        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-        if (setSystemTheme) {
-            setSystemTheme(newTheme);
-        }
-    }, [currentTheme, setSystemTheme]);
+    // Theme toggle is now handled by Magic UI AnimatedThemeToggler component
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
     const [submenuPosition, setSubmenuPosition] = useState({ top: 20, left: ICON_SIDEBAR_WIDTH });
     const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
@@ -226,10 +221,8 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
         clearHoverTimeout();
         clearCloseTimeout();
 
-        // Special handling for theme toggle
+        // Skip theme toggle - handled by Magic UI AnimatedThemeToggler component
         if (item.id === 'theme-toggle') {
-            toggleTheme();
-            setHoveredItem(null);
             return;
         }
 
@@ -258,7 +251,7 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
                 openPanelForItem(item.id);
             }
         }
-    }, [clearCloseTimeout, clearHoverTimeout, handleNavigation, hoveredItem, openPanelForItem, accountMenuId, isAccountDropdownOpen, toggleTheme]);
+    }, [clearCloseTimeout, clearHoverTimeout, handleNavigation, hoveredItem, openPanelForItem, accountMenuId, isAccountDropdownOpen]);
 
     // Handle keyboard navigation
     const handleIconKeyDown = useCallback((item: any, event: React.KeyboardEvent) => {
@@ -275,12 +268,8 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
         } else if (event.key === "ArrowRight" && (item.subItems || item.id === accountMenuId)) {
             clearCloseTimeout();
             openPanelForItem(item.id);
-        } else if (event.key === "t" && event.altKey && item.id === 'theme-toggle') {
-            // Alt + T for theme toggle
-            event.preventDefault();
-            toggleTheme();
         }
-    }, [clearCloseTimeout, handleIconClick, openPanelForItem, scheduleClosePanel, accountMenuId, isAccountDropdownOpen, toggleTheme]);
+    }, [clearCloseTimeout, handleIconClick, openPanelForItem, scheduleClosePanel, accountMenuId, isAccountDropdownOpen]);
 
     // Cleanup timeouts on unmount
     useEffect(() => {
@@ -444,6 +433,19 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
                                     const isHovered = hoveredItem === item.id;
                                     const isThemeToggle = item.id === 'theme-toggle';
                                     
+                                    // Special handling for theme toggle - use Magic UI component
+                                    if (isThemeToggle) {
+                                        return (
+                                            <div
+                                                key={item.id}
+                                                className="flex items-center justify-center w-10 h-10 rounded-md transition-colors duration-200 hover:bg-[#fafafa] dark:hover:bg-[#252b37]/50"
+                                                title={`${item.label} (${currentTheme})`}
+                                            >
+                                                <AnimatedThemeToggler className="w-5 h-5 text-[#a4a7ae] dark:text-[#717680] hover:text-[#717680] dark:hover:text-[#a4a7ae] transition-colors duration-200" />
+                                            </div>
+                                        );
+                                    }
+                                    
                                     return (
                                         <button
                                             key={item.id}
@@ -461,8 +463,8 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
                                                     : 'hover:bg-[#fafafa] dark:hover:bg-[#252b37]/50'
                                                 }
                                             `}
-                                            title={isThemeToggle ? `${item.label} (${currentTheme})` : item.label}
-                                            aria-label={isThemeToggle ? `Toggle theme (currently ${currentTheme})` : `${item.label} navigation`}
+                                            title={item.label}
+                                            aria-label={`${item.label} navigation`}
                                             aria-haspopup={item.subItems ? "menu" : undefined}
                                             aria-expanded={item.subItems ? hoveredItem === item.id : undefined}
                                             aria-controls={item.subItems ? `nav-panel-${item.id}` : undefined}
