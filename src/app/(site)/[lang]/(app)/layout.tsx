@@ -5,7 +5,14 @@ import GlassmorphismBackground from "@/components/atoms/GlassmorphismBackground"
 import { getAuthSession } from "@/lib/auth";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
-	const session = await getAuthSession();
+	let session = null;
+	
+	try {
+		session = await getAuthSession();
+	} catch (error) {
+		console.error('Error fetching session:', error);
+		session = null;
+	}
 	
 	// Map session user to UserProfile type or use fallback
 	const user = session?.user ? {

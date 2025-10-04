@@ -301,5 +301,16 @@ export const authOptions: NextAuthOptions = {
 };
 
 export const getAuthSession = async () => {
-	return getServerSession(authOptions);
+	try {
+		// Check if required environment variables are present
+		if (!process.env.NEXTAUTH_SECRET) {
+			console.warn('NEXTAUTH_SECRET is not set');
+			return null;
+		}
+		
+		return await getServerSession(authOptions);
+	} catch (error) {
+		console.error('Error in getAuthSession:', error);
+		return null;
+	}
 };
