@@ -41,17 +41,19 @@ interface NewsletterProps {
 export default function Newsletter({ dictionary }: NewsletterProps) {
 	const [email, setEmail] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
-	const [hasSeenPopup, setHasSeenPopup] = useState(true); // Start true to prevent flash
+	
+	// Initialize hasSeenPopup based on cookie value
+	const [hasSeenPopup, setHasSeenPopup] = useState(() => {
+		if (typeof window === 'undefined') return true; // SSR safety
+		return !!Cookies.get("mailchimp_popup_seen");
+	});
 
 	useEffect(() => {
-		// Check if user has seen the popup before
-		const popupSeen = Cookies.get("mailchimp_popup_seen");
-		if (!popupSeen) {
-			setHasSeenPopup(false);
-			// Set cookie that expires in 30 days
+		// Set cookie that expires in 30 days if not already set
+		if (!hasSeenPopup) {
 			Cookies.set("mailchimp_popup_seen", "true", { expires: 30 });
 		}
-	}, []);
+	}, [hasSeenPopup]);
 
 	// Add Mailchimp popup script - Only in production
 	useEffect(() => {

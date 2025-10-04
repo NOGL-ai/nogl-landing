@@ -35,9 +35,6 @@ const Header3: FC<Header3Props> = ({ className = "" }) => {
 	const pathname = usePathname();
 	//
 
-	useEffect(() => {
-		// setShowHeroSearch(null);
-	}, [pathname]);
 
 	// HIDDEN WHEN SCROLL EVENT
 	useEffect(() => {

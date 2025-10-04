@@ -24,17 +24,13 @@ const HeaderFilter: FC<HeaderFilterProps> = ({
 }) => {
 	const [tabActiveState, setTabActiveState] = useState(tabActive);
 
-	useEffect(() => {
-		setTabActiveState(tabActive);
-	}, [tabActive]);
-
 	const handleClickTab = (item: string) => {
 		onClickTab(item);
 		setTabActiveState(item);
 	};
 
 	return (
-		<div className='relative mb-8 flex flex-col'>
+		<div key={tabActive} className='relative mb-8 flex flex-col'>
 			<Heading desc={subHeading}>{heading}</Heading>
 			<div className='flex items-center justify-between'>
 				<Nav

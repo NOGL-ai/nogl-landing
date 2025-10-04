@@ -1,7 +1,7 @@
 "use client";
 
 import type { HTMLAttributes } from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import QRCodeStyling, { type Options as QRCodeStylingOptions } from "qr-code-styling";
 import { cx } from "@/utils/cx";
 
@@ -49,28 +49,28 @@ interface QRCodeProps {
 
 export const QRCode = ({ size = "md", value, options, className }: QRCodeProps) => {
     const ref = useRef<HTMLDivElement | null>(null);
-    const [qrCode, setQrCode] = useState<QRCodeStyling | null>(null);
-
-    useEffect(() => {
-        if (!ref.current) return;
-
-        const qrCode = new QRCodeStyling({
+    
+    const qrCode = useMemo(() => {
+        return new QRCodeStyling({
             width: styles[size].qr.width,
             height: styles[size].qr.height,
             data: value,
             type: "svg",
             ...options,
         });
-
-        setQrCode(qrCode);
-        qrCode.append(ref.current);
     }, [options, size, value]);
 
     useEffect(() => {
-        if (!qrCode) return;
-
-        qrCode.update(options);
-    }, [qrCode, value, options]);
+        if (!ref.current || !qrCode) return;
+        
+        qrCode.append(ref.current);
+        
+        return () => {
+            if (ref.current) {
+                ref.current.innerHTML = '';
+            }
+        };
+    }, [qrCode]);
 
     return (
         <div className={cx("relative flex items-center justify-center", styles[size].root, className)}>

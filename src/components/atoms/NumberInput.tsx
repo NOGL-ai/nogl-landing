@@ -24,10 +24,6 @@ const NcInputNumber: FC<NcInputNumberProps> = ({
 }) => {
 	const [value, setValue] = useState(defaultValue);
 
-	useEffect(() => {
-		setValue(defaultValue);
-	}, [defaultValue]);
-
 	const handleClickDecrement = () => {
 		if (min >= value) return;
 		setValue((state) => {
@@ -60,6 +56,7 @@ const NcInputNumber: FC<NcInputNumberProps> = ({
 
 	return (
 		<div
+			key={defaultValue} // Reset component when defaultValue changes
 			className={`nc-NcInputNumber flex items-center justify-between space-x-5 ${className}`}
 			data-nc-id='NcInputNumber'
 		>

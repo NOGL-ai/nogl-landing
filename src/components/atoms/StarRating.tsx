@@ -18,12 +18,9 @@ const FiveStarIconForRate: FC<FiveStarIconForRateProps> = ({
 	const [point, setPoint] = useState(defaultPoint);
 	const [currentHover, setCurrentHover] = useState(0);
 
-	useEffect(() => {
-		setPoint(defaultPoint);
-	}, [defaultPoint]);
-
 	return (
 		<div
+			key={defaultPoint} // Reset component when defaultPoint changes
 			className={`nc-FiveStarIconForRate flex items-center text-neutral-300 ${className}`}
 			data-nc-id='FiveStarIconForRate'
 		>

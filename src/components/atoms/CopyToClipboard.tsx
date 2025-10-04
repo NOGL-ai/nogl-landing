@@ -1,28 +1,24 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const CopyToClipboard = ({ text, label }: { text: string; label: string }) => {
 	const [copied, setCopied] = useState(false);
 
-	useEffect(() => {
-		if (copied) {
-			setTimeout(() => {
-				setCopied(false);
-			}, 1000);
+	const handleCopy = async () => {
+		try {
+			await navigator.clipboard.writeText(text);
+			setCopied(true);
+			// Reset after 1 second
+			setTimeout(() => setCopied(false), 1000);
+		} catch (error) {
+			console.error("Failed to copy text:", error);
+			// You could add a toast notification here if you have a toast system
 		}
-	}, [copied]);
+	};
 
 	return (
 		<button
-			onClick={async () => {
-				try {
-					await navigator.clipboard.writeText(text);
-					setCopied(true);
-				} catch (error) {
-					console.error("Failed to copy text:", error);
-					// You could add a toast notification here if you have a toast system
-				}
-			}}
+			onClick={handleCopy}
 			className={`bg-primary font-satoshi hover:bg-primary-dark flex items-center justify-center gap-2 rounded-lg px-4 py-2 font-medium text-white duration-200 ease-in
 			`}
 		>
