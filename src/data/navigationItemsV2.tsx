@@ -70,9 +70,9 @@ export const navigationStructure: NavigationSection[] = [
                         icon: SearchMd,
                     },
                     {
-                        label: 'Reports',
+                        label: 'Price Rules',
                         href: '/catalog',
-                        icon: FileX01,
+                        icon: RefreshCw01,
                     },
                     {
                         label: 'Data Management',
@@ -91,9 +91,9 @@ export const navigationStructure: NavigationSection[] = [
                         icon: LayersThree01,
                     },
                     {
-                        label: 'Price Rules',
+                        label: 'Reports',
                         href: '/catalog',
-                        icon: RefreshCw01,
+                        icon: FileX01,
                     },
                 ],
             },
