@@ -1,10 +1,6 @@
-import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
-	return twMerge(clsx(inputs));
-}
-
-export function absoluteUrl(path: string) {
-	return `${process.env.SITE_URL || "http://nogl.ai:3000"}${path}`;
+  return twMerge(clsx(inputs))
 }

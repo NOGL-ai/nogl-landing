@@ -15,6 +15,7 @@ import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { navigationStructure, getActiveIconMenuItem, accountMenuItem } from "@/data/navigationItemsV2";
 import type { IconMenuItem } from "@/data/navigationItemsV2";
+import { Sun, Moon } from "@untitledui/icons";
 import { SubmenuPanel } from "./submenu-panel";
 
 interface CollapsedSidebarProps {
@@ -43,13 +44,21 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
     theme = "light"
 }) => {
     const pathname = usePathname();
-    const { theme: systemTheme } = useTheme();
+    const { theme: systemTheme, setTheme: setSystemTheme } = useTheme();
     
     // Enhanced theme handling: Use system theme if no theme prop provided, fallback to prop
     // This provides better integration with next-themes and more flexible theme management
     const currentTheme = useMemo(() => {
         return theme || systemTheme || "light";
     }, [theme, systemTheme]);
+
+    // Theme toggle functionality
+    const toggleTheme = useCallback(() => {
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        if (setSystemTheme) {
+            setSystemTheme(newTheme);
+        }
+    }, [currentTheme, setSystemTheme]);
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
     const [submenuPosition, setSubmenuPosition] = useState({ top: 20, left: ICON_SIDEBAR_WIDTH });
     const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
@@ -217,6 +226,13 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
         clearHoverTimeout();
         clearCloseTimeout();
 
+        // Special handling for theme toggle
+        if (item.id === 'theme-toggle') {
+            toggleTheme();
+            setHoveredItem(null);
+            return;
+        }
+
         // Special handling for account menu
         if (item.id === accountMenuId) {
             if (isAccountDropdownOpen) {
@@ -242,7 +258,7 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
                 openPanelForItem(item.id);
             }
         }
-    }, [clearCloseTimeout, clearHoverTimeout, handleNavigation, hoveredItem, openPanelForItem, accountMenuId, isAccountDropdownOpen]);
+    }, [clearCloseTimeout, clearHoverTimeout, handleNavigation, hoveredItem, openPanelForItem, accountMenuId, isAccountDropdownOpen, toggleTheme]);
 
     // Handle keyboard navigation
     const handleIconKeyDown = useCallback((item: any, event: React.KeyboardEvent) => {
@@ -259,8 +275,12 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
         } else if (event.key === "ArrowRight" && (item.subItems || item.id === accountMenuId)) {
             clearCloseTimeout();
             openPanelForItem(item.id);
+        } else if (event.key === "t" && event.altKey && item.id === 'theme-toggle') {
+            // Alt + T for theme toggle
+            event.preventDefault();
+            toggleTheme();
         }
-    }, [clearCloseTimeout, handleIconClick, openPanelForItem, scheduleClosePanel, accountMenuId, isAccountDropdownOpen]);
+    }, [clearCloseTimeout, handleIconClick, openPanelForItem, scheduleClosePanel, accountMenuId, isAccountDropdownOpen, toggleTheme]);
 
     // Cleanup timeouts on unmount
     useEffect(() => {
@@ -422,6 +442,7 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
                                     const IconComponent = item.icon;
                                     const isActive = activeIconItem?.id === item.id;
                                     const isHovered = hoveredItem === item.id;
+                                    const isThemeToggle = item.id === 'theme-toggle';
                                     
                                     return (
                                         <button
@@ -440,8 +461,8 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
                                                     : 'hover:bg-[#fafafa] dark:hover:bg-[#252b37]/50'
                                                 }
                                             `}
-                                            title={item.label}
-                                            aria-label={`${item.label} navigation`}
+                                            title={isThemeToggle ? `${item.label} (${currentTheme})` : item.label}
+                                            aria-label={isThemeToggle ? `Toggle theme (currently ${currentTheme})` : `${item.label} navigation`}
                                             aria-haspopup={item.subItems ? "menu" : undefined}
                                             aria-expanded={item.subItems ? hoveredItem === item.id : undefined}
                                             aria-controls={item.subItems ? `nav-panel-${item.id}` : undefined}

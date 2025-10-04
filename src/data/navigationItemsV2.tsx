@@ -9,7 +9,9 @@ import {
     UserSquare,
     Settings03,
     LifeBuoy01,
-    PieChart03
+    PieChart03,
+    Sun,
+    Moon
 } from "@untitledui/icons";
 import type { FC, ReactNode } from "react";
 
@@ -90,7 +92,7 @@ export const navigationStructure: NavigationSection[] = [
             {
                 id: 'theme-toggle',
                 label: 'Theme',
-                icon: Settings03,
+                icon: Sun, // Will be dynamically changed based on theme
             },
         ],
     },
