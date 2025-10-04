@@ -9,7 +9,6 @@ import {
     UserSquare,
     Settings03,
     LifeBuoy01,
-    Settings01,
     PieChart03
 } from "@untitledui/icons";
 import type { FC, ReactNode } from "react";
@@ -93,12 +92,6 @@ export const navigationStructure: NavigationSection[] = [
                 label: 'Theme',
                 icon: Settings03,
             },
-            {
-                id: 'settings',
-                label: 'Settings',
-                icon: Settings01,
-                href: '/settings',
-            },
         ],
     },
 ];
@@ -116,7 +109,7 @@ export const accountMenuItem: IconMenuItem = {
         {
             label: 'Example 2',
             href: '/account/example-2',
-            icon: Settings01,
+            icon: Settings03,
         },
         {
             label: 'Example 3',
