@@ -226,7 +226,7 @@ const mockData: RepricingData[] = [
 	},
 ];
 
-export const RepricingPreview: React.FC = () => {
+const RepricingPreview: React.FC = () => {
 	const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
 	const [searchTerm, setSearchTerm] = useState("");
 	const [currentPage, setCurrentPage] = useState(57);

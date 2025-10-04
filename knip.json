@@ -1,0 +1,57 @@
+{
+  "entry": [
+    "src/app/layout.tsx",
+    "src/app/page.tsx",
+    "src/app/not-found.tsx",
+    "next.config.js",
+    "tailwind.config.ts",
+    "postcss.config.js",
+    "jest.config.mjs",
+    "playwright.config.ts"
+  ],
+  "project": [
+    "src/**/*.{js,jsx,ts,tsx}",
+    "tests/**/*.{js,jsx,ts,tsx}",
+    "scripts/**/*.{js,jsx,ts,tsx}"
+  ],
+  "ignore": [
+    "src/app/api/**/*",
+    "coverage/**/*",
+    "node_modules/**/*",
+    ".next/**/*",
+    "public/**/*",
+    "docs/**/*",
+    "prisma/**/*",
+    "*.d.ts",
+    "*.sql",
+    "*.md",
+    "next-sitemap.config.js"
+  ],
+  "ignoreDependencies": [
+    "@types/*",
+    "typescript",
+    "eslint*",
+    "prettier*",
+    "stylelint*",
+    "jest*",
+    "playwright*",
+    "vitest*",
+    "vite*",
+    "chromatic",
+    "husky",
+    "lint-staged",
+    "msw",
+    "puppeteer",
+    "@storybook/*",
+    "@testing-library/*",
+    "@vitejs/*",
+    "@vitest/*",
+    "copy-webpack-plugin",
+    "jsdom"
+  ],
+  "ignoreBinaries": [
+    "stripe",
+    "wait-on"
+  ],
+  "includeEntryExports": false
+}

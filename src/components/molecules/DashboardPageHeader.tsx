@@ -17,7 +17,7 @@ interface DashboardPageHeaderProps {
 	className?: string;
 }
 
-export const DashboardPageHeader: React.FC<DashboardPageHeaderProps> = ({
+const DashboardPageHeader: React.FC<DashboardPageHeaderProps> = ({
 	title = "Dashboard",
 	onColorToggle,
 	onFullscreenToggle,

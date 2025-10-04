@@ -111,7 +111,7 @@ const PlanCard = ({
 	);
 };
 
-export function Pricing({ isBilling = false }: { isBilling?: boolean }) {
+function Pricing({ isBilling = false }: { isBilling?: boolean }) {
 	const regularPlans = pricingData.slice(0, 2);
 	const expertPlan = pricingData[2];
 

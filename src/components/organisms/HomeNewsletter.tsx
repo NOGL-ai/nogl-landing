@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { AnimatedSubscribeButton } from "@/components/ui/animated-subscribe-button";
-import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { ErrorBoundary } from "@/components/organisms/ErrorBoundary";
 
 // Add this type declaration at the top of your file
 declare global {

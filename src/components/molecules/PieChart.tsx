@@ -18,7 +18,7 @@ interface PieChartProps {
 	className?: string;
 }
 
-export const PieChart: React.FC<PieChartProps> = ({
+const PieChart: React.FC<PieChartProps> = ({
 	data,
 	centerValue,
 	centerLabel,

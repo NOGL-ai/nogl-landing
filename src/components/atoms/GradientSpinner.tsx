@@ -7,7 +7,7 @@ interface GradientSpinnerProps {
 	className?: string;
 }
 
-export const GradientSpinner: React.FC<GradientSpinnerProps> = ({
+const GradientSpinner: React.FC<GradientSpinnerProps> = ({
 	size = 46,
 	className = "",
 }) => {

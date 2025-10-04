@@ -9,7 +9,7 @@ interface ChartDropdownProps {
 	className?: string;
 }
 
-export const ChartDropdown: React.FC<ChartDropdownProps> = ({
+const ChartDropdown: React.FC<ChartDropdownProps> = ({
 	value,
 	onChange,
 	options = [

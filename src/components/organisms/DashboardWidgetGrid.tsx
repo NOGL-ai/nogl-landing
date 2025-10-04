@@ -9,7 +9,7 @@ interface DashboardWidgetGridProps {
 	className?: string;
 }
 
-export const DashboardWidgetGrid: React.FC<DashboardWidgetGridProps> = ({
+const DashboardWidgetGrid: React.FC<DashboardWidgetGridProps> = ({
 	children,
 	columns = 3,
 	gap = "md",

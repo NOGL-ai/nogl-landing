@@ -8,7 +8,7 @@ interface LoadingChartProps {
 	className?: string;
 }
 
-export const LoadingChart: React.FC<LoadingChartProps> = ({
+const LoadingChart: React.FC<LoadingChartProps> = ({
 	title,
 	height = "442px",
 	className = "",

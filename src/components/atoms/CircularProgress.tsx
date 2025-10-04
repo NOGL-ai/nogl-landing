@@ -12,7 +12,7 @@ interface CircularProgressProps {
 	className?: string;
 }
 
-export const CircularProgress: React.FC<CircularProgressProps> = ({
+const CircularProgress: React.FC<CircularProgressProps> = ({
 	percentage,
 	size = 72,
 	strokeWidth = 4,

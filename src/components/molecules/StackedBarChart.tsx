@@ -17,7 +17,7 @@ interface StackedBarChartProps {
 	className?: string;
 }
 
-export const StackedBarChart: React.FC<StackedBarChartProps> = ({
+const StackedBarChart: React.FC<StackedBarChartProps> = ({
 	data,
 	title,
 	maxValue = 20000,

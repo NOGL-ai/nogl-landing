@@ -15,7 +15,7 @@ interface StatWidgetProps {
 	className?: string;
 }
 
-export const StatWidget: React.FC<StatWidgetProps> = ({
+const StatWidget: React.FC<StatWidgetProps> = ({
 	title,
 	percentage,
 	value,

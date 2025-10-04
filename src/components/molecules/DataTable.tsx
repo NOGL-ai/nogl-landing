@@ -22,7 +22,7 @@ interface DataTableProps {
 	maxHeight?: string;
 }
 
-export const DataTable: React.FC<DataTableProps> = ({
+const DataTable: React.FC<DataTableProps> = ({
 	columns,
 	data,
 	title,
