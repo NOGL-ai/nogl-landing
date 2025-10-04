@@ -10,21 +10,24 @@ import {
     Settings03,
     LifeBuoy01,
     PieChart03,
-    Sun
+    Sun,
+    Sale02,
+    CreditCard01,
+    Wallet01
 } from "@untitledui/icons";
-import type { FC, ReactNode } from "react";
+import type { ReactNode } from "react";
 
 export interface SubMenuItem {
     label: string;
     href: string;
-    icon?: FC<{ className?: string }>;
+    icon?: any;
     badge?: ReactNode;
 }
 
 export interface IconMenuItem {
     id: string;
     label: string;
-    icon: FC<{ className?: string }>;
+    icon: any;
     href?: string;
     subItems?: SubMenuItem[];
 }
@@ -46,40 +49,39 @@ export const navigationStructure: NavigationSection[] = [
                 href: '/',
             },
             {
-                id: 'dashboard',
-                label: 'Dashboard',
-                icon: BarChartSquare02,
+                id: 'pricing',
+                label: 'Pricing',
+                icon: Sale02,
                 subItems: [
                     {
                         label: 'Overview',
-                        href: '/dashboard',
+                        href: '/pricing',
                         icon: Grid03,
                     },
                     {
-                        label: 'Notifications',
-                        href: '/dashboard/notifications',
-                        icon: NotificationBox,
-                        badge: '10',
+                        label: 'Plans',
+                        href: '/pricing/plans',
+                        icon: BarChartSquare02,
                     },
                     {
-                        label: 'Analytics',
-                        href: '/dashboard/analytics',
+                        label: 'Billing',
+                        href: '/pricing/billing',
+                        icon: CreditCard01,
+                    },
+                    {
+                        label: 'Invoices',
+                        href: '/pricing/invoices',
+                        icon: Wallet01,
+                    },
+                    {
+                        label: 'Payment Methods',
+                        href: '/pricing/payment-methods',
+                        icon: CreditCard01,
+                    },
+                    {
+                        label: 'Usage',
+                        href: '/pricing/usage',
                         icon: LineChartUp03,
-                    },
-                    {
-                        label: 'Saved reports',
-                        href: '/dashboard/reports/saved',
-                        icon: Star01,
-                    },
-                    {
-                        label: 'Scheduled reports',
-                        href: '/dashboard/reports/scheduled',
-                        icon: ClockFastForward,
-                    },
-                    {
-                        label: 'User reports',
-                        href: '/dashboard/reports/users',
-                        icon: UserSquare,
                     },
                 ],
             },

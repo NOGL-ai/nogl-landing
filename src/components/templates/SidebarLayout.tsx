@@ -47,8 +47,14 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 	const toggleButtonRef = useRef<HTMLButtonElement>(null);
 	const mobileToggleRef = useRef<HTMLButtonElement>(null);
 	const [isKeyboardUser, setIsKeyboardUser] = useState(false);
+	const [mounted, setMounted] = useState(false);
 	const { theme, setTheme } = useTheme();
 	const { isMobile, isTablet, isDesktop } = useResponsive();
+
+	// Prevent hydration mismatch
+	useEffect(() => {
+		setMounted(true);
+	}, []);
 
 	const toggleTheme = useCallback(() => {
 		setTheme(theme === 'light' ? 'dark' : 'light');
@@ -152,13 +158,13 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 				Skip to main content
 			</a>
 
-			{/* Desktop Sidebar - Two-Level Navigation */}
-			<CollapsedSidebar 
-				user={user}
-				onLogout={handleLogout}
-				onNavigate={handleNavigation}
-				theme={theme as "light" | "dark" | undefined}
-			/>
+		{/* Desktop Sidebar - Two-Level Navigation */}
+		<CollapsedSidebar 
+			user={user}
+			onLogout={handleLogout}
+			onNavigate={handleNavigation}
+			theme={mounted ? (theme as "light" | "dark" | undefined) : "light"}
+		/>
 
 			{/* Mobile Sidebar - Collapsed State */}
 			<div className="lg:hidden fixed left-0 top-0 z-50">
@@ -334,11 +340,11 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 							}
 						>
 							<Suspense fallback={<LoadingSpinner size="sm" className="p-4" />}>
-								<MobileNavigation
-									activeUrl={pathname}
-									onNavigate={handleNavigation}
-									theme={theme as "light" | "dark" | undefined}
-								/>
+						<MobileNavigation
+							activeUrl={pathname}
+							onNavigate={handleNavigation}
+							theme={mounted ? (theme as "light" | "dark" | undefined) : "light"}
+						/>
 							</Suspense>
 						</ErrorBoundary>
 					</div>
@@ -351,13 +357,13 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 								</div>
 							}
 						>
-							<SidebarFooter 
-								user={user}
-								onLogout={handleLogout}
-								isCollapsed={false}
-								isHovered={false}
-								theme={theme as "light" | "dark" | undefined}
-							/>
+					<SidebarFooter 
+						user={user}
+						onLogout={handleLogout}
+						isCollapsed={false}
+						isHovered={false}
+						theme={mounted ? (theme as "light" | "dark" | undefined) : "light"}
+					/>
 						</ErrorBoundary>
 					</div>
 				</div>

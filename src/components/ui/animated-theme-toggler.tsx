@@ -14,7 +14,13 @@ type Props = {
 export const AnimatedThemeToggler = ({ className }: Props) => {
   const { theme, setTheme } = useTheme()
   const [isDark, setIsDark] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const buttonRef = useRef<HTMLButtonElement>(null)
+
+  // Prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   // Sync with next-themes
   useEffect(() => {
@@ -57,7 +63,7 @@ export const AnimatedThemeToggler = ({ className }: Props) => {
 
   return (
     <button ref={buttonRef} onClick={toggleTheme} className={cn(className)}>
-      {isDark ? <Sun /> : <Moon />}
+      {mounted && isDark ? <Sun /> : <Moon />}
     </button>
   )
 }

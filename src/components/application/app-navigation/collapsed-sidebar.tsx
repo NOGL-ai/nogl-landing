@@ -46,12 +46,20 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
 }) => {
     const pathname = usePathname();
     const { theme: systemTheme, setTheme: setSystemTheme } = useTheme();
+    const [mounted, setMounted] = useState(false);
+    
+    // Prevent hydration mismatch
+    useEffect(() => {
+        setMounted(true);
+    }, []);
     
     // Enhanced theme handling: Use system theme if no theme prop provided, fallback to prop
     // This provides better integration with next-themes and more flexible theme management
+    // Always use 'light' during SSR to prevent hydration mismatch
     const currentTheme = useMemo(() => {
+        if (!mounted) return "light";
         return theme || systemTheme || "light";
-    }, [theme, systemTheme]);
+    }, [theme, systemTheme, mounted]);
 
     // Theme toggle is now handled by Magic UI AnimatedThemeToggler component
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
