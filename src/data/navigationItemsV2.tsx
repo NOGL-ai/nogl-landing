@@ -12,6 +12,7 @@ import {
     PieChart03,
     Sun,
     Sale02,
+    Sale04,
     CreditCard01,
     Wallet01,
     SearchMd,
@@ -55,9 +56,9 @@ export const navigationStructure: NavigationSection[] = [
                 href: '/',
             },
             {
-                id: 'analytics',
-                label: 'Analytics',
-                icon: BarChartSquare02,
+                id: 'pricing',
+                label: 'Pricing',
+                icon: Sale02,
                 subItems: [
                     {
                         label: 'Dashboard',
