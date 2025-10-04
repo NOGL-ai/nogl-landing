@@ -20,9 +20,9 @@ export interface NavigationSection {
 }
 
 export interface UserProfile {
-	name: string;
-	email: string;
-	avatar: string;
+	name?: string;
+	email?: string;
+	avatar?: string;
 }
 
 export interface SidebarProps {

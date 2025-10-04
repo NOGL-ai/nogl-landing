@@ -10,6 +10,10 @@ interface SimpleAccountCardProps {
   isHovered?: boolean;
   className?: string;
   theme?: 'light' | 'dark';
+  hideAvatar?: boolean;
+  alwaysShowDropdown?: boolean;
+  externalDropdownState?: boolean;
+  setExternalDropdownState?: (open: boolean) => void;
 }
 
 export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
@@ -19,8 +23,16 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
   isHovered = false,
   className = "",
   theme = 'light',
+  hideAvatar = false,
+  alwaysShowDropdown = false,
+  externalDropdownState,
+  setExternalDropdownState,
 }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [internalIsMenuOpen, setInternalIsMenuOpen] = useState(false);
+  
+  // Use external state if provided, otherwise use internal state
+  const isMenuOpen = externalDropdownState !== undefined ? externalDropdownState : internalIsMenuOpen;
+  const setIsMenuOpen = setExternalDropdownState || setInternalIsMenuOpen;
   const menuRef = useRef<HTMLDivElement>(null);
 
   // Close menu when clicking outside
@@ -36,6 +48,14 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
   }, []);
 
   const showContent = !isCollapsed || isHovered;
+
+  const toggleMenu = () => {
+    if (setExternalDropdownState) {
+      setExternalDropdownState(!isMenuOpen);
+    } else {
+      setInternalIsMenuOpen((prev) => !prev);
+    }
+  };
 
   const handleLogout = () => {
     if (onLogout) {
@@ -76,52 +96,66 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
 
   return (
     <div className={`relative ${className}`} ref={menuRef}>
-      {/* Account Card Button - Theme-aware styling */}
-      <button
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-        className={`${cardStyles} border border-solid box-border content-stretch cursor-pointer flex gap-[16px] items-start p-[12px] relative rounded-[12px] size-full transition-colors ${
+      {/* Account Card - Theme-aware styling */}
+      <div
+        className={`${cardStyles} border border-solid box-border content-stretch flex gap-[16px] items-start p-[12px] relative rounded-[12px] size-full transition-colors ${
           showContent ? '' : 'justify-center'
         }`}
         data-name={`Type=Card, Open=True, Theme=${theme === 'dark' ? 'Dark' : 'Default'}, Breakpoint=Desktop`}
       >
         {/* Avatar and User Info Group */}
-        <div className="content-stretch flex flex-[1_0_0] gap-[8px] items-center min-h-px min-w-px relative shrink-0" data-name="Avatar label group">
-          {/* Avatar */}
-          <div className="border border-[rgba(0,0,0,0.08)] border-solid relative rounded-[200px] shrink-0 size-[40px]" data-name="Avatar">
-            {user?.avatar ? (
-              <img 
-                alt={user.name || 'User'} 
-                className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none rounded-[200px] size-full" 
-                src={user.avatar} 
-              />
-            ) : (
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-[200px] flex items-center justify-center">
-                <span className="text-white font-semibold text-sm">
-                  {(user?.name || 'U').charAt(0).toUpperCase()}
-                </span>
-              </div>
-            )}
-            {/* Online indicator */}
-            <div className={`absolute bg-[#17b26a] border-[1.5px] border-solid ${onlineIndicatorBorder} bottom-0 right-0 rounded-[5px] size-[10px]`} data-name="_Avatar online indicator" />
-          </div>
+        <div className="content-stretch flex flex-[1_0_0] gap-[8px] items-center min-h-px min-w-px relative shrink-0 pr-12" data-name="Avatar label group">
+          {/* Avatar - conditionally rendered */}
+          {!hideAvatar && (
+            <div className="border border-[rgba(0,0,0,0.08)] border-solid relative rounded-[200px] shrink-0 size-[40px]" data-name="Avatar">
+              {user?.avatar ? (
+                <img 
+                  alt={user.name || 'User'} 
+                  className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none rounded-[200px] size-full" 
+                  src={user.avatar} 
+                />
+              ) : (
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-[200px] flex items-center justify-center">
+                  <span className="text-white font-semibold text-sm">
+                    {(user?.name || 'U').charAt(0).toUpperCase()}
+                  </span>
+                </div>
+              )}
+              {/* Online indicator */}
+              <div className={`absolute bg-[#17b26a] border-[1.5px] border-solid ${onlineIndicatorBorder} bottom-0 right-0 rounded-[5px] size-[10px]`} data-name="_Avatar online indicator" />
+            </div>
+          )}
           
           {/* User Info */}
-          {showContent && (
-            <div className="content-stretch flex flex-col items-start leading-[20px] not-italic relative shrink-0 text-[14px]" data-name="Text and supporting text">
-              <p className={`font-['Inter:Semi_Bold',_sans-serif] font-semibold relative shrink-0 ${textStyles.name}`}>
+          {(showContent || alwaysShowDropdown) && (
+            <div className="content-stretch flex flex-col items-start leading-[20px] not-italic relative shrink-0 text-[14px] min-w-0" data-name="Text and supporting text">
+              <p className={`font-['Inter:Semi_Bold',_sans-serif] font-semibold relative shrink-0 truncate ${textStyles.name}`}>
                 {user?.name || 'User'}
               </p>
-              <p className={`font-['Inter:Regular',_sans-serif] font-normal relative shrink-0 ${textStyles.email}`}>
-                {user?.email || 'user@example.com'}
+              <p className={`font-['Inter:Regular',_sans-serif] font-normal relative shrink-0 truncate ${textStyles.email}`}>
+                {user?.email || 'No email'}
               </p>
             </div>
           )}
         </div>
 
         {/* Dropdown Button */}
-        {showContent && (
-          <div className="absolute content-stretch flex items-start right-[8px] top-[8px]" data-name="__Nav account card menu button">
-            <div className={`${buttonStyles} box-border content-stretch flex items-center justify-center p-[6px] relative rounded-[8px] shrink-0`} data-name="Buttons/Button utility">
+        {(showContent || alwaysShowDropdown) && (
+          <div
+            className="absolute content-stretch flex items-start right-[4px] top-[4px] z-10"
+            data-name="__Nav account card menu button"
+          >
+            <button
+              type="button"
+              className={`${buttonStyles} box-border content-stretch flex items-center justify-center p-[6px] relative rounded-[8px] shrink-0`}
+              aria-haspopup="menu"
+              aria-expanded={isMenuOpen}
+              onClick={(event) => {
+                event.stopPropagation();
+                toggleMenu();
+              }}
+            >
+              <span className="sr-only">{isMenuOpen ? 'Close account menu' : 'Open account menu'}</span>
               <div className="overflow-clip relative shrink-0 size-[16px]" data-name="chevron-selector-vertical">
                 <div className="absolute inset-[16.67%_29.17%]" data-name="Icon">
                   <svg className="w-full h-full" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="rgba(113, 118, 128, 1)">
@@ -129,14 +163,19 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
                   </svg>
                 </div>
               </div>
-            </div>
+            </button>
           </div>
         )}
-      </button>
+      </div>
 
       {/* Dropdown Menu - Theme-aware styling */}
-      {isMenuOpen && showContent && (
-        <div className={`absolute ${menuStyles.outer} border border-solid bottom-0 right-[-272px] rounded-[12px] w-[264px] z-50`} data-name="Menu">
+      {isMenuOpen && (showContent || alwaysShowDropdown) && (
+        <div
+          className={`absolute ${menuStyles.outer} border border-solid bottom-full left-0 mb-2 rounded-[12px] w-[264px] z-[100]`}
+          data-name="Menu"
+          role="menu"
+          aria-label="Account menu"
+        >
           <div className="content-stretch flex flex-col items-start overflow-clip relative rounded-[inherit] w-[264px]">
             <div className={`${menuStyles.inner} ${isDark ? '' : 'border border-solid'} content-stretch flex flex-col items-start relative rounded-bl-[16px] rounded-br-[16px] rounded-tl-[12px] rounded-tr-[12px] shrink-0 w-full`} data-name="Menu items wrapper">
               {/* Main Menu Items */}
@@ -236,7 +275,7 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
                             {user?.name || 'User'}
                           </p>
                           <p className={`font-['Inter:Regular',_sans-serif] font-normal relative shrink-0 ${textStyles.email}`}>
-                            {user?.email || 'user@example.com'}
+                            {user?.email || 'No email'}
                           </p>
                         </div>
                       </div>

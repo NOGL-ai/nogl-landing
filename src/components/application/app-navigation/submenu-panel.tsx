@@ -4,6 +4,8 @@ import React, { useMemo, useRef } from "react";
 import { NavItemBase } from "@/components/application/app-navigation/base-components/nav-item";
 import { IconMenuItem, isSubItemActive } from "@/data/navigationItemsV2";
 import { LogOut01 } from "@untitledui/icons";
+import { SimpleAccountCard } from "./simple-account-card";
+import { UserProfile } from "@/types/navigation";
 
 interface SubmenuPanelProps {
     item: IconMenuItem;
@@ -14,12 +16,10 @@ interface SubmenuPanelProps {
     onMouseEnter?: () => void;
     onMouseLeave?: () => void;
     theme?: 'light' | 'dark';
-    user?: {
-        name?: string;
-        email?: string;
-        avatar?: string;
-    };
+    user?: UserProfile;
     onLogout?: () => void;
+    isAccountDropdownOpen?: boolean;
+    setIsAccountDropdownOpen?: (open: boolean) => void;
 }
 
 export const SubmenuPanel: React.FC<SubmenuPanelProps> = ({
@@ -32,7 +32,9 @@ export const SubmenuPanel: React.FC<SubmenuPanelProps> = ({
     onMouseLeave,
     theme = 'light',
     user,
-    onLogout
+    onLogout,
+    isAccountDropdownOpen = false,
+    setIsAccountDropdownOpen
 }) => {
     const panelRef = useRef<HTMLDivElement>(null);
     const panelStyle = useMemo<React.CSSProperties>(() => {
@@ -60,10 +62,17 @@ export const SubmenuPanel: React.FC<SubmenuPanelProps> = ({
             aria-label={`${item.label} navigation`}
             id={`nav-panel-${item.id}`}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
+            onMouseLeave={(e) => {
+                // Don't close if clicking inside the submenu
+                if (e.relatedTarget && panelRef.current?.contains(e.relatedTarget as Node)) {
+                    return;
+                }
+                onMouseLeave?.();
+            }}
+            onClick={(e) => e.stopPropagation()}
         >
             {/* Inner container with border and rounded corners */}
-            <div className="flex flex-col justify-between h-full border border-[#e9eaeb] dark:border-[#252b37] bg-white dark:bg-[#0a0d12] rounded-r-xl overflow-hidden">
+            <div className="flex flex-col justify-between h-full border border-[#e9eaeb] dark:border-[#252b37] bg-white dark:bg-[#0a0d12] rounded-r-xl overflow-visible">
                 {/* Content Section - Figma: padding: 24px 16px 0 16px */}
                 <div className="flex flex-col items-start gap-2 self-stretch px-4 pt-6 flex-1 overflow-hidden">
                 {/* Subheading - Dark theme: #D5D7DA, Light: #6941C6 */}
@@ -97,30 +106,22 @@ export const SubmenuPanel: React.FC<SubmenuPanelProps> = ({
                 </nav>
                 </div>
 
-                {/* Account Section - Dark theme with border-top */}
+                {/* Account Section - Replaced with SimpleAccountCard */}
                 {user && (
                 <div className="flex flex-col items-start self-stretch px-4 pb-5">
                     <div className="flex items-start gap-2 self-stretch pt-5 border-t border-[#e9eaeb] dark:border-[#252b37]">
-                        <div className="flex flex-col items-start flex-1">
-                            {/* Title - Dark: #FAFAFA, Light: #181D27 */}
-                            <div className="self-stretch text-[#181d27] dark:text-[#fafafa] font-semibold text-[14px] leading-5">
-                                {user.name || 'User'}
-                            </div>
-                            {/* Supporting text - Dark: #A4A7AE, Light: #535862 */}
-                            <div className="self-stretch text-[#535862] dark:text-[#a4a7ae] font-normal text-[14px] leading-5 truncate">
-                                {user.email || ''}
-                            </div>
-                        </div>
-                        {onLogout && (
-                            <button
-                                onClick={onLogout}
-                                className="flex p-[6px] justify-center items-center rounded-lg hover:bg-gray-50 dark:hover:bg-[#252b37]/50 transition-colors"
-                                title="Logout"
-                                aria-label="Logout"
-                            >
-                                <LogOut01 className="w-4 h-4 text-[#a4a7ae] dark:text-[#717680]" />
-                            </button>
-                        )}
+                        <SimpleAccountCard
+                            user={user}
+                            onLogout={onLogout}
+                            isCollapsed={false}
+                            isHovered={true}
+                            theme={theme}
+                            hideAvatar={true}
+                            alwaysShowDropdown={true}
+                            className="w-full"
+                            externalDropdownState={isAccountDropdownOpen}
+                            setExternalDropdownState={setIsAccountDropdownOpen}
+                        />
                     </div>
                 </div>
                 )}

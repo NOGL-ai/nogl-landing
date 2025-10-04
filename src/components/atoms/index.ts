@@ -34,7 +34,6 @@ export { default as FeatureItem } from "./FeatureItem";
 export { default as FeatureWithImageItem } from "./FeatureWithImageItem";
 export { default as SupportCard } from "./SupportCard";
 export { default as Dropdown } from "./Dropdown";
-export { default as ThemeSwitcher } from "./ThemeSwitcher";
 // Removed react-instantsearch components from barrel export to prevent SSR issues
 // export { default as CustomHits } from "./CustomHits";
 // export { default as CustomSearchBox } from "./CustomSearchBox";

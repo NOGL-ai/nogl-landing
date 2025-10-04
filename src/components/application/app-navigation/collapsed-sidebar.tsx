@@ -34,10 +34,12 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
     const pathname = usePathname();
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
     const [submenuPosition, setSubmenuPosition] = useState({ top: 20, left: ICON_SIDEBAR_WIDTH });
+    const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
     const accountMenu = useMemo<IconMenuItem>(() => ({
         ...accountMenuItem,
         label: user?.name || accountMenuItem.label
     }), [user?.name]);
+    const accountMenuId = accountMenu.id;
     const hoverTimeoutRef = useRef<NodeJS.Timeout>();
     const closeTimeoutRef = useRef<NodeJS.Timeout>();
     const iconRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});
@@ -61,6 +63,12 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
         closeTimeoutRef.current = setTimeout(() => {
             setHoveredItem(null);
         }, HOVER_LEAVE_DELAY);
+    }, [clearCloseTimeout]);
+
+    // Prevent closing when clicking inside submenu
+    const handleSubmenuClick = useCallback((e: React.MouseEvent) => {
+        e.stopPropagation();
+        clearCloseTimeout();
     }, [clearCloseTimeout]);
 
     // Calculate submenu position
@@ -195,6 +203,12 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
         }
         return null;
     }, [hoveredItem, accountMenu]);
+
+    useEffect(() => {
+        if (hoveredItem !== accountMenuId && isAccountDropdownOpen) {
+            setIsAccountDropdownOpen(false);
+        }
+    }, [hoveredItem, accountMenuId, isAccountDropdownOpen]);
 
     return (
         <div
@@ -390,18 +404,22 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
 
             {/* Submenu Panel - Always visible showing active section */}
             {hoveredItemData && hoveredItemData.subItems && (
-                <SubmenuPanel
-                    item={hoveredItemData}
-                    activeUrl={pathname}
-                    position={submenuPosition}
-                    onNavigate={handleNavigation}
-                    onClose={() => setHoveredItem(null)}
-                    onMouseEnter={clearCloseTimeout}
-                    onMouseLeave={scheduleClosePanel}
-                    theme={theme as "light" | "dark" | undefined}
-                    user={user}
-                    onLogout={onLogout}
-                />
+                <div onClick={handleSubmenuClick}>
+                    <SubmenuPanel
+                        item={hoveredItemData}
+                        activeUrl={pathname}
+                        position={submenuPosition}
+                        onNavigate={handleNavigation}
+                        onClose={() => setHoveredItem(null)}
+                        onMouseEnter={clearCloseTimeout}
+                        onMouseLeave={scheduleClosePanel}
+                        theme={theme as "light" | "dark" | undefined}
+                        user={user}
+                        onLogout={onLogout}
+                        isAccountDropdownOpen={isAccountDropdownOpen}
+                        setIsAccountDropdownOpen={setIsAccountDropdownOpen}
+                    />
+                </div>
             )}
         </div>
     );

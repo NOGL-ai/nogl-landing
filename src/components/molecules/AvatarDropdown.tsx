@@ -3,7 +3,7 @@
 import { Popover, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import Avatar from "@/shared/Avatar";
-import SwitchDarkMode2 from "@/shared/SwitchDarkMode2";
+import ThemeToggler from "@/components/atoms/ThemeToggler";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { Route } from "@/routers/types";
@@ -224,7 +224,7 @@ export default function AvatarDropdown({ className = "" }: Props) {
 															</p>
 														</div>
 													</div>
-													<SwitchDarkMode2 />
+													<ThemeToggler />
 												</div>
 
 												{/* Support Link */}

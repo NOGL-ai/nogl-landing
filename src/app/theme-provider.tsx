@@ -2,7 +2,7 @@
 
 import { APIProvider } from "@vis.gl/react-google-maps";
 
-export default function ThemeProvider({
+export default function GoogleMapsProvider({
 	children,
 }: {
 	children: React.ReactNode;

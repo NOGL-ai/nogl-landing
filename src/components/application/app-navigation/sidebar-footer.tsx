@@ -73,7 +73,7 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
 
   const upgradePlan = () => {
     // Placeholder for upgrade functionality
-    console.log('Upgrade plan clicked');
+    // TODO: Implement upgrade functionality
   };
 
   const showContent = !isCollapsed || isHovered;

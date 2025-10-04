@@ -4,7 +4,7 @@ import Navigation from "@/shared/Navigation/Navigation";
 import { SearchDropdown } from "@/components/molecules";
 import ButtonPrimary from "@/shared/ButtonPrimary";
 import MenuBar from "@/shared/MenuBar";
-import SwitchDarkMode from "@/shared/SwitchDarkMode";
+import ThemeToggler from "@/components/atoms/ThemeToggler";
 // import HeroSearchForm2MobileFactory from "../(HeroSearchForm2Mobile)/HeroSearchForm2MobileFactory";
 // import LangDropdown from "./LangDropdown";
 import { Route } from "@/routers/types";
@@ -30,7 +30,7 @@ const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
 
 				<div className='hidden flex-1 flex-shrink-0 justify-end text-neutral-700 md:flex lg:flex-none dark:text-neutral-100'>
 					<div className='hidden space-x-0.5 xl:flex'>
-						<SwitchDarkMode />
+						<ThemeToggler />
 						<SearchDropdown className='flex items-center' />
 						<div className='px-1' />
 						<ButtonPrimary className='self-center' href={"/login" as Route}>
@@ -39,7 +39,7 @@ const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
 					</div>
 
 					<div className='flex items-center xl:hidden'>
-						<SwitchDarkMode />
+						<ThemeToggler />
 						<div className='px-0.5' />
 						<MenuBar />
 					</div>

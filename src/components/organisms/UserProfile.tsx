@@ -3,7 +3,7 @@
 import React, { Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import Avatar from "@/shared/Avatar";
-import SwitchDarkMode2 from "@/shared/SwitchDarkMode2";
+import ThemeToggler from "@/components/atoms/ThemeToggler";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { Route } from "@/routers/types";
@@ -248,7 +248,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ isCollapsed }) => {
 															<p className='text-sm font-medium'>Dark theme</p>
 														</div>
 													</div>
-													<SwitchDarkMode2 />
+													<ThemeToggler />
 												</div>
 
 												<Link
