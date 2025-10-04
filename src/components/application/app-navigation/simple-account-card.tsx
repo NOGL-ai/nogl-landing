@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useLayoutEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect, useLayoutEffect, useCallback, memo, useMemo } from "react";
 import { UserProfile } from "@/types/navigation";
 
 interface SimpleAccountCardProps {
@@ -16,7 +16,54 @@ interface SimpleAccountCardProps {
   setExternalDropdownState?: (open: boolean) => void;
 }
 
-export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
+// Theme configuration for better maintainability
+const THEME_CONFIG = {
+  light: {
+    card: 'bg-white border-[#e9eaeb] hover:bg-gray-50',
+    text: {
+      name: 'text-[#181d27]',
+      email: 'text-[#535862]',
+      menuItem: 'text-[#414651]',
+      shortcut: 'text-[#535862]',
+      sectionHeader: 'text-[#535862]',
+    },
+    button: 'bg-transparent',
+    menu: {
+      outer: 'bg-neutral-50 border-[rgba(0,0,0,0.08)]',
+      inner: 'bg-white border-[#e9eaeb]',
+      divider: 'border-[#e9eaeb]',
+      shortcut: 'border-[#e9eaeb]',
+      switchAccount: 'bg-neutral-50',
+      addAccount: 'bg-white border-[#d5d7da]',
+    },
+    onlineIndicatorBorder: 'border-white',
+    iconStroke: '#A4A7AE',
+  },
+  dark: {
+    card: 'bg-[#181d27] border-[#252b37] hover:bg-[#252b37]',
+    text: {
+      name: 'text-neutral-50',
+      email: 'text-[#a4a7ae]',
+      menuItem: 'text-[#d5d7da]',
+      shortcut: 'text-[#a4a7ae]',
+      sectionHeader: 'text-[#a4a7ae]',
+    },
+    button: 'bg-[#252b37]',
+    menu: {
+      outer: 'bg-[#252b37] border-[#252b37]',
+      inner: 'bg-[#0a0d12]',
+      divider: 'border-[#252b37]',
+      shortcut: 'border-[#414651]',
+      switchAccount: 'bg-[#252b37]',
+      addAccount: 'bg-[#181d27] border-[#414651]',
+    },
+    onlineIndicatorBorder: 'border-[#0a0d12]',
+    iconStroke: '#717680',
+  },
+} as const;
+
+// Memoized component for better performance
+export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
   user,
   onLogout,
   isCollapsed = false,
@@ -37,20 +84,24 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
   const menuRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
-  // Close menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsMenuOpen(false);
-      }
-    };
+  // Get theme configuration
+  const themeConfig = THEME_CONFIG[theme];
 
+  // Close menu when clicking outside - memoized callback
+  const handleClickOutside = useCallback((event: MouseEvent) => {
+    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      setIsMenuOpen(false);
+    }
+  }, [setIsMenuOpen]);
+
+  useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [handleClickOutside]);
 
   const showContent = !isCollapsed || isHovered;
 
+  // Memoized dropdown placement calculation
   const updateDropdownPlacement = useCallback(() => {
     if (!isMenuOpen || typeof window === 'undefined') {
       return;
@@ -83,66 +134,50 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
     };
   }, [isMenuOpen, updateDropdownPlacement]);
 
-  const toggleMenu = () => {
+  // Memoized event handlers
+  const toggleMenu = useCallback(() => {
     if (setExternalDropdownState) {
       setExternalDropdownState(!isMenuOpen);
     } else {
       setInternalIsMenuOpen((prev) => !prev);
     }
-  };
+  }, [isMenuOpen, setExternalDropdownState]);
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     if (onLogout) {
       onLogout();
     }
     setIsMenuOpen(false);
-  };
+  }, [onLogout, setIsMenuOpen]);
 
-  // Theme-based styling
-  const isDark = theme === 'dark';
-  
-  const cardStyles = isDark 
-    ? 'bg-[#181d27] border-[#252b37] hover:bg-[#252b37]'
-    : 'bg-white border-[#e9eaeb] hover:bg-gray-50';
-    
-  const textStyles = {
-    name: isDark ? 'text-neutral-50' : 'text-[#181d27]',
-    email: isDark ? 'text-[#a4a7ae]' : 'text-[#535862]',
-    menuItem: isDark ? 'text-[#d5d7da]' : 'text-[#414651]',
-    shortcut: isDark ? 'text-[#a4a7ae]' : 'text-[#535862]',
-    sectionHeader: isDark ? 'text-[#a4a7ae]' : 'text-[#535862]',
-  };
-  
-  const buttonStyles = isDark
-    ? 'bg-[#252b37]'
-    : 'bg-transparent';
-
-  const iconStrokeColor = isDark ? '#717680' : '#A4A7AE';
-
-  const menuStyles = {
-    outer: isDark ? 'bg-[#252b37] border-[#252b37]' : 'bg-neutral-50 border-[rgba(0,0,0,0.08)]',
-    inner: isDark ? 'bg-[#0a0d12]' : 'bg-white border-[#e9eaeb]',
-    divider: isDark ? 'border-[#252b37]' : 'border-[#e9eaeb]',
-    shortcut: isDark ? 'border-[#414651]' : 'border-[#e9eaeb]',
-    switchAccount: isDark ? 'bg-[#252b37]' : 'bg-neutral-50',
-    addAccount: isDark ? 'bg-[#181d27] border-[#414651]' : 'bg-white border-[#d5d7da]',
-  };
-  
-  const onlineIndicatorBorder = isDark ? 'border-[#0a0d12]' : 'border-white';
-
-  const menuPositionClasses = dropdownPlacement === 'right'
-    ? 'bottom-0 left-full ml-3'
-    : 'bottom-full left-0 mb-2';
+  // Memoized menu position classes
+  const menuPositionClasses = useMemo(() => 
+    dropdownPlacement === 'right'
+      ? 'bottom-0 left-full ml-3'
+      : 'bottom-full left-0 mb-2',
+    [dropdownPlacement]
+  );
 
   return (
     <div className={`relative ${className}`} ref={menuRef}>
       {/* Account Card - Theme-aware styling */}
       <div
         ref={cardRef}
-        className={`${cardStyles} border border-solid box-border content-stretch flex gap-[16px] items-start p-[12px] relative rounded-[12px] size-full transition-colors ${
+        className={`${themeConfig.card} border border-solid box-border content-stretch flex gap-[16px] items-start p-[12px] relative rounded-[12px] size-full transition-colors ${
           showContent ? '' : 'justify-center'
         }`}
         data-name={`Type=Card, Open=True, Theme=${theme === 'dark' ? 'Dark' : 'Default'}, Breakpoint=Desktop`}
+        role="button"
+        tabIndex={0}
+        aria-expanded={isMenuOpen}
+        aria-haspopup="menu"
+        aria-label={`Account menu for ${user?.name || 'User'}`}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleMenu();
+          }
+        }}
       >
         {/* Avatar and User Info Group */}
         <div className="content-stretch flex flex-[1_0_0] gap-[8px] items-center min-h-px min-w-px relative shrink-0 pr-12" data-name="Avatar label group">
@@ -163,17 +198,17 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
                 </div>
               )}
               {/* Online indicator */}
-              <div className={`absolute bg-[#17b26a] border-[1.5px] border-solid ${onlineIndicatorBorder} bottom-0 right-0 rounded-[5px] size-[10px]`} data-name="_Avatar online indicator" />
+              <div className={`absolute bg-[#17b26a] border-[1.5px] border-solid ${themeConfig.onlineIndicatorBorder} bottom-0 right-0 rounded-[5px] size-[10px]`} data-name="_Avatar online indicator" />
             </div>
           )}
           
           {/* User Info */}
           {(showContent || alwaysShowDropdown) && (
             <div className="content-stretch flex flex-col items-start leading-[20px] not-italic relative shrink-0 text-[14px] min-w-0" data-name="Text and supporting text">
-              <p className={`font-['Inter:Semi_Bold',_sans-serif] font-semibold relative shrink-0 truncate ${textStyles.name}`}>
+              <p className={`font-['Inter:Semi_Bold',_sans-serif] font-semibold relative shrink-0 truncate ${themeConfig.text.name}`}>
                 {user?.name || 'User'}
               </p>
-              <p className={`font-['Inter:Regular',_sans-serif] font-normal relative shrink-0 truncate ${textStyles.email}`}>
+              <p className={`font-['Inter:Regular',_sans-serif] font-normal relative shrink-0 truncate ${themeConfig.text.email}`}>
                 {user?.email || 'No email'}
               </p>
             </div>
@@ -188,9 +223,10 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
           >
             <button
               type="button"
-              className={`${buttonStyles} flex items-center justify-center p-[6px] rounded-[8px] border-none cursor-pointer transition-colors`}
+              className={`${themeConfig.button} flex items-center justify-center p-[6px] rounded-[8px] border-none cursor-pointer transition-colors`}
               aria-haspopup="menu"
               aria-expanded={isMenuOpen}
+              aria-label={isMenuOpen ? 'Close account menu' : 'Open account menu'}
               onClick={(event) => {
                 event.stopPropagation();
                 toggleMenu();
@@ -208,7 +244,7 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
               >
                 <path
                   d="M4.66666 10.0001L7.99999 13.3334L11.3333 10.0001M4.66666 6.00008L7.99999 2.66675L11.3333 6.00008"
-                  stroke={iconStrokeColor}
+                  stroke={themeConfig.iconStroke}
                   strokeWidth="1.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -222,13 +258,13 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
       {/* Dropdown Menu - Theme-aware styling */}
       {isMenuOpen && (showContent || alwaysShowDropdown) && (
         <div
-          className={`absolute ${menuStyles.outer} border border-solid ${menuPositionClasses} rounded-[12px] w-[264px] z-[100]`}
+          className={`absolute ${themeConfig.menu.outer} border border-solid ${menuPositionClasses} rounded-[12px] w-[264px] z-[100]`}
           data-name="Menu"
           role="menu"
           aria-label="Account menu"
         >
           <div className="content-stretch flex flex-col items-start overflow-clip relative rounded-[inherit] w-[264px]">
-            <div className={`${menuStyles.inner} ${isDark ? '' : 'border border-solid'} content-stretch flex flex-col items-start relative rounded-bl-[16px] rounded-br-[16px] rounded-tl-[12px] rounded-tr-[12px] shrink-0 w-full`} data-name="Menu items wrapper">
+            <div className={`${themeConfig.menu.inner} ${theme === 'light' ? 'border border-solid' : ''} content-stretch flex flex-col items-start relative rounded-bl-[16px] rounded-br-[16px] rounded-tl-[12px] rounded-tr-[12px] shrink-0 w-full`} data-name="Menu items wrapper">
               {/* Main Menu Items */}
               <div className="box-border content-stretch flex flex-col gap-[2px] items-start overflow-clip px-0 py-[6px] relative shrink-0 w-full" data-name="Menu items">
                 {/* View Profile */}
@@ -242,12 +278,12 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
                           </svg>
                         </div>
                       </div>
-                      <p className={`flex-[1_0_0] font-['Inter:Semi_Bold',_sans-serif] font-semibold h-[20px] leading-[20px] min-h-px min-w-px not-italic relative shrink-0 ${textStyles.menuItem} text-[14px] whitespace-pre-wrap`}>
+                      <p className={`flex-[1_0_0] font-['Inter:Semi_Bold',_sans-serif] font-semibold h-[20px] leading-[20px] min-h-px min-w-px not-italic relative shrink-0 ${themeConfig.text.menuItem} text-[14px] whitespace-pre-wrap`}>
                         View profile
                       </p>
                     </div>
-                    <div className={`border ${menuStyles.shortcut} border-solid box-border content-stretch flex items-start px-[4px] py-px relative rounded-[4px] shrink-0`} data-name="Shortcut wrapper">
-                      <p className={`font-['Inter:Medium',_sans-serif] font-medium leading-[18px] not-italic relative shrink-0 ${textStyles.shortcut} text-[12px]`}>{`⌘K->P`}</p>
+                    <div className={`border ${themeConfig.menu.shortcut} border-solid box-border content-stretch flex items-start px-[4px] py-px relative rounded-[4px] shrink-0`} data-name="Shortcut wrapper">
+                      <p className={`font-['Inter:Medium',_sans-serif] font-medium leading-[18px] not-italic relative shrink-0 ${themeConfig.text.shortcut} text-[12px]`}>{`⌘K->P`}</p>
                     </div>
                   </div>
                 </div>
@@ -264,12 +300,12 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
                           </svg>
                         </div>
                       </div>
-                      <p className={`flex-[1_0_0] font-['Inter:Semi_Bold',_sans-serif] font-semibold h-[20px] leading-[20px] min-h-px min-w-px not-italic relative shrink-0 ${textStyles.menuItem} text-[14px] whitespace-pre-wrap`}>
+                      <p className={`flex-[1_0_0] font-['Inter:Semi_Bold',_sans-serif] font-semibold h-[20px] leading-[20px] min-h-px min-w-px not-italic relative shrink-0 ${themeConfig.text.menuItem} text-[14px] whitespace-pre-wrap`}>
                         Account settings
                       </p>
                     </div>
-                    <div className={`border ${menuStyles.shortcut} border-solid box-border content-stretch flex items-start px-[4px] py-px relative rounded-[4px] shrink-0`} data-name="Shortcut wrapper">
-                      <p className={`font-['Inter:Medium',_sans-serif] font-medium leading-[18px] not-italic relative shrink-0 ${textStyles.shortcut} text-[12px]`}>
+                    <div className={`border ${themeConfig.menu.shortcut} border-solid box-border content-stretch flex items-start px-[4px] py-px relative rounded-[4px] shrink-0`} data-name="Shortcut wrapper">
+                      <p className={`font-['Inter:Medium',_sans-serif] font-medium leading-[18px] not-italic relative shrink-0 ${themeConfig.text.shortcut} text-[12px]`}>
                         ⌘S
                       </p>
                     </div>
@@ -287,7 +323,7 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
                           </svg>
                         </div>
                       </div>
-                      <p className={`flex-[1_0_0] font-['Inter:Semi_Bold',_sans-serif] font-semibold h-[20px] leading-[20px] min-h-px min-w-px not-italic relative shrink-0 ${textStyles.menuItem} text-[14px] whitespace-pre-wrap`}>
+                      <p className={`flex-[1_0_0] font-['Inter:Semi_Bold',_sans-serif] font-semibold h-[20px] leading-[20px] min-h-px min-w-px not-italic relative shrink-0 ${themeConfig.text.menuItem} text-[14px] whitespace-pre-wrap`}>
                         Documentation
                       </p>
                     </div>
@@ -296,18 +332,18 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
               </div>
 
               {/* Divider */}
-              <div className={`${menuStyles.divider} border-b-0 border-l-0 border-r-0 border-solid border-t relative shrink-0 w-full`} data-name="Menu items">
+              <div className={`${themeConfig.menu.divider} border-b-0 border-l-0 border-r-0 border-solid border-t relative shrink-0 w-full`} data-name="Menu items">
                 <div className="box-border content-stretch flex flex-col gap-[2px] items-start overflow-clip px-0 py-[6px] relative rounded-[inherit] w-full">
                   {/* Switch Account Section */}
                   <div className="box-border content-stretch flex items-start pb-[4px] pt-[6px] px-[12px] relative shrink-0 w-full" data-name="Text wrapper">
-                    <p className={`flex-[1_0_0] font-['Inter:Semi_Bold',_sans-serif] font-semibold h-[18px] leading-[18px] min-h-px min-w-px not-italic relative shrink-0 ${textStyles.sectionHeader} text-[12px] whitespace-pre-wrap`}>
+                    <p className={`flex-[1_0_0] font-['Inter:Semi_Bold',_sans-serif] font-semibold h-[18px] leading-[18px] min-h-px min-w-px not-italic relative shrink-0 ${themeConfig.text.sectionHeader} text-[12px] whitespace-pre-wrap`}>
                       Switch account
                     </p>
                   </div>
                   
                   {/* Current User */}
                   <div className="box-border content-stretch flex items-center px-[6px] py-0 relative shrink-0 w-full" data-name="_Nav account card menu item">
-                    <div className={`${menuStyles.switchAccount} box-border content-stretch flex flex-[1_0_0] gap-[12px] items-center min-h-px min-w-px overflow-clip px-[8px] py-[6px] relative rounded-[6px] shrink-0`} data-name="Content">
+                    <div className={`${themeConfig.menu.switchAccount} box-border content-stretch flex flex-[1_0_0] gap-[12px] items-center min-h-px min-w-px overflow-clip px-[8px] py-[6px] relative rounded-[6px] shrink-0`} data-name="Content">
                       <div className="content-stretch flex flex-[1_0_0] gap-[8px] items-center min-h-px min-w-px relative shrink-0" data-name="Avatar label group">
                         <div className="border border-[rgba(0,0,0,0.08)] border-solid relative rounded-[200px] shrink-0 size-[40px]" data-name="Avatar">
                           {user?.avatar ? (
@@ -319,13 +355,13 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
                               </span>
                             </div>
                           )}
-                          <div className={`absolute bg-[#17b26a] border-[1.5px] border-solid ${onlineIndicatorBorder} bottom-0 right-0 rounded-[5px] size-[10px]`} data-name="_Avatar online indicator" />
+                          <div className={`absolute bg-[#17b26a] border-[1.5px] border-solid ${themeConfig.onlineIndicatorBorder} bottom-0 right-0 rounded-[5px] size-[10px]`} data-name="_Avatar online indicator" />
                         </div>
                         <div className="content-stretch flex flex-col items-start leading-[20px] not-italic relative shrink-0 text-[14px]" data-name="Text and supporting text">
-                          <p className={`font-['Inter:Semi_Bold',_sans-serif] font-semibold relative shrink-0 ${textStyles.name}`}>
+                          <p className={`font-['Inter:Semi_Bold',_sans-serif] font-semibold relative shrink-0 ${themeConfig.text.name}`}>
                             {user?.name || 'User'}
                           </p>
-                          <p className={`font-['Inter:Regular',_sans-serif] font-normal relative shrink-0 ${textStyles.email}`}>
+                          <p className={`font-['Inter:Regular',_sans-serif] font-normal relative shrink-0 ${themeConfig.text.email}`}>
                             {user?.email || 'No email'}
                           </p>
                         </div>
@@ -344,7 +380,7 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
 
               {/* Add Account Button */}
               <div className="box-border content-stretch flex gap-[8px] items-center justify-center pb-[8px] pt-[2px] px-[8px] relative shrink-0 w-full" data-name="Menu actions">
-                <div className={`${menuStyles.addAccount} border border-solid flex-[1_0_0] min-h-px min-w-px relative rounded-[8px] shrink-0`} data-name="Buttons/Button">
+                <div className={`${themeConfig.menu.addAccount} border border-solid flex-[1_0_0] min-h-px min-w-px relative rounded-[8px] shrink-0`} data-name="Buttons/Button">
                   <div className="box-border content-stretch flex gap-[4px] items-center justify-center overflow-clip px-[12px] py-[8px] relative rounded-[inherit] w-full">
                     <div className="overflow-clip relative shrink-0 size-[20px]" data-name="plus">
                       <div className="absolute inset-[20.833%]" data-name="Icon">
@@ -354,7 +390,7 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
                       </div>
                     </div>
                     <div className="box-border content-stretch flex items-center justify-center px-[2px] py-0 relative shrink-0" data-name="Text padding">
-                      <p className={`font-['Inter:Semi_Bold',_sans-serif] font-semibold leading-[20px] not-italic relative shrink-0 ${textStyles.menuItem} text-[14px]`}>
+                      <p className={`font-['Inter:Semi_Bold',_sans-serif] font-semibold leading-[20px] not-italic relative shrink-0 ${themeConfig.text.menuItem} text-[14px]`}>
                         Add account
                       </p>
                     </div>
@@ -376,12 +412,12 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
                         </svg>
                       </div>
                     </div>
-                    <p className={`flex-[1_0_0] font-['Inter:Semi_Bold',_sans-serif] font-semibold h-[20px] leading-[20px] min-h-px min-w-px not-italic relative shrink-0 ${textStyles.menuItem} text-[14px] whitespace-pre-wrap`}>
+                    <p className={`flex-[1_0_0] font-['Inter:Semi_Bold',_sans-serif] font-semibold h-[20px] leading-[20px] min-h-px min-w-px not-italic relative shrink-0 ${themeConfig.text.menuItem} text-[14px] whitespace-pre-wrap`}>
                       Sign out
                     </p>
                   </div>
-                  <div className={`border ${menuStyles.shortcut} border-solid box-border content-stretch flex items-start px-[4px] py-px relative rounded-[4px] shrink-0`} data-name="Shortcut wrapper">
-                    <p className={`font-['Inter:Medium',_sans-serif] font-medium leading-[18px] not-italic relative shrink-0 ${textStyles.shortcut} text-[12px]`}>
+                  <div className={`border ${themeConfig.menu.shortcut} border-solid box-border content-stretch flex items-start px-[4px] py-px relative rounded-[4px] shrink-0`} data-name="Shortcut wrapper">
+                    <p className={`font-['Inter:Medium',_sans-serif] font-medium leading-[18px] not-italic relative shrink-0 ${themeConfig.text.shortcut} text-[12px]`}>
                       ⌥⇧Q
                     </p>
                   </div>
@@ -393,4 +429,7 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
       )}
     </div>
   );
-};
+});
+
+// Add display name for better debugging
+SimpleAccountCard.displayName = 'SimpleAccountCard';
