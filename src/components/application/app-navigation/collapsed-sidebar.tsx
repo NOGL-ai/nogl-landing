@@ -35,6 +35,7 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
     const [submenuPosition, setSubmenuPosition] = useState({ top: 20, left: ICON_SIDEBAR_WIDTH });
     const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
+    const isAccountDropdownOpenRef = useRef(isAccountDropdownOpen);
     const accountMenu = useMemo<IconMenuItem>(() => ({
         ...accountMenuItem,
         label: user?.name || accountMenuItem.label
@@ -43,6 +44,12 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
     const hoverTimeoutRef = useRef<NodeJS.Timeout>();
     const closeTimeoutRef = useRef<NodeJS.Timeout>();
     const iconRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});
+    const sidebarRef = useRef<HTMLDivElement | null>(null);
+    const submenuPanelRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        isAccountDropdownOpenRef.current = isAccountDropdownOpen;
+    }, [isAccountDropdownOpen]);
 
     const clearHoverTimeout = useCallback(() => {
         if (hoverTimeoutRef.current) {
@@ -58,12 +65,23 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
         }
     }, []);
 
+    useEffect(() => {
+        if (isAccountDropdownOpen) {
+            clearCloseTimeout();
+        }
+    }, [isAccountDropdownOpen, clearCloseTimeout]);
+
     const scheduleClosePanel = useCallback(() => {
         clearCloseTimeout();
         closeTimeoutRef.current = setTimeout(() => {
-            setHoveredItem(null);
+            setHoveredItem((current) => {
+                if (current === accountMenuId && isAccountDropdownOpenRef.current) {
+                    return current;
+                }
+                return null;
+            });
         }, HOVER_LEAVE_DELAY);
-    }, [clearCloseTimeout]);
+    }, [clearCloseTimeout, accountMenuId, isAccountDropdownOpenRef]);
 
     // Prevent closing when clicking inside submenu
     const handleSubmenuClick = useCallback((e: React.MouseEvent) => {
@@ -118,6 +136,15 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
     }, [clearCloseTimeout, clearHoverTimeout, openPanelForItem, hoveredItem]);
 
     const handleIconMouseLeave = useCallback(() => {
+        clearHoverTimeout();
+        scheduleClosePanel();
+    }, [clearHoverTimeout, scheduleClosePanel]);
+
+    const handleIconBlur = useCallback((event: React.FocusEvent) => {
+        const nextTarget = event.relatedTarget as Node | null;
+        if (nextTarget && (sidebarRef.current?.contains(nextTarget) || submenuPanelRef.current?.contains(nextTarget))) {
+            return;
+        }
         clearHoverTimeout();
         scheduleClosePanel();
     }, [clearHoverTimeout, scheduleClosePanel]);
@@ -210,8 +237,23 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
         }
     }, [hoveredItem, accountMenuId, isAccountDropdownOpen]);
 
+    useEffect(() => {
+        const handleDocumentClick = (event: MouseEvent) => {
+            const target = event.target as Node;
+            if (sidebarRef.current?.contains(target) || submenuPanelRef.current?.contains(target)) {
+                return;
+            }
+            setHoveredItem(null);
+            setIsAccountDropdownOpen(false);
+        };
+
+        document.addEventListener("mousedown", handleDocumentClick);
+        return () => document.removeEventListener("mousedown", handleDocumentClick);
+    }, []);
+
     return (
         <div
+            ref={sidebarRef}
             className="fixed left-0 top-0 z-50 h-screen bg-white dark:bg-[#0a0d12] group"
             style={{ width: ICON_SIDEBAR_WIDTH, padding: "4px 0 4px 4px" }}
             onMouseEnter={clearCloseTimeout}
@@ -275,7 +317,7 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
                                             onMouseEnter={() => handleIconMouseEnter(item.id)}
                                             onMouseLeave={handleIconMouseLeave}
                                             onFocus={() => handleIconFocus(item.id)}
-                                            onBlur={handleIconMouseLeave}
+                                            onBlur={handleIconBlur}
                                             onKeyDown={(e) => handleIconKeyDown(item, e)}
                                             className={`
                                                 flex items-center justify-center w-10 h-10 rounded-md transition-colors duration-200
@@ -329,7 +371,7 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
                                             onMouseEnter={() => handleIconMouseEnter(item.id)}
                                             onMouseLeave={handleIconMouseLeave}
                                             onFocus={() => handleIconFocus(item.id)}
-                                            onBlur={handleIconMouseLeave}
+                                            onBlur={handleIconBlur}
                                             onKeyDown={(e) => handleIconKeyDown(item, e)}
                                             className={`
                                                 flex items-center justify-center w-10 h-10 rounded-md transition-colors duration-200
@@ -418,6 +460,7 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
                         onLogout={onLogout}
                         isAccountDropdownOpen={isAccountDropdownOpen}
                         setIsAccountDropdownOpen={setIsAccountDropdownOpen}
+                        panelRef={submenuPanelRef}
                     />
                 </div>
             )}

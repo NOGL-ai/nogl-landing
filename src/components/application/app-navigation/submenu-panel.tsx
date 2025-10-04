@@ -20,6 +20,7 @@ interface SubmenuPanelProps {
     onLogout?: () => void;
     isAccountDropdownOpen?: boolean;
     setIsAccountDropdownOpen?: (open: boolean) => void;
+    panelRef?: React.RefObject<HTMLDivElement>;
 }
 
 export const SubmenuPanel: React.FC<SubmenuPanelProps> = ({
@@ -34,9 +35,11 @@ export const SubmenuPanel: React.FC<SubmenuPanelProps> = ({
     user,
     onLogout,
     isAccountDropdownOpen = false,
-    setIsAccountDropdownOpen
+    setIsAccountDropdownOpen,
+    panelRef: externalPanelRef
 }) => {
-    const panelRef = useRef<HTMLDivElement>(null);
+    const internalPanelRef = useRef<HTMLDivElement>(null);
+    const panelRef = externalPanelRef ?? internalPanelRef;
     const panelStyle = useMemo<React.CSSProperties>(() => {
         const normalizedLeft = position.left ?? 0;
 
