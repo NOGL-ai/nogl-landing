@@ -4,6 +4,19 @@ const nextConfig = {
 	reactStrictMode: true,
 	typedRoutes: true,
 	output: 'standalone',
+	async headers() {
+		return [
+			{
+				source: '/(.*)',
+				headers: [
+					{
+						key: 'Permissions-Policy',
+						value: 'clipboard-write=*'
+					}
+				]
+			}
+		]
+	},
 	webpack: (config, { isServer }) => {
 		// Modify PostCSS loader configuration
 		const rules = config.module.rules;

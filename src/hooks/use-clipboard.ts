@@ -26,6 +26,12 @@ export function useClipboard(
 					throw new Error("Clipboard API not available");
 				}
 
+				// Check if clipboard permissions are granted
+				const permission = await navigator.permissions.query({ name: 'clipboard-write' as PermissionName });
+				if (permission.state === 'denied') {
+					throw new Error("Clipboard access denied. Please check your browser permissions.");
+				}
+
 				await navigator.clipboard.writeText(text);
 				setCopied(true);
 				setError(null);

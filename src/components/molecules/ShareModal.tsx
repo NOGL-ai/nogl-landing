@@ -55,8 +55,13 @@ const ShareModal: FC<ShareModalProps> = ({ isOpen, onClose, session }) => {
 								/>
 								<button
 									onClick={async () => {
-										await navigator.clipboard.writeText(shareUrl);
-										toast.success("Link copied!");
+										try {
+											await navigator.clipboard.writeText(shareUrl);
+											toast.success("Link copied!");
+										} catch (error) {
+											console.error("Failed to copy link:", error);
+											toast.error("Failed to copy link. Please try again.");
+										}
 									}}
 									className='bg-primary-500 hover:bg-primary-600 rounded p-2 text-white'
 								>

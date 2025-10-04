@@ -3,7 +3,10 @@ import clientConfig from "./config/client-config";
 // Ghost Content API methods
 // import { Blog } from "@/types/blog";
 
-export const client = new GhostContentAPI(clientConfig);
+// Only create client if configuration is valid
+export const client = clientConfig.url && clientConfig.key 
+	? new GhostContentAPI(clientConfig)
+	: null;
 // Ghost API helper functions
 
 export function imageBuilder(source: string) {
@@ -14,6 +17,10 @@ export function imageBuilder(source: string) {
 }
 
 export const getPosts = async () => {
+	if (!client) {
+		console.warn("Ghost client not configured. Please set environment variables.");
+		return [];
+	}
 	try {
 		const posts = await client.posts.browse({
 			include: ["tags", "authors"],
@@ -27,6 +34,10 @@ export const getPosts = async () => {
 };
 
 export const getPostBySlug = async (slug: string) => {
+	if (!client) {
+		console.warn("Ghost client not configured. Please set environment variables.");
+		return null;
+	}
 	try {
 		const post = await client.posts.read(
 			{ slug },
@@ -42,6 +53,10 @@ export const getPostBySlug = async (slug: string) => {
 };
 
 export const getPostsByTag = async (tag: string) => {
+	if (!client) {
+		console.warn("Ghost client not configured. Please set environment variables.");
+		return [];
+	}
 	try {
 		const posts = await client.posts.browse({
 			filter: `tag:${tag}`,
@@ -55,6 +70,10 @@ export const getPostsByTag = async (tag: string) => {
 };
 
 export const getPostsByAuthor = async (slug: string) => {
+	if (!client) {
+		console.warn("Ghost client not configured. Please set environment variables.");
+		return [];
+	}
 	try {
 		const posts = await client.posts.browse({
 			filter: `authors:${slug}`,
@@ -68,6 +87,10 @@ export const getPostsByAuthor = async (slug: string) => {
 };
 
 export const getPostsByCategory = async (category: string) => {
+	if (!client) {
+		console.warn("Ghost client not configured. Please set environment variables.");
+		return [];
+	}
 	try {
 		const posts = await client.posts.browse({
 			filter: `tag:${category}`,
@@ -81,6 +104,10 @@ export const getPostsByCategory = async (category: string) => {
 };
 
 export const getAuthorBySlug = async (slug: string) => {
+	if (!client) {
+		console.warn("Ghost client not configured. Please set environment variables.");
+		return null;
+	}
 	try {
 		const author = await client.authors.read({ slug });
 		return author;

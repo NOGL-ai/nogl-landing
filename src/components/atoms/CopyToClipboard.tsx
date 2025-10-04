@@ -14,9 +14,14 @@ const CopyToClipboard = ({ text, label }: { text: string; label: string }) => {
 
 	return (
 		<button
-			onClick={() => {
-				navigator.clipboard.writeText(text);
-				setCopied(true);
+			onClick={async () => {
+				try {
+					await navigator.clipboard.writeText(text);
+					setCopied(true);
+				} catch (error) {
+					console.error("Failed to copy text:", error);
+					// You could add a toast notification here if you have a toast system
+				}
 			}}
 			className={`bg-primary font-satoshi hover:bg-primary-dark flex items-center justify-center gap-2 rounded-lg px-4 py-2 font-medium text-white duration-200 ease-in
 			`}
