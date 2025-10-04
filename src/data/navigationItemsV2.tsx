@@ -10,8 +10,7 @@ import {
     Settings03,
     LifeBuoy01,
     PieChart03,
-    Sun,
-    Moon
+    Sun
 } from "@untitledui/icons";
 import type { FC, ReactNode } from "react";
 
