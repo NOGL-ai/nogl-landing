@@ -1,25 +1,21 @@
-# Testing Setup
+# Testing Guide
 
 This project uses Jest and React Testing Library for testing.
 
-## Quick Start
+## Quick Commands
 
 ```bash
-# Run all tests
-npm test
-
-# Run tests in watch mode
-npm run test:watch
-
-# Run tests with coverage
-npm run test:coverage
+npm test              # Run all tests
+npm run test:watch    # Watch mode
+npm run test:coverage # With coverage
+npm run test:e2e      # E2E tests
 ```
 
 ## Writing Tests
 
-Create test files with `.test.ts` or `.test.tsx` extension in the `tests/` directory.
+Create test files with `.test.ts` or `.test.tsx` in the `tests/` directory.
 
-### Example Test
+### Example
 
 ```tsx
 import { render, screen } from '@testing-library/react';
@@ -30,11 +26,11 @@ test('renders component', () => {
 });
 ```
 
-## Test Structure
+## Structure
 
 ```
 tests/
 ├── unit/           # Unit tests
 ├── integration/    # Integration tests
-└── e2e/           # End-to-end tests (Playwright)
+└── e2e/           # E2E tests
 ```
