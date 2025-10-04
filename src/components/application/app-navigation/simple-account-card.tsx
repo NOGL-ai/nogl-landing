@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useLayoutEffect, useCallback } from "react";
 import { UserProfile } from "@/types/navigation";
 
 interface SimpleAccountCardProps {
@@ -29,11 +29,13 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
   setExternalDropdownState,
 }) => {
   const [internalIsMenuOpen, setInternalIsMenuOpen] = useState(false);
-  
+  const [dropdownPlacement, setDropdownPlacement] = useState<"overlay" | "right">("overlay");
+
   // Use external state if provided, otherwise use internal state
   const isMenuOpen = externalDropdownState !== undefined ? externalDropdownState : internalIsMenuOpen;
   const setIsMenuOpen = setExternalDropdownState || setInternalIsMenuOpen;
   const menuRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -48,6 +50,38 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
   }, []);
 
   const showContent = !isCollapsed || isHovered;
+
+  const updateDropdownPlacement = useCallback(() => {
+    if (!isMenuOpen || typeof window === 'undefined') {
+      return;
+    }
+    const cardElement = cardRef.current;
+    if (!cardElement) {
+      return;
+    }
+    const rect = cardElement.getBoundingClientRect();
+    const viewportWidth = window.innerWidth;
+    const dropdownWidth = 264;
+    const gutter = 16;
+    if (viewportWidth - rect.right >= dropdownWidth + gutter) {
+      setDropdownPlacement('right');
+    } else {
+      setDropdownPlacement('overlay');
+    }
+  }, [isMenuOpen]);
+
+  useLayoutEffect(() => {
+    if (!isMenuOpen) {
+      setDropdownPlacement('overlay');
+      return;
+    }
+
+    updateDropdownPlacement();
+    window.addEventListener('resize', updateDropdownPlacement);
+    return () => {
+      window.removeEventListener('resize', updateDropdownPlacement);
+    };
+  }, [isMenuOpen, updateDropdownPlacement]);
 
   const toggleMenu = () => {
     if (setExternalDropdownState) {
@@ -94,10 +128,15 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
   
   const onlineIndicatorBorder = isDark ? 'border-[#0a0d12]' : 'border-white';
 
+  const menuPositionClasses = dropdownPlacement === 'right'
+    ? 'bottom-0 left-full ml-3'
+    : 'bottom-full left-0 mb-2';
+
   return (
     <div className={`relative ${className}`} ref={menuRef}>
       {/* Account Card - Theme-aware styling */}
       <div
+        ref={cardRef}
         className={`${cardStyles} border border-solid box-border content-stretch flex gap-[16px] items-start p-[12px] relative rounded-[12px] size-full transition-colors ${
           showContent ? '' : 'justify-center'
         }`}
@@ -171,7 +210,7 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
       {/* Dropdown Menu - Theme-aware styling */}
       {isMenuOpen && (showContent || alwaysShowDropdown) && (
         <div
-          className={`absolute ${menuStyles.outer} border border-solid bottom-full left-0 mb-2 rounded-[12px] w-[264px] z-[100]`}
+          className={`absolute ${menuStyles.outer} border border-solid ${menuPositionClasses} rounded-[12px] w-[264px] z-[100]`}
           data-name="Menu"
           role="menu"
           aria-label="Account menu"
