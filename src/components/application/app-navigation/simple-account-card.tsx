@@ -77,7 +77,6 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
 }) => {
   const [internalIsMenuOpen, setInternalIsMenuOpen] = useState(false);
   const [dropdownPlacement, setDropdownPlacement] = useState<"overlay" | "right">("overlay");
-  const [mounted, setMounted] = useState(false);
 
   // Use external state if provided, otherwise use internal state
   const isMenuOpen = externalDropdownState !== undefined ? externalDropdownState : internalIsMenuOpen;
@@ -85,13 +84,8 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
   const menuRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
-  // Prevent hydration mismatch by only rendering theme-dependent content after mount
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Get theme configuration - always use light theme during SSR
-  const themeConfig = THEME_CONFIG[mounted ? theme : 'light'];
+  // Get theme configuration
+  const themeConfig = THEME_CONFIG[theme];
 
   // Close menu when clicking outside - memoized callback
   const handleClickOutside = useCallback((event: MouseEvent) => {
@@ -173,7 +167,7 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
         className={`${themeConfig.card} border border-solid box-border content-stretch flex gap-[12px] items-center p-[16px] relative rounded-[12px] size-full transition-colors ${
           showContent ? '' : 'justify-center'
         }`}
-        data-name={`Type=Card, Open=True, Theme=${mounted && theme === 'dark' ? 'Dark' : 'Default'}, Breakpoint=Desktop`}
+        data-name={`Type=Card, Open=True, Theme=${theme === 'dark' ? 'Dark' : 'Default'}, Breakpoint=Desktop`}
         role="button"
         tabIndex={0}
         aria-expanded={isMenuOpen}
