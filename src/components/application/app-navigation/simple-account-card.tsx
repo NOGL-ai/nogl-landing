@@ -163,7 +163,7 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
       {/* Account Card - Theme-aware styling */}
       <div
         ref={cardRef}
-        className={`${themeConfig.card} border border-solid box-border content-stretch flex gap-[16px] items-start p-[12px] relative rounded-[12px] size-full transition-colors ${
+        className={`${themeConfig.card} border border-solid box-border content-stretch flex gap-[12px] items-center p-[16px] relative rounded-[12px] size-full transition-colors ${
           showContent ? '' : 'justify-center'
         }`}
         data-name={`Type=Card, Open=True, Theme=${theme === 'dark' ? 'Dark' : 'Default'}, Breakpoint=Desktop`}
@@ -180,7 +180,7 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
         }}
       >
         {/* Avatar and User Info Group */}
-        <div className="content-stretch flex flex-[1_0_0] gap-[8px] items-center min-h-px min-w-px relative shrink-0 pr-12" data-name="Avatar label group">
+        <div className="content-stretch flex flex-[1_0_0] gap-[12px] items-center min-h-px min-w-px relative shrink-0 pr-4" data-name="Avatar label group">
           {/* Avatar - conditionally rendered */}
           {!hideAvatar && (
             <div className="border border-[rgba(0,0,0,0.08)] border-solid relative rounded-[200px] shrink-0 size-[40px]" data-name="Avatar">
@@ -205,10 +205,10 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
           {/* User Info */}
           {(showContent || alwaysShowDropdown) && (
             <div className="content-stretch flex flex-col items-start leading-[20px] not-italic relative shrink-0 text-[14px] min-w-0" data-name="Text and supporting text">
-              <p className={`font-['Inter:Semi_Bold',_sans-serif] font-semibold relative shrink-0 truncate ${themeConfig.text.name}`}>
+              <p className={`font-['Inter:Semi_Bold',_sans-serif] font-semibold relative shrink-0 truncate text-[16px] leading-[20px] ${themeConfig.text.name}`}>
                 {user?.name || 'User'}
               </p>
-              <p className={`font-['Inter:Regular',_sans-serif] font-normal relative shrink-0 truncate ${themeConfig.text.email}`}>
+              <p className={`font-['Inter:Regular',_sans-serif] font-normal relative shrink-0 truncate text-[14px] leading-[18px] ${themeConfig.text.email}`}>
                 {user?.email || 'No email'}
               </p>
             </div>
