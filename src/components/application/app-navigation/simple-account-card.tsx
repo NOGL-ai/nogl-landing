@@ -5,7 +5,7 @@ import { UserProfile } from "@/types/navigation";
 
 interface SimpleAccountCardProps {
   user?: UserProfile;
-  onLogout?: () => void;
+  onLogout?: () => void | Promise<void>;
   isCollapsed?: boolean;
   isHovered?: boolean;
   className?: string;
@@ -143,11 +143,12 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
     }
   }, [isMenuOpen, setExternalDropdownState]);
 
-  const handleLogout = useCallback(() => {
-    if (onLogout) {
-      onLogout();
-    }
+  const handleLogout = useCallback(async () => {
     setIsMenuOpen(false);
+
+    if (onLogout) {
+      await onLogout();
+    }
   }, [onLogout, setIsMenuOpen]);
 
   // Memoized menu position classes
@@ -403,26 +404,37 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
             {/* Footer Items */}
             <div className="box-border content-stretch flex flex-col gap-[2px] items-start overflow-clip pb-[6px] pt-[4px] px-0 relative shrink-0 w-[264px]" data-name="Footer items">
               <div className="box-border content-stretch flex items-center px-[6px] py-0 relative shrink-0 w-full" data-name="_Nav account card menu item">
-                <div className="box-border content-stretch flex flex-[1_0_0] gap-[12px] items-center min-h-px min-w-px overflow-clip p-[8px] relative rounded-[6px] shrink-0" data-name="Content">
-                  <div className="content-stretch flex flex-[1_0_0] gap-[8px] items-center min-h-px min-w-px relative shrink-0" data-name="Icon and text">
-                    <div className="overflow-clip relative shrink-0 size-[20px]" data-name="log-out-01">
-                      <div className="absolute inset-[12.5%]" data-name="Icon">
-                        <svg className="w-full h-full" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="rgba(164, 167, 174, 1)">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
-                        </svg>
-                      </div>
+              <button
+                type="button"
+                className="box-border content-stretch flex flex-[1_0_0] gap-[12px] items-center min-h-px min-w-px overflow-clip p-[8px] relative rounded-[6px] shrink-0 w-full text-left cursor-pointer transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#375dfb]/60 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0a0d12] hover:bg-[#f5f5f5] dark:hover:bg-[#1f2533]"
+                data-name="Content"
+                onClick={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  void handleLogout();
+                }}
+                role="menuitem"
+                aria-label="Sign out"
+              >
+                <div className="content-stretch flex flex-[1_0_0] gap-[8px] items-center min-h-px min-w-px relative shrink-0" data-name="Icon and text">
+                  <div className="overflow-clip relative shrink-0 size-[20px]" data-name="log-out-01">
+                    <div className="absolute inset-[12.5%]" data-name="Icon">
+                      <svg className="w-full h-full" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="rgba(164, 167, 174, 1)">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                      </svg>
                     </div>
-                    <p className={`flex-[1_0_0] font-['Inter:Semi_Bold',_sans-serif] font-semibold h-[20px] leading-[20px] min-h-px min-w-px not-italic relative shrink-0 ${themeConfig.text.menuItem} text-[14px] whitespace-pre-wrap`}>
-                      Sign out
-                    </p>
                   </div>
-                  <div className={`border ${themeConfig.menu.shortcut} border-solid box-border content-stretch flex items-start px-[4px] py-px relative rounded-[4px] shrink-0`} data-name="Shortcut wrapper">
-                    <p className={`font-['Inter:Medium',_sans-serif] font-medium leading-[18px] not-italic relative shrink-0 ${themeConfig.text.shortcut} text-[12px]`}>
-                      ⌥⇧Q
-                    </p>
-                  </div>
+                  <p className={`flex-[1_0_0] font-['Inter:Semi_Bold',_sans-serif] font-semibold h-[20px] leading-[20px] min-h-px min-w-px not-italic relative shrink-0 ${themeConfig.text.menuItem} text-[14px] whitespace-pre-wrap`}>
+                    Sign out
+                  </p>
                 </div>
-              </div>
+                <div className={`border ${themeConfig.menu.shortcut} border-solid box-border content-stretch flex items-start px-[4px] py-px relative rounded-[4px] shrink-0`} data-name="Shortcut wrapper">
+                  <p className={`font-['Inter:Medium',_sans-serif] font-medium leading-[18px] not-italic relative shrink-0 ${themeConfig.text.shortcut} text-[12px]`}>
+                    ⌥⇧Q
+                  </p>
+                </div>
+              </button>
+            </div>
             </div>
           </div>
         </div>

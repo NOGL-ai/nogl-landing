@@ -24,7 +24,12 @@
 		"test:coverage": "jest --coverage",
 		"test:e2e": "playwright test",
 		"test:e2e:headed": "playwright test --headed",
-		"playwright:install": "playwright install"
+		"playwright:install": "playwright install",
+		"test:sidebar": "node tests/scripts/run-sidebar-tests.js all",
+		"test:sidebar:unit": "node tests/scripts/run-sidebar-tests.js unit",
+		"test:sidebar:integration": "node tests/scripts/run-sidebar-tests.js integration",
+		"test:sidebar:e2e": "node tests/scripts/run-sidebar-tests.js e2e",
+		"test:sidebar:report": "node tests/scripts/run-sidebar-tests.js report"
 	},
 	"dependencies": {
 		"@aws-sdk/client-s3": "^3.901.0",

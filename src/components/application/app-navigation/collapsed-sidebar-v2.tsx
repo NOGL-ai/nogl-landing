@@ -44,7 +44,7 @@ interface CollapsedSidebarV2Props {
         email?: string;
         avatar?: string;
     };
-    onLogout?: () => void;
+    onLogout?: () => void | Promise<void>;
     onNavigate?: (href: string) => void;
     theme?: "light" | "dark";
 }

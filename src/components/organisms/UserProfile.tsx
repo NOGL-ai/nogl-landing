@@ -13,7 +13,7 @@ import { UserProfile as UserProfileType } from "@/types/navigation";
 interface UserProfileProps {
 	user: UserProfileType;
 	isCollapsed: boolean;
-	onLogout?: () => void;
+	onLogout?: () => void | Promise<void>;
 }
 
 const UserProfile: React.FC<UserProfileProps> = ({ isCollapsed }) => {

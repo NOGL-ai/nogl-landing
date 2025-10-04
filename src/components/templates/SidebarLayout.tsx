@@ -14,12 +14,14 @@ import { ErrorBoundary } from "@/components/base/error-boundary";
 import { LoadingSpinner } from "@/components/base/loading-spinner";
 import { useResponsive } from "@/hooks/useResponsive";
 import { useTheme } from "next-themes";
+import { signOut } from "next-auth/react";
+import { i18n } from "@/i18n";
 import "@/styles/sidebar-animations.css";
 
 interface SidebarLayoutProps {
 	children: React.ReactNode;
 	user?: UserProfile;
-	onLogout?: () => void;
+	onLogout?: () => void | Promise<void>;
 	className?: string;
 }
 
@@ -115,13 +117,24 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 		}
 	}, [isDesktop, isMobileOpen, closeMobile]);
 
-	const handleLogout = useCallback(() => {
-		if (onLogout) {
-			onLogout();
+	const handleLogout = useCallback(async () => {
+		try {
+			if (onLogout) {
+				await onLogout();
+			}
+		} catch (error) {
+			console.error("Error during custom logout cleanup", error);
 		}
-		// Add your logout logic here
-		// For example: signOut(), redirect to login page, etc.
-	}, [onLogout]);
+
+		const segments = pathname.split("/").filter(Boolean);
+		const candidateLocale = segments[0];
+		const resolvedLocale = i18n.locales.includes(candidateLocale as (typeof i18n.locales)[number])
+			? (candidateLocale as (typeof i18n.locales)[number])
+			: i18n.defaultLocale;
+		const callbackUrl = `/${resolvedLocale}/auth/signin`;
+
+		await signOut({ callbackUrl });
+	}, [onLogout, pathname]);
 
 	const handleNavigation = useCallback((href: string) => {
 		// Use Next.js router for navigation

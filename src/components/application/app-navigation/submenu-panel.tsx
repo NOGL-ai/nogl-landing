@@ -17,7 +17,7 @@ interface SubmenuPanelProps {
     onMouseLeave?: () => void;
     theme?: 'light' | 'dark';
     user?: UserProfile;
-    onLogout?: () => void;
+    onLogout?: () => void | Promise<void>;
     isAccountDropdownOpen?: boolean;
     setIsAccountDropdownOpen?: (open: boolean) => void;
     panelRef?: React.RefObject<HTMLDivElement>;

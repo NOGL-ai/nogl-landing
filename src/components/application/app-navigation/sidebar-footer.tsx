@@ -7,7 +7,7 @@ import { SimpleAccountCard } from "./simple-account-card";
 
 interface SidebarFooterProps {
   user?: UserProfile;
-  onLogout?: () => void;
+  onLogout?: () => void | Promise<void>;
   isCollapsed?: boolean;
   isHovered?: boolean;
   className?: string;
@@ -61,9 +61,9 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
   // ];
 
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     if (onLogout) {
-      onLogout();
+      await onLogout();
     }
   };
 
