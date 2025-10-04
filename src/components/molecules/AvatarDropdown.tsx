@@ -4,7 +4,7 @@ import { Popover, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import Avatar from "@/shared/Avatar";
 import ThemeToggler from "@/components/atoms/ThemeToggler";
-import { signOut, useSession } from "next-auth/react";
+import { signOut, useSession, signIn } from "next-auth/react";
 import Link from "next/link";
 import { Route } from "@/routers/types";
 
@@ -333,20 +333,46 @@ export default function AvatarDropdown({ className = "" }: Props) {
 											</>
 										) : (
 											<>
-												{/* Sign In Link */}
-												<Link
-													href={"/auth/signin" as Route}
-													className='font-satoshi px-5 py-2 font-medium text-black dark:text-white'
+												{/* Sign In Button for non-authenticated users */}
+												<button
+													className='-m-3 flex w-full items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-neutral-100 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 dark:hover:bg-neutral-700'
+													onClick={() => signIn()}
 												>
-													Sign In
-												</Link>
-												{/* Sign Up Link */}
-												<Link
-													href={"/auth/signup" as Route}
-													className='bg-primary-500 font-satoshi hover:bg-primary-600 border-primary-400 rounded-full border-2 px-5 py-2 font-medium text-white shadow-lg'
-												>
-													Sign Up
-												</Link>
+													<div className='flex flex-shrink-0 items-center justify-center text-neutral-500 dark:text-neutral-300'>
+														<svg
+															width='24'
+															height='24'
+															viewBox='0 0 24 24'
+															fill='none'
+															xmlns='http://www.w3.org/2000/svg'
+														>
+															<path
+																d='M8.90002 7.55999C9.21002 3.95999 11.06 2.48999 15.11 2.48999H15.24C19.71 2.48999 21.5 4.27999 21.5 8.74999V15.27C21.5 19.74 19.71 21.53 15.24 21.53H15.11C11.09 21.53 9.24002 20.08 8.91002 16.54'
+																stroke='currentColor'
+																strokeWidth='1.5'
+																strokeLinecap='round'
+																strokeLinejoin='round'
+															/>
+															<path
+																d='M15 12H3.62'
+																stroke='currentColor'
+																strokeWidth='1.5'
+																strokeLinecap='round'
+																strokeLinejoin='round'
+															/>
+															<path
+																d='M5.85 8.6499L2.5 11.9999L5.85 15.3499'
+																stroke='currentColor'
+																strokeWidth='1.5'
+																strokeLinecap='round'
+																strokeLinejoin='round'
+															/>
+														</svg>
+													</div>
+													<div className='ml-4'>
+														<p className='text-sm font-medium'>Sign in</p>
+													</div>
+												</button>
 											</>
 										)}
 									</div>

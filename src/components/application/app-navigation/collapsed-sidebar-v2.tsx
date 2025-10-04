@@ -293,6 +293,7 @@ const CollapsedSidebarV2: React.FC<CollapsedSidebarV2Props> = ({
                             )
                         }
                     </div>
+                </div>
 
                 {/* Footer Section - Figma: padding: 0 16px 20px, gap: 16px */}
                 <div className="flex flex-col gap-4 items-center pb-5 px-4 self-stretch">
