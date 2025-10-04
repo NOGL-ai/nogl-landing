@@ -5,6 +5,7 @@ import pluginReact from "eslint-plugin-react";
 import pluginReactHooks from "eslint-plugin-react-hooks";
 import pluginNext from "@next/eslint-plugin-next";
 import pluginJsxA11y from "eslint-plugin-jsx-a11y";
+import pluginReactYouMightNotNeedAnEffect from "eslint-plugin-react-you-might-not-need-an-effect";
 
 export default [
 	{
@@ -34,6 +35,7 @@ export default [
 	pluginJs.configs.recommended,
 	...tseslint.configs.recommended,
 	pluginReact.configs.flat.recommended,
+	pluginReactYouMightNotNeedAnEffect.configs.recommended,
 	{
 		settings: {
 			react: {
@@ -44,6 +46,7 @@ export default [
 			"react-hooks": pluginReactHooks,
 			"@next/next": pluginNext,
 			"jsx-a11y": pluginJsxA11y,
+			"react-you-might-not-need-an-effect": pluginReactYouMightNotNeedAnEffect,
 		},
 		rules: {
 			// React rules

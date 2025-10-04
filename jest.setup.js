@@ -48,7 +48,7 @@ jest.mock('next/navigation', () => ({
 // Mock Next.js image
 jest.mock('next/image', () => {
   return function MockedImage({ src, alt, ...props }) {
-    // eslint-disable-next-line @next/next/no-img-element
+     
     return <img src={src} alt={alt} {...props} />;
   };
 });
