@@ -113,10 +113,12 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
     sectionHeader: isDark ? 'text-[#a4a7ae]' : 'text-[#535862]',
   };
   
-  const buttonStyles = isDark 
+  const buttonStyles = isDark
     ? 'bg-[#252b37]'
-    : 'bg-neutral-50';
-    
+    : 'bg-transparent';
+
+  const iconStrokeColor = isDark ? '#717680' : '#A4A7AE';
+
   const menuStyles = {
     outer: isDark ? 'bg-[#252b37] border-[#252b37]' : 'bg-neutral-50 border-[rgba(0,0,0,0.08)]',
     inner: isDark ? 'bg-[#0a0d12]' : 'bg-white border-[#e9eaeb]',
@@ -181,12 +183,12 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
         {/* Dropdown Button */}
         {(showContent || alwaysShowDropdown) && (
           <div
-            className="absolute content-stretch flex items-start right-[4px] top-[4px] z-10"
+            className="absolute flex items-start right-[8px] top-[8px] z-10"
             data-name="__Nav account card menu button"
           >
             <button
               type="button"
-              className={`${buttonStyles} box-border content-stretch flex items-center justify-center p-[6px] relative rounded-[8px] shrink-0`}
+              className={`${buttonStyles} flex items-center justify-center p-[6px] rounded-[8px] border-none cursor-pointer transition-colors`}
               aria-haspopup="menu"
               aria-expanded={isMenuOpen}
               onClick={(event) => {
@@ -195,13 +197,23 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = ({
               }}
             >
               <span className="sr-only">{isMenuOpen ? 'Close account menu' : 'Open account menu'}</span>
-              <div className="overflow-clip relative shrink-0 size-[16px]" data-name="chevron-selector-vertical">
-                <div className="absolute inset-[16.67%_29.17%]" data-name="Icon">
-                  <svg className="w-full h-full" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="rgba(113, 118, 128, 1)">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 15L12 18.75 15.75 15" />
-                  </svg>
-                </div>
-              </div>
+              <svg
+                className="w-[16px] h-[16px]"
+                data-name="chevron-selector-vertical"
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4.66666 10.0001L7.99999 13.3334L11.3333 10.0001M4.66666 6.00008L7.99999 2.66675L11.3333 6.00008"
+                  stroke={iconStrokeColor}
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </button>
           </div>
         )}
