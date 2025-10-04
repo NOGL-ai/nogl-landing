@@ -88,8 +88,33 @@ export const SubmenuPanel: React.FC<SubmenuPanelProps> = ({
                     {item.subItems.map((subItem, index) => {
                         const isActive = isSubItemActive(subItem, activeUrl);
 
+                        // Handle sub-headings
+                        if (subItem.isSubHeading) {
+                            return (
+                                <div key={subItem.label} className="flex flex-col items-start self-stretch mt-4 mb-2">
+                                    <div className="flex items-center gap-2 w-full px-3">
+                                        {subItem.icon && (
+                                            <div className="flex items-center justify-center w-4 h-4">
+                                                <subItem.icon 
+                                                    aria-hidden="true" 
+                                                    className="size-4 text-[#717680] dark:text-[#a4a7ae]" 
+                                                />
+                                            </div>
+                                        )}
+                                        <h3 className="text-[10px] font-bold uppercase tracking-wider text-[#717680] dark:text-[#a4a7ae] leading-4">
+                                            {subItem.label}
+                                        </h3>
+                                    </div>
+                                </div>
+                            );
+                        }
+
+                        // Check if this item follows a sub-heading for proper indentation
+                        const previousItem = item.subItems?.[index - 1];
+                        const isAfterSubHeading = previousItem?.isSubHeading;
+                        
                         return (
-                            <div key={subItem.label} className="flex py-[2px] items-center self-stretch">
+                            <div key={subItem.label} className={`flex py-[2px] items-center self-stretch ${isAfterSubHeading ? 'ml-2' : ''}`}>
                                 <NavItemBase
                                     href={subItem.href}
                                     icon={subItem.icon}

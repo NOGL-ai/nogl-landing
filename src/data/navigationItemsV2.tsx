@@ -13,7 +13,12 @@ import {
     Sun,
     Sale02,
     CreditCard01,
-    Wallet01
+    Wallet01,
+    SearchMd,
+    FileX01,
+    Package,
+    LayersThree01,
+    RefreshCw01
 } from "@untitledui/icons";
 import type { ReactNode } from "react";
 
@@ -22,6 +27,7 @@ export interface SubMenuItem {
     href: string;
     icon?: any;
     badge?: ReactNode;
+    isSubHeading?: boolean;
 }
 
 export interface IconMenuItem {
@@ -49,39 +55,45 @@ export const navigationStructure: NavigationSection[] = [
                 href: '/',
             },
             {
-                id: 'pricing',
-                label: 'Pricing',
-                icon: Sale02,
+                id: 'analytics',
+                label: 'Analytics',
+                icon: BarChartSquare02,
                 subItems: [
                     {
-                        label: 'Overview',
-                        href: '/pricing',
-                        icon: Grid03,
-                    },
-                    {
-                        label: 'Plans',
-                        href: '/pricing/plans',
+                        label: 'Dashboard',
+                        href: '/catalog',
                         icon: BarChartSquare02,
                     },
                     {
-                        label: 'Billing',
-                        href: '/pricing/billing',
-                        icon: CreditCard01,
+                        label: 'Competitor Intelligence',
+                        href: '/catalog',
+                        icon: SearchMd,
                     },
                     {
-                        label: 'Invoices',
-                        href: '/pricing/invoices',
-                        icon: Wallet01,
+                        label: 'Reports',
+                        href: '/catalog',
+                        icon: FileX01,
                     },
                     {
-                        label: 'Payment Methods',
-                        href: '/pricing/payment-methods',
-                        icon: CreditCard01,
+                        label: 'Data Management',
+                        href: '#',
+                        icon: null,
+                        isSubHeading: true,
                     },
                     {
-                        label: 'Usage',
-                        href: '/pricing/usage',
-                        icon: LineChartUp03,
+                        label: 'Product Catalog',
+                        href: '/catalog',
+                        icon: Package,
+                    },
+                    {
+                        label: 'Data Feeds',
+                        href: '/catalog',
+                        icon: LayersThree01,
+                    },
+                    {
+                        label: 'Price Rules',
+                        href: '/catalog',
+                        icon: RefreshCw01,
                     },
                 ],
             },

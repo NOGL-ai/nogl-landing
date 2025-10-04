@@ -50,8 +50,9 @@ interface CollapsedSidebarV2Props {
 }
 
 // Hover timing constants for optimal UX
-const HOVER_ENTER_DELAY = 150; // Delay before showing submenu (prevents accidental opens)
-const HOVER_LEAVE_DELAY = 300; // Grace period before closing (allows mouse travel to submenu)
+const HOVER_ENTER_DELAY = 200; // Delay before showing submenu (prevents accidental opens)
+const HOVER_LEAVE_DELAY = 500; // Grace period before closing (allows mouse travel to submenu)
+const HOVER_FAST_ENTER_DELAY = 50; // Faster delay for already hovered items
 
 const CollapsedSidebarV2: React.FC<CollapsedSidebarV2Props> = ({
     user,
@@ -104,19 +105,44 @@ const CollapsedSidebarV2: React.FC<CollapsedSidebarV2Props> = ({
     const handleIconMouseEnter = useCallback((itemId: string) => {
         clearHoverTimeout();
 
+        // If already hovering this item, show immediately
         if (hoveredItem === itemId) {
             openPanelForItem(itemId);
             return;
         }
 
+        // Use faster delay for switching between items
+        const delay = hoveredItem ? HOVER_FAST_ENTER_DELAY : HOVER_ENTER_DELAY;
+
         hoverTimeoutRef.current = setTimeout(() => {
             openPanelForItem(itemId);
             hoverTimeoutRef.current = undefined;
-        }, HOVER_ENTER_DELAY);
+        }, delay);
     }, [clearHoverTimeout, openPanelForItem, hoveredItem]);
 
     const handleIconMouseLeave = useCallback(() => {
         clearHoverTimeout();
+        
+        // Add delay before closing to allow mouse travel to submenu
+        hoverTimeoutRef.current = setTimeout(() => {
+            setHoveredItem(null);
+            hoverTimeoutRef.current = undefined;
+        }, HOVER_LEAVE_DELAY);
+    }, [clearHoverTimeout]);
+
+    // Handle submenu panel hover to keep it open
+    const handleSubmenuMouseEnter = useCallback(() => {
+        clearHoverTimeout();
+    }, [clearHoverTimeout]);
+
+    const handleSubmenuMouseLeave = useCallback(() => {
+        clearHoverTimeout();
+        
+        // Close submenu when leaving the panel
+        hoverTimeoutRef.current = setTimeout(() => {
+            setHoveredItem(null);
+            hoverTimeoutRef.current = undefined;
+        }, HOVER_LEAVE_DELAY);
     }, [clearHoverTimeout]);
 
     const handleIconFocus = useCallback((itemId: string) => {
@@ -372,6 +398,8 @@ const CollapsedSidebarV2: React.FC<CollapsedSidebarV2Props> = ({
                     position={submenuPosition}
                     onNavigate={handleNavigation}
                     onClose={() => {}}
+                    onMouseEnter={handleSubmenuMouseEnter}
+                    onMouseLeave={handleSubmenuMouseLeave}
                     theme={theme as "light" | "dark" | undefined}
                     user={user}
                     onLogout={onLogout}
