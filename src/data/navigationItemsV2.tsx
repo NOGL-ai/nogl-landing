@@ -181,10 +181,9 @@ export const navigationStructure: NavigationSection[] = [
         section: 'footer',
         items: [
             {
-                id: 'support',
-                label: 'Support',
-                icon: LifeBuoy01,
-                href: '/support',
+                id: 'theme-toggle',
+                label: 'Theme',
+                icon: Settings03,
             },
             {
                 id: 'settings',
@@ -195,6 +194,34 @@ export const navigationStructure: NavigationSection[] = [
         ],
     },
 ];
+
+export const accountMenuItem: IconMenuItem = {
+    id: 'account',
+    label: 'Account',
+    icon: UserSquare,
+    subItems: [
+        {
+            label: 'Example 1',
+            href: '/account/example-1',
+            icon: UserSquare,
+        },
+        {
+            label: 'Example 2',
+            href: '/account/example-2',
+            icon: Settings01,
+        },
+        {
+            label: 'Example 3',
+            href: '/account/example-3',
+            icon: LifeBuoy01,
+        },
+        {
+            label: 'Example 4',
+            href: '/account/example-4',
+            icon: PieChart03,
+        },
+    ],
+};
 
 // Helper function to get all hrefs for active state detection
 export const getAllNavigationHrefs = (): string[] => {
@@ -238,4 +265,3 @@ export const getActiveIconMenuItem = (activeUrl: string): IconMenuItem | undefin
 export const isSubItemActive = (subItem: SubMenuItem, activeUrl: string): boolean => {
     return subItem.href === activeUrl;
 };
-

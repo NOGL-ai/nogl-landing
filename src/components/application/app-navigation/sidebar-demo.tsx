@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import CollapsedSidebarV2 from "./collapsed-sidebar-v2";
+import CollapsedSidebar from "./collapsed-sidebar";
 
 interface SidebarDemoProps {
     children: React.ReactNode;
@@ -27,12 +27,12 @@ const SidebarDemo: React.FC<SidebarDemoProps> = ({ children }) => {
 
     return (
         <div className="flex h-screen">
-            <CollapsedSidebarV2
+            <CollapsedSidebar
                 user={mockUser}
                 onLogout={handleLogout}
                 onNavigate={handleNavigate}
             />
-            <main className="flex-1 ml-16 bg-gray-50 dark:bg-[#0a0d12] overflow-auto">
+            <main className="flex-1 bg-gray-50 dark:bg-[#0a0d12] overflow-auto" style={{ marginLeft: '72px' }}>
                 <div className="p-8">
                     <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
                         Two-Level Sidebar Demo

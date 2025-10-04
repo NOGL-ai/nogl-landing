@@ -6,7 +6,8 @@ import { UserProfile } from "@/types/navigation";
 import { SidebarNavigationSectionsSubheadings } from "@/components/application/app-navigation/sidebar-navigation/sidebar-sections-subheadings";
 import { SidebarFooter } from "@/components/application/app-navigation/sidebar-footer";
 import { SidebarSearch } from "@/components/application/app-navigation/sidebar-search";
-import CollapsedSidebarV2 from "@/components/application/app-navigation/collapsed-sidebar-v2";
+import CollapsedSidebar from "@/components/application/app-navigation/collapsed-sidebar";
+import { MobileNavigation } from "@/components/application/app-navigation/mobile-navigation";
 import { navItemsWithSectionsSubheadings } from "@/data/navigationItems";
 import { usePathname } from "next/navigation";
 import { ErrorBoundary } from "@/components/base/error-boundary";
@@ -139,7 +140,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 			</a>
 
 			{/* Desktop Sidebar - Two-Level Navigation */}
-			<CollapsedSidebarV2 
+			<CollapsedSidebar 
 				user={user}
 				onLogout={handleLogout}
 				onNavigate={handleNavigation}
@@ -309,7 +310,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 						</div>
 
 					{/* Mobile Navigation */}
-					<div className="flex-1 overflow-y-auto px-4 py-4">
+					<div className="flex-1 overflow-y-auto px-2 py-2">
 						<ErrorBoundary
 							fallback={
 								<div className="p-4 text-center">
@@ -320,9 +321,10 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 							}
 						>
 							<Suspense fallback={<LoadingSpinner size="sm" className="p-4" />}>
-								<SidebarNavigationSectionsSubheadings 
-									activeUrl={pathname} 
-									items={navItemsWithSectionsSubheadings} 
+								<MobileNavigation
+									activeUrl={pathname}
+									onNavigate={handleNavigation}
+									theme={theme as "light" | "dark" | undefined}
 								/>
 							</Suspense>
 						</ErrorBoundary>
