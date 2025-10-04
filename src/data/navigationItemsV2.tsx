@@ -1,10 +1,5 @@
 import { 
     BarChartSquare02, 
-    Package, 
-    SearchMd, 
-    RefreshCw01, 
-    FileX01, 
-    LayersThree01,
     HomeLine,
     Grid03,
     NotificationBox,
@@ -15,10 +10,7 @@ import {
     Settings03,
     LifeBuoy01,
     Settings01,
-    CheckDone01,
-    PieChart03,
-    Users01,
-    Rows01
+    PieChart03
 } from "@untitledui/icons";
 import type { FC, ReactNode } from "react";
 
@@ -88,90 +80,6 @@ export const navigationStructure: NavigationSection[] = [
                         label: 'User reports',
                         href: '/dashboard/reports/users',
                         icon: UserSquare,
-                    },
-                ],
-            },
-            {
-                id: 'catalog',
-                label: 'Products',
-                icon: Rows01,
-                subItems: [
-                    {
-                        label: 'Product Catalog',
-                        href: '/catalog',
-                        icon: Package,
-                    },
-                    {
-                        label: 'Example 1',
-                        href: '/catalog/example-1',
-                        icon: Package,
-                    },
-                    {
-                        label: 'Example 2',
-                        href: '/catalog/example-2',
-                        icon: Package,
-                    },
-                    {
-                        label: 'Example 3',
-                        href: '/catalog/example-3',
-                        icon: Package,
-                    },
-                ],
-            },
-            {
-                id: 'tasks',
-                label: 'Tasks',
-                icon: CheckDone01,
-                subItems: [
-                    {
-                        label: 'Example 1',
-                        href: '/tasks/example-1',
-                    },
-                    {
-                        label: 'Example 2',
-                        href: '/tasks/example-2',
-                    },
-                    {
-                        label: 'Example 3',
-                        href: '/tasks/example-3',
-                    },
-                    {
-                        label: 'Example 4',
-                        href: '/tasks/example-4',
-                    },
-                ],
-            },
-            {
-                id: 'reports',
-                label: 'Reports',
-                icon: PieChart03,
-                subItems: [
-                    {
-                        label: 'Example 1',
-                        href: '/reports/example-1',
-                    },
-                    {
-                        label: 'Example 2',
-                        href: '/reports/example-2',
-                    },
-                ],
-            },
-            {
-                id: 'team',
-                label: 'Team',
-                icon: Users01,
-                subItems: [
-                    {
-                        label: 'Example 1',
-                        href: '/team/example-1',
-                    },
-                    {
-                        label: 'Example 2',
-                        href: '/team/example-2',
-                    },
-                    {
-                        label: 'Example 3',
-                        href: '/team/example-3',
                     },
                 ],
             },
