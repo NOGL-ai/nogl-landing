@@ -22,7 +22,7 @@ const competitors = [
     trend: 5,
     trendUp: true,
     date: '22 Jan 2025',
-    categories: ['Active', 'Customer data', 'Admin', '+4'],
+    categories: ['Active', 'In Stock', 'Customer data', '+3'],
     competitorPrice: 29.90,
     myPrice: 42.00,
   },
@@ -36,7 +36,7 @@ const competitors = [
     trend: 4,
     trendUp: false,
     date: '20 Jan 2025',
-    categories: ['Active', 'Business data', 'Admin', '+4'],
+    categories: ['Active', 'In Stock', 'Business data', '+3'],
     competitorPrice: 35.50,
     myPrice: 32.00,
   },
@@ -50,7 +50,7 @@ const competitors = [
     trend: 6,
     trendUp: true,
     date: '24 Jan 2025',
-    categories: ['Active', 'Customer data', 'Financials'],
+    categories: ['Active', 'In Stock', 'Customer data'],
     competitorPrice: 45.00,
     myPrice: 45.00,
   },
@@ -64,7 +64,7 @@ const competitors = [
     trend: 8,
     trendUp: true,
     date: '26 Jan 2025',
-    categories: ['Active', 'Database access', 'Admin'],
+    categories: ['Active', 'In Stock', 'Database access'],
     competitorPrice: 52.00,
     myPrice: 48.00,
   },
@@ -78,7 +78,7 @@ const competitors = [
     trend: 1,
     trendUp: false,
     date: '18 Jan 2025',
-    categories: ['Active', 'Salesforce', 'Admin', '+4'],
+    categories: ['Active', 'In Stock', 'Salesforce', '+3'],
     competitorPrice: 28.00,
     myPrice: 35.50,
   },
@@ -92,7 +92,7 @@ const competitors = [
     trend: 6,
     trendUp: false,
     date: '28 Jan 2025',
-    categories: ['Active', 'Business data', 'Admin', '+4'],
+    categories: ['Active', 'In Stock', 'Business data', '+3'],
     competitorPrice: 39.99,
     myPrice: 42.00,
   },
@@ -106,7 +106,7 @@ const competitors = [
     trend: 2,
     trendUp: true,
     date: '16 Jan 2025',
-    categories: ['Inactive', 'Customer data', 'Financials'],
+    categories: ['Inactive', 'Out of Stock', 'Customer data'],
     competitorPrice: 55.00,
     myPrice: 49.99,
   },
@@ -115,6 +115,8 @@ const competitors = [
 const badgeClasses: Record<string, string> = {
   Active: 'border-[#ABEFC6] bg-[#ECFDF3] text-[#067647]',
   Inactive: 'border-[#E9EAEB] bg-[#FAFAFA] text-[#414651]',
+  'In Stock': 'border-[#ABEFC6] bg-[#ECFDF3] text-[#067647]',
+  'Out of Stock': 'border-[#FECDCA] bg-[#FEF3F2] text-[#B42318]',
   'Customer data': 'border-[#B2DDFF] bg-[#EFF8FF] text-[#175CD3]',
   'Business data': 'border-[#E9D7FE] bg-[#F9F5FF] text-[#6941C6]',
   Admin: 'border-[#C7D7FE] bg-[#EEF4FF] text-[#3538CD]',
@@ -612,6 +614,8 @@ export default function CompetitorPage() {
                         >
                           {category === 'Active' && <span className="h-2 w-2 rounded-full bg-[#17B26A]" />}
                           {category === 'Inactive' && <span className="h-2 w-2 rounded-full bg-[#717680]" />}
+                          {category === 'In Stock' && <span className="h-2 w-2 rounded-full bg-[#17B26A]" />}
+                          {category === 'Out of Stock' && <span className="h-2 w-2 rounded-full bg-[#F04438]" />}
                           {category}
                         </span>
                       ))}
