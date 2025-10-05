@@ -2,6 +2,7 @@
 
 import type { CSSProperties, FC, HTMLAttributes, ReactNode } from "react";
 import React, { cloneElement, createContext, isValidElement, useCallback, useContext, useMemo } from "react";
+import { Button } from "@/components/base/buttons/button";
 
 type PaginationPage = {
     /** The type of the pagination item. */
@@ -243,9 +244,15 @@ const Trigger: FC<TriggerProps> = ({ children, style, className, asChild = false
     }
 
     return (
-        <button aria-label={ariaLabel || defaultAriaLabel} onClick={handleClick} disabled={isDisabled} style={style} className={computedClassName}>
+        <Button 
+            aria-label={ariaLabel || defaultAriaLabel} 
+            onClick={handleClick} 
+            isDisabled={isDisabled} 
+            style={style} 
+            className={computedClassName}
+        >
             {children}
-        </button>
+        </Button>
     );
 };
 
@@ -321,7 +328,7 @@ const PaginationItem = ({ value, isCurrent, children, style, className, ariaLabe
     }
 
     return (
-        <button
+        <Button
             onClick={handleClick}
             style={style}
             className={computedClassName}
@@ -330,7 +337,7 @@ const PaginationItem = ({ value, isCurrent, children, style, className, ariaLabe
             role="listitem"
         >
             {children}
-        </button>
+        </Button>
     );
 };
 interface PaginationEllipsisProps {

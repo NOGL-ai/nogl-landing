@@ -3,6 +3,7 @@
 import type { CSSProperties, ComponentPropsWithRef, HTMLAttributes, KeyboardEvent, ReactNode, Ref } from "react";
 import { cloneElement, createContext, isValidElement, useCallback, useContext, useEffect, useState } from "react";
 import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-react";
+import { Button } from "@/components/base/buttons/button";
 import { cx } from "@/utils/cx";
 
 type CarouselApi = UseEmblaCarouselType[1];
@@ -216,9 +217,15 @@ const Trigger = ({ className, children, asChild, direction, style, ...props }: T
     }
 
     return (
-        <button aria-label={defaultAriaLabel} disabled={isDisabled} className={computedClassName} onClick={handleClick} {...props}>
+        <Button 
+            aria-label={defaultAriaLabel} 
+            isDisabled={isDisabled} 
+            className={computedClassName} 
+            onClick={handleClick} 
+            {...props}
+        >
             {children}
-        </button>
+        </Button>
     );
 };
 
@@ -275,9 +282,14 @@ const CarouselIndicator = ({ index, isSelected = false, children, asChild, class
     }
 
     return (
-        <button aria-label={defaultAriaLabel} aria-current={isSelected ? "true" : undefined} className={computedClassName} onClick={handleClick}>
+        <Button 
+            aria-label={defaultAriaLabel} 
+            aria-current={isSelected ? "true" : undefined} 
+            className={computedClassName} 
+            onClick={handleClick}
+        >
             {children}
-        </button>
+        </Button>
     );
 };
 

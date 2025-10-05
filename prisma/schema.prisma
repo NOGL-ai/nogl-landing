@@ -34,6 +34,7 @@ model User {
   accounts              Account[]
   sessions              Session[]
   apiKeys               ApiKey[]
+  products              Product[]
 
   @@index([role])
 }
@@ -89,4 +90,129 @@ enum UserRole {
   USER
   EXPERT
   ADMIN
+}
+
+// Product-related models
+model Brand {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  logo        String?
+  website     String?
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
+
+  @@index([name])
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  slug        String    @unique
+  description String?
+  parentId    String?
+  parent      Category? @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryHierarchy")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
+
+  @@index([name])
+  @@index([slug])
+}
+
+model Product {
+  id              String    @id @default(cuid())
+  name            String
+  sku             String    @unique
+  description     String?
+  image           String?
+  productUrl      String?
+  cost            Decimal   @db.Decimal(10, 2)
+  price           Decimal   @db.Decimal(10, 2)
+  currency        String    @default("EUR")
+  minPrice        Decimal?  @db.Decimal(10, 2)
+  maxPrice        Decimal?  @db.Decimal(10, 2)
+  margin          Decimal?  @db.Decimal(5, 2)
+  stock           Int?      @default(0)
+  status          ProductStatus @default(ACTIVE)
+  featured        Boolean   @default(false)
+  channel         String?
+  categoryId      String?
+  category        Category? @relation(fields: [categoryId], references: [id])
+  brandId         String?
+  brand           Brand?    @relation(fields: [brandId], references: [id])
+  triggeredRule   String?
+  lastUpdated     DateTime  @default(now())
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  competitors     Competitor[]
+  priceHistory    PriceHistory[]
+  productImages   ProductImage[]
+
+  @@index([name])
+  @@index([sku])
+  @@index([status])
+  @@index([featured])
+  @@index([channel])
+  @@index([brandId])
+  @@index([categoryId])
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model Competitor {
+  id          String    @id @default(cuid())
+  productId   String
+  product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name        String
+  url         String?
+  cheapest    Decimal   @db.Decimal(10, 2)
+  avg         Decimal   @db.Decimal(10, 2)
+  highest     Decimal   @db.Decimal(10, 2)
+  cheapestColor String  @default("gray")
+  lastChecked DateTime  @default(now())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([productId])
+  @@index([name])
+}
+
+model PriceHistory {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  price     Decimal  @db.Decimal(10, 2)
+  cost      Decimal? @db.Decimal(10, 2)
+  currency  String   @default("EUR")
+  source    String?  // "manual", "api", "scraper"
+  createdAt DateTime @default(now())
+
+  @@index([productId])
+  @@index([createdAt])
+}
+
+model ProductImage {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url       String
+  alt       String?
+  order     Int      @default(0)
+  isPrimary Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([productId])
+  @@index([isPrimary])
+}
+
+enum ProductStatus {
+  ACTIVE
+  INACTIVE
+  DRAFT
+  ARCHIVED
 }

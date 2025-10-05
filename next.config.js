@@ -43,7 +43,7 @@ const nextConfig = {
 			config.resolve.fallback = {
 				...config.resolve.fallback,
 				stream: require.resolve("stream-browserify"),
-				buffer: require.resolve("buffer/"),
+				buffer: require.resolve("buffer"),
 				fs: false,
 				net: false,
 				dns: false,

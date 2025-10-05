@@ -1,29 +1,47 @@
-import '@testing-library/jest-dom';
+import '@testing-library/jest-dom'
+
+// Mock global Request and Response for Next.js
+global.Request = global.Request || class Request {
+  constructor(input, init) {
+    Object.defineProperty(this, 'url', {
+      value: input,
+      writable: false,
+      enumerable: true,
+      configurable: true
+    })
+    this.method = init?.method || 'GET'
+    this.headers = new Map(Object.entries(init?.headers || {}))
+  }
+}
+
+global.Response = global.Response || class Response {
+  constructor(body, init) {
+    this.body = body
+    this.status = init?.status || 200
+    this.statusText = init?.statusText || 'OK'
+    this.headers = new Map(Object.entries(init?.headers || {}))
+  }
+  
+  async json() {
+    return JSON.parse(this.body)
+  }
+  
+  async text() {
+    return this.body
+  }
+  
+  static json(data, init) {
+    return new Response(JSON.stringify(data), {
+      ...init,
+      headers: {
+        'Content-Type': 'application/json',
+        ...init?.headers
+      }
+    })
+  }
+}
 
 // Mock Next.js router
-jest.mock('next/router', () => ({
-  useRouter() {
-    return {
-      route: '/',
-      pathname: '/',
-      query: {},
-      asPath: '/',
-      push: jest.fn(),
-      pop: jest.fn(),
-      reload: jest.fn(),
-      back: jest.fn(),
-      prefetch: jest.fn(),
-      beforePopState: jest.fn(),
-      events: {
-        on: jest.fn(),
-        off: jest.fn(),
-        emit: jest.fn(),
-      },
-    };
-  },
-}));
-
-// Mock Next.js navigation
 jest.mock('next/navigation', () => ({
   useRouter() {
     return {
@@ -33,126 +51,44 @@ jest.mock('next/navigation', () => ({
       back: jest.fn(),
       forward: jest.fn(),
       refresh: jest.fn(),
-    };
+    }
   },
   useSearchParams() {
-    return {
-      get: jest.fn(),
-    };
+    return new URLSearchParams()
   },
   usePathname() {
-    return '/';
+    return '/'
   },
-}));
+}))
 
-// Mock Next.js image
-jest.mock('next/image', () => {
-  return function MockedImage({ src, alt, ...props }) {
-     
-    return <img src={src} alt={alt} {...props} />;
-  };
-});
-
-// Mock Next.js link
-jest.mock('next/link', () => {
-  return function MockedLink({ children, href, ...props }) {
-    return (
-      <a href={href} {...props}>
-        {children}
-      </a>
-    );
-  };
-});
+// Mock Next.js headers
+jest.mock('next/headers', () => ({
+  headers: jest.fn(() => new Map()),
+  cookies: jest.fn(() => new Map()),
+}))
 
 // Mock environment variables
-process.env.NODE_ENV = 'test';
-process.env.NEXTAUTH_URL = 'http://localhost:3000';
-process.env.NEXTAUTH_SECRET = 'test-secret';
+process.env.NEXTAUTH_SECRET = 'test-secret'
+process.env.NEXTAUTH_URL = 'http://localhost:3000'
+process.env.DATABASE_URL = 'postgresql://test:test@localhost:5432/test_db'
 
-// Mock IntersectionObserver
-global.IntersectionObserver = jest.fn().mockImplementation(() => ({
-  observe: jest.fn(),
-  unobserve: jest.fn(),
-  disconnect: jest.fn(),
-}));
+// Global test timeout
+jest.setTimeout(10000)
 
-// Mock ResizeObserver
-global.ResizeObserver = jest.fn().mockImplementation(() => ({
-  observe: jest.fn(),
-  unobserve: jest.fn(),
-  disconnect: jest.fn(),
-}));
-
-// Mock matchMedia
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: jest.fn().mockImplementation(query => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: jest.fn(), // deprecated
-    removeListener: jest.fn(), // deprecated
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
-  })),
-});
-
-// Mock scrollTo
-Object.defineProperty(window, 'scrollTo', {
-  writable: true,
-  value: jest.fn(),
-});
-
-// Mock localStorage
-const localStorageMock = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  removeItem: jest.fn(),
-  clear: jest.fn(),
-};
-Object.defineProperty(window, 'localStorage', {
-  value: localStorageMock,
-});
-
-// Mock sessionStorage
-const sessionStorageMock = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  removeItem: jest.fn(),
-  clear: jest.fn(),
-};
-Object.defineProperty(window, 'sessionStorage', {
-  value: sessionStorageMock,
-});
-
-// Suppress console warnings in tests
-const originalWarn = console.warn;
-const originalError = console.error;
-
+// Suppress console errors in tests unless explicitly needed
+const originalError = console.error
 beforeAll(() => {
-  console.warn = (...args) => {
+  console.error = (...args) => {
     if (
       typeof args[0] === 'string' &&
       args[0].includes('Warning: ReactDOM.render is no longer supported')
     ) {
-      return;
+      return
     }
-    originalWarn.call(console, ...args);
-  };
-
-  console.error = (...args) => {
-    if (
-      typeof args[0] === 'string' &&
-      (args[0].includes('Warning:') || args[0].includes('Error: Not implemented'))
-    ) {
-      return;
-    }
-    originalError.call(console, ...args);
-  };
-});
+    originalError.call(console, ...args)
+  }
+})
 
 afterAll(() => {
-  console.warn = originalWarn;
-  console.error = originalError;
-});
+  console.error = originalError
+})
