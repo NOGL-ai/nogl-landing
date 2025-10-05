@@ -13,6 +13,7 @@ interface DataTableHeaderProps<TData> {
 	enableSelection?: boolean;
 	enableColumnResizing?: boolean;
 	enableColumnReordering?: boolean;
+	variant?: "default" | "untitled-ui";
 }
 
 export function DataTableHeader<TData>({
@@ -20,6 +21,7 @@ export function DataTableHeader<TData>({
 	enableSelection = false,
 	enableColumnResizing = false,
 	enableColumnReordering = false,
+	variant = "default",
 }: DataTableHeaderProps<TData>) {
 	return (
 		<DataTableDragDropWrapper
@@ -42,6 +44,7 @@ export function DataTableHeader<TData>({
 								index={index}
 								enableColumnResizing={enableColumnResizing}
 								enableColumnReordering={enableColumnReordering}
+								variant={variant}
 							/>
 						))}
 					</UntitledTable.Row>

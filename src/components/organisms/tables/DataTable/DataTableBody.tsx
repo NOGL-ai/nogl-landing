@@ -9,6 +9,7 @@ interface DataTableBodyProps<TData> {
 	enableSelection?: boolean;
 	enableColumnResizing?: boolean;
 	enableColumnReordering?: boolean;
+	variant?: "default" | "untitled-ui";
 }
 
 export function DataTableBody<TData>({
@@ -16,6 +17,7 @@ export function DataTableBody<TData>({
 	enableSelection = false,
 	enableColumnResizing = false,
 	enableColumnReordering = false,
+	variant = "default",
 }: DataTableBodyProps<TData>) {
 	const rows = table.getRowModel().rows;
 	const rowCount = rows?.length || 0;
@@ -26,33 +28,40 @@ export function DataTableBody<TData>({
 			aria-label="Table body with data rows"
 		>
 			{rowCount > 0 ? (
-				rows.map((row, index) => (
-					<UntitledTable.Row
-						key={row.id}
-						data-state={row.getIsSelected() && "selected"}
-						role="row"
-						aria-rowindex={index + 2} // +2 because header is row 1
-						aria-selected={row.getIsSelected()}
-						className={row.getIsSelected() ? "bg-blue-50 dark:bg-blue-900/20" : ""}
-					>
-						{row.getVisibleCells().map((cell, cellIndex) => (
-							<UntitledTable.Cell 
-								key={cell.id}
-								role="gridcell"
-								aria-colindex={cellIndex + 1}
-								aria-describedby={cell.column.id}
-								style={{
-									width: enableColumnResizing ? cell.column.getSize() : undefined,
-								}}
-							>
-								{flexRender(
-									cell.column.columnDef.cell,
-									cell.getContext()
-								)}
-							</UntitledTable.Cell>
-						))}
-					</UntitledTable.Row>
-				))
+				rows.map((row, index) => {
+					const isAlternate = index % 2 === 0;
+					const rowBg = variant === "untitled-ui"
+						? (isAlternate ? "bg-[#FDFDFD]" : "bg-white")
+						: row.getIsSelected() ? "bg-blue-50 dark:bg-blue-900/20" : "";
+
+					return (
+						<UntitledTable.Row
+							key={row.id}
+							data-state={row.getIsSelected() && "selected"}
+							role="row"
+							aria-rowindex={index + 2} // +2 because header is row 1
+							aria-selected={row.getIsSelected()}
+							className={rowBg}
+						>
+							{row.getVisibleCells().map((cell, cellIndex) => (
+								<UntitledTable.Cell
+									key={cell.id}
+									role="gridcell"
+									aria-colindex={cellIndex + 1}
+									aria-describedby={cell.column.id}
+									style={{
+										width: enableColumnResizing ? cell.column.getSize() : undefined,
+									}}
+								>
+									{flexRender(
+										cell.column.columnDef.cell,
+										cell.getContext()
+									)}
+								</UntitledTable.Cell>
+							))}
+						</UntitledTable.Row>
+					);
+				})
 			) : (
 				<UntitledTable.Row role="row">
 					<UntitledTable.Cell

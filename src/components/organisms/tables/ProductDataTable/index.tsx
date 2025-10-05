@@ -48,6 +48,10 @@ interface ProductDataTableProps {
 	enableInfiniteScroll?: boolean;
 	onInfiniteScrollToggle?: (enabled: boolean) => void;
 	infiniteScrollProps?: unknown;
+	variant?: "default" | "untitled-ui";
+	tableTitle?: string;
+	tableBadge?: React.ReactNode;
+	tableDescription?: string;
 }
 
 export function ProductDataTable({
@@ -55,8 +59,12 @@ export function ProductDataTable({
 	enableInfiniteScroll = false,
 	onInfiniteScrollToggle,
 	infiniteScrollProps,
+	variant = "default",
+	tableTitle,
+	tableBadge,
+	tableDescription,
 }: ProductDataTableProps) {
-	const columns = useMemo(() => ProductTableColumns(products), [products]);
+	const columns = useMemo(() => ProductTableColumns(products, { variant }), [products, variant]);
 	const [viewMode, setViewMode] = useState<"table" | "grid">("table");
 	const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
 	const [filters, setFilters] = useState<any>({});

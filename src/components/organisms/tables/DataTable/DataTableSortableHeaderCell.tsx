@@ -12,6 +12,7 @@ interface DataTableSortableHeaderCellProps<TData> {
 	index: number;
 	enableColumnResizing?: boolean;
 	enableColumnReordering?: boolean;
+	variant?: "default" | "untitled-ui";
 }
 
 export function DataTableSortableHeaderCell<TData>({
@@ -19,6 +20,7 @@ export function DataTableSortableHeaderCell<TData>({
 	index,
 	enableColumnResizing = false,
 	enableColumnReordering = false,
+	variant = "default",
 }: DataTableSortableHeaderCellProps<TData>) {
 	const {
 		attributes,
@@ -60,7 +62,7 @@ export function DataTableSortableHeaderCell<TData>({
 			aria-label={`Column ${index + 1}: ${header.id}`}
 			className={`relative ${isDragging ? "z-50" : ""} ${
 				enableColumnReordering ? "cursor-grab active:cursor-grabbing" : ""
-			}`}
+			} ${variant === "untitled-ui" ? "px-6 py-2 text-xs font-semibold text-tertiary" : ""}`}
 			{...attributes}
 			{...listeners}
 		>
