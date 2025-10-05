@@ -23,6 +23,8 @@ const competitors = [
     trendUp: true,
     date: '22 Jan 2025',
     categories: ['Active', 'Customer data', 'Admin', '+4'],
+    competitorPrice: 29.90,
+    myPrice: 42.00,
   },
   {
     id: 1,
@@ -35,6 +37,8 @@ const competitors = [
     trendUp: false,
     date: '20 Jan 2025',
     categories: ['Active', 'Business data', 'Admin', '+4'],
+    competitorPrice: 35.50,
+    myPrice: 32.00,
   },
   {
     id: 2,
@@ -47,6 +51,8 @@ const competitors = [
     trendUp: true,
     date: '24 Jan 2025',
     categories: ['Active', 'Customer data', 'Financials'],
+    competitorPrice: 45.00,
+    myPrice: 45.00,
   },
   {
     id: 3,
@@ -59,6 +65,8 @@ const competitors = [
     trendUp: true,
     date: '26 Jan 2025',
     categories: ['Active', 'Database access', 'Admin'],
+    competitorPrice: 52.00,
+    myPrice: 48.00,
   },
   {
     id: 4,
@@ -71,6 +79,8 @@ const competitors = [
     trendUp: false,
     date: '18 Jan 2025',
     categories: ['Active', 'Salesforce', 'Admin', '+4'],
+    competitorPrice: 28.00,
+    myPrice: 35.50,
   },
   {
     id: 5,
@@ -83,6 +93,8 @@ const competitors = [
     trendUp: false,
     date: '28 Jan 2025',
     categories: ['Active', 'Business data', 'Admin', '+4'],
+    competitorPrice: 39.99,
+    myPrice: 42.00,
   },
   {
     id: 6,
@@ -95,6 +107,8 @@ const competitors = [
     trendUp: true,
     date: '16 Jan 2025',
     categories: ['Inactive', 'Customer data', 'Financials'],
+    competitorPrice: 55.00,
+    myPrice: 49.99,
   },
 ];
 
@@ -107,6 +121,153 @@ const badgeClasses: Record<string, string> = {
   Financials: 'border-[#FCCEEE] bg-[#FDF2FA] text-[#C11574]',
   'Database access': 'border-[#D5D9EB] bg-[#F8F9FC] text-[#363F72]',
   Salesforce: 'border-[#F9DBAF] bg-[#FEF6EE] text-[#B93815]',
+};
+
+// Price Position Component
+const PricePositionCell = ({ 
+  competitorPrice, 
+  myPrice 
+}: { 
+  competitorPrice: number; 
+  myPrice: number;
+}) => {
+  const priceDiff = myPrice - competitorPrice;
+  const percentageDiff = ((priceDiff / competitorPrice) * 100);
+  const isWinning = priceDiff < 0;
+  const isEqual = priceDiff === 0;
+  
+  const formatPrice = (price: number) => `€ ${price.toFixed(2)}`;
+  const formatDiff = (diff: number) => {
+    const sign = diff > 0 ? '+' : '';
+    return `${sign}€ ${diff.toFixed(2)}`;
+  };
+  
+  const formatPercentage = (percent: number) => {
+    const sign = percent > 0 ? '+' : '';
+    return `${sign}${Math.abs(percent).toFixed(2)}%`;
+  };
+
+  const getStatusColor = () => {
+    if (isEqual) return { bg: 'bg-[#F5F5F5]', text: 'text-[#717680]', border: 'border-[#E9EAEB]' };
+    if (isWinning) return { bg: 'bg-[#ECFDF3]', text: 'text-[#067647]', border: 'border-[#ABEFC6]' };
+    return { bg: 'bg-[#FEF3F2]', text: 'text-[#B42318]', border: 'border-[#FECDCA]' };
+  };
+
+  const getStatusText = () => {
+    if (isEqual) return 'Equal';
+    return isWinning ? 'You Win' : 'You Lose';
+  };
+
+  const colors = getStatusColor();
+  const progressPercentage = isEqual ? 50 : (competitorPrice / (competitorPrice + myPrice)) * 100;
+
+  return (
+    <div className="group relative min-w-[280px] space-y-2">
+      {/* Compact View - Always Visible */}
+      <div className="flex items-center justify-between gap-2 text-xs">
+        <div className="flex items-center gap-1.5">
+          <div className="flex h-6 w-6 items-center justify-center rounded bg-[#EEF4FF]">
+            <svg className="h-3.5 w-3.5 text-[#3538CD]" fill="none" stroke="currentColor" viewBox="0 0 16 16">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2 6L8 2L14 6M3 13.5V7M13 13.5V7M2 13.5H14M5.5 13.5V10H10.5V13.5" />
+            </svg>
+          </div>
+          <div>
+            <div className="text-[10px] font-medium text-[#717680]">Comp. Price</div>
+            <div className="font-semibold text-[#181D27]">{formatPrice(competitorPrice)}</div>
+          </div>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div>
+            <div className="text-right text-[10px] font-medium text-[#717680]">My Price</div>
+            <div className="text-right font-semibold text-[#181D27]">{formatPrice(myPrice)}</div>
+          </div>
+          <div className="flex h-6 w-6 items-center justify-center rounded bg-[#F4EBFF]">
+            <svg className="h-3.5 w-3.5 text-[#7F56D9]" fill="none" stroke="currentColor" viewBox="0 0 16 16">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 14A6 6 0 108 2a6 6 0 000 12zM8 5.33V8m0 2.67h.007" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      {/* Visual Progress Bar with Position */}
+      <div className="relative">
+        <div className="h-2 overflow-hidden rounded-full bg-[#E9EAEB]">
+          <div 
+            className={`h-full transition-all duration-300 ${isWinning ? 'bg-[#17B26A]' : isEqual ? 'bg-[#717680]' : 'bg-[#F04438]'}`}
+            style={{ width: `${progressPercentage}%` }}
+          />
+        </div>
+        <div 
+          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 flex items-center justify-center"
+          style={{ left: `${progressPercentage}%` }}
+        >
+          <div className={`h-4 w-4 rounded-full border-2 border-white shadow-sm ${isWinning ? 'bg-[#17B26A]' : isEqual ? 'bg-[#717680]' : 'bg-[#F04438]'}`}>
+            <div className="h-full w-full rounded-full bg-white/30" />
+          </div>
+        </div>
+      </div>
+
+      {/* Status Badge with Difference */}
+      <div className="flex items-center justify-between">
+        <div className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs font-medium ${colors.border} ${colors.bg} ${colors.text}`}>
+          {!isEqual && (
+            isWinning ? (
+              <ArrowDown className="h-3 w-3" />
+            ) : (
+              <ArrowUp className="h-3 w-3" />
+            )
+          )}
+          <span>{getStatusText()}</span>
+        </div>
+        {!isEqual && (
+          <div className={`text-xs font-semibold ${colors.text}`}>
+            {formatDiff(priceDiff)} ({formatPercentage(percentageDiff)})
+          </div>
+        )}
+      </div>
+
+      {/* Detailed Tooltip on Hover */}
+      <div className="pointer-events-none absolute left-0 top-full z-50 mt-2 hidden w-[320px] rounded-lg border border-[#E9EAEB] bg-white p-4 shadow-lg group-hover:block">
+        <div className="space-y-3">
+          <div className="text-sm font-semibold text-[#181D27]">Price Analysis</div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1 rounded-lg bg-[#EEF4FF] p-3">
+              <div className="text-xs text-[#535862]">Competitor</div>
+              <div className="text-lg font-bold text-[#3538CD]">{formatPrice(competitorPrice)}</div>
+            </div>
+            <div className="space-y-1 rounded-lg bg-[#F4EBFF] p-3">
+              <div className="text-xs text-[#535862]">Your Price</div>
+              <div className="text-lg font-bold text-[#7F56D9]">{formatPrice(myPrice)}</div>
+            </div>
+          </div>
+          <div className="space-y-2 rounded-lg border border-[#E9EAEB] bg-[#FAFAFA] p-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-[#535862]">Difference:</span>
+              <span className={`text-sm font-semibold ${colors.text}`}>{formatDiff(priceDiff)}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-[#535862]">Percentage:</span>
+              <span className={`text-sm font-semibold ${colors.text}`}>{formatPercentage(percentageDiff)}</span>
+            </div>
+            <div className="flex items-center justify-between border-t border-[#E9EAEB] pt-2">
+              <span className="text-xs text-[#535862]">Status:</span>
+              <span className={`text-sm font-bold ${colors.text}`}>{getStatusText()}</span>
+            </div>
+          </div>
+          {!isEqual && (
+            <div className={`rounded-lg p-2 text-xs ${colors.bg}`}>
+              <span className={colors.text}>
+                {isWinning 
+                  ? `💡 Great! You're ${Math.abs(percentageDiff).toFixed(1)}% cheaper than your competitor.`
+                  : `⚠️ Consider adjusting your price. You're ${percentageDiff.toFixed(1)}% more expensive.`
+                }
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default function CompetitorPage() {
@@ -423,13 +584,10 @@ export default function CompetitorPage() {
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <span className="text-sm font-medium text-[#414651]">60</span>
-                      <div className="h-2 flex-1 overflow-hidden rounded-full bg-[#E9EAEB]">
-                        <div className="h-full rounded-full bg-[#7F56D9]" style={{ width: `${competitor.position}%` }} />
-                      </div>
-                      <span className="text-sm font-medium text-[#414651]">76</span>
-                    </div>
+                    <PricePositionCell 
+                      competitorPrice={competitor.competitorPrice} 
+                      myPrice={competitor.myPrice}
+                    />
                   </td>
                   <td className="px-6 py-4">
                     <div className={`inline-flex items-center gap-0.5 rounded-full border px-2 py-0.5 ${
@@ -447,7 +605,7 @@ export default function CompetitorPage() {
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex flex-wrap items-center gap-1">
-                      {competitor.categories.slice(0, 3).map(category => (
+                      {competitor.categories.slice(0, 2).map(category => (
                         <span
                           key={category}
                           className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium ${badgeClasses[category] ?? 'border-[#E9EAEB] bg-[#FAFAFA] text-[#414651]'}`}
@@ -457,9 +615,9 @@ export default function CompetitorPage() {
                           {category}
                         </span>
                       ))}
-                        {competitor.categories.length > 3 && (
+                        {competitor.categories.length > 2 && (
                           <span className="inline-flex items-center rounded-full border border-[#E9EAEB] bg-[#FAFAFA] px-2 py-0.5 text-xs font-medium text-[#414651]">
-                            +{competitor.categories.length - 3}
+                            +{competitor.categories.length - 2}
                           </span>
                         )}
                     </div>
