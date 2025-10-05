@@ -12,7 +12,7 @@ import {
 	SortingState,
 	VisibilityState,
 	RowSelectionState,
-	ColumnResizingState,
+	ColumnSizingState,
 	ColumnOrderState,
 } from "@tanstack/react-table";
 import { DataTableHeader } from "./DataTableHeader";
@@ -21,7 +21,6 @@ import { DataTablePagination } from "./DataTablePagination";
 import { DataTableToolbar } from "./DataTableToolbar";
 import { DataTableGlobalSearch } from "./DataTableGlobalSearch";
 import { DataTableColumnManagement } from "./DataTableColumnManagement";
-import { DataTableAdvancedFilters } from "./DataTableAdvancedFilters";
 import { Table as UntitledTable } from "@/components/application/table/table";
 
 export interface DataTableProps<TData, TValue> {
@@ -37,7 +36,6 @@ export interface DataTableProps<TData, TValue> {
 	enableColumnManagement?: boolean;
 	enableColumnResizing?: boolean;
 	enableColumnReordering?: boolean;
-	enableAdvancedFilters?: boolean;
 	pageSize?: number;
 	className?: string;
 	onRowSelectionChange?: (selectedRows: TData[]) => void;
@@ -56,7 +54,6 @@ export function DataTable<TData, TValue>({
 	enableColumnManagement = false,
 	enableColumnResizing = false,
 	enableColumnReordering = false,
-	enableAdvancedFilters = false,
 	pageSize = 10,
 	className,
 	onRowSelectionChange,
@@ -66,7 +63,7 @@ export function DataTable<TData, TValue>({
 	const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
 	const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
 	const [globalFilter, setGlobalFilter] = React.useState("");
-	const [columnResizing, setColumnResizing] = React.useState<ColumnResizingState>({});
+	const [columnSizing, setColumnSizing] = React.useState<ColumnSizingState>({});
 	const [columnOrder, setColumnOrder] = React.useState<ColumnOrderState>([]);
 
 	// Global filter function
@@ -97,13 +94,24 @@ export function DataTable<TData, TValue>({
 		getSortedRowModel: getSortedRowModel(),
 		getFilteredRowModel: getFilteredRowModel(),
 		onColumnVisibilityChange: setColumnVisibility,
-		onRowSelectionChange: setRowSelection,
+		onRowSelectionChange: (updaterOrValue) => {
+			setRowSelection(updaterOrValue);
+			if (onRowSelectionChange) {
+				// Get the updated row selection state
+				const newRowSelection = typeof updaterOrValue === 'function' 
+					? updaterOrValue(rowSelection) 
+					: updaterOrValue;
+				
+				// Get selected rows from the current data based on selection indices
+				const selectedRows = data.filter((_, index) => newRowSelection[index]);
+				onRowSelectionChange(selectedRows);
+			}
+		},
 		onGlobalFilterChange: setGlobalFilter,
 		globalFilterFn: enableGlobalSearch ? globalFilterFn : "includesString",
 		enableColumnResizing: enableColumnResizing,
 		columnResizeMode: "onChange",
-		onColumnResizingChange: setColumnResizing,
-		enableColumnOrdering: enableColumnReordering,
+		onColumnSizingChange: setColumnSizing,
 		onColumnOrderChange: setColumnOrder,
 		state: {
 			sorting,
@@ -111,7 +119,7 @@ export function DataTable<TData, TValue>({
 			columnVisibility,
 			rowSelection,
 			globalFilter,
-			columnResizing,
+			columnSizing,
 			columnOrder,
 		},
 		initialState: {
@@ -120,14 +128,6 @@ export function DataTable<TData, TValue>({
 			},
 		},
 	});
-
-	// Handle row selection changes
-	React.useEffect(() => {
-		if (onRowSelectionChange) {
-			const selectedRows = table.getFilteredSelectedRowModel().rows.map(row => row.original);
-			onRowSelectionChange(selectedRows);
-		}
-	}, [rowSelection, onRowSelectionChange, table]);
 
 	return (
 		<div 
@@ -148,7 +148,6 @@ export function DataTable<TData, TValue>({
 					placeholder={searchPlaceholder}
 				/>
 			)}
-			{enableAdvancedFilters && <DataTableAdvancedFilters table={table} />}
 			<UntitledTable
 				role="table"
 				aria-label="Data table"

@@ -38,8 +38,6 @@ export function DataTableColumnManagement<TData>({
 				<DropdownMenuContent 
 					align="end"
 					className="w-48"
-					role="menu"
-					aria-label="Column visibility options"
 				>
 					{/* Show all columns */}
 					<DropdownMenuCheckboxItem

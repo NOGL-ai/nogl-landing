@@ -43,12 +43,10 @@ export function DataTableSortableHeaderCell<TData>({
 
 	return (
 		<UntitledTable.Head
-			ref={setNodeRef}
 			style={{
 				...style,
 				width: enableColumnResizing ? header.getSize() : undefined,
 			}}
-			role="columnheader"
 			aria-colindex={index + 1}
 			aria-sort={
 				isSortable

@@ -5,7 +5,39 @@ import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Icon } from "../Icon";
-import { Product } from "./index";
+// Define Product interface locally to avoid circular dependency
+interface Product {
+	id: string;
+	name: string;
+	sku: string;
+	image: string;
+	productUrl?: string;
+	cost: string;
+	price: string;
+	currency?: string;
+	minPrice: string;
+	maxPrice: string;
+	brand: {
+		name: string;
+		logo: string | null;
+	};
+	competitors: {
+		id: string;
+		name: string;
+		cheapest: number;
+		avg: number;
+		highest: number;
+		cheapestColor: string;
+	}[];
+	category: {
+		name: string;
+		slug: string;
+	};
+	status: "ACTIVE" | "INACTIVE" | "DRAFT" | "ARCHIVED";
+	featured: boolean;
+	createdAt: string;
+	updatedAt: string;
+}
 
 interface ProductTableBulkActionsProps {
 	table: Table<Product>;
@@ -117,7 +149,7 @@ export function ProductTableBulkActions({
 						className="border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
 						aria-label={`Edit ${selectedCount} selected products`}
 					>
-						<Icon name="Edit01" className="mr-2 h-4 w-4" aria-hidden={true} />
+						<Icon name="Edit" className="mr-2 h-4 w-4" aria-hidden={true} />
 						Bulk Edit
 					</Button>
 					<Button
@@ -127,7 +159,7 @@ export function ProductTableBulkActions({
 						className="border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
 						aria-label={`Delete ${selectedCount} selected products`}
 					>
-						<Icon name="Trash01" className="mr-2 h-4 w-4" aria-hidden={true} />
+						<Icon name="Trash2" className="mr-2 h-4 w-4" aria-hidden={true} />
 						Delete
 					</Button>
 				</div>

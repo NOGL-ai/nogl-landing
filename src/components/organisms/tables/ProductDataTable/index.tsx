@@ -177,7 +177,6 @@ export function ProductDataTable({
 				enableColumnManagement={true}
 				enableColumnResizing={true}
 				enableColumnReordering={true}
-				enableAdvancedFilters={true}
 				pageSize={20}
 				onRowSelectionChange={setSelectedRows}
 			/>
