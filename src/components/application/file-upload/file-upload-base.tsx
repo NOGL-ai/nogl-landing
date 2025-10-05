@@ -245,7 +245,7 @@ export interface FileListItemProps {
     /** Whether the file failed to upload. */
     failed?: boolean;
     /** The type of the file. */
-    type?: ComponentProps<typeof FileIcon>["type"];
+    type?: ComponentProps<typeof FileTypeIcon>["type"];
     /** The class name of the file list item. */
     className?: string;
     /** The variant of the file icon. */
