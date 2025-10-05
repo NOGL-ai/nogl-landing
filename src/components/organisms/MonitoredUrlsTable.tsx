@@ -477,7 +477,7 @@ export default function MonitoredUrlsTable() {
 					</div>
 					<div className='flex items-center gap-2'>
 						<Button
-							variant='outline'
+							variant='secondary'
 							className='h-8 border-gray-300 px-2 dark:border-gray-600'
 							onClick={() => table.previousPage()}
 							disabled={!table.getCanPreviousPage()}
@@ -489,7 +489,7 @@ export default function MonitoredUrlsTable() {
 							{table.getPageCount()}
 						</div>
 						<Button
-							variant='outline'
+							variant='secondary'
 							className='h-8 border-gray-300 px-2 dark:border-gray-600'
 							onClick={() => table.nextPage()}
 							disabled={!table.getCanNextPage()}

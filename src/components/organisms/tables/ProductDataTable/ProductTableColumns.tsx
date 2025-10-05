@@ -174,31 +174,33 @@ export function ProductTableColumns(products: Product[] = []): ColumnDef<Product
 				isRowHeader: true,
 			},
 		},
-		{
-			id: "compare",
-			accessorFn: (row) => {
-				// Simple comparison logic - in real app this would be more complex
-				const name = row.name.toLowerCase();
-				// This would need access to all products, for now return a mock value
-				return Math.floor(Math.random() * 5);
-			},
-			header: ({ column }) => (
-				<SortableHeader column={column}>
-					Compare
-				</SortableHeader>
-			),
-			cell: ({ row }) => {
-				const count = row.getValue("compare") as number;
-				return (
-					<div className="flex items-center justify-center">
-						<div className="flex h-7 w-7 items-center justify-center rounded-full border border-blue-200 bg-blue-50 text-xs font-semibold text-blue-700 dark:border-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
-							{count}
-						</div>
-					</div>
-				);
-			},
-			size: 80,
+	{
+		id: "compare",
+		accessorFn: (row) => {
+			// Simple comparison logic - generate deterministic value based on product ID
+			// This ensures server and client render the same value
+			const hash = row.id.split('').reduce((acc, char) => {
+				return char.charCodeAt(0) + ((acc << 5) - acc);
+			}, 0);
+			return Math.abs(hash) % 5;
 		},
+		header: ({ column }) => (
+			<SortableHeader column={column}>
+				Compare
+			</SortableHeader>
+		),
+		cell: ({ row }) => {
+			const count = row.getValue("compare") as number;
+			return (
+				<div className="flex items-center justify-center">
+					<div className="flex h-7 w-7 items-center justify-center rounded-full border border-blue-200 bg-blue-50 text-xs font-semibold text-blue-700 dark:border-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+						{count}
+					</div>
+				</div>
+			);
+		},
+		size: 80,
+	},
 		{
 			id: "cost",
 			accessorFn: (row) => parseEuro(row.cost) ?? null,

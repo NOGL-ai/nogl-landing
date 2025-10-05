@@ -59,15 +59,7 @@ export function DataTableSortableHeaderCell<TData>({
 						: "none"
 					: undefined
 			}
-			aria-label={
-				header.column.columnDef.header
-					? `Column ${index + 1}: ${
-							typeof header.column.columnDef.header === "string"
-								? header.column.columnDef.header
-								: "Sortable column"
-					  }`
-					: `Column ${index + 1}`
-			}
+			aria-label={`Column ${index + 1}: ${header.id}`}
 			className={`relative ${isDragging ? "z-50" : ""} ${
 				enableColumnReordering ? "cursor-grab active:cursor-grabbing" : ""
 			}`}
@@ -84,7 +76,7 @@ export function DataTableSortableHeaderCell<TData>({
 					onMouseDown={header.getResizeHandler()}
 					onTouchStart={header.getResizeHandler()}
 					className="absolute right-0 top-0 h-full w-1 bg-gray-300 cursor-col-resize select-none touch-none hover:bg-blue-500 dark:bg-gray-600 dark:hover:bg-blue-400"
-					aria-label={`Resize column ${header.column.columnDef.header || header.id}`}
+					aria-label={`Resize column ${header.id}`}
 					onClick={(e) => e.stopPropagation()}
 				/>
 			)}
@@ -93,7 +85,7 @@ export function DataTableSortableHeaderCell<TData>({
 			{enableColumnReordering && (
 				<div
 					className="absolute left-0 top-0 h-full w-2 flex items-center justify-center cursor-grab active:cursor-grabbing opacity-0 hover:opacity-100 transition-opacity"
-					aria-label={`Drag to reorder column ${header.column.columnDef.header || header.id}`}
+					aria-label={`Drag to reorder column ${header.id}`}
 					onClick={(e) => e.stopPropagation()}
 				>
 					<Icon

@@ -21,6 +21,7 @@ import { DataTablePagination } from "./DataTablePagination";
 import { DataTableToolbar } from "./DataTableToolbar";
 import { DataTableGlobalSearch } from "./DataTableGlobalSearch";
 import { DataTableColumnManagement } from "./DataTableColumnManagement";
+import { DataTableAdvancedFilters } from "./DataTableAdvancedFilters";
 import { Table as UntitledTable } from "@/components/application/table/table";
 
 export interface DataTableProps<TData, TValue> {
@@ -36,6 +37,7 @@ export interface DataTableProps<TData, TValue> {
 	enableColumnManagement?: boolean;
 	enableColumnResizing?: boolean;
 	enableColumnReordering?: boolean;
+	enableAdvancedFilters?: boolean;
 	pageSize?: number;
 	className?: string;
 	onRowSelectionChange?: (selectedRows: TData[]) => void;
@@ -54,6 +56,7 @@ export function DataTable<TData, TValue>({
 	enableColumnManagement = false,
 	enableColumnResizing = false,
 	enableColumnReordering = false,
+	enableAdvancedFilters = false,
 	pageSize = 10,
 	className,
 	onRowSelectionChange,
@@ -145,6 +148,7 @@ export function DataTable<TData, TValue>({
 					placeholder={searchPlaceholder}
 				/>
 			)}
+			{enableAdvancedFilters && <DataTableAdvancedFilters table={table} />}
 			<UntitledTable
 				role="table"
 				aria-label="Data table"
