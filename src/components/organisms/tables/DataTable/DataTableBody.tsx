@@ -7,11 +7,13 @@ import { Table as UntitledTable } from "@/components/application/table/table";
 interface DataTableBodyProps<TData> {
 	table: Table<TData>;
 	enableSelection?: boolean;
+	enableColumnResizing?: boolean;
 }
 
 export function DataTableBody<TData>({
 	table,
 	enableSelection = false,
+	enableColumnResizing = false,
 }: DataTableBodyProps<TData>) {
 	const rows = table.getRowModel().rows;
 	const rowCount = rows?.length || 0;
@@ -37,6 +39,9 @@ export function DataTableBody<TData>({
 								role="gridcell"
 								aria-colindex={cellIndex + 1}
 								aria-describedby={cell.column.id}
+								style={{
+									width: enableColumnResizing ? cell.column.getSize() : undefined,
+								}}
 							>
 								{flexRender(
 									cell.column.columnDef.cell,

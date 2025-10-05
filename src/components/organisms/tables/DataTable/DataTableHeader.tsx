@@ -9,11 +9,13 @@ import { Button } from "@/components/ui/button";
 interface DataTableHeaderProps<TData> {
 	table: Table<TData>;
 	enableSelection?: boolean;
+	enableColumnResizing?: boolean;
 }
 
 export function DataTableHeader<TData>({
 	table,
 	enableSelection = false,
+	enableColumnResizing = false,
 }: DataTableHeaderProps<TData>) {
 	return (
 		<UntitledTable.Header
@@ -45,6 +47,10 @@ export function DataTableHeader<TData>({
 									: 'Sortable column'}`
 								: `Column ${index + 1}`
 							}
+							style={{
+								width: enableColumnResizing ? header.getSize() : undefined,
+							}}
+							className="relative"
 						>
 							{header.isPlaceholder
 								? null
@@ -52,6 +58,14 @@ export function DataTableHeader<TData>({
 										header.column.columnDef.header,
 										header.getContext()
 								  )}
+							{enableColumnResizing && header.column.getCanResize() && (
+								<div
+									onMouseDown={header.getResizeHandler()}
+									onTouchStart={header.getResizeHandler()}
+									className="absolute right-0 top-0 h-full w-1 bg-gray-300 cursor-col-resize select-none touch-none hover:bg-blue-500 dark:bg-gray-600 dark:hover:bg-blue-400"
+									aria-label={`Resize column ${header.column.columnDef.header || header.id}`}
+								/>
+							)}
 						</UntitledTable.Head>
 					))}
 				</UntitledTable.Row>

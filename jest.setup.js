@@ -11,6 +11,14 @@ global.Request = global.Request || class Request {
     })
     this.method = init?.method || 'GET'
     this.headers = new Map(Object.entries(init?.headers || {}))
+    this._body = init?.body || null
+  }
+  
+  async json() {
+    if (!this._body) {
+      throw new Error('No body to parse')
+    }
+    return JSON.parse(this._body)
   }
 }
 

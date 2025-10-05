@@ -3,8 +3,8 @@ import {
   otherNavigationItems,
   versionInfo,
   defaultUserProfile,
-} from '@/data/sidebarNavigation';
-import { NavigationSection, UserProfile } from '@/types/navigation';
+} from '@/data/sidebarNavigation.tsx';
+import { NavigationSection, UserProfile } from '@/types/navigation.ts';
 
 describe('Sidebar Navigation Data', () => {
   describe('mainNavigationItems', () => {
@@ -42,7 +42,7 @@ describe('Sidebar Navigation Data', () => {
 
     it('has valid paths', () => {
       mainNavigationItems.items.forEach(item => {
-        expect(item.path).toMatch(/^\/[a-zA-Z0-9\-_\/]*$/);
+        expect(item.path).toMatch(/^\/[a-zA-Z0-9\-_/]*$/);
       });
     });
 
@@ -87,7 +87,7 @@ describe('Sidebar Navigation Data', () => {
       
       itemsWithSubmenus.forEach(item => {
         item.submenu!.forEach(subItem => {
-          expect(subItem.path).toMatch(/^\/[a-zA-Z0-9\-_\/]*$/);
+          expect(subItem.path).toMatch(/^\/[a-zA-Z0-9\-_/]*$/);
         });
       });
     });
@@ -135,7 +135,7 @@ describe('Sidebar Navigation Data', () => {
 
     it('has valid paths', () => {
       otherNavigationItems.items.forEach(item => {
-        expect(item.path).toMatch(/^\/[a-zA-Z0-9\-_\/]*$/);
+        expect(item.path).toMatch(/^\/[a-zA-Z0-9\-_/]*$/);
       });
     });
 
@@ -214,7 +214,7 @@ describe('Sidebar Navigation Data', () => {
     });
 
     it('has valid avatar URL', () => {
-      expect(defaultUserProfile.avatar).toMatch(/^\/[a-zA-Z0-9\-_\/]*$/);
+      expect(defaultUserProfile.avatar).toMatch(/^\/[a-zA-Z0-9\-_/]*$/);
     });
 
     it('has specific default values', () => {
@@ -296,7 +296,7 @@ describe('Sidebar Navigation Data', () => {
       ];
       
       allItems.forEach(item => {
-        expect(item.path).toMatch(/^\/[a-zA-Z0-9\-_\/]*$/);
+        expect(item.path).toMatch(/^\/[a-zA-Z0-9\-_/]*$/);
         expect(item.path).not.toMatch(/\/$/); // Should not end with slash
         expect(item.path).not.toMatch(/\/{2,}/); // Should not have double slashes
       });

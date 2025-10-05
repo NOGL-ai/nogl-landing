@@ -175,6 +175,7 @@ export function ProductDataTable({
 				enableSelection={true}
 				enableGlobalSearch={true}
 				enableColumnManagement={true}
+				enableColumnResizing={true}
 				pageSize={20}
 				onRowSelectionChange={setSelectedRows}
 			/>

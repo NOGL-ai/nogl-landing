@@ -12,6 +12,7 @@ import {
 	SortingState,
 	VisibilityState,
 	RowSelectionState,
+	ColumnResizingState,
 } from "@tanstack/react-table";
 import { DataTableHeader } from "./DataTableHeader";
 import { DataTableBody } from "./DataTableBody";
@@ -32,6 +33,7 @@ export interface DataTableProps<TData, TValue> {
 	enableSelection?: boolean;
 	enableGlobalSearch?: boolean;
 	enableColumnManagement?: boolean;
+	enableColumnResizing?: boolean;
 	pageSize?: number;
 	className?: string;
 	onRowSelectionChange?: (selectedRows: TData[]) => void;
@@ -48,6 +50,7 @@ export function DataTable<TData, TValue>({
 	enableSelection = false,
 	enableGlobalSearch = false,
 	enableColumnManagement = false,
+	enableColumnResizing = false,
 	pageSize = 10,
 	className,
 	onRowSelectionChange,
@@ -57,6 +60,7 @@ export function DataTable<TData, TValue>({
 	const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
 	const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
 	const [globalFilter, setGlobalFilter] = React.useState("");
+	const [columnResizing, setColumnResizing] = React.useState<ColumnResizingState>({});
 
 	// Global filter function
 	const globalFilterFn = React.useCallback((row: any, _columnId: string, value: string) => {
@@ -89,12 +93,16 @@ export function DataTable<TData, TValue>({
 		onRowSelectionChange: setRowSelection,
 		onGlobalFilterChange: setGlobalFilter,
 		globalFilterFn: enableGlobalSearch ? globalFilterFn : "includesString",
+		enableColumnResizing: enableColumnResizing,
+		columnResizeMode: "onChange",
+		onColumnResizingChange: setColumnResizing,
 		state: {
 			sorting,
 			columnFilters,
 			columnVisibility,
 			rowSelection,
 			globalFilter,
+			columnResizing,
 		},
 		initialState: {
 			pagination: {
@@ -136,8 +144,16 @@ export function DataTable<TData, TValue>({
 				aria-rowcount={table.getRowModel().rows.length + 1} // +1 for header
 				aria-colcount={table.getAllColumns().length}
 			>
-				<DataTableHeader table={table} enableSelection={enableSelection} />
-				<DataTableBody table={table} enableSelection={enableSelection} />
+				<DataTableHeader 
+					table={table} 
+					enableSelection={enableSelection} 
+					enableColumnResizing={enableColumnResizing}
+				/>
+				<DataTableBody 
+					table={table} 
+					enableSelection={enableSelection} 
+					enableColumnResizing={enableColumnResizing}
+				/>
 			</UntitledTable>
 			{enablePagination && <DataTablePagination table={table} />}
 		</div>

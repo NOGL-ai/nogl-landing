@@ -51,9 +51,9 @@ export function withQueryValidation<T>(
       // Convert string values to appropriate types for Yup
       const processedQuery = {
         ...queryObject,
-        page: queryObject.page ? parseInt(queryObject.page) : 1,
-        limit: queryObject.limit ? parseInt(queryObject.limit) : 10,
-        featured: queryObject.featured === "true",
+        page: queryObject.page ? parseInt(queryObject.page) : undefined,
+        limit: queryObject.limit ? parseInt(queryObject.limit) : undefined,
+        featured: queryObject.featured !== undefined ? (queryObject.featured === "true" ? true : queryObject.featured === "false" ? false : queryObject.featured) : undefined,
         minPrice: queryObject.minPrice ? parseFloat(queryObject.minPrice) : undefined,
         maxPrice: queryObject.maxPrice ? parseFloat(queryObject.maxPrice) : undefined,
       };
