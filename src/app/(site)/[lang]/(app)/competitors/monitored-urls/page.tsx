@@ -299,10 +299,10 @@ export default function CompetitorPage() {
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <h2 className="text-lg font-semibold text-[#181D27]">Competitor movements</h2>
-                <span className="inline-flex items-center rounded-full border border-[#E9D7FE] bg-[#F9F5FF] px-2 py-0.5 text-xs font-medium text-[#6941C6]">240 vendors</span>
+                <h2 className="text-lg font-semibold text-[#181D27]">Products nogled</h2>
+                <span className="inline-flex items-center rounded-full border border-[#E9D7FE] bg-[#F9F5FF] px-2 py-0.5 text-xs font-medium text-[#6941C6]">240 products</span>
               </div>
-              <p className="mt-1 text-sm text-[#535862]">Keep track of competitor and their security ratings.</p>
+              <p className="mt-1 text-sm text-[#535862]">Monitor competitor pricing and stay competitive with real-time price tracking.</p>
             </div>
             <div className="flex items-center gap-3">
               <button className="flex items-center gap-1 rounded-lg border border-[#D5D7DA] bg-white px-3.5 py-2.5 text-sm font-semibold text-[#414651] shadow-sm transition-colors hover:bg-gray-50">
@@ -311,7 +311,7 @@ export default function CompetitorPage() {
               </button>
               <button className="flex items-center gap-1 rounded-lg border-2 border-[#FFFFFF1F] bg-[#7F56D9] px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#6941C6]">
                 <Plus className="h-5 w-5 text-[#D6BBFB]" />
-                Add Competitor
+                Track Product
               </button>
             </div>
           </div>
@@ -326,7 +326,7 @@ export default function CompetitorPage() {
                 activeTab === 'all' ? 'border-r border-[#D5D7DA] bg-[#FAFAFA] text-[#252B37]' : 'border-r border-[#D5D7DA] bg-white text-[#414651] hover:bg-gray-50'
               }`}
             >
-              View all
+              All Products
             </button>
             <button
               type="button"
@@ -335,7 +335,7 @@ export default function CompetitorPage() {
                 activeTab === 'monitored' ? 'border-r border-[#D5D7DA] bg-[#FAFAFA] text-[#252B37]' : 'border-r border-[#D5D7DA] bg-white text-[#414651] hover:bg-gray-50'
               }`}
             >
-              Monitored
+              Tracking
             </button>
             <button
               type="button"
@@ -344,7 +344,7 @@ export default function CompetitorPage() {
                 activeTab === 'unmonitored' ? 'bg-[#FAFAFA] text-[#252B37]' : 'bg-white text-[#414651] hover:bg-gray-50'
               }`}
             >
-              Unmonitored
+              Paused
             </button>
           </div>
           <div className="flex items-center gap-3">
@@ -352,7 +352,7 @@ export default function CompetitorPage() {
               <Search className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-[#A4A7AE]" />
               <input
                 type="text"
-                placeholder="Search"
+                placeholder="Search products, URLs, SKL"
                 className="w-full rounded-lg border border-[#D5D7DA] bg-white py-2 pl-10 pr-16 text-base placeholder:text-[#717680] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#7F56D9]"
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 rounded border border-[#E9EAEB] px-1.5 py-0.5 text-xs text-[#717680]">⌘K</span>
@@ -379,18 +379,18 @@ export default function CompetitorPage() {
                       className="h-5 w-5 rounded-md border-[#7F56D9] text-[#7F56D9] focus:ring-[#7F56D9]"
                     />
                     <span className="flex items-center gap-1 text-xs font-semibold text-[#717680]">
-                      Competitor
+                      Product
                       <svg className="h-3 w-3 text-[#A4A7AE]" fill="none" stroke="currentColor" viewBox="0 0 12 12">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 2.5v7m0 0l3.5-3.5M6 9.5L2.5 6" />
                       </svg>
                     </span>
                   </div>
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]">Products</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]">Price Position</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]">Trend</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]">Last updated</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]">Categories</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]">Matched Product</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]">Your Price</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]">Price Comparison</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]">Stock</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]">Status</th>
                 <th className="px-4 py-3" />
               </tr>
             </thead>
