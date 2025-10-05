@@ -1,10 +1,12 @@
+// Import navigation data and types
 import {
   mainNavigationItems,
   otherNavigationItems,
   versionInfo,
   defaultUserProfile,
-} from '@/data/sidebarNavigation.tsx';
-import { NavigationSection, UserProfile } from '@/types/navigation.ts';
+} from '@/data/sidebarNavigation';
+import { NavigationSection, UserProfile } from '@/types/navigation';
+import { isValidElement } from 'react';
 
 describe('Sidebar Navigation Data', () => {
   describe('mainNavigationItems', () => {
@@ -307,29 +309,42 @@ describe('Sidebar Navigation Data', () => {
     it('all main navigation items have valid SVG icons', () => {
       mainNavigationItems.items.forEach(item => {
         expect(item.icon).toBeDefined();
-        expect(item.icon.type).toBe('svg');
-        expect(item.icon.props).toHaveProperty('width');
-        expect(item.icon.props).toHaveProperty('height');
-        expect(item.icon.props).toHaveProperty('viewBox');
+        expect(isValidElement(item.icon)).toBe(true);
+        
+        if (item.icon && isValidElement(item.icon)) {
+          expect(item.icon.type).toBe('svg');
+          expect(item.icon.props).toHaveProperty('width');
+          expect(item.icon.props).toHaveProperty('height');
+          expect(item.icon.props).toHaveProperty('viewBox');
+        }
       });
     });
 
     it('all other navigation items have valid SVG icons', () => {
       otherNavigationItems.items.forEach(item => {
         expect(item.icon).toBeDefined();
-        expect(item.icon.type).toBe('svg');
-        expect(item.icon.props).toHaveProperty('width');
-        expect(item.icon.props).toHaveProperty('height');
-        expect(item.icon.props).toHaveProperty('viewBox');
+        expect(isValidElement(item.icon)).toBe(true);
+        
+        if (item.icon && isValidElement(item.icon)) {
+          expect(item.icon.type).toBe('svg');
+          expect(item.icon.props).toHaveProperty('width');
+          expect(item.icon.props).toHaveProperty('height');
+          expect(item.icon.props).toHaveProperty('viewBox');
+        }
       });
     });
 
     it('version info has valid SVG icon', () => {
-      expect(versionInfo.icon).toBeDefined();
-      expect(versionInfo.icon.type).toBe('svg');
-      expect(versionInfo.icon.props).toHaveProperty('width');
-      expect(versionInfo.icon.props).toHaveProperty('height');
-      expect(versionInfo.icon.props).toHaveProperty('viewBox');
+      const { icon } = versionInfo;
+      expect(icon).toBeDefined();
+      expect(isValidElement(icon)).toBe(true);
+      
+      if (icon && isValidElement(icon)) {
+        expect(icon.type).toBe('svg');
+        expect(icon.props).toHaveProperty('width');
+        expect(icon.props).toHaveProperty('height');
+        expect(icon.props).toHaveProperty('viewBox');
+      }
     });
 
     it('all icons have consistent dimensions', () => {
@@ -340,8 +355,11 @@ describe('Sidebar Navigation Data', () => {
       ];
       
       allIcons.forEach(icon => {
-        expect(icon.props.width).toBe('20');
-        expect(icon.props.height).toBe('20');
+        if (icon && isValidElement(icon)) {
+          const props = icon.props as { width?: string; height?: string };
+          expect(props.width).toBe('20');
+          expect(props.height).toBe('20');
+        }
       });
     });
   });

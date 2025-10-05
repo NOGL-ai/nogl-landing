@@ -5,72 +5,49 @@ import { flexRender, Table } from "@tanstack/react-table";
 import { Table as UntitledTable } from "@/components/application/table/table";
 import { Icon } from "../Icon";
 import { Button } from "@/components/ui/button";
+import { DataTableDragDropWrapper } from "./DataTableDragDropWrapper";
+import { DataTableSortableHeaderCell } from "./DataTableSortableHeaderCell";
 
 interface DataTableHeaderProps<TData> {
 	table: Table<TData>;
 	enableSelection?: boolean;
 	enableColumnResizing?: boolean;
+	enableColumnReordering?: boolean;
 }
 
 export function DataTableHeader<TData>({
 	table,
 	enableSelection = false,
 	enableColumnResizing = false,
+	enableColumnReordering = false,
 }: DataTableHeaderProps<TData>) {
 	return (
-		<UntitledTable.Header
-			aria-label="Table header with column headers"
+		<DataTableDragDropWrapper
+			table={table}
+			enableColumnReordering={enableColumnReordering}
 		>
-			{table.getHeaderGroups().map((headerGroup) => (
-				<UntitledTable.Row 
-					key={headerGroup.id}
-					role="row"
-					aria-rowindex={1}
-				>
-					{headerGroup.headers.map((header, index) => (
-						<UntitledTable.Head 
-							key={header.id}
-							role="columnheader"
-							aria-colindex={index + 1}
-							aria-sort={
-								header.column.getCanSort()
-									? header.column.getIsSorted() === "asc"
-										? "ascending"
-										: header.column.getIsSorted() === "desc"
-										? "descending"
-										: "none"
-									: undefined
-							}
-							aria-label={header.column.columnDef.header ? 
-								`Column ${index + 1}: ${typeof header.column.columnDef.header === 'string' 
-									? header.column.columnDef.header 
-									: 'Sortable column'}`
-								: `Column ${index + 1}`
-							}
-							style={{
-								width: enableColumnResizing ? header.getSize() : undefined,
-							}}
-							className="relative"
-						>
-							{header.isPlaceholder
-								? null
-								: flexRender(
-										header.column.columnDef.header,
-										header.getContext()
-								  )}
-							{enableColumnResizing && header.column.getCanResize() && (
-								<div
-									onMouseDown={header.getResizeHandler()}
-									onTouchStart={header.getResizeHandler()}
-									className="absolute right-0 top-0 h-full w-1 bg-gray-300 cursor-col-resize select-none touch-none hover:bg-blue-500 dark:bg-gray-600 dark:hover:bg-blue-400"
-									aria-label={`Resize column ${header.column.columnDef.header || header.id}`}
-								/>
-							)}
-						</UntitledTable.Head>
-					))}
-				</UntitledTable.Row>
-			))}
-		</UntitledTable.Header>
+			<UntitledTable.Header
+				aria-label="Table header with column headers"
+			>
+				{table.getHeaderGroups().map((headerGroup) => (
+					<UntitledTable.Row 
+						key={headerGroup.id}
+						role="row"
+						aria-rowindex={1}
+					>
+						{headerGroup.headers.map((header, index) => (
+							<DataTableSortableHeaderCell
+								key={header.id}
+								header={header}
+								index={index}
+								enableColumnResizing={enableColumnResizing}
+								enableColumnReordering={enableColumnReordering}
+							/>
+						))}
+					</UntitledTable.Row>
+				))}
+			</UntitledTable.Header>
+		</DataTableDragDropWrapper>
 	);
 }
 

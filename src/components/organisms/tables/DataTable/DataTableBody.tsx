@@ -8,12 +8,14 @@ interface DataTableBodyProps<TData> {
 	table: Table<TData>;
 	enableSelection?: boolean;
 	enableColumnResizing?: boolean;
+	enableColumnReordering?: boolean;
 }
 
 export function DataTableBody<TData>({
 	table,
 	enableSelection = false,
 	enableColumnResizing = false,
+	enableColumnReordering = false,
 }: DataTableBodyProps<TData>) {
 	const rows = table.getRowModel().rows;
 	const rowCount = rows?.length || 0;
