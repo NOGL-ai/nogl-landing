@@ -164,26 +164,30 @@ const PricePositionCell = ({
   const progressPercentage = isEqual ? 50 : (competitorPrice / (competitorPrice + myPrice)) * 100;
 
   return (
-    <div className="group relative min-w-[280px] space-y-2">
+    <div className="group relative min-w-[280px] space-y-2" role="region" aria-label="Price comparison">
       {/* Compact View - Always Visible */}
       <div className="flex items-center justify-between gap-2 text-xs">
         <div className="flex items-center gap-1.5">
-          <div className="flex h-6 w-6 items-center justify-center rounded bg-[#EEF4FF]">
+          <div className="flex h-6 w-6 items-center justify-center rounded bg-[#EEF4FF]" aria-hidden="true">
             <svg className="h-3.5 w-3.5 text-[#3538CD]" fill="none" stroke="currentColor" viewBox="0 0 16 16">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2 6L8 2L14 6M3 13.5V7M13 13.5V7M2 13.5H14M5.5 13.5V10H10.5V13.5" />
             </svg>
           </div>
           <div>
             <div className="text-[10px] font-medium text-[#717680]">Comp. Price</div>
-            <div className="font-semibold text-[#181D27]">{formatPrice(competitorPrice)}</div>
+            <div className="font-semibold text-[#181D27]" aria-label={`Competitor price: ${formatPrice(competitorPrice)}`}>
+              {formatPrice(competitorPrice)}
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-1.5">
           <div>
             <div className="text-right text-[10px] font-medium text-[#717680]">My Price</div>
-            <div className="text-right font-semibold text-[#181D27]">{formatPrice(myPrice)}</div>
+            <div className="text-right font-semibold text-[#181D27]" aria-label={`Your price: ${formatPrice(myPrice)}`}>
+              {formatPrice(myPrice)}
+            </div>
           </div>
-          <div className="flex h-6 w-6 items-center justify-center rounded bg-[#F4EBFF]">
+          <div className="flex h-6 w-6 items-center justify-center rounded bg-[#F4EBFF]" aria-hidden="true">
             <svg className="h-3.5 w-3.5 text-[#7F56D9]" fill="none" stroke="currentColor" viewBox="0 0 16 16">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 14A6 6 0 108 2a6 6 0 000 12zM8 5.33V8m0 2.67h.007" />
             </svg>
@@ -192,16 +196,18 @@ const PricePositionCell = ({
       </div>
 
       {/* Visual Progress Bar with Position */}
-      <div className="relative">
+      <div className="relative" role="img" aria-label={`Price comparison bar showing ${isWinning ? 'you are winning' : isEqual ? 'prices are equal' : 'competitor is winning'}`}>
         <div className="h-2 overflow-hidden rounded-full bg-[#E9EAEB]">
           <div 
             className={`h-full transition-all duration-300 ${isWinning ? 'bg-[#17B26A]' : isEqual ? 'bg-[#717680]' : 'bg-[#F04438]'}`}
             style={{ width: `${progressPercentage}%` }}
+            aria-hidden="true"
           />
         </div>
         <div 
           className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 flex items-center justify-center"
           style={{ left: `${progressPercentage}%` }}
+          aria-hidden="true"
         >
           <div className={`h-4 w-4 rounded-full border-2 border-white shadow-sm ${isWinning ? 'bg-[#17B26A]' : isEqual ? 'bg-[#717680]' : 'bg-[#F04438]'}`}>
             <div className="h-full w-full rounded-full bg-white/30" />
@@ -211,25 +217,36 @@ const PricePositionCell = ({
 
       {/* Status Badge with Difference */}
       <div className="flex items-center justify-between">
-        <div className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs font-medium ${colors.border} ${colors.bg} ${colors.text}`}>
+        <div 
+          className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs font-medium ${colors.border} ${colors.bg} ${colors.text}`}
+          role="status"
+          aria-label={`Status: ${getStatusText()}`}
+        >
           {!isEqual && (
             isWinning ? (
-              <ArrowDown className="h-3 w-3" />
+              <ArrowDown className="h-3 w-3" aria-hidden="true" />
             ) : (
-              <ArrowUp className="h-3 w-3" />
+              <ArrowUp className="h-3 w-3" aria-hidden="true" />
             )
           )}
           <span>{getStatusText()}</span>
         </div>
         {!isEqual && (
-          <div className={`text-xs font-semibold ${colors.text}`}>
+          <div 
+            className={`text-xs font-semibold ${colors.text}`}
+            aria-label={`Price difference: ${formatDiff(priceDiff)}, percentage: ${formatPercentage(percentageDiff)}`}
+          >
             {formatDiff(priceDiff)} ({formatPercentage(percentageDiff)})
           </div>
         )}
       </div>
 
       {/* Detailed Tooltip on Hover */}
-      <div className="pointer-events-none absolute left-0 top-full z-50 mt-2 hidden w-[320px] rounded-lg border border-[#E9EAEB] bg-white p-4 shadow-lg group-hover:block">
+      <div 
+        className="pointer-events-none absolute left-0 top-full z-50 mt-2 hidden w-[320px] rounded-lg border border-[#E9EAEB] bg-white p-4 shadow-lg group-hover:block"
+        role="tooltip"
+        aria-hidden="true"
+      >
         <div className="space-y-3">
           <div className="text-sm font-semibold text-[#181D27]">Price Analysis</div>
           <div className="grid grid-cols-2 gap-3">
@@ -275,6 +292,8 @@ const PricePositionCell = ({
 export default function CompetitorPage() {
   const [selectedRows, setSelectedRows] = React.useState<Set<number>>(new Set([0, 1, 2, 5, 6]));
   const [activeTab, setActiveTab] = React.useState<'all' | 'monitored' | 'unmonitored'>('all');
+  const [searchQuery, setSearchQuery] = React.useState('');
+  const [focusedRowIndex, setFocusedRowIndex] = React.useState<number | null>(null);
 
   const toggleRow = (id: number) => {
     setSelectedRows(prev => {
@@ -297,8 +316,50 @@ export default function CompetitorPage() {
     });
   };
 
+  // Keyboard navigation handlers
+  const handleKeyDown = (event: React.KeyboardEvent, competitorId: number, index: number) => {
+    switch (event.key) {
+      case 'ArrowDown': {
+        event.preventDefault();
+        const nextIndex = Math.min(index + 1, competitors.length - 1);
+        setFocusedRowIndex(nextIndex);
+        break;
+      }
+      case 'ArrowUp': {
+        event.preventDefault();
+        const prevIndex = Math.max(index - 1, 0);
+        setFocusedRowIndex(prevIndex);
+        break;
+      }
+      case ' ':
+      case 'Enter':
+        event.preventDefault();
+        toggleRow(competitorId);
+        break;
+      case 'Escape':
+        setFocusedRowIndex(null);
+        break;
+    }
+  };
+
+  // Filter competitors based on search query
+  const filteredCompetitors = competitors.filter(competitor =>
+    competitor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    competitor.domain.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="mx-auto w-full max-w-7xl space-y-6 px-4 py-6 sm:px-6 lg:py-10 lg:px-8">
+      {/* Screen reader announcements */}
+      <div 
+        id="search-results-announcement" 
+        className="sr-only" 
+        aria-live="polite" 
+        aria-atomic="true"
+      >
+        {searchQuery && `Found ${filteredCompetitors.length} competitors matching "${searchQuery}"`}
+      </div>
+      
       <header className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-[280px] flex-1">
           <h1 className="text-2xl font-semibold text-[#181D27]">Welcome back, Tim</h1>
@@ -481,44 +542,70 @@ export default function CompetitorPage() {
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#E9EAEB] px-6 py-3">
-          <div className="flex overflow-hidden rounded-lg border border-[#D5D7DA] shadow-sm">
+          <div className="flex overflow-hidden rounded-lg border border-[#D5D7DA] shadow-sm" role="tablist" aria-label="Product filter tabs">
             <button
               type="button"
               onClick={() => setActiveTab('all')}
-              className={`px-4 py-2 text-sm font-semibold transition-colors ${
+              className={`px-4 py-2 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-[#7F56D9] ${
                 activeTab === 'all' ? 'border-r border-[#D5D7DA] bg-[#FAFAFA] text-[#252B37]' : 'border-r border-[#D5D7DA] bg-white text-[#414651] hover:bg-gray-50'
               }`}
+              role="tab"
+              aria-selected={activeTab === 'all'}
+              aria-controls="all-products-panel"
+              id="all-products-tab"
             >
               All Products
             </button>
             <button
               type="button"
               onClick={() => setActiveTab('monitored')}
-              className={`px-4 py-2 text-sm font-semibold transition-colors ${
+              className={`px-4 py-2 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-[#7F56D9] ${
                 activeTab === 'monitored' ? 'border-r border-[#D5D7DA] bg-[#FAFAFA] text-[#252B37]' : 'border-r border-[#D5D7DA] bg-white text-[#414651] hover:bg-gray-50'
               }`}
+              role="tab"
+              aria-selected={activeTab === 'monitored'}
+              aria-controls="monitored-products-panel"
+              id="monitored-products-tab"
             >
               Tracking
             </button>
             <button
               type="button"
               onClick={() => setActiveTab('unmonitored')}
-              className={`px-4 py-2 text-sm font-semibold transition-colors ${
+              className={`px-4 py-2 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-[#7F56D9] ${
                 activeTab === 'unmonitored' ? 'bg-[#FAFAFA] text-[#252B37]' : 'bg-white text-[#414651] hover:bg-gray-50'
               }`}
+              role="tab"
+              aria-selected={activeTab === 'unmonitored'}
+              aria-controls="unmonitored-products-panel"
+              id="unmonitored-products-tab"
             >
               Paused
             </button>
           </div>
           <div className="flex items-center gap-3">
             <div className="relative max-w-[320px]">
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-[#A4A7AE]" />
+              <label htmlFor="search-input" className="sr-only">
+                Search competitors by name or domain
+              </label>
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-[#A4A7AE]" aria-hidden="true" />
               <input
+                id="search-input"
                 type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search products, URLs, SKL"
                 className="w-full rounded-lg border border-[#D5D7DA] bg-white py-2 pl-10 pr-16 text-base placeholder:text-[#717680] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#7F56D9]"
+                aria-describedby="search-help"
+                aria-label="Search competitors by name or domain"
               />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 rounded border border-[#E9EAEB] px-1.5 py-0.5 text-xs text-[#717680]">⌘K</span>
+              <span 
+                id="search-help"
+                className="absolute right-3 top-1/2 -translate-y-1/2 rounded border border-[#E9EAEB] px-1.5 py-0.5 text-xs text-[#717680]"
+                aria-label="Keyboard shortcut: Command K"
+              >
+                ⌘K
+              </span>
             </div>
             <button className="flex items-center gap-1 rounded-lg border border-[#D5D7DA] bg-white px-3.5 py-2.5 text-sm font-semibold text-[#414651] shadow-sm transition-colors hover:bg-gray-50">
               <svg className="h-5 w-5 text-[#A4A7AE]" fill="none" stroke="currentColor" viewBox="0 0 20 20">
@@ -529,106 +616,173 @@ export default function CompetitorPage() {
           </div>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full">
+        <div 
+          className="overflow-x-auto"
+          role="tabpanel"
+          id="all-products-panel"
+          aria-labelledby="all-products-tab"
+          hidden={activeTab !== 'all'}
+        >
+          <table 
+            className="w-full" 
+            role="table"
+            aria-label="Competitor monitoring table"
+            aria-describedby="table-description"
+          >
+            <caption id="table-description" className="sr-only">
+              Table showing competitor products with pricing information, trends, and categories. 
+              Use arrow keys to navigate between rows, space or enter to select, and escape to clear selection.
+            </caption>
             <thead className="border-b border-[#E9EAEB] bg-[#FAFAFA]">
-              <tr>
-                <th className="px-6 py-3 text-left">
+              <tr role="row">
+                <th 
+                  className="px-6 py-3 text-left" 
+                  role="columnheader" 
+                  scope="col"
+                  aria-sort={selectedRows.size === competitors.length ? "other" : selectedRows.size > 0 ? "other" : "none" as const}
+                >
                   <div className="flex items-center gap-3">
                     <input
                       type="checkbox"
                       checked={selectedRows.size === competitors.length}
                       onChange={toggleAll}
                       className="h-5 w-5 rounded-md border-[#7F56D9] text-[#7F56D9] focus:ring-[#7F56D9]"
+                      aria-label="Select all competitors"
+                      aria-describedby="select-all-help"
                     />
                     <span className="flex items-center gap-1 text-xs font-semibold text-[#717680]">
                       Product
-                      <svg className="h-3 w-3 text-[#A4A7AE]" fill="none" stroke="currentColor" viewBox="0 0 12 12">
+                      <svg className="h-3 w-3 text-[#A4A7AE]" fill="none" stroke="currentColor" viewBox="0 0 12 12" aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 2.5v7m0 0l3.5-3.5M6 9.5L2.5 6" />
                       </svg>
                     </span>
                   </div>
+                  <div id="select-all-help" className="sr-only">
+                    Checkbox to select or deselect all competitors in the table
+                  </div>
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]">Matched Product</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]">Price Position</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]">Trend</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]">Categories</th>
-                <th className="px-4 py-3" />
+                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]" role="columnheader" scope="col">
+                  Matched Product
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]" role="columnheader" scope="col">
+                  Price Position
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]" role="columnheader" scope="col">
+                  Trend
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]" role="columnheader" scope="col">
+                  Categories
+                </th>
+                <th className="px-4 py-3" role="columnheader" scope="col" aria-label="Actions">
+                  <span className="sr-only">Actions</span>
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#E9EAEB]">
-              {competitors.map(competitor => (
-                <tr key={competitor.id} className="transition-colors hover:bg-gray-50">
-                  <td className="px-6 py-4">
+              {filteredCompetitors.map((competitor, index) => (
+                <tr 
+                  key={competitor.id} 
+                  className={`transition-colors hover:bg-gray-50 ${
+                    focusedRowIndex === index ? 'bg-blue-50 ring-2 ring-blue-200' : ''
+                  }`}
+                  role="row"
+                  tabIndex={0}
+                  onKeyDown={(e) => handleKeyDown(e, competitor.id, index)}
+                  aria-selected={selectedRows.has(competitor.id)}
+                  aria-label={`Competitor ${competitor.name} from ${competitor.domain}`}
+                >
+                  <td className="px-6 py-4" role="gridcell">
                     <div className="flex items-center gap-3">
                       <input
                         type="checkbox"
                         checked={selectedRows.has(competitor.id)}
                         onChange={() => toggleRow(competitor.id)}
                         className="h-5 w-5 rounded-md border-[#7F56D9] text-[#7F56D9] focus:ring-[#7F56D9]"
+                        aria-label={`Select ${competitor.name} competitor`}
+                        aria-describedby={`competitor-${competitor.id}-info`}
                       />
                       <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-full border border-black/8 bg-gray-200" />
-                        <div>
+                        <div 
+                          className="h-10 w-10 rounded-full border border-black/8 bg-gray-200"
+                          aria-hidden="true"
+                        />
+                        <div id={`competitor-${competitor.id}-info`}>
                           <div className="text-sm font-medium text-[#181D27]">{competitor.name}</div>
                           <div className="text-sm text-[#535862]">{competitor.domain}</div>
                         </div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4" role="gridcell">
                     <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-full border border-black/8 bg-gray-200" />
+                      <div 
+                        className="h-10 w-10 rounded-full border border-black/8 bg-gray-200"
+                        aria-hidden="true"
+                      />
                       <div>
                         <div className="text-sm font-medium text-[#181D27]">{competitor.name}</div>
                         <div className="text-sm text-[#535862]">{competitor.domain}</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4" role="gridcell">
                     <PricePositionCell 
                       competitorPrice={competitor.competitorPrice} 
                       myPrice={competitor.myPrice}
                     />
                   </td>
-                  <td className="px-6 py-4">
-                    <div className={`inline-flex items-center gap-0.5 rounded-full border px-2 py-0.5 ${
-                      competitor.trendUp ? 'border-[#ABEFC6] bg-[#ECFDF3]' : 'border-[#FECDCA] bg-[#FEF3F2]'
-                    }`}>
+                  <td className="px-6 py-4" role="gridcell">
+                    <div 
+                      className={`inline-flex items-center gap-0.5 rounded-full border px-2 py-0.5 ${
+                        competitor.trendUp ? 'border-[#ABEFC6] bg-[#ECFDF3]' : 'border-[#FECDCA] bg-[#FEF3F2]'
+                      }`}
+                      role="img"
+                      aria-label={`Price trend ${competitor.trendUp ? 'up' : 'down'} by ${competitor.trend}%`}
+                    >
                       {competitor.trendUp ? (
-                        <ArrowUp className="h-3 w-3 text-[#17B26A]" />
+                        <ArrowUp className="h-3 w-3 text-[#17B26A]" aria-hidden="true" />
                       ) : (
-                        <ArrowDown className="h-3 w-3 text-[#F04438]" />
+                        <ArrowDown className="h-3 w-3 text-[#F04438]" aria-hidden="true" />
                       )}
                       <span className={`text-xs font-medium ${competitor.trendUp ? 'text-[#067647]' : 'text-[#B42318]'}`}>
                         {competitor.trend}%
                       </span>
                     </div>
                   </td>
-                  <td className="px-6 py-4">
-                    <div className="flex flex-wrap items-center gap-1">
+                  <td className="px-6 py-4" role="gridcell">
+                    <div className="flex flex-wrap items-center gap-1" role="list" aria-label="Product categories">
                       {competitor.categories.slice(0, 2).map(category => (
                         <span
                           key={category}
+                          role="listitem"
                           className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium ${badgeClasses[category] ?? 'border-[#E9EAEB] bg-[#FAFAFA] text-[#414651]'}`}
+                          aria-label={`Category: ${category}`}
                         >
-                          {category === 'Active' && <span className="h-2 w-2 rounded-full bg-[#17B26A]" />}
-                          {category === 'Inactive' && <span className="h-2 w-2 rounded-full bg-[#717680]" />}
-                          {category === 'In Stock' && <span className="h-2 w-2 rounded-full bg-[#17B26A]" />}
-                          {category === 'Out of Stock' && <span className="h-2 w-2 rounded-full bg-[#F04438]" />}
+                          {category === 'Active' && <span className="h-2 w-2 rounded-full bg-[#17B26A]" aria-hidden="true" />}
+                          {category === 'Inactive' && <span className="h-2 w-2 rounded-full bg-[#717680]" aria-hidden="true" />}
+                          {category === 'In Stock' && <span className="h-2 w-2 rounded-full bg-[#17B26A]" aria-hidden="true" />}
+                          {category === 'Out of Stock' && <span className="h-2 w-2 rounded-full bg-[#F04438]" aria-hidden="true" />}
                           {category}
                         </span>
                       ))}
                         {competitor.categories.length > 2 && (
-                          <span className="inline-flex items-center rounded-full border border-[#E9EAEB] bg-[#FAFAFA] px-2 py-0.5 text-xs font-medium text-[#414651]">
+                          <span 
+                            className="inline-flex items-center rounded-full border border-[#E9EAEB] bg-[#FAFAFA] px-2 py-0.5 text-xs font-medium text-[#414651]"
+                            role="listitem"
+                            aria-label={`${competitor.categories.length - 2} additional categories`}
+                          >
                             +{competitor.categories.length - 2}
                           </span>
                         )}
                     </div>
                   </td>
-                  <td className="px-4 py-4">
-                    <button className="rounded-lg p-2 transition-colors hover:bg-[#F5F5F5]" aria-label="More actions">
-                      <svg className="h-5 w-5 text-[#A4A7AE]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <td className="px-4 py-4" role="gridcell">
+                    <button 
+                      className="rounded-lg p-2 transition-colors hover:bg-[#F5F5F5] focus:outline-none focus:ring-2 focus:ring-[#7F56D9]" 
+                      aria-label={`More actions for ${competitor.name}`}
+                      aria-haspopup="menu"
+                    >
+                      <svg className="h-5 w-5 text-[#A4A7AE]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zm0 5.25a.75.75 0 110-1.5.75.75 0 010 1.5zm0 5.25a.75.75 0 110-1.5.75.75 0 010 1.5z" />
                       </svg>
                     </button>
@@ -640,12 +794,25 @@ export default function CompetitorPage() {
         </div>
 
         <div className="flex items-center justify-between border-t border-[#E9EAEB] px-6 py-3">
-          <div className="text-sm font-medium text-[#414651]">Page 1 of 10</div>
+          <div className="text-sm font-medium text-[#414651]">
+            Page 1 of 10
+            <span className="sr-only">
+              Showing {filteredCompetitors.length} of {competitors.length} competitors
+              {searchQuery && ` matching "${searchQuery}"`}
+            </span>
+          </div>
           <div className="flex items-center gap-3">
-            <button className="rounded-lg border border-[#D5D7DA] bg-white px-3 py-2 text-sm font-semibold text-[#414651] shadow-sm transition-colors hover:bg-gray-50">
+            <button 
+              className="rounded-lg border border-[#D5D7DA] bg-white px-3 py-2 text-sm font-semibold text-[#414651] shadow-sm transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#7F56D9]"
+              aria-label="Go to previous page"
+              disabled
+            >
               Previous
             </button>
-            <button className="rounded-lg border border-[#D5D7DA] bg-white px-3 py-2 text-sm font-semibold text-[#414651] shadow-sm transition-colors hover:bg-gray-50">
+            <button 
+              className="rounded-lg border border-[#D5D7DA] bg-white px-3 py-2 text-sm font-semibold text-[#414651] shadow-sm transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#7F56D9]"
+              aria-label="Go to next page"
+            >
               Next
             </button>
           </div>
