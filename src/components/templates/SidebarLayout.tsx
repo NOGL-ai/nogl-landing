@@ -372,13 +372,13 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 			{/* Main Content */}
 			<main
 				id="main-content"
-				className="flex flex-1 flex-col overflow-hidden transition-all duration-300 ease-in-out lg:ml-16 ml-16 bg-white dark:bg-[#0a0d12]"
+				className="flex flex-1 flex-col overflow-hidden transition-all duration-300 ease-in-out ml-16 lg:ml-16 bg-[#F9FAFB] dark:bg-[#0a0d12]"
 				role="main"
 				aria-label="Main content"
 			>
 
 				{/* Page content */}
-				<div className={`sidebar-scroll flex-1 overflow-y-auto bg-white dark:bg-[#0a0d12]`}>
+				<div className="sidebar-scroll flex-1 overflow-y-auto bg-[#F9FAFB] dark:bg-[#0a0d12]">
 					{children}
 				</div>
 			</main>

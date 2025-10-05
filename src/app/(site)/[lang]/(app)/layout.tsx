@@ -1,19 +1,17 @@
 import React from "react";
 import SidebarLayout from "@/components/templates/SidebarLayout";
-import Particles from "@/components/ui/particles";
-import GlassmorphismBackground from "@/components/atoms/GlassmorphismBackground";
 import { getAuthSession } from "@/lib/auth";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
 	let session = null;
-	
+
 	try {
 		session = await getAuthSession();
 	} catch (error) {
 		console.error('Error fetching session:', error);
 		session = null;
 	}
-	
+
 	// Map session user to UserProfile type or use fallback
 	const user = session?.user ? {
 		name: session.user.name || undefined,
@@ -26,18 +24,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 	};
 
 	return (
-		<SidebarLayout user={user}>
-			<div className='relative min-h-screen overflow-hidden'>
-				<Particles
-					className='absolute inset-0 -z-10'
-					quantity={3000}
-					ease={70}
-					size={0.5}
-					staticity={40}
-					color='#4F46E5'
-				/>
-				<GlassmorphismBackground />
-				<main className='relative z-10 flex-1'>{children}</main>
+		<SidebarLayout user={user} className="bg-[#F9FAFB]">
+			<div className="min-h-screen bg-[#F9FAFB]">
+				{children}
 			</div>
 		</SidebarLayout>
 	);

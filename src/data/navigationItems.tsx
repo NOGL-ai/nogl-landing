@@ -21,7 +21,7 @@ const navItemsWithSectionsSubheadings: Array<{ label: string; items: NavItemType
             },
             {
                 label: "Competitor Intelligence",
-                href: "/competitors",
+                href: "/competitors/competitor",
                 icon: SearchMd,
             },
             {

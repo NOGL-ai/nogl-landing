@@ -62,17 +62,17 @@ export const navigationStructure: NavigationSection[] = [
                 subItems: [
                     {
                         label: 'Dashboard',
-                        href: '/catalog',
+                        href: '/dashboard',
                         icon: BarChartSquare02,
                     },
                     {
                         label: 'Competitor Intelligence',
-                        href: '/catalog',
+                        href: '/competitors/competitor',
                         icon: SearchMd,
                     },
                     {
                         label: 'Price Rules',
-                        href: '/catalog',
+                        href: '/repricing',
                         icon: RefreshCw01,
                     },
                     {
@@ -88,12 +88,12 @@ export const navigationStructure: NavigationSection[] = [
                     },
                     {
                         label: 'Data Feeds',
-                        href: '/catalog',
+                        href: '/product-feed',
                         icon: LayersThree01,
                     },
                     {
                         label: 'Reports',
-                        href: '/catalog',
+                        href: '/reports',
                         icon: FileX01,
                     },
                 ],
