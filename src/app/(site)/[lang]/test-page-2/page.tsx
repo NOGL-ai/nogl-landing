@@ -133,7 +133,7 @@ export default function TestPage2() {
         <div className="mb-6">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="flex-1 min-w-[320px]">
-              <h1 className="text-2xl font-semibold text-[#181D27]">Welcome back, TIm</h1>
+              <h1 className="text-2xl font-semibold text-[#181D27]">Welcome back, Tim</h1>
             </div>
             <div className="flex items-center gap-3">
               <button className="p-2.5 rounded-lg hover:bg-gray-50 transition-colors">
