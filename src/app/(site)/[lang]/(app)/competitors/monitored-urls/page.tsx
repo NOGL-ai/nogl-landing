@@ -387,10 +387,9 @@ export default function CompetitorPage() {
                   </div>
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]">Matched Product</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]">Your Price</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]">Price Comparison</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]">Stock</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]">Status</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]">Price Position</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]">Trend</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]">Categories</th>
                 <th className="px-4 py-3" />
               </tr>
             </thead>
@@ -416,17 +415,20 @@ export default function CompetitorPage() {
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-14 w-14 items-center justify-center rounded-full border-4 border-[#E9D7FE] bg-[#F9F5FF] text-sm font-semibold text-[#6941C6]">
-                        {competitor.products}
+                      <div className="h-10 w-10 rounded-full border border-black/8 bg-gray-200" />
+                      <div>
+                        <div className="text-sm font-medium text-[#181D27]">{competitor.name}</div>
+                        <div className="text-sm text-[#535862]">{competitor.domain}</div>
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
+                      <span className="text-sm font-medium text-[#414651]">60</span>
                       <div className="h-2 flex-1 overflow-hidden rounded-full bg-[#E9EAEB]">
                         <div className="h-full rounded-full bg-[#7F56D9]" style={{ width: `${competitor.position}%` }} />
                       </div>
-                      <span className="w-8 text-right text-sm font-medium text-[#414651]">{competitor.position}</span>
+                      <span className="text-sm font-medium text-[#414651]">76</span>
                     </div>
                   </td>
                   <td className="px-6 py-4">
@@ -444,9 +446,6 @@ export default function CompetitorPage() {
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <div className="text-sm text-[#535862]">{competitor.date}</div>
-                  </td>
-                  <td className="px-6 py-4">
                     <div className="flex flex-wrap items-center gap-1">
                       {competitor.categories.slice(0, 3).map(category => (
                         <span
@@ -458,11 +457,11 @@ export default function CompetitorPage() {
                           {category}
                         </span>
                       ))}
-                      {competitor.categories.length > 3 && (
-                        <span className="inline-flex items-center rounded-full border border-[#E9EAEB] bg-[#FAFAFA] px-2 py-0.5 text-xs font-medium text-[#414651]">
-                          {competitor.categories[3]}
-                        </span>
-                      )}
+                        {competitor.categories.length > 3 && (
+                          <span className="inline-flex items-center rounded-full border border-[#E9EAEB] bg-[#FAFAFA] px-2 py-0.5 text-xs font-medium text-[#414651]">
+                            +{competitor.categories.length - 3}
+                          </span>
+                        )}
                     </div>
                   </td>
                   <td className="px-4 py-4">
