@@ -268,6 +268,11 @@ const PricePositionCell = ({
         </div>
       </div>
 
+      {/* Hidden meter for proper measurement semantics */}
+      <meter className="sr-only" min={0} max={100} value={Math.round(progress)}>
+        {statusText} ({fmtPct(pctDiff)})
+      </meter>
+
       {/* Status + diff */}
       <div className="flex items-center justify-between">
         <div className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs font-medium ${colors.border} ${colors.bg} ${colors.text}`} role="status">
