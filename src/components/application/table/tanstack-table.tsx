@@ -50,6 +50,7 @@ interface TanStackTableProps {
   formatPercentDetailed?: (value: number) => string;
   formatPercentCompact?: (value: number) => string;
   showCompetitorColumn?: boolean;
+  showProductsColumn?: boolean;
 }
 
 const columnHelper = createColumnHelper<Competitor>();
@@ -70,6 +71,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
   formatPercentDetailed,
   formatPercentCompact,
   showCompetitorColumn = false,
+  showProductsColumn = true,
 }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
@@ -179,6 +181,28 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
               <div className="text-sm text-muted-foreground">{row.original.domain}</div>
             </div>
           </div>
+        ),
+        enableSorting: true,
+      });
+    }
+
+    // Add Products column only if showProductsColumn is true
+    if (showProductsColumn) {
+      baseColumns.push({
+        accessorKey: 'products',
+        id: 'products',
+        header: 'Products',
+        cell: ({ row }) => (
+          ProductsCell ? (
+            <ProductsCell 
+              competitor={row.original} 
+              maxProducts={maxProducts || 100}
+            />
+          ) : (
+            <div className="text-sm text-foreground">
+              {row.original.products.toLocaleString()}
+            </div>
+          )
         ),
         enableSorting: true,
       });
@@ -298,7 +322,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
     );
 
     return baseColumns;
-  }, [selectedRows, maxProducts, badgeClasses, ProductsCell, PricePositionCell, computeTrend, formatPercentDetailed, formatPercentCompact, showCompetitorColumn]);
+  }, [selectedRows, maxProducts, badgeClasses, ProductsCell, PricePositionCell, computeTrend, formatPercentDetailed, formatPercentCompact, showCompetitorColumn, showProductsColumn]);
 
   const table = useReactTable({
     data,

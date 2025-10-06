@@ -817,7 +817,7 @@ export default function CompetitorPage() {
     const list = [...filteredCompetitors];
     list.sort((a, b) => {
       if (productSort !== 'none') {
-        const diff = a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
+        const diff = a.products - b.products;
         return productSort === 'asc' ? diff : -diff;
       }
       if (priceSort !== 'none') {
@@ -1173,7 +1173,7 @@ export default function CompetitorPage() {
             selectedRows={selectedRows}
             onRowSelectionChange={setSelectedRows}
             onSortChange={(sorting) => {
-              if (sorting.column === 'name') {
+              if (sorting.column === 'products') {
                 setProductSort(sorting.direction);
                 setPriceSort('none');
                 setTrendSort('none');
@@ -1197,6 +1197,7 @@ export default function CompetitorPage() {
             computeTrend={computeTrend}
             formatPercentDetailed={formatPercentDetailed}
             formatPercentCompact={formatPercentCompact}
+            showProductsColumn={true}
           />
         </div>
 
