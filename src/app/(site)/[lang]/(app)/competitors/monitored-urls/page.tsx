@@ -114,16 +114,16 @@ const competitors = [
 ];
 
 const badgeClasses: Record<string, string> = {
-  Active: 'border-[#ABEFC6] bg-[#ECFDF3] text-[#067647]',
-  Inactive: 'border-[#E9EAEB] bg-[#FAFAFA] text-muted-foreground',
-  'In Stock': 'border-[#ABEFC6] bg-[#ECFDF3] text-[#067647]',
-  'Out of Stock': 'border-[#FECDCA] bg-[#FEF3F2] text-[#B42318]',
-  'Customer data': 'border-[#B2DDFF] bg-[#EFF8FF] text-[#175CD3]',
-  'Business data': 'border-[#E9D7FE] bg-[#F9F5FF] text-[#6941C6]',
-  Admin: 'border-[#C7D7FE] bg-[#EEF4FF] text-[#3538CD]',
-  Financials: 'border-[#FCCEEE] bg-[#FDF2FA] text-[#C11574]',
-  'Database access': 'border-[#D5D9EB] bg-[#F8F9FC] text-[#363F72]',
-  Salesforce: 'border-[#F9DBAF] bg-[#FEF6EE] text-[#B93815]',
+  Active: 'border-green-200 bg-green-50 text-green-700 dark:border-green-700 dark:bg-green-900 dark:text-green-300',
+  Inactive: 'border-border-secondary bg-muted text-muted-foreground',
+  'In Stock': 'border-green-200 bg-green-50 text-green-700 dark:border-green-700 dark:bg-green-900 dark:text-green-300',
+  'Out of Stock': 'border-red-200 bg-red-50 text-red-700 dark:border-red-700 dark:bg-red-900 dark:text-red-300',
+  'Customer data': 'border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-700 dark:bg-blue-900 dark:text-blue-300',
+  'Business data': 'border-purple-200 bg-purple-50 text-purple-700 dark:border-purple-700 dark:bg-purple-900 dark:text-purple-300',
+  Admin: 'border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-700 dark:bg-blue-900 dark:text-blue-300',
+  Financials: 'border-pink-200 bg-pink-50 text-pink-700 dark:border-pink-700 dark:bg-pink-900 dark:text-pink-300',
+  'Database access': 'border-slate-200 bg-slate-50 text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300',
+  Salesforce: 'border-orange-200 bg-orange-50 text-orange-700 dark:border-orange-700 dark:bg-orange-900 dark:text-orange-300',
 };
 
 const iconButtonClasses = 'rounded-lg p-2.5 transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40';
@@ -167,7 +167,7 @@ const PricePositionCell = ({
       <div className="min-w-[280px]">
         <span
           role="status"
-          className="inline-flex items-center gap-1 rounded-md border border-[#E9EAEB] bg-[#FAFAFA] px-2 py-0.5 text-xs font-medium text-muted-foreground"
+          className="inline-flex items-center gap-1 rounded-md border border-border-secondary bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground"
           aria-label="Price comparison not available"
         >
           N/A
@@ -184,10 +184,22 @@ const PricePositionCell = ({
   const isWinning = priceDiff < 0;
 
   const colors = isEqual
-    ? { bg: 'bg-muted dark:bg-gray-700', text: 'text-muted-foreground dark:text-gray-300', border: 'border-[#E9EAEB] dark:border-gray-600' }
+    ? {
+        bg: 'bg-muted dark:bg-gray-700',
+        text: 'text-muted-foreground dark:text-gray-300',
+        border: 'border-border-secondary dark:border-gray-600',
+      }
     : isWinning
-    ? { bg: 'bg-[#ECFDF3] dark:bg-green-900', text: 'text-[#067647] dark:text-green-300', border: 'border-[#ABEFC6] dark:border-green-700' }
-    : { bg: 'bg-[#FEF3F2] dark:bg-red-900', text: 'text-[#B42318] dark:text-red-300', border: 'border-[#FECDCA] dark:border-red-700' };
+    ? {
+        bg: 'bg-green-50 dark:bg-green-900',
+        text: 'text-green-700 dark:text-green-300',
+        border: 'border-green-200 dark:border-green-700',
+      }
+    : {
+        bg: 'bg-red-50 dark:bg-red-900',
+        text: 'text-red-700 dark:text-red-300',
+        border: 'border-red-200 dark:border-red-700',
+      };
 
   const statusText = isEqual ? 'Equal' : isWinning ? 'You Win' : 'You Lose';
 
@@ -212,8 +224,8 @@ const PricePositionCell = ({
       {/* Compact numbers */}
       <div className="flex items-center justify-between gap-2 text-xs">
         <div className="flex items-center gap-1.5">
-          <div className="flex h-6 w-6 items-center justify-center rounded bg-[#EEF4FF] dark:bg-blue-900" aria-hidden="true">
-            <svg className="h-3.5 w-3.5 text-[#3538CD]" fill="none" stroke="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <div className="flex h-6 w-6 items-center justify-center rounded bg-blue-50 dark:bg-blue-900" aria-hidden="true">
+            <svg className="h-3.5 w-3.5 text-blue-700 dark:text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2 6L8 2L14 6M3 13.5V7M13 13.5V7M2 13.5H14M5.5 13.5V10H10.5V13.5" />
             </svg>
           </div>
@@ -232,8 +244,8 @@ const PricePositionCell = ({
               {fmtPrice(myPrice)}
             </div>
           </div>
-          <div className="flex h-6 w-6 items-center justify-center rounded bg-[#F4EBFF] dark:bg-purple-900" aria-hidden="true">
-            <svg className="h-3.5 w-3.5 text-[#7F56D9]" fill="none" stroke="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <div className="flex h-6 w-6 items-center justify-center rounded bg-purple-50 dark:bg-purple-900" aria-hidden="true">
+            <svg className="h-3.5 w-3.5 text-purple-700 dark:text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 14A6 6 0 108 2a6 6 0 000 12zM8 5.33V8m0 2.67h.007" />
             </svg>
           </div>
@@ -250,9 +262,9 @@ const PricePositionCell = ({
         aria-valuetext={`${statusText} (${fmtPct(pctDiff)})`}
         aria-label="Price comparison progress"
       >
-        <div className="h-2 overflow-hidden rounded-full bg-[#E9EAEB] dark:bg-gray-600">
+        <div className="h-2 overflow-hidden rounded-full bg-border-secondary dark:bg-gray-600">
           <div
-            className={`h-full transition-all duration-300 ${isWinning ? 'bg-[#17B26A]' : isEqual ? 'bg-[#717680]' : 'bg-[#F04438]'}`}
+            className={`h-full transition-all duration-300 ${isWinning ? 'bg-green-500' : isEqual ? 'bg-gray-500' : 'bg-red-500'}`}
             style={{ width: `${progress}%` }}
             aria-hidden="true"
           />
@@ -262,7 +274,7 @@ const PricePositionCell = ({
           style={{ left: `${progress}%` }}
           aria-hidden="true"
         >
-          <div className={`h-4 w-4 rounded-full border-2 border-white shadow-sm ${isWinning ? 'bg-[#17B26A]' : isEqual ? 'bg-[#717680]' : 'bg-[#F04438]'}`}>
+          <div className={`h-4 w-4 rounded-full border-2 border-white shadow-sm ${isWinning ? 'bg-green-500' : isEqual ? 'bg-gray-500' : 'bg-red-500'}`}>
             <div className="h-full w-full rounded-full bg-white/30" />
           </div>
         </div>
@@ -288,23 +300,23 @@ const PricePositionCell = ({
 
       {/* Tooltip: now keyboard-friendly via focus-within */}
       <div
-        className="pointer-events-none absolute left-0 top-full z-50 mt-2 hidden w-[320px] rounded-lg border border-[#E9EAEB] bg-white p-4 shadow-lg group-hover:block group-focus-within:block"
+        className="pointer-events-none absolute left-0 top-full z-50 mt-2 hidden w-[320px] rounded-lg border border-border-secondary bg-background p-4 shadow-lg group-hover:block group-focus-within:block"
         role="tooltip"
         aria-hidden="true"
       >
         <div className="space-y-3">
           <div className="text-sm font-semibold text-primary">Price Analysis</div>
           <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1 rounded-lg bg-[#EEF4FF] p-3">
+            <div className="space-y-1 rounded-lg bg-blue-50 dark:bg-blue-900 p-3">
               <div className="text-xs text-muted-foreground">Competitor</div>
-              <div className="text-lg font-bold text-[#3538CD]">{fmtPrice(competitorPrice)}</div>
+              <div className="text-lg font-bold text-blue-700 dark:text-blue-300">{fmtPrice(competitorPrice)}</div>
             </div>
-            <div className="space-y-1 rounded-lg bg-[#F4EBFF] p-3">
+            <div className="space-y-1 rounded-lg bg-purple-50 dark:bg-purple-900 p-3">
               <div className="text-xs text-muted-foreground">Your Price</div>
-              <div className="text-lg font-bold text-[#7F56D9]">{fmtPrice(myPrice)}</div>
+              <div className="text-lg font-bold text-purple-700 dark:text-purple-300">{fmtPrice(myPrice)}</div>
             </div>
           </div>
-          <div className="space-y-2 rounded-lg border border-[#E9EAEB] bg-[#FAFAFA] p-3">
+          <div className="space-y-2 rounded-lg border border-border-secondary bg-muted p-3">
             <div className="flex items-center justify-between">
               <span className="text-xs text-muted-foreground">Difference:</span>
               <span className={`text-sm font-semibold ${colors.text}`}>{fmtDiff(priceDiff)}</span>
@@ -548,9 +560,9 @@ export default function CompetitorPage() {
                     { h1: 76, h2: 52, h3: 28 },
                   ].map((bar, index) => (
                     <div key={index} className="relative w-8" style={{ height: bar.h1 }}>
-                      <div className="absolute inset-0 rounded-t-md bg-[#E9EAEB] dark:bg-border-secondary" />
-                      <div className="absolute inset-x-0 bottom-0 rounded-t-md bg-[#9E77ED] dark:bg-[#8B5CF6]" style={{ height: bar.h2 }} />
-                      <div className="absolute inset-x-0 bottom-0 rounded-t-md bg-[#6941C6] dark:bg-[#7C3AED]" style={{ height: bar.h3 }} />
+                      <div className="absolute inset-0 rounded-t-md bg-border-secondary dark:bg-border-secondary" />
+                      <div className="absolute inset-x-0 bottom-0 rounded-t-md bg-purple-400 dark:bg-purple-600" style={{ height: bar.h2 }} />
+                      <div className="absolute inset-x-0 bottom-0 rounded-t-md bg-purple-600 dark:bg-purple-700" style={{ height: bar.h3 }} />
                     </div>
                   ))}
                 </div>
@@ -592,14 +604,16 @@ export default function CompetitorPage() {
                 <svg className="h-auto w-full" viewBox="0 0 200 110" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
                   <path
                     d="M190 100C190 88.181 187.672 76.4778 183.149 65.5585C178.626 54.6392 171.997 44.7177 163.64 36.3604C155.282 28.0031 145.361 21.3738 134.442 16.8508C123.522 12.3279 111.819 10 100 10C88.181 9.99999 76.4779 12.3279 65.5585 16.8508C54.6392 21.3737 44.7177 28.0031 36.3604 36.3604C28.0031 44.7176 21.3738 54.6391 16.8509 65.5584C12.3279 76.4777 10 88.181 10 100"
-                    stroke="#E9EAEB"
+                    stroke="currentColor"
+                    className="text-border-secondary"
                     strokeWidth="20"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
                   <path
                     d="M10 100C10 80.9939 16.017 62.4756 27.1885 47.0993C38.36 31.723 54.1126 20.2781 72.1885 14.4049C90.2644 8.53169 109.736 8.5317 127.812 14.4049C145.887 20.2781 161.64 31.7231 172.812 47.0994"
-                    stroke="#7F56D9"
+                    stroke="currentColor"
+                    className="text-purple-600"
                     strokeWidth="20"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -609,9 +623,9 @@ export default function CompetitorPage() {
               </div>
               <div className="flex items-center gap-1">
                 <svg className="h-4 w-4" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                  <path d="M14.6673 4.66663L9.42156 9.91238C9.15755 10.1764 9.02555 10.3084 8.87333 10.3579C8.73943 10.4014 8.5952 10.4014 8.46131 10.3579C8.30909 10.3084 8.17708 10.1764 7.91307 9.91238L6.08823 8.08754C5.82422 7.82353 5.69221 7.69152 5.54 7.64206C5.4061 7.59856 5.26187 7.59856 5.12797 7.64206C4.97575 7.69152 4.84375 7.82353 4.57974 8.08754L1.33398 11.3333M14.6673 4.66663H10.0007M14.6673 4.66663V9.33329" stroke="#17B26A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M14.6673 4.66663L9.42156 9.91238C9.15755 10.1764 9.02555 10.3084 8.87333 10.3579C8.73943 10.4014 8.5952 10.4014 8.46131 10.3579C8.30909 10.3084 8.17708 10.1764 7.91307 9.91238L6.08823 8.08754C5.82422 7.82353 5.69221 7.69152 5.54 7.64206C5.4061 7.59856 5.26187 7.59856 5.12797 7.64206C4.97575 7.69152 4.84375 7.82353 4.57974 8.08754L1.33398 11.3333M14.6673 4.66663H10.0007M14.6673 4.66663V9.33329" stroke="currentColor" className="text-green-600" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                <span className="text-sm font-medium text-[#067647]">10%</span>
+                <span className="text-sm font-medium text-green-700 dark:text-green-300">10%</span>
               </div>
             </div>
             <div>
@@ -645,8 +659,8 @@ export default function CompetitorPage() {
                 <Upload className="h-5 w-5 text-quaternary" />
                 Import
               </button>
-              <button className="flex items-center gap-1 rounded-lg border-2 border-[#FFFFFF1F] bg-[#7F56D9] px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#6941C6]">
-                <Plus className="h-5 w-5 text-[#D6BBFB]" />
+              <button className="flex items-center gap-1 rounded-lg border-2 border-white/10 bg-primary px-3.5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90">
+                <Plus className="h-5 w-5 text-primary-foreground/80" />
                 Track Product
               </button>
             </div>
@@ -756,7 +770,7 @@ export default function CompetitorPage() {
                       type="checkbox"
                       checked={sortedCompetitors.every(item => selectedRows.has(item.id)) && sortedCompetitors.length > 0}
                       onChange={toggleAll}
-                      className="h-5 w-5 rounded-md border-[#7F56D9] text-[#7F56D9] focus:ring-ring/40"
+                      className="h-5 w-5 rounded-md border-primary text-primary focus:ring-ring/40"
                       aria-label="Select all competitors"
                       aria-describedby="select-all-help"
                     />
@@ -852,7 +866,7 @@ export default function CompetitorPage() {
                         type="checkbox"
                         checked={selectedRows.has(competitor.id)}
                         onChange={() => toggleRow(competitor.id)}
-                        className="h-5 w-5 rounded-md border-[#7F56D9] text-[#7F56D9] focus:ring-ring/40 dark:border-gray-400 dark:text-gray-400 dark:bg-gray-700"
+                        className="h-5 w-5 rounded-md border-primary text-primary focus:ring-ring/40 dark:border-gray-400 dark:text-gray-400 dark:bg-gray-700"
                         aria-label={`Select ${competitor.name} competitor`}
                         aria-describedby={`competitor-${competitor.id}-info`}
                       />
@@ -898,20 +912,20 @@ export default function CompetitorPage() {
                         <div 
                           className={`inline-flex items-center gap-0.5 rounded-full border px-2 py-0.5 ${
                             neutral
-                              ? 'border-[#E9EAEB] bg-[#FAFAFA]'
+                              ? 'border-border-secondary bg-muted'
                               : up
-                              ? 'border-[#ABEFC6] bg-[#ECFDF3]'
-                              : 'border-[#FECDCA] bg-[#FEF3F2]'
+                              ? 'border-green-200 bg-green-50 dark:border-green-700 dark:bg-green-900'
+                              : 'border-red-200 bg-red-50 dark:border-red-700 dark:bg-red-900'
                           }`}
                           role="img"
                           aria-label={label}
                         >
                           {!neutral && (up ? (
-                            <ArrowUp className="h-3 w-3 text-[#17B26A]" aria-hidden="true" />
+                            <ArrowUp className="h-3 w-3 text-green-600 dark:text-green-400" aria-hidden="true" />
                           ) : (
-                            <ArrowDown className="h-3 w-3 text-[#F04438]" aria-hidden="true" />
+                            <ArrowDown className="h-3 w-3 text-red-600 dark:text-red-400" aria-hidden="true" />
                           ))}
-                          <span className={`text-xs font-medium ${neutral ? 'text-muted-foreground' : up ? 'text-[#067647]' : 'text-[#B42318]'}`}>
+                          <span className={`text-xs font-medium ${neutral ? 'text-muted-foreground' : up ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'}`}>
                             {neutral ? '0%' : formatPercentCompact(precise)}
                           </span>
                         </div>
@@ -924,13 +938,13 @@ export default function CompetitorPage() {
                         <span
                           key={category}
                           role="listitem"
-                          className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium ${badgeClasses[category] ?? 'border-[#E9EAEB] bg-[#FAFAFA] text-muted-foreground'}`}
+                          className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium ${badgeClasses[category] ?? 'border-border-secondary bg-muted text-muted-foreground'}`}
                           aria-label={`Category: ${category}`}
                         >
-                          {category === 'Active' && <span className="h-2 w-2 rounded-full bg-[#17B26A]" aria-hidden="true" />}
-                          {category === 'Inactive' && <span className="h-2 w-2 rounded-full bg-[#717680]" aria-hidden="true" />}
-                          {category === 'In Stock' && <span className="h-2 w-2 rounded-full bg-[#17B26A]" aria-hidden="true" />}
-                          {category === 'Out of Stock' && <span className="h-2 w-2 rounded-full bg-[#F04438]" aria-hidden="true" />}
+                          {category === 'Active' && <span className="h-2 w-2 rounded-full bg-green-500 dark:bg-green-400" aria-hidden="true" />}
+                          {category === 'Inactive' && <span className="h-2 w-2 rounded-full bg-gray-500 dark:bg-gray-400" aria-hidden="true" />}
+                          {category === 'In Stock' && <span className="h-2 w-2 rounded-full bg-green-500 dark:bg-green-400" aria-hidden="true" />}
+                          {category === 'Out of Stock' && <span className="h-2 w-2 rounded-full bg-red-500 dark:bg-red-400" aria-hidden="true" />}
                           {category}
                         </span>
                       ))}
