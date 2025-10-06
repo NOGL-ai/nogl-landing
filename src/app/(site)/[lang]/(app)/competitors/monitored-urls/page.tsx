@@ -483,27 +483,27 @@ export default function CompetitorPage() {
         {searchQuery && `Found ${filteredCompetitors.length} competitors matching "${searchQuery}"`}
       </div>
       
-      <main className="mx-auto w-full min-h-screen space-y-8 bg-background px-8 pt-8 pb-12 text-foreground transition-colors">
+      <main className="mx-auto w-full min-h-screen space-y-6 md:space-y-8 bg-background px-4 md:px-8 pt-6 md:pt-8 pb-8 md:pb-12 text-foreground transition-colors">
       {/* Header */}
-      <header className="flex flex-wrap items-start justify-between gap-4">
-        <div className="min-w-[280px] flex-1">
-          <h1 className="text-2xl font-semibold text-foreground">Welcome back, Tim</h1>
+      <header className="flex flex-wrap items-start justify-between gap-3 md:gap-4">
+        <div className="min-w-[200px] md:min-w-[280px] flex-1">
+          <h1 className="text-xl md:text-2xl font-semibold text-foreground">Welcome back, Tim</h1>
         </div>
-        <div className="flex items-center gap-3">
-          <button className={iconButtonClasses} aria-label="Search">
+        <div className="flex items-center gap-2 md:gap-3">
+          <button className="hidden md:flex p-2.5 rounded-lg hover:bg-muted transition-colors" aria-label="Search">
             <Search className="h-5 w-5 text-quaternary" />
           </button>
           <button className={secondaryButtonClasses}>
             <Settings className="h-5 w-5 text-quaternary" />
-            Customize
+            <span className="hidden sm:inline">Customize</span>
           </button>
           <button className={secondaryButtonClasses}>
             <Download className="h-5 w-5 text-quaternary" />
-            Export
+            <span className="hidden sm:inline">Export</span>
           </button>
         </div>
       </header>
-      <section className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <section className="grid grid-cols-1 gap-4 md:gap-6 lg:grid-cols-3">
         <article className="lg:col-span-2 rounded-xl border border-border-secondary bg-card shadow-sm transition-colors">
           <div className="border-b border-border-secondary p-6">
             <div className="flex items-start justify-between">
@@ -645,34 +645,34 @@ export default function CompetitorPage() {
       </section>
 
       <section className="rounded-xl border border-border-secondary bg-card shadow-sm transition-colors">
-        <div className="border-b border-border-secondary p-6">
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div className="flex-1">
-              <div className="flex items-center gap-2">
-                <h2 className="text-lg font-semibold text-foreground">Products nogled</h2>
+        <div className="border-b border-border-secondary p-4 md:p-6">
+          <div className="flex flex-wrap items-start justify-between gap-3 md:gap-4">
+            <div className="flex-1 min-w-[200px]">
+              <div className="flex flex-wrap items-center gap-2">
+                <h2 className="text-base md:text-lg font-semibold text-foreground">Products nogled</h2>
                 <span className="inline-flex items-center rounded-full border border-border-secondary bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">240 products</span>
               </div>
-              <p className="mt-1 text-sm text-muted-foreground">Monitor competitor pricing and stay competitive with real-time price tracking.</p>
+              <p className="mt-1 text-xs md:text-sm text-muted-foreground">Monitor competitor pricing and stay competitive with real-time price tracking.</p>
             </div>
-            <div className="flex items-center gap-3">
-              <button className={secondaryButtonClasses}>
-                <Upload className="h-5 w-5 text-quaternary" />
-                Import
+            <div className="flex items-center gap-2 md:gap-3">
+              <button className="hidden sm:flex items-center gap-1 rounded-lg border border-border-secondary bg-background px-3 md:px-3.5 py-2 md:py-2.5 text-xs md:text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted">
+                <Upload className="h-4 md:h-5 w-4 md:w-5 text-quaternary" />
+                <span className="hidden md:inline">Import</span>
               </button>
-              <button className="flex items-center gap-1 rounded-lg border-2 border-white/10 bg-primary px-3.5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90">
-                <Plus className="h-5 w-5 text-primary-foreground/80" />
-                Track Product
+              <button className="flex items-center gap-1 rounded-lg border-2 border-white/10 bg-primary px-3 md:px-3.5 py-2 md:py-2.5 text-xs md:text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90">
+                <Plus className="h-4 md:h-5 w-4 md:w-5 text-primary-foreground/80" />
+                <span className="hidden sm:inline">Track Product</span>
               </button>
             </div>
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border-secondary px-6 py-3">
+        <div className="flex flex-wrap items-center justify-between gap-3 md:gap-4 border-b border-border-secondary px-4 md:px-6 py-3">
           <div className="flex overflow-hidden rounded-lg border border-border-secondary shadow-sm" role="tablist" aria-label="Product filter tabs">
             <button
               type="button"
               onClick={() => setActiveTab('all')}
-              className={`px-4 py-2 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring/40 ${
+              className={`px-3 md:px-4 py-2 text-xs md:text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring/40 ${
                 activeTab === 'all' ? 'border-r border-border-secondary bg-muted text-foreground' : 'border-r border-border-secondary bg-background text-muted-foreground hover:bg-muted'
               }`}
               role="tab"
@@ -680,12 +680,13 @@ export default function CompetitorPage() {
               aria-controls="all-products-panel"
               id="all-products-tab"
             >
-              All Products
+              <span className="hidden sm:inline">All Products</span>
+              <span className="sm:hidden">All</span>
             </button>
             <button
               type="button"
               onClick={() => setActiveTab('monitored')}
-              className={`px-4 py-2 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring/40 ${
+              className={`px-3 md:px-4 py-2 text-xs md:text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring/40 ${
                 activeTab === 'monitored' ? 'border-r border-border-secondary bg-muted text-foreground' : 'border-r border-border-secondary bg-background text-muted-foreground hover:bg-muted'
               }`}
               role="tab"
@@ -698,7 +699,7 @@ export default function CompetitorPage() {
             <button
               type="button"
               onClick={() => setActiveTab('unmonitored')}
-              className={`px-4 py-2 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring/40 ${
+              className={`px-3 md:px-4 py-2 text-xs md:text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring/40 ${
                 activeTab === 'unmonitored' ? 'bg-muted text-foreground' : 'bg-background text-muted-foreground hover:bg-muted'
               }`}
               role="tab"
@@ -709,35 +710,35 @@ export default function CompetitorPage() {
               Paused
             </button>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="relative max-w-[320px]">
+          <div className="flex items-center gap-2 md:gap-3 w-full sm:w-auto">
+            <div className="relative flex-1 sm:flex-initial sm:w-[200px] md:max-w-[320px]">
               <label htmlFor="search-input" className="sr-only">
                 Search competitors by name or domain
               </label>
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-quaternary" aria-hidden="true" />
+              <Search className="pointer-events-none absolute left-2 md:left-3 top-1/2 h-4 md:h-5 w-4 md:w-5 -translate-y-1/2 text-quaternary" aria-hidden="true" />
               <input
                 id="search-input"
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search products, URLs, SKU"
-                className="w-full rounded-lg border border-border-secondary bg-background py-2 pl-10 pr-16 text-base text-foreground placeholder:text-muted-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-ring/40"
+                className="w-full rounded-lg border border-border-secondary bg-background py-2 pl-8 md:pl-10 pr-10 md:pr-16 text-sm md:text-base text-foreground placeholder:text-muted-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-ring/40"
                 aria-describedby="search-help"
                 aria-label="Search competitors by name or domain"
               />
               <span
                 id="search-help"
-                className="absolute right-3 top-1/2 -translate-y-1/2 rounded border border-border-secondary bg-background px-1.5 py-0.5 text-xs text-muted-foreground"
+                className="hidden md:inline-flex absolute right-3 top-1/2 -translate-y-1/2 rounded border border-border-secondary bg-background px-1.5 py-0.5 text-xs text-muted-foreground"
                 aria-label="Keyboard shortcut: Command K"
               >
                 ⌘K
               </span>
             </div>
-            <button className={secondaryButtonClasses}>
-              <svg className="h-5 w-5 text-quaternary" fill="none" stroke="currentColor" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <button className="flex items-center gap-1 rounded-lg border border-border-secondary bg-background px-3 md:px-3.5 py-2 md:py-2.5 text-xs md:text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted">
+              <svg className="h-4 md:h-5 w-4 md:w-5 text-quaternary" fill="none" stroke="currentColor" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.67} d="M3 4h14M6 8h8M9 12h2" />
               </svg>
-              Filters
+              <span className="hidden sm:inline">Filters</span>
             </button>
           </div>
         </div>
@@ -932,13 +933,14 @@ export default function CompetitorPage() {
                       );
                     })()}
                   </td>
-                  <td className="px-6 py-4 bg-card">
+                  <td className="px-4 md:px-6 py-4 bg-card">
                     <div className="flex flex-wrap items-center gap-1" role="list" aria-label="Product categories">
-                      {competitor.categories.slice(0, 2).map(category => (
+                      {/* Mobile: Show only 1 category, Desktop: Show 2 categories */}
+                      {competitor.categories.slice(0, 2).map((category, index) => (
                         <span
                           key={category}
                           role="listitem"
-                          className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium ${badgeClasses[category] ?? 'border-border-secondary bg-muted text-muted-foreground'}`}
+                          className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium ${badgeClasses[category] ?? 'border-border-secondary bg-muted text-muted-foreground'} ${index === 1 ? 'hidden md:inline-flex' : ''}`}
                           aria-label={`Category: ${category}`}
                         >
                           {category === 'Active' && <span className="h-2 w-2 rounded-full bg-green-500 dark:bg-green-400" aria-hidden="true" />}
@@ -977,24 +979,24 @@ export default function CompetitorPage() {
           </table>
         </div>
 
-        <div className="flex items-center justify-between border-t border-border-secondary px-6 py-3">
-          <div className="text-sm font-medium text-muted-foreground dark:text-gray-300">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border-secondary px-4 md:px-6 py-3">
+          <div className="text-xs md:text-sm font-medium text-muted-foreground dark:text-gray-300">
             Page 1 of 10
             <span className="sr-only">
               Showing {filteredCompetitors.length} of {competitors.length} competitors
               {searchQuery && ` matching "${searchQuery}"`}
             </span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 md:gap-3">
             <button
-              className={secondaryButtonClasses}
+              className="inline-flex items-center justify-center gap-1 rounded-lg border border-border-secondary bg-background px-3 py-2 text-xs md:text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40 disabled:cursor-not-allowed disabled:opacity-60"
               aria-label="Go to previous page"
               disabled
             >
               Previous
             </button>
             <button
-              className={secondaryButtonClasses}
+              className="inline-flex items-center justify-center gap-1 rounded-lg border border-border-secondary bg-background px-3 py-2 text-xs md:text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40 disabled:cursor-not-allowed disabled:opacity-60"
               aria-label="Go to next page"
             >
               Next
