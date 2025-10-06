@@ -10,6 +10,7 @@ import {
   Settings,
   Upload,
 } from 'lucide-react';
+import { computeTrend, formatPercentCompact, formatPercentDetailed } from '@/utils/priceTrend';
 
 const competitors = [
   {
@@ -148,6 +149,8 @@ const fmtPct = (percent: number) => {
   const sign = percent > 0 ? '+' : '';
   return `${sign}${Math.abs(percent).toFixed(2)}%`;
 };
+
+// computeTrend now imported from utils
 
 // Price Position Component
 const PricePositionCell = ({
@@ -400,9 +403,11 @@ export default function CompetitorPage() {
         return priceSort === 'asc' ? diff : -diff;
       }
       if (trendSort !== 'none') {
-        // Convert trend to signed value: positive for up trends, negative for down trends
-        const getSignedTrend = (competitor: typeof a) => 
-          competitor.trendUp ? competitor.trend : -competitor.trend;
+        // Use derived signed trend from price comparison
+        const getSignedTrend = (competitor: typeof a) => {
+          const { precise } = computeTrend(competitor.competitorPrice, competitor.myPrice);
+          return precise; // signed value for ordering
+        };
         
         const diff = getSignedTrend(a) - getSignedTrend(b);
         return trendSort === 'asc' ? diff : -diff;
@@ -844,22 +849,36 @@ export default function CompetitorPage() {
                     />
                   </td>
                   <td className="px-6 py-4 bg-card" role="gridcell">
-                    <div 
-                      className={`inline-flex items-center gap-0.5 rounded-full border px-2 py-0.5 ${
-                        competitor.trendUp ? 'border-[#ABEFC6] bg-[#ECFDF3]' : 'border-[#FECDCA] bg-[#FEF3F2]'
-                      }`}
-                      role="img"
-                      aria-label={`Price trend ${competitor.trendUp ? 'up' : 'down'} by ${competitor.trend}%`}
-                    >
-                      {competitor.trendUp ? (
-                        <ArrowUp className="h-3 w-3 text-[#17B26A]" aria-hidden="true" />
-                      ) : (
-                        <ArrowDown className="h-3 w-3 text-[#F04438]" aria-hidden="true" />
-                      )}
-                      <span className={`text-xs font-medium ${competitor.trendUp ? 'text-[#067647]' : 'text-[#B42318]'}`}>
-                        {competitor.trend}%
-                      </span>
-                    </div>
+                    {(() => {
+                      const { value, precise, up, neutral } = computeTrend(competitor.competitorPrice, competitor.myPrice);
+                      const label = neutral
+                        ? 'Prices equal'
+                        : up
+                        ? `You are ${formatPercentDetailed(-precise)} cheaper than competitor`
+                        : `You are ${formatPercentDetailed(precise)} more expensive than competitor`;
+                      return (
+                        <div 
+                          className={`inline-flex items-center gap-0.5 rounded-full border px-2 py-0.5 ${
+                            neutral
+                              ? 'border-[#E9EAEB] bg-[#FAFAFA]'
+                              : up
+                              ? 'border-[#ABEFC6] bg-[#ECFDF3]'
+                              : 'border-[#FECDCA] bg-[#FEF3F2]'
+                          }`}
+                          role="img"
+                          aria-label={label}
+                        >
+                          {!neutral && (up ? (
+                            <ArrowUp className="h-3 w-3 text-[#17B26A]" aria-hidden="true" />
+                          ) : (
+                            <ArrowDown className="h-3 w-3 text-[#F04438]" aria-hidden="true" />
+                          ))}
+                          <span className={`text-xs font-medium ${neutral ? 'text-muted-foreground' : up ? 'text-[#067647]' : 'text-[#B42318]'}`}>
+                            {neutral ? '0%' : formatPercentCompact(precise)}
+                          </span>
+                        </div>
+                      );
+                    })()}
                   </td>
                   <td className="px-6 py-4 bg-card" role="gridcell">
                     <div className="flex flex-wrap items-center gap-1" role="list" aria-label="Product categories">
