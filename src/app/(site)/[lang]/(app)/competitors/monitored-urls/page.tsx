@@ -378,11 +378,15 @@ export default function CompetitorPage() {
     }
   };
 
-  // Filter competitors based on search query
-  const filteredCompetitors = competitors.filter(competitor =>
-    competitor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    competitor.domain.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Filter competitors based on search query (memoized for performance)
+  const filteredCompetitors = React.useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return competitors;
+    return competitors.filter(competitor =>
+      competitor.name.toLowerCase().includes(q) ||
+      competitor.domain.toLowerCase().includes(q)
+    );
+  }, [searchQuery]);
 
   return (
         <div className="mx-auto w-full max-w-7xl min-h-screen space-y-6 bg-background px-4 py-6 text-foreground transition-colors sm:px-6 lg:py-10 lg:px-8">
@@ -630,7 +634,7 @@ export default function CompetitorPage() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search products, URLs, SKL"
+                placeholder="Search products, URLs, SKU"
                 className="w-full rounded-lg border border-border-secondary bg-background py-2 pl-10 pr-16 text-base text-foreground placeholder:text-muted-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-ring/40"
                 aria-describedby="search-help"
                 aria-label="Search competitors by name or domain"
@@ -675,7 +679,6 @@ export default function CompetitorPage() {
                   className="px-6 py-3 text-left" 
                   role="columnheader" 
                   scope="col"
-                  aria-sort={selectedRows.size === competitors.length ? "other" : selectedRows.size > 0 ? "other" : "none" as const}
                 >
                   <div className="flex items-center gap-3">
                     <input
