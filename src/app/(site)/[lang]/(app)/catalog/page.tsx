@@ -1253,7 +1253,7 @@ export default function CompetitorPage() {
               </button>
               <button className="flex items-center gap-1 rounded-lg border-2 border-white/10 bg-primary px-3 md:px-3.5 py-2 md:py-2.5 text-xs md:text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90">
                 <Plus className="h-4 md:h-5 w-4 md:w-5 text-primary-foreground/80" />
-                <span className="hidden sm:inline">Track Competitor</span>
+                <span className="hidden sm:inline">Nogl Product</span>
               </button>
             </div>
           </div>
