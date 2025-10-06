@@ -1386,9 +1386,9 @@ export default function CompetitorPage() {
             computeTrend={computeTrend}
             formatPercentDetailed={formatPercentDetailed}
             formatPercentCompact={formatPercentCompact}
-            showProductsColumn={true}
-            productsColumnHeader="Competitor Products"
-            showMaterialsColumn={true}
+            showProductsColumn={false} // Remove Products column
+            showCompetitorsColumn={true} // Enable Competitors column for catalog page
+            showMaterialsColumn={true} // Enable Materials column for catalog page
           />
         </div>
 

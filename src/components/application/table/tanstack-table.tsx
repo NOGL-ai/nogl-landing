@@ -72,6 +72,7 @@ interface TanStackTableProps {
   showProductsColumn?: boolean;
   productsColumnHeader?: string;
   showMaterialsColumn?: boolean;
+  showCompetitorsColumn?: boolean;
   enableDragDrop?: boolean;
   onDragEnd?: (event: DragEndEvent) => void;
 }
@@ -97,6 +98,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
   showProductsColumn = true,
   productsColumnHeader = 'Products',
   showMaterialsColumn = false,
+  showCompetitorsColumn = false,
   enableDragDrop = false,
   onDragEnd,
 }) => {
@@ -349,11 +351,97 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
     }
 
 
+    // Add Competitor Count column (Untitled UI inspired) - conditional
+    if (showCompetitorsColumn) {
+      baseColumns.push({
+        accessorKey: 'competitorCount',
+        id: 'competitorCount',
+        header: 'Competitors',
+        cell: ({ row }) => {
+          const product = row.original as any;
+          const competitorCount = product.competitorCount || 0;
+          
+          if (competitorCount === 0) {
+            return (
+              <div className="flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                  <span className="text-sm font-medium text-gray-400">—</span>
+                </div>
+              </div>
+            );
+          }
+
+          // Calculate progress percentage (max 10 competitors for 100% fill)
+          const maxCompetitors = 10;
+          const progressPercentage = Math.min((competitorCount / maxCompetitors) * 100, 100);
+          const circumference = 2 * Math.PI * 16; // radius = 16
+          const strokeDasharray = `${(progressPercentage / 100) * circumference} ${circumference}`;
+          
+          return (
+            <div className="group relative flex items-center justify-center">
+              {/* Circular Progress Chart - Untitled UI Style */}
+              <div className="relative w-10 h-10">
+                <svg width="40" height="40" className="transform -rotate-90">
+                  {/* Background circle */}
+                  <circle
+                    cx="20"
+                    cy="20"
+                    r="16"
+                    fill="none"
+                    stroke="#E9EAEB"
+                    strokeWidth="3"
+                  />
+                  {/* Progress circle */}
+                  <circle
+                    cx="20"
+                    cy="20"
+                    r="16"
+                    fill="none"
+                    stroke="#7F56D9"
+                    strokeWidth="3"
+                    strokeDasharray={strokeDasharray}
+                    strokeDashoffset="0"
+                    strokeLinecap="round"
+                    className="transition-all duration-300 ease-out"
+                  />
+                </svg>
+                
+                {/* Center count - Untitled UI typography */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                    {competitorCount}
+                  </span>
+                </div>
+              </div>
+
+              {/* Hover tooltip */}
+              <div className="absolute left-1/2 top-full mt-2 hidden group-hover:block z-50 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs rounded-lg px-3 py-2 shadow-lg whitespace-nowrap transform -translate-x-1/2">
+                <div className="space-y-1">
+                  <div className="font-semibold">Competitor Analysis</div>
+                  <div className="text-gray-300 dark:text-gray-600">
+                    {competitorCount} competitor{competitorCount !== 1 ? 's' : ''} found
+                  </div>
+                  {product.competitors?.competitorNames && (
+                    <div className="text-gray-300 dark:text-gray-600">
+                      Top: {product.competitors.competitorNames.slice(0, 3).join(', ')}
+                      {product.competitors.competitorNames.length > 3 && ` +${product.competitors.competitorNames.length - 3} more`}
+                    </div>
+                  )}
+                </div>
+                <div className="absolute -top-1 left-1/2 w-2 h-2 bg-gray-900 dark:bg-gray-100 rotate-45 transform -translate-x-1/2"></div>
+              </div>
+            </div>
+          );
+        },
+        enableSorting: true,
+      });
+    }
+
     // Add remaining columns
     baseColumns.push(
       {
         accessorKey: 'competitorPrice',
-        header: 'Competitor Prices',
+        header: 'Price Analysis',
         cell: ({ row }) => {
           const product = row.original as any;
           const competitors = product.competitors;
