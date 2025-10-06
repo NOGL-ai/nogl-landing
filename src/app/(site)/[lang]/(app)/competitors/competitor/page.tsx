@@ -520,9 +520,9 @@ const ProductsCell = ({ competitor, maxProducts }: { competitor: any, maxProduct
   const percentageOfLeader = Math.round((competitor.products / maxProducts) * 100);
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-1">
       <div className="flex items-center gap-2">
-        <div className="text-lg font-semibold text-foreground">{competitor.products.toLocaleString()}</div>
+        <div className="text-base font-semibold text-foreground">{competitor.products.toLocaleString()}</div>
         <div className="text-xs text-muted-foreground">({percentageOfLeader}% of leader)</div>
       </div>
       <div className="flex items-center gap-2">
@@ -591,7 +591,7 @@ const PricePositionCell = ({
 
   return (
     <div
-      className="group relative min-w-[280px] space-y-2"
+      className="group relative min-w-[280px] space-y-1"
       role="region"
       aria-label="Price comparison"
       aria-describedby={srId}

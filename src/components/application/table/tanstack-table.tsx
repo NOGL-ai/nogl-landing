@@ -829,7 +829,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
           {row.getVisibleCells().map((cell: any) => (
             <td
               key={cell.id}
-              className="px-6 py-4 bg-card"
+              className="px-6 py-3 bg-card"
             >
               {flexRender(cell.column.columnDef.cell, cell.getContext())}
             </td>
@@ -854,10 +854,10 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
         tabIndex={focusedRowIndex === index ? 0 : -1}
       >
         {row.getVisibleCells().map((cell: any) => (
-          <td
-            key={cell.id}
-            className="px-6 py-4 bg-card"
-          >
+            <td
+              key={cell.id}
+              className="px-6 py-3 bg-card"
+            >
             {flexRender(cell.column.columnDef.cell, cell.getContext())}
           </td>
         ))}

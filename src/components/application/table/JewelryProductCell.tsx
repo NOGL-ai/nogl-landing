@@ -86,8 +86,8 @@ const JewelryProductCell: React.FC<JewelryProductCellProps> = ({
       default: // md
         return {
           container: 'gap-3 p-2',
-          image: 'h-16 w-16',
-          imageInner: 'h-14 w-14',
+          image: 'h-12 w-12',
+          imageInner: 'h-10 w-10',
           statusIndicator: 'w-4 h-4 -top-1 -right-1',
           title: 'text-sm',
           subtitle: 'text-xs',

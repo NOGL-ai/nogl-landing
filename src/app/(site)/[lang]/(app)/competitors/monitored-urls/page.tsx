@@ -213,7 +213,7 @@ const PricePositionCell = ({
 
   return (
     <div
-      className="group relative min-w-[280px] space-y-2"
+      className="group relative min-w-[280px] space-y-1"
       role="region"
       aria-label="Price comparison"
       aria-describedby={srId}
