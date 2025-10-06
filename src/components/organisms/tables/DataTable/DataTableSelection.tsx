@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Checkbox } from "@/components/ui/checkbox";
+import Checkbox from "@/components/ui/checkbox";
 
 interface SelectionCheckboxProps {
 	checked: boolean;
@@ -21,10 +21,8 @@ export function SelectionCheckbox({
 	return (
 		<Checkbox
 			checked={checked}
-			onCheckedChange={onCheckedChange}
-			aria-label={ariaLabel}
-			aria-describedby={indeterminate ? "indeterminate-state" : undefined}
-			disabled={disabled}
+			onChange={onCheckedChange}
+			ariaLabel={ariaLabel}
 			className="focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
 		/>
 	);

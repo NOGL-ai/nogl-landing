@@ -16,7 +16,7 @@ import {
 } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
+import Checkbox from "@/components/ui/checkbox";
 import {
 	Table,
 	TableBody,

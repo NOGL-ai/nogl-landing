@@ -183,7 +183,7 @@ export function DataTable<TData, TValue>({
 						variant={variant}
 					/>
 				</UntitledTable>
-				{enablePagination && <DataTablePagination table={table} variant={variant} />}
+				{enablePagination && <DataTablePagination table={table} />}
 			</TableCard.Root>
 		);
 	}

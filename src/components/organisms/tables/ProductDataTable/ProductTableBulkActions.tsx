@@ -35,6 +35,7 @@ interface Product {
 	};
 	status: "ACTIVE" | "INACTIVE" | "DRAFT" | "ARCHIVED";
 	featured: boolean;
+	triggeredRule: string;
 	createdAt: string;
 	updatedAt: string;
 }

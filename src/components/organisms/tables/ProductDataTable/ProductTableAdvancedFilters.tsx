@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import Checkbox from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
 import { Icon } from "../Icon";
@@ -192,10 +192,10 @@ export function ProductTableAdvancedFilters({
 										<Checkbox
 											id={`brand-${brand}`}
 											checked={filters.brands.includes(brand)}
-											onCheckedChange={(checked) =>
+											onChange={(checked: boolean) =>
 												handleBrandFilter(brand, !!checked)
 											}
-											aria-label={`Filter by ${brand} brand`}
+											ariaLabel={`Filter by ${brand} brand`}
 										/>
 										<label
 											htmlFor={`brand-${brand}`}
@@ -219,10 +219,10 @@ export function ProductTableAdvancedFilters({
 										<Checkbox
 											id={`currency-${currency}`}
 											checked={filters.currencies.includes(currency)}
-											onCheckedChange={(checked) =>
+											onChange={(checked: boolean) =>
 												handleCurrencyFilter(currency, !!checked)
 											}
-											aria-label={`Filter by ${currency} currency`}
+											ariaLabel={`Filter by ${currency} currency`}
 										/>
 										<label
 											htmlFor={`currency-${currency}`}

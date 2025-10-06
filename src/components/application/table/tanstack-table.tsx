@@ -17,6 +17,25 @@ import {
 import { ArrowDown, ArrowUp, ChevronsUpDown } from 'lucide-react';
 import Checkbox from '@/components/ui/checkbox';
 import type { TrendComputation } from '@/utils/priceTrend';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import {
+  useSortable,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 // Types
 export interface Competitor {
@@ -51,6 +70,8 @@ interface TanStackTableProps {
   formatPercentCompact?: (value: number) => string;
   showCompetitorColumn?: boolean;
   showProductsColumn?: boolean;
+  enableDragDrop?: boolean;
+  onDragEnd?: (event: DragEndEvent) => void;
 }
 
 const columnHelper = createColumnHelper<Competitor>();
@@ -72,6 +93,8 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
   formatPercentCompact,
   showCompetitorColumn = false,
   showProductsColumn = true,
+  enableDragDrop = false,
+  onDragEnd,
 }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
@@ -79,6 +102,21 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
     pageSize: 10,
   });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
+  // Drag and drop sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  // Handle drag end
+  const handleDragEnd = (event: DragEndEvent) => {
+    if (onDragEnd) {
+      onDragEnd(event);
+    }
+  };
 
   // Handle row selection
   const handleSelectAll = (checked: boolean) => {
@@ -324,6 +362,75 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
     return baseColumns;
   }, [selectedRows, maxProducts, badgeClasses, ProductsCell, PricePositionCell, computeTrend, formatPercentDetailed, formatPercentCompact, showCompetitorColumn, showProductsColumn]);
 
+  // Sortable Row Component
+  const SortableRow = ({ row, index }: { row: any; index: number }) => {
+    const {
+      attributes,
+      listeners,
+      setNodeRef,
+      transform,
+      transition,
+      isDragging,
+    } = useSortable({ id: row.original.id });
+
+    const style = {
+      transform: CSS.Transform.toString(transform),
+      transition,
+      opacity: isDragging ? 0.5 : 1,
+    };
+
+    if (!enableDragDrop) {
+      return (
+        <tr
+          key={row.id}
+          className={`transition-colors hover:bg-muted ${
+            focusedRowIndex === index ? 'bg-blue-50 dark:bg-blue-900 ring-2 ring-blue-200 dark:ring-blue-800' : ''
+          }`}
+          tabIndex={focusedRowIndex === index ? 0 : -1}
+          onFocus={() => onRowClick?.(row.original)}
+          onKeyDown={(e) => onRowKeyDown?.(e, row.original, index)}
+          aria-selected={selectedRows.has(row.original.id)}
+          aria-label={`Competitor ${row.original.name} from ${row.original.domain}`}
+        >
+          {row.getVisibleCells().map((cell: any) => (
+            <td
+              key={cell.id}
+              className="px-6 py-4 bg-card"
+            >
+              {flexRender(cell.column.columnDef.cell, cell.getContext())}
+            </td>
+          ))}
+        </tr>
+      );
+    }
+
+    return (
+      <tr
+        ref={setNodeRef}
+        style={style}
+        className={`transition-colors hover:bg-muted ${
+          focusedRowIndex === index ? 'bg-blue-50 dark:bg-blue-900 ring-2 ring-blue-200 dark:ring-blue-800' : ''
+        } ${isDragging ? 'z-50' : ''}`}
+        onFocus={() => onRowClick?.(row.original)}
+        onKeyDown={(e) => onRowKeyDown?.(e, row.original, index)}
+        aria-selected={selectedRows.has(row.original.id)}
+        aria-label={`Competitor ${row.original.name} from ${row.original.domain}`}
+        {...attributes}
+        {...listeners}
+        tabIndex={focusedRowIndex === index ? 0 : -1}
+      >
+        {row.getVisibleCells().map((cell: any) => (
+          <td
+            key={cell.id}
+            className="px-6 py-4 bg-card"
+          >
+            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+          </td>
+        ))}
+      </tr>
+    );
+  };
+
   const table = useReactTable({
     data,
     columns,
@@ -355,13 +462,12 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
     manualPagination: true, // We handle pagination externally
   });
 
-  return (
-    <div className="w-full bg-card transition-colors">
-      <table
-        className="w-full"
-        aria-label="Competitor monitoring table"
-        aria-describedby="table-description"
-      >
+  const tableContent = (
+    <table
+      className="w-full"
+      aria-label="Competitor monitoring table"
+      aria-describedby="table-description"
+    >
         <caption id="table-description" className="sr-only">
           Table showing competitor products with pricing information, trends, and categories. 
           Use arrow keys to navigate between rows, space or enter to select, and escape to clear selection.
@@ -413,30 +519,34 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
           ))}
         </thead>
         <tbody className="divide-y divide-border-secondary bg-card">
-          {table.getRowModel().rows.map((row, index) => (
-            <tr
-              key={row.id}
-              className={`transition-colors hover:bg-muted ${
-                focusedRowIndex === index ? 'bg-blue-50 dark:bg-blue-900 ring-2 ring-blue-200 dark:ring-blue-800' : ''
-              }`}
-              tabIndex={focusedRowIndex === index ? 0 : -1}
-              onFocus={() => onRowClick?.(row.original)}
-              onKeyDown={(e) => onRowKeyDown?.(e, row.original, index)}
-              aria-selected={selectedRows.has(row.original.id)}
-              aria-label={`Competitor ${row.original.name} from ${row.original.domain}`}
-            >
-              {row.getVisibleCells().map(cell => (
-                <td
-                  key={cell.id}
-                  className="px-6 py-4 bg-card"
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
+          {enableDragDrop ? (
+            <SortableContext items={data.map(item => item.id)} strategy={verticalListSortingStrategy}>
+              {table.getRowModel().rows.map((row, index) => (
+                <SortableRow key={row.id} row={row} index={index} />
               ))}
-            </tr>
-          ))}
+            </SortableContext>
+          ) : (
+            table.getRowModel().rows.map((row, index) => (
+              <SortableRow key={row.id} row={row} index={index} />
+            ))
+          )}
         </tbody>
       </table>
+  );
+
+  return (
+    <div className="w-full bg-card transition-colors">
+      {enableDragDrop ? (
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          {tableContent}
+        </DndContext>
+      ) : (
+        tableContent
+      )}
     </div>
   );
 };
