@@ -356,10 +356,19 @@ export default function CompetitorPage() {
 
   const toggleAll = () => {
     setSelectedRows(prev => {
-      if (prev.size === competitors.length) {
-        return new Set();
+      // Select/Deselect only currently visible (sorted) rows
+      const visibleIds = new Set(sortedCompetitors.map(item => item.id));
+      const allVisibleSelected = sortedCompetitors.every(item => prev.has(item.id));
+
+      const next = new Set(prev);
+      if (allVisibleSelected) {
+        // Deselect visible
+        visibleIds.forEach(id => next.delete(id));
+      } else {
+        // Select visible
+        visibleIds.forEach(id => next.add(id));
       }
-      return new Set(competitors.map(item => item.id));
+      return next;
     });
   };
 
@@ -368,13 +377,15 @@ export default function CompetitorPage() {
     switch (event.key) {
       case 'ArrowDown': {
         event.preventDefault();
-        const nextIndex = index + 1 >= competitors.length ? 0 : index + 1;
+        const length = sortedCompetitors.length;
+        const nextIndex = index + 1 >= length ? 0 : index + 1;
         setFocusedRowIndex(nextIndex);
         break;
       }
       case 'ArrowUp': {
         event.preventDefault();
-        const prevIndex = index - 1 < 0 ? competitors.length - 1 : index - 1;
+        const length = sortedCompetitors.length;
+        const prevIndex = index - 1 < 0 ? length - 1 : index - 1;
         setFocusedRowIndex(prevIndex);
         break;
       }
@@ -409,7 +420,10 @@ export default function CompetitorPage() {
         return productSort === 'asc' ? diff : -diff;
       }
       if (priceSort !== 'none') {
-        const diff = a.competitorPrice - b.competitorPrice;
+        // Sort by relative price position: (my - competitor) / competitor
+        const relA = (a.myPrice - a.competitorPrice) / a.competitorPrice;
+        const relB = (b.myPrice - b.competitorPrice) / b.competitorPrice;
+        const diff = relA - relB;
         return priceSort === 'asc' ? diff : -diff;
       }
       if (trendSort !== 'none') {
@@ -723,7 +737,6 @@ export default function CompetitorPage() {
         >
           <table
             className="w-full bg-card transition-colors"
-            role="table"
             aria-label="Competitor monitoring table"
             aria-describedby="table-description"
           >
@@ -732,17 +745,16 @@ export default function CompetitorPage() {
               Use arrow keys to navigate between rows, space or enter to select, and escape to clear selection.
             </caption>
             <thead className="border-b border-border-secondary bg-muted">
-              <tr role="row">
+              <tr>
                 <th 
                   className="px-6 py-3 text-left" 
-                  role="columnheader" 
                   scope="col"
                   aria-sort={productSort === 'none' ? 'none' : productSort === 'asc' ? 'ascending' : 'descending'}
                 >
                   <div className="flex items-center gap-3">
                     <input
                       type="checkbox"
-                      checked={selectedRows.size === competitors.length}
+                      checked={sortedCompetitors.every(item => selectedRows.has(item.id)) && sortedCompetitors.length > 0}
                       onChange={toggleAll}
                       className="h-5 w-5 rounded-md border-[#7F56D9] text-[#7F56D9] focus:ring-ring/40"
                       aria-label="Select all competitors"
@@ -768,12 +780,11 @@ export default function CompetitorPage() {
                     Checkbox to select or deselect all competitors in the table
                   </div>
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground" role="columnheader" scope="col">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground" scope="col">
                   Matched Product
                 </th>
                 <th
                   className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground"
-                  role="columnheader"
                   scope="col"
                   aria-sort={priceSort === 'none' ? 'none' : priceSort === 'asc' ? 'ascending' : 'descending'}
                 >
@@ -795,7 +806,6 @@ export default function CompetitorPage() {
                 </th>
                 <th
                   className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground"
-                  role="columnheader"
                   scope="col"
                   aria-sort={trendSort === 'none' ? 'none' : trendSort === 'asc' ? 'ascending' : 'descending'}
                 >
@@ -815,10 +825,10 @@ export default function CompetitorPage() {
                     )}
                   </button>
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground" role="columnheader" scope="col">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground" scope="col">
                   Categories
                 </th>
-                <th className="px-4 py-3" role="columnheader" scope="col" aria-label="Actions">
+                <th className="px-4 py-3" scope="col" aria-label="Actions">
                   <span className="sr-only">Actions</span>
                 </th>
               </tr>
@@ -830,14 +840,13 @@ export default function CompetitorPage() {
                   className={`transition-colors hover:bg-muted ${
                     focusedRowIndex === index ? 'bg-blue-50 dark:bg-blue-900 ring-2 ring-blue-200 dark:ring-blue-800' : ''
                   }`}
-                  role="row"
                   tabIndex={focusedRowIndex === index ? 0 : -1}
                   onFocus={() => setFocusedRowIndex(index)}
                   onKeyDown={(e) => handleKeyDown(e, competitor.id, index)}
                   aria-selected={selectedRows.has(competitor.id)}
                   aria-label={`Competitor ${competitor.name} from ${competitor.domain}`}
                 >
-                  <td className="px-6 py-4 bg-card" role="gridcell">
+                  <td className="px-6 py-4 bg-card">
                     <div className="flex items-center gap-3">
                       <input
                         type="checkbox"
@@ -859,7 +868,7 @@ export default function CompetitorPage() {
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 bg-card" role="gridcell">
+                  <td className="px-6 py-4 bg-card">
                     <div className="flex items-center gap-3">
                       <div 
                         className="h-10 w-10 rounded-full border border-black/8 bg-gray-200"
@@ -871,13 +880,13 @@ export default function CompetitorPage() {
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 bg-card" role="gridcell">
+                  <td className="px-6 py-4 bg-card">
                     <PricePositionCell 
                       competitorPrice={competitor.competitorPrice} 
                       myPrice={competitor.myPrice}
                     />
                   </td>
-                  <td className="px-6 py-4 bg-card" role="gridcell">
+                  <td className="px-6 py-4 bg-card">
                     {(() => {
                       const { value, precise, up, neutral } = computeTrend(competitor.competitorPrice, competitor.myPrice);
                       const label = neutral
@@ -909,7 +918,7 @@ export default function CompetitorPage() {
                       );
                     })()}
                   </td>
-                  <td className="px-6 py-4 bg-card" role="gridcell">
+                  <td className="px-6 py-4 bg-card">
                     <div className="flex flex-wrap items-center gap-1" role="list" aria-label="Product categories">
                       {competitor.categories.slice(0, 2).map(category => (
                         <span
@@ -936,8 +945,9 @@ export default function CompetitorPage() {
                         )}
                     </div>
                   </td>
-                  <td className="px-4 py-4" role="gridcell">
+                  <td className="px-4 py-4">
                     <button 
+                      type="button"
                       className="rounded-lg p-2 transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40" 
                       aria-label={`More actions for ${competitor.name}`}
                       aria-haspopup="menu"
