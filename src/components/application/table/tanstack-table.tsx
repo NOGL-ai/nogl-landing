@@ -73,6 +73,8 @@ interface TanStackTableProps {
   productsColumnHeader?: string;
   showMaterialsColumn?: boolean;
   showCompetitorsColumn?: boolean;
+  showBrandColumn?: boolean;
+  showChannelColumn?: boolean;
   enableDragDrop?: boolean;
   onDragEnd?: (event: DragEndEvent) => void;
 }
@@ -99,6 +101,8 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
   productsColumnHeader = 'Products',
   showMaterialsColumn = false,
   showCompetitorsColumn = false,
+  showBrandColumn = false,
+  showChannelColumn = false,
   enableDragDrop = false,
   onDragEnd,
 }) => {
@@ -429,6 +433,190 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
                   )}
                 </div>
                 <div className="absolute -top-1 left-1/2 w-2 h-2 bg-gray-900 dark:bg-gray-100 rotate-45 transform -translate-x-1/2"></div>
+              </div>
+            </div>
+          );
+        },
+        enableSorting: true,
+      });
+    }
+
+    // Add Brand/Country column - conditional
+    if (showBrandColumn) {
+      baseColumns.push({
+        accessorKey: 'brand',
+        id: 'brand',
+        header: 'Country',
+        cell: ({ row }) => {
+          const product = row.original as any;
+          const brand = product.brand;
+          const domain = product.domain;
+          
+          // Determine country based on domain or brand
+          const getCountryInfo = (domain: string, brandName?: string) => {
+            if (domain?.includes('.de') || brandName?.toLowerCase().includes('german') || brandName?.toLowerCase().includes('deutsch')) {
+              return {
+                code: 'DE',
+                name: 'Germany',
+                flag: '🇩🇪',
+                color: 'bg-black text-white'
+              };
+            }
+            if (domain?.includes('.com') || domain?.includes('.net')) {
+              return {
+                code: 'US',
+                name: 'United States',
+                flag: '🇺🇸',
+                color: 'bg-blue-600 text-white'
+              };
+            }
+            if (domain?.includes('.uk') || domain?.includes('.co.uk')) {
+              return {
+                code: 'UK',
+                name: 'United Kingdom',
+                flag: '🇬🇧',
+                color: 'bg-blue-600 text-white'
+              };
+            }
+            if (domain?.includes('.fr')) {
+              return {
+                code: 'FR',
+                name: 'France',
+                flag: '🇫🇷',
+                color: 'bg-blue-600 text-white'
+              };
+            }
+            if (domain?.includes('.it')) {
+              return {
+                code: 'IT',
+                name: 'Italy',
+                flag: '🇮🇹',
+                color: 'bg-green-600 text-white'
+              };
+            }
+            // Default fallback
+            return {
+              code: 'DE',
+              name: 'Germany',
+              flag: '🇩🇪',
+              color: 'bg-black text-white'
+            };
+          };
+
+          const countryInfo = getCountryInfo(domain, brand?.name);
+
+          return (
+            <div className="group relative flex items-center gap-2.5">
+              {/* Country Flag/Code */}
+              <div className="relative">
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center border border-gray-200 dark:border-gray-700 ${countryInfo.color}`}>
+                  <span className="text-sm font-bold">
+                    {countryInfo.flag}
+                  </span>
+                </div>
+              </div>
+              
+              {/* Country Code */}
+              <div className="flex flex-col min-w-0">
+                <span className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                  {countryInfo.code}
+                </span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">
+                  {countryInfo.name}
+                </span>
+              </div>
+
+              {/* Hover tooltip */}
+              <div className="absolute left-0 top-full mt-2 hidden group-hover:block z-50 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs rounded-lg px-3 py-2 shadow-lg whitespace-nowrap">
+                <div className="space-y-1">
+                  <div className="font-semibold">Country Information</div>
+                  <div className="text-gray-300 dark:text-gray-600">
+                    {countryInfo.name} {countryInfo.flag}
+                  </div>
+                  <div className="text-gray-300 dark:text-gray-600">
+                    Domain: {domain}
+                  </div>
+                  {brand?.name && (
+                    <div className="text-gray-300 dark:text-gray-600">
+                      Brand: {brand.name}
+                    </div>
+                  )}
+                </div>
+                <div className="absolute -top-1 left-4 w-2 h-2 bg-gray-900 dark:bg-gray-100 rotate-45"></div>
+              </div>
+            </div>
+          );
+        },
+        enableSorting: true,
+      });
+    }
+
+    // Add Channel column - conditional
+    if (showChannelColumn) {
+      baseColumns.push({
+        accessorKey: 'channel',
+        id: 'channel',
+        header: 'Channel',
+        cell: ({ row }) => {
+          const product = row.original as any;
+          const channel = product.channel || 'shopify';
+          
+          // Channel logos using logo.dev service
+          const channelLogos = {
+            shopify: 'https://img.logo.dev/shopify.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+            woocommerce: 'https://img.logo.dev/woocommerce.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+            magento: 'https://img.logo.dev/magento.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+            bigcommerce: 'https://img.logo.dev/bigcommerce.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+            prestashop: 'https://img.logo.dev/prestashop.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+            opencart: 'https://img.logo.dev/opencart.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+          };
+
+          const channelName = channel.charAt(0).toUpperCase() + channel.slice(1);
+          const logoUrl = channelLogos[channel as keyof typeof channelLogos] || channelLogos.shopify;
+
+          return (
+            <div className="group relative flex items-center gap-2.5">
+              {/* Channel Logo */}
+              <div className="relative">
+                <div className="w-8 h-8 rounded-lg bg-gray-50 dark:bg-gray-800 flex items-center justify-center border border-gray-200 dark:border-gray-700">
+                  <img
+                    src={logoUrl}
+                    alt={channelName}
+                    className="w-6 h-6 rounded object-cover"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      target.nextElementSibling?.classList.remove('hidden');
+                    }}
+                  />
+                  <div className="hidden w-6 h-6 rounded flex items-center justify-center text-xs font-semibold text-gray-600 dark:text-gray-300">
+                    {channelName.charAt(0).toUpperCase()}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Channel Name */}
+              <div className="flex flex-col min-w-0">
+                <span className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                  {channelName}
+                </span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">
+                  D2C
+                </span>
+              </div>
+
+              {/* Hover tooltip */}
+              <div className="absolute left-0 top-full mt-2 hidden group-hover:block z-50 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs rounded-lg px-3 py-2 shadow-lg whitespace-nowrap">
+                <div className="space-y-1">
+                  <div className="font-semibold">Channel Information</div>
+                  <div className="text-gray-300 dark:text-gray-600">
+                    {channelName} D2C
+                  </div>
+                  <div className="text-gray-300 dark:text-gray-600">
+                    Direct-to-Consumer
+                  </div>
+                </div>
+                <div className="absolute -top-1 left-4 w-2 h-2 bg-gray-900 dark:bg-gray-100 rotate-45"></div>
               </div>
             </div>
           );

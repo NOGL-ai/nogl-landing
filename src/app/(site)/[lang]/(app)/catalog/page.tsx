@@ -52,6 +52,7 @@ const jewelryProducts = [
     // Required Competitor interface properties
     products: 3, // Using variants as products count
     position: 25,
+    channel: 'shopify',
   },
   {
     id: 1,
@@ -213,6 +214,7 @@ const competitors = [
     categories: ['Active', 'Jewelry', 'Watches', '+4'],
     competitorPrice: 29.90,
     myPrice: 42.00,
+    channel: 'shopify',
   },
   {
     id: 1,
@@ -1389,6 +1391,8 @@ export default function CompetitorPage() {
             showProductsColumn={false} // Remove Products column
             showCompetitorsColumn={true} // Enable Competitors column for catalog page
             showMaterialsColumn={true} // Enable Materials column for catalog page
+            showBrandColumn={true} // Enable Brand column for catalog page
+            showChannelColumn={true} // Enable Channel column for catalog page
           />
         </div>
 
