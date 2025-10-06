@@ -204,7 +204,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
               <div id={`competitor-${row.original.id}-info`} className="min-w-0 flex-1">
                 <div className="text-sm font-medium text-foreground truncate">{row.original.name}</div>
                 <div className="text-sm text-muted-foreground truncate">
-                  {row.original.sku ? `SKU: ${row.original.sku}` : row.original.domain}
+                  {row.original.sku ? `SKU: ${row.original.sku}` : `Code: ${row.original.domain}`}
                 </div>
               </div>
             </div>
