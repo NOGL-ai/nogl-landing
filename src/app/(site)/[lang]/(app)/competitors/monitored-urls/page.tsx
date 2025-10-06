@@ -338,6 +338,7 @@ export default function CompetitorPage() {
   const [activeTab, setActiveTab] = React.useState<'all' | 'monitored' | 'unmonitored'>('all');
   const [searchQuery, setSearchQuery] = React.useState('');
   const [focusedRowIndex, setFocusedRowIndex] = React.useState<number | null>(null);
+  const [productSort, setProductSort] = React.useState<'none' | 'asc' | 'desc'>('none');
   const [priceSort, setPriceSort] = React.useState<'none' | 'asc' | 'desc'>('none');
   const [trendSort, setTrendSort] = React.useState<'none' | 'asc' | 'desc'>('none');
 
@@ -398,11 +399,15 @@ export default function CompetitorPage() {
     );
   }, [searchQuery]);
 
-  // Sort according to price or trend toggle
+  // Sort according to product, price or trend toggle
   const sortedCompetitors = React.useMemo(() => {
-    if (priceSort === 'none' && trendSort === 'none') return filteredCompetitors;
+    if (productSort === 'none' && priceSort === 'none' && trendSort === 'none') return filteredCompetitors;
     const list = [...filteredCompetitors];
     list.sort((a, b) => {
+      if (productSort !== 'none') {
+        const diff = a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
+        return productSort === 'asc' ? diff : -diff;
+      }
       if (priceSort !== 'none') {
         const diff = a.competitorPrice - b.competitorPrice;
         return priceSort === 'asc' ? diff : -diff;
@@ -420,16 +425,24 @@ export default function CompetitorPage() {
       return 0;
     });
     return list;
-  }, [filteredCompetitors, priceSort, trendSort]);
+  }, [filteredCompetitors, productSort, priceSort, trendSort]);
 
   const togglePriceSort = () => {
     setPriceSort(prev => (prev === 'none' ? 'asc' : prev === 'asc' ? 'desc' : 'none'));
+    setProductSort('none');
     setTrendSort('none'); // Reset trend sort when price sort is active
   };
 
   const toggleTrendSort = () => {
     setTrendSort(prev => (prev === 'none' ? 'asc' : prev === 'asc' ? 'desc' : 'none'));
+    setProductSort('none');
     setPriceSort('none'); // Reset price sort when trend sort is active
+  };
+
+  const toggleProductSort = () => {
+    setProductSort(prev => (prev === 'none' ? 'asc' : prev === 'asc' ? 'desc' : 'none'));
+    setPriceSort('none');
+    setTrendSort('none');
   };
 
   return (
@@ -724,6 +737,7 @@ export default function CompetitorPage() {
                   className="px-6 py-3 text-left" 
                   role="columnheader" 
                   scope="col"
+                  aria-sort={productSort === 'none' ? 'none' : productSort === 'asc' ? 'ascending' : 'descending'}
                 >
                   <div className="flex items-center gap-3">
                     <input
@@ -734,12 +748,21 @@ export default function CompetitorPage() {
                       aria-label="Select all competitors"
                       aria-describedby="select-all-help"
                     />
-                    <span className="flex items-center gap-1 text-xs font-semibold text-muted-foreground">
+                    <button
+                      type="button"
+                      onClick={toggleProductSort}
+                      className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring/40 rounded"
+                      aria-label={`Sort by product name ${productSort === 'none' ? 'ascending' : productSort === 'asc' ? 'descending' : 'none'}`}
+                    >
                       Product
-                      <svg className="h-3 w-3 text-quaternary" fill="none" stroke="currentColor" viewBox="0 0 12 12" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 2.5v7m0 0l3.5-3.5M6 9.5L2.5 6" />
-                      </svg>
-                    </span>
+                      {productSort === 'asc' && <ArrowUp className="h-3 w-3" aria-hidden="true" />}
+                      {productSort === 'desc' && <ArrowDown className="h-3 w-3" aria-hidden="true" />}
+                      {productSort === 'none' && (
+                        <svg className="h-3 w-3 text-quaternary" fill="none" stroke="currentColor" viewBox="0 0 12 12" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 2.5v7m0 0l3.5-3.5M6 9.5L2.5 6" />
+                        </svg>
+                      )}
+                    </button>
                   </div>
                   <div id="select-all-help" className="sr-only">
                     Checkbox to select or deselect all competitors in the table
