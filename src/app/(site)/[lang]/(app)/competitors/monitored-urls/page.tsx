@@ -357,13 +357,13 @@ export default function CompetitorPage() {
     switch (event.key) {
       case 'ArrowDown': {
         event.preventDefault();
-        const nextIndex = Math.min(index + 1, competitors.length - 1);
+        const nextIndex = index + 1 >= competitors.length ? 0 : index + 1;
         setFocusedRowIndex(nextIndex);
         break;
       }
       case 'ArrowUp': {
         event.preventDefault();
-        const prevIndex = Math.max(index - 1, 0);
+        const prevIndex = index - 1 < 0 ? competitors.length - 1 : index - 1;
         setFocusedRowIndex(prevIndex);
         break;
       }
@@ -722,7 +722,8 @@ export default function CompetitorPage() {
                     focusedRowIndex === index ? 'bg-blue-50 dark:bg-blue-900 ring-2 ring-blue-200 dark:ring-blue-800' : ''
                   }`}
                   role="row"
-                  tabIndex={0}
+                  tabIndex={focusedRowIndex === index ? 0 : -1}
+                  onFocus={() => setFocusedRowIndex(index)}
                   onKeyDown={(e) => handleKeyDown(e, competitor.id, index)}
                   aria-selected={selectedRows.has(competitor.id)}
                   aria-label={`Competitor ${competitor.name} from ${competitor.domain}`}
