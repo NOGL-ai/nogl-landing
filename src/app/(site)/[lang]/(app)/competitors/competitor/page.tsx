@@ -15,115 +15,409 @@ import { computeTrend, formatPercentCompact, formatPercentDetailed } from '@/uti
 const competitors = [
   {
     id: 0,
-    name: 'Ephemeral',
-    domain: 'ephemeral.io',
-    avatar: '/api/placeholder/40/40',
-    products: 1250,
-    position: 60,
-    trend: 5,
+    name: 'Pilgrim',
+    domain: 'pilgrim.net',
+    avatar: 'https://img.logo.dev/pilgrim.net?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 85,
+    position: 25,
+    trend: 12,
     trendUp: true,
     date: '22 Jan 2025',
-    categories: ['Active', 'In Stock', 'Customer data', '+3'],
+    categories: ['Active', 'Jewelry', 'Watches', '+4'],
     competitorPrice: 29.90,
     myPrice: 42.00,
   },
   {
     id: 1,
-    name: 'Stack3d Lab',
-    domain: 'stack3dlab.com',
-    avatar: '/api/placeholder/40/40',
-    products: 980,
-    position: 72,
-    trend: 4,
+    name: 'Amoonic',
+    domain: 'amoonic.de',
+    avatar: 'https://img.logo.dev/amoonic.de?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 42,
+    position: 78,
+    trend: 3,
     trendUp: false,
     date: '20 Jan 2025',
-    categories: ['Active', 'In Stock', 'Business data', '+3'],
+    categories: ['Active', 'Jewelry', 'Fashion', '+4'],
     competitorPrice: 35.50,
     myPrice: 32.00,
   },
   {
     id: 2,
-    name: 'Warpspeed',
-    domain: 'getwarpspeed.com',
-    avatar: '/api/placeholder/40/40',
-    products: 113,
-    position: 78,
-    trend: 6,
+    name: 'Cluse',
+    domain: 'cluse.com',
+    avatar: 'https://img.logo.dev/cluse.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 65,
+    position: 35,
+    trend: 15,
     trendUp: true,
     date: '24 Jan 2025',
-    categories: ['Active', 'In Stock', 'Customer data'],
+    categories: ['Active', 'Watches', 'Accessories'],
     competitorPrice: 45.00,
     myPrice: 45.00,
   },
   {
     id: 3,
-    name: 'CloudWatch',
-    domain: 'cloudwatch.app',
-    avatar: '/api/placeholder/40/40',
-    products: 2455,
-    position: 38,
-    trend: 8,
+    name: 'Eastside',
+    domain: 'eastsidewatches.com',
+    avatar: 'https://img.logo.dev/eastsidewatches.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 28,
+    position: 88,
+    trend: 2,
     trendUp: true,
     date: '26 Jan 2025',
-    categories: ['Active', 'In Stock', 'Database access'],
+    categories: ['Active', 'Watches', 'Luxury'],
     competitorPrice: 52.00,
     myPrice: 48.00,
   },
   {
     id: 4,
-    name: 'ContrastAI',
-    domain: 'contrastai.com',
-    avatar: '/api/placeholder/40/40',
-    products: 765,
-    position: 42,
+    name: 'Engelssinn',
+    domain: 'engelsinn.de',
+    avatar: 'https://img.logo.dev/engelsinn.de?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 38,
+    position: 82,
     trend: 1,
     trendUp: false,
     date: '18 Jan 2025',
-    categories: ['Active', 'In Stock', 'Salesforce', '+3'],
+    categories: ['Active', 'Jewelry', 'Fashion', '+4'],
     competitorPrice: 28.00,
     myPrice: 35.50,
   },
   {
     id: 5,
-    name: 'Convergence',
-    domain: 'convergence.io',
-    avatar: '/api/placeholder/40/40',
-    products: 1540,
-    position: 66,
-    trend: 6,
-    trendUp: false,
+    name: 'fejn',
+    domain: 'fejn.com',
+    avatar: 'https://img.logo.dev/fejn.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 52,
+    position: 65,
+    trend: 8,
+    trendUp: true,
     date: '28 Jan 2025',
-    categories: ['Active', 'In Stock', 'Business data', '+3'],
+    categories: ['Active', 'Jewelry', 'Design', '+4'],
     competitorPrice: 39.99,
     myPrice: 42.00,
   },
   {
     id: 6,
-    name: 'Sisyphus',
-    domain: 'sisyphus.com',
-    avatar: '/api/placeholder/40/40',
-    products: 48,
-    position: 91,
-    trend: 2,
+    name: 'float',
+    domain: 'float.to',
+    avatar: 'https://img.logo.dev/float.to?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 15,
+    position: 92,
+    trend: 1,
     trendUp: true,
     date: '16 Jan 2025',
-    categories: ['Inactive', 'Out of Stock', 'Customer data'],
+    categories: ['Inactive', 'Jewelry', 'Minimalist'],
     competitorPrice: 55.00,
     myPrice: 49.99,
+  },
+  {
+    id: 7,
+    name: 'Golden Strawberry',
+    domain: 'goldenstrawberry.de',
+    avatar: 'https://img.logo.dev/goldenstrawberry.de?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 35,
+    position: 85,
+    trend: 4,
+    trendUp: true,
+    date: '25 Jan 2025',
+    categories: ['Active', 'Jewelry', 'Fashion'],
+    competitorPrice: 28.00,
+    myPrice: 35.50,
+  },
+  {
+    id: 8,
+    name: 'Heideman',
+    domain: 'heideman-store.de',
+    avatar: 'https://img.logo.dev/heideman-store.de?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 48,
+    position: 75,
+    trend: 2,
+    trendUp: false,
+    date: '19 Jan 2025',
+    categories: ['Active', 'Jewelry', 'Luxury', '+4'],
+    competitorPrice: 39.99,
+    myPrice: 42.00,
+  },
+  {
+    id: 9,
+    name: 'Hey Happiness',
+    domain: 'heyhappiness.com',
+    avatar: 'https://img.logo.dev/heyhappiness.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 45,
+    position: 80,
+    trend: 6,
+    trendUp: true,
+    date: '27 Jan 2025',
+    categories: ['Active', 'Jewelry', 'Fashion'],
+    competitorPrice: 45.00,
+    myPrice: 45.00,
+  },
+  {
+    id: 10,
+    name: 'Jukserei',
+    domain: 'jukserei.com',
+    avatar: 'https://img.logo.dev/jukserei.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 22,
+    position: 90,
+    trend: 3,
+    trendUp: true,
+    date: '21 Jan 2025',
+    categories: ['Active', 'Jewelry', 'Design'],
+    competitorPrice: 52.00,
+    myPrice: 48.00,
+  },
+  {
+    id: 11,
+    name: 'Luamaya',
+    domain: 'luamaya.com',
+    avatar: 'https://img.logo.dev/luamaya.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 32,
+    position: 88,
+    trend: 4,
+    trendUp: false,
+    date: '23 Jan 2025',
+    categories: ['Active', 'Jewelry', 'Fashion', '+4'],
+    competitorPrice: 28.00,
+    myPrice: 35.50,
+  },
+  {
+    id: 12,
+    name: 'Nialaya',
+    domain: 'nialaya.com',
+    avatar: 'https://img.logo.dev/nialaya.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 28,
+    position: 90,
+    trend: 5,
+    trendUp: true,
+    date: '26 Jan 2025',
+    categories: ['Active', 'Jewelry', 'Design'],
+    competitorPrice: 39.99,
+    myPrice: 42.00,
+  },
+  {
+    id: 13,
+    name: 'Nonu Berlin',
+    domain: 'nonu.shop',
+    avatar: 'https://img.logo.dev/nonu.shop?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 42,
+    position: 82,
+    trend: 7,
+    trendUp: true,
+    date: '24 Jan 2025',
+    categories: ['Active', 'Jewelry', 'Fashion', '+4'],
+    competitorPrice: 45.00,
+    myPrice: 45.00,
+  },
+  {
+    id: 14,
+    name: 'Orelia',
+    domain: 'orelia.co.uk',
+    avatar: 'https://img.logo.dev/orelia.co.uk?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 95,
+    position: 40,
+    trend: 18,
+    trendUp: true,
+    date: '28 Jan 2025',
+    categories: ['Active', 'Jewelry', 'Fashion'],
+    competitorPrice: 52.00,
+    myPrice: 48.00,
+  },
+  {
+    id: 15,
+    name: 'Pico Kopenhagen',
+    domain: 'picocopenhagen.com',
+    avatar: 'https://img.logo.dev/picocopenhagen.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 35,
+    position: 85,
+    trend: 2,
+    trendUp: false,
+    date: '20 Jan 2025',
+    categories: ['Active', 'Jewelry', 'Design', '+4'],
+    competitorPrice: 28.00,
+    myPrice: 35.50,
+  },
+  {
+    id: 16,
+    name: 'Purelei',
+    domain: 'purelei.com',
+    avatar: 'https://img.logo.dev/purelei.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 58,
+    position: 70,
+    trend: 9,
+    trendUp: true,
+    date: '25 Jan 2025',
+    categories: ['Active', 'Jewelry', 'Fashion'],
+    competitorPrice: 39.99,
+    myPrice: 42.00,
+  },
+  {
+    id: 17,
+    name: 'Singaluru',
+    domain: 'singularu.com',
+    avatar: 'https://img.logo.dev/singularu.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 18,
+    position: 95,
+    trend: 3,
+    trendUp: true,
+    date: '22 Jan 2025',
+    categories: ['Active', 'Jewelry', 'Design'],
+    competitorPrice: 55.00,
+    myPrice: 49.99,
+  },
+  {
+    id: 18,
+    name: 'The Silver Collective',
+    domain: 'thesilvercollective.com',
+    avatar: 'https://img.logo.dev/thesilvercollective.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 72,
+    position: 60,
+    trend: 11,
+    trendUp: true,
+    date: '27 Jan 2025',
+    categories: ['Active', 'Jewelry', 'Silver', '+4'],
+    competitorPrice: 28.00,
+    myPrice: 35.50,
+  },
+  {
+    id: 19,
+    name: 'Wunderklein',
+    domain: 'wunderklein.com',
+    avatar: 'https://img.logo.dev/wunderklein.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 38,
+    position: 80,
+    trend: 4,
+    trendUp: false,
+    date: '19 Jan 2025',
+    categories: ['Active', 'Jewelry', 'Fashion'],
+    competitorPrice: 45.00,
+    myPrice: 45.00,
+  },
+  {
+    id: 20,
+    name: 'Bynouk',
+    domain: 'bynouck.com',
+    avatar: 'https://img.logo.dev/bynouck.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 25,
+    position: 90,
+    trend: 5,
+    trendUp: true,
+    date: '23 Jan 2025',
+    categories: ['Active', 'Jewelry', 'Design', '+4'],
+    competitorPrice: 52.00,
+    myPrice: 48.00,
+  },
+  {
+    id: 21,
+    name: 'Nana KAY',
+    domain: 'nana-kay.com',
+    avatar: 'https://img.logo.dev/nana-kay.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 32,
+    position: 88,
+    trend: 6,
+    trendUp: true,
+    date: '26 Jan 2025',
+    categories: ['Active', 'Jewelry', 'Fashion'],
+    competitorPrice: 28.00,
+    myPrice: 35.50,
+  },
+  {
+    id: 22,
+    name: 'Rafaela Donata',
+    domain: 'rafaela-donata.com',
+    avatar: 'https://img.logo.dev/rafaela-donata.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 15,
+    position: 95,
+    trend: 2,
+    trendUp: false,
+    date: '21 Jan 2025',
+    categories: ['Active', 'Jewelry', 'Design'],
+    competitorPrice: 39.99,
+    myPrice: 42.00,
+  },
+  {
+    id: 23,
+    name: 'Wanderlust + Co',
+    domain: 'wanderlustandco.com',
+    avatar: 'https://img.logo.dev/wanderlustandco.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 88,
+    position: 50,
+    trend: 14,
+    trendUp: true,
+    date: '28 Jan 2025',
+    categories: ['Active', 'Jewelry', 'Fashion', '+4'],
+    competitorPrice: 45.00,
+    myPrice: 45.00,
+  },
+  {
+    id: 24,
+    name: 'Engelsrufer',
+    domain: 'engelsrufer.de',
+    avatar: 'https://img.logo.dev/engelsrufer.de?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 12,
+    position: 98,
+    trend: 1,
+    trendUp: true,
+    date: '18 Jan 2025',
+    categories: ['Inactive', 'Jewelry', 'Fashion'],
+    competitorPrice: 55.00,
+    myPrice: 49.99,
+  },
+  {
+    id: 25,
+    name: 'Makaro',
+    domain: 'makarojewelry.com',
+    avatar: 'https://img.logo.dev/makarojewelry.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 45,
+    position: 75,
+    trend: 8,
+    trendUp: true,
+    date: '24 Jan 2025',
+    categories: ['Active', 'Jewelry', 'Design', '+4'],
+    competitorPrice: 52.00,
+    myPrice: 48.00,
+  },
+  {
+    id: 26,
+    name: 'Bruna The Label',
+    domain: 'brunathelabel.com',
+    avatar: 'https://img.logo.dev/brunathelabel.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 28,
+    position: 88,
+    trend: 3,
+    trendUp: false,
+    date: '22 Jan 2025',
+    categories: ['Active', 'Jewelry', 'Fashion'],
+    competitorPrice: 28.00,
+    myPrice: 35.50,
+  },
+  {
+    id: 27,
+    name: 'PDPaola',
+    domain: 'pdpaola.com',
+    avatar: 'https://img.logo.dev/pdpaola.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+    products: 125,
+    position: 35,
+    trend: 22,
+    trendUp: true,
+    date: '27 Jan 2025',
+    categories: ['Active', 'Jewelry', 'Fashion', '+4'],
+    competitorPrice: 39.99,
+    myPrice: 42.00,
   },
 ];
 
 const badgeClasses: Record<string, string> = {
-  Active: 'border-green-200 bg-green-50 text-green-700 dark:border-green-700 dark:bg-green-900 dark:text-green-300',
-  Inactive: 'border-border-secondary bg-muted text-muted-foreground',
-  'In Stock': 'border-green-200 bg-green-50 text-green-700 dark:border-green-700 dark:bg-green-900 dark:text-green-300',
-  'Out of Stock': 'border-red-200 bg-red-50 text-red-700 dark:border-red-700 dark:bg-red-900 dark:text-red-300',
-  'Customer data': 'border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-700 dark:bg-blue-900 dark:text-blue-300',
-  'Business data': 'border-purple-200 bg-purple-50 text-purple-700 dark:border-purple-700 dark:bg-purple-900 dark:text-purple-300',
-  Admin: 'border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-700 dark:bg-blue-900 dark:text-blue-300',
-  Financials: 'border-pink-200 bg-pink-50 text-pink-700 dark:border-pink-700 dark:bg-pink-900 dark:text-pink-300',
-  'Database access': 'border-slate-200 bg-slate-50 text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300',
-  Salesforce: 'border-orange-200 bg-orange-50 text-orange-700 dark:border-orange-700 dark:bg-orange-900 dark:text-orange-300',
+  Active: 'border-[#ABEFC6] bg-[#ECFDF3] text-[#067647]',
+  Inactive: 'border-[#E9EAEB] bg-[#FAFAFA] text-[#414651]',
+  Jewelry: 'border-[#F9DBAF] bg-[#FEF6EE] text-[#B93815]',
+  Watches: 'border-[#B2DDFF] bg-[#EFF8FF] text-[#175CD3]',
+  Fashion: 'border-[#E9D7FE] bg-[#F9F5FF] text-[#6941C6]',
+  Design: 'border-[#C7D7FE] bg-[#EEF4FF] text-[#3538CD]',
+  Luxury: 'border-[#FCCEEE] bg-[#FDF2FA] text-[#C11574]',
+  Accessories: 'border-[#D5D9EB] bg-[#F8F9FC] text-[#363F72]',
+  Silver: 'border-[#D1D5DB] bg-[#F9FAFB] text-[#374151]',
+  Minimalist: 'border-[#E5E7EB] bg-[#F3F4F6] text-[#6B7280]',
 };
 
 const iconButtonClasses = 'rounded-lg p-2.5 transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40';
@@ -151,6 +445,91 @@ const fmtPct = (percent: number) => {
 };
 
 // computeTrend now imported from utils
+
+// Mini Sparkline Chart Component
+const MiniSparkline = ({ data, width = 60, height = 20 }: { data: number[], width?: number, height?: number }) => {
+  if (!data || data.length === 0) return null;
+  
+  const max = Math.max(...data);
+  const min = Math.min(...data);
+  const range = max - min || 1;
+  
+  const points = data.map((value, index) => {
+    const x = (index / (data.length - 1)) * width;
+    const y = height - ((value - min) / range) * height;
+    return `${x},${y}`;
+  }).join(' ');
+  
+  return (
+    <svg width={width} height={height} className="overflow-visible">
+      <polyline
+        points={points}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        className="text-blue-500"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
+// Status Badge Component
+const StatusBadge = ({ productCount, maxProducts }: { productCount: number, maxProducts: number }) => {
+  const percentage = (productCount / maxProducts) * 100;
+  
+  if (percentage >= 80) {
+    return (
+      <span className="inline-flex items-center gap-1 rounded-full border border-purple-200 bg-purple-50 px-2 py-0.5 text-xs font-medium text-purple-700 dark:border-purple-700 dark:bg-purple-900 dark:text-purple-300">
+        <div className="h-1.5 w-1.5 rounded-full bg-purple-500" />
+        Market Leader
+      </span>
+    );
+  } else if (percentage >= 20) {
+    return (
+      <span className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700 dark:border-blue-700 dark:bg-blue-900 dark:text-blue-300">
+        <div className="h-1.5 w-1.5 rounded-full bg-blue-500" />
+        Established
+      </span>
+    );
+  } else {
+    return (
+      <span className="inline-flex items-center gap-1 rounded-full border border-green-200 bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700 dark:border-green-700 dark:bg-green-900 dark:text-green-300">
+        <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
+        Emerging
+      </span>
+    );
+  }
+};
+
+// Enhanced Products Cell Component
+const ProductsCell = ({ competitor, maxProducts }: { competitor: any, maxProducts: number }) => {
+  // Generate mock trend data for sparkline (last 7 days)
+  const trendData = React.useMemo(() => {
+    const base = competitor.products;
+    const variation = competitor.trend;
+    return Array.from({ length: 7 }, (_, i) => {
+      const dayVariation = (Math.random() - 0.5) * variation;
+      return Math.max(0, Math.round(base + dayVariation));
+    });
+  }, [competitor.products, competitor.trend]);
+
+  const percentageOfLeader = Math.round((competitor.products / maxProducts) * 100);
+
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center gap-2">
+        <div className="text-lg font-semibold text-foreground">{competitor.products.toLocaleString()}</div>
+        <div className="text-xs text-muted-foreground">({percentageOfLeader}% of leader)</div>
+      </div>
+      <div className="flex items-center gap-2">
+        <MiniSparkline data={trendData} />
+        <StatusBadge productCount={competitor.products} maxProducts={maxProducts} />
+      </div>
+    </div>
+  );
+};
 
 // Price Position Component
 const PricePositionCell = ({
@@ -353,6 +732,13 @@ export default function CompetitorPage() {
   const [productSort, setProductSort] = React.useState<'none' | 'asc' | 'desc'>('none');
   const [priceSort, setPriceSort] = React.useState<'none' | 'asc' | 'desc'>('none');
   const [trendSort, setTrendSort] = React.useState<'none' | 'asc' | 'desc'>('none');
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [itemsPerPage] = React.useState(10);
+
+  // Calculate max products for relative scaling
+  const maxProducts = React.useMemo(() => {
+    return Math.max(...competitors.map(c => c.products));
+  }, []);
 
   const toggleRow = (id: number) => {
     setSelectedRows(prev => {
@@ -453,6 +839,33 @@ export default function CompetitorPage() {
     return list;
   }, [filteredCompetitors, productSort, priceSort, trendSort]);
 
+  // Pagination logic
+  const totalPages = Math.ceil(sortedCompetitors.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedCompetitors = sortedCompetitors.slice(startIndex, endIndex);
+
+  // Reset to first page when search or filters change
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, activeTab, productSort, priceSort, trendSort]);
+
+  const goToPage = (page: number) => {
+    setCurrentPage(Math.max(1, Math.min(page, totalPages)));
+  };
+
+  const goToNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const goToPreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   const togglePriceSort = () => {
     setPriceSort(prev => (prev === 'none' ? 'asc' : prev === 'asc' ? 'desc' : 'none'));
     setProductSort('none');
@@ -517,7 +930,7 @@ export default function CompetitorPage() {
                 </div>
                 <div>
                   <h2 className="text-lg font-semibold text-foreground">Competitor breakdown</h2>
-                  <p className="mt-1 text-sm text-muted-foreground">Keep track of vendors and their security ratings.</p>
+                  <p className="mt-1 text-sm text-muted-foreground">Monitor competitor pricing, product counts, and market positioning.</p>
                 </div>
               </div>
               <button className={compactIconButtonClasses} aria-label="More actions">
@@ -649,8 +1062,10 @@ export default function CompetitorPage() {
           <div className="flex flex-wrap items-start justify-between gap-3 md:gap-4">
             <div className="flex-1 min-w-[200px]">
               <div className="flex flex-wrap items-center gap-2">
-                <h2 className="text-base md:text-lg font-semibold text-foreground">Products nogled</h2>
-                <span className="inline-flex items-center rounded-full border border-border-secondary bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">240 products</span>
+                <h2 className="text-base md:text-lg font-semibold text-foreground">Competitor monitored</h2>
+                <span className="inline-flex items-center rounded-full border border-border-secondary bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+                  {sortedCompetitors.length} competitors
+                </span>
               </div>
               <p className="mt-1 text-xs md:text-sm text-muted-foreground">Monitor competitor pricing and stay competitive with real-time price tracking.</p>
             </div>
@@ -661,14 +1076,14 @@ export default function CompetitorPage() {
               </button>
               <button className="flex items-center gap-1 rounded-lg border-2 border-white/10 bg-primary px-3 md:px-3.5 py-2 md:py-2.5 text-xs md:text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90">
                 <Plus className="h-4 md:h-5 w-4 md:w-5 text-primary-foreground/80" />
-                <span className="hidden sm:inline">Track Product</span>
+                <span className="hidden sm:inline">Track Competitor</span>
               </button>
             </div>
           </div>
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-3 md:gap-4 border-b border-border-secondary px-4 md:px-6 py-3">
-          <div className="flex overflow-hidden rounded-lg border border-border-secondary shadow-sm" role="tablist" aria-label="Product filter tabs">
+          <div className="flex overflow-hidden rounded-lg border border-border-secondary shadow-sm" role="tablist" aria-label="Competitor filter tabs">
             <button
               type="button"
               onClick={() => setActiveTab('all')}
@@ -677,10 +1092,10 @@ export default function CompetitorPage() {
               }`}
               role="tab"
               aria-selected={activeTab === 'all'}
-              aria-controls="all-products-panel"
-              id="all-products-tab"
+              aria-controls="all-competitors-panel"
+              id="all-competitors-tab"
             >
-              <span className="hidden sm:inline">All Products</span>
+              <span className="hidden sm:inline">All Competitors</span>
               <span className="sm:hidden">All</span>
             </button>
             <button
@@ -721,7 +1136,7 @@ export default function CompetitorPage() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search products, URLs, SKU"
+                placeholder="Search competitors by name or domain"
                 className="w-full rounded-lg border border-border-secondary bg-background py-2 pl-8 md:pl-10 pr-10 md:pr-16 text-sm md:text-base text-foreground placeholder:text-muted-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-ring/40"
                 aria-describedby="search-help"
                 aria-label="Search competitors by name or domain"
@@ -746,8 +1161,8 @@ export default function CompetitorPage() {
         <div 
           className="overflow-x-auto"
           role="tabpanel"
-          id="all-products-panel"
-          aria-labelledby="all-products-tab"
+          id="all-competitors-panel"
+          aria-labelledby="all-competitors-tab"
           hidden={activeTab !== 'all'}
         >
           <table
@@ -781,7 +1196,7 @@ export default function CompetitorPage() {
                       className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring/40 rounded"
                       aria-label={`Sort by product name ${productSort === 'none' ? 'ascending' : productSort === 'asc' ? 'descending' : 'none'}`}
                     >
-                      Product
+                      Competitor
                       {productSort === 'asc' && <ArrowUp className="h-3 w-3" aria-hidden="true" />}
                       {productSort === 'desc' && <ArrowDown className="h-3 w-3" aria-hidden="true" />}
                       {productSort === 'none' && (
@@ -796,7 +1211,7 @@ export default function CompetitorPage() {
                   </div>
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground" scope="col">
-                  Matched Product
+                  Products
                 </th>
                 <th
                   className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground"
@@ -849,7 +1264,7 @@ export default function CompetitorPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-border-secondary bg-card">
-              {sortedCompetitors.map((competitor, index) => (
+              {paginatedCompetitors.map((competitor, index) => (
                 <tr 
                   key={competitor.id} 
                   className={`transition-colors hover:bg-muted ${
@@ -872,28 +1287,37 @@ export default function CompetitorPage() {
                         aria-describedby={`competitor-${competitor.id}-info`}
                       />
                       <div className="flex items-center gap-3">
-                        <div 
-                          className="h-10 w-10 rounded-full border border-black/8 dark:border-gray-600 bg-gray-200 dark:bg-gray-600"
-                          aria-hidden="true"
-                        />
-                        <div id={`competitor-${competitor.id}-info`}>
-                          <div className="text-sm font-medium text-foreground">{competitor.name}</div>
-                          <div className="text-sm text-muted-foreground">{competitor.domain}</div>
+                        <div className="relative h-10 w-10 flex-shrink-0">
+                          <div className="h-10 w-10 rounded-full border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 p-1">
+                            <img
+                              src={competitor.avatar}
+                              alt={`${competitor.name} logo`}
+                              className="h-8 w-8 rounded-full object-cover"
+                              onError={(e) => {
+                                // Fallback to initials if image fails to load
+                                const target = e.target as HTMLImageElement;
+                                target.style.display = 'none';
+                                const fallback = target.nextElementSibling as HTMLElement;
+                                if (fallback) fallback.style.display = 'flex';
+                              }}
+                            />
+                            <div 
+                              className="h-8 w-8 rounded-full bg-gray-200 dark:bg-gray-600 items-center justify-center text-xs font-semibold text-gray-600 dark:text-gray-300 hidden"
+                              style={{ display: 'none' }}
+                            >
+                              {competitor.name.charAt(0).toUpperCase()}
+                            </div>
+                          </div>
+                        </div>
+                        <div id={`competitor-${competitor.id}-info`} className="min-w-0 flex-1">
+                          <div className="text-sm font-medium text-foreground truncate">{competitor.name}</div>
+                          <div className="text-sm text-muted-foreground truncate">{competitor.domain}</div>
                         </div>
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4 bg-card">
-                    <div className="flex items-center gap-3">
-                      <div 
-                        className="h-10 w-10 rounded-full border border-black/8 bg-gray-200"
-                        aria-hidden="true"
-                      />
-                      <div>
-                        <div className="text-sm font-medium text-foreground">{competitor.name}</div>
-                        <div className="text-sm text-muted-foreground">{competitor.domain}</div>
-                      </div>
-                    </div>
+                    <ProductsCell competitor={competitor} maxProducts={maxProducts} />
                   </td>
                   <td className="px-6 py-4 bg-card">
                     <PricePositionCell 
@@ -981,21 +1405,54 @@ export default function CompetitorPage() {
 
         <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border-secondary px-4 md:px-6 py-3">
           <div className="text-xs md:text-sm font-medium text-muted-foreground dark:text-gray-300">
-            Page 1 of 10
+            Page {currentPage} of {totalPages}
             <span className="sr-only">
-              Showing {filteredCompetitors.length} of {competitors.length} competitors
+              Showing {startIndex + 1}-{Math.min(endIndex, sortedCompetitors.length)} of {sortedCompetitors.length} competitors
               {searchQuery && ` matching "${searchQuery}"`}
             </span>
           </div>
           <div className="flex items-center gap-2 md:gap-3">
             <button
+              onClick={goToPreviousPage}
+              disabled={currentPage === 1}
               className="inline-flex items-center justify-center gap-1 rounded-lg border border-border-secondary bg-background px-3 py-2 text-xs md:text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40 disabled:cursor-not-allowed disabled:opacity-60"
               aria-label="Go to previous page"
-              disabled
             >
               Previous
             </button>
+            <div className="flex items-center gap-1">
+              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                let pageNum;
+                if (totalPages <= 5) {
+                  pageNum = i + 1;
+                } else if (currentPage <= 3) {
+                  pageNum = i + 1;
+                } else if (currentPage >= totalPages - 2) {
+                  pageNum = totalPages - 4 + i;
+                } else {
+                  pageNum = currentPage - 2 + i;
+                }
+                
+                return (
+                  <button
+                    key={pageNum}
+                    onClick={() => goToPage(pageNum)}
+                    className={`inline-flex items-center justify-center w-8 h-8 rounded-lg text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring/40 ${
+                      currentPage === pageNum
+                        ? 'bg-primary text-primary-foreground'
+                        : 'text-foreground hover:bg-muted'
+                    }`}
+                    aria-label={`Go to page ${pageNum}`}
+                    aria-current={currentPage === pageNum ? 'page' : undefined}
+                  >
+                    {pageNum}
+                  </button>
+                );
+              })}
+            </div>
             <button
+              onClick={goToNextPage}
+              disabled={currentPage === totalPages}
               className="inline-flex items-center justify-center gap-1 rounded-lg border border-border-secondary bg-background px-3 py-2 text-xs md:text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40 disabled:cursor-not-allowed disabled:opacity-60"
               aria-label="Go to next page"
             >

@@ -796,7 +796,7 @@ export default function CompetitorPage() {
                   </div>
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground" scope="col">
-                  Matched Product
+                  Competitor
                 </th>
                 <th
                   className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground"
@@ -940,7 +940,7 @@ export default function CompetitorPage() {
                         <span
                           key={category}
                           role="listitem"
-                          className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium ${badgeClasses[category] ?? 'border-border-secondary bg-muted text-muted-foreground'} ${index === 1 ? 'hidden md:inline-flex' : ''}`}
+                          className={`inline-flex items-center gap-1 whitespace-nowrap flex-shrink-0 rounded-full border px-2 py-0.5 text-xs font-medium ${badgeClasses[category] ?? 'border-border-secondary bg-muted text-muted-foreground'} ${index === 1 ? 'hidden md:inline-flex' : ''}`}
                           aria-label={`Category: ${category}`}
                         >
                           {category === 'Active' && <span className="h-2 w-2 rounded-full bg-green-500 dark:bg-green-400" aria-hidden="true" />}
@@ -952,7 +952,7 @@ export default function CompetitorPage() {
                       ))}
                         {competitor.categories.length > 2 && (
                           <span 
-                            className="inline-flex items-center rounded-full border border-[#E9EAEB] bg-[#FAFAFA] px-2 py-0.5 text-xs font-medium text-muted-foreground"
+                            className="inline-flex items-center whitespace-nowrap flex-shrink-0 rounded-full border border-[#E9EAEB] bg-[#FAFAFA] px-2 py-0.5 text-xs font-medium text-muted-foreground"
                             role="listitem"
                             aria-label={`${competitor.categories.length - 2} additional categories`}
                           >
