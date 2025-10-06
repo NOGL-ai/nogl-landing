@@ -60,8 +60,8 @@ const JewelryProductCell: React.FC<JewelryProductCellProps> = ({
       case 'sm':
         return {
           container: 'gap-2 p-1.5',
-          image: 'h-8 w-8',
-          imageInner: 'h-6 w-6',
+          image: 'h-10 w-10',
+          imageInner: 'h-8 w-8',
           statusIndicator: 'w-3 h-3 -top-0.5 -right-0.5',
           title: 'text-xs',
           subtitle: 'text-[10px]',
@@ -73,8 +73,8 @@ const JewelryProductCell: React.FC<JewelryProductCellProps> = ({
       case 'lg':
         return {
           container: 'gap-4 p-3',
-          image: 'h-16 w-16',
-          imageInner: 'h-14 w-14',
+          image: 'h-20 w-20',
+          imageInner: 'h-18 w-18',
           statusIndicator: 'w-5 h-5 -top-1 -right-1',
           title: 'text-base',
           subtitle: 'text-sm',
@@ -86,8 +86,8 @@ const JewelryProductCell: React.FC<JewelryProductCellProps> = ({
       default: // md
         return {
           container: 'gap-3 p-2',
-          image: 'h-12 w-12',
-          imageInner: 'h-10 w-10',
+          image: 'h-16 w-16',
+          imageInner: 'h-14 w-14',
           statusIndicator: 'w-4 h-4 -top-1 -right-1',
           title: 'text-sm',
           subtitle: 'text-xs',

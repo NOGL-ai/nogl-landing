@@ -508,12 +508,12 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
             <div className="group relative flex items-center gap-2.5">
               {/* Brand Logo */}
               <div className="relative">
-                <div className="w-8 h-8 rounded-lg bg-white dark:bg-white flex items-center justify-center border border-gray-200 dark:border-gray-300 overflow-hidden shadow-sm">
+                <div className="w-10 h-10 rounded-lg bg-white dark:bg-white flex items-center justify-center border border-gray-200 dark:border-gray-300 overflow-hidden shadow-sm">
                   {brand?.logo ? (
                     <img
                       src={brand.logo}
                       alt={brand.name}
-                      className="w-6 h-6 rounded object-contain"
+                      className="w-8 h-8 rounded object-contain"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.style.display = 'none';
@@ -525,7 +525,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
                       }}
                     />
                   ) : null}
-                  <div className={`w-6 h-6 rounded flex items-center justify-center text-xs font-semibold text-gray-600 dark:text-gray-300 ${brand?.logo ? 'hidden' : ''}`}>
+                  <div className={`w-8 h-8 rounded flex items-center justify-center text-sm font-semibold text-gray-600 dark:text-gray-300 ${brand?.logo ? 'hidden' : ''}`}>
                     {brand?.name?.charAt(0).toUpperCase() || '?'}
                   </div>
                 </div>
@@ -593,18 +593,22 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
             <div className="group relative flex items-center gap-2.5">
               {/* Channel Logo */}
               <div className="relative">
-                <div className="w-8 h-8 rounded-lg bg-gray-50 dark:bg-gray-800 flex items-center justify-center border border-gray-200 dark:border-gray-700">
+                <div className="w-10 h-10 rounded-lg bg-white dark:bg-white flex items-center justify-center border border-gray-200 dark:border-gray-300 overflow-hidden shadow-sm">
                   <img
                     src={logoUrl}
                     alt={channelName}
-                    className="w-6 h-6 rounded object-cover"
+                    className="w-8 h-8 rounded object-contain"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.style.display = 'none';
                       target.nextElementSibling?.classList.remove('hidden');
                     }}
+                    onLoad={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.nextElementSibling?.classList.add('hidden');
+                    }}
                   />
-                  <div className="hidden w-6 h-6 rounded flex items-center justify-center text-xs font-semibold text-gray-600 dark:text-gray-300">
+                  <div className="hidden w-8 h-8 rounded flex items-center justify-center text-sm font-semibold text-gray-600 dark:text-gray-300">
                     {channelName.charAt(0).toUpperCase()}
                   </div>
                 </div>

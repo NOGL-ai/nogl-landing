@@ -1381,7 +1381,7 @@ export default function CompetitorPage() {
                 showStatus={true}
                 showCompetitorCount={false}
                 showTooltip={true}
-                size="md"
+                size="lg"
               />
             )}
             PricePositionCell={PricePositionCell}
