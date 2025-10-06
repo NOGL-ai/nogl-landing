@@ -247,43 +247,95 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
     }
 
 
-    // Add Variants column
+    // Add Variants column with clean aesthetic design
     baseColumns.push({
       accessorKey: 'variants',
       id: 'variants',
-      header: 'Variants',
+      header: 'Materials',
       cell: ({ row }) => {
-        const variants = (row.original as any).variants || 0;
-        const getVariantsColor = (variants: number) => {
-          if (variants === 0) return 'text-gray-500 bg-gray-100 dark:bg-gray-800';
-          if (variants === 1) return 'text-blue-700 bg-blue-100 dark:bg-blue-900 dark:text-blue-300';
-          if (variants <= 3) return 'text-green-700 bg-green-100 dark:bg-green-900 dark:text-green-300';
-          if (variants <= 5) return 'text-yellow-700 bg-yellow-100 dark:bg-yellow-900 dark:text-yellow-300';
-          return 'text-purple-700 bg-purple-100 dark:bg-purple-900 dark:text-purple-300';
+        const product = row.original as any;
+        const variants = product.variants || 0;
+        
+        // Generate material distribution
+        const getMaterialDistribution = (total: number) => {
+          if (total === 0) return [];
+          if (total === 1) return [{ type: 'Gold', icon: '◉', color: '#D4AF37', bgColor: 'bg-yellow-50 dark:bg-yellow-900/20' }];
+          if (total === 2) return [
+            { type: 'Gold', icon: '◉', color: '#D4AF37', bgColor: 'bg-yellow-50 dark:bg-yellow-900/20' },
+            { type: 'Silver', icon: '◉', color: '#A8A9AD', bgColor: 'bg-gray-50 dark:bg-gray-800/20' }
+          ];
+          if (total === 3) return [
+            { type: 'Gold', icon: '◉', color: '#D4AF37', bgColor: 'bg-yellow-50 dark:bg-yellow-900/20' },
+            { type: 'Silver', icon: '◉', color: '#A8A9AD', bgColor: 'bg-gray-50 dark:bg-gray-800/20' },
+            { type: 'Rose', icon: '◉', color: '#B76E79', bgColor: 'bg-pink-50 dark:bg-pink-900/20' }
+          ];
+          // For 4+ variants
+          return [
+            { type: 'Gold', icon: '◉', color: '#D4AF37', bgColor: 'bg-yellow-50 dark:bg-yellow-900/20' },
+            { type: 'Silver', icon: '◉', color: '#A8A9AD', bgColor: 'bg-gray-50 dark:bg-gray-800/20' },
+            { type: 'Rose', icon: '◉', color: '#B76E79', bgColor: 'bg-pink-50 dark:bg-pink-900/20' },
+            { type: 'Platinum', icon: '◉', color: '#E5E4E2', bgColor: 'bg-slate-50 dark:bg-slate-800/20' }
+          ].slice(0, total);
         };
 
-        const getVariantsText = (variants: number) => {
-          if (variants === 0) return 'No variants';
-          if (variants === 1) return '1 variant';
-          return `${variants} variants`;
-        };
-
-        const getVariantsIcon = (variants: number) => {
-          if (variants === 0) return '⚪';
-          if (variants === 1) return '🔵';
-          if (variants <= 3) return '🟢';
-          if (variants <= 5) return '🟡';
-          return '🟣';
-        };
+        const materials = getMaterialDistribution(variants);
+        
+        if (variants === 0) {
+          return (
+            <div className="flex items-center gap-2 opacity-60">
+              <div className="w-6 h-6 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                <span className="text-xs">—</span>
+              </div>
+              <span className="text-xs text-muted-foreground">None</span>
+            </div>
+          );
+        }
 
         return (
-          <div className="flex items-center gap-2">
-            <span className="text-sm" aria-hidden="true">
-              {getVariantsIcon(variants)}
+          <div className="group relative flex items-center gap-2.5">
+            {/* Material Icons - Clean Circles */}
+            <div className="flex -space-x-2">
+              {materials.slice(0, 3).map((material, index) => (
+                <div
+                  key={index}
+                  className={`w-6 h-6 rounded-full border-2 border-white dark:border-gray-800 flex items-center justify-center transition-transform group-hover:scale-110 ${material.bgColor}`}
+                  style={{ 
+                    zIndex: materials.length - index,
+                  }}
+                  title={material.type}
+                >
+                  <span className="text-xs font-bold" style={{ color: material.color }}>
+                    {material.icon}
+                  </span>
+                </div>
+              ))}
+              {variants > 3 && (
+                <div 
+                  className="w-6 h-6 rounded-full border-2 border-white dark:border-gray-800 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center text-[9px] font-semibold text-gray-600 dark:text-gray-300"
+                  title={`${variants - 3} more`}
+                >
+                  +{variants - 3}
+                </div>
+              )}
+            </div>
+            
+            {/* Variant count */}
+            <span className="text-xs font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">
+              {variants} {variants === 1 ? 'option' : 'options'}
             </span>
-            <span className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${getVariantsColor(variants)}`}>
-              {getVariantsText(variants)}
-            </span>
+
+            {/* Tooltip on hover */}
+            <div className="absolute left-0 top-8 hidden group-hover:block z-50 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs rounded-lg px-2.5 py-1.5 shadow-lg whitespace-nowrap">
+              <div className="flex flex-col gap-0.5">
+                {materials.map((material, index) => (
+                  <div key={index} className="flex items-center gap-1.5">
+                    <span style={{ color: material.color }}>{material.icon}</span>
+                    <span className="font-medium">{material.type}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="absolute -top-1 left-4 w-2 h-2 bg-gray-900 dark:bg-gray-100 rotate-45"></div>
+            </div>
           </div>
         );
       },
