@@ -129,47 +129,84 @@ const iconButtonClasses = 'rounded-lg p-2.5 transition-colors hover:bg-muted foc
 const compactIconButtonClasses = 'rounded p-1 transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40';
 const secondaryButtonClasses = 'inline-flex items-center justify-center gap-1 rounded-lg border border-border-secondary bg-background px-3.5 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40 disabled:cursor-not-allowed disabled:opacity-60';
 
+// Utility functions for price formatting
+const fmtPrice = (price: number) => {
+  return new Intl.NumberFormat('de-DE', {
+    style: 'currency',
+    currency: 'EUR',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(price);
+};
+
+const fmtDiff = (diff: number) => {
+  const sign = diff > 0 ? '+' : '';
+  return `${sign}${fmtPrice(diff)}`;
+};
+
+const fmtPct = (percent: number) => {
+  const sign = percent > 0 ? '+' : '';
+  return `${sign}${Math.abs(percent).toFixed(2)}%`;
+};
+
 // Price Position Component
-const PricePositionCell = ({ 
-  competitorPrice, 
-  myPrice 
-}: { 
-  competitorPrice: number; 
+const PricePositionCell = ({
+  competitorPrice,
+  myPrice,
+}: {
+  competitorPrice: number;
   myPrice: number;
 }) => {
+  // Guard: division by 0 / bad inputs
+  const invalid = !(competitorPrice > 0 && Number.isFinite(competitorPrice) && Number.isFinite(myPrice));
+  if (invalid) {
+    return (
+      <div className="min-w-[280px]">
+        <span
+          role="status"
+          className="inline-flex items-center gap-1 rounded-md border border-[#E9EAEB] bg-[#FAFAFA] px-2 py-0.5 text-xs font-medium text-muted-foreground"
+          aria-label="Price comparison not available"
+        >
+          N/A
+        </span>
+        <div className="mt-1 text-[11px] text-muted-foreground">Missing or invalid competitor price.</div>
+      </div>
+    );
+  }
+
   const priceDiff = myPrice - competitorPrice;
-  const percentageDiff = ((priceDiff / competitorPrice) * 100);
-  const isWinning = priceDiff < 0;
+  const pctDiff = (priceDiff / competitorPrice) * 100;
+
   const isEqual = priceDiff === 0;
-  
-  const formatPrice = (price: number) => `€ ${price.toFixed(2)}`;
-  const formatDiff = (diff: number) => {
-    const sign = diff > 0 ? '+' : '';
-    return `${sign}€ ${diff.toFixed(2)}`;
-  };
-  
-  const formatPercentage = (percent: number) => {
-    const sign = percent > 0 ? '+' : '';
-    return `${sign}${Math.abs(percent).toFixed(2)}%`;
-  };
+  const isWinning = priceDiff < 0;
 
-  const getStatusColor = () => {
-    if (isEqual) return { bg: 'bg-muted dark:bg-gray-700', text: 'text-muted-foreground dark:text-gray-300', border: 'border-[#E9EAEB] dark:border-gray-600' };
-    if (isWinning) return { bg: 'bg-[#ECFDF3] dark:bg-green-900', text: 'text-[#067647] dark:text-green-300', border: 'border-[#ABEFC6] dark:border-green-700' };
-    return { bg: 'bg-[#FEF3F2] dark:bg-red-900', text: 'text-[#B42318] dark:text-red-300', border: 'border-[#FECDCA] dark:border-red-700' };
-  };
+  const colors = isEqual
+    ? { bg: 'bg-muted dark:bg-gray-700', text: 'text-muted-foreground dark:text-gray-300', border: 'border-[#E9EAEB] dark:border-gray-600' }
+    : isWinning
+    ? { bg: 'bg-[#ECFDF3] dark:bg-green-900', text: 'text-[#067647] dark:text-green-300', border: 'border-[#ABEFC6] dark:border-green-700' }
+    : { bg: 'bg-[#FEF3F2] dark:bg-red-900', text: 'text-[#B42318] dark:text-red-300', border: 'border-[#FECDCA] dark:border-red-700' };
 
-  const getStatusText = () => {
-    if (isEqual) return 'Equal';
-    return isWinning ? 'You Win' : 'You Lose';
-  };
+  const statusText = isEqual ? 'Equal' : isWinning ? 'You Win' : 'You Lose';
 
-  const colors = getStatusColor();
-  const progressPercentage = isEqual ? 50 : (competitorPrice / (competitorPrice + myPrice)) * 100;
+  // Keep your "fraction of competitor" bar. 50% == equal.
+  const progress = isEqual ? 50 : (competitorPrice / (competitorPrice + myPrice)) * 100;
+
+  const srId = React.useId();
 
   return (
-    <div className="group relative min-w-[280px] space-y-2" role="region" aria-label="Price comparison">
-      {/* Compact View - Always Visible */}
+    <div
+      className="group relative min-w-[280px] space-y-2"
+      role="region"
+      aria-label="Price comparison"
+      aria-describedby={srId}
+    >
+      {/* SR-only descriptive text */}
+      <div id={srId} className="sr-only">
+        Competitor price {fmtPrice(competitorPrice)}. Your price {fmtPrice(myPrice)}.
+        Status: {statusText}. Difference {fmtDiff(priceDiff)} ({fmtPct(pctDiff)}).
+      </div>
+
+      {/* Compact numbers */}
       <div className="flex items-center justify-between gap-2 text-xs">
         <div className="flex items-center gap-1.5">
           <div className="flex h-6 w-6 items-center justify-center rounded bg-[#EEF4FF] dark:bg-blue-900" aria-hidden="true">
@@ -179,16 +216,17 @@ const PricePositionCell = ({
           </div>
           <div>
             <div className="text-[10px] font-medium text-muted-foreground dark:text-gray-400">Comp. Price</div>
-            <div className="font-semibold text-primary" aria-label={`Competitor price: ${formatPrice(competitorPrice)}`}>
-              {formatPrice(competitorPrice)}
+            <div className="font-semibold text-primary" aria-label={`Competitor price: ${fmtPrice(competitorPrice)}`}>
+              {fmtPrice(competitorPrice)}
             </div>
           </div>
         </div>
+
         <div className="flex items-center gap-1.5">
           <div>
             <div className="text-right text-[10px] font-medium text-muted-foreground dark:text-gray-400">My Price</div>
-            <div className="text-right font-semibold text-primary" aria-label={`Your price: ${formatPrice(myPrice)}`}>
-              {formatPrice(myPrice)}
+            <div className="text-right font-semibold text-primary" aria-label={`Your price: ${fmtPrice(myPrice)}`}>
+              {fmtPrice(myPrice)}
             </div>
           </div>
           <div className="flex h-6 w-6 items-center justify-center rounded bg-[#F4EBFF] dark:bg-purple-900" aria-hidden="true">
@@ -199,26 +237,26 @@ const PricePositionCell = ({
         </div>
       </div>
 
-      {/* Visual Progress Bar with Position */}
+      {/* Progress bar */}
       <div
         className="relative"
         role="progressbar"
         aria-valuemin={0}
         aria-valuemax={100}
-        aria-valuenow={Math.round(progressPercentage)}
-        aria-valuetext={`${getStatusText()} (${formatPercentage(percentageDiff)})`}
+        aria-valuenow={Math.round(progress)}
+        aria-valuetext={`${statusText} (${fmtPct(pctDiff)})`}
         aria-label="Price comparison progress"
       >
         <div className="h-2 overflow-hidden rounded-full bg-[#E9EAEB] dark:bg-gray-600">
-          <div 
+          <div
             className={`h-full transition-all duration-300 ${isWinning ? 'bg-[#17B26A]' : isEqual ? 'bg-[#717680]' : 'bg-[#F04438]'}`}
-            style={{ width: `${progressPercentage}%` }}
+            style={{ width: `${progress}%` }}
             aria-hidden="true"
           />
         </div>
-        <div 
+        <div
           className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 flex items-center justify-center"
-          style={{ left: `${progressPercentage}%` }}
+          style={{ left: `${progress}%` }}
           aria-hidden="true"
         >
           <div className={`h-4 w-4 rounded-full border-2 border-white shadow-sm ${isWinning ? 'bg-[#17B26A]' : isEqual ? 'bg-[#717680]' : 'bg-[#F04438]'}`}>
@@ -227,35 +265,22 @@ const PricePositionCell = ({
         </div>
       </div>
 
-      {/* Status Badge with Difference */}
+      {/* Status + diff */}
       <div className="flex items-center justify-between">
-        <div 
-          className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs font-medium ${colors.border} ${colors.bg} ${colors.text}`}
-          role="status"
-          aria-label={`Status: ${getStatusText()}`}
-        >
-          {!isEqual && (
-            isWinning ? (
-              <ArrowDown className="h-3 w-3" aria-hidden="true" />
-            ) : (
-              <ArrowUp className="h-3 w-3" aria-hidden="true" />
-            )
-          )}
-          <span>{getStatusText()}</span>
+        <div className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs font-medium ${colors.border} ${colors.bg} ${colors.text}`} role="status">
+          {!isEqual && (isWinning ? <ArrowDown className="h-3 w-3" aria-hidden="true" /> : <ArrowUp className="h-3 w-3" aria-hidden="true" />)}
+          <span>{statusText}</span>
         </div>
         {!isEqual && (
-          <div 
-            className={`text-xs font-semibold ${colors.text}`}
-            aria-label={`Price difference: ${formatDiff(priceDiff)}, percentage: ${formatPercentage(percentageDiff)}`}
-          >
-            {formatDiff(priceDiff)} ({formatPercentage(percentageDiff)})
+          <div className={`text-xs font-semibold ${colors.text}`}>
+            {fmtDiff(priceDiff)} ({fmtPct(pctDiff)})
           </div>
         )}
       </div>
 
-      {/* Detailed Tooltip on Hover */}
-      <div 
-        className="pointer-events-none absolute left-0 top-full z-50 mt-2 hidden w-[320px] rounded-lg border border-[#E9EAEB] bg-white p-4 shadow-lg group-hover:block"
+      {/* Tooltip: now keyboard-friendly via focus-within */}
+      <div
+        className="pointer-events-none absolute left-0 top-full z-50 mt-2 hidden w-[320px] rounded-lg border border-[#E9EAEB] bg-white p-4 shadow-lg group-hover:block group-focus-within:block"
         role="tooltip"
         aria-hidden="true"
       >
@@ -264,34 +289,33 @@ const PricePositionCell = ({
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1 rounded-lg bg-[#EEF4FF] p-3">
               <div className="text-xs text-muted-foreground">Competitor</div>
-              <div className="text-lg font-bold text-[#3538CD]">{formatPrice(competitorPrice)}</div>
+              <div className="text-lg font-bold text-[#3538CD]">{fmtPrice(competitorPrice)}</div>
             </div>
             <div className="space-y-1 rounded-lg bg-[#F4EBFF] p-3">
               <div className="text-xs text-muted-foreground">Your Price</div>
-              <div className="text-lg font-bold text-[#7F56D9]">{formatPrice(myPrice)}</div>
+              <div className="text-lg font-bold text-[#7F56D9]">{fmtPrice(myPrice)}</div>
             </div>
           </div>
           <div className="space-y-2 rounded-lg border border-[#E9EAEB] bg-[#FAFAFA] p-3">
             <div className="flex items-center justify-between">
               <span className="text-xs text-muted-foreground">Difference:</span>
-              <span className={`text-sm font-semibold ${colors.text}`}>{formatDiff(priceDiff)}</span>
+              <span className={`text-sm font-semibold ${colors.text}`}>{fmtDiff(priceDiff)}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-xs text-muted-foreground">Percentage:</span>
-              <span className={`text-sm font-semibold ${colors.text}`}>{formatPercentage(percentageDiff)}</span>
+              <span className={`text-sm font-semibold ${colors.text}`}>{fmtPct(pctDiff)}</span>
             </div>
             <div className="flex items-center justify-between border-t border-border-secondary pt-2">
               <span className="text-xs text-muted-foreground">Status:</span>
-              <span className={`text-sm font-bold ${colors.text}`}>{getStatusText()}</span>
+              <span className={`text-sm font-bold ${colors.text}`}>{statusText}</span>
             </div>
           </div>
           {!isEqual && (
             <div className={`rounded-lg p-2 text-xs ${colors.bg}`}>
               <span className={colors.text}>
-                {isWinning 
-                  ? `💡 Great! You're ${Math.abs(percentageDiff).toFixed(1)}% cheaper than your competitor.`
-                  : `⚠️ Consider adjusting your price. You're ${percentageDiff.toFixed(1)}% more expensive.`
-                }
+                {isWinning
+                  ? `💡 Great! You're ${fmtPct(-pctDiff)} cheaper than your competitor.`
+                  : `⚠️ Consider adjusting your price. You're ${fmtPct(pctDiff)} more expensive.`}
               </span>
             </div>
           )}
