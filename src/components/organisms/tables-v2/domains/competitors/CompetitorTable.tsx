@@ -22,7 +22,7 @@ export interface Competitor {
   myPrice: number;
 }
 
-interface CompetitorTableProps extends Omit<DomainTableProps<Competitor, any>, 'columns'> {
+interface CompetitorTableProps extends Omit<DomainTableProps<Competitor, any>, 'columns' | 'data'> {
   competitors: Competitor[];
 }
 
