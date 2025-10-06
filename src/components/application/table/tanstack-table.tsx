@@ -303,40 +303,35 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
         }
 
         return (
-          <div className="group relative flex items-center gap-2.5">
-            {/* Material Icons - Clean Circles */}
-            <div className="flex -space-x-2">
+          <div className="group relative flex items-center justify-center">
+            {/* Material Icons - Compact Circles */}
+            <div className="flex -space-x-1">
               {materials.slice(0, 3).map((material, index) => (
                 <div
                   key={index}
-                  className={`w-6 h-6 rounded-full border-2 border-white dark:border-gray-800 flex items-center justify-center transition-transform group-hover:scale-110 ${material.bgColor}`}
+                  className={`w-5 h-5 rounded-full border-2 border-white dark:border-gray-800 flex items-center justify-center transition-transform group-hover:scale-110 ${material.bgColor}`}
                   style={{ 
                     zIndex: materials.length - index,
                   }}
                   title={material.type}
                 >
-                  <span className="text-xs font-bold" style={{ color: material.color }}>
+                  <span className="text-[10px] font-bold" style={{ color: material.color }}>
                     {material.icon}
                   </span>
                 </div>
               ))}
               {variants > 3 && (
                 <div 
-                  className="w-6 h-6 rounded-full border-2 border-white dark:border-gray-800 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center text-[9px] font-semibold text-gray-600 dark:text-gray-300"
+                  className="w-5 h-5 rounded-full border-2 border-white dark:border-gray-800 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center text-[8px] font-semibold text-gray-600 dark:text-gray-300"
                   title={`${variants - 3} more`}
                 >
                   +{variants - 3}
                 </div>
               )}
             </div>
-            
-            {/* Variant count */}
-            <span className="text-xs font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">
-              {variants} {variants === 1 ? 'option' : 'options'}
-            </span>
 
             {/* Tooltip on hover */}
-            <div className="absolute left-0 top-8 hidden group-hover:block z-50 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs rounded-lg px-2.5 py-1.5 shadow-lg whitespace-nowrap">
+            <div className="absolute left-1/2 top-full mt-2 hidden group-hover:block z-50 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs rounded-lg px-2.5 py-1.5 shadow-lg whitespace-nowrap transform -translate-x-1/2">
               <div className="flex flex-col gap-0.5">
                 {materials.map((material, index) => (
                   <div key={index} className="flex items-center gap-1.5">
@@ -345,7 +340,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
                   </div>
                 ))}
               </div>
-              <div className="absolute -top-1 left-4 w-2 h-2 bg-gray-900 dark:bg-gray-100 rotate-45"></div>
+              <div className="absolute -top-1 left-1/2 w-2 h-2 bg-gray-900 dark:bg-gray-100 rotate-45 transform -translate-x-1/2"></div>
             </div>
           </div>
         );
@@ -454,7 +449,11 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
           
           // Determine country based on domain or brand
           const getCountryInfo = (domain: string, brandName?: string) => {
-            if (domain?.includes('.de') || brandName?.toLowerCase().includes('german') || brandName?.toLowerCase().includes('deutsch')) {
+            // Check for German brands first (even with .com domains)
+            if (brandName?.toLowerCase().includes('elli') || 
+                brandName?.toLowerCase().includes('german') || 
+                brandName?.toLowerCase().includes('deutsch') ||
+                domain?.includes('.de')) {
               return {
                 code: 'DE',
                 name: 'Germany',
@@ -507,40 +506,56 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
 
           return (
             <div className="group relative flex items-center gap-2.5">
-              {/* Country Flag/Code */}
+              {/* Brand Logo */}
               <div className="relative">
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center border border-gray-200 dark:border-gray-700 ${countryInfo.color}`}>
-                  <span className="text-sm font-bold">
-                    {countryInfo.flag}
-                  </span>
+                <div className="w-8 h-8 rounded-lg bg-white dark:bg-white flex items-center justify-center border border-gray-200 dark:border-gray-300 overflow-hidden shadow-sm">
+                  {brand?.logo ? (
+                    <img
+                      src={brand.logo}
+                      alt={brand.name}
+                      className="w-6 h-6 rounded object-contain"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        target.nextElementSibling?.classList.remove('hidden');
+                      }}
+                      onLoad={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.nextElementSibling?.classList.add('hidden');
+                      }}
+                    />
+                  ) : null}
+                  <div className={`w-6 h-6 rounded flex items-center justify-center text-xs font-semibold text-gray-600 dark:text-gray-300 ${brand?.logo ? 'hidden' : ''}`}>
+                    {brand?.name?.charAt(0).toUpperCase() || '?'}
+                  </div>
                 </div>
               </div>
               
-              {/* Country Code */}
+              {/* Brand Name and Country */}
               <div className="flex flex-col min-w-0">
                 <span className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
-                  {countryInfo.code}
+                  {brand?.name || 'Unknown'}
                 </span>
-                <span className="text-xs text-gray-500 dark:text-gray-400">
-                  {countryInfo.name}
-                </span>
+                <div className="flex items-center gap-1">
+                  <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
+                    {countryInfo.flag} {countryInfo.code}
+                  </span>
+                </div>
               </div>
 
               {/* Hover tooltip */}
               <div className="absolute left-0 top-full mt-2 hidden group-hover:block z-50 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs rounded-lg px-3 py-2 shadow-lg whitespace-nowrap">
                 <div className="space-y-1">
-                  <div className="font-semibold">Country Information</div>
+                  <div className="font-semibold">Brand & Country</div>
                   <div className="text-gray-300 dark:text-gray-600">
-                    {countryInfo.name} {countryInfo.flag}
+                    {brand?.name || 'Unknown Brand'}
+                  </div>
+                  <div className="text-gray-300 dark:text-gray-600">
+                    {countryInfo.flag} {countryInfo.name}
                   </div>
                   <div className="text-gray-300 dark:text-gray-600">
                     Domain: {domain}
                   </div>
-                  {brand?.name && (
-                    <div className="text-gray-300 dark:text-gray-600">
-                      Brand: {brand.name}
-                    </div>
-                  )}
                 </div>
                 <div className="absolute -top-1 left-4 w-2 h-2 bg-gray-900 dark:bg-gray-100 rotate-45"></div>
               </div>

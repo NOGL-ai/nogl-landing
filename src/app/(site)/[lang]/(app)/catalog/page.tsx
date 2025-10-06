@@ -28,7 +28,7 @@ const jewelryProducts = [
     currency: 'EUR',
     brand: {
       name: 'Ellijewelry',
-      logo: '/api/placeholder/24/24',
+      logo: 'https://img.logo.dev/ellijewelry.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
     },
     competitors: {
       cheapest: 45.90,
@@ -65,7 +65,7 @@ const jewelryProducts = [
     currency: 'EUR',
     brand: {
       name: 'Ellijewelry',
-      logo: '/api/placeholder/24/24',
+      logo: 'https://img.logo.dev/ellijewelry.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
     },
     competitors: {
       cheapest: 65.90,
@@ -101,7 +101,7 @@ const jewelryProducts = [
     currency: 'EUR',
     brand: {
       name: 'Nenalina',
-      logo: '/api/placeholder/24/24',
+      logo: 'https://img.logo.dev/ellijewelry.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
     },
     competitors: {
       cheapest: 89.90,
@@ -137,7 +137,7 @@ const jewelryProducts = [
     currency: 'EUR',
     brand: {
       name: 'Kuzzoi',
-      logo: '/api/placeholder/24/24',
+      logo: 'https://img.logo.dev/ellijewelry.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
     },
     competitors: {
       cheapest: 45.90,
@@ -173,7 +173,7 @@ const jewelryProducts = [
     currency: 'EUR',
     brand: {
       name: 'Kuzzoi',
-      logo: '/api/placeholder/24/24',
+      logo: 'https://img.logo.dev/ellijewelry.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
     },
     competitors: {
       cheapest: 65.90,
