@@ -125,6 +125,10 @@ const badgeClasses: Record<string, string> = {
   Salesforce: 'border-[#F9DBAF] bg-[#FEF6EE] text-[#B93815]',
 };
 
+const iconButtonClasses = 'rounded-lg p-2.5 transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40';
+const compactIconButtonClasses = 'rounded p-1 transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40';
+const secondaryButtonClasses = 'flex items-center gap-1 rounded-lg border border-border-secondary bg-background px-3.5 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40';
+
 // Price Position Component
 const PricePositionCell = ({ 
   competitorPrice, 
@@ -268,7 +272,7 @@ const PricePositionCell = ({
               <span className="text-xs text-tertiary">Percentage:</span>
               <span className={`text-sm font-semibold ${colors.text}`}>{formatPercentage(percentageDiff)}</span>
             </div>
-            <div className="flex items-center justify-between border-t border-[#E9EAEB] pt-2">
+            <div className="flex items-center justify-between border-t border-border-secondary pt-2">
               <span className="text-xs text-tertiary">Status:</span>
               <span className={`text-sm font-bold ${colors.text}`}>{getStatusText()}</span>
             </div>
@@ -349,12 +353,12 @@ export default function CompetitorPage() {
   );
 
   return (
-        <div className="mx-auto w-full max-w-7xl space-y-6 px-4 py-6 sm:px-6 lg:py-10 lg:px-8 bg-primary min-h-screen">
+        <div className="mx-auto w-full max-w-7xl min-h-screen space-y-6 bg-background px-4 py-6 text-foreground transition-colors sm:px-6 lg:py-10 lg:px-8">
       {/* Screen reader announcements */}
-      <div 
-        id="search-results-announcement" 
-        className="sr-only" 
-        aria-live="polite" 
+      <div
+        id="search-results-announcement"
+        className="sr-only"
+        aria-live="polite"
         aria-atomic="true"
       >
         {searchQuery && `Found ${filteredCompetitors.length} competitors matching "${searchQuery}"`}
@@ -362,17 +366,17 @@ export default function CompetitorPage() {
       
       <header className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-[280px] flex-1">
-          <h1 className="text-2xl font-semibold text-primary">Welcome back, Tim</h1>
+          <h1 className="text-2xl font-semibold text-foreground">Welcome back, Tim</h1>
         </div>
         <div className="flex items-center gap-3">
-          <button className="rounded-lg p-2.5 transition-colors hover:bg-secondary" aria-label="Search">
+          <button className={iconButtonClasses} aria-label="Search">
             <Search className="h-5 w-5 text-quaternary" />
           </button>
-          <button className="flex items-center gap-1 rounded-lg border border-border-secondary bg-primary px-3.5 py-2.5 text-sm font-semibold text-primary shadow-sm transition-colors hover:bg-secondary">
+          <button className={secondaryButtonClasses}>
             <Settings className="h-5 w-5 text-quaternary" />
             Customize
           </button>
-          <button className="flex items-center gap-1 rounded-lg border border-border-secondary bg-primary px-3.5 py-2.5 text-sm font-semibold text-primary shadow-sm transition-colors hover:bg-secondary">
+          <button className={secondaryButtonClasses}>
             <Download className="h-5 w-5 text-quaternary" />
             Export
           </button>
@@ -380,7 +384,7 @@ export default function CompetitorPage() {
       </header>
 
       <section className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <article className="lg:col-span-2 rounded-xl border border-border-secondary bg-primary shadow-sm">
+        <article className="lg:col-span-2 rounded-xl border border-border-secondary bg-card shadow-sm transition-colors">
           <div className="border-b border-border-secondary p-6">
             <div className="flex items-start justify-between">
               <div className="flex items-start gap-3">
@@ -396,7 +400,7 @@ export default function CompetitorPage() {
                   <p className="mt-1 text-sm text-tertiary">Keep track of vendors and their security ratings.</p>
                 </div>
               </div>
-              <button className="rounded p-1 transition-colors hover:bg-secondary" aria-label="More actions">
+              <button className={compactIconButtonClasses} aria-label="More actions">
                 <svg className="h-5 w-5 text-quaternary" fill="currentColor" viewBox="0 0 20 20">
                   <circle cx="10" cy="10" r="1.5" />
                   <circle cx="10" cy="4" r="1.5" />
@@ -451,21 +455,21 @@ export default function CompetitorPage() {
             </div>
             <div className="mt-2 text-center text-xs font-medium text-tertiary">Month</div>
           </div>
-          <div className="flex justify-end border-t border-[#E9EAEB] p-6">
+          <div className="flex justify-end border-t border-border-secondary p-6">
             <button className="rounded-lg border border-border-secondary bg-primary px-3.5 py-2.5 text-sm font-semibold text-primary shadow-sm transition-colors hover:bg-secondary">
               View full report
             </button>
           </div>
         </article>
 
-        <article className="rounded-xl border border-border-secondary bg-primary shadow-sm">
-          <div className="border-b border-[#E9EAEB] p-6">
+        <article className="rounded-xl border border-border-secondary bg-card shadow-sm transition-colors">
+          <div className="border-b border-border-secondary p-6">
             <div className="flex items-start justify-between">
               <div>
                 <h2 className="text-lg font-semibold text-primary">Products monitored</h2>
                 <p className="mt-1 text-sm text-tertiary">You're monitoring 80% of your inventory.</p>
               </div>
-              <button className="rounded p-1 transition-colors hover:bg-secondary" aria-label="More actions">
+              <button className={compactIconButtonClasses} aria-label="More actions">
                 <svg className="h-5 w-5 text-quaternary" fill="currentColor" viewBox="0 0 20 20">
                   <circle cx="10" cy="10" r="1.5" />
                   <circle cx="10" cy="4" r="1.5" />
@@ -507,8 +511,8 @@ export default function CompetitorPage() {
               <p className="mt-1 text-sm text-tertiary">You have used 80% of your goal.</p>
             </div>
           </div>
-          <div className="flex justify-end border-t border-[#E9EAEB] p-6">
-            <button className="flex items-center gap-1 rounded-lg border border-border-secondary bg-primary px-3.5 py-2.5 text-sm font-semibold text-primary shadow-sm transition-colors hover:bg-secondary">
+          <div className="flex justify-end border-t border-border-secondary p-6">
+            <button className={secondaryButtonClasses}>
               <svg className="h-5 w-5 text-quaternary" fill="none" stroke="currentColor" viewBox="0 0 20 20">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.67} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
@@ -518,8 +522,8 @@ export default function CompetitorPage() {
         </article>
       </section>
 
-      <section className="rounded-xl border border-border-secondary bg-primary shadow-sm">
-        <div className="border-b border-[#E9EAEB] p-6">
+      <section className="rounded-xl border border-border-secondary bg-card shadow-sm transition-colors">
+        <div className="border-b border-border-secondary p-6">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="flex-1">
               <div className="flex items-center gap-2">
@@ -529,7 +533,7 @@ export default function CompetitorPage() {
               <p className="mt-1 text-sm text-tertiary">Monitor competitor pricing and stay competitive with real-time price tracking.</p>
             </div>
             <div className="flex items-center gap-3">
-              <button className="flex items-center gap-1 rounded-lg border border-border-secondary bg-primary px-3.5 py-2.5 text-sm font-semibold text-primary shadow-sm transition-colors hover:bg-secondary">
+              <button className={secondaryButtonClasses}>
                 <Upload className="h-5 w-5 text-quaternary" />
                 Import
               </button>
@@ -541,13 +545,13 @@ export default function CompetitorPage() {
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#E9EAEB] px-6 py-3">
-          <div className="flex overflow-hidden rounded-lg border border-[#D5D7DA] shadow-sm" role="tablist" aria-label="Product filter tabs">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border-secondary px-6 py-3">
+          <div className="flex overflow-hidden rounded-lg border border-border-secondary shadow-sm" role="tablist" aria-label="Product filter tabs">
             <button
               type="button"
               onClick={() => setActiveTab('all')}
-              className={`px-4 py-2 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-[#7F56D9] ${
-                activeTab === 'all' ? 'border-r border-border-secondary bg-[#FAFAFA] dark:bg-gray-700 text-[#252B37] dark:text-white' : 'border-r border-border-secondary bg-primary text-primary hover:bg-secondary'
+              className={`px-4 py-2 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring/40 ${
+                activeTab === 'all' ? 'border-r border-border-secondary bg-muted text-foreground' : 'border-r border-border-secondary bg-background text-muted-foreground hover:bg-muted'
               }`}
               role="tab"
               aria-selected={activeTab === 'all'}
@@ -559,8 +563,8 @@ export default function CompetitorPage() {
             <button
               type="button"
               onClick={() => setActiveTab('monitored')}
-              className={`px-4 py-2 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-[#7F56D9] ${
-                activeTab === 'monitored' ? 'border-r border-border-secondary bg-[#FAFAFA] dark:bg-gray-700 text-[#252B37] dark:text-white' : 'border-r border-border-secondary bg-primary text-primary hover:bg-secondary'
+              className={`px-4 py-2 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring/40 ${
+                activeTab === 'monitored' ? 'border-r border-border-secondary bg-muted text-foreground' : 'border-r border-border-secondary bg-background text-muted-foreground hover:bg-muted'
               }`}
               role="tab"
               aria-selected={activeTab === 'monitored'}
@@ -572,8 +576,8 @@ export default function CompetitorPage() {
             <button
               type="button"
               onClick={() => setActiveTab('unmonitored')}
-              className={`px-4 py-2 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-[#7F56D9] ${
-                activeTab === 'unmonitored' ? 'bg-[#FAFAFA] dark:bg-gray-700 text-[#252B37] dark:text-white' : 'bg-primary text-primary hover:bg-secondary'
+              className={`px-4 py-2 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring/40 ${
+                activeTab === 'unmonitored' ? 'bg-muted text-foreground' : 'bg-background text-muted-foreground hover:bg-muted'
               }`}
               role="tab"
               aria-selected={activeTab === 'unmonitored'}
@@ -595,19 +599,19 @@ export default function CompetitorPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search products, URLs, SKL"
-                className="w-full rounded-lg border border-border-secondary bg-primary py-2 pl-10 pr-16 text-base text-primary placeholder:text-[#717680] dark:placeholder:text-gray-400 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#7F56D9]"
+                className="w-full rounded-lg border border-border-secondary bg-background py-2 pl-10 pr-16 text-base text-foreground placeholder:text-muted-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-ring/40"
                 aria-describedby="search-help"
                 aria-label="Search competitors by name or domain"
               />
-              <span 
+              <span
                 id="search-help"
-                className="absolute right-3 top-1/2 -translate-y-1/2 rounded border border-[#E9EAEB] dark:border-gray-600 px-1.5 py-0.5 text-xs text-[#717680] dark:text-gray-400"
+                className="absolute right-3 top-1/2 -translate-y-1/2 rounded border border-border-secondary bg-background px-1.5 py-0.5 text-xs text-muted-foreground"
                 aria-label="Keyboard shortcut: Command K"
               >
                 ⌘K
               </span>
             </div>
-            <button className="flex items-center gap-1 rounded-lg border border-border-secondary bg-primary px-3.5 py-2.5 text-sm font-semibold text-primary shadow-sm transition-colors hover:bg-secondary">
+            <button className={secondaryButtonClasses}>
               <svg className="h-5 w-5 text-quaternary" fill="none" stroke="currentColor" viewBox="0 0 20 20">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.67} d="M3 4h14M6 8h8M9 12h2" />
               </svg>
@@ -623,8 +627,8 @@ export default function CompetitorPage() {
           aria-labelledby="all-products-tab"
           hidden={activeTab !== 'all'}
         >
-          <table 
-            className="w-full bg-primary" 
+          <table
+            className="w-full bg-card transition-colors"
             role="table"
             aria-label="Competitor monitoring table"
             aria-describedby="table-description"
@@ -633,7 +637,7 @@ export default function CompetitorPage() {
               Table showing competitor products with pricing information, trends, and categories. 
               Use arrow keys to navigate between rows, space or enter to select, and escape to clear selection.
             </caption>
-            <thead className="border-b border-border-secondary bg-[#FAFAFA] dark:bg-gray-700">
+            <thead className="border-b border-border-secondary bg-muted">
               <tr role="row">
                 <th 
                   className="px-6 py-3 text-left" 
@@ -678,7 +682,7 @@ export default function CompetitorPage() {
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#E9EAEB] dark:divide-gray-700 bg-primary">
+            <tbody className="divide-y divide-border-secondary bg-card">
               {filteredCompetitors.map((competitor, index) => (
                 <tr 
                   key={competitor.id} 
@@ -691,7 +695,7 @@ export default function CompetitorPage() {
                   aria-selected={selectedRows.has(competitor.id)}
                   aria-label={`Competitor ${competitor.name} from ${competitor.domain}`}
                 >
-                  <td className="px-6 py-4 bg-primary" role="gridcell">
+                  <td className="px-6 py-4 bg-card" role="gridcell">
                     <div className="flex items-center gap-3">
                       <input
                         type="checkbox"
@@ -713,7 +717,7 @@ export default function CompetitorPage() {
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 bg-primary" role="gridcell">
+                  <td className="px-6 py-4 bg-card" role="gridcell">
                     <div className="flex items-center gap-3">
                       <div 
                         className="h-10 w-10 rounded-full border border-black/8 bg-gray-200"
@@ -725,13 +729,13 @@ export default function CompetitorPage() {
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 bg-primary" role="gridcell">
+                  <td className="px-6 py-4 bg-card" role="gridcell">
                     <PricePositionCell 
                       competitorPrice={competitor.competitorPrice} 
                       myPrice={competitor.myPrice}
                     />
                   </td>
-                  <td className="px-6 py-4 bg-primary" role="gridcell">
+                  <td className="px-6 py-4 bg-card" role="gridcell">
                     <div 
                       className={`inline-flex items-center gap-0.5 rounded-full border px-2 py-0.5 ${
                         competitor.trendUp ? 'border-[#ABEFC6] bg-[#ECFDF3]' : 'border-[#FECDCA] bg-[#FEF3F2]'
@@ -749,7 +753,7 @@ export default function CompetitorPage() {
                       </span>
                     </div>
                   </td>
-                  <td className="px-6 py-4 bg-primary" role="gridcell">
+                  <td className="px-6 py-4 bg-card" role="gridcell">
                     <div className="flex flex-wrap items-center gap-1" role="list" aria-label="Product categories">
                       {competitor.categories.slice(0, 2).map(category => (
                         <span
@@ -793,7 +797,7 @@ export default function CompetitorPage() {
           </table>
         </div>
 
-        <div className="flex items-center justify-between border-t border-[#E9EAEB] px-6 py-3">
+        <div className="flex items-center justify-between border-t border-border-secondary px-6 py-3">
           <div className="text-sm font-medium text-[#414651] dark:text-gray-300">
             Page 1 of 10
             <span className="sr-only">
