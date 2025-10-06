@@ -246,6 +246,37 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
       });
     }
 
+    // Add Competitor Count column
+    baseColumns.push({
+      accessorKey: 'competitorCount',
+      id: 'competitorCount',
+      header: 'Competitors',
+      cell: ({ row }) => {
+        const count = (row.original as any).competitorCount || 0;
+        const getCompetitorCountColor = (count: number) => {
+          if (count === 0) return 'text-gray-500 bg-gray-100 dark:bg-gray-800';
+          if (count <= 2) return 'text-green-700 bg-green-100 dark:bg-green-900 dark:text-green-300';
+          if (count <= 4) return 'text-yellow-700 bg-yellow-100 dark:bg-yellow-900 dark:text-yellow-300';
+          return 'text-red-700 bg-red-100 dark:bg-red-900 dark:text-red-300';
+        };
+
+        const getCompetitorCountText = (count: number) => {
+          if (count === 0) return 'No competitors';
+          if (count === 1) return '1 competitor';
+          return `${count} competitors`;
+        };
+
+        return (
+          <div className="flex items-center gap-2">
+            <span className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${getCompetitorCountColor(count)}`}>
+              {getCompetitorCountText(count)}
+            </span>
+          </div>
+        );
+      },
+      enableSorting: true,
+    });
+
     // Add remaining columns
     baseColumns.push(
       {
