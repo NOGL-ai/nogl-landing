@@ -1080,7 +1080,7 @@ export default function CompetitorPage() {
         <div className="flex items-start content-start gap-4 self-stretch flex-wrap">
           <div className="flex min-w-[200px] md:min-w-[320px] flex-col items-start gap-1 flex-1">
             <h1 className="self-stretch text-foreground text-xl md:text-2xl font-semibold leading-8">
-              Nogl Lens
+              NogLens
             </h1>
             <p className="self-stretch text-muted-foreground text-sm md:text-base font-normal leading-6">
               Unlock the potential of Google Lens! Experience the world from a fresh perspective.
