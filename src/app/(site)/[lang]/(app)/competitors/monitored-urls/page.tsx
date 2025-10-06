@@ -330,6 +330,8 @@ export default function CompetitorPage() {
   const [activeTab, setActiveTab] = React.useState<'all' | 'monitored' | 'unmonitored'>('all');
   const [searchQuery, setSearchQuery] = React.useState('');
   const [focusedRowIndex, setFocusedRowIndex] = React.useState<number | null>(null);
+  const [priceSort, setPriceSort] = React.useState<'none' | 'asc' | 'desc'>('none');
+  const [trendSort, setTrendSort] = React.useState<'none' | 'asc' | 'desc'>('none');
 
   const toggleRow = (id: number) => {
     setSelectedRows(prev => {
@@ -387,6 +389,38 @@ export default function CompetitorPage() {
       competitor.domain.toLowerCase().includes(q)
     );
   }, [searchQuery]);
+
+  // Sort according to price or trend toggle
+  const sortedCompetitors = React.useMemo(() => {
+    if (priceSort === 'none' && trendSort === 'none') return filteredCompetitors;
+    const list = [...filteredCompetitors];
+    list.sort((a, b) => {
+      if (priceSort !== 'none') {
+        const diff = a.competitorPrice - b.competitorPrice;
+        return priceSort === 'asc' ? diff : -diff;
+      }
+      if (trendSort !== 'none') {
+        // Convert trend to signed value: positive for up trends, negative for down trends
+        const getSignedTrend = (competitor: typeof a) => 
+          competitor.trendUp ? competitor.trend : -competitor.trend;
+        
+        const diff = getSignedTrend(a) - getSignedTrend(b);
+        return trendSort === 'asc' ? diff : -diff;
+      }
+      return 0;
+    });
+    return list;
+  }, [filteredCompetitors, priceSort, trendSort]);
+
+  const togglePriceSort = () => {
+    setPriceSort(prev => (prev === 'none' ? 'asc' : prev === 'asc' ? 'desc' : 'none'));
+    setTrendSort('none'); // Reset trend sort when price sort is active
+  };
+
+  const toggleTrendSort = () => {
+    setTrendSort(prev => (prev === 'none' ? 'asc' : prev === 'asc' ? 'desc' : 'none'));
+    setPriceSort('none'); // Reset price sort when trend sort is active
+  };
 
   return (
         <div className="mx-auto w-full max-w-7xl min-h-screen space-y-6 bg-background px-4 py-6 text-foreground transition-colors sm:px-6 lg:py-10 lg:px-8">
@@ -703,11 +737,49 @@ export default function CompetitorPage() {
                 <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground" role="columnheader" scope="col">
                   Matched Product
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground" role="columnheader" scope="col">
-                  Price Position
+                <th
+                  className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground"
+                  role="columnheader"
+                  scope="col"
+                  aria-sort={priceSort === 'none' ? 'none' : priceSort === 'asc' ? 'ascending' : 'descending'}
+                >
+                  <button
+                    type="button"
+                    onClick={togglePriceSort}
+                    className="inline-flex items-center gap-1 hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring/40 rounded"
+                    aria-label={`Sort by competitor price ${priceSort === 'none' ? 'ascending' : priceSort === 'asc' ? 'descending' : 'none'}`}
+                  >
+                    Price Position
+                    {priceSort === 'asc' && <ArrowUp className="h-3.5 w-3.5" aria-hidden="true" />}
+                    {priceSort === 'desc' && <ArrowDown className="h-3.5 w-3.5" aria-hidden="true" />}
+                    {priceSort === 'none' && (
+                      <svg className="h-3.5 w-3.5 text-quaternary" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                        <path d="M6 2.5v7m0 0l3.5-3.5M6 9.5L2.5 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    )}
+                  </button>
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground" role="columnheader" scope="col">
-                  Trend
+                <th
+                  className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground"
+                  role="columnheader"
+                  scope="col"
+                  aria-sort={trendSort === 'none' ? 'none' : trendSort === 'asc' ? 'ascending' : 'descending'}
+                >
+                  <button
+                    type="button"
+                    onClick={toggleTrendSort}
+                    className="inline-flex items-center gap-1 hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring/40 rounded"
+                    aria-label={`Sort by trend ${trendSort === 'none' ? 'ascending' : trendSort === 'asc' ? 'descending' : 'none'}`}
+                  >
+                    Trend
+                    {trendSort === 'asc' && <ArrowUp className="h-3.5 w-3.5" aria-hidden="true" />}
+                    {trendSort === 'desc' && <ArrowDown className="h-3.5 w-3.5" aria-hidden="true" />}
+                    {trendSort === 'none' && (
+                      <svg className="h-3.5 w-3.5 text-quaternary" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                        <path d="M6 2.5v7m0 0l3.5-3.5M6 9.5L2.5 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    )}
+                  </button>
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground" role="columnheader" scope="col">
                   Categories
@@ -718,7 +790,7 @@ export default function CompetitorPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-border-secondary bg-card">
-              {filteredCompetitors.map((competitor, index) => (
+              {sortedCompetitors.map((competitor, index) => (
                 <tr 
                   key={competitor.id} 
                   className={`transition-colors hover:bg-muted ${
