@@ -233,9 +233,9 @@ export default function TestPage2() {
               <div className="text-center text-xs font-medium text-[#535862] mt-2">Month</div>
             </div>
             <div className="border-t border-[#E9EAEB] p-6 flex justify-end">
-              <button className="px-3.5 py-2.5 rounded-lg border border-[#D5D7DA] bg-white shadow-sm text-sm font-semibold text-[#414651] hover:bg-gray-50 transition-colors">
+              <a href="#" className="px-3.5 py-2.5 rounded-lg border border-[#D5D7DA] bg-white shadow-sm text-sm font-semibold text-[#414651] hover:bg-gray-50 transition-colors">
                 View full report
-              </button>
+              </a>
             </div>
           </div>
 
