@@ -356,8 +356,8 @@ function MultiSelectFilter({ options, selectedValues, onSelectionChange, placeho
 							>
 								<Checkbox
 									checked={selectedValues.includes(option.value)}
-									onCheckedChange={() => handleToggle(option.value)}
-									aria-label={`Select ${option.label}`}
+									onChange={() => handleToggle(option.value)}
+									ariaLabel={`Select ${option.label}`}
 								/>
 								<Label className="flex-1 cursor-pointer">
 									{option.label}
