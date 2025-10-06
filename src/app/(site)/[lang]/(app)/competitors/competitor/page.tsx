@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { computeTrend, formatPercentCompact, formatPercentDetailed } from '@/utils/priceTrend';
 import Checkbox from '@/components/ui/checkbox';
+import TanStackTable from '@/components/application/table/tanstack-table';
 
 const competitors = [
   {
@@ -1167,241 +1168,36 @@ export default function CompetitorPage() {
           aria-labelledby="all-competitors-tab"
           hidden={activeTab !== 'all'}
         >
-          <table
-            className="w-full bg-card transition-colors"
-            aria-label="Competitor monitoring table"
-            aria-describedby="table-description"
-          >
-            <caption id="table-description" className="sr-only">
-              Table showing competitor products with pricing information, trends, and categories. 
-              Use arrow keys to navigate between rows, space or enter to select, and escape to clear selection.
-            </caption>
-            <thead className="border-b border-border-secondary bg-muted">
-              <tr>
-                <th 
-                  className="px-6 py-3 text-left" 
-                  scope="col"
-                  aria-sort={productSort === 'none' ? 'none' : productSort === 'asc' ? 'ascending' : 'descending'}
-                >
-                  <div className="flex items-center gap-3">
-                    <Checkbox
-                      checked={sortedCompetitors.every(item => selectedRows.has(item.id)) && sortedCompetitors.length > 0}
-                      indeterminate={sortedCompetitors.some(item => selectedRows.has(item.id)) && !sortedCompetitors.every(item => selectedRows.has(item.id))}
-                      onChange={(checked) => toggleAll(checked)}
-                      ariaLabel="Select all competitors"
-                      id="select-all"
-                      className="mr-1"
-                    />
-                    <button
-                      type="button"
-                      onClick={toggleProductSort}
-                      className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring/40 rounded"
-                      aria-label={`Sort by product name ${productSort === 'none' ? 'ascending' : productSort === 'asc' ? 'descending' : 'none'}`}
-                    >
-                      Competitor
-                      {productSort === 'asc' && <ArrowUp className="h-3 w-3" aria-hidden="true" />}
-                      {productSort === 'desc' && <ArrowDown className="h-3 w-3" aria-hidden="true" />}
-                      {productSort === 'none' && (
-                        <svg className="h-3 w-3 text-quaternary" fill="none" stroke="currentColor" viewBox="0 0 12 12" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 2.5v7m0 0l3.5-3.5M6 9.5L2.5 6" />
-                        </svg>
-                      )}
-                    </button>
-                  </div>
-                  <div id="select-all-help" className="sr-only">
-                    Checkbox to select or deselect all competitors in the table
-                  </div>
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground" scope="col">
-                  Products
-                </th>
-                <th
-                  className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground"
-                  scope="col"
-                  aria-sort={priceSort === 'none' ? 'none' : priceSort === 'asc' ? 'ascending' : 'descending'}
-                >
-                  <button
-                    type="button"
-                    onClick={togglePriceSort}
-                    className="inline-flex items-center gap-1 hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring/40 rounded"
-                    aria-label={`Sort by competitor price ${priceSort === 'none' ? 'ascending' : priceSort === 'asc' ? 'descending' : 'none'}`}
-                  >
-                    Price Position
-                    {priceSort === 'asc' && <ArrowUp className="h-3.5 w-3.5" aria-hidden="true" />}
-                    {priceSort === 'desc' && <ArrowDown className="h-3.5 w-3.5" aria-hidden="true" />}
-                    {priceSort === 'none' && (
-                      <svg className="h-3.5 w-3.5 text-quaternary" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                        <path d="M6 2.5v7m0 0l3.5-3.5M6 9.5L2.5 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    )}
-                  </button>
-                </th>
-                <th
-                  className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground"
-                  scope="col"
-                  aria-sort={trendSort === 'none' ? 'none' : trendSort === 'asc' ? 'ascending' : 'descending'}
-                >
-                  <button
-                    type="button"
-                    onClick={toggleTrendSort}
-                    className="inline-flex items-center gap-1 hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring/40 rounded"
-                    aria-label={`Sort by trend ${trendSort === 'none' ? 'ascending' : trendSort === 'asc' ? 'descending' : 'none'}`}
-                  >
-                    Trend
-                    {trendSort === 'asc' && <ArrowUp className="h-3.5 w-3.5" aria-hidden="true" />}
-                    {trendSort === 'desc' && <ArrowDown className="h-3.5 w-3.5" aria-hidden="true" />}
-                    {trendSort === 'none' && (
-                      <svg className="h-3.5 w-3.5 text-quaternary" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                        <path d="M6 2.5v7m0 0l3.5-3.5M6 9.5L2.5 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    )}
-                  </button>
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground" scope="col">
-                  Categories
-                </th>
-                <th className="px-4 py-3" scope="col" aria-label="Actions">
-                  <span className="sr-only">Actions</span>
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border-secondary bg-card">
-              {paginatedCompetitors.map((competitor, index) => (
-                <tr 
-                  key={competitor.id} 
-                  className={`transition-colors hover:bg-muted ${
-                    focusedRowIndex === index ? 'bg-blue-50 dark:bg-blue-900 ring-2 ring-blue-200 dark:ring-blue-800' : ''
-                  }`}
-                  tabIndex={focusedRowIndex === index ? 0 : -1}
-                  onFocus={() => setFocusedRowIndex(index)}
-                  onKeyDown={(e) => handleKeyDown(e, competitor.id, index)}
-                  aria-selected={selectedRows.has(competitor.id)}
-                  aria-label={`Competitor ${competitor.name} from ${competitor.domain}`}
-                >
-                  <td className="px-6 py-4 bg-card">
-                    <div className="flex items-center gap-3">
-                      <Checkbox
-                        checked={selectedRows.has(competitor.id)}
-                        onChange={() => toggleRow(competitor.id)}
-                        ariaLabel={`Select ${competitor.name} competitor`}
-                        id={`competitor-${competitor.id}-checkbox`}
-                        className="mr-1"
-                      />
-                      <div className="flex items-center gap-3">
-                        <div className="relative h-10 w-10 flex-shrink-0">
-                          <div className="h-10 w-10 rounded-full border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 p-1">
-                            <img
-                              src={competitor.avatar}
-                              alt={`${competitor.name} logo`}
-                              className="h-8 w-8 rounded-full object-cover"
-                              onError={(e) => {
-                                // Fallback to initials if image fails to load
-                                const target = e.target as HTMLImageElement;
-                                target.style.display = 'none';
-                                const fallback = target.nextElementSibling as HTMLElement;
-                                if (fallback) fallback.style.display = 'flex';
-                              }}
-                            />
-                            <div 
-                              className="h-8 w-8 rounded-full bg-gray-200 dark:bg-gray-600 items-center justify-center text-xs font-semibold text-gray-600 dark:text-gray-300 hidden"
-                              style={{ display: 'none' }}
-                            >
-                              {competitor.name.charAt(0).toUpperCase()}
-                            </div>
-                          </div>
-                        </div>
-                        <div id={`competitor-${competitor.id}-info`} className="min-w-0 flex-1">
-                          <div className="text-sm font-medium text-foreground truncate">{competitor.name}</div>
-                          <div className="text-sm text-muted-foreground truncate">{competitor.domain}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 bg-card">
-                    <ProductsCell competitor={competitor} maxProducts={maxProducts} />
-                  </td>
-                  <td className="px-6 py-4 bg-card">
-                    <PricePositionCell 
-                      competitorPrice={competitor.competitorPrice} 
-                      myPrice={competitor.myPrice}
-                    />
-                  </td>
-                  <td className="px-6 py-4 bg-card">
-                    {(() => {
-                      const { value, precise, up, neutral } = computeTrend(competitor.competitorPrice, competitor.myPrice);
-                      const label = neutral
-                        ? 'Prices equal'
-                        : up
-                        ? `You are ${formatPercentDetailed(-precise)} cheaper than competitor`
-                        : `You are ${formatPercentDetailed(precise)} more expensive than competitor`;
-                      return (
-                        <div 
-                          className={`inline-flex items-center gap-0.5 rounded-full border px-2 py-0.5 ${
-                            neutral
-                              ? 'border-border-secondary bg-muted'
-                              : up
-                              ? 'border-green-200 bg-green-50 dark:border-green-700 dark:bg-green-900'
-                              : 'border-red-200 bg-red-50 dark:border-red-700 dark:bg-red-900'
-                          }`}
-                          role="img"
-                          aria-label={label}
-                        >
-                          {!neutral && (up ? (
-                            <ArrowUp className="h-3 w-3 text-green-600 dark:text-green-400" aria-hidden="true" />
-                          ) : (
-                            <ArrowDown className="h-3 w-3 text-red-600 dark:text-red-400" aria-hidden="true" />
-                          ))}
-                          <span className={`text-xs font-medium ${neutral ? 'text-muted-foreground' : up ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'}`}>
-                            {neutral ? '0%' : formatPercentCompact(precise)}
-                          </span>
-                        </div>
-                      );
-                    })()}
-                  </td>
-                  <td className="px-4 md:px-6 py-4 bg-card">
-                    <div className="flex flex-wrap items-center gap-1" role="list" aria-label="Product categories">
-                      {/* Mobile: Show only 1 category, Desktop: Show 2 categories */}
-                      {competitor.categories.slice(0, 2).map((category, index) => (
-                        <span
-                          key={category}
-                          role="listitem"
-                          className={`inline-flex items-center gap-1 whitespace-nowrap flex-shrink-0 rounded-full border px-2 py-0.5 text-xs font-medium ${badgeClasses[category] ?? 'border-border-secondary bg-muted text-muted-foreground'} ${index === 1 ? 'hidden md:inline-flex' : ''}`}
-                          aria-label={`Category: ${category}`}
-                        >
-                          {category === 'Active' && <span className="h-2 w-2 rounded-full bg-green-500 dark:bg-green-400" aria-hidden="true" />}
-                          {category === 'Inactive' && <span className="h-2 w-2 rounded-full bg-gray-500 dark:bg-gray-400" aria-hidden="true" />}
-                          {category === 'In Stock' && <span className="h-2 w-2 rounded-full bg-green-500 dark:bg-green-400" aria-hidden="true" />}
-                          {category === 'Out of Stock' && <span className="h-2 w-2 rounded-full bg-red-500 dark:bg-red-400" aria-hidden="true" />}
-                          {category}
-                        </span>
-                      ))}
-                        {competitor.categories.length > 2 && (
-                          <span 
-                            className="inline-flex items-center whitespace-nowrap flex-shrink-0 rounded-full border border-[#E9EAEB] bg-[#FAFAFA] px-2 py-0.5 text-xs font-medium text-muted-foreground"
-                            role="listitem"
-                            aria-label={`${competitor.categories.length - 2} additional categories`}
-                          >
-                            +{competitor.categories.length - 2}
-                          </span>
-                        )}
-                    </div>
-                  </td>
-                  <td className="px-4 py-4">
-                    <button 
-                      type="button"
-                      className="rounded-lg p-2 transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40" 
-                      aria-label={`More actions for ${competitor.name}`}
-                      aria-haspopup="menu"
-                    >
-                      <svg className="h-5 w-5 text-quaternary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zm0 5.25a.75.75 0 110-1.5.75.75 0 010 1.5zm0 5.25a.75.75 0 110-1.5.75.75 0 010 1.5z" />
-                      </svg>
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <TanStackTable
+            data={paginatedCompetitors}
+            selectedRows={selectedRows}
+            onRowSelectionChange={setSelectedRows}
+            onSortChange={(sorting) => {
+              if (sorting.column === 'name') {
+                setProductSort(sorting.direction);
+                setPriceSort('none');
+                setTrendSort('none');
+              } else if (sorting.column === 'competitorPrice') {
+                setPriceSort(sorting.direction);
+                setProductSort('none');
+                setTrendSort('none');
+              } else if (sorting.column === 'trend') {
+                setTrendSort(sorting.direction);
+                setProductSort('none');
+                setPriceSort('none');
+              }
+            }}
+            onRowClick={(row) => setFocusedRowIndex(paginatedCompetitors.findIndex(c => c.id === row.id))}
+            onRowKeyDown={(e, row, index) => handleKeyDown(e, row.id, index)}
+            focusedRowIndex={focusedRowIndex ?? -1}
+            maxProducts={maxProducts}
+            badgeClasses={badgeClasses}
+            ProductsCell={ProductsCell}
+            PricePositionCell={PricePositionCell}
+            computeTrend={computeTrend}
+            formatPercentDetailed={formatPercentDetailed}
+            formatPercentCompact={formatPercentCompact}
+          />
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border-secondary px-4 md:px-6 py-3">
