@@ -578,12 +578,12 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
           
           // Channel logos using logo.dev service
           const channelLogos = {
-            shopify: 'https://img.logo.dev/shopify.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-            woocommerce: 'https://img.logo.dev/woocommerce.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-            magento: 'https://img.logo.dev/magento.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-            bigcommerce: 'https://img.logo.dev/bigcommerce.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-            prestashop: 'https://img.logo.dev/prestashop.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-            opencart: 'https://img.logo.dev/opencart.com?format=jpg&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+            shopify: 'https://img.logo.dev/shopify.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+            woocommerce: 'https://img.logo.dev/woocommerce.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+            magento: 'https://img.logo.dev/magento.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+            bigcommerce: 'https://img.logo.dev/bigcommerce.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+            prestashop: 'https://img.logo.dev/prestashop.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
+            opencart: 'https://img.logo.dev/opencart.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
           };
 
           const channelName = channel.charAt(0).toUpperCase() + channel.slice(1);
