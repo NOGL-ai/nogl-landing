@@ -1392,6 +1392,7 @@ export default function CompetitorPage() {
             showCompetitorsColumn={true} // Enable Competitors column for catalog page
             showMaterialsColumn={true} // Enable Materials column for catalog page
             showBrandColumn={true} // Enable Brand column for catalog page
+            brandColumnHeader="Brand" // Change Brand column header to "Brand"
             showChannelColumn={true} // Enable Channel column for catalog page
             firstColumnHeader="Product Name" // Change first column header to "Product Name"
           />

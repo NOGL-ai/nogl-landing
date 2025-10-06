@@ -74,6 +74,7 @@ interface TanStackTableProps {
   showMaterialsColumn?: boolean;
   showCompetitorsColumn?: boolean;
   showBrandColumn?: boolean;
+  brandColumnHeader?: string;
   showChannelColumn?: boolean;
   firstColumnHeader?: string;
   enableDragDrop?: boolean;
@@ -102,6 +103,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
   showMaterialsColumn = false,
   showCompetitorsColumn = false,
   showBrandColumn = false,
+  brandColumnHeader = 'Country',
   showChannelColumn = false,
   firstColumnHeader = 'Competitor',
   enableDragDrop = false,
@@ -423,7 +425,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
       baseColumns.push({
         accessorKey: 'brand',
         id: 'brand',
-        header: 'Country',
+        header: brandColumnHeader,
         cell: ({ row }) => {
           const product = row.original as any;
           const brand = product.brand;
