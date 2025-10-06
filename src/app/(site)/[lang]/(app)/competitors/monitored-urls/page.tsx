@@ -114,7 +114,7 @@ const competitors = [
 
 const badgeClasses: Record<string, string> = {
   Active: 'border-[#ABEFC6] bg-[#ECFDF3] text-[#067647]',
-  Inactive: 'border-[#E9EAEB] bg-[#FAFAFA] text-[#414651]',
+  Inactive: 'border-[#E9EAEB] bg-[#FAFAFA] text-muted-foreground',
   'In Stock': 'border-[#ABEFC6] bg-[#ECFDF3] text-[#067647]',
   'Out of Stock': 'border-[#FECDCA] bg-[#FEF3F2] text-[#B42318]',
   'Customer data': 'border-[#B2DDFF] bg-[#EFF8FF] text-[#175CD3]',
@@ -127,7 +127,7 @@ const badgeClasses: Record<string, string> = {
 
 const iconButtonClasses = 'rounded-lg p-2.5 transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40';
 const compactIconButtonClasses = 'rounded p-1 transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40';
-const secondaryButtonClasses = 'flex items-center gap-1 rounded-lg border border-border-secondary bg-background px-3.5 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40';
+const secondaryButtonClasses = 'inline-flex items-center justify-center gap-1 rounded-lg border border-border-secondary bg-background px-3.5 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40 disabled:cursor-not-allowed disabled:opacity-60';
 
 // Price Position Component
 const PricePositionCell = ({ 
@@ -154,7 +154,7 @@ const PricePositionCell = ({
   };
 
   const getStatusColor = () => {
-    if (isEqual) return { bg: 'bg-[#F5F5F5] dark:bg-gray-700', text: 'text-[#717680] dark:text-gray-300', border: 'border-[#E9EAEB] dark:border-gray-600' };
+    if (isEqual) return { bg: 'bg-muted dark:bg-gray-700', text: 'text-muted-foreground dark:text-gray-300', border: 'border-[#E9EAEB] dark:border-gray-600' };
     if (isWinning) return { bg: 'bg-[#ECFDF3] dark:bg-green-900', text: 'text-[#067647] dark:text-green-300', border: 'border-[#ABEFC6] dark:border-green-700' };
     return { bg: 'bg-[#FEF3F2] dark:bg-red-900', text: 'text-[#B42318] dark:text-red-300', border: 'border-[#FECDCA] dark:border-red-700' };
   };
@@ -178,7 +178,7 @@ const PricePositionCell = ({
             </svg>
           </div>
           <div>
-            <div className="text-[10px] font-medium text-[#717680] dark:text-gray-400">Comp. Price</div>
+            <div className="text-[10px] font-medium text-muted-foreground dark:text-gray-400">Comp. Price</div>
             <div className="font-semibold text-primary" aria-label={`Competitor price: ${formatPrice(competitorPrice)}`}>
               {formatPrice(competitorPrice)}
             </div>
@@ -186,7 +186,7 @@ const PricePositionCell = ({
         </div>
         <div className="flex items-center gap-1.5">
           <div>
-            <div className="text-right text-[10px] font-medium text-[#717680] dark:text-gray-400">My Price</div>
+            <div className="text-right text-[10px] font-medium text-muted-foreground dark:text-gray-400">My Price</div>
             <div className="text-right font-semibold text-primary" aria-label={`Your price: ${formatPrice(myPrice)}`}>
               {formatPrice(myPrice)}
             </div>
@@ -200,7 +200,15 @@ const PricePositionCell = ({
       </div>
 
       {/* Visual Progress Bar with Position */}
-      <div className="relative" role="img" aria-label={`Price comparison bar showing ${isWinning ? 'you are winning' : isEqual ? 'prices are equal' : 'competitor is winning'}`}>
+      <div
+        className="relative"
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(progressPercentage)}
+        aria-valuetext={`${getStatusText()} (${formatPercentage(percentageDiff)})`}
+        aria-label="Price comparison progress"
+      >
         <div className="h-2 overflow-hidden rounded-full bg-[#E9EAEB] dark:bg-gray-600">
           <div 
             className={`h-full transition-all duration-300 ${isWinning ? 'bg-[#17B26A]' : isEqual ? 'bg-[#717680]' : 'bg-[#F04438]'}`}
@@ -255,25 +263,25 @@ const PricePositionCell = ({
           <div className="text-sm font-semibold text-primary">Price Analysis</div>
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1 rounded-lg bg-[#EEF4FF] p-3">
-              <div className="text-xs text-tertiary">Competitor</div>
+              <div className="text-xs text-muted-foreground">Competitor</div>
               <div className="text-lg font-bold text-[#3538CD]">{formatPrice(competitorPrice)}</div>
             </div>
             <div className="space-y-1 rounded-lg bg-[#F4EBFF] p-3">
-              <div className="text-xs text-tertiary">Your Price</div>
+              <div className="text-xs text-muted-foreground">Your Price</div>
               <div className="text-lg font-bold text-[#7F56D9]">{formatPrice(myPrice)}</div>
             </div>
           </div>
           <div className="space-y-2 rounded-lg border border-[#E9EAEB] bg-[#FAFAFA] p-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-tertiary">Difference:</span>
+              <span className="text-xs text-muted-foreground">Difference:</span>
               <span className={`text-sm font-semibold ${colors.text}`}>{formatDiff(priceDiff)}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-xs text-tertiary">Percentage:</span>
+              <span className="text-xs text-muted-foreground">Percentage:</span>
               <span className={`text-sm font-semibold ${colors.text}`}>{formatPercentage(percentageDiff)}</span>
             </div>
             <div className="flex items-center justify-between border-t border-border-secondary pt-2">
-              <span className="text-xs text-tertiary">Status:</span>
+              <span className="text-xs text-muted-foreground">Status:</span>
               <span className={`text-sm font-bold ${colors.text}`}>{getStatusText()}</span>
             </div>
           </div>
@@ -396,8 +404,8 @@ export default function CompetitorPage() {
                   </svg>
                 </div>
                 <div>
-                  <h2 className="text-lg font-semibold text-primary">Competitor breakdown</h2>
-                  <p className="mt-1 text-sm text-tertiary">Keep track of vendors and their security ratings.</p>
+                  <h2 className="text-lg font-semibold text-foreground">Competitor breakdown</h2>
+                  <p className="mt-1 text-sm text-muted-foreground">Keep track of vendors and their security ratings.</p>
                 </div>
               </div>
               <button className={compactIconButtonClasses} aria-label="More actions">
@@ -411,7 +419,7 @@ export default function CompetitorPage() {
           </div>
           <div className="p-6">
             <div className="relative flex h-[184px] items-end">
-              <div className="absolute bottom-6 left-0 top-0 w-10 text-right text-xs text-tertiary">
+              <div className="absolute bottom-6 left-0 top-0 w-10 text-right text-xs text-muted-foreground">
                 <div className="flex h-full flex-col justify-between">
                   {[100, 80, 60, 40, 20, 0].map(label => (
                     <div key={label}>{label}</div>
@@ -421,7 +429,7 @@ export default function CompetitorPage() {
               <div className="ml-12 h-[132px] flex-1">
                 <div className="absolute inset-0 ml-12 flex h-[132px] flex-col justify-between">
                   {[0, 1, 2, 3, 4, 5].map(i => (
-                    <div key={i} className="h-px bg-[#F5F5F5]" />
+                    <div key={i} className="h-px bg-muted" />
                   ))}
                 </div>
                 <div className="relative ml-12 flex h-[132px] items-end justify-between px-5">
@@ -440,23 +448,23 @@ export default function CompetitorPage() {
                     { h1: 76, h2: 52, h3: 28 },
                   ].map((bar, index) => (
                     <div key={index} className="relative w-8" style={{ height: bar.h1 }}>
-                      <div className="absolute inset-0 rounded-t-md bg-[#E9EAEB]" />
-                      <div className="absolute inset-x-0 bottom-0 rounded-t-md bg-[#9E77ED]" style={{ height: bar.h2 }} />
-                      <div className="absolute inset-x-0 bottom-0 rounded-t-md bg-[#6941C6]" style={{ height: bar.h3 }} />
+                      <div className="absolute inset-0 rounded-t-md bg-[#E9EAEB] dark:bg-border-secondary" />
+                      <div className="absolute inset-x-0 bottom-0 rounded-t-md bg-[#9E77ED] dark:bg-[#8B5CF6]" style={{ height: bar.h2 }} />
+                      <div className="absolute inset-x-0 bottom-0 rounded-t-md bg-[#6941C6] dark:bg-[#7C3AED]" style={{ height: bar.h3 }} />
                     </div>
                   ))}
                 </div>
               </div>
-              <div className="absolute bottom-0 left-12 right-0 flex justify-between px-6 text-xs text-tertiary">
+              <div className="absolute bottom-0 left-12 right-0 flex justify-between px-6 text-xs text-muted-foreground">
                 {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map(month => (
                   <div key={month}>{month}</div>
                 ))}
               </div>
             </div>
-            <div className="mt-2 text-center text-xs font-medium text-tertiary">Month</div>
+            <div className="mt-2 text-center text-xs font-medium text-muted-foreground">Month</div>
           </div>
           <div className="flex justify-end border-t border-border-secondary p-6">
-            <button className="rounded-lg border border-border-secondary bg-primary px-3.5 py-2.5 text-sm font-semibold text-primary shadow-sm transition-colors hover:bg-secondary">
+            <button className={secondaryButtonClasses}>
               View full report
             </button>
           </div>
@@ -466,8 +474,8 @@ export default function CompetitorPage() {
           <div className="border-b border-border-secondary p-6">
             <div className="flex items-start justify-between">
               <div>
-                <h2 className="text-lg font-semibold text-primary">Products monitored</h2>
-                <p className="mt-1 text-sm text-tertiary">You're monitoring 80% of your inventory.</p>
+                <h2 className="text-lg font-semibold text-foreground">Products monitored</h2>
+                <p className="mt-1 text-sm text-muted-foreground">You're monitoring 80% of your inventory.</p>
               </div>
               <button className={compactIconButtonClasses} aria-label="More actions">
                 <svg className="h-5 w-5 text-quaternary" fill="currentColor" viewBox="0 0 20 20">
@@ -507,8 +515,8 @@ export default function CompetitorPage() {
               </div>
             </div>
             <div>
-              <h3 className="text-base font-medium text-primary">You've almost reached your goal</h3>
-              <p className="mt-1 text-sm text-tertiary">You have used 80% of your goal.</p>
+              <h3 className="text-base font-medium text-foreground">You've almost reached your goal</h3>
+              <p className="mt-1 text-sm text-muted-foreground">You have used 80% of your goal.</p>
             </div>
           </div>
           <div className="flex justify-end border-t border-border-secondary p-6">
@@ -527,10 +535,10 @@ export default function CompetitorPage() {
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <h2 className="text-lg font-semibold text-primary">Products nogled</h2>
-                <span className="inline-flex items-center rounded-full border border-[#E9D7FE] bg-[#F9F5FF] px-2 py-0.5 text-xs font-medium text-[#6941C6]">240 products</span>
+                <h2 className="text-lg font-semibold text-foreground">Products nogled</h2>
+                <span className="inline-flex items-center rounded-full border border-border-secondary bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">240 products</span>
               </div>
-              <p className="mt-1 text-sm text-tertiary">Monitor competitor pricing and stay competitive with real-time price tracking.</p>
+              <p className="mt-1 text-sm text-muted-foreground">Monitor competitor pricing and stay competitive with real-time price tracking.</p>
             </div>
             <div className="flex items-center gap-3">
               <button className={secondaryButtonClasses}>
@@ -650,11 +658,11 @@ export default function CompetitorPage() {
                       type="checkbox"
                       checked={selectedRows.size === competitors.length}
                       onChange={toggleAll}
-                      className="h-5 w-5 rounded-md border-[#7F56D9] text-[#7F56D9] focus:ring-[#7F56D9]"
+                      className="h-5 w-5 rounded-md border-[#7F56D9] text-[#7F56D9] focus:ring-ring/40"
                       aria-label="Select all competitors"
                       aria-describedby="select-all-help"
                     />
-                    <span className="flex items-center gap-1 text-xs font-semibold text-[#717680] dark:text-gray-400">
+                    <span className="flex items-center gap-1 text-xs font-semibold text-muted-foreground">
                       Product
                       <svg className="h-3 w-3 text-quaternary" fill="none" stroke="currentColor" viewBox="0 0 12 12" aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 2.5v7m0 0l3.5-3.5M6 9.5L2.5 6" />
@@ -665,16 +673,16 @@ export default function CompetitorPage() {
                     Checkbox to select or deselect all competitors in the table
                   </div>
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680] dark:text-gray-400" role="columnheader" scope="col">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground" role="columnheader" scope="col">
                   Matched Product
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680] dark:text-gray-400" role="columnheader" scope="col">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground" role="columnheader" scope="col">
                   Price Position
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680] dark:text-gray-400" role="columnheader" scope="col">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground" role="columnheader" scope="col">
                   Trend
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680] dark:text-gray-400" role="columnheader" scope="col">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground" role="columnheader" scope="col">
                   Categories
                 </th>
                 <th className="px-4 py-3" role="columnheader" scope="col" aria-label="Actions">
@@ -686,7 +694,7 @@ export default function CompetitorPage() {
               {filteredCompetitors.map((competitor, index) => (
                 <tr 
                   key={competitor.id} 
-                  className={`transition-colors hover:bg-secondary ${
+                  className={`transition-colors hover:bg-muted ${
                     focusedRowIndex === index ? 'bg-blue-50 dark:bg-blue-900 ring-2 ring-blue-200 dark:ring-blue-800' : ''
                   }`}
                   role="row"
@@ -701,7 +709,7 @@ export default function CompetitorPage() {
                         type="checkbox"
                         checked={selectedRows.has(competitor.id)}
                         onChange={() => toggleRow(competitor.id)}
-                        className="h-5 w-5 rounded-md border-[#7F56D9] text-[#7F56D9] focus:ring-[#7F56D9] dark:border-gray-400 dark:text-gray-400 dark:bg-gray-700"
+                        className="h-5 w-5 rounded-md border-[#7F56D9] text-[#7F56D9] focus:ring-ring/40 dark:border-gray-400 dark:text-gray-400 dark:bg-gray-700"
                         aria-label={`Select ${competitor.name} competitor`}
                         aria-describedby={`competitor-${competitor.id}-info`}
                       />
@@ -711,8 +719,8 @@ export default function CompetitorPage() {
                           aria-hidden="true"
                         />
                         <div id={`competitor-${competitor.id}-info`}>
-                          <div className="text-sm font-medium text-primary">{competitor.name}</div>
-                          <div className="text-sm text-tertiary">{competitor.domain}</div>
+                          <div className="text-sm font-medium text-foreground">{competitor.name}</div>
+                          <div className="text-sm text-muted-foreground">{competitor.domain}</div>
                         </div>
                       </div>
                     </div>
@@ -724,8 +732,8 @@ export default function CompetitorPage() {
                         aria-hidden="true"
                       />
                       <div>
-                        <div className="text-sm font-medium text-primary">{competitor.name}</div>
-                        <div className="text-sm text-tertiary">{competitor.domain}</div>
+                        <div className="text-sm font-medium text-foreground">{competitor.name}</div>
+                        <div className="text-sm text-muted-foreground">{competitor.domain}</div>
                       </div>
                     </div>
                   </td>
@@ -759,7 +767,7 @@ export default function CompetitorPage() {
                         <span
                           key={category}
                           role="listitem"
-                          className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium ${badgeClasses[category] ?? 'border-[#E9EAEB] bg-[#FAFAFA] text-[#414651]'}`}
+                          className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium ${badgeClasses[category] ?? 'border-[#E9EAEB] bg-[#FAFAFA] text-muted-foreground'}`}
                           aria-label={`Category: ${category}`}
                         >
                           {category === 'Active' && <span className="h-2 w-2 rounded-full bg-[#17B26A]" aria-hidden="true" />}
@@ -771,7 +779,7 @@ export default function CompetitorPage() {
                       ))}
                         {competitor.categories.length > 2 && (
                           <span 
-                            className="inline-flex items-center rounded-full border border-[#E9EAEB] bg-[#FAFAFA] px-2 py-0.5 text-xs font-medium text-[#414651]"
+                            className="inline-flex items-center rounded-full border border-[#E9EAEB] bg-[#FAFAFA] px-2 py-0.5 text-xs font-medium text-muted-foreground"
                             role="listitem"
                             aria-label={`${competitor.categories.length - 2} additional categories`}
                           >
@@ -782,7 +790,7 @@ export default function CompetitorPage() {
                   </td>
                   <td className="px-4 py-4" role="gridcell">
                     <button 
-                      className="rounded-lg p-2 transition-colors hover:bg-[#F5F5F5] focus:outline-none focus:ring-2 focus:ring-[#7F56D9]" 
+                      className="rounded-lg p-2 transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40" 
                       aria-label={`More actions for ${competitor.name}`}
                       aria-haspopup="menu"
                     >
@@ -798,7 +806,7 @@ export default function CompetitorPage() {
         </div>
 
         <div className="flex items-center justify-between border-t border-border-secondary px-6 py-3">
-          <div className="text-sm font-medium text-[#414651] dark:text-gray-300">
+          <div className="text-sm font-medium text-muted-foreground dark:text-gray-300">
             Page 1 of 10
             <span className="sr-only">
               Showing {filteredCompetitors.length} of {competitors.length} competitors
@@ -806,15 +814,15 @@ export default function CompetitorPage() {
             </span>
           </div>
           <div className="flex items-center gap-3">
-            <button 
-              className="rounded-lg border border-border-secondary bg-primary px-3 py-2 text-sm font-semibold text-primary shadow-sm transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-[#7F56D9]"
+            <button
+              className={secondaryButtonClasses}
               aria-label="Go to previous page"
               disabled
             >
               Previous
             </button>
-            <button 
-              className="rounded-lg border border-border-secondary bg-primary px-3 py-2 text-sm font-semibold text-primary shadow-sm transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-[#7F56D9]"
+            <button
+              className={secondaryButtonClasses}
               aria-label="Go to next page"
             >
               Next
