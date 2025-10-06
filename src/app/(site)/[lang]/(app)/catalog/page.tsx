@@ -34,6 +34,8 @@ const jewelryProducts = [
       avg: 52.30,
       highest: 58.90,
       cheapestColor: 'green' as const,
+      prices: [45.90, 48.50, 52.30, 55.20, 58.90], // Multiple competitor prices
+      competitorNames: ['Pilgrim', 'Amoonic', 'Cluse', 'Eastside', 'Engelssinn'],
     },
     triggeredRule: 'price optimization active',
     variants: 3,
@@ -68,10 +70,12 @@ const jewelryProducts = [
       avg: 72.50,
       highest: 79.90,
       cheapestColor: 'green' as const,
+      prices: [65.90, 68.50, 72.50, 76.20, 79.90], // Multiple competitor prices
+      competitorNames: ['fejn', 'float', 'Golden Strawberry', 'Heideman', 'Hey Happiness'],
     },
     triggeredRule: 'price optimization active',
     variants: 1,
-    competitorCount: 3,
+    competitorCount: 5,
     margin: 28,
     stock: 8,
     trend: -1.2,
@@ -102,10 +106,12 @@ const jewelryProducts = [
       avg: 105.50,
       highest: 119.90,
       cheapestColor: 'green' as const,
+      prices: [89.90, 95.50, 105.50, 112.30, 119.90], // Multiple competitor prices
+      competitorNames: ['Jukserei', 'Luamaya', 'Nialaya', 'Nonu Berlin', 'Orelia'],
     },
     triggeredRule: 'price optimization active',
     variants: 2,
-    competitorCount: 4,
+    competitorCount: 5,
     margin: 42,
     stock: 12,
     trend: 3.8,
@@ -136,10 +142,12 @@ const jewelryProducts = [
       avg: 52.30,
       highest: 58.90,
       cheapestColor: 'green' as const,
+      prices: [45.90, 47.20, 52.30, 55.80, 58.90], // Multiple competitor prices
+      competitorNames: ['Bijou Brigitte', 'Christ', 'Pandora', 'Swarovski', 'Tous'],
     },
     triggeredRule: 'price optimization active',
     variants: 4,
-    competitorCount: 2,
+    competitorCount: 5,
     margin: 32,
     stock: 20,
     trend: 1.5,
@@ -170,10 +178,12 @@ const jewelryProducts = [
       avg: 72.50,
       highest: 79.90,
       cheapestColor: 'green' as const,
+      prices: [65.90, 68.30, 72.50, 75.80, 79.90], // Multiple competitor prices
+      competitorNames: ['Cartier', 'Tiffany & Co', 'Bulgari', 'Van Cleef', 'Harry Winston'],
     },
     triggeredRule: 'price optimization active',
     variants: 6,
-    competitorCount: 3,
+    competitorCount: 5,
     margin: 25,
     stock: 5,
     trend: -0.8,
@@ -959,7 +969,6 @@ export default function CompetitorPage() {
   const [focusedRowIndex, setFocusedRowIndex] = React.useState<number | null>(null);
   const [productSort, setProductSort] = React.useState<'none' | 'asc' | 'desc'>('none');
   const [priceSort, setPriceSort] = React.useState<'none' | 'asc' | 'desc'>('none');
-  const [trendSort, setTrendSort] = React.useState<'none' | 'asc' | 'desc'>('none');
   const [currentPage, setCurrentPage] = React.useState(1);
   const [itemsPerPage] = React.useState(10);
 
@@ -1043,7 +1052,7 @@ export default function CompetitorPage() {
 
   // Sort according to product, price or trend toggle
   const sortedProducts = React.useMemo(() => {
-    if (productSort === 'none' && priceSort === 'none' && trendSort === 'none') return filteredProducts;
+    if (productSort === 'none' && priceSort === 'none') return filteredProducts;
     const list = [...filteredProducts];
     list.sort((a, b) => {
       if (productSort !== 'none') {
@@ -1057,15 +1066,10 @@ export default function CompetitorPage() {
         const diff = relA - relB;
         return priceSort === 'asc' ? diff : -diff;
       }
-      if (trendSort !== 'none') {
-        // Use trend from product data
-        const diff = (a.trend || 0) - (b.trend || 0);
-        return trendSort === 'asc' ? diff : -diff;
-      }
       return 0;
     });
     return list;
-  }, [filteredProducts, productSort, priceSort, trendSort]);
+  }, [filteredProducts, productSort, priceSort]);
 
   // Pagination logic
   const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
@@ -1076,7 +1080,7 @@ export default function CompetitorPage() {
   // Reset to first page when search or filters change
   React.useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery, activeTab, productSort, priceSort, trendSort]);
+  }, [searchQuery, activeTab, productSort, priceSort]);
 
   const goToPage = (page: number) => {
     setCurrentPage(Math.max(1, Math.min(page, totalPages)));
@@ -1097,19 +1101,12 @@ export default function CompetitorPage() {
   const togglePriceSort = () => {
     setPriceSort(prev => (prev === 'none' ? 'asc' : prev === 'asc' ? 'desc' : 'none'));
     setProductSort('none');
-    setTrendSort('none'); // Reset trend sort when price sort is active
   };
 
-  const toggleTrendSort = () => {
-    setTrendSort(prev => (prev === 'none' ? 'asc' : prev === 'asc' ? 'desc' : 'none'));
-    setProductSort('none');
-    setPriceSort('none'); // Reset price sort when trend sort is active
-  };
 
   const toggleProductSort = () => {
     setProductSort(prev => (prev === 'none' ? 'asc' : prev === 'asc' ? 'desc' : 'none'));
     setPriceSort('none');
-    setTrendSort('none');
   };
 
   return (
@@ -1401,15 +1398,9 @@ export default function CompetitorPage() {
               if (sorting.column === 'products') {
                 setProductSort(sorting.direction);
                 setPriceSort('none');
-                setTrendSort('none');
               } else if (sorting.column === 'competitorPrice') {
                 setPriceSort(sorting.direction);
                 setProductSort('none');
-                setTrendSort('none');
-              } else if (sorting.column === 'trend') {
-                setTrendSort(sorting.direction);
-                setProductSort('none');
-                setPriceSort('none');
               }
             }}
             onRowClick={(row) => setFocusedRowIndex(paginatedProducts.findIndex(c => c.id === row.id))}

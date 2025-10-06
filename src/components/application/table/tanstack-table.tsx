@@ -229,7 +229,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
       baseColumns.push({
         accessorKey: 'products',
         id: 'products',
-        header: 'Products',
+        header: 'Competitor Products',
         cell: ({ row }) => (
           ProductsCell ? (
             <ProductsCell 
@@ -246,30 +246,43 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
       });
     }
 
-    // Add Competitor Count column
+
+    // Add Variants column
     baseColumns.push({
-      accessorKey: 'competitorCount',
-      id: 'competitorCount',
-      header: 'Competitors',
+      accessorKey: 'variants',
+      id: 'variants',
+      header: 'Variants',
       cell: ({ row }) => {
-        const count = (row.original as any).competitorCount || 0;
-        const getCompetitorCountColor = (count: number) => {
-          if (count === 0) return 'text-gray-500 bg-gray-100 dark:bg-gray-800';
-          if (count <= 2) return 'text-green-700 bg-green-100 dark:bg-green-900 dark:text-green-300';
-          if (count <= 4) return 'text-yellow-700 bg-yellow-100 dark:bg-yellow-900 dark:text-yellow-300';
-          return 'text-red-700 bg-red-100 dark:bg-red-900 dark:text-red-300';
+        const variants = (row.original as any).variants || 0;
+        const getVariantsColor = (variants: number) => {
+          if (variants === 0) return 'text-gray-500 bg-gray-100 dark:bg-gray-800';
+          if (variants === 1) return 'text-blue-700 bg-blue-100 dark:bg-blue-900 dark:text-blue-300';
+          if (variants <= 3) return 'text-green-700 bg-green-100 dark:bg-green-900 dark:text-green-300';
+          if (variants <= 5) return 'text-yellow-700 bg-yellow-100 dark:bg-yellow-900 dark:text-yellow-300';
+          return 'text-purple-700 bg-purple-100 dark:bg-purple-900 dark:text-purple-300';
         };
 
-        const getCompetitorCountText = (count: number) => {
-          if (count === 0) return 'No competitors';
-          if (count === 1) return '1 competitor';
-          return `${count} competitors`;
+        const getVariantsText = (variants: number) => {
+          if (variants === 0) return 'No variants';
+          if (variants === 1) return '1 variant';
+          return `${variants} variants`;
+        };
+
+        const getVariantsIcon = (variants: number) => {
+          if (variants === 0) return '⚪';
+          if (variants === 1) return '🔵';
+          if (variants <= 3) return '🟢';
+          if (variants <= 5) return '🟡';
+          return '🟣';
         };
 
         return (
           <div className="flex items-center gap-2">
-            <span className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${getCompetitorCountColor(count)}`}>
-              {getCompetitorCountText(count)}
+            <span className="text-sm" aria-hidden="true">
+              {getVariantsIcon(variants)}
+            </span>
+            <span className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${getVariantsColor(variants)}`}>
+              {getVariantsText(variants)}
             </span>
           </div>
         );
@@ -277,63 +290,100 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
       enableSorting: true,
     });
 
+
     // Add remaining columns
     baseColumns.push(
       {
         accessorKey: 'competitorPrice',
-        header: 'Competitor Price',
-        cell: ({ row }) => (
-          PricePositionCell ? (
+        header: 'Competitor Prices',
+        cell: ({ row }) => {
+          const product = row.original as any;
+          const competitors = product.competitors;
+          const myPrice = product.myPrice || product.price;
+          
+          // If we have multiple competitor prices, show horizontal bar infographic
+          if (competitors?.prices && competitors.prices.length > 1) {
+            const prices = [...competitors.prices, myPrice].sort((a, b) => a - b);
+            const cheapest = Math.min(...competitors.prices);
+            const highest = Math.max(...competitors.prices);
+            const avg = competitors.avg || competitors.prices.reduce((a: number, b: number) => a + b, 0) / competitors.prices.length;
+            const myPosition = prices.indexOf(myPrice) + 1;
+            const totalPositions = prices.length;
+            
+            // Calculate position percentage for bar
+            const positionPercent = ((myPosition - 1) / (totalPositions - 1)) * 100;
+            
+            // Count competitors cheaper and more expensive than you
+            const cheaperCount = competitors.prices.filter((price: number) => price < myPrice).length;
+            const moreExpensiveCount = competitors.prices.filter((price: number) => price > myPrice).length;
+            
+            return (
+              <div className="space-y-1 min-w-[220px]">
+                {/* Price Range Bar with Position Number */}
+                <div className="relative h-3.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-visible">
+                  {/* Gradient background from green to red */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 rounded-full" />
+                  
+                  {/* Your position indicator with number */}
+                  <div 
+                    className="absolute -top-0.5 w-5 h-5 flex items-center justify-center z-10"
+                    style={{ left: `calc(${positionPercent}% - 10px)` }}
+                  >
+                    <div className="bg-white dark:bg-gray-900 border-2 border-blue-500 shadow-md rounded-full w-5 h-5 flex items-center justify-center">
+                      <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400">
+                        {myPosition}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  {/* Price labels at ends */}
+                  <div className="absolute -top-4 left-0 text-[10px] font-semibold text-green-600">
+                    {cheapest.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}
+                  </div>
+                  <div className="absolute -top-4 right-0 text-[10px] font-semibold text-red-600">
+                    {highest.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}
+                  </div>
+                </div>
+                
+                {/* Compact info row */}
+                <div className="flex items-center justify-between text-[10px] pt-0.5">
+                  <div className="flex items-center gap-1">
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                    <span className="text-green-600 font-medium">{cheaperCount}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-muted-foreground">You:</span>
+                    <span className="font-semibold text-blue-600">
+                      {myPrice.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-muted-foreground">Avg:</span>
+                    <span className="font-medium text-gray-700 dark:text-gray-300">
+                      {avg.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <span className="text-red-600 font-medium">{moreExpensiveCount}</span>
+                    <div className="w-1.5 h-1.5 rounded-full bg-red-500"></div>
+                  </div>
+                </div>
+              </div>
+            );
+          }
+          
+          // Fallback to single price display
+          return PricePositionCell ? (
             <PricePositionCell 
-              competitorPrice={row.original.competitorPrice} 
-              myPrice={row.original.myPrice}
+              competitorPrice={product.competitorPrice} 
+              myPrice={product.myPrice}
             />
           ) : (
             <div className="text-sm text-foreground">
-              {row.original.competitorPrice.toLocaleString('de-DE', {
+              {product.competitorPrice.toLocaleString('de-DE', {
                 style: 'currency',
                 currency: 'EUR',
               })}
-            </div>
-          )
-        ),
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'trend',
-        header: 'Trend',
-        cell: ({ row }) => {
-          if (!computeTrend || !formatPercentDetailed || !formatPercentCompact) {
-            return <div className="text-sm text-foreground">N/A</div>;
-          }
-          
-          const { value, precise, up, neutral } = computeTrend(row.original.competitorPrice, row.original.myPrice);
-          const label = neutral
-            ? 'Prices equal'
-            : up
-            ? `You are ${formatPercentDetailed(-precise)} cheaper than competitor`
-            : `You are ${formatPercentDetailed(precise)} more expensive than competitor`;
-          
-          return (
-            <div 
-              className={`inline-flex items-center gap-0.5 rounded-full border px-2 py-0.5 ${
-                neutral
-                  ? 'border-border-secondary bg-muted'
-                  : up
-                  ? 'border-green-200 bg-green-50 dark:border-green-700 dark:bg-green-900'
-                  : 'border-red-200 bg-red-50 dark:border-red-700 dark:bg-red-900'
-              }`}
-              role="img"
-              aria-label={label}
-            >
-              {!neutral && (up ? (
-                <ArrowUp className="h-3 w-3 text-green-600 dark:text-green-400" aria-hidden="true" />
-              ) : (
-                <ArrowDown className="h-3 w-3 text-red-600 dark:text-red-400" aria-hidden="true" />
-              ))}
-              <span className={`text-xs font-medium ${neutral ? 'text-muted-foreground' : up ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'}`}>
-                {neutral ? '0%' : formatPercentCompact(precise)}
-              </span>
             </div>
           );
         },
