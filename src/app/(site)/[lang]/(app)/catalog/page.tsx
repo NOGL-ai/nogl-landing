@@ -13,6 +13,7 @@ import {
 import { computeTrend, formatPercentCompact, formatPercentDetailed } from '@/utils/priceTrend';
 import Checkbox from '@/components/ui/checkbox';
 import TanStackTable from '@/components/application/table/tanstack-table';
+import JewelryProductCell from '@/components/application/table/JewelryProductCell';
 
 // Jewelry products data (compatible with Competitor interface)
 const jewelryProducts = [
@@ -717,57 +718,6 @@ const ProductsCell = ({ competitor, maxProducts }: { competitor: any, maxProduct
   );
 };
 
-// Jewelry Product Cell Component with Competitor Count
-const JewelryProductCell = ({ product }: { product: any }) => {
-  const getCompetitorCountColor = (count: number) => {
-    if (count === 0) return 'text-gray-500 bg-gray-100 dark:bg-gray-800';
-    if (count <= 2) return 'text-green-700 bg-green-100 dark:bg-green-900 dark:text-green-300';
-    if (count <= 4) return 'text-yellow-700 bg-yellow-100 dark:bg-yellow-900 dark:text-yellow-300';
-    return 'text-red-700 bg-red-100 dark:bg-red-900 dark:text-red-300';
-  };
-
-  const getCompetitorCountText = (count: number) => {
-    if (count === 0) return 'No competitors';
-    if (count === 1) return '1 competitor';
-    return `${count} competitors`;
-  };
-
-  return (
-    <div className="flex items-center gap-3">
-      <div className="relative h-10 w-10 flex-shrink-0">
-        <div className="h-10 w-10 rounded-full border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 p-1">
-          <img
-            src={product.image}
-            alt={`${product.name} product image`}
-            className="h-8 w-8 rounded-full object-cover"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.style.display = 'none';
-              const fallback = target.nextElementSibling as HTMLElement;
-              if (fallback) fallback.style.display = 'flex';
-            }}
-          />
-          <div 
-            className="h-8 w-8 rounded-full bg-gray-200 dark:bg-gray-600 items-center justify-center text-xs font-semibold text-gray-600 dark:text-gray-300 hidden"
-            style={{ display: 'none' }}
-          >
-            {product.name.charAt(0).toUpperCase()}
-          </div>
-        </div>
-      </div>
-      <div className="min-w-0 flex-1">
-        <div className="text-sm font-medium text-foreground truncate">{product.name}</div>
-        <div className="text-sm text-muted-foreground truncate">{product.brand.name}</div>
-        <div className="flex items-center gap-2 mt-1">
-          <span className="text-xs text-muted-foreground">SKU: {product.sku}</span>
-          <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${getCompetitorCountColor(product.competitorCount)}`}>
-            {getCompetitorCountText(product.competitorCount)}
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 // Price Position Component
 const PricePositionCell = ({
@@ -1408,12 +1358,37 @@ export default function CompetitorPage() {
             focusedRowIndex={focusedRowIndex ?? -1}
             maxProducts={maxProducts}
             badgeClasses={badgeClasses}
-            ProductsCell={ProductsCell}
+            ProductsCell={({ competitor, maxProducts }) => (
+              <JewelryProductCell 
+                product={{
+                  id: competitor.id,
+                  name: competitor.name,
+                  image: competitor.avatar,
+                  sku: (competitor as any).sku || `SKU-${competitor.id}`,
+                  brand: {
+                    name: (competitor as any).brand?.name || 'Unknown Brand',
+                    logo: (competitor as any).brand?.logo
+                  },
+                  myPrice: (competitor as any).myPrice || competitor.competitorPrice,
+                  competitorCount: (competitor as any).competitorCount || 0,
+                  status: (competitor as any).status || 'Active',
+                  currency: (competitor as any).currency || 'EUR',
+                  categories: (competitor as any).categories || []
+                }}
+                showPrice={false}
+                showStatus={true}
+                showCompetitorCount={false}
+                showTooltip={true}
+                size="md"
+              />
+            )}
             PricePositionCell={PricePositionCell}
             computeTrend={computeTrend}
             formatPercentDetailed={formatPercentDetailed}
             formatPercentCompact={formatPercentCompact}
             showProductsColumn={true}
+            productsColumnHeader="Competitor Products"
+            showMaterialsColumn={true}
           />
         </div>
 

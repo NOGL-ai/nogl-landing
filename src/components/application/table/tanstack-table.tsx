@@ -70,6 +70,8 @@ interface TanStackTableProps {
   formatPercentCompact?: (value: number) => string;
   showCompetitorColumn?: boolean;
   showProductsColumn?: boolean;
+  productsColumnHeader?: string;
+  showMaterialsColumn?: boolean;
   enableDragDrop?: boolean;
   onDragEnd?: (event: DragEndEvent) => void;
 }
@@ -93,6 +95,8 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
   formatPercentCompact,
   showCompetitorColumn = false,
   showProductsColumn = true,
+  productsColumnHeader = 'Products',
+  showMaterialsColumn = false,
   enableDragDrop = false,
   onDragEnd,
 }) => {
@@ -229,7 +233,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
       baseColumns.push({
         accessorKey: 'products',
         id: 'products',
-        header: 'Competitor Products',
+        header: productsColumnHeader,
         cell: ({ row }) => (
           ProductsCell ? (
             <ProductsCell 
@@ -247,11 +251,12 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
     }
 
 
-    // Add Variants column with clean aesthetic design
-    baseColumns.push({
-      accessorKey: 'variants',
-      id: 'variants',
-      header: 'Materials',
+    // Add Materials column only if showMaterialsColumn is true
+    if (showMaterialsColumn) {
+      baseColumns.push({
+        accessorKey: 'variants',
+        id: 'variants',
+        header: 'Materials',
       cell: ({ row }) => {
         const product = row.original as any;
         const variants = product.variants || 0;
@@ -340,7 +345,8 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
         );
       },
       enableSorting: true,
-    });
+      });
+    }
 
 
     // Add remaining columns
