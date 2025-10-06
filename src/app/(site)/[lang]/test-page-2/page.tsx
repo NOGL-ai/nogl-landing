@@ -159,7 +159,7 @@ export default function TestPage2() {
               <div className="flex items-start justify-between">
                 <div className="flex items-start gap-3">
                   <div className="w-14 h-14 rounded-full bg-gray-200 flex items-center justify-center">
-                    <svg className="w-8 h-8 text-gray-600" viewBox="0 0 24 24" fill="currentColor">
+                    <svg className="w-8 h-8 text-gray-600" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
                       <path d="M12 2L2 7L12 12L22 7L12 2Z" />
                       <path d="M2 17L12 22L22 17" />
                       <path d="M2 12L12 17L22 12" />
@@ -171,7 +171,7 @@ export default function TestPage2() {
                   </div>
                 </div>
                 <button className="p-1 hover:bg-gray-50 rounded">
-                  <svg className="w-5 h-5 text-[#A4A7AE]" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-5 h-5 text-[#A4A7AE]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
                     <circle cx="10" cy="10" r="1.5" />
                     <circle cx="10" cy="4" r="1.5" />
                     <circle cx="10" cy="16" r="1.5" />
@@ -248,7 +248,7 @@ export default function TestPage2() {
                   <p className="text-sm text-[#535862] mt-0.5">You're monitoring 80% of your inventory.</p>
                 </div>
                 <button className="p-1 hover:bg-gray-50 rounded">
-                  <svg className="w-5 h-5 text-[#A4A7AE]" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-5 h-5 text-[#A4A7AE]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
                     <circle cx="10" cy="10" r="1.5" />
                     <circle cx="10" cy="4" r="1.5" />
                     <circle cx="10" cy="16" r="1.5" />
@@ -260,7 +260,7 @@ export default function TestPage2() {
               <div className="flex items-start justify-between mb-8">
                 {/* Half Circle Progress Gauge */}
                 <div className="relative w-[200px] h-[110px]">
-                  <svg className="w-full h-auto" viewBox="0 0 200 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg className="w-full h-auto" viewBox="0 0 200 110" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
                     {/* Background arc */}
                     <path
                       d="M190 100C190 88.181 187.672 76.4778 183.149 65.5585C178.626 54.6392 171.997 44.7177 163.64 36.3604C155.282 28.0031 145.361 21.3738 134.442 16.8508C123.522 12.3279 111.819 10 100 10C88.181 9.99999 76.4779 12.3279 65.5585 16.8508C54.6392 21.3737 44.7177 28.0031 36.3604 36.3604C28.0031 44.7176 21.3738 54.6391 16.8509 65.5584C12.3279 76.4777 10 88.181 10 100"
@@ -284,7 +284,7 @@ export default function TestPage2() {
                 </div>
                 {/* Badge with trend icon */}
                 <div className="flex items-center gap-1">
-                  <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
                     <path d="M14.6673 4.66663L9.42156 9.91238C9.15755 10.1764 9.02555 10.3084 8.87333 10.3579C8.73943 10.4014 8.5952 10.4014 8.46131 10.3579C8.30909 10.3084 8.17708 10.1764 7.91307 9.91238L6.08823 8.08754C5.82422 7.82353 5.69221 7.69152 5.54 7.64206C5.4061 7.59856 5.26187 7.59856 5.12797 7.64206C4.97575 7.69152 4.84375 7.82353 4.57974 8.08754L1.33398 11.3333M14.6673 4.66663H10.0007M14.6673 4.66663V9.33329" stroke="#17B26A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                   <span className="text-sm font-medium text-[#067647]">10%</span>
@@ -297,7 +297,7 @@ export default function TestPage2() {
             </div>
             <div className="border-t border-[#E9EAEB] p-6 flex justify-end">
               <button className="flex items-center gap-1 px-3.5 py-2.5 rounded-lg border border-[#D5D7DA] bg-white shadow-sm hover:bg-gray-50 transition-colors">
-                <svg className="w-5 h-5 text-[#A4A7AE]" fill="none" stroke="currentColor" viewBox="0 0 20 20">
+                <svg className="w-5 h-5 text-[#A4A7AE]" fill="none" stroke="currentColor" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.67} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
                 <span className="text-sm font-semibold text-[#414651]">Upgrade plan</span>
@@ -375,7 +375,7 @@ export default function TestPage2() {
                   </div>
                 </div>
                 <button className="flex items-center gap-1 px-3.5 py-2.5 rounded-lg border border-[#D5D7DA] bg-white shadow-sm hover:bg-gray-50 transition-colors">
-                  <svg className="w-5 h-5 text-[#A4A7AE]" fill="none" stroke="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-5 h-5 text-[#A4A7AE]" fill="none" stroke="currentColor" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.67} d="M3 4h14M6 8h8M9 12h2" />
                   </svg>
                   <span className="text-sm font-semibold text-[#414651]">Filters</span>
@@ -399,7 +399,7 @@ export default function TestPage2() {
                       />
                       <span className="text-xs font-semibold text-[#717680] flex items-center gap-1">
                         Competitor
-                        <svg className="w-3 h-3 text-[#A4A7AE]" fill="none" stroke="currentColor" viewBox="0 0 12 12">
+                        <svg className="w-3 h-3 text-[#A4A7AE]" fill="none" stroke="currentColor" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 2.5v7m0 0l3.5-3.5M6 9.5L2.5 6" />
                         </svg>
                       </span>

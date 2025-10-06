@@ -213,7 +213,7 @@ const PricePositionCell = ({
       <div className="flex items-center justify-between gap-2 text-xs">
         <div className="flex items-center gap-1.5">
           <div className="flex h-6 w-6 items-center justify-center rounded bg-[#EEF4FF] dark:bg-blue-900" aria-hidden="true">
-            <svg className="h-3.5 w-3.5 text-[#3538CD]" fill="none" stroke="currentColor" viewBox="0 0 16 16">
+            <svg className="h-3.5 w-3.5 text-[#3538CD]" fill="none" stroke="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2 6L8 2L14 6M3 13.5V7M13 13.5V7M2 13.5H14M5.5 13.5V10H10.5V13.5" />
             </svg>
           </div>
@@ -233,7 +233,7 @@ const PricePositionCell = ({
             </div>
           </div>
           <div className="flex h-6 w-6 items-center justify-center rounded bg-[#F4EBFF] dark:bg-purple-900" aria-hidden="true">
-            <svg className="h-3.5 w-3.5 text-[#7F56D9]" fill="none" stroke="currentColor" viewBox="0 0 16 16">
+            <svg className="h-3.5 w-3.5 text-[#7F56D9]" fill="none" stroke="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 14A6 6 0 108 2a6 6 0 000 12zM8 5.33V8m0 2.67h.007" />
             </svg>
           </div>
@@ -470,7 +470,7 @@ export default function CompetitorPage() {
             <div className="flex items-start justify-between">
               <div className="flex items-start gap-3">
                 <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gray-200">
-                  <svg className="h-8 w-8 text-gray-600" viewBox="0 0 24 24" fill="currentColor">
+                  <svg className="h-8 w-8 text-gray-600" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
                     <path d="M12 2L2 7L12 12L22 7L12 2Z" />
                     <path d="M2 17L12 22L22 17" />
                     <path d="M2 12L12 17L22 12" />
@@ -482,7 +482,7 @@ export default function CompetitorPage() {
                 </div>
               </div>
               <button className={compactIconButtonClasses} aria-label="More actions">
-                <svg className="h-5 w-5 text-quaternary" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="h-5 w-5 text-quaternary" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
                   <circle cx="10" cy="10" r="1.5" />
                   <circle cx="10" cy="4" r="1.5" />
                   <circle cx="10" cy="16" r="1.5" />
@@ -551,7 +551,7 @@ export default function CompetitorPage() {
                 <p className="mt-1 text-sm text-muted-foreground">You're monitoring 80% of your inventory.</p>
               </div>
               <button className={compactIconButtonClasses} aria-label="More actions">
-                <svg className="h-5 w-5 text-quaternary" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="h-5 w-5 text-quaternary" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
                   <circle cx="10" cy="10" r="1.5" />
                   <circle cx="10" cy="4" r="1.5" />
                   <circle cx="10" cy="16" r="1.5" />
@@ -562,7 +562,7 @@ export default function CompetitorPage() {
           <div className="space-y-8 p-6">
             <div className="flex items-start justify-between">
               <div className="relative w-[200px]">
-                <svg className="h-auto w-full" viewBox="0 0 200 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg className="h-auto w-full" viewBox="0 0 200 110" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
                   <path
                     d="M190 100C190 88.181 187.672 76.4778 183.149 65.5585C178.626 54.6392 171.997 44.7177 163.64 36.3604C155.282 28.0031 145.361 21.3738 134.442 16.8508C123.522 12.3279 111.819 10 100 10C88.181 9.99999 76.4779 12.3279 65.5585 16.8508C54.6392 21.3737 44.7177 28.0031 36.3604 36.3604C28.0031 44.7176 21.3738 54.6391 16.8509 65.5584C12.3279 76.4777 10 88.181 10 100"
                     stroke="#E9EAEB"
@@ -581,7 +581,7 @@ export default function CompetitorPage() {
                 <div className="absolute left-1/2 top-[60px] -translate-x-1/2 text-[30px] font-semibold text-primary">240</div>
               </div>
               <div className="flex items-center gap-1">
-                <svg className="h-4 w-4" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg className="h-4 w-4" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
                   <path d="M14.6673 4.66663L9.42156 9.91238C9.15755 10.1764 9.02555 10.3084 8.87333 10.3579C8.73943 10.4014 8.5952 10.4014 8.46131 10.3579C8.30909 10.3084 8.17708 10.1764 7.91307 9.91238L6.08823 8.08754C5.82422 7.82353 5.69221 7.69152 5.54 7.64206C5.4061 7.59856 5.26187 7.59856 5.12797 7.64206C4.97575 7.69152 4.84375 7.82353 4.57974 8.08754L1.33398 11.3333M14.6673 4.66663H10.0007M14.6673 4.66663V9.33329" stroke="#17B26A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 <span className="text-sm font-medium text-[#067647]">10%</span>
@@ -594,7 +594,7 @@ export default function CompetitorPage() {
           </div>
           <div className="flex justify-end border-t border-border-secondary p-6">
             <button className={secondaryButtonClasses}>
-              <svg className="h-5 w-5 text-quaternary" fill="none" stroke="currentColor" viewBox="0 0 20 20">
+              <svg className="h-5 w-5 text-quaternary" fill="none" stroke="currentColor" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.67} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
               Upgrade plan
@@ -693,7 +693,7 @@ export default function CompetitorPage() {
               </span>
             </div>
             <button className={secondaryButtonClasses}>
-              <svg className="h-5 w-5 text-quaternary" fill="none" stroke="currentColor" viewBox="0 0 20 20">
+              <svg className="h-5 w-5 text-quaternary" fill="none" stroke="currentColor" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.67} d="M3 4h14M6 8h8M9 12h2" />
               </svg>
               Filters

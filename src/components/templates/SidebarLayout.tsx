@@ -213,6 +213,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 									strokeWidth='1.5'
 									stroke='currentColor'
 									aria-hidden='true'
+									focusable='false'
 								>
 									<path
 										strokeLinecap='round'
@@ -267,6 +268,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 								strokeWidth="1.5"
 								stroke="currentColor"
 								aria-hidden="true"
+								focusable="false"
 							>
 								<path
 									strokeLinecap="round"

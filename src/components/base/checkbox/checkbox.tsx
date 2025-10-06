@@ -27,6 +27,7 @@ export const CheckboxBase = ({ className, isSelected, isDisabled, isIndeterminat
         >
             <svg
                 aria-hidden="true"
+                focusable="false"
                 viewBox="0 0 14 14"
                 fill="none"
                 className={cx(
@@ -41,6 +42,7 @@ export const CheckboxBase = ({ className, isSelected, isDisabled, isIndeterminat
 
             <svg
                 aria-hidden="true"
+                focusable="false"
                 viewBox="0 0 14 14"
                 fill="none"
                 className={cx(
