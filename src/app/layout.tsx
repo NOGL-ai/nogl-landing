@@ -17,7 +17,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<html
 			lang='en'
-			className={`${inter.variable} scroll-smooth`}
+			className={`${inter.variable} scroll-smooth dark`}
 			suppressHydrationWarning={true}
 		>
 			<head>

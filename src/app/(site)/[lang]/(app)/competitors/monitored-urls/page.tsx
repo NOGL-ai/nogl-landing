@@ -150,9 +150,9 @@ const PricePositionCell = ({
   };
 
   const getStatusColor = () => {
-    if (isEqual) return { bg: 'bg-[#F5F5F5]', text: 'text-[#717680]', border: 'border-[#E9EAEB]' };
-    if (isWinning) return { bg: 'bg-[#ECFDF3]', text: 'text-[#067647]', border: 'border-[#ABEFC6]' };
-    return { bg: 'bg-[#FEF3F2]', text: 'text-[#B42318]', border: 'border-[#FECDCA]' };
+    if (isEqual) return { bg: 'bg-[#F5F5F5] dark:bg-gray-700', text: 'text-[#717680] dark:text-gray-300', border: 'border-[#E9EAEB] dark:border-gray-600' };
+    if (isWinning) return { bg: 'bg-[#ECFDF3] dark:bg-green-900', text: 'text-[#067647] dark:text-green-300', border: 'border-[#ABEFC6] dark:border-green-700' };
+    return { bg: 'bg-[#FEF3F2] dark:bg-red-900', text: 'text-[#B42318] dark:text-red-300', border: 'border-[#FECDCA] dark:border-red-700' };
   };
 
   const getStatusText = () => {
@@ -168,26 +168,26 @@ const PricePositionCell = ({
       {/* Compact View - Always Visible */}
       <div className="flex items-center justify-between gap-2 text-xs">
         <div className="flex items-center gap-1.5">
-          <div className="flex h-6 w-6 items-center justify-center rounded bg-[#EEF4FF]" aria-hidden="true">
+          <div className="flex h-6 w-6 items-center justify-center rounded bg-[#EEF4FF] dark:bg-blue-900" aria-hidden="true">
             <svg className="h-3.5 w-3.5 text-[#3538CD]" fill="none" stroke="currentColor" viewBox="0 0 16 16">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2 6L8 2L14 6M3 13.5V7M13 13.5V7M2 13.5H14M5.5 13.5V10H10.5V13.5" />
             </svg>
           </div>
           <div>
-            <div className="text-[10px] font-medium text-[#717680]">Comp. Price</div>
-            <div className="font-semibold text-[#181D27]" aria-label={`Competitor price: ${formatPrice(competitorPrice)}`}>
+            <div className="text-[10px] font-medium text-[#717680] dark:text-gray-400">Comp. Price</div>
+            <div className="font-semibold text-primary" aria-label={`Competitor price: ${formatPrice(competitorPrice)}`}>
               {formatPrice(competitorPrice)}
             </div>
           </div>
         </div>
         <div className="flex items-center gap-1.5">
           <div>
-            <div className="text-right text-[10px] font-medium text-[#717680]">My Price</div>
-            <div className="text-right font-semibold text-[#181D27]" aria-label={`Your price: ${formatPrice(myPrice)}`}>
+            <div className="text-right text-[10px] font-medium text-[#717680] dark:text-gray-400">My Price</div>
+            <div className="text-right font-semibold text-primary" aria-label={`Your price: ${formatPrice(myPrice)}`}>
               {formatPrice(myPrice)}
             </div>
           </div>
-          <div className="flex h-6 w-6 items-center justify-center rounded bg-[#F4EBFF]" aria-hidden="true">
+          <div className="flex h-6 w-6 items-center justify-center rounded bg-[#F4EBFF] dark:bg-purple-900" aria-hidden="true">
             <svg className="h-3.5 w-3.5 text-[#7F56D9]" fill="none" stroke="currentColor" viewBox="0 0 16 16">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 14A6 6 0 108 2a6 6 0 000 12zM8 5.33V8m0 2.67h.007" />
             </svg>
@@ -197,7 +197,7 @@ const PricePositionCell = ({
 
       {/* Visual Progress Bar with Position */}
       <div className="relative" role="img" aria-label={`Price comparison bar showing ${isWinning ? 'you are winning' : isEqual ? 'prices are equal' : 'competitor is winning'}`}>
-        <div className="h-2 overflow-hidden rounded-full bg-[#E9EAEB]">
+        <div className="h-2 overflow-hidden rounded-full bg-[#E9EAEB] dark:bg-gray-600">
           <div 
             className={`h-full transition-all duration-300 ${isWinning ? 'bg-[#17B26A]' : isEqual ? 'bg-[#717680]' : 'bg-[#F04438]'}`}
             style={{ width: `${progressPercentage}%` }}
@@ -248,28 +248,28 @@ const PricePositionCell = ({
         aria-hidden="true"
       >
         <div className="space-y-3">
-          <div className="text-sm font-semibold text-[#181D27]">Price Analysis</div>
+          <div className="text-sm font-semibold text-primary">Price Analysis</div>
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1 rounded-lg bg-[#EEF4FF] p-3">
-              <div className="text-xs text-[#535862]">Competitor</div>
+              <div className="text-xs text-tertiary">Competitor</div>
               <div className="text-lg font-bold text-[#3538CD]">{formatPrice(competitorPrice)}</div>
             </div>
             <div className="space-y-1 rounded-lg bg-[#F4EBFF] p-3">
-              <div className="text-xs text-[#535862]">Your Price</div>
+              <div className="text-xs text-tertiary">Your Price</div>
               <div className="text-lg font-bold text-[#7F56D9]">{formatPrice(myPrice)}</div>
             </div>
           </div>
           <div className="space-y-2 rounded-lg border border-[#E9EAEB] bg-[#FAFAFA] p-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-[#535862]">Difference:</span>
+              <span className="text-xs text-tertiary">Difference:</span>
               <span className={`text-sm font-semibold ${colors.text}`}>{formatDiff(priceDiff)}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-xs text-[#535862]">Percentage:</span>
+              <span className="text-xs text-tertiary">Percentage:</span>
               <span className={`text-sm font-semibold ${colors.text}`}>{formatPercentage(percentageDiff)}</span>
             </div>
             <div className="flex items-center justify-between border-t border-[#E9EAEB] pt-2">
-              <span className="text-xs text-[#535862]">Status:</span>
+              <span className="text-xs text-tertiary">Status:</span>
               <span className={`text-sm font-bold ${colors.text}`}>{getStatusText()}</span>
             </div>
           </div>
@@ -349,7 +349,7 @@ export default function CompetitorPage() {
   );
 
   return (
-    <div className="mx-auto w-full max-w-7xl space-y-6 px-4 py-6 sm:px-6 lg:py-10 lg:px-8">
+        <div className="mx-auto w-full max-w-7xl space-y-6 px-4 py-6 sm:px-6 lg:py-10 lg:px-8 bg-primary min-h-screen">
       {/* Screen reader announcements */}
       <div 
         id="search-results-announcement" 
@@ -362,26 +362,26 @@ export default function CompetitorPage() {
       
       <header className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-[280px] flex-1">
-          <h1 className="text-2xl font-semibold text-[#181D27]">Welcome back, Tim</h1>
+          <h1 className="text-2xl font-semibold text-primary">Welcome back, Tim</h1>
         </div>
         <div className="flex items-center gap-3">
-          <button className="rounded-lg p-2.5 transition-colors hover:bg-gray-50" aria-label="Search">
-            <Search className="h-5 w-5 text-[#A4A7AE]" />
+          <button className="rounded-lg p-2.5 transition-colors hover:bg-secondary" aria-label="Search">
+            <Search className="h-5 w-5 text-quaternary" />
           </button>
-          <button className="flex items-center gap-1 rounded-lg border border-[#D5D7DA] bg-white px-3.5 py-2.5 text-sm font-semibold text-[#414651] shadow-sm transition-colors hover:bg-gray-50">
-            <Settings className="h-5 w-5 text-[#A4A7AE]" />
+          <button className="flex items-center gap-1 rounded-lg border border-border-secondary bg-primary px-3.5 py-2.5 text-sm font-semibold text-primary shadow-sm transition-colors hover:bg-secondary">
+            <Settings className="h-5 w-5 text-quaternary" />
             Customize
           </button>
-          <button className="flex items-center gap-1 rounded-lg border border-[#D5D7DA] bg-white px-3.5 py-2.5 text-sm font-semibold text-[#414651] shadow-sm transition-colors hover:bg-gray-50">
-            <Download className="h-5 w-5 text-[#A4A7AE]" />
+          <button className="flex items-center gap-1 rounded-lg border border-border-secondary bg-primary px-3.5 py-2.5 text-sm font-semibold text-primary shadow-sm transition-colors hover:bg-secondary">
+            <Download className="h-5 w-5 text-quaternary" />
             Export
           </button>
         </div>
       </header>
 
       <section className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <article className="lg:col-span-2 rounded-xl border border-[#E9EAEB] bg-white shadow-sm">
-          <div className="border-b border-[#E9EAEB] p-6">
+        <article className="lg:col-span-2 rounded-xl border border-border-secondary bg-primary shadow-sm">
+          <div className="border-b border-border-secondary p-6">
             <div className="flex items-start justify-between">
               <div className="flex items-start gap-3">
                 <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gray-200">
@@ -392,12 +392,12 @@ export default function CompetitorPage() {
                   </svg>
                 </div>
                 <div>
-                  <h2 className="text-lg font-semibold text-[#181D27]">Competitor breakdown</h2>
-                  <p className="mt-1 text-sm text-[#535862]">Keep track of vendors and their security ratings.</p>
+                  <h2 className="text-lg font-semibold text-primary">Competitor breakdown</h2>
+                  <p className="mt-1 text-sm text-tertiary">Keep track of vendors and their security ratings.</p>
                 </div>
               </div>
-              <button className="rounded p-1 transition-colors hover:bg-gray-50" aria-label="More actions">
-                <svg className="h-5 w-5 text-[#A4A7AE]" fill="currentColor" viewBox="0 0 20 20">
+              <button className="rounded p-1 transition-colors hover:bg-secondary" aria-label="More actions">
+                <svg className="h-5 w-5 text-quaternary" fill="currentColor" viewBox="0 0 20 20">
                   <circle cx="10" cy="10" r="1.5" />
                   <circle cx="10" cy="4" r="1.5" />
                   <circle cx="10" cy="16" r="1.5" />
@@ -407,7 +407,7 @@ export default function CompetitorPage() {
           </div>
           <div className="p-6">
             <div className="relative flex h-[184px] items-end">
-              <div className="absolute bottom-6 left-0 top-0 w-10 text-right text-xs text-[#535862]">
+              <div className="absolute bottom-6 left-0 top-0 w-10 text-right text-xs text-tertiary">
                 <div className="flex h-full flex-col justify-between">
                   {[100, 80, 60, 40, 20, 0].map(label => (
                     <div key={label}>{label}</div>
@@ -443,30 +443,30 @@ export default function CompetitorPage() {
                   ))}
                 </div>
               </div>
-              <div className="absolute bottom-0 left-12 right-0 flex justify-between px-6 text-xs text-[#535862]">
+              <div className="absolute bottom-0 left-12 right-0 flex justify-between px-6 text-xs text-tertiary">
                 {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map(month => (
                   <div key={month}>{month}</div>
                 ))}
               </div>
             </div>
-            <div className="mt-2 text-center text-xs font-medium text-[#535862]">Month</div>
+            <div className="mt-2 text-center text-xs font-medium text-tertiary">Month</div>
           </div>
           <div className="flex justify-end border-t border-[#E9EAEB] p-6">
-            <button className="rounded-lg border border-[#D5D7DA] bg-white px-3.5 py-2.5 text-sm font-semibold text-[#414651] shadow-sm transition-colors hover:bg-gray-50">
+            <button className="rounded-lg border border-border-secondary bg-primary px-3.5 py-2.5 text-sm font-semibold text-primary shadow-sm transition-colors hover:bg-secondary">
               View full report
             </button>
           </div>
         </article>
 
-        <article className="rounded-xl border border-[#E9EAEB] bg-white shadow-sm">
+        <article className="rounded-xl border border-border-secondary bg-primary shadow-sm">
           <div className="border-b border-[#E9EAEB] p-6">
             <div className="flex items-start justify-between">
               <div>
-                <h2 className="text-lg font-semibold text-[#181D27]">Products monitored</h2>
-                <p className="mt-1 text-sm text-[#535862]">You're monitoring 80% of your inventory.</p>
+                <h2 className="text-lg font-semibold text-primary">Products monitored</h2>
+                <p className="mt-1 text-sm text-tertiary">You're monitoring 80% of your inventory.</p>
               </div>
-              <button className="rounded p-1 transition-colors hover:bg-gray-50" aria-label="More actions">
-                <svg className="h-5 w-5 text-[#A4A7AE]" fill="currentColor" viewBox="0 0 20 20">
+              <button className="rounded p-1 transition-colors hover:bg-secondary" aria-label="More actions">
+                <svg className="h-5 w-5 text-quaternary" fill="currentColor" viewBox="0 0 20 20">
                   <circle cx="10" cy="10" r="1.5" />
                   <circle cx="10" cy="4" r="1.5" />
                   <circle cx="10" cy="16" r="1.5" />
@@ -493,7 +493,7 @@ export default function CompetitorPage() {
                     strokeLinejoin="round"
                   />
                 </svg>
-                <div className="absolute left-1/2 top-[60px] -translate-x-1/2 text-[30px] font-semibold text-[#181D27]">240</div>
+                <div className="absolute left-1/2 top-[60px] -translate-x-1/2 text-[30px] font-semibold text-primary">240</div>
               </div>
               <div className="flex items-center gap-1">
                 <svg className="h-4 w-4" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -503,13 +503,13 @@ export default function CompetitorPage() {
               </div>
             </div>
             <div>
-              <h3 className="text-base font-medium text-[#181D27]">You've almost reached your goal</h3>
-              <p className="mt-1 text-sm text-[#535862]">You have used 80% of your goal.</p>
+              <h3 className="text-base font-medium text-primary">You've almost reached your goal</h3>
+              <p className="mt-1 text-sm text-tertiary">You have used 80% of your goal.</p>
             </div>
           </div>
           <div className="flex justify-end border-t border-[#E9EAEB] p-6">
-            <button className="flex items-center gap-1 rounded-lg border border-[#D5D7DA] bg-white px-3.5 py-2.5 text-sm font-semibold text-[#414651] shadow-sm transition-colors hover:bg-gray-50">
-              <svg className="h-5 w-5 text-[#A4A7AE]" fill="none" stroke="currentColor" viewBox="0 0 20 20">
+            <button className="flex items-center gap-1 rounded-lg border border-border-secondary bg-primary px-3.5 py-2.5 text-sm font-semibold text-primary shadow-sm transition-colors hover:bg-secondary">
+              <svg className="h-5 w-5 text-quaternary" fill="none" stroke="currentColor" viewBox="0 0 20 20">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.67} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
               Upgrade plan
@@ -518,19 +518,19 @@ export default function CompetitorPage() {
         </article>
       </section>
 
-      <section className="rounded-xl border border-[#E9EAEB] bg-white shadow-sm">
+      <section className="rounded-xl border border-border-secondary bg-primary shadow-sm">
         <div className="border-b border-[#E9EAEB] p-6">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <h2 className="text-lg font-semibold text-[#181D27]">Products nogled</h2>
+                <h2 className="text-lg font-semibold text-primary">Products nogled</h2>
                 <span className="inline-flex items-center rounded-full border border-[#E9D7FE] bg-[#F9F5FF] px-2 py-0.5 text-xs font-medium text-[#6941C6]">240 products</span>
               </div>
-              <p className="mt-1 text-sm text-[#535862]">Monitor competitor pricing and stay competitive with real-time price tracking.</p>
+              <p className="mt-1 text-sm text-tertiary">Monitor competitor pricing and stay competitive with real-time price tracking.</p>
             </div>
             <div className="flex items-center gap-3">
-              <button className="flex items-center gap-1 rounded-lg border border-[#D5D7DA] bg-white px-3.5 py-2.5 text-sm font-semibold text-[#414651] shadow-sm transition-colors hover:bg-gray-50">
-                <Upload className="h-5 w-5 text-[#A4A7AE]" />
+              <button className="flex items-center gap-1 rounded-lg border border-border-secondary bg-primary px-3.5 py-2.5 text-sm font-semibold text-primary shadow-sm transition-colors hover:bg-secondary">
+                <Upload className="h-5 w-5 text-quaternary" />
                 Import
               </button>
               <button className="flex items-center gap-1 rounded-lg border-2 border-[#FFFFFF1F] bg-[#7F56D9] px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#6941C6]">
@@ -547,7 +547,7 @@ export default function CompetitorPage() {
               type="button"
               onClick={() => setActiveTab('all')}
               className={`px-4 py-2 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-[#7F56D9] ${
-                activeTab === 'all' ? 'border-r border-[#D5D7DA] bg-[#FAFAFA] text-[#252B37]' : 'border-r border-[#D5D7DA] bg-white text-[#414651] hover:bg-gray-50'
+                activeTab === 'all' ? 'border-r border-border-secondary bg-[#FAFAFA] dark:bg-gray-700 text-[#252B37] dark:text-white' : 'border-r border-border-secondary bg-primary text-primary hover:bg-secondary'
               }`}
               role="tab"
               aria-selected={activeTab === 'all'}
@@ -560,7 +560,7 @@ export default function CompetitorPage() {
               type="button"
               onClick={() => setActiveTab('monitored')}
               className={`px-4 py-2 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-[#7F56D9] ${
-                activeTab === 'monitored' ? 'border-r border-[#D5D7DA] bg-[#FAFAFA] text-[#252B37]' : 'border-r border-[#D5D7DA] bg-white text-[#414651] hover:bg-gray-50'
+                activeTab === 'monitored' ? 'border-r border-border-secondary bg-[#FAFAFA] dark:bg-gray-700 text-[#252B37] dark:text-white' : 'border-r border-border-secondary bg-primary text-primary hover:bg-secondary'
               }`}
               role="tab"
               aria-selected={activeTab === 'monitored'}
@@ -573,7 +573,7 @@ export default function CompetitorPage() {
               type="button"
               onClick={() => setActiveTab('unmonitored')}
               className={`px-4 py-2 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-[#7F56D9] ${
-                activeTab === 'unmonitored' ? 'bg-[#FAFAFA] text-[#252B37]' : 'bg-white text-[#414651] hover:bg-gray-50'
+                activeTab === 'unmonitored' ? 'bg-[#FAFAFA] dark:bg-gray-700 text-[#252B37] dark:text-white' : 'bg-primary text-primary hover:bg-secondary'
               }`}
               role="tab"
               aria-selected={activeTab === 'unmonitored'}
@@ -588,27 +588,27 @@ export default function CompetitorPage() {
               <label htmlFor="search-input" className="sr-only">
                 Search competitors by name or domain
               </label>
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-[#A4A7AE]" aria-hidden="true" />
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-quaternary" aria-hidden="true" />
               <input
                 id="search-input"
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search products, URLs, SKL"
-                className="w-full rounded-lg border border-[#D5D7DA] bg-white py-2 pl-10 pr-16 text-base placeholder:text-[#717680] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#7F56D9]"
+                className="w-full rounded-lg border border-border-secondary bg-primary py-2 pl-10 pr-16 text-base text-primary placeholder:text-[#717680] dark:placeholder:text-gray-400 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#7F56D9]"
                 aria-describedby="search-help"
                 aria-label="Search competitors by name or domain"
               />
               <span 
                 id="search-help"
-                className="absolute right-3 top-1/2 -translate-y-1/2 rounded border border-[#E9EAEB] px-1.5 py-0.5 text-xs text-[#717680]"
+                className="absolute right-3 top-1/2 -translate-y-1/2 rounded border border-[#E9EAEB] dark:border-gray-600 px-1.5 py-0.5 text-xs text-[#717680] dark:text-gray-400"
                 aria-label="Keyboard shortcut: Command K"
               >
                 ⌘K
               </span>
             </div>
-            <button className="flex items-center gap-1 rounded-lg border border-[#D5D7DA] bg-white px-3.5 py-2.5 text-sm font-semibold text-[#414651] shadow-sm transition-colors hover:bg-gray-50">
-              <svg className="h-5 w-5 text-[#A4A7AE]" fill="none" stroke="currentColor" viewBox="0 0 20 20">
+            <button className="flex items-center gap-1 rounded-lg border border-border-secondary bg-primary px-3.5 py-2.5 text-sm font-semibold text-primary shadow-sm transition-colors hover:bg-secondary">
+              <svg className="h-5 w-5 text-quaternary" fill="none" stroke="currentColor" viewBox="0 0 20 20">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.67} d="M3 4h14M6 8h8M9 12h2" />
               </svg>
               Filters
@@ -624,7 +624,7 @@ export default function CompetitorPage() {
           hidden={activeTab !== 'all'}
         >
           <table 
-            className="w-full" 
+            className="w-full bg-primary" 
             role="table"
             aria-label="Competitor monitoring table"
             aria-describedby="table-description"
@@ -633,7 +633,7 @@ export default function CompetitorPage() {
               Table showing competitor products with pricing information, trends, and categories. 
               Use arrow keys to navigate between rows, space or enter to select, and escape to clear selection.
             </caption>
-            <thead className="border-b border-[#E9EAEB] bg-[#FAFAFA]">
+            <thead className="border-b border-border-secondary bg-[#FAFAFA] dark:bg-gray-700">
               <tr role="row">
                 <th 
                   className="px-6 py-3 text-left" 
@@ -650,9 +650,9 @@ export default function CompetitorPage() {
                       aria-label="Select all competitors"
                       aria-describedby="select-all-help"
                     />
-                    <span className="flex items-center gap-1 text-xs font-semibold text-[#717680]">
+                    <span className="flex items-center gap-1 text-xs font-semibold text-[#717680] dark:text-gray-400">
                       Product
-                      <svg className="h-3 w-3 text-[#A4A7AE]" fill="none" stroke="currentColor" viewBox="0 0 12 12" aria-hidden="true">
+                      <svg className="h-3 w-3 text-quaternary" fill="none" stroke="currentColor" viewBox="0 0 12 12" aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 2.5v7m0 0l3.5-3.5M6 9.5L2.5 6" />
                       </svg>
                     </span>
@@ -661,16 +661,16 @@ export default function CompetitorPage() {
                     Checkbox to select or deselect all competitors in the table
                   </div>
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]" role="columnheader" scope="col">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680] dark:text-gray-400" role="columnheader" scope="col">
                   Matched Product
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]" role="columnheader" scope="col">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680] dark:text-gray-400" role="columnheader" scope="col">
                   Price Position
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]" role="columnheader" scope="col">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680] dark:text-gray-400" role="columnheader" scope="col">
                   Trend
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680]" role="columnheader" scope="col">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-[#717680] dark:text-gray-400" role="columnheader" scope="col">
                   Categories
                 </th>
                 <th className="px-4 py-3" role="columnheader" scope="col" aria-label="Actions">
@@ -678,12 +678,12 @@ export default function CompetitorPage() {
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#E9EAEB]">
+            <tbody className="divide-y divide-[#E9EAEB] dark:divide-gray-700 bg-primary">
               {filteredCompetitors.map((competitor, index) => (
                 <tr 
                   key={competitor.id} 
-                  className={`transition-colors hover:bg-gray-50 ${
-                    focusedRowIndex === index ? 'bg-blue-50 ring-2 ring-blue-200' : ''
+                  className={`transition-colors hover:bg-secondary ${
+                    focusedRowIndex === index ? 'bg-blue-50 dark:bg-blue-900 ring-2 ring-blue-200 dark:ring-blue-800' : ''
                   }`}
                   role="row"
                   tabIndex={0}
@@ -691,47 +691,47 @@ export default function CompetitorPage() {
                   aria-selected={selectedRows.has(competitor.id)}
                   aria-label={`Competitor ${competitor.name} from ${competitor.domain}`}
                 >
-                  <td className="px-6 py-4" role="gridcell">
+                  <td className="px-6 py-4 bg-primary" role="gridcell">
                     <div className="flex items-center gap-3">
                       <input
                         type="checkbox"
                         checked={selectedRows.has(competitor.id)}
                         onChange={() => toggleRow(competitor.id)}
-                        className="h-5 w-5 rounded-md border-[#7F56D9] text-[#7F56D9] focus:ring-[#7F56D9]"
+                        className="h-5 w-5 rounded-md border-[#7F56D9] text-[#7F56D9] focus:ring-[#7F56D9] dark:border-gray-400 dark:text-gray-400 dark:bg-gray-700"
                         aria-label={`Select ${competitor.name} competitor`}
                         aria-describedby={`competitor-${competitor.id}-info`}
                       />
                       <div className="flex items-center gap-3">
                         <div 
-                          className="h-10 w-10 rounded-full border border-black/8 bg-gray-200"
+                          className="h-10 w-10 rounded-full border border-black/8 dark:border-gray-600 bg-gray-200 dark:bg-gray-600"
                           aria-hidden="true"
                         />
                         <div id={`competitor-${competitor.id}-info`}>
-                          <div className="text-sm font-medium text-[#181D27]">{competitor.name}</div>
-                          <div className="text-sm text-[#535862]">{competitor.domain}</div>
+                          <div className="text-sm font-medium text-primary">{competitor.name}</div>
+                          <div className="text-sm text-tertiary">{competitor.domain}</div>
                         </div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4" role="gridcell">
+                  <td className="px-6 py-4 bg-primary" role="gridcell">
                     <div className="flex items-center gap-3">
                       <div 
                         className="h-10 w-10 rounded-full border border-black/8 bg-gray-200"
                         aria-hidden="true"
                       />
                       <div>
-                        <div className="text-sm font-medium text-[#181D27]">{competitor.name}</div>
-                        <div className="text-sm text-[#535862]">{competitor.domain}</div>
+                        <div className="text-sm font-medium text-primary">{competitor.name}</div>
+                        <div className="text-sm text-tertiary">{competitor.domain}</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4" role="gridcell">
+                  <td className="px-6 py-4 bg-primary" role="gridcell">
                     <PricePositionCell 
                       competitorPrice={competitor.competitorPrice} 
                       myPrice={competitor.myPrice}
                     />
                   </td>
-                  <td className="px-6 py-4" role="gridcell">
+                  <td className="px-6 py-4 bg-primary" role="gridcell">
                     <div 
                       className={`inline-flex items-center gap-0.5 rounded-full border px-2 py-0.5 ${
                         competitor.trendUp ? 'border-[#ABEFC6] bg-[#ECFDF3]' : 'border-[#FECDCA] bg-[#FEF3F2]'
@@ -749,7 +749,7 @@ export default function CompetitorPage() {
                       </span>
                     </div>
                   </td>
-                  <td className="px-6 py-4" role="gridcell">
+                  <td className="px-6 py-4 bg-primary" role="gridcell">
                     <div className="flex flex-wrap items-center gap-1" role="list" aria-label="Product categories">
                       {competitor.categories.slice(0, 2).map(category => (
                         <span
@@ -782,7 +782,7 @@ export default function CompetitorPage() {
                       aria-label={`More actions for ${competitor.name}`}
                       aria-haspopup="menu"
                     >
-                      <svg className="h-5 w-5 text-[#A4A7AE]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <svg className="h-5 w-5 text-quaternary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zm0 5.25a.75.75 0 110-1.5.75.75 0 010 1.5zm0 5.25a.75.75 0 110-1.5.75.75 0 010 1.5z" />
                       </svg>
                     </button>
@@ -794,7 +794,7 @@ export default function CompetitorPage() {
         </div>
 
         <div className="flex items-center justify-between border-t border-[#E9EAEB] px-6 py-3">
-          <div className="text-sm font-medium text-[#414651]">
+          <div className="text-sm font-medium text-[#414651] dark:text-gray-300">
             Page 1 of 10
             <span className="sr-only">
               Showing {filteredCompetitors.length} of {competitors.length} competitors
@@ -803,14 +803,14 @@ export default function CompetitorPage() {
           </div>
           <div className="flex items-center gap-3">
             <button 
-              className="rounded-lg border border-[#D5D7DA] bg-white px-3 py-2 text-sm font-semibold text-[#414651] shadow-sm transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#7F56D9]"
+              className="rounded-lg border border-border-secondary bg-primary px-3 py-2 text-sm font-semibold text-primary shadow-sm transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-[#7F56D9]"
               aria-label="Go to previous page"
               disabled
             >
               Previous
             </button>
             <button 
-              className="rounded-lg border border-[#D5D7DA] bg-white px-3 py-2 text-sm font-semibold text-[#414651] shadow-sm transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#7F56D9]"
+              className="rounded-lg border border-border-secondary bg-primary px-3 py-2 text-sm font-semibold text-primary shadow-sm transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-[#7F56D9]"
               aria-label="Go to next page"
             >
               Next
