@@ -788,6 +788,7 @@ export default function CompetitorPage() {
             formatPercentDetailed={formatPercentDetailed}
             formatPercentCompact={formatPercentCompact}
             showCompetitorColumn={true}
+            showProductsColumn={false}
           />
         </div>
 
