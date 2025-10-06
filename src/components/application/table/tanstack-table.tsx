@@ -68,13 +68,13 @@ interface TanStackTableProps {
   computeTrend?: (competitorPrice: number, myPrice: number) => TrendComputation;
   formatPercentDetailed?: (value: number) => string;
   formatPercentCompact?: (value: number) => string;
-  showCompetitorColumn?: boolean;
   showProductsColumn?: boolean;
   productsColumnHeader?: string;
   showMaterialsColumn?: boolean;
   showCompetitorsColumn?: boolean;
   showBrandColumn?: boolean;
   showChannelColumn?: boolean;
+  firstColumnHeader?: string;
   enableDragDrop?: boolean;
   onDragEnd?: (event: DragEndEvent) => void;
 }
@@ -96,13 +96,13 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
   computeTrend,
   formatPercentDetailed,
   formatPercentCompact,
-  showCompetitorColumn = false,
   showProductsColumn = true,
   productsColumnHeader = 'Products',
   showMaterialsColumn = false,
   showCompetitorsColumn = false,
   showBrandColumn = false,
   showChannelColumn = false,
+  firstColumnHeader = 'Competitor',
   enableDragDrop = false,
   onDragEnd,
 }) => {
@@ -164,7 +164,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
               className="mr-1"
             />
             <span className="text-xs font-semibold text-muted-foreground">
-              {showCompetitorColumn ? 'Product' : 'Competitor'}
+              {firstColumnHeader}
             </span>
           </div>
         ),
@@ -212,27 +212,6 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
       },
     ];
 
-    // Add Competitor column only if showCompetitorColumn is true
-    if (showCompetitorColumn) {
-      baseColumns.push({
-        accessorKey: 'name',
-        id: 'competitor',
-        header: 'Competitor',
-        cell: ({ row }) => (
-          <div className="flex items-center gap-3">
-            <div 
-              className="h-10 w-10 rounded-full border border-black/8 bg-gray-200"
-              aria-hidden="true"
-            />
-            <div>
-              <div className="text-sm font-medium text-foreground">{row.original.name}</div>
-              <div className="text-sm text-muted-foreground">{row.original.domain}</div>
-            </div>
-          </div>
-        ),
-        enableSorting: true,
-      });
-    }
 
     // Add Products column only if showProductsColumn is true
     if (showProductsColumn) {
@@ -794,7 +773,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
     );
 
     return baseColumns;
-  }, [selectedRows, maxProducts, badgeClasses, ProductsCell, PricePositionCell, computeTrend, formatPercentDetailed, formatPercentCompact, showCompetitorColumn, showProductsColumn]);
+  }, [selectedRows, maxProducts, badgeClasses, ProductsCell, PricePositionCell, computeTrend, formatPercentDetailed, formatPercentCompact, showProductsColumn]);
 
   // Sortable Row Component
   const SortableRow = ({ row, index }: { row: any; index: number }) => {
