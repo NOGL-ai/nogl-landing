@@ -11,6 +11,7 @@ import {
   Upload,
 } from 'lucide-react';
 import { computeTrend, formatPercentCompact, formatPercentDetailed } from '@/utils/priceTrend';
+import Checkbox from '@/components/ui/checkbox';
 
 const competitors = [
   {
@@ -366,14 +367,15 @@ export default function CompetitorPage() {
     });
   };
 
-  const toggleAll = () => {
+  const toggleAll = (force?: boolean) => {
     setSelectedRows(prev => {
       // Select/Deselect only currently visible (sorted) rows
       const visibleIds = new Set(sortedCompetitors.map(item => item.id));
       const allVisibleSelected = sortedCompetitors.every(item => prev.has(item.id));
 
       const next = new Set(prev);
-      if (allVisibleSelected) {
+      const shouldSelect = typeof force === 'boolean' ? force : !allVisibleSelected;
+      if (!shouldSelect) {
         // Deselect visible
         visibleIds.forEach(id => next.delete(id));
       } else {
@@ -767,13 +769,13 @@ export default function CompetitorPage() {
                   aria-sort={productSort === 'none' ? 'none' : productSort === 'asc' ? 'ascending' : 'descending'}
                 >
                   <div className="flex items-center gap-3">
-                    <input
-                      type="checkbox"
+                    <Checkbox
                       checked={sortedCompetitors.every(item => selectedRows.has(item.id)) && sortedCompetitors.length > 0}
-                      onChange={toggleAll}
-                      className="h-5 w-5 rounded-md border-primary text-primary focus:ring-ring/40"
-                      aria-label="Select all competitors"
-                      aria-describedby="select-all-help"
+                      indeterminate={sortedCompetitors.some(item => selectedRows.has(item.id)) && !sortedCompetitors.every(item => selectedRows.has(item.id))}
+                      onChange={(checked) => toggleAll(checked)}
+                      ariaLabel="Select all competitors"
+                      id="select-all"
+                      className="mr-1"
                     />
                     <button
                       type="button"
@@ -863,13 +865,12 @@ export default function CompetitorPage() {
                 >
                   <td className="px-6 py-4 bg-card">
                     <div className="flex items-center gap-3">
-                      <input
-                        type="checkbox"
+                      <Checkbox
                         checked={selectedRows.has(competitor.id)}
                         onChange={() => toggleRow(competitor.id)}
-                        className="h-5 w-5 rounded-md border-primary text-primary focus:ring-ring/40 dark:border-gray-400 dark:text-gray-400 dark:bg-gray-700"
-                        aria-label={`Select ${competitor.name} competitor`}
-                        aria-describedby={`competitor-${competitor.id}-info`}
+                        ariaLabel={`Select ${competitor.name} competitor`}
+                        id={`competitor-${competitor.id}-checkbox`}
+                        className="mr-1"
                       />
                       <div className="flex items-center gap-3">
                         <div 
