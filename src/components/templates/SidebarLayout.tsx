@@ -158,7 +158,6 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 			user={user}
 			onLogout={handleLogout}
 			onNavigate={handleNavigation}
-			theme={mounted ? (theme as "light" | "dark" | undefined) : "light"}
 		/>
 
 			{/* Mobile Sidebar - Collapsed State */}
@@ -338,7 +337,6 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 						<MobileNavigation
 							activeUrl={pathname}
 							onNavigate={handleNavigation}
-							theme={mounted ? (theme as "light" | "dark" | undefined) : "light"}
 						/>
 							</Suspense>
 						</ErrorBoundary>
@@ -357,7 +355,6 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 						onLogout={handleLogout}
 						isCollapsed={false}
 						isHovered={false}
-						theme={mounted ? (theme as "light" | "dark" | undefined) : "light"}
 					/>
 						</ErrorBoundary>
 					</div>

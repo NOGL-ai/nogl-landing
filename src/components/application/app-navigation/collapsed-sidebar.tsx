@@ -5,8 +5,8 @@
  * 
  * Features improved theme handling with:
  * - Direct integration with next-themes useTheme hook
- * - Fallback theme management (prop -> system -> default)
- * - Theme change responsiveness
+ * - No theme props needed - uses next-themes directly
+ * - Theme change responsiveness through hook updates
  * - Consistent theme-aware styling utilities
  */
 
@@ -27,7 +27,6 @@ interface CollapsedSidebarProps {
     };
     onLogout?: () => void | Promise<void>;
     onNavigate?: (href: string) => void;
-    theme?: "light" | "dark";
 }
 
 // Hover timing constants for optimal UX
@@ -41,11 +40,10 @@ const ESTIMATED_SUBMENU_HEIGHT = 420;
 const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
     user,
     onLogout,
-    onNavigate,
-    theme = "light"
+    onNavigate
 }) => {
     const pathname = usePathname();
-    const { theme: systemTheme, setTheme: setSystemTheme } = useTheme();
+    const { theme } = useTheme();
     const [mounted, setMounted] = useState(false);
     
     // Prevent hydration mismatch
@@ -53,13 +51,12 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
         setMounted(true);
     }, []);
     
-    // Enhanced theme handling: Use system theme if no theme prop provided, fallback to prop
-    // This provides better integration with next-themes and more flexible theme management
+    // Use next-themes directly - no prop needed
     // Always use 'light' during SSR to prevent hydration mismatch
     const currentTheme = useMemo(() => {
         if (!mounted) return "light";
-        return theme || systemTheme || "light";
-    }, [theme, systemTheme, mounted]);
+        return theme || "light";
+    }, [theme, mounted]);
 
     // Theme toggle is now handled by Magic UI AnimatedThemeToggler component
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);

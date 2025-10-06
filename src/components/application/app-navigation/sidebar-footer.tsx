@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
 import { UserProfile } from "@/types/navigation";
 import { SimpleAccountCard } from "./simple-account-card";
 
@@ -11,7 +12,6 @@ interface SidebarFooterProps {
   isCollapsed?: boolean;
   isHovered?: boolean;
   className?: string;
-  theme?: 'light' | 'dark';
 }
 
 interface NavigationItem {
@@ -29,11 +29,23 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
   isCollapsed = false,
   isHovered = false,
   className = "",
-  theme = 'light',
 }) => {
   const router = useRouter();
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const [isFeaturedCardVisible, setIsFeaturedCardVisible] = useState(true);
   const [usedSpacePercentage, setUsedSpacePercentage] = useState(80);
+  
+  // Prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
+  // Use next-themes directly
+  const currentTheme = useMemo(() => {
+    if (!mounted) return "light";
+    return theme || "light";
+  }, [theme, mounted]);
 
   // Navigation items
   // const navigationItems: NavigationItem[] = [
@@ -88,20 +100,20 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
               key={item.id}
               onClick={item.onClick}
               className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors duration-200 group ${
-                theme === 'dark' 
+                currentTheme === 'dark' 
                   ? "bg-[#0a0d12] hover:bg-[#252b37]" 
                   : "bg-gray-50 hover:bg-gray-100"
               }`}
             >
               <div className={`transition-colors ${
-                theme === 'dark' 
+                currentTheme === 'dark' 
                   ? "text-[#717680] group-hover:text-[#a4a7ae]" 
                   : "text-[#a4a7ae] group-hover:text-[#717680]"
               }`}>
                 {item.icon}
               </div>
               <span className={`font-semibold text-base flex-1 text-left ${
-                theme === 'dark' 
+                currentTheme === 'dark' 
                   ? "text-[#d5d7da]" 
                   : "text-[#717680]"
               }`}>
@@ -109,13 +121,13 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
               </span>
               {item.badge && (
                 <div className={`border rounded-md px-2 py-1 flex items-center gap-1 ${
-                  theme === 'dark' 
+                  currentTheme === 'dark' 
                     ? "bg-[#181d27] border-[#414651]" 
                     : "bg-gray-100 border-gray-200"
                 }`}>
                   <div className="w-2 h-2 bg-[#17b26a] rounded-full"></div>
                   <span className={`text-xs font-medium ${
-                    theme === 'dark' 
+                    currentTheme === 'dark' 
                       ? "text-[#d5d7ae]" 
                       : "text-[#717680]"
                   }`}>Online</span>
@@ -131,14 +143,14 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
               key={item.id}
               onClick={item.onClick}
               className={`p-2 rounded-md transition-colors duration-200 group relative ${
-                theme === 'dark' 
+                currentTheme === 'dark' 
                   ? "bg-[#0a0d12] hover:bg-[#252b37]" 
                   : "bg-gray-50 hover:bg-gray-100"
               }`}
               title={item.label}
             >
               <div className={`transition-colors ${
-                theme === 'dark' 
+                currentTheme === 'dark' 
                   ? "text-[#717680] group-hover:text-[#a4a7ae]" 
                   : "text-[#a4a7ae] group-hover:text-[#717680]"
               }`}>
@@ -146,7 +158,7 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
               </div>
               {item.badge && (
                 <div className={`absolute -top-1 -right-1 w-3 h-3 bg-[#17b26a] rounded-full border ${
-                  theme === 'dark' 
+                  currentTheme === 'dark' 
                     ? "border-[#0a0d12]" 
                     : "border-gray-50"
                 }`}></div>
@@ -207,7 +219,7 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
             onLogout={handleLogout}
             isCollapsed={isCollapsed}
             isHovered={isHovered}
-            theme={theme}
+            theme={currentTheme}
           />
     </div>
   );

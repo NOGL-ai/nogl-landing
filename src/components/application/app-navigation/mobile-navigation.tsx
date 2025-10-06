@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
+import { useTheme } from "next-themes";
 import { NavItemBase } from "@/components/application/app-navigation/base-components/nav-item";
 import { navigationStructure, isSubItemActive, getActiveIconMenuItem } from "@/data/navigationItemsV2";
 import { ChevronDown, ChevronUp } from "@untitledui/icons";
@@ -8,14 +9,25 @@ import { ChevronDown, ChevronUp } from "@untitledui/icons";
 interface MobileNavigationProps {
     activeUrl: string;
     onNavigate?: (href: string) => void;
-    theme?: 'light' | 'dark';
 }
 
 export const MobileNavigation: React.FC<MobileNavigationProps> = ({
     activeUrl,
-    onNavigate,
-    theme = 'light'
+    onNavigate
 }) => {
+    const { theme } = useTheme();
+    const [mounted, setMounted] = useState(false);
+    
+    // Prevent hydration mismatch
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+    
+    // Use next-themes directly
+    const currentTheme = useMemo(() => {
+        if (!mounted) return "light";
+        return theme || "light";
+    }, [theme, mounted]);
     // Auto-expand the active item on mount
     const getInitialExpandedItems = () => {
         const activeItem = getActiveIconMenuItem(activeUrl);
@@ -122,7 +134,7 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
                                                     type="collapsible-child"
                                                     current={isSubActive}
                                                     onClick={() => handleNavigation(subItem.href)}
-                                                    theme={theme}
+                                                    theme={currentTheme}
                                                 >
                                                     {subItem.label}
                                                 </NavItemBase>
