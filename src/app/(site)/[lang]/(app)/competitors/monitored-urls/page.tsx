@@ -428,7 +428,7 @@ export default function CompetitorPage() {
   };
 
   return (
-        <div className="mx-auto w-full max-w-7xl min-h-screen space-y-6 bg-background px-4 py-6 text-foreground transition-colors sm:px-6 lg:py-10 lg:px-8">
+    <>
       {/* Screen reader announcements */}
       <div
         id="search-results-announcement"
@@ -458,6 +458,7 @@ export default function CompetitorPage() {
         </div>
       </header>
 
+      <main className="mx-auto w-full max-w-7xl min-h-screen space-y-6 bg-background px-4 py-6 text-foreground transition-colors sm:px-6 lg:py-10 lg:px-8">
       <section className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <article className="lg:col-span-2 rounded-xl border border-border-secondary bg-card shadow-sm transition-colors">
           <div className="border-b border-border-secondary p-6">
@@ -949,6 +950,7 @@ export default function CompetitorPage() {
           </div>
         </div>
       </section>
-    </div>
+      </main>
+    </>
   );
 }

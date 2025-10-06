@@ -389,7 +389,7 @@ export default function CompetitorPage() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-7xl space-y-6 px-4 py-6 sm:px-6 lg:py-10 lg:px-8 bg-[#F9FAFB] dark:bg-[#0a0d12] min-h-screen">
+    <>
       <header className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-[280px] flex-1">
           <h1 className="text-2xl font-semibold text-[#181D27] dark:text-white">Welcome back, Tim</h1>
@@ -409,6 +409,7 @@ export default function CompetitorPage() {
         </div>
       </header>
 
+      <main className="mx-auto w-full max-w-7xl space-y-6 px-4 py-6 sm:px-6 lg:py-10 lg:px-8 bg-[#F9FAFB] dark:bg-[#0a0d12] min-h-screen">
       <section className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <article className="lg:col-span-2 rounded-xl border border-[#E9EAEB] dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm">
           <div className="border-b border-[#E9EAEB] p-6">
@@ -753,6 +754,7 @@ export default function CompetitorPage() {
           </div>
         </div>
       </section>
-    </div>
+      </main>
+    </>
   );
 }
