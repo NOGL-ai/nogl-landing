@@ -43,6 +43,7 @@ export interface Competitor {
   name: string;
   domain: string;
   avatar: string;
+  sku?: string;
   products: number;
   position: number;
   trend: number;
@@ -202,7 +203,9 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
               </div>
               <div id={`competitor-${row.original.id}-info`} className="min-w-0 flex-1">
                 <div className="text-sm font-medium text-foreground truncate">{row.original.name}</div>
-                <div className="text-sm text-muted-foreground truncate">{row.original.domain}</div>
+                <div className="text-sm text-muted-foreground truncate">
+                  {row.original.sku ? `SKU: ${row.original.sku}` : row.original.domain}
+                </div>
               </div>
             </div>
           </div>
