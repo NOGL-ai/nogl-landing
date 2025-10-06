@@ -267,7 +267,7 @@ const PricePositionCell = ({
       >
         <div className="h-2 overflow-hidden rounded-full bg-border-secondary dark:bg-gray-600">
           <div
-            className={`h-full transition-all duration-300 ${isWinning ? 'bg-green-600 dark:bg-green-500' : isEqual ? 'bg-gray-500 dark:bg-gray-400' : 'bg-red-600 dark:bg-red-500'}`}
+            className={`h-full transition-all duration-300 ${isWinning ? 'bg-green-500 dark:bg-green-400' : isEqual ? 'bg-gray-400 dark:bg-gray-500' : 'bg-red-500 dark:bg-red-400'}`}
             style={{ width: `${progress}%` }}
             aria-hidden="true"
           />
@@ -277,7 +277,7 @@ const PricePositionCell = ({
           style={{ left: `${progress}%` }}
           aria-hidden="true"
         >
-          <div className={`h-4 w-4 rounded-full border-2 border-white shadow-sm ${isWinning ? 'bg-green-600 dark:bg-green-500' : isEqual ? 'bg-gray-500 dark:bg-gray-400' : 'bg-red-600 dark:bg-red-500'}`}>
+          <div className={`h-4 w-4 rounded-full border-2 border-white shadow-sm ${isWinning ? 'bg-green-500 dark:bg-green-400' : isEqual ? 'bg-gray-400 dark:bg-gray-500' : 'bg-red-500 dark:bg-red-400'}`}>
             <div className="h-full w-full rounded-full bg-white/30" />
           </div>
         </div>
