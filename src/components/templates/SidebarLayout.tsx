@@ -47,14 +47,9 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 	const toggleButtonRef = useRef<HTMLButtonElement>(null);
 	const mobileToggleRef = useRef<HTMLButtonElement>(null);
 	const [isKeyboardUser, setIsKeyboardUser] = useState(false);
-	const [mounted, setMounted] = useState(false);
+	const [mounted, setMounted] = useState(true);
 	const { theme, setTheme } = useTheme();
 	const { isMobile, isTablet, isDesktop } = useResponsive();
-
-	// Prevent hydration mismatch
-	useEffect(() => {
-		setMounted(true);
-	}, []);
 
 	const toggleTheme = useCallback(() => {
 		setTheme(theme === 'light' ? 'dark' : 'light');
