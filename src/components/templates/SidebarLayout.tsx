@@ -368,9 +368,8 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 				role="main"
 				aria-label="Main content"
 			>
-
 				{/* Page content */}
-				<div className="sidebar-scroll flex-1 overflow-y-auto bg-[#F9FAFB] dark:bg-[#0a0d12]">
+				<div className="flex-1 overflow-y-auto bg-[#F9FAFB] dark:bg-[#0a0d12]">
 					{children}
 				</div>
 			</main>

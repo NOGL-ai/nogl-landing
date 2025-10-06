@@ -25,9 +25,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
 	return (
 		<SidebarLayout user={user} className="bg-[#F9FAFB]">
-			<div className="min-h-screen bg-[#F9FAFB]">
-				{children}
-			</div>
+			{children}
 		</SidebarLayout>
 	);
 }

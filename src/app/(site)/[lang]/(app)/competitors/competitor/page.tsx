@@ -389,41 +389,41 @@ export default function CompetitorPage() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-7xl space-y-6 px-4 py-6 sm:px-6 lg:py-10 lg:px-8">
+    <div className="mx-auto w-full max-w-7xl space-y-6 px-4 py-6 sm:px-6 lg:py-10 lg:px-8 bg-[#F9FAFB] dark:bg-[#0a0d12] min-h-screen">
       <header className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-[280px] flex-1">
-          <h1 className="text-2xl font-semibold text-[#181D27]">Welcome back, Tim</h1>
+          <h1 className="text-2xl font-semibold text-[#181D27] dark:text-white">Welcome back, Tim</h1>
         </div>
         <div className="flex items-center gap-3">
-          <button className="rounded-lg p-2.5 transition-colors hover:bg-gray-50" aria-label="Search">
-            <Search className="h-5 w-5 text-[#A4A7AE]" />
+          <button className="rounded-lg p-2.5 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800" aria-label="Search">
+            <Search className="h-5 w-5 text-[#A4A7AE] dark:text-gray-400" />
           </button>
-          <button className="flex items-center gap-1 rounded-lg border border-[#D5D7DA] bg-white px-3.5 py-2.5 text-sm font-semibold text-[#414651] shadow-sm transition-colors hover:bg-gray-50">
-            <Settings className="h-5 w-5 text-[#A4A7AE]" />
+          <button className="flex items-center gap-1 rounded-lg border border-[#D5D7DA] dark:border-gray-600 bg-white dark:bg-gray-800 px-3.5 py-2.5 text-sm font-semibold text-[#414651] dark:text-gray-200 shadow-sm transition-colors hover:bg-gray-50 dark:hover:bg-gray-700">
+            <Settings className="h-5 w-5 text-[#A4A7AE] dark:text-gray-400" />
             Customize
           </button>
-          <button className="flex items-center gap-1 rounded-lg border border-[#D5D7DA] bg-white px-3.5 py-2.5 text-sm font-semibold text-[#414651] shadow-sm transition-colors hover:bg-gray-50">
-            <Download className="h-5 w-5 text-[#A4A7AE]" />
+          <button className="flex items-center gap-1 rounded-lg border border-[#D5D7DA] dark:border-gray-600 bg-white dark:bg-gray-800 px-3.5 py-2.5 text-sm font-semibold text-[#414651] dark:text-gray-200 shadow-sm transition-colors hover:bg-gray-50 dark:hover:bg-gray-700">
+            <Download className="h-5 w-5 text-[#A4A7AE] dark:text-gray-400" />
             Export
           </button>
         </div>
       </header>
 
       <section className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <article className="lg:col-span-2 rounded-xl border border-[#E9EAEB] bg-white shadow-sm">
+        <article className="lg:col-span-2 rounded-xl border border-[#E9EAEB] dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm">
           <div className="border-b border-[#E9EAEB] p-6">
             <div className="flex items-start justify-between">
               <div className="flex items-start gap-3">
-                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gray-200">
-                  <svg className="h-8 w-8 text-gray-600" viewBox="0 0 24 24" fill="currentColor">
+            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700">
+              <svg className="h-8 w-8 text-gray-600 dark:text-gray-300" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 2L2 7L12 12L22 7L12 2Z" />
                     <path d="M2 17L12 22L22 17" />
                     <path d="M2 12L12 17L22 12" />
                   </svg>
                 </div>
                 <div>
-                  <h2 className="text-lg font-semibold text-[#181D27]">Competitor breakdown</h2>
-                  <p className="mt-1 text-sm text-[#535862]">Keep track of vendors and their security ratings.</p>
+                  <h2 className="text-lg font-semibold text-[#181D27] dark:text-white">Competitor breakdown</h2>
+                  <p className="mt-1 text-sm text-[#535862] dark:text-gray-400">Keep track of vendors and their security ratings.</p>
                 </div>
               </div>
               <button className="rounded p-1 transition-colors hover:bg-gray-50" aria-label="More actions">
@@ -437,7 +437,7 @@ export default function CompetitorPage() {
           </div>
           <div className="p-6">
             <div className="relative flex h-[184px] items-end">
-              <div className="absolute bottom-6 left-0 top-0 w-10 text-right text-xs text-[#535862]">
+              <div className="absolute bottom-6 left-0 top-0 w-10 text-right text-xs text-[#535862] dark:text-gray-400">
                 <div className="flex h-full flex-col justify-between">
                   {[100, 80, 60, 40, 20, 0].map(label => (
                     <div key={label}>{label}</div>
@@ -473,27 +473,27 @@ export default function CompetitorPage() {
                   ))}
                 </div>
               </div>
-              <div className="absolute bottom-0 left-12 right-0 flex justify-between px-6 text-xs text-[#535862]">
+              <div className="absolute bottom-0 left-12 right-0 flex justify-between px-6 text-xs text-[#535862] dark:text-gray-400">
                 {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map(month => (
                   <div key={month}>{month}</div>
                 ))}
               </div>
             </div>
-            <div className="mt-2 text-center text-xs font-medium text-[#535862]">Month</div>
+            <div className="mt-2 text-center text-xs font-medium text-[#535862] dark:text-gray-400">Month</div>
           </div>
           <div className="flex justify-end border-t border-[#E9EAEB] p-6">
-            <button className="rounded-lg border border-[#D5D7DA] bg-white px-3.5 py-2.5 text-sm font-semibold text-[#414651] shadow-sm transition-colors hover:bg-gray-50">
+            <button className="rounded-lg border border-[#D5D7DA] dark:border-gray-600 bg-white dark:bg-gray-800 px-3.5 py-2.5 text-sm font-semibold text-[#414651] dark:text-gray-200 shadow-sm transition-colors hover:bg-gray-50 dark:hover:bg-gray-700">
               View full report
             </button>
           </div>
         </article>
 
-        <article className="rounded-xl border border-[#E9EAEB] bg-white shadow-sm">
+        <article className="rounded-xl border border-[#E9EAEB] dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm">
           <div className="border-b border-[#E9EAEB] p-6">
             <div className="flex items-start justify-between">
               <div>
-                <h2 className="text-lg font-semibold text-[#181D27]">Products monitored</h2>
-                <p className="mt-1 text-sm text-[#535862]">You're monitoring 80% of your inventory.</p>
+                <h2 className="text-lg font-semibold text-[#181D27] dark:text-white">Products monitored</h2>
+                <p className="mt-1 text-sm text-[#535862] dark:text-gray-400">You're monitoring 80% of your inventory.</p>
               </div>
               <button className="rounded p-1 transition-colors hover:bg-gray-50" aria-label="More actions">
                 <svg className="h-5 w-5 text-[#A4A7AE]" fill="currentColor" viewBox="0 0 20 20">
@@ -523,7 +523,7 @@ export default function CompetitorPage() {
                     strokeLinejoin="round"
                   />
                 </svg>
-                <div className="absolute left-1/2 top-[60px] -translate-x-1/2 text-[30px] font-semibold text-[#181D27]">240</div>
+                <div className="absolute left-1/2 top-[60px] -translate-x-1/2 text-[30px] font-semibold text-[#181D27] dark:text-white">30</div>
               </div>
               <div className="flex items-center gap-1">
                 <svg className="h-4 w-4" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -533,8 +533,8 @@ export default function CompetitorPage() {
               </div>
             </div>
             <div>
-              <h3 className="text-base font-medium text-[#181D27]">You've almost reached your goal</h3>
-              <p className="mt-1 text-sm text-[#535862]">You have used 80% of your goal.</p>
+              <h3 className="text-base font-medium text-[#181D27] dark:text-white">You've almost reached your goal</h3>
+              <p className="mt-1 text-sm text-[#535862] dark:text-gray-400">You have used 80% of your goal.</p>
             </div>
           </div>
           <div className="flex justify-end border-t border-[#E9EAEB] p-6">
@@ -548,15 +548,15 @@ export default function CompetitorPage() {
         </article>
       </section>
 
-      <section className="rounded-xl border border-[#E9EAEB] bg-white shadow-sm">
+      <section className="rounded-xl border border-[#E9EAEB] dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm">
         <div className="border-b border-[#E9EAEB] p-6">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <h2 className="text-lg font-semibold text-[#181D27]">Competitor movements</h2>
-                <span className="inline-flex items-center rounded-full border border-[#E9D7FE] bg-[#F9F5FF] px-2 py-0.5 text-xs font-medium text-[#6941C6]">240 vendors</span>
+                <h2 className="text-lg font-semibold text-[#181D27] dark:text-white">Competitor movements</h2>
+                <span className="inline-flex items-center rounded-full border border-[#E9D7FE] bg-[#F9F5FF] px-2 py-0.5 text-xs font-medium text-[#6941C6]">30 competitor</span>
               </div>
-              <p className="mt-1 text-sm text-[#535862]">Keep track of competitor and their security ratings.</p>
+              <p className="mt-1 text-sm text-[#535862] dark:text-gray-400">Keep track of competitor and their security ratings.</p>
             </div>
             <div className="flex items-center gap-3">
               <button className="flex items-center gap-1 rounded-lg border border-[#D5D7DA] bg-white px-3.5 py-2.5 text-sm font-semibold text-[#414651] shadow-sm transition-colors hover:bg-gray-50">
