@@ -24,7 +24,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 	};
 
 	return (
-		<SidebarLayout user={user} className="bg-[#F9FAFB]">
+		<SidebarLayout user={user} className="bg-background">
 			{children}
 		</SidebarLayout>
 	);

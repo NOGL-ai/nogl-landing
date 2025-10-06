@@ -483,6 +483,8 @@ export default function CompetitorPage() {
         {searchQuery && `Found ${filteredCompetitors.length} competitors matching "${searchQuery}"`}
       </div>
       
+      <main className="mx-auto w-full min-h-screen space-y-8 bg-background px-8 pt-8 pb-12 text-foreground transition-colors">
+      {/* Header */}
       <header className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-[280px] flex-1">
           <h1 className="text-2xl font-semibold text-foreground">Welcome back, Tim</h1>
@@ -501,8 +503,6 @@ export default function CompetitorPage() {
           </button>
         </div>
       </header>
-
-      <main className="mx-auto w-full max-w-7xl min-h-screen space-y-6 bg-background px-4 py-6 text-foreground transition-colors sm:px-6 lg:py-10 lg:px-8">
       <section className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <article className="lg:col-span-2 rounded-xl border border-border-secondary bg-card shadow-sm transition-colors">
           <div className="border-b border-border-secondary p-6">

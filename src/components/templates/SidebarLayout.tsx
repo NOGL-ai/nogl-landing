@@ -366,12 +366,12 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 			{/* Main Content */}
 			<main
 				id="main-content"
-				className="flex flex-1 flex-col overflow-hidden transition-all duration-300 ease-in-out ml-16 lg:ml-16 bg-[#F9FAFB] dark:bg-[#0a0d12]"
+				className="flex flex-1 flex-col overflow-hidden transition-all duration-300 ease-in-out ml-[72px] lg:ml-[72px] bg-background dark:bg-background"
 				role="main"
 				aria-label="Main content"
 			>
 				{/* Page content */}
-				<div className="flex-1 overflow-y-auto bg-[#F9FAFB] dark:bg-[#0a0d12]">
+				<div className="flex-1 overflow-y-auto bg-background dark:bg-background rounded-tl-[40px]">
 					{children}
 				</div>
 			</main>
