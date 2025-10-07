@@ -15,6 +15,7 @@ import { computeTrend, formatPercentCompact, formatPercentDetailed } from '@/uti
 import Checkbox from '@/components/ui/checkbox';
 import TanStackTable from '@/components/application/table/tanstack-table';
 import JewelryProductCell from '@/components/application/table/JewelryProductCell';
+import { FileUpload } from '@/components/application/file-upload';
 
 // Jewelry products data (compatible with Competitor interface)
 const jewelryProducts = [
@@ -924,6 +925,13 @@ export default function CompetitorPage() {
   const [priceSort, setPriceSort] = React.useState<'none' | 'asc' | 'desc'>('none');
   const [currentPage, setCurrentPage] = React.useState(1);
   const [itemsPerPage] = React.useState(10);
+  const [uploadedFiles, setUploadedFiles] = React.useState<File[]>([]);
+
+  // File upload handler
+  const handleFilesChange = (files: File[]) => {
+    setUploadedFiles(files);
+    console.log('Files uploaded:', files);
+  };
 
   // Use jewelry products data instead of competitors
   const currentData = jewelryProducts;
@@ -1107,27 +1115,51 @@ export default function CompetitorPage() {
       </header>
 
       {/* File Upload Widget - Figma Design */}
-      <section className="rounded-xl border-2 border-primary bg-background p-4 md:p-6 transition-colors hover:border-primary/80 focus-within:border-primary" aria-label="File upload">
-        <div className="flex flex-col items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-border-secondary bg-background shadow-sm">
-            <UploadCloud02 className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
-          </div>
-          <div className="flex flex-col items-center gap-1 self-stretch">
-            <div className="flex items-start justify-center gap-1 self-stretch text-center">
-              <button
-                className="text-sm font-semibold text-primary hover:text-primary/80 focus:outline-none focus:ring-2 focus:ring-ring/40 rounded"
-                aria-label="Click to upload files"
-              >
-                Click to upload
-              </button>
-              <span className="text-sm font-normal text-muted-foreground">or drag and drop</span>
+      <FileUpload onFilesChange={handleFilesChange}>
+        <FileUpload.DropZone 
+          variant="catalog"
+          accept="image/*"
+          maxSize={1024 * 1024} // 1MB
+        >
+          <FileUpload.Input accept="image/*" />
+          <FileUpload.Content>
+            {/* Your exact beautiful content - keeping the same styling */}
+            <div className="flex flex-col items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-border-secondary bg-background shadow-sm">
+                <UploadCloud02 className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+              </div>
+              <div className="flex flex-col items-center gap-1 self-stretch">
+                <div className="flex items-start justify-center gap-1 self-stretch text-center">
+                  <button
+                    className="text-sm font-semibold text-primary hover:text-primary/80 focus:outline-none focus:ring-2 focus:ring-ring/40 rounded"
+                    aria-label="Click to upload files"
+                  >
+                    Click to upload
+                  </button>
+                  <span className="text-sm font-normal text-muted-foreground">or drag and drop</span>
+                </div>
+                <p className="self-stretch text-center text-xs font-normal leading-[18px] text-muted-foreground">
+                  SVG, PNG, JPG or GIF (max. 800x400px)
+                </p>
+              </div>
             </div>
-            <p className="self-stretch text-center text-xs font-normal leading-[18px] text-muted-foreground">
-              SVG, PNG, JPG or GIF (max. 800x400px)
-            </p>
-          </div>
+          </FileUpload.Content>
+        </FileUpload.DropZone>
+      </FileUpload>
+
+      {/* File List - Only show if files are uploaded */}
+      {uploadedFiles.length > 0 && (
+        <div className="mt-4 space-y-2">
+          <h3 className="text-sm font-medium text-foreground">Uploaded Files ({uploadedFiles.length})</h3>
+          <FileUpload>
+            <FileUpload.List>
+              {uploadedFiles.map((file, index) => (
+                <FileUpload.Item key={index} file={file} index={index} />
+              ))}
+            </FileUpload.List>
+          </FileUpload>
         </div>
-      </section>
+      )}
 
       <section className="rounded-xl border border-border-secondary bg-card shadow-sm transition-colors">
         <div className="border-b border-border-secondary p-4 md:p-6">
