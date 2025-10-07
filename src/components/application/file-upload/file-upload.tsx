@@ -275,6 +275,10 @@ const FileUploadContent: React.FC<FileUploadContentProps> = ({
 }) => {
   const { inputRef } = useFileUpload();
 
+  const handleButtonClick = () => {
+    inputRef.current?.click();
+  };
+
   if (children) {
     return <div className={className}>{children}</div>;
   }
@@ -291,7 +295,7 @@ const FileUploadContent: React.FC<FileUploadContentProps> = ({
         <div className="flex flex-col items-center gap-1 self-stretch">
           <div className="flex items-start justify-center gap-1 self-stretch text-center">
             <button
-              onClick={() => inputRef.current?.click()}
+              onClick={handleButtonClick}
               className="text-sm font-semibold text-primary hover:text-primary/80 focus:outline-none focus:ring-2 focus:ring-ring/40 rounded"
               aria-label="Click to upload files"
             >
@@ -314,7 +318,7 @@ const FileUploadContent: React.FC<FileUploadContentProps> = ({
         </div>
         <div>
           <button
-            onClick={() => inputRef.current?.click()}
+            onClick={handleButtonClick}
             className="text-xs font-medium text-foreground hover:text-primary"
           >
             Upload Files
@@ -332,7 +336,7 @@ const FileUploadContent: React.FC<FileUploadContentProps> = ({
         </div>
         <div className="text-center">
           <button
-            onClick={() => inputRef.current?.click()}
+            onClick={handleButtonClick}
             className="text-sm font-semibold text-primary hover:text-primary/80"
           >
             Choose Files
@@ -418,6 +422,37 @@ const FileUploadItem: React.FC<FileUploadItemProps> = ({
   );
 };
 
+// Button component that automatically connects to file input
+interface FileUploadButtonProps {
+  children: ReactNode;
+  className?: string;
+  onClick?: () => void;
+}
+
+const FileUploadButton: React.FC<FileUploadButtonProps> = ({
+  children,
+  className = "",
+  onClick,
+  ...props
+}) => {
+  const { inputRef } = useFileUpload();
+
+  const handleClick = () => {
+    inputRef.current?.click();
+    onClick?.();
+  };
+
+  return (
+    <button
+      className={className}
+      onClick={handleClick}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+};
+
 // Export compound component
 export const FileUpload = {
   Root: FileUploadRoot,
@@ -426,6 +461,7 @@ export const FileUpload = {
   Content: FileUploadContent,
   List: FileUploadList,
   Item: FileUploadItem,
+  Button: FileUploadButton,
 };
 
 // Export hook for advanced usage

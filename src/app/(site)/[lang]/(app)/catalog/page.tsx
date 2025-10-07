@@ -1130,12 +1130,12 @@ export default function CompetitorPage() {
               </div>
               <div className="flex flex-col items-center gap-1 self-stretch">
                 <div className="flex items-start justify-center gap-1 self-stretch text-center">
-                  <button
+                  <FileUpload.Button
                     className="text-sm font-semibold text-primary hover:text-primary/80 focus:outline-none focus:ring-2 focus:ring-ring/40 rounded"
                     aria-label="Click to upload files"
                   >
                     Click to upload
-                  </button>
+                  </FileUpload.Button>
                   <span className="text-sm font-normal text-muted-foreground">or drag and drop</span>
                 </div>
                 <p className="self-stretch text-center text-xs font-normal leading-[18px] text-muted-foreground">
