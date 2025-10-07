@@ -33,8 +33,7 @@ export { Select as SelectSimple } from "./select";
 // 	SelectValue,
 // } from "./select-new";
 
-// Modal
-export { Modal, ModalHeader, ModalBody, ModalFooter } from "./modal";
+// Modal (removed: use application/modals instead)
 
 // Card
 export {
