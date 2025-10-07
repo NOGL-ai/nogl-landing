@@ -32,9 +32,8 @@ model User {
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
   accounts              Account[]
-  sessions              Session[]
   apiKeys               ApiKey[]
-  products              Product[]
+  sessions              Session[]
 
   @@index([role])
 }
@@ -64,6 +63,8 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model VerificationToken {
@@ -71,7 +72,7 @@ model VerificationToken {
   token      String   @unique
   expires    DateTime
 
-  @@unique([identifier, token])
+  @@id([identifier, token])
 }
 
 model ApiKey {
@@ -79,140 +80,104 @@ model ApiKey {
   name      String
   key       String   @unique
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+}
+
+model product_images_normalized {
+  id          Int       @id @default(autoincrement())
+  product_id  String?   @db.VarChar(255)
+  image_url   String?
+  image_type  String?   @db.VarChar(50)
+  image_order Int?
+  alt_text    String?
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
+  products    products? @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([product_id], map: "idx_product_images_product_id")
+}
+
+model product_sizes {
+  id          Int       @id @default(autoincrement())
+  product_id  String?   @db.VarChar(255)
+  size        String?   @db.VarChar(50)
+  sku         String?   @db.VarChar(255)
+  available   Boolean?
+  price       Decimal?  @db.Decimal(10, 2)
+  stock_level Int?
+  color       String?   @db.VarChar(100)
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
+  products    products? @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([product_id], map: "idx_product_sizes_product_id")
+}
+
+model products {
+  id                          Int                         @id @default(autoincrement())
+  product_id                  String                      @unique @db.VarChar(255)
+  product_sku                 String?                     @db.VarChar(255)
+  product_url                 String?
+  product_title               String?                     @db.VarChar(500)
+  product_description         String?
+  product_description_source  String?                     @db.VarChar(50)
+  product_color               String?                     @db.VarChar(100)
+  product_material            String?                     @db.VarChar(100)
+  product_season              String?                     @db.VarChar(50)
+  product_brand               String?                     @db.VarChar(200)
+  product_vendor              String?                     @db.VarChar(200)
+  product_supplier_name       String?                     @db.VarChar(200)
+  product_category            String?                     @db.VarChar(100)
+  product_gender              String?                     @db.VarChar(20)
+  product_original_price      Decimal?                    @db.Decimal(10, 2)
+  product_discount_price      Decimal?                    @db.Decimal(10, 2)
+  product_discount_amount     Decimal?                    @db.Decimal(10, 2)
+  product_discount_percentage Decimal?                    @db.Decimal(5, 2)
+  product_currency            String?                     @db.VarChar(10)
+  product_price_group         String?                     @db.VarChar(20)
+  product_display_mode        String?                     @db.VarChar(50)
+  product_price_range         String?                     @db.VarChar(50)
+  product_has_promotion       Boolean?
+  product_page_image_url      String?
+  product_image_count         Int?
+  product_has_hover_images    Boolean?
+  product_variants_count      Int?
+  product_available_sizes     Int?
+  product_condition           String?                     @db.VarChar(50)
+  product_in_wishlist         Boolean?
+  product_visibility          String?                     @db.VarChar(50)
+  product_family              String?                     @db.VarChar(200)
+  source_url                  String?
+  extraction_timestamp        DateTime?                   @db.Timestamptz(6)
+  tracking_key                String?
+  cache_key_hash              String?                     @db.VarChar(50)
+  product_price_texts         Json?
+  product_images              Json?
+  product_gallery_images      Json?
+  product_image_descriptions  Json?
+  product_size_analysis       Json?
+  product_tags                Json?
+  product_flags               Json?
+  product_flag_categories     Json?
+  product_benefits            Json?
+  outfit_context              Json?
+  campaign_context            Json?
+  created_at                  DateTime?                   @default(now()) @db.Timestamptz(6)
+  updated_at                  DateTime?                   @default(now()) @db.Timestamptz(6)
+  product_images_normalized   product_images_normalized[]
+  product_sizes               product_sizes[]
+
+  @@index([product_brand], map: "idx_products_brand")
+  @@index([product_category], map: "idx_products_category")
+  @@index([extraction_timestamp], map: "idx_products_extraction_timestamp")
+  @@index([product_discount_price], map: "idx_products_price")
+  @@index([product_id], map: "idx_products_product_id")
 }
 
 enum UserRole {
   USER
   EXPERT
   ADMIN
-}
-
-// Product-related models
-model Brand {
-  id          String    @id @default(cuid())
-  name        String    @unique
-  logo        String?
-  website     String?
-  description String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  products    Product[]
-
-  @@index([name])
-}
-
-model Category {
-  id          String    @id @default(cuid())
-  name        String    @unique
-  slug        String    @unique
-  description String?
-  parentId    String?
-  parent      Category? @relation("CategoryHierarchy", fields: [parentId], references: [id])
-  children    Category[] @relation("CategoryHierarchy")
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  products    Product[]
-
-  @@index([name])
-  @@index([slug])
-}
-
-model Product {
-  id              String    @id @default(cuid())
-  name            String
-  sku             String    @unique
-  description     String?
-  image           String?
-  productUrl      String?
-  cost            Decimal   @db.Decimal(10, 2)
-  price           Decimal   @db.Decimal(10, 2)
-  currency        String    @default("EUR")
-  minPrice        Decimal?  @db.Decimal(10, 2)
-  maxPrice        Decimal?  @db.Decimal(10, 2)
-  margin          Decimal?  @db.Decimal(5, 2)
-  stock           Int?      @default(0)
-  status          ProductStatus @default(ACTIVE)
-  featured        Boolean   @default(false)
-  channel         String?
-  categoryId      String?
-  category        Category? @relation(fields: [categoryId], references: [id])
-  brandId         String?
-  brand           Brand?    @relation(fields: [brandId], references: [id])
-  triggeredRule   String?
-  lastUpdated     DateTime  @default(now())
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  userId          String
-  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  competitors     Competitor[]
-  priceHistory    PriceHistory[]
-  productImages   ProductImage[]
-
-  @@index([name])
-  @@index([sku])
-  @@index([status])
-  @@index([featured])
-  @@index([channel])
-  @@index([brandId])
-  @@index([categoryId])
-  @@index([userId])
-  @@index([createdAt])
-}
-
-model Competitor {
-  id          String    @id @default(cuid())
-  productId   String
-  product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
-  name        String
-  url         String?
-  cheapest    Decimal   @db.Decimal(10, 2)
-  avg         Decimal   @db.Decimal(10, 2)
-  highest     Decimal   @db.Decimal(10, 2)
-  cheapestColor String  @default("gray")
-  lastChecked DateTime  @default(now())
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  @@index([productId])
-  @@index([name])
-}
-
-model PriceHistory {
-  id        String   @id @default(cuid())
-  productId String
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  price     Decimal  @db.Decimal(10, 2)
-  cost      Decimal? @db.Decimal(10, 2)
-  currency  String   @default("EUR")
-  source    String?  // "manual", "api", "scraper"
-  createdAt DateTime @default(now())
-
-  @@index([productId])
-  @@index([createdAt])
-}
-
-model ProductImage {
-  id        String   @id @default(cuid())
-  productId String
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  url       String
-  alt       String?
-  order     Int      @default(0)
-  isPrimary Boolean  @default(false)
-  createdAt DateTime @default(now())
-
-  @@index([productId])
-  @@index([isPrimary])
-}
-
-enum ProductStatus {
-  ACTIVE
-  INACTIVE
-  DRAFT
-  ARCHIVED
 }

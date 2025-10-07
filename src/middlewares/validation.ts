@@ -6,15 +6,15 @@ export interface ValidationError {
   message: string;
 }
 
-export function withValidation<T>(
+export function withValidation<T, U extends any[] = []>(
   schema: yup.Schema<T>,
-  handler: (req: NextRequest, data: T) => Promise<NextResponse>
+  handler: (req: NextRequest, data: T, ...args: U) => Promise<NextResponse>
 ) {
-  return async (request: NextRequest) => {
+  return async (request: NextRequest, ...args: U) => {
     try {
       const body = await request.json();
       const validatedData = await schema.validate(body, { abortEarly: false });
-      return handler(request, validatedData);
+      return handler(request, validatedData, ...args);
     } catch (error) {
       if (error instanceof yup.ValidationError) {
         const validationErrors: ValidationError[] = error.inner.map((err) => ({
@@ -39,11 +39,11 @@ export function withValidation<T>(
   };
 }
 
-export function withQueryValidation<T>(
+export function withQueryValidation<T, U extends any[] = []>(
   schema: yup.Schema<T>,
-  handler: (req: NextRequest, data: T) => Promise<NextResponse>
+  handler: (req: NextRequest, data: T, ...args: U) => Promise<NextResponse>
 ) {
-  return async (request: NextRequest) => {
+  return async (request: NextRequest, ...args: U) => {
     try {
       const { searchParams } = new URL(request.url);
       const queryObject = Object.fromEntries(searchParams.entries());
@@ -59,7 +59,7 @@ export function withQueryValidation<T>(
       };
 
       const validatedData = await schema.validate(processedQuery, { abortEarly: false });
-      return handler(request, validatedData);
+      return handler(request, validatedData, ...args);
     } catch (error) {
       if (error instanceof yup.ValidationError) {
         const validationErrors: ValidationError[] = error.inner.map((err) => ({

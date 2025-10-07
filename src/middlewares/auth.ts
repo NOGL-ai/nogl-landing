@@ -11,10 +11,10 @@ export interface AuthenticatedRequest extends NextRequest {
   };
 }
 
-export function withAuth(
-  handler: (req: AuthenticatedRequest) => Promise<NextResponse>
+export function withAuth<T extends any[] = []>(
+  handler: (req: AuthenticatedRequest, ...args: T) => Promise<NextResponse>
 ) {
-  return async (request: NextRequest) => {
+  return async (request: NextRequest, ...args: T) => {
     try {
       const session = await getServerSession(authOptions);
       
@@ -42,7 +42,7 @@ export function withAuth(
       const authenticatedRequest = request as AuthenticatedRequest;
       authenticatedRequest.user = user;
 
-      return handler(authenticatedRequest);
+      return handler(authenticatedRequest, ...args);
     } catch (error) {
       console.error("Auth middleware error:", error);
       return NextResponse.json(
@@ -53,11 +53,11 @@ export function withAuth(
   };
 }
 
-export function withRole(
+export function withRole<T extends any[] = []>(
   allowedRoles: UserRole[],
-  handler: (req: AuthenticatedRequest) => Promise<NextResponse>
+  handler: (req: AuthenticatedRequest, ...args: T) => Promise<NextResponse>
 ) {
-  return withAuth(async (req) => {
+  return withAuth<T>(async (req, ...args: T) => {
     if (!req.user) {
       return NextResponse.json(
         { error: "Unauthorized" },
@@ -72,18 +72,18 @@ export function withRole(
       );
     }
 
-    return handler(req);
+    return handler(req, ...args);
   });
 }
 
-export function withAdmin(
-  handler: (req: AuthenticatedRequest) => Promise<NextResponse>
+export function withAdmin<T extends any[] = []>(
+  handler: (req: AuthenticatedRequest, ...args: T) => Promise<NextResponse>
 ) {
-  return withRole([UserRole.ADMIN], handler);
+  return withRole<T>([UserRole.ADMIN], handler);
 }
 
-export function withUserOrAdmin(
-  handler: (req: AuthenticatedRequest) => Promise<NextResponse>
+export function withUserOrAdmin<T extends any[] = []>(
+  handler: (req: AuthenticatedRequest, ...args: T) => Promise<NextResponse>
 ) {
-  return withRole([UserRole.USER, UserRole.ADMIN], handler);
+  return withRole<T>([UserRole.USER, UserRole.ADMIN], handler);
 }
