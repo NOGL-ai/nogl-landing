@@ -48,9 +48,10 @@ const extendedAuthOptions: NextAuthOptions = {
 			session: Session;
 			token: JWT & { emailError?: string };
 		}) {
-			const safeUser = (session?.user ?? {}) as Record<string, any>;
+			const safeSession = (session ?? ({} as Partial<Session>)) as any;
+			const safeUser = (safeSession?.user ?? {}) as Record<string, any>;
 			return {
-				...session,
+				...(safeSession as object),
 				user: {
 					...safeUser,
 					id: (token?.id as string | undefined) ?? safeUser.id,
