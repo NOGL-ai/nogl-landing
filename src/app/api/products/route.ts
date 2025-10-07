@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prismaDb";
 import { withRequestLogging, withSecurityHeaders } from "@/middlewares/security";
 import { withRateLimit } from "@/middlewares/rateLimit";
+import { generateLogoUrl, extractDomainFromUrl, extractMainDomain } from "@/lib/logoService";
 
 // GET /api/products - List products with filtering, sorting, and pagination (no auth required)
 export const GET = withRequestLogging(
@@ -86,29 +87,51 @@ export const GET = withRequestLogging(
     ]);
 
     // Map products to ProductDTO format expected by the catalog
-    const mappedProducts = products.map((product: any) => ({
-      id: product.product_id,
-      name: product.product_title || 'Untitled Product',
-      sku: product.product_sku || 'N/A',
-      image: product.product_page_image_url,
-      price: product.product_original_price ? parseFloat(product.product_original_price.toString()) : 0,
-      currency: product.product_currency || 'EUR',
-      channel: product.product_display_mode,
-      brand: product.product_brand ? {
-        id: product.product_brand.toLowerCase().replace(/\s+/g, '-'),
-        name: product.product_brand,
-        logo: null
-      } : null,
-      category: product.product_category ? {
-        id: product.product_category.toLowerCase().replace(/\s+/g, '-'),
-        name: product.product_category,
-        slug: product.product_category.toLowerCase().replace(/\s+/g, '-')
-      } : null,
-      competitors: [], // No competitor data in current table structure
-      _count: {
-        competitors: 0
+    const mappedProducts = products.map((product: any) => {
+      // Generate logo URL from brand name or domain
+      let logoUrl: string | null = null;
+      
+      if (product.product_brand) {
+        // Priority 1: Try to extract domain from product URL
+        let domain = extractDomainFromUrl(product.product_url);
+        
+        // If domain is from a CDN or subdomain, extract the main domain
+        if (domain) {
+          domain = extractMainDomain(domain);
+        }
+        
+        // Priority 2: Use brand name as fallback
+        // Generate logo using extracted domain or brand name
+        logoUrl = generateLogoUrl(domain || product.product_brand, {
+          format: 'png',
+          size: 64
+        });
       }
-    }));
+      
+      return {
+        id: product.product_id,
+        name: product.product_title || 'Untitled Product',
+        sku: product.product_sku || 'N/A',
+        image: product.product_page_image_url,
+        price: product.product_original_price ? parseFloat(product.product_original_price.toString()) : 0,
+        currency: product.product_currency || 'EUR',
+        channel: product.product_display_mode,
+        brand: product.product_brand ? {
+          id: product.product_brand.toLowerCase().replace(/\s+/g, '-'),
+          name: product.product_brand,
+          logo: logoUrl
+        } : null,
+        category: product.product_category ? {
+          id: product.product_category.toLowerCase().replace(/\s+/g, '-'),
+          name: product.product_category,
+          slug: product.product_category.toLowerCase().replace(/\s+/g, '-')
+        } : null,
+        competitors: [], // No competitor data in current table structure
+        _count: {
+          competitors: 0
+        }
+      };
+    });
 
     const response = NextResponse.json({
       products: mappedProducts,
