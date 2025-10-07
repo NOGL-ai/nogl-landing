@@ -105,7 +105,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
   showBrandColumn = false,
   brandColumnHeader = 'Country',
   showChannelColumn = false,
-  firstColumnHeader = 'Competitor',
+  firstColumnHeader = 'Product',
   enableDragDrop = false,
   onDragEnd,
 }) => {
