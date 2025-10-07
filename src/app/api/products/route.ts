@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prismaDb";
 import { withRequestLogging, withSecurityHeaders } from "@/middlewares/security";
 import { withRateLimit } from "@/middlewares/rateLimit";
-import { generateLogoUrl, extractDomainFromUrl, extractMainDomain } from "@/lib/logoService";
+import { generateLogoUrl, extractDomainFromUrl, extractMainDomain, isMarketplaceDomain } from "@/lib/logoService";
 
 // GET /api/products - List products with filtering, sorting, and pagination (no auth required)
 export const GET = withRequestLogging(
@@ -98,6 +98,10 @@ export const GET = withRequestLogging(
         // If domain is from a CDN or subdomain, extract the main domain
         if (domain) {
           domain = extractMainDomain(domain);
+        }
+        // Ignore marketplace/platform domains to avoid wrong brand logos
+        if (domain && isMarketplaceDomain(domain)) {
+          domain = null;
         }
         
         // Priority 2: Use brand name as fallback

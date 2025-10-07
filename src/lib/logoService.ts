@@ -11,6 +11,47 @@ const LOGO_DEV_TOKEN = process.env.NEXT_PUBLIC_LOGO_DEV_TOKEN || 'pk_bjGBOZlPTmC
 const LOGO_DEV_BASE_URL = 'https://img.logo.dev';
 
 /**
+ * Known brand-to-domain mappings (normalized brand name -> domain)
+ * Extend as needed to ensure correct logos for brands with non-.com TLDs
+ */
+const BRAND_DOMAIN_MAPPINGS: Record<string, string> = {
+  // Jewelry examples
+  'ellijewelry': 'ellijewelry.com',
+  'cluse': 'cluse.com',
+  // Add more as needed, e.g. 'amoonic': 'amoonic.de'
+};
+
+/**
+ * Marketplace/CDN/platform domains to ignore when extracting brand logos
+ */
+const MARKETPLACE_DOMAINS = new Set([
+  // Marketplaces
+  'amazon.com', 'amazon.de', 'ebay.com', 'ebay.de', 'etsy.com', 'aliexpress.com', 'temu.com', 'otto.de', 'zalando.de', 'aboutyou.de',
+  // Platforms/CDNs
+  'shopify.com', 'myshopify.com', 'shopifycdn.com', 'cdn.shopify.com', 'bigcommerce.com', 'woocommerce.com',
+]);
+
+function normalizeBrandName(name: string): string {
+  return name.toLowerCase().trim().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '');
+}
+
+/**
+ * Returns a mapped brand domain if available
+ */
+export function getBrandDomain(brandName: string | null | undefined): string | null {
+  if (!brandName) return null;
+  const key = normalizeBrandName(brandName);
+  return BRAND_DOMAIN_MAPPINGS[key] || null;
+}
+
+/** Determines if a domain is a marketplace/platform we should skip for brand logos */
+export function isMarketplaceDomain(domain: string | null | undefined): boolean {
+  if (!domain) return false;
+  const clean = domain.replace(/^https?:\/\//, '').split('/')[0].toLowerCase();
+  return MARKETPLACE_DOMAINS.has(clean);
+}
+
+/**
  * Logo configuration options
  */
 export interface LogoOptions {
@@ -97,8 +138,10 @@ export function generateLogoUrl(
   if (isValidDomain(domainOrBrand)) {
     domain = domainOrBrand.replace(/^https?:\/\//, '').split('/')[0];
   } else {
-    // Try to convert brand name to domain
-    domain = brandNameToDomain(domainOrBrand);
+    // Prefer explicit brand-domain mappings when available
+    const mapped = getBrandDomain(domainOrBrand);
+    // Fallback: derive from brand name
+    domain = mapped || brandNameToDomain(domainOrBrand);
   }
   
   if (!domain) return null;
@@ -247,4 +290,3 @@ export function extractMainDomain(domain: string | null): string | null {
   // Return last 2 parts (domain.com)
   return parts.slice(-2).join('.');
 }
-
