@@ -15,6 +15,9 @@ import { computeTrend, formatPercentCompact, formatPercentDetailed } from '@/uti
 import Checkbox from '@/components/ui/checkbox';
 import TanStackTable from '@/components/application/table/tanstack-table';
 import JewelryProductCell from '@/components/application/table/JewelryProductCell';
+import { FileUpload } from '@/components/application/file-upload/file-upload-base';
+import { getSignedURL } from '@/actions/upload';
+import toast from 'react-hot-toast';
 
 // Jewelry products data (compatible with Competitor interface)
 const jewelryProducts = [
@@ -924,6 +927,11 @@ export default function CompetitorPage() {
   const [priceSort, setPriceSort] = React.useState<'none' | 'asc' | 'desc'>('none');
   const [currentPage, setCurrentPage] = React.useState(1);
   const [itemsPerPage] = React.useState(10);
+  
+  // File upload state
+  const [uploadedFiles, setUploadedFiles] = React.useState<File[]>([]);
+  const [uploadProgress, setUploadProgress] = React.useState<Record<string, number>>({});
+  const [isUploading, setIsUploading] = React.useState(false);
 
   // Use jewelry products data instead of competitors
   const currentData = jewelryProducts;
@@ -1062,6 +1070,96 @@ export default function CompetitorPage() {
     setPriceSort('none');
   };
 
+  // File upload handlers
+  const handleFileUpload = async (file: File) => {
+    if (!file) return null;
+
+    try {
+      const signedUrl = await getSignedURL(file.type, file.size);
+
+      if (signedUrl.failure !== undefined) {
+        toast.error(signedUrl.failure);
+        return null;
+      }
+
+      const url = signedUrl.success.url;
+
+      const res = await fetch(url, {
+        method: "PUT",
+        headers: {
+          "Content-Type": file.type || "application/octet-stream",
+        },
+        body: file,
+      });
+
+      if (res.status === 200) {
+        toast.success("File uploaded successfully");
+        return signedUrl?.success?.key;
+      } else {
+        toast.error("Failed to upload file");
+        return null;
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      toast.error("Failed to upload file");
+      return null;
+    }
+  };
+
+  const handleFilesDropped = async (files: FileList) => {
+    const fileArray = Array.from(files);
+    setIsUploading(true);
+    
+    try {
+      const uploadPromises = fileArray.map(async (file) => {
+        const fileId = `${file.name}-${Date.now()}`;
+        setUploadProgress(prev => ({ ...prev, [fileId]: 0 }));
+        
+        // Simulate progress
+        const progressInterval = setInterval(() => {
+          setUploadProgress(prev => ({
+            ...prev,
+            [fileId]: Math.min(prev[fileId] + Math.random() * 20, 90)
+          }));
+        }, 200);
+
+        const result = await handleFileUpload(file);
+        
+        clearInterval(progressInterval);
+        setUploadProgress(prev => ({ ...prev, [fileId]: 100 }));
+        
+        if (result) {
+          setUploadedFiles(prev => [...prev, file]);
+        }
+        
+        return result;
+      });
+
+      await Promise.all(uploadPromises);
+    } catch (error) {
+      console.error("Error processing files:", error);
+      toast.error("Error processing files");
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleUnacceptedFiles = (files: FileList) => {
+    const fileArray = Array.from(files);
+    const fileNames = fileArray.map(f => f.name).join(", ");
+    toast.error(`Unsupported file types: ${fileNames}`);
+  };
+
+  const handleSizeLimitExceed = (files: FileList) => {
+    const fileArray = Array.from(files);
+    const fileNames = fileArray.map(f => f.name).join(", ");
+    toast.error(`Files too large: ${fileNames}`);
+  };
+
+  const removeFile = (fileToRemove: File) => {
+    setUploadedFiles(prev => prev.filter(file => file !== fileToRemove));
+  };
+
   return (
     <>
       {/* Screen reader announcements */}
@@ -1106,28 +1204,38 @@ export default function CompetitorPage() {
         <div className="h-px self-stretch bg-border-secondary" role="separator" aria-hidden="true" />
       </header>
 
-      {/* File Upload Widget - Figma Design */}
-      <section className="rounded-xl border-2 border-primary bg-background p-4 md:p-6 transition-colors hover:border-primary/80 focus-within:border-primary" aria-label="File upload">
-        <div className="flex flex-col items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-border-secondary bg-background shadow-sm">
-            <UploadCloud02 className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
-          </div>
-          <div className="flex flex-col items-center gap-1 self-stretch">
-            <div className="flex items-start justify-center gap-1 self-stretch text-center">
-              <button
-                className="text-sm font-semibold text-primary hover:text-primary/80 focus:outline-none focus:ring-2 focus:ring-ring/40 rounded"
-                aria-label="Click to upload files"
-              >
-                Click to upload
-              </button>
-              <span className="text-sm font-normal text-muted-foreground">or drag and drop</span>
-            </div>
-            <p className="self-stretch text-center text-xs font-normal leading-[18px] text-muted-foreground">
-              SVG, PNG, JPG or GIF (max. 800x400px)
-            </p>
-          </div>
-        </div>
-      </section>
+      {/* File Upload Widget - Functional */}
+      <FileUpload.Root>
+        <FileUpload.DropZone
+          className="rounded-xl border-2 border-primary bg-background p-4 md:p-6 transition-colors hover:border-primary/80 focus-within:border-primary"
+          hint="SVG, PNG, JPG or GIF (max. 800x400px)"
+          accept="image/*,.svg,.png,.jpg,.jpeg,.gif"
+          maxSize={5 * 1024 * 1024} // 5MB
+          allowsMultiple={true}
+          onDropFiles={handleFilesDropped}
+          onDropUnacceptedFiles={handleUnacceptedFiles}
+          onSizeLimitExceed={handleSizeLimitExceed}
+          isDisabled={isUploading}
+        />
+        
+        {uploadedFiles.length > 0 && (
+          <FileUpload.List>
+            {uploadedFiles.map((file, index) => {
+              const fileId = `${file.name}-${index}`;
+              const progress = uploadProgress[fileId] || 0;
+              return (
+                <FileUpload.ListItemProgressBar
+                  key={fileId}
+                  name={file.name}
+                  size={file.size}
+                  progress={progress}
+                  onDelete={() => removeFile(file)}
+                />
+              );
+            })}
+          </FileUpload.List>
+        )}
+      </FileUpload.Root>
 
       <section className="rounded-xl border border-border-secondary bg-card shadow-sm transition-colors">
         <div className="border-b border-border-secondary p-4 md:p-6">

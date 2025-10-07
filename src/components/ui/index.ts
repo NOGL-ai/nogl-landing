@@ -8,7 +8,7 @@ export { Button } from "./button";
 export { Input } from "./input";
 
 // Checkbox
-export { Checkbox } from "./checkbox";
+export { default as Checkbox } from "./checkbox";
 
 // Tables
 export {

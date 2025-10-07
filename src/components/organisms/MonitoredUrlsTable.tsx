@@ -21,7 +21,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import { Checkbox } from "@/components/ui/checkbox";
+import Checkbox from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import {
 	Search,
