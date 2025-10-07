@@ -15,7 +15,6 @@ import { computeTrend, formatPercentCompact, formatPercentDetailed } from '@/uti
 import Checkbox from '@/components/ui/checkbox';
 import TanStackTable from '@/components/application/table/tanstack-table';
 import JewelryProductCell from '@/components/application/table/JewelryProductCell';
-import { FileUpload } from '@/components/application/file-upload';
 
 // Jewelry products data (compatible with Competitor interface)
 const jewelryProducts = [
