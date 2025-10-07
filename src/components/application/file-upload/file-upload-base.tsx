@@ -226,7 +226,7 @@ export const FileUploadDropZone = ({
             )}
         >
             <FeaturedIcon color="gray" theme="modern" size="md">
-                <UploadCloud02 className="size-5 text-secondary dark:text-gray-200" />
+                <UploadCloud02 className="size-5 text-fg-secondary dark:text-fg-white" />
             </FeaturedIcon>
 
             <div className="flex flex-col gap-1 text-center">
@@ -304,7 +304,7 @@ export const FileListItemProgressBar = ({ name, size, progress, failed, type, fi
                                 {isComplete && <CheckCircle className="size-4 stroke-[2.5px] text-fg-success-primary dark:text-green-400" />}
                                 {isComplete && <p className="text-sm font-medium text-success-primary dark:text-green-400">Complete</p>}
 
-                                {!isComplete && !failed && <UploadCloud02 className="size-4 stroke-[2.5px] text-fg-quaternary dark:text-gray-500" />}
+                                {!isComplete && !failed && <UploadCloud02 className="size-4 stroke-[2.5px] text-fg-quaternary dark:text-fg-white" />}
                                 {!isComplete && !failed && <p className="text-sm font-medium text-quaternary dark:text-gray-500">Uploading...</p>}
 
                                 {failed && <XCircle className="size-4 text-fg-error-primary dark:text-red-400" />}
@@ -369,7 +369,7 @@ export const FileListItemProgressFill = ({ name, size, progress, failed, type, f
                                     <hr className="h-3 w-px rounded-t-full rounded-b-full border-none bg-border-primary dark:bg-gray-600" />
                                     <div className="flex items-center gap-1">
                                         {isComplete && <CheckCircle className="size-4 stroke-[2.5px] text-fg-success-primary dark:text-green-400" />}
-                                        {!isComplete && <UploadCloud02 className="size-4 stroke-[2.5px] text-fg-quaternary dark:text-gray-500" />}
+                                        {!isComplete && <UploadCloud02 className="size-4 stroke-[2.5px] text-fg-quaternary dark:text-fg-white" />}
 
                                         <p className="text-sm text-tertiary dark:text-gray-400">{progress}%</p>
                                     </div>
