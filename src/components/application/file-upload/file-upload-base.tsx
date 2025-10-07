@@ -191,23 +191,42 @@ export const FileUploadDropZone = ({
         processFiles(Array.from(event.target.files || []));
     };
 
+    const handleClick = () => {
+        if (isDisabled) return;
+        inputRef.current?.click();
+    };
+
+    const handleKeyActivate = (event: React.KeyboardEvent<HTMLDivElement>) => {
+        if (isDisabled) return;
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            inputRef.current?.click();
+        }
+    };
+
     return (
         <div
             data-dropzone
+            role="button"
+            tabIndex={isDisabled ? -1 : 0}
+            aria-disabled={isDisabled || undefined}
+            onClick={handleClick}
+            onKeyDown={handleKeyActivate}
             onDragOver={handleDragIn}
             onDragEnter={handleDragIn}
             onDragLeave={handleDragOut}
             onDragEnd={handleDragOut}
             onDrop={handleDrop}
             className={cx(
-                "relative flex flex-col items-center gap-3 rounded-xl bg-primary px-6 py-4 text-tertiary ring-1 ring-secondary transition duration-100 ease-linear ring-inset",
-                isDraggingOver && "ring-2 ring-brand",
-                isDisabled && "cursor-not-allowed bg-disabled_subtle ring-disabled_subtle",
+                "relative flex flex-col items-center gap-3 rounded-xl bg-primary dark:bg-gray-800 px-6 py-4 text-tertiary dark:text-gray-300 ring-1 ring-secondary dark:ring-gray-600 transition duration-100 ease-linear ring-inset focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40",
+                !isDisabled && "cursor-pointer",
+                isDraggingOver && "ring-2 ring-brand dark:ring-blue-500",
+                isDisabled && "cursor-not-allowed bg-disabled_subtle dark:bg-gray-700 ring-disabled_subtle dark:ring-gray-600",
                 className,
             )}
         >
             <FeaturedIcon color="gray" theme="modern" size="md">
-                <UploadCloud02 className="size-5" />
+                <UploadCloud02 className="size-5 text-secondary dark:text-gray-200" />
             </FeaturedIcon>
 
             <div className="flex flex-col gap-1 text-center">
@@ -225,9 +244,9 @@ export const FileUploadDropZone = ({
                     <Button color="link-color" size="md" isDisabled={isDisabled} onClick={() => inputRef.current?.click()}>
                         Click to upload <span className="md:hidden">and attach files</span>
                     </Button>
-                    <span className="text-sm max-md:hidden">or drag and drop</span>
+                    <span className="text-sm max-md:hidden dark:text-gray-400">or drag and drop</span>
                 </div>
-                <p className={cx("text-xs transition duration-100 ease-linear", isInvalid && "text-error-primary")}>
+                <p className={cx("text-xs transition duration-100 ease-linear dark:text-gray-400", isInvalid && "text-error-primary dark:text-red-400")}>
                     {hint || "SVG, PNG, JPG or GIF (max. 800x400px)"}
                 </p>
             </div>
@@ -263,8 +282,8 @@ export const FileListItemProgressBar = ({ name, size, progress, failed, type, fi
         <motion.li
             layout="position"
             className={cx(
-                "relative flex gap-3 rounded-xl bg-primary p-4 ring-1 ring-secondary transition-shadow duration-100 ease-linear ring-inset",
-                failed && "ring-2 ring-error",
+                "relative flex gap-3 rounded-xl bg-primary dark:bg-gray-800 p-4 ring-1 ring-secondary dark:ring-gray-600 transition-shadow duration-100 ease-linear ring-inset",
+                failed && "ring-2 ring-error dark:ring-red-500",
                 className,
             )}
         >
@@ -274,22 +293,22 @@ export const FileListItemProgressBar = ({ name, size, progress, failed, type, fi
             <div className="flex min-w-0 flex-1 flex-col items-start">
                 <div className="flex w-full max-w-full min-w-0 flex-1">
                     <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-medium text-secondary">{name}</p>
+                        <p className="truncate text-sm font-medium text-secondary dark:text-gray-200">{name}</p>
 
                         <div className="mt-0.5 flex items-center gap-2">
-                            <p className="truncate text-sm whitespace-nowrap text-tertiary">{getReadableFileSize(size)}</p>
+                            <p className="truncate text-sm whitespace-nowrap text-tertiary dark:text-gray-400">{getReadableFileSize(size)}</p>
 
-                            <hr className="h-3 w-px rounded-t-full rounded-b-full border-none bg-border-primary" />
+                            <hr className="h-3 w-px rounded-t-full rounded-b-full border-none bg-border-primary dark:bg-gray-600" />
 
                             <div className="flex items-center gap-1">
-                                {isComplete && <CheckCircle className="size-4 stroke-[2.5px] text-fg-success-primary" />}
-                                {isComplete && <p className="text-sm font-medium text-success-primary">Complete</p>}
+                                {isComplete && <CheckCircle className="size-4 stroke-[2.5px] text-fg-success-primary dark:text-green-400" />}
+                                {isComplete && <p className="text-sm font-medium text-success-primary dark:text-green-400">Complete</p>}
 
-                                {!isComplete && !failed && <UploadCloud02 className="stroke-[2.5px size-4 text-fg-quaternary" />}
-                                {!isComplete && !failed && <p className="text-sm font-medium text-quaternary">Uploading...</p>}
+                                {!isComplete && !failed && <UploadCloud02 className="size-4 stroke-[2.5px] text-fg-quaternary dark:text-gray-500" />}
+                                {!isComplete && !failed && <p className="text-sm font-medium text-quaternary dark:text-gray-500">Uploading...</p>}
 
-                                {failed && <XCircle className="size-4 text-fg-error-primary" />}
-                                {failed && <p className="text-sm font-medium text-error-primary">Failed</p>}
+                                {failed && <XCircle className="size-4 text-fg-error-primary dark:text-red-400" />}
+                                {failed && <p className="text-sm font-medium text-error-primary dark:text-red-400">Failed</p>}
                             </div>
                         </div>
                     </div>
@@ -317,11 +336,11 @@ export const FileListItemProgressFill = ({ name, size, progress, failed, type, f
     const isComplete = progress === 100;
 
     return (
-        <motion.li layout="position" className={cx("relative flex gap-3 overflow-hidden rounded-xl bg-primary p-4", className)}>
+        <motion.li layout="position" className={cx("relative flex gap-3 overflow-hidden rounded-xl bg-primary dark:bg-gray-800 p-4", className)}>
             {/* Progress fill. */}
             <div
                 style={{ transform: `translateX(-${100 - progress}%)` }}
-                className={cx("absolute inset-0 size-full bg-secondary transition duration-75 ease-linear", isComplete && "opacity-0")}
+                className={cx("absolute inset-0 size-full bg-secondary dark:bg-gray-700 transition duration-75 ease-linear", isComplete && "opacity-0")}
                 role="progressbar"
                 aria-valuenow={progress}
                 aria-valuemin={0}
@@ -330,8 +349,8 @@ export const FileListItemProgressFill = ({ name, size, progress, failed, type, f
             {/* Inner ring. */}
             <div
                 className={cx(
-                    "absolute inset-0 size-full rounded-[inherit] ring-1 ring-secondary transition duration-100 ease-linear ring-inset",
-                    failed && "ring-2 ring-error",
+                    "absolute inset-0 size-full rounded-[inherit] ring-1 ring-secondary dark:ring-gray-600 transition duration-100 ease-linear ring-inset",
+                    failed && "ring-2 ring-error dark:ring-red-500",
                 )}
             />
             <FileTypeIcon className="relative size-10 shrink-0 dark:hidden" type={type ?? "empty"} theme="light" variant={fileIconVariant ?? "solid"} />
@@ -340,19 +359,19 @@ export const FileListItemProgressFill = ({ name, size, progress, failed, type, f
             <div className="relative flex min-w-0 flex-1">
                 <div className="relative flex min-w-0 flex-1 flex-col items-start">
                     <div className="w-full min-w-0 flex-1">
-                        <p className="truncate text-sm font-medium text-secondary">{name}</p>
+                        <p className="truncate text-sm font-medium text-secondary dark:text-gray-200">{name}</p>
 
                         <div className="mt-0.5 flex items-center gap-2">
-                            <p className="text-sm text-tertiary">{failed ? "Upload failed, please try again" : getReadableFileSize(size)}</p>
+                            <p className="text-sm text-tertiary dark:text-gray-400">{failed ? "Upload failed, please try again" : getReadableFileSize(size)}</p>
 
                             {!failed && (
                                 <>
-                                    <hr className="h-3 w-px rounded-t-full rounded-b-full border-none bg-border-primary" />
+                                    <hr className="h-3 w-px rounded-t-full rounded-b-full border-none bg-border-primary dark:bg-gray-600" />
                                     <div className="flex items-center gap-1">
-                                        {isComplete && <CheckCircle className="size-4 stroke-[2.5px] text-fg-success-primary" />}
-                                        {!isComplete && <UploadCloud02 className="size-4 stroke-[2.5px] text-fg-quaternary" />}
+                                        {isComplete && <CheckCircle className="size-4 stroke-[2.5px] text-fg-success-primary dark:text-green-400" />}
+                                        {!isComplete && <UploadCloud02 className="size-4 stroke-[2.5px] text-fg-quaternary dark:text-gray-500" />}
 
-                                        <p className="text-sm text-tertiary">{progress}%</p>
+                                        <p className="text-sm text-tertiary dark:text-gray-400">{progress}%</p>
                                     </div>
                                 </>
                             )}

@@ -932,6 +932,15 @@ export default function CompetitorPage() {
   const [uploadedFiles, setUploadedFiles] = React.useState<File[]>([]);
   const [uploadProgress, setUploadProgress] = React.useState<Record<string, number>>({});
   const [isUploading, setIsUploading] = React.useState(false);
+  const [uploadErrors, setUploadErrors] = React.useState<Record<string, string>>({});
+  
+  // Cleanup intervals on unmount
+  React.useEffect(() => {
+    return () => {
+      // Cleanup any remaining intervals
+      setUploadProgress({});
+    };
+  }, []);
 
   // Use jewelry products data instead of competitors
   const currentData = jewelryProducts;
@@ -1071,15 +1080,23 @@ export default function CompetitorPage() {
   };
 
   // File upload handlers
-  const handleFileUpload = async (file: File) => {
+  const handleFileUpload = async (file: File): Promise<string | null> => {
     if (!file) return null;
+
+    // Validate file before upload
+    if (!file.type.startsWith('image/')) {
+      throw new Error('Only image files are allowed');
+    }
+
+    if (file.size > 5 * 1024 * 1024) { // 5MB limit
+      throw new Error('File size must be less than 5MB');
+    }
 
     try {
       const signedUrl = await getSignedURL(file.type, file.size);
 
       if (signedUrl.failure !== undefined) {
-        toast.error(signedUrl.failure);
-        return null;
+        throw new Error(signedUrl.failure);
       }
 
       const url = signedUrl.success.url;
@@ -1093,16 +1110,13 @@ export default function CompetitorPage() {
       });
 
       if (res.status === 200) {
-        toast.success("File uploaded successfully");
         return signedUrl?.success?.key;
       } else {
-        toast.error("Failed to upload file");
-        return null;
+        throw new Error(`Upload failed with status: ${res.status}`);
       }
     } catch (error) {
       console.error("Error uploading file:", error);
-      toast.error("Failed to upload file");
-      return null;
+      throw error;
     }
   };
 
@@ -1110,29 +1124,48 @@ export default function CompetitorPage() {
     const fileArray = Array.from(files);
     setIsUploading(true);
     
+    // Clear previous progress
+    setUploadProgress({});
+    
     try {
       const uploadPromises = fileArray.map(async (file) => {
         const fileId = `${file.name}-${Date.now()}`;
         setUploadProgress(prev => ({ ...prev, [fileId]: 0 }));
         
-        // Simulate progress
+        // Simulate progress with proper cleanup
         const progressInterval = setInterval(() => {
           setUploadProgress(prev => ({
             ...prev,
-            [fileId]: Math.min(prev[fileId] + Math.random() * 20, 90)
+            [fileId]: Math.min((prev[fileId] || 0) + Math.random() * 20, 90)
           }));
         }, 200);
 
-        const result = await handleFileUpload(file);
-        
-        clearInterval(progressInterval);
-        setUploadProgress(prev => ({ ...prev, [fileId]: 100 }));
-        
-        if (result) {
-          setUploadedFiles(prev => [...prev, file]);
+        try {
+          const result = await handleFileUpload(file);
+          
+          clearInterval(progressInterval);
+          setUploadProgress(prev => ({ ...prev, [fileId]: 100 }));
+          setUploadErrors(prev => {
+            const { [fileId]: _, ...rest } = prev;
+            return rest;
+          });
+          
+          if (result) {
+            setUploadedFiles(prev => [...prev, file]);
+            toast.success(`${file.name} uploaded successfully`);
+          }
+          
+          return result;
+        } catch (error) {
+          clearInterval(progressInterval);
+          setUploadProgress(prev => ({ ...prev, [fileId]: 0 }));
+          setUploadErrors(prev => ({ 
+            ...prev, 
+            [fileId]: error instanceof Error ? error.message : 'Upload failed' 
+          }));
+          toast.error(`${file.name}: ${error instanceof Error ? error.message : 'Upload failed'}`);
+          throw error;
         }
-        
-        return result;
       });
 
       await Promise.all(uploadPromises);
@@ -1207,7 +1240,7 @@ export default function CompetitorPage() {
       {/* File Upload Widget - Functional */}
       <FileUpload.Root>
         <FileUpload.DropZone
-          className="rounded-xl border-2 border-primary bg-background p-4 md:p-6 transition-colors hover:border-primary/80 focus-within:border-primary"
+          className="rounded-xl border-2 border-primary bg-background dark:bg-gray-900 p-4 md:p-6 transition-colors hover:border-primary/80 focus-within:border-primary dark:border-primary dark:hover:border-primary/80 dark:focus-within:border-primary"
           hint="SVG, PNG, JPG or GIF (max. 800x400px)"
           accept="image/*,.svg,.png,.jpg,.jpeg,.gif"
           maxSize={5 * 1024 * 1024} // 5MB
@@ -1218,18 +1251,30 @@ export default function CompetitorPage() {
           isDisabled={isUploading}
         />
         
-        {uploadedFiles.length > 0 && (
+        {(uploadedFiles.length > 0 || Object.keys(uploadProgress).length > 0) && (
           <FileUpload.List>
             {uploadedFiles.map((file, index) => {
               const fileId = `${file.name}-${index}`;
               const progress = uploadProgress[fileId] || 0;
+              const error = uploadErrors[fileId];
               return (
                 <FileUpload.ListItemProgressBar
                   key={fileId}
                   name={file.name}
                   size={file.size}
                   progress={progress}
+                  failed={!!error}
                   onDelete={() => removeFile(file)}
+                  onRetry={error ? () => {
+                    setUploadErrors(prev => {
+                      const { [fileId]: _, ...rest } = prev;
+                      return rest;
+                    });
+                    // Retry upload for this specific file
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    handleFilesDropped(dataTransfer.files);
+                  } : undefined}
                 />
               );
             })}
