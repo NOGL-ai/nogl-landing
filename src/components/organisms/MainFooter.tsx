@@ -312,18 +312,6 @@ const Footer = ({ lang = "en" }: { lang?: string }) => {
 				</div>
 				
 				{/* Logo.dev Attribution */}
-				<div className='mt-8 pt-4 border-t border-gray-800'>
-					<p className='text-xs text-gray-500 text-center'>
-						<a 
-							href='https://logo.dev' 
-							target='_blank' 
-							rel='noopener noreferrer'
-							className='hover:text-gray-400 transition-colors'
-						>
-							Logos provided by Logo.dev
-						</a>
-					</p>
-				</div>
 			</div>
 		</footer>
 	);

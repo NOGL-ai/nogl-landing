@@ -1,7 +1,7 @@
 import { GetProductsResponse, PageParams, ProductDTO } from "@/types/product";
 
-// Toggle between mock and API using NEXT_PUBLIC_USE_MOCK ("true"/"false")
-const useMock = typeof process !== "undefined" && process.env.NEXT_PUBLIC_USE_MOCK === "true";
+// Force to use real API (mock disabled)
+const useMock = false;
 
 // Minimal mock dataset shaped like ProductDTO
 const mockProducts: ProductDTO[] = [

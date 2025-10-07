@@ -17,9 +17,9 @@ import TanStackTable from '@/components/application/table/tanstack-table';
 import JewelryProductCell from '@/components/application/table/JewelryProductCell';
 import { FileUpload } from '@/components/application/file-upload/file-upload-base';
 import { getSignedURL } from '@/actions/upload';
-import toast from 'react-hot-toast';
 import { getProducts } from '@/lib/services/productClient';
-import type { ProductDTO } from '@/types/product';
+import { ProductDTO } from '@/types/product';
+import toast from 'react-hot-toast';
 
 // Jewelry products data (compatible with Competitor interface)
 const jewelryProducts = [
@@ -929,100 +929,82 @@ export default function CompetitorPage() {
   const [priceSort, setPriceSort] = React.useState<'none' | 'asc' | 'desc'>('none');
   const [currentPage, setCurrentPage] = React.useState(1);
   const [itemsPerPage] = React.useState(10);
-  const [fetchedProducts, setFetchedProducts] = React.useState<any[]>([]);
-  const [fetchedTotalPages, setFetchedTotalPages] = React.useState<number | null>(null);
   
   // File upload state
   const [uploadedFiles, setUploadedFiles] = React.useState<File[]>([]);
   const [uploadProgress, setUploadProgress] = React.useState<Record<string, number>>({});
   const [isUploading, setIsUploading] = React.useState(false);
-  const [uploadErrors, setUploadErrors] = React.useState<Record<string, string>>({});
-  
-  // Cleanup intervals on unmount
-  React.useEffect(() => {
-    return () => {
-      // Cleanup any remaining intervals
-      setUploadProgress({});
-    };
-  }, []);
 
-  // Use jewelry products data instead of competitors
-  const usingRemote = fetchedProducts.length > 0 && fetchedTotalPages !== null;
-  const currentData = usingRemote ? fetchedProducts : jewelryProducts;
+  // API data state
+  const [products, setProducts] = React.useState<any[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
 
-  // Fetch products from API (or mock via flag)
+  // Fetch products from API
   React.useEffect(() => {
-    const controller = new AbortController();
-    const run = async () => {
+    const fetchProducts = async () => {
       try {
-        const sortBy = priceSort !== 'none' ? 'price' : 'createdAt';
-        const sortOrder = priceSort === 'asc' ? 'asc' : 'desc';
-        const response = await getProducts({
-          page: currentPage,
-          limit: itemsPerPage,
-          search: searchQuery || undefined,
-          sortBy,
-          sortOrder,
-        });
-
-        // Map API ProductDTO -> table row shape used in this page
-        const mapped = (response.products || []).map((p: ProductDTO, idx: number) => {
-          const cheapestCompetitor = p.competitors && p.competitors.length > 0 ? p.competitors[0] : undefined;
-          return {
-            id: idx, // keep numeric id for selection; UI uses number
-            name: p.name,
-            domain: p.brand?.name || '',
-            avatar: p.image || p.brand?.logo || '',
-            sku: p.sku,
-            image: p.image || '',
-            price: p.price,
-            currency: p.currency || 'EUR',
-            brand: {
-              name: p.brand?.name || 'Unknown Brand',
-              logo: p.brand?.logo || undefined,
-            },
-            competitors: cheapestCompetitor
-              ? {
-                  cheapest: cheapestCompetitor.cheapest,
-                  avg: cheapestCompetitor.avg,
-                  highest: cheapestCompetitor.highest,
-                  cheapestColor: (cheapestCompetitor.cheapestColor as any) || 'green',
-                  prices: [cheapestCompetitor.cheapest, cheapestCompetitor.avg, cheapestCompetitor.highest],
-                  competitorNames: [cheapestCompetitor.name],
-                }
-              : { cheapest: p.price, avg: p.price, highest: p.price, cheapestColor: 'green', prices: [p.price], competitorNames: [] },
-            triggeredRule: '',
-            variants: 0,
-            competitorCount: p._count?.competitors ?? (p.competitors?.length || 0),
-            margin: 0,
-            stock: 0,
-            trend: 0,
-            trendUp: true,
-            date: '',
-            categories: [p.category?.name || 'Active'],
-            competitorPrice: cheapestCompetitor?.cheapest ?? p.price,
-            myPrice: p.price,
-            products: 0,
-            position: 0,
-            channel: p.channel || 'shopify',
-          };
-        });
-
-        if (!controller.signal.aborted) {
-          setFetchedProducts(mapped);
-          setFetchedTotalPages(response.pagination?.totalPages ?? 1);
-        }
-      } catch (e) {
-        if (!controller.signal.aborted) {
-          // Fallback to mock already handled by currentData
-          setFetchedProducts([]);
-          setFetchedTotalPages(null);
-        }
+        setIsLoading(true);
+        setError(null);
+        const response = await getProducts({ page: 1, limit: 100 });
+        
+        // Map ProductDTO to the expected format
+        const mappedProducts = response.products.map((product: ProductDTO, index: number) => ({
+          id: index,
+          name: product.name,
+          domain: 'example.com', // Default domain since not in ProductDTO
+          avatar: product.image,
+          sku: product.sku,
+          image: product.image,
+          price: product.price,
+          currency: product.currency,
+          brand: product.brand ? {
+            name: product.brand.name,
+            logo: product.brand.logo,
+          } : {
+            name: 'Unknown',
+            logo: null,
+          },
+          competitors: {
+            cheapest: product.price * 0.9, // Mock competitor data
+            avg: product.price * 1.05,
+            highest: product.price * 1.2,
+            cheapestColor: 'green' as const,
+            prices: [product.price * 0.9, product.price * 0.95, product.price * 1.05, product.price * 1.1, product.price * 1.2],
+            competitorNames: ['Competitor 1', 'Competitor 2', 'Competitor 3', 'Competitor 4', 'Competitor 5'],
+          },
+          triggeredRule: 'price optimization active',
+          variants: 1,
+          competitorCount: product._count?.competitors || 0,
+          margin: 25,
+          stock: 10,
+          trend: 2.5,
+          trendUp: true,
+          date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+          categories: product.category ? [product.category.name] : ['Uncategorized'],
+          competitorPrice: product.price * 0.9,
+          myPrice: product.price,
+          products: 1,
+          position: 25,
+          channel: product.channel || 'unknown',
+        }));
+        
+        setProducts(mappedProducts);
+      } catch (err) {
+        console.error('Error fetching products:', err);
+        setError('Failed to load products');
+        // Fallback to mock data on error
+        setProducts(jewelryProducts);
+      } finally {
+        setIsLoading(false);
       }
     };
-    run();
-    return () => controller.abort();
-  }, [currentPage, itemsPerPage, searchQuery, priceSort]);
+
+    fetchProducts();
+  }, []);
+
+  // Use API products data instead of hardcoded jewelry products
+  const currentData = products;
   
   // Calculate max products for relative scaling
   const maxProducts = React.useMemo(() => {
@@ -1121,10 +1103,10 @@ export default function CompetitorPage() {
   }, [filteredProducts, productSort, priceSort]);
 
   // Pagination logic
-  const totalPages = usingRemote ? (fetchedTotalPages as number) : Math.ceil(sortedProducts.length / itemsPerPage);
-  const startIndex = usingRemote ? 0 : (currentPage - 1) * itemsPerPage;
-  const endIndex = usingRemote ? sortedProducts.length : startIndex + itemsPerPage;
-  const paginatedProducts = usingRemote ? sortedProducts : sortedProducts.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedProducts = sortedProducts.slice(startIndex, endIndex);
 
   // Reset to first page when search or filters change
   React.useEffect(() => {
@@ -1159,23 +1141,15 @@ export default function CompetitorPage() {
   };
 
   // File upload handlers
-  const handleFileUpload = async (file: File): Promise<string | null> => {
+  const handleFileUpload = async (file: File) => {
     if (!file) return null;
-
-    // Validate file before upload
-    if (!file.type.startsWith('image/')) {
-      throw new Error('Only image files are allowed');
-    }
-
-    if (file.size > 5 * 1024 * 1024) { // 5MB limit
-      throw new Error('File size must be less than 5MB');
-    }
 
     try {
       const signedUrl = await getSignedURL(file.type, file.size);
 
       if (signedUrl.failure !== undefined) {
-        throw new Error(signedUrl.failure);
+        toast.error(signedUrl.failure);
+        return null;
       }
 
       const url = signedUrl.success.url;
@@ -1189,13 +1163,16 @@ export default function CompetitorPage() {
       });
 
       if (res.status === 200) {
+        toast.success("File uploaded successfully");
         return signedUrl?.success?.key;
       } else {
-        throw new Error(`Upload failed with status: ${res.status}`);
+        toast.error("Failed to upload file");
+        return null;
       }
     } catch (error) {
       console.error("Error uploading file:", error);
-      throw error;
+      toast.error("Failed to upload file");
+      return null;
     }
   };
 
@@ -1203,48 +1180,29 @@ export default function CompetitorPage() {
     const fileArray = Array.from(files);
     setIsUploading(true);
     
-    // Clear previous progress
-    setUploadProgress({});
-    
     try {
       const uploadPromises = fileArray.map(async (file) => {
         const fileId = `${file.name}-${Date.now()}`;
         setUploadProgress(prev => ({ ...prev, [fileId]: 0 }));
         
-        // Simulate progress with proper cleanup
+        // Simulate progress
         const progressInterval = setInterval(() => {
           setUploadProgress(prev => ({
             ...prev,
-            [fileId]: Math.min((prev[fileId] || 0) + Math.random() * 20, 90)
+            [fileId]: Math.min(prev[fileId] + Math.random() * 20, 90)
           }));
         }, 200);
 
-        try {
-          const result = await handleFileUpload(file);
-          
-          clearInterval(progressInterval);
-          setUploadProgress(prev => ({ ...prev, [fileId]: 100 }));
-          setUploadErrors(prev => {
-            const { [fileId]: _, ...rest } = prev;
-            return rest;
-          });
-          
-          if (result) {
-            setUploadedFiles(prev => [...prev, file]);
-            toast.success(`${file.name} uploaded successfully`);
-          }
-          
-          return result;
-        } catch (error) {
-          clearInterval(progressInterval);
-          setUploadProgress(prev => ({ ...prev, [fileId]: 0 }));
-          setUploadErrors(prev => ({ 
-            ...prev, 
-            [fileId]: error instanceof Error ? error.message : 'Upload failed' 
-          }));
-          toast.error(`${file.name}: ${error instanceof Error ? error.message : 'Upload failed'}`);
-          throw error;
+        const result = await handleFileUpload(file);
+        
+        clearInterval(progressInterval);
+        setUploadProgress(prev => ({ ...prev, [fileId]: 100 }));
+        
+        if (result) {
+          setUploadedFiles(prev => [...prev, file]);
         }
+        
+        return result;
       });
 
       await Promise.all(uploadPromises);
@@ -1271,6 +1229,39 @@ export default function CompetitorPage() {
   const removeFile = (fileToRemove: File) => {
     setUploadedFiles(prev => prev.filter(file => file !== fileToRemove));
   };
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <main className="mx-auto w-full min-h-screen space-y-6 md:space-y-8 bg-background px-4 md:px-8 pt-6 md:pt-8 pb-8 md:pb-12 text-foreground transition-colors">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Loading products...</p>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <main className="mx-auto w-full min-h-screen space-y-6 md:space-y-8 bg-background px-4 md:px-8 pt-6 md:pt-8 pb-8 md:pb-12 text-foreground transition-colors">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <p className="text-destructive mb-4">{error}</p>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <>
@@ -1319,7 +1310,7 @@ export default function CompetitorPage() {
       {/* File Upload Widget - Functional */}
       <FileUpload.Root>
         <FileUpload.DropZone
-          className="rounded-xl border-2 border-primary bg-background dark:bg-gray-900 p-4 md:p-6 transition-colors hover:border-primary/80 focus-within:border-primary dark:border-primary dark:hover:border-primary/80 dark:focus-within:border-primary"
+          className="rounded-xl border-2 border-primary bg-background p-4 md:p-6 transition-colors hover:border-primary/80 focus-within:border-primary"
           hint="SVG, PNG, JPG or GIF (max. 800x400px)"
           accept="image/*,.svg,.png,.jpg,.jpeg,.gif"
           maxSize={5 * 1024 * 1024} // 5MB
@@ -1330,30 +1321,18 @@ export default function CompetitorPage() {
           isDisabled={isUploading}
         />
         
-        {(uploadedFiles.length > 0 || Object.keys(uploadProgress).length > 0) && (
+        {uploadedFiles.length > 0 && (
           <FileUpload.List>
             {uploadedFiles.map((file, index) => {
               const fileId = `${file.name}-${index}`;
               const progress = uploadProgress[fileId] || 0;
-              const error = uploadErrors[fileId];
               return (
                 <FileUpload.ListItemProgressBar
                   key={fileId}
                   name={file.name}
                   size={file.size}
                   progress={progress}
-                  failed={!!error}
                   onDelete={() => removeFile(file)}
-                  onRetry={error ? () => {
-                    setUploadErrors(prev => {
-                      const { [fileId]: _, ...rest } = prev;
-                      return rest;
-                    });
-                    // Retry upload for this specific file
-                    const dataTransfer = new DataTransfer();
-                    dataTransfer.items.add(file);
-                    handleFilesDropped(dataTransfer.files);
-                  } : undefined}
                 />
               );
             })}

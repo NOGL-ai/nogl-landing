@@ -76,37 +76,38 @@ export const GET = withRequestLogging(
 
     // Get products and total count in parallel
     const [products, total] = await Promise.all([
-      prisma.products.findMany({
+      (prisma as any).products.findMany({
         where,
         orderBy,
         skip,
         take: limit,
       }),
-      prisma.products.count({ where }),
+      (prisma as any).products.count({ where }),
     ]);
 
-    // Map products to API-friendly format
+    // Map products to ProductDTO format expected by the catalog
     const mappedProducts = products.map((product: any) => ({
       id: product.product_id,
-      name: product.product_title,
-      sku: product.product_sku,
-      description: product.product_description,
+      name: product.product_title || 'Untitled Product',
+      sku: product.product_sku || 'N/A',
       image: product.product_page_image_url,
-      url: product.product_url,
-      price: product.product_original_price,
-      discountPrice: product.product_discount_price,
-      currency: product.product_currency,
-      brand: product.product_brand,
-      category: product.product_category,
-      condition: product.product_condition,
-      color: product.product_color,
-      material: product.product_material,
-      gender: product.product_gender,
-      hasPromotion: product.product_has_promotion,
-      imageCount: product.product_image_count,
-      variantsCount: product.product_variants_count,
-      availableSizes: product.product_available_sizes,
-      extractionTimestamp: product.extraction_timestamp,
+      price: product.product_original_price ? parseFloat(product.product_original_price.toString()) : 0,
+      currency: product.product_currency || 'EUR',
+      channel: product.product_display_mode,
+      brand: product.product_brand ? {
+        id: product.product_brand.toLowerCase().replace(/\s+/g, '-'),
+        name: product.product_brand,
+        logo: null
+      } : null,
+      category: product.product_category ? {
+        id: product.product_category.toLowerCase().replace(/\s+/g, '-'),
+        name: product.product_category,
+        slug: product.product_category.toLowerCase().replace(/\s+/g, '-')
+      } : null,
+      competitors: [], // No competitor data in current table structure
+      _count: {
+        competitors: 0
+      }
     }));
 
     const response = NextResponse.json({
