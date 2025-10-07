@@ -79,6 +79,7 @@ interface TanStackTableProps {
   firstColumnHeader?: string;
   enableDragDrop?: boolean;
   onDragEnd?: (event: DragEndEvent) => void;
+  columnOrder?: 'default' | 'monitored-urls';
 }
 
 const columnHelper = createColumnHelper<Competitor>();
@@ -108,6 +109,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
   firstColumnHeader = 'Product',
   enableDragDrop = false,
   onDragEnd,
+  columnOrder = 'default',
 }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
@@ -167,7 +169,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
               className="mr-1"
             />
             <span className="text-xs font-semibold text-muted-foreground">
-              {firstColumnHeader}
+              {columnOrder === 'monitored-urls' ? 'Competitor Product' : firstColumnHeader}
             </span>
           </div>
         ),
@@ -218,30 +220,79 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
     ];
 
 
-    // Add Products column only if showProductsColumn is true
-    if (showProductsColumn) {
-      baseColumns.push({
-        accessorKey: 'products',
-        id: 'products',
-        header: productsColumnHeader,
-        cell: ({ row }) => (
-          ProductsCell ? (
-            <ProductsCell 
-              competitor={row.original} 
-              maxProducts={maxProducts || 100}
-            />
-          ) : (
-            <div className="text-sm text-foreground">
-              {row.original.products.toLocaleString()}
-            </div>
-          )
-        ),
-        enableSorting: true,
-      });
+    // For monitored-urls column order: Competitors -> Materials -> Brand -> Channel
+    // For default column order: Products -> Materials -> Competitors -> Brand -> Channel
+    
+    if (columnOrder === 'monitored-urls') {
+      // Add Competitor Count column first for monitored URLs
+      if (showCompetitorsColumn) {
+        baseColumns.push({
+          accessorKey: 'competitorCount',
+          id: 'competitorCount',
+          header: 'Competitors',
+          cell: ({ row }) => {
+            const product = row.original as any;
+            const competitorCount = product.competitorCount || 0;
+            
+            if (competitorCount === 0) {
+              return (
+                <div className="flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                    <span className="text-sm font-medium text-gray-400">—</span>
+                  </div>
+                </div>
+              );
+            }
+
+            const maxCompetitors = 10;
+            const progressPercentage = Math.min((competitorCount / maxCompetitors) * 100, 100);
+            const circumference = 2 * Math.PI * 16;
+            const strokeDasharray = `${(progressPercentage / 100) * circumference} ${circumference}`;
+            
+            return (
+              <div className="group relative flex items-center justify-center">
+                <div className="relative w-10 h-10">
+                  <svg width="40" height="40" className="transform -rotate-90">
+                    <circle cx="20" cy="20" r="16" fill="none" stroke="#E9EAEB" strokeWidth="3" />
+                    <circle cx="20" cy="20" r="16" fill="none" stroke="#7F56D9" strokeWidth="3" strokeDasharray={strokeDasharray} strokeDashoffset="0" strokeLinecap="round" className="transition-all duration-300 ease-out" />
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">{competitorCount}</span>
+                  </div>
+                </div>
+                <div className="absolute left-1/2 top-full mt-2 hidden group-hover:block z-50 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs rounded-lg px-3 py-2 shadow-lg whitespace-nowrap transform -translate-x-1/2">
+                  <div className="space-y-1">
+                    <div className="font-semibold">Competitor Analysis</div>
+                    <div className="text-gray-300 dark:text-gray-600">{competitorCount} competitor{competitorCount !== 1 ? 's' : ''} found</div>
+                  </div>
+                  <div className="absolute -top-1 left-1/2 w-2 h-2 bg-gray-900 dark:bg-gray-100 rotate-45 transform -translate-x-1/2"></div>
+                </div>
+              </div>
+            );
+          },
+          enableSorting: true,
+        });
+      }
+    } else {
+      // Default order: add Products column first
+      if (showProductsColumn) {
+        baseColumns.push({
+          accessorKey: 'products',
+          id: 'products',
+          header: productsColumnHeader,
+          cell: ({ row }) => (
+            ProductsCell ? (
+              <ProductsCell competitor={row.original} maxProducts={maxProducts || 100} />
+            ) : (
+              <div className="text-sm text-foreground">{row.original.products.toLocaleString()}</div>
+            )
+          ),
+          enableSorting: true,
+        });
+      }
     }
 
-
-    // Add Materials column only if showMaterialsColumn is true
+    // Add Materials column
     if (showMaterialsColumn) {
       baseColumns.push({
         accessorKey: 'variants',
@@ -333,9 +384,8 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
       });
     }
 
-
-    // Add Competitor Count column (Untitled UI inspired) - conditional
-    if (showCompetitorsColumn) {
+    // Add Competitor Count column for default order (after materials)
+    if (columnOrder === 'default' && showCompetitorsColumn) {
       baseColumns.push({
         accessorKey: 'competitorCount',
         id: 'competitorCount',
@@ -354,56 +404,26 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
             );
           }
 
-          // Calculate progress percentage (max 10 competitors for 100% fill)
           const maxCompetitors = 10;
           const progressPercentage = Math.min((competitorCount / maxCompetitors) * 100, 100);
-          const circumference = 2 * Math.PI * 16; // radius = 16
+          const circumference = 2 * Math.PI * 16;
           const strokeDasharray = `${(progressPercentage / 100) * circumference} ${circumference}`;
           
           return (
             <div className="group relative flex items-center justify-center">
-              {/* Circular Progress Chart - Untitled UI Style */}
               <div className="relative w-10 h-10">
                 <svg width="40" height="40" className="transform -rotate-90">
-                  {/* Background circle */}
-                  <circle
-                    cx="20"
-                    cy="20"
-                    r="16"
-                    fill="none"
-                    stroke="#E9EAEB"
-                    strokeWidth="3"
-                  />
-                  {/* Progress circle */}
-                  <circle
-                    cx="20"
-                    cy="20"
-                    r="16"
-                    fill="none"
-                    stroke="#7F56D9"
-                    strokeWidth="3"
-                    strokeDasharray={strokeDasharray}
-                    strokeDashoffset="0"
-                    strokeLinecap="round"
-                    className="transition-all duration-300 ease-out"
-                  />
+                  <circle cx="20" cy="20" r="16" fill="none" stroke="#E9EAEB" strokeWidth="3" />
+                  <circle cx="20" cy="20" r="16" fill="none" stroke="#7F56D9" strokeWidth="3" strokeDasharray={strokeDasharray} strokeDashoffset="0" strokeLinecap="round" className="transition-all duration-300 ease-out" />
                 </svg>
-                
-                {/* Center count - Untitled UI typography */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                    {competitorCount}
-                  </span>
+                  <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">{competitorCount}</span>
                 </div>
               </div>
-
-              {/* Hover tooltip */}
               <div className="absolute left-1/2 top-full mt-2 hidden group-hover:block z-50 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs rounded-lg px-3 py-2 shadow-lg whitespace-nowrap transform -translate-x-1/2">
                 <div className="space-y-1">
                   <div className="font-semibold">Competitor Analysis</div>
-                  <div className="text-gray-300 dark:text-gray-600">
-                    {competitorCount} competitor{competitorCount !== 1 ? 's' : ''} found
-                  </div>
+                  <div className="text-gray-300 dark:text-gray-600">{competitorCount} competitor{competitorCount !== 1 ? 's' : ''} found</div>
                   {product.competitors?.competitorNames && (
                     <div className="text-gray-300 dark:text-gray-600">
                       Top: {product.competitors.competitorNames.slice(0, 3).join(', ')}
@@ -778,7 +798,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
     );
 
     return baseColumns;
-  }, [selectedRows, maxProducts, badgeClasses, ProductsCell, PricePositionCell, computeTrend, formatPercentDetailed, formatPercentCompact, showProductsColumn]);
+  }, [selectedRows, maxProducts, badgeClasses, ProductsCell, PricePositionCell, computeTrend, formatPercentDetailed, formatPercentCompact, showProductsColumn, showMaterialsColumn, showCompetitorsColumn, showBrandColumn, showChannelColumn, brandColumnHeader, firstColumnHeader, productsColumnHeader, columnOrder]);
 
   // Sortable Row Component
   const SortableRow = ({ row, index }: { row: any; index: number }) => {

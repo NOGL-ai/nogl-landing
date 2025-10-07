@@ -14,106 +14,184 @@ import { computeTrend, formatPercentCompact, formatPercentDetailed } from '@/uti
 import Checkbox from '@/components/ui/checkbox';
 import TanStackTable from '@/components/application/table/tanstack-table';
 
-const competitors = [
+// Competitor Products Data - for monitored URLs
+const competitorProducts = [
   {
-    id: 0,
+    id: 100,
     name: 'Ephemeral',
+    sku: 'COMP-EPH-001',
     domain: 'ephemeral.io',
     avatar: '/api/placeholder/40/40',
+    brand: {
+      name: 'Ephemeral',
+      logo: null,
+    },
+    variants: 1,
+    competitorCount: 1,
+    competitors: {
+      prices: [29.90],
+      avg: 29.90,
+      cheapest: 29.90,
+      highest: 29.90,
+    },
     products: 1250,
     position: 60,
     trend: 5,
     trendUp: true,
     date: '22 Jan 2025',
-    categories: ['Active', 'In Stock', 'Customer data', '+3'],
+    categories: ['Active', 'In Stock', 'Tracking'],
     competitorPrice: 29.90,
     myPrice: 42.00,
+    channel: 'shopify',
   },
   {
-    id: 1,
+    id: 101,
     name: 'Stack3d Lab',
+    sku: 'COMP-STK-002',
     domain: 'stack3dlab.com',
     avatar: '/api/placeholder/40/40',
+    brand: {
+      name: 'Stack3d Lab',
+      logo: null,
+    },
+    variants: 1,
+    competitorCount: 1,
+    competitors: {
+      prices: [35.50],
+      avg: 35.50,
+      cheapest: 35.50,
+      highest: 35.50,
+    },
     products: 980,
     position: 72,
     trend: 4,
     trendUp: false,
     date: '20 Jan 2025',
-    categories: ['Active', 'In Stock', 'Business data', '+3'],
+    categories: ['Active', 'In Stock', 'Tracking'],
     competitorPrice: 35.50,
     myPrice: 32.00,
+    channel: 'woocommerce',
   },
   {
-    id: 2,
+    id: 102,
     name: 'Warpspeed',
+    sku: 'COMP-WSP-003',
     domain: 'getwarpspeed.com',
     avatar: '/api/placeholder/40/40',
+    brand: {
+      name: 'Warpspeed',
+      logo: null,
+    },
+    variants: 1,
+    competitorCount: 1,
+    competitors: {
+      prices: [45.00],
+      avg: 45.00,
+      cheapest: 45.00,
+      highest: 45.00,
+    },
     products: 113,
     position: 78,
     trend: 6,
     trendUp: true,
     date: '24 Jan 2025',
-    categories: ['Active', 'In Stock', 'Customer data'],
+    categories: ['Active', 'In Stock', 'Tracking'],
     competitorPrice: 45.00,
     myPrice: 45.00,
+    channel: 'shopify',
   },
+];
+
+// Your Products Data - for monitored URLs
+const yourProducts = [
   {
-    id: 3,
-    name: 'CloudWatch',
-    domain: 'cloudwatch.app',
+    id: 200,
+    name: 'Ephemeral',
+    sku: 'YOUR-EPH-001',
+    domain: 'yourstore.com',
     avatar: '/api/placeholder/40/40',
-    products: 2455,
-    position: 38,
-    trend: 8,
-    trendUp: true,
-    date: '26 Jan 2025',
-    categories: ['Active', 'In Stock', 'Database access'],
-    competitorPrice: 52.00,
-    myPrice: 48.00,
-  },
-  {
-    id: 4,
-    name: 'ContrastAI',
-    domain: 'contrastai.com',
-    avatar: '/api/placeholder/40/40',
-    products: 765,
-    position: 42,
-    trend: 1,
-    trendUp: false,
-    date: '18 Jan 2025',
-    categories: ['Active', 'In Stock', 'Salesforce', '+3'],
-    competitorPrice: 28.00,
-    myPrice: 35.50,
-  },
-  {
-    id: 5,
-    name: 'Convergence',
-    domain: 'convergence.io',
-    avatar: '/api/placeholder/40/40',
+    brand: {
+      name: 'Your Brand',
+      logo: null,
+    },
+    variants: 1,
+    competitorCount: 1,
+    competitors: {
+      prices: [29.90],
+      avg: 29.90,
+      cheapest: 29.90,
+      highest: 29.90,
+    },
     products: 1540,
     position: 66,
     trend: 6,
     trendUp: false,
     date: '28 Jan 2025',
-    categories: ['Active', 'In Stock', 'Business data', '+3'],
-    competitorPrice: 39.99,
+    categories: ['Active', 'In Stock', 'Your Catalog'],
+    competitorPrice: 29.90,
     myPrice: 42.00,
+    channel: 'shopify',
   },
   {
-    id: 6,
-    name: 'Sisyphus',
-    domain: 'sisyphus.com',
+    id: 201,
+    name: 'Stack3d Lab',
+    sku: 'YOUR-STK-002',
+    domain: 'yourstore.com',
     avatar: '/api/placeholder/40/40',
+    brand: {
+      name: 'Your Brand',
+      logo: null,
+    },
+    variants: 1,
+    competitorCount: 1,
+    competitors: {
+      prices: [35.50],
+      avg: 35.50,
+      cheapest: 35.50,
+      highest: 35.50,
+    },
     products: 48,
     position: 91,
     trend: 2,
     trendUp: true,
     date: '16 Jan 2025',
-    categories: ['Inactive', 'Out of Stock', 'Customer data'],
-    competitorPrice: 55.00,
-    myPrice: 49.99,
+    categories: ['Active', 'In Stock', 'Your Catalog'],
+    competitorPrice: 35.50,
+    myPrice: 32.00,
+    channel: 'woocommerce',
+  },
+  {
+    id: 202,
+    name: 'Warpspeed',
+    sku: 'YOUR-WSP-003',
+    domain: 'yourstore.com',
+    avatar: '/api/placeholder/40/40',
+    brand: {
+      name: 'Your Brand',
+      logo: null,
+    },
+    variants: 1,
+    competitorCount: 1,
+    competitors: {
+      prices: [45.00],
+      avg: 45.00,
+      cheapest: 45.00,
+      highest: 45.00,
+    },
+    products: 820,
+    position: 55,
+    trend: 3,
+    trendUp: true,
+    date: '25 Jan 2025',
+    categories: ['Active', 'In Stock', 'Your Catalog'],
+    competitorPrice: 45.00,
+    myPrice: 45.00,
+    channel: 'shopify',
   },
 ];
+
+// Combined data for the table
+const competitors = [...competitorProducts, ...yourProducts];
 
 const badgeClasses: Record<string, string> = {
   Active: 'border-green-200 bg-green-50 text-green-700 dark:border-green-700 dark:bg-green-900 dark:text-green-300',
@@ -126,6 +204,8 @@ const badgeClasses: Record<string, string> = {
   Financials: 'border-pink-200 bg-pink-50 text-pink-700 dark:border-pink-700 dark:bg-pink-900 dark:text-pink-300',
   'Database access': 'border-slate-200 bg-slate-50 text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300',
   Salesforce: 'border-orange-200 bg-orange-50 text-orange-700 dark:border-orange-700 dark:bg-orange-900 dark:text-orange-300',
+  Tracking: 'border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-700 dark:bg-blue-900 dark:text-blue-300',
+  'Your Catalog': 'border-purple-200 bg-purple-50 text-purple-700 dark:border-purple-700 dark:bg-purple-900 dark:text-purple-300',
 };
 
 const iconButtonClasses = 'rounded-lg p-2.5 transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40';
@@ -155,7 +235,7 @@ const fmtPct = (percent: number) => {
 // computeTrend now imported from utils
 
 
-// Price Position Component
+// Compact Price Analysis Component (matching the image design)
 const PricePositionCell = ({
   competitorPrice,
   myPrice,
@@ -167,7 +247,7 @@ const PricePositionCell = ({
   const invalid = !(competitorPrice > 0 && Number.isFinite(competitorPrice) && Number.isFinite(myPrice));
   if (invalid) {
     return (
-      <div className="min-w-[280px]">
+      <div className="min-w-[200px]">
         <span
           role="status"
           className="inline-flex items-center gap-1 rounded-md border border-border-secondary bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground"
@@ -175,174 +255,89 @@ const PricePositionCell = ({
         >
           N/A
         </span>
-        <div className="mt-1 text-[11px] text-muted-foreground">Missing or invalid competitor price.</div>
       </div>
     );
   }
 
   const priceDiff = myPrice - competitorPrice;
   const pctDiff = (priceDiff / competitorPrice) * 100;
-
   const isEqual = priceDiff === 0;
   const isWinning = priceDiff < 0;
-
-  const colors = isEqual
-    ? {
-        bg: 'bg-muted dark:bg-gray-700',
-        text: 'text-muted-foreground dark:text-gray-300',
-        border: 'border-border-secondary dark:border-gray-600',
-      }
-    : isWinning
-    ? {
-        bg: 'bg-green-50 dark:bg-green-900',
-        text: 'text-green-700 dark:text-green-300',
-        border: 'border-green-200 dark:border-green-700',
-      }
-    : {
-        bg: 'bg-red-50 dark:bg-red-900',
-        text: 'text-red-700 dark:text-red-300',
-        border: 'border-red-200 dark:border-red-700',
-      };
-
   const statusText = isEqual ? 'Equal' : isWinning ? 'You Win' : 'You Lose';
 
-  // Keep your "fraction of competitor" bar. 50% == equal.
-  const progress = isEqual ? 50 : (competitorPrice / (competitorPrice + myPrice)) * 100;
-
-  const srId = React.useId();
+  // Calculate progress for the horizontal bar (competitor price position)
+  const progress = (competitorPrice / (competitorPrice + myPrice)) * 100;
 
   return (
-    <div
-      className="group relative min-w-[280px] space-y-1"
-      role="region"
-      aria-label="Price comparison"
-      aria-describedby={srId}
-    >
-      {/* SR-only descriptive text */}
-      <div id={srId} className="sr-only">
-        Competitor price {fmtPrice(competitorPrice)}. Your price {fmtPrice(myPrice)}.
-        Status: {statusText}. Difference {fmtDiff(priceDiff)} ({fmtPct(pctDiff)}).
+    <div className="min-w-[200px] space-y-2">
+      {/* Header with sort icon */}
+      <div className="flex items-center gap-1">
+        <h3 className="text-sm font-medium text-muted-foreground">Price Analysis</h3>
+        <svg className="h-3 w-3 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+        </svg>
       </div>
 
-      {/* Compact numbers */}
-      <div className="flex items-center justify-between gap-2 text-xs">
-        <div className="flex items-center gap-1.5">
-          <div className="flex h-6 w-6 items-center justify-center rounded bg-blue-50 dark:bg-blue-900" aria-hidden="true">
-            <svg className="h-3.5 w-3.5 text-blue-700 dark:text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2 6L8 2L14 6M3 13.5V7M13 13.5V7M2 13.5H14M5.5 13.5V10H10.5V13.5" />
+      {/* Compact horizontal layout */}
+      <div className="flex items-center justify-between gap-4">
+        {/* Competitor Price */}
+        <div className="flex items-center gap-2">
+          <div className="flex h-6 w-6 items-center justify-center rounded bg-blue-50 dark:bg-blue-900">
+            <svg className="h-3 w-3 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
             </svg>
           </div>
           <div>
-            <div className="text-[10px] font-medium text-muted-foreground dark:text-gray-400">Comp. Price</div>
-            <div className="font-semibold text-primary" aria-label={`Competitor price: ${fmtPrice(competitorPrice)}`}>
-              {fmtPrice(competitorPrice)}
-            </div>
+            <div className="text-xs text-muted-foreground">Comp. Price</div>
+            <div className="text-sm font-semibold text-foreground">{fmtPrice(competitorPrice)}</div>
           </div>
         </div>
 
-        <div className="flex items-center gap-1.5">
+        {/* My Price */}
+        <div className="flex items-center gap-2">
           <div>
-            <div className="text-right text-[10px] font-medium text-muted-foreground dark:text-gray-400">My Price</div>
-            <div className="text-right font-semibold text-primary" aria-label={`Your price: ${fmtPrice(myPrice)}`}>
-              {fmtPrice(myPrice)}
-            </div>
+            <div className="text-xs text-muted-foreground">My Price</div>
+            <div className="text-sm font-semibold text-foreground">{fmtPrice(myPrice)}</div>
           </div>
-          <div className="flex h-6 w-6 items-center justify-center rounded bg-purple-50 dark:bg-purple-900" aria-hidden="true">
-            <svg className="h-3.5 w-3.5 text-purple-700 dark:text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 14A6 6 0 108 2a6 6 0 000 12zM8 5.33V8m0 2.67h.007" />
+          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900">
+            <svg className="h-3 w-3 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
             </svg>
           </div>
         </div>
       </div>
 
-      {/* Progress bar */}
-      <div
-        className="relative"
-        role="progressbar"
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-valuenow={Math.round(progress)}
-        aria-valuetext={`${statusText} (${fmtPct(pctDiff)})`}
-        aria-label="Price comparison progress"
-      >
-        <div className="h-2 overflow-hidden rounded-full bg-border-secondary dark:bg-gray-600">
-          <div
-            className={`h-full transition-all duration-300 ${isWinning ? 'bg-green-500 dark:bg-green-400' : isEqual ? 'bg-gray-400 dark:bg-gray-500' : 'bg-red-500 dark:bg-red-400'}`}
-            style={{ width: `${progress}%` }}
-            aria-hidden="true"
-          />
-        </div>
-        <div
-          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 flex items-center justify-center"
+      {/* Horizontal progress bar */}
+      <div className="relative h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+        <div 
+          className={`h-full transition-all duration-300 ${isWinning ? 'bg-green-500' : isEqual ? 'bg-gray-400' : 'bg-red-500'}`}
+          style={{ width: `${progress}%` }}
+        />
+        <div 
+          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full border-2 border-white shadow-sm"
           style={{ left: `${progress}%` }}
-          aria-hidden="true"
         >
-          <div className={`h-4 w-4 rounded-full border-2 border-white shadow-sm ${isWinning ? 'bg-green-500 dark:bg-green-400' : isEqual ? 'bg-gray-400 dark:bg-gray-500' : 'bg-red-500 dark:bg-red-400'}`}>
-            <div className="h-full w-full rounded-full bg-white/30" />
-          </div>
+          <div className={`w-full h-full rounded-full ${isWinning ? 'bg-green-500' : isEqual ? 'bg-gray-400' : 'bg-red-500'}`} />
         </div>
       </div>
 
-      {/* Hidden meter for proper measurement semantics */}
-      <meter className="sr-only" min={0} max={100} value={Math.round(progress)}>
-        {statusText} ({fmtPct(pctDiff)})
-      </meter>
-
-      {/* Status + diff */}
+      {/* Status and difference */}
       <div className="flex items-center justify-between">
-        <div className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs font-medium ${colors.border} ${colors.bg} ${colors.text}`} role="status">
-          {!isEqual && (isWinning ? <ArrowDown className="h-3 w-3" aria-hidden="true" /> : <ArrowUp className="h-3 w-3" aria-hidden="true" />)}
-          <span>{statusText}</span>
+        <div className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium ${
+          isWinning ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
+          isEqual ? 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200' :
+          'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+        }`}>
+          {!isEqual && (isWinning ? <ArrowDown className="h-3 w-3" /> : <ArrowUp className="h-3 w-3" />)}
+          {statusText}
         </div>
         {!isEqual && (
-          <div className={`text-xs font-semibold ${colors.text}`}>
+          <div className={`text-xs font-medium ${
+            isWinning ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+          }`}>
             {fmtDiff(priceDiff)} ({fmtPct(pctDiff)})
           </div>
         )}
-      </div>
-
-      {/* Tooltip: now keyboard-friendly via focus-within */}
-      <div
-        className="pointer-events-none absolute left-0 top-full z-50 mt-2 hidden w-[320px] rounded-lg border border-border-secondary bg-background p-4 shadow-lg group-hover:block group-focus-within:block"
-        role="tooltip"
-        aria-hidden="true"
-      >
-        <div className="space-y-3">
-          <div className="text-sm font-semibold text-primary">Price Analysis</div>
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1 rounded-lg bg-blue-50 dark:bg-blue-900 p-3">
-              <div className="text-xs text-muted-foreground">Competitor</div>
-              <div className="text-lg font-bold text-blue-700 dark:text-blue-300">{fmtPrice(competitorPrice)}</div>
-            </div>
-            <div className="space-y-1 rounded-lg bg-purple-50 dark:bg-purple-900 p-3">
-              <div className="text-xs text-muted-foreground">Your Price</div>
-              <div className="text-lg font-bold text-purple-700 dark:text-purple-300">{fmtPrice(myPrice)}</div>
-            </div>
-          </div>
-          <div className="space-y-2 rounded-lg border border-border-secondary bg-muted p-3">
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-muted-foreground">Difference:</span>
-              <span className={`text-sm font-semibold ${colors.text}`}>{fmtDiff(priceDiff)}</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-muted-foreground">Percentage:</span>
-              <span className={`text-sm font-semibold ${colors.text}`}>{fmtPct(pctDiff)}</span>
-            </div>
-            <div className="flex items-center justify-between border-t border-border-secondary pt-2">
-              <span className="text-xs text-muted-foreground">Status:</span>
-              <span className={`text-sm font-bold ${colors.text}`}>{statusText}</span>
-            </div>
-          </div>
-          {!isEqual && (
-            <div className={`rounded-lg p-2 text-xs ${colors.bg}`}>
-              <span className={colors.text}>
-                {isWinning
-                  ? `💡 Great! You're ${fmtPct(-pctDiff)} cheaper than your competitor.`
-                  : `⚠️ Consider adjusting your price. You're ${fmtPct(pctDiff)} more expensive.`}
-              </span>
-            </div>
-          )}
-        </div>
       </div>
     </div>
   );
@@ -788,10 +783,13 @@ export default function CompetitorPage() {
             formatPercentDetailed={formatPercentDetailed}
             formatPercentCompact={formatPercentCompact}
             showProductsColumn={false}
-            showMaterialsColumn={true}
             showCompetitorsColumn={true}
+            showMaterialsColumn={false}
             showBrandColumn={true}
+            brandColumnHeader="Brand"
             showChannelColumn={true}
+            firstColumnHeader="Product"
+            columnOrder="monitored-urls"
           />
         </div>
 

@@ -1494,13 +1494,14 @@ export default function CompetitorPage() {
             computeTrend={computeTrend}
             formatPercentDetailed={formatPercentDetailed}
             formatPercentCompact={formatPercentCompact}
-            showProductsColumn={false} // Remove Products column
-            showCompetitorsColumn={true} // Enable Competitors column for catalog page
-            showMaterialsColumn={true} // Enable Materials column for catalog page
-            showBrandColumn={true} // Enable Brand column for catalog page
-            brandColumnHeader="Brand" // Change Brand column header to "Brand"
-            showChannelColumn={true} // Enable Channel column for catalog page
-            firstColumnHeader="Product Name" // Change first column header to "Product Name"
+            showProductsColumn={false}
+            showMaterialsColumn={true}
+            showCompetitorsColumn={true}
+            showBrandColumn={true}
+            brandColumnHeader="Brand"
+            showChannelColumn={true}
+            firstColumnHeader="Product Name"
+            columnOrder="default"
           />
         </div>
 

@@ -116,7 +116,7 @@ export function ProductTableColumns(products: Product[] = []): ColumnDef<Product
 						href={productUrl}
 						target="_blank"
 						rel="noopener noreferrer"
-						className="block h-10 w-10 overflow-hidden rounded-lg bg-gray-100 transition-colors duration-200 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:h-12 sm:w-12 dark:bg-gray-700 dark:hover:bg-gray-600"
+						className="block h-12 w-12 overflow-hidden rounded-lg bg-gray-100 transition-colors duration-200 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:h-14 sm:w-14 dark:bg-gray-700 dark:hover:bg-gray-600"
 						aria-label={`View product details for ${product.name}`}
 					>
 						<img
@@ -359,12 +359,12 @@ export function ProductTableColumns(products: Product[] = []): ColumnDef<Product
 			cell: ({ row }) => {
 				const brand = row.getValue("brand") as Product["brand"];
 				return (
-					<div className="flex items-center space-x-2">
+					<div className="flex items-center space-x-3">
 						{brand.logo && (
 							<img
 								src={brand.logo}
 								alt={`${brand.name} brand logo`}
-								className="h-5 w-5 rounded"
+								className="h-8 w-8 rounded-md object-contain"
 								loading="lazy"
 							/>
 						)}

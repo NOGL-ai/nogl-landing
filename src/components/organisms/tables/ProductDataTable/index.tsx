@@ -59,7 +59,7 @@ export function ProductDataTable({
 	enableInfiniteScroll = false,
 	onInfiniteScrollToggle,
 	infiniteScrollProps,
-	variant = "default",
+	variant = "untitled-ui",
 	tableTitle,
 	tableBadge,
 	tableDescription,
@@ -187,6 +187,7 @@ export function ProductDataTable({
 				enableColumnReordering={true}
 				pageSize={20}
 				onRowSelectionChange={setSelectedRows}
+				variant={variant === 'untitled-ui' ? 'untitled-ui' : 'default'}
 			/>
 		</div>
 	);
