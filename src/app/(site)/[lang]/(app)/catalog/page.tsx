@@ -18,6 +18,8 @@ import JewelryProductCell from '@/components/application/table/JewelryProductCel
 import { FileUpload } from '@/components/application/file-upload/file-upload-base';
 import { getSignedURL } from '@/actions/upload';
 import toast from 'react-hot-toast';
+import { getProducts } from '@/lib/services/productClient';
+import type { ProductDTO } from '@/types/product';
 
 // Jewelry products data (compatible with Competitor interface)
 const jewelryProducts = [
@@ -927,6 +929,8 @@ export default function CompetitorPage() {
   const [priceSort, setPriceSort] = React.useState<'none' | 'asc' | 'desc'>('none');
   const [currentPage, setCurrentPage] = React.useState(1);
   const [itemsPerPage] = React.useState(10);
+  const [fetchedProducts, setFetchedProducts] = React.useState<any[]>([]);
+  const [fetchedTotalPages, setFetchedTotalPages] = React.useState<number | null>(null);
   
   // File upload state
   const [uploadedFiles, setUploadedFiles] = React.useState<File[]>([]);
@@ -943,7 +947,82 @@ export default function CompetitorPage() {
   }, []);
 
   // Use jewelry products data instead of competitors
-  const currentData = jewelryProducts;
+  const usingRemote = fetchedProducts.length > 0 && fetchedTotalPages !== null;
+  const currentData = usingRemote ? fetchedProducts : jewelryProducts;
+
+  // Fetch products from API (or mock via flag)
+  React.useEffect(() => {
+    const controller = new AbortController();
+    const run = async () => {
+      try {
+        const sortBy = priceSort !== 'none' ? 'price' : 'createdAt';
+        const sortOrder = priceSort === 'asc' ? 'asc' : 'desc';
+        const response = await getProducts({
+          page: currentPage,
+          limit: itemsPerPage,
+          search: searchQuery || undefined,
+          sortBy,
+          sortOrder,
+        });
+
+        // Map API ProductDTO -> table row shape used in this page
+        const mapped = (response.products || []).map((p: ProductDTO, idx: number) => {
+          const cheapestCompetitor = p.competitors && p.competitors.length > 0 ? p.competitors[0] : undefined;
+          return {
+            id: idx, // keep numeric id for selection; UI uses number
+            name: p.name,
+            domain: p.brand?.name || '',
+            avatar: p.image || p.brand?.logo || '',
+            sku: p.sku,
+            image: p.image || '',
+            price: p.price,
+            currency: p.currency || 'EUR',
+            brand: {
+              name: p.brand?.name || 'Unknown Brand',
+              logo: p.brand?.logo || undefined,
+            },
+            competitors: cheapestCompetitor
+              ? {
+                  cheapest: cheapestCompetitor.cheapest,
+                  avg: cheapestCompetitor.avg,
+                  highest: cheapestCompetitor.highest,
+                  cheapestColor: (cheapestCompetitor.cheapestColor as any) || 'green',
+                  prices: [cheapestCompetitor.cheapest, cheapestCompetitor.avg, cheapestCompetitor.highest],
+                  competitorNames: [cheapestCompetitor.name],
+                }
+              : { cheapest: p.price, avg: p.price, highest: p.price, cheapestColor: 'green', prices: [p.price], competitorNames: [] },
+            triggeredRule: '',
+            variants: 0,
+            competitorCount: p._count?.competitors ?? (p.competitors?.length || 0),
+            margin: 0,
+            stock: 0,
+            trend: 0,
+            trendUp: true,
+            date: '',
+            categories: [p.category?.name || 'Active'],
+            competitorPrice: cheapestCompetitor?.cheapest ?? p.price,
+            myPrice: p.price,
+            products: 0,
+            position: 0,
+            channel: p.channel || 'shopify',
+          };
+        });
+
+        if (!controller.signal.aborted) {
+          setFetchedProducts(mapped);
+          setFetchedTotalPages(response.pagination?.totalPages ?? 1);
+        }
+      } catch (e) {
+        if (!controller.signal.aborted) {
+          // Fallback to mock already handled by currentData
+          setFetchedProducts([]);
+          setFetchedTotalPages(null);
+        }
+      }
+    };
+    run();
+    return () => controller.abort();
+  }, [currentPage, itemsPerPage, searchQuery, priceSort]);
   
   // Calculate max products for relative scaling
   const maxProducts = React.useMemo(() => {
@@ -1042,10 +1121,10 @@ export default function CompetitorPage() {
   }, [filteredProducts, productSort, priceSort]);
 
   // Pagination logic
-  const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const paginatedProducts = sortedProducts.slice(startIndex, endIndex);
+  const totalPages = usingRemote ? (fetchedTotalPages as number) : Math.ceil(sortedProducts.length / itemsPerPage);
+  const startIndex = usingRemote ? 0 : (currentPage - 1) * itemsPerPage;
+  const endIndex = usingRemote ? sortedProducts.length : startIndex + itemsPerPage;
+  const paginatedProducts = usingRemote ? sortedProducts : sortedProducts.slice(startIndex, endIndex);
 
   // Reset to first page when search or filters change
   React.useEffect(() => {

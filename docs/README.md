@@ -53,6 +53,7 @@ Welcome to the comprehensive documentation for the CallAPro landing page project
 - **[FEATURES_IMPLEMENTATION_README.md](./guides/FEATURES_IMPLEMENTATION_README.md)** - Feature implementation guide
 - **[UltimateAnalysis.md](./guides/UltimateAnalysis.md)** - Ultimate analysis documentation
 - **[README.md](./guides/README.md)** - Sidebar component documentation
+- **[MODAL_VARIANTS_GUIDE.md](./guides/MODAL_VARIANTS_GUIDE.md)** - Modal variants, usage, and Untitled UI styling
 
 ---
 
