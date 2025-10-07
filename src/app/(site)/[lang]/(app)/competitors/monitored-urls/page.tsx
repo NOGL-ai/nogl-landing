@@ -13,6 +13,10 @@ import {
 import { computeTrend, formatPercentCompact, formatPercentDetailed } from '@/utils/priceTrend';
 import Checkbox from '@/components/ui/checkbox';
 import TanStackTable from '@/components/application/table/tanstack-table';
+import JewelryProductCell from '@/components/application/table/JewelryProductCell';
+import { getProducts } from '@/lib/services/productClient';
+import { ProductDTO } from '@/types/product';
+import toast from 'react-hot-toast';
 
 // Competitor Products Data - for monitored URLs
 const competitorProducts = [
@@ -352,10 +356,76 @@ export default function CompetitorPage() {
   const [priceSort, setPriceSort] = React.useState<'none' | 'asc' | 'desc'>('none');
   const [trendSort, setTrendSort] = React.useState<'none' | 'asc' | 'desc'>('none');
 
+  // API data state
+  const [products, setProducts] = React.useState<any[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
+
+  // Fetch products from API
+  React.useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const response = await getProducts({ page: 1, limit: 100 });
+        
+        // Map ProductDTO to the expected format for monitored URLs
+        const mappedProducts = response.products.map((product: ProductDTO, index: number) => ({
+          id: index,
+          name: product.name,
+          domain: 'yourstore.com', // Default domain
+          avatar: product.image,
+          sku: product.sku,
+          image: product.image,
+          brand: product.brand ? {
+            name: product.brand.name,
+            logo: product.brand.logo,
+          } : {
+            name: 'Your Brand',
+            logo: null,
+          },
+          variants: 1,
+          competitorCount: product._count?.competitors || 1,
+          competitors: {
+            prices: [product.price * 0.9],
+            avg: product.price * 0.9,
+            cheapest: product.price * 0.9,
+            highest: product.price * 0.9,
+          },
+          products: 1,
+          position: 60 + index,
+          trend: Math.random() * 10 - 2, // Random trend between -2 and 8
+          trendUp: Math.random() > 0.5,
+          date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+          categories: product.category ? ['Active', 'In Stock', 'Tracking', product.category.name] : ['Active', 'In Stock', 'Tracking'],
+          competitorPrice: product.price * 0.9, // Mock competitor price
+          myPrice: product.price,
+          channel: product.channel || 'shopify',
+          currency: product.currency || 'EUR',
+          status: 'Active',
+        }));
+        
+        setProducts(mappedProducts);
+      } catch (err) {
+        console.error('Error fetching products:', err);
+        setError('Failed to load products');
+        // Fallback to mock data on error
+        setProducts(competitors);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // Use API products data instead of hardcoded data
+  const currentData = products.length > 0 ? products : competitors;
+
   // Calculate max products for relative scaling
   const maxProducts = React.useMemo(() => {
-    return Math.max(...competitors.map(c => c.products));
-  }, []);
+    return Math.max(...currentData.map(c => c.products));
+  }, [currentData]);
 
   const toggleRow = (id: number) => {
     setSelectedRows(prev => {
@@ -419,12 +489,13 @@ export default function CompetitorPage() {
   // Filter competitors based on search query (memoized for performance)
   const filteredCompetitors = React.useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
-    if (!q) return competitors;
-    return competitors.filter(competitor =>
+    if (!q) return currentData;
+    return currentData.filter(competitor =>
       competitor.name.toLowerCase().includes(q) ||
-      competitor.domain.toLowerCase().includes(q)
+      competitor.domain.toLowerCase().includes(q) ||
+      (competitor.sku && competitor.sku.toLowerCase().includes(q))
     );
-  }, [searchQuery]);
+  }, [searchQuery, currentData]);
 
   // Sort according to product, price or trend toggle
   const sortedCompetitors = React.useMemo(() => {
@@ -474,6 +545,39 @@ export default function CompetitorPage() {
     setPriceSort('none');
     setTrendSort('none');
   };
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <main className="mx-auto w-full min-h-screen space-y-6 md:space-y-8 bg-background px-4 md:px-8 pt-6 md:pt-8 pb-8 md:pb-12 text-foreground transition-colors">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Loading products...</p>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <main className="mx-auto w-full min-h-screen space-y-6 md:space-y-8 bg-background px-4 md:px-8 pt-6 md:pt-8 pb-8 md:pb-12 text-foreground transition-colors">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <p className="text-destructive mb-4">{error}</p>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <>
@@ -591,7 +695,7 @@ export default function CompetitorPage() {
             <div className="flex items-start justify-between">
               <div>
                 <h2 className="text-lg font-semibold text-foreground">Products monitored</h2>
-                <p className="mt-1 text-sm text-muted-foreground">You're monitoring 80% of your inventory.</p>
+                <p className="mt-1 text-sm text-muted-foreground">You're monitoring {currentData.length} products.</p>
               </div>
               <button className={compactIconButtonClasses} aria-label="More actions">
                 <svg className="h-5 w-5 text-quaternary" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
@@ -623,7 +727,7 @@ export default function CompetitorPage() {
                     strokeLinejoin="round"
                   />
                 </svg>
-                <div className="absolute left-1/2 top-[60px] -translate-x-1/2 text-[30px] font-semibold text-primary">240</div>
+                <div className="absolute left-1/2 top-[60px] -translate-x-1/2 text-[30px] font-semibold text-primary">{currentData.length}</div>
               </div>
               <div className="flex items-center gap-1">
                 <svg className="h-4 w-4" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
@@ -654,7 +758,7 @@ export default function CompetitorPage() {
             <div className="flex-1 min-w-[200px]">
               <div className="flex flex-wrap items-center gap-2">
                 <h2 className="text-base md:text-lg font-semibold text-foreground">Products nogled</h2>
-                <span className="inline-flex items-center rounded-full border border-border-secondary bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">240 products</span>
+                <span className="inline-flex items-center rounded-full border border-border-secondary bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">{currentData.length} products</span>
               </div>
               <p className="mt-1 text-xs md:text-sm text-muted-foreground">Monitor competitor pricing and stay competitive with real-time price tracking.</p>
             </div>
@@ -778,6 +882,33 @@ export default function CompetitorPage() {
             focusedRowIndex={focusedRowIndex ?? -1}
             maxProducts={maxProducts}
             badgeClasses={badgeClasses}
+            ProductsCell={({ competitor, maxProducts }) => {
+              const comp: any = competitor;
+              return (
+                <JewelryProductCell 
+                  product={{
+                    id: comp.id,
+                    name: comp.name,
+                    image: comp.avatar || comp.image,
+                    sku: comp.sku || `SKU-${comp.id}`,
+                    brand: {
+                      name: comp.brand?.name || 'Unknown Brand',
+                      logo: comp.brand?.logo
+                    },
+                    myPrice: comp.myPrice || comp.competitorPrice,
+                    competitorCount: comp.competitorCount || 0,
+                    status: comp.status || 'Active',
+                    currency: comp.currency || 'EUR',
+                    categories: comp.categories || []
+                  }}
+                  showPrice={false}
+                  showStatus={true}
+                  showCompetitorCount={false}
+                  showTooltip={true}
+                  size="lg"
+                />
+              );
+            }}
             PricePositionCell={PricePositionCell}
             computeTrend={computeTrend}
             formatPercentDetailed={formatPercentDetailed}
@@ -795,9 +926,9 @@ export default function CompetitorPage() {
 
         <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border-secondary px-4 md:px-6 py-3">
           <div className="text-xs md:text-sm font-medium text-muted-foreground dark:text-gray-300">
-            Page 1 of 10
+            Page 1 of {Math.max(1, Math.ceil(sortedCompetitors.length / 10))}
             <span className="sr-only">
-              Showing {filteredCompetitors.length} of {competitors.length} competitors
+              Showing {filteredCompetitors.length} of {currentData.length} products
               {searchQuery && ` matching "${searchQuery}"`}
             </span>
           </div>
