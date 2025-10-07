@@ -924,13 +924,6 @@ export default function CompetitorPage() {
   const [priceSort, setPriceSort] = React.useState<'none' | 'asc' | 'desc'>('none');
   const [currentPage, setCurrentPage] = React.useState(1);
   const [itemsPerPage] = React.useState(10);
-  const [uploadedFiles, setUploadedFiles] = React.useState<File[]>([]);
-
-  // File upload handler
-  const handleFilesChange = (files: File[]) => {
-    setUploadedFiles(files);
-    console.log('Files uploaded:', files);
-  };
 
   // Use jewelry products data instead of competitors
   const currentData = jewelryProducts;
