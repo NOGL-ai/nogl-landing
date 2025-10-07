@@ -1,16 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prismaDb";
-import { withAuth } from "@/middlewares/auth";
-import { withQueryValidation, withValidation } from "@/middlewares/validation";
 import { withRequestLogging, withSecurityHeaders } from "@/middlewares/security";
 import { withRateLimit } from "@/middlewares/rateLimit";
-import { productQuerySchema, createProductSchema } from "@/lib/validations/product";
 
-// GET /api/products - List products with filtering, sorting, and pagination
+// GET /api/products - List products with filtering, sorting, and pagination (no auth required)
 export const GET = withRequestLogging(
   withRateLimit(100, 15 * 60 * 1000)(
-    withAuth(
-      withQueryValidation(productQuerySchema, async (request, query) => {
+    async (request) => {
+      // Parse query parameters
+      const { searchParams } = new URL(request.url);
+      const query = {
+        page: parseInt(searchParams.get('page') || '1'),
+        limit: parseInt(searchParams.get('limit') || '10'),
+        search: searchParams.get('search') || undefined,
+        status: searchParams.get('status') || undefined,
+        featured: searchParams.get('featured') ? searchParams.get('featured') === 'true' : undefined,
+        channel: searchParams.get('channel') || undefined,
+        categoryId: searchParams.get('categoryId') || undefined,
+        brandId: searchParams.get('brandId') || undefined,
+        minPrice: searchParams.get('minPrice') ? parseFloat(searchParams.get('minPrice')!) : undefined,
+        maxPrice: searchParams.get('maxPrice') ? parseFloat(searchParams.get('maxPrice')!) : undefined,
+        sortBy: searchParams.get('sortBy') || 'createdAt',
+        sortOrder: searchParams.get('sortOrder') || 'desc',
+      };
+    
     const {
       page,
       limit,
@@ -28,74 +41,76 @@ export const GET = withRequestLogging(
 
     const skip = (page - 1) * limit;
 
-    // Build where clause
+    // Build where clause for products table
     const where = {
-      userId: request.user.id,
       ...(search && {
         OR: [
-          { name: { contains: search, mode: "insensitive" } },
-          { sku: { contains: search, mode: "insensitive" } },
-          { description: { contains: search, mode: "insensitive" } },
+          { product_title: { contains: search, mode: "insensitive" as const } },
+          { product_sku: { contains: search, mode: "insensitive" as const } },
+          { product_description: { contains: search, mode: "insensitive" as const } },
         ],
       }),
-      ...(status && { status }),
-      ...(featured !== undefined && { featured }),
-      ...(channel && { channel }),
-      ...(categoryId && { categoryId }),
-      ...(brandId && { brandId }),
-      ...(minPrice && { price: { gte: minPrice } }),
-      ...(maxPrice && { price: { lte: maxPrice } }),
+      ...(status && { product_condition: status }),
+      ...(channel && { product_display_mode: channel }),
+      ...(categoryId && { product_category: categoryId }),
+      ...(brandId && { product_brand: brandId }),
+      ...(minPrice && { product_original_price: { gte: minPrice } }),
+      ...(maxPrice && { product_original_price: { lte: maxPrice } }),
     };
 
-    // Build orderBy clause
+    // Build orderBy clause for products table
+    const getSortField = (sortBy: string) => {
+      switch (sortBy) {
+        case 'name': return 'product_title';
+        case 'price': return 'product_original_price';
+        case 'cost': return 'product_discount_price';
+        case 'createdAt': return 'id';
+        case 'updatedAt': return 'id';
+        default: return 'id';
+      }
+    };
+    
     const orderBy = {
-      [sortBy]: sortOrder,
+      [getSortField(sortBy)]: sortOrder,
     };
 
     // Get products and total count in parallel
     const [products, total] = await Promise.all([
-      prisma.product.findMany({
+      prisma.products.findMany({
         where,
         orderBy,
         skip,
         take: limit,
-        include: {
-          brand: {
-            select: {
-              id: true,
-              name: true,
-              logo: true,
-            },
-          },
-          category: {
-            select: {
-              id: true,
-              name: true,
-              slug: true,
-            },
-          },
-          competitors: {
-            select: {
-              id: true,
-              name: true,
-              cheapest: true,
-              avg: true,
-              highest: true,
-              cheapestColor: true,
-            },
-          },
-          _count: {
-            select: {
-              competitors: true,
-            },
-          },
-        },
       }),
-      prisma.product.count({ where }),
+      prisma.products.count({ where }),
     ]);
 
+    // Map products to API-friendly format
+    const mappedProducts = products.map((product: any) => ({
+      id: product.product_id,
+      name: product.product_title,
+      sku: product.product_sku,
+      description: product.product_description,
+      image: product.product_page_image_url,
+      url: product.product_url,
+      price: product.product_original_price,
+      discountPrice: product.product_discount_price,
+      currency: product.product_currency,
+      brand: product.product_brand,
+      category: product.product_category,
+      condition: product.product_condition,
+      color: product.product_color,
+      material: product.product_material,
+      gender: product.product_gender,
+      hasPromotion: product.product_has_promotion,
+      imageCount: product.product_image_count,
+      variantsCount: product.product_variants_count,
+      availableSizes: product.product_available_sizes,
+      extractionTimestamp: product.extraction_timestamp,
+    }));
+
     const response = NextResponse.json({
-      products,
+      products: mappedProducts,
       pagination: {
         page,
         limit,
@@ -115,74 +130,14 @@ export const GET = withRequestLogging(
     });
 
     return withSecurityHeaders(response);
-  })
-    )
-  )
-);
-
-// POST /api/products - Create new product
-export const POST = withRequestLogging(
-  withRateLimit(50, 15 * 60 * 1000)(
-    withAuth(
-      withValidation(createProductSchema, async (request, data) => {
-    // Check if SKU already exists
-    const existingProduct = await prisma.product.findUnique({
-      where: { sku: data.sku },
-    });
-
-    if (existingProduct) {
-      return NextResponse.json(
-        { error: "Product with this SKU already exists" },
-        { status: 409 }
-      );
     }
-
-    // Calculate margin if not provided
-    const margin = data.margin ?? (data.cost > 0 ? ((data.price - data.cost) / data.cost) * 100 : 0);
-
-    const product = await prisma.product.create({
-      data: {
-        ...data,
-        userId: request.user.id,
-        margin,
-        lastUpdated: new Date(),
-      },
-      include: {
-        brand: {
-          select: {
-            id: true,
-            name: true,
-            logo: true,
-          },
-        },
-        category: {
-          select: {
-            id: true,
-            name: true,
-            slug: true,
-          },
-        },
-        competitors: {
-          select: {
-            id: true,
-            name: true,
-            cheapest: true,
-            avg: true,
-            highest: true,
-            cheapestColor: true,
-          },
-        },
-        _count: {
-          select: {
-            competitors: true,
-          },
-        },
-      },
-    });
-
-    const response = NextResponse.json(product, { status: 201 });
-    return withSecurityHeaders(response);
-  })
-    )
   )
 );
+
+// POST /api/products - Not available (read-only Supabase data)
+export const POST = async () => {
+  return NextResponse.json(
+    { error: "POST not supported - this is read-only data from Supabase" },
+    { status: 405 }
+  );
+};
