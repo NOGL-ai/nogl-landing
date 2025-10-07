@@ -11,53 +11,53 @@ export interface AuthenticatedRequest extends NextRequest {
   };
 }
 
-export async function withAuth(
-  request: NextRequest,
+export function withAuth(
   handler: (req: AuthenticatedRequest) => Promise<NextResponse>
 ) {
-  try {
-    const session = await getServerSession(authOptions);
-    
-    if (!session?.user?.id) {
+  return async (request: NextRequest) => {
+    try {
+      const session = await getServerSession(authOptions);
+      
+      if (!session?.user?.id) {
+        return NextResponse.json(
+          { error: "Unauthorized" },
+          { status: 401 }
+        );
+      }
+
+      // Get user details from database
+      const { prisma } = await import("@/lib/prismaDb");
+      const user = await prisma.user.findUnique({
+        where: { id: session.user.id },
+        select: { id: true, email: true, role: true }
+      });
+
+      if (!user) {
+        return NextResponse.json(
+          { error: "User not found" },
+          { status: 404 }
+        );
+      }
+
+      const authenticatedRequest = request as AuthenticatedRequest;
+      authenticatedRequest.user = user;
+
+      return handler(authenticatedRequest);
+    } catch (error) {
+      console.error("Auth middleware error:", error);
       return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
+        { error: "Internal server error" },
+        { status: 500 }
       );
     }
-
-    // Get user details from database
-    const { prisma } = await import("@/lib/prismaDb");
-    const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
-      select: { id: true, email: true, role: true }
-    });
-
-    if (!user) {
-      return NextResponse.json(
-        { error: "User not found" },
-        { status: 404 }
-      );
-    }
-
-    const authenticatedRequest = request as AuthenticatedRequest;
-    authenticatedRequest.user = user;
-
-    return handler(authenticatedRequest);
-  } catch (error) {
-    console.error("Auth middleware error:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
-  }
+  };
 }
 
-export async function withRole(
-  request: NextRequest,
+export function withRole(
   allowedRoles: UserRole[],
   handler: (req: AuthenticatedRequest) => Promise<NextResponse>
 ) {
-  return withAuth(request, async (req) => {
+  return withAuth(async (req) => {
     if (!req.user) {
       return NextResponse.json(
         { error: "Unauthorized" },
@@ -76,16 +76,14 @@ export async function withRole(
   });
 }
 
-export async function withAdmin(
-  request: NextRequest,
+export function withAdmin(
   handler: (req: AuthenticatedRequest) => Promise<NextResponse>
 ) {
-  return withRole(request, [UserRole.ADMIN], handler);
+  return withRole([UserRole.ADMIN], handler);
 }
 
-export async function withUserOrAdmin(
-  request: NextRequest,
+export function withUserOrAdmin(
   handler: (req: AuthenticatedRequest) => Promise<NextResponse>
 ) {
-  return withRole(request, [UserRole.USER, UserRole.ADMIN], handler);
+  return withRole([UserRole.USER, UserRole.ADMIN], handler);
 }
