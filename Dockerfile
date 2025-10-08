@@ -60,6 +60,28 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
+# Public environment variables needed at build time (embedded in client bundle)
+# These are build args that get passed in and become ENV vars
+ARG NEXT_PUBLIC_APP_URL
+ARG NEXT_PUBLIC_DOMAIN
+ARG NEXT_PUBLIC_APP_SUBDOMAIN
+ARG NEXT_PUBLIC_AUTH_SUBDOMAIN
+ARG NEXT_PUBLIC_GHOST_URL
+ARG NEXT_PUBLIC_GHOST_CONTENT_API_KEY
+ARG NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+ARG NEXT_PUBLIC_BUILDER_API_KEY
+ARG NEXT_PUBLIC_GOOGLE_TAG_ID
+
+ENV NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL
+ENV NEXT_PUBLIC_DOMAIN=$NEXT_PUBLIC_DOMAIN
+ENV NEXT_PUBLIC_APP_SUBDOMAIN=$NEXT_PUBLIC_APP_SUBDOMAIN
+ENV NEXT_PUBLIC_AUTH_SUBDOMAIN=$NEXT_PUBLIC_AUTH_SUBDOMAIN
+ENV NEXT_PUBLIC_GHOST_URL=$NEXT_PUBLIC_GHOST_URL
+ENV NEXT_PUBLIC_GHOST_CONTENT_API_KEY=$NEXT_PUBLIC_GHOST_CONTENT_API_KEY
+ENV NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+ENV NEXT_PUBLIC_BUILDER_API_KEY=$NEXT_PUBLIC_BUILDER_API_KEY
+ENV NEXT_PUBLIC_GOOGLE_TAG_ID=$NEXT_PUBLIC_GOOGLE_TAG_ID
+
 # Build the application
 # Next.js will output to .next directory with standalone mode
 RUN npm run build
@@ -82,6 +104,9 @@ RUN adduser --system --uid 1001 nextjs
 # Set environment variables
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
+
+# Runtime environment variables will be provided at container runtime
+# These are NOT baked into the image - they come from docker-compose.yml or --env-file
 
 # Copy necessary files from builder
 # Copy public assets

@@ -21,15 +21,80 @@ services:
       - /app/node_modules
       - /app/.next
     environment:
+      # =============================================================================
+      # Core Configuration
+      # =============================================================================
       - NODE_ENV=development
-      - NEXTAUTH_URL=${NEXTAUTH_URL:-http://localhost:3000}
-      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
-      - DATABASE_URL=${DATABASE_URL}
-      - NEXT_PUBLIC_DOMAIN=${NEXT_PUBLIC_DOMAIN:-localhost:3000}
-      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
-      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
       - NEXT_TELEMETRY_DISABLED=1
       - WATCHPACK_POLLING=true
+      
+      # =============================================================================
+      # Database
+      # =============================================================================
+      - DATABASE_URL=${DATABASE_URL}
+      
+      # =============================================================================
+      # NextAuth Configuration
+      # =============================================================================
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - NEXTAUTH_URL=${NEXTAUTH_URL:-http://localhost:3000}
+      
+      # =============================================================================
+      # App Configuration
+      # =============================================================================
+      - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+      - SITE_URL=${SITE_URL:-http://localhost:3000}
+      - SITE_NAME=${SITE_NAME:-NOGL}
+      - NEXT_PUBLIC_DOMAIN=${NEXT_PUBLIC_DOMAIN:-localhost:3000}
+      - NEXT_PUBLIC_APP_SUBDOMAIN=${NEXT_PUBLIC_APP_SUBDOMAIN:-app}
+      - NEXT_PUBLIC_AUTH_SUBDOMAIN=${NEXT_PUBLIC_AUTH_SUBDOMAIN:-}
+      
+      # =============================================================================
+      # Email Configuration
+      # =============================================================================
+      - EMAIL_SERVER_HOST=${EMAIL_SERVER_HOST}
+      - EMAIL_SERVER_PORT=${EMAIL_SERVER_PORT}
+      - EMAIL_SERVER_USER=${EMAIL_SERVER_USER}
+      - EMAIL_SERVER_PASSWORD=${EMAIL_SERVER_PASSWORD}
+      - EMAIL_FROM=${EMAIL_FROM}
+      
+      # =============================================================================
+      # Ghost CMS Configuration
+      # =============================================================================
+      - NEXT_PUBLIC_GHOST_URL=${NEXT_PUBLIC_GHOST_URL}
+      - NEXT_PUBLIC_GHOST_CONTENT_API_KEY=${NEXT_PUBLIC_GHOST_CONTENT_API_KEY}
+      - GHOST_API_URL=${GHOST_API_URL}
+      - GHOST_CONTENT_API_KEY=${GHOST_CONTENT_API_KEY}
+      
+      # =============================================================================
+      # Google OAuth
+      # =============================================================================
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      
+      # =============================================================================
+      # Payment Processing (Stripe)
+      # =============================================================================
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+      - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}
+      
+      # =============================================================================
+      # Builder.io
+      # =============================================================================
+      - NEXT_PUBLIC_BUILDER_API_KEY=${NEXT_PUBLIC_BUILDER_API_KEY}
+      
+      # =============================================================================
+      # Analytics
+      # =============================================================================
+      - NEXT_PUBLIC_GOOGLE_TAG_ID=${NEXT_PUBLIC_GOOGLE_TAG_ID}
+      
+      # =============================================================================
+      # Optional Services (uncomment when needed)
+      # =============================================================================
+      # - OPENAI_API_KEY=${OPENAI_API_KEY}
+      # - UPLOADTHING_SECRET=${UPLOADTHING_SECRET}
+      # - UPLOADTHING_APP_ID=${UPLOADTHING_APP_ID}
     depends_on:
       db-dev:
         condition: service_healthy
