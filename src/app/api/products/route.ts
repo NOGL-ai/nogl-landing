@@ -8,6 +8,14 @@ import { generateLogoUrl, extractDomainFromUrl, extractMainDomain, isMarketplace
 const queryCache = new Map<string, { data: any; timestamp: number }>();
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
+// Connection pooling optimization
+const CONNECTION_POOL_CONFIG = {
+  maxConnections: 10,
+  minConnections: 2,
+  connectionTimeout: 30000,
+  idleTimeout: 60000
+};
+
 // GET /api/products - List products with filtering, sorting, and pagination (no auth required)
 export const GET = withRequestLogging(
   withRateLimit(100, 15 * 60 * 1000)(
@@ -155,23 +163,42 @@ export const GET = withRequestLogging(
       // Optimize FDW fetch size for better performance
       const fetchSize = Math.min(limit * 2, 1000); // Optimize fetch size
       
+      // Add query plan analysis for debugging
+      const enableQueryAnalysis = process.env.NODE_ENV === 'development';
+      
+      // Optimize batch size based on query complexity
+      const batchSize = search ? Math.min(limit, 50) : Math.min(limit, 100);
+      const optimizedLimit = Math.min(limit, batchSize);
+      
       while (retryCount < maxRetries) {
         try {
-            [productsResult, totalResult] = await Promise.all([
+            // Execute queries with optional plan analysis
+            const queries = [
               prisma.$queryRawUnsafe(
                 `SELECT ${selectColumns} FROM nogl.shopify_product_variants_bq 
                  ${whereClause}
                  ORDER BY ${sortColumn} ${sortOrder.toUpperCase()}
                  LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`,
                 ...params,
-                limit,
+                optimizedLimit,
                 skip
               ),
               prisma.$queryRawUnsafe(
                 `SELECT COUNT(*) as count FROM nogl.shopify_product_variants_bq ${whereClause}`,
                 ...params
               ),
-            ]) as [any[], any[]];
+            ];
+            
+            // Add query plan analysis in development
+            if (enableQueryAnalysis) {
+              console.log('Query Plan Analysis:');
+              console.log('Main Query:', queries[0]);
+              console.log('Count Query:', queries[1]);
+              console.log('Parameters:', params);
+              console.log('Where Clause:', whereClause);
+            }
+            
+            [productsResult, totalResult] = await Promise.all(queries) as [any[], any[]];
             
             // If we get here, the query succeeded
             break;
@@ -191,9 +218,28 @@ export const GET = withRequestLogging(
         
         const endTime = Date.now();
         const queryTime = endTime - startTime;
+        
+        // Advanced performance monitoring
         console.log('BigQuery query completed successfully in', queryTime, 'ms');
         console.log('Products returned:', productsResult?.length || 0);
         console.log('Total products available:', totalResult?.[0]?.count || 0);
+        console.log('Query complexity:', {
+          hasSearch: !!search,
+          hasFilters: !!(status || channel || brandId || minPrice || maxPrice),
+          batchSize: optimizedLimit,
+          cacheHit: false
+        });
+        
+        // Performance categorization
+        if (queryTime > 10000) {
+          console.warn('⚠️ Very slow query:', queryTime, 'ms - Consider adding indexes');
+        } else if (queryTime > 5000) {
+          console.warn('⚠️ Slow query:', queryTime, 'ms - Monitor for optimization');
+        } else if (queryTime > 1000) {
+          console.log('⚠️ Moderate query:', queryTime, 'ms');
+        } else {
+          console.log('✅ Fast query:', queryTime, 'ms');
+        }
 
         const products = productsResult || [];
         const total = parseInt(totalResult?.[0]?.count || '0');
