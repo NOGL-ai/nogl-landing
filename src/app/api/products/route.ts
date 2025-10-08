@@ -121,25 +121,47 @@ export const GET = withRequestLogging(
                         getSortField(sortBy) === 'id' ? 'variant_id' : 'variant_id';
 
       const startTime = Date.now();
-      try {
-        // Get products and total count in parallel using raw SQL for BigQuery table
-        console.log('BigQuery query starting...');
-        
-        const [productsResult, totalResult] = await Promise.all([
-          prisma.$queryRawUnsafe(
-            `SELECT * FROM nogl.shopify_product_variants_bq 
-             ${whereClause}
-             ORDER BY ${sortColumn} ${sortOrder.toUpperCase()}
-             LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`,
-            ...params,
-            limit,
-            skip
-          ),
-          prisma.$queryRawUnsafe(
-            `SELECT COUNT(*) as count FROM nogl.shopify_product_variants_bq ${whereClause}`,
-            ...params
-          ),
-        ]) as [any[], any[]];
+    try {
+      // Get products and total count in parallel using raw SQL for Supabase FDW table
+      console.log('Supabase FDW query starting...');
+      
+      // Retry logic for FDW connection issues
+      let retryCount = 0;
+      const maxRetries = 3;
+      let productsResult, totalResult;
+      
+      while (retryCount < maxRetries) {
+        try {
+            [productsResult, totalResult] = await Promise.all([
+              prisma.$queryRawUnsafe(
+                `SELECT * FROM nogl.shopify_product_variants_bq 
+                 ${whereClause}
+                 ORDER BY ${sortColumn} ${sortOrder.toUpperCase()}
+                 LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`,
+                ...params,
+                limit,
+                skip
+              ),
+              prisma.$queryRawUnsafe(
+                `SELECT COUNT(*) as count FROM nogl.shopify_product_variants_bq ${whereClause}`,
+                ...params
+              ),
+            ]) as [any[], any[]];
+            
+            // If we get here, the query succeeded
+            break;
+          } catch (fdwError) {
+            retryCount++;
+            console.log(`FDW query attempt ${retryCount} failed:`, fdwError.message);
+            
+            if (retryCount >= maxRetries) {
+              throw fdwError;
+            }
+            
+            // Wait before retry
+            await new Promise(resolve => setTimeout(resolve, 1000 * retryCount));
+          }
+        }
         
         const endTime = Date.now();
         const queryTime = endTime - startTime;
