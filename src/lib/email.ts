@@ -11,12 +11,18 @@ const requiredEnvVars = [
 	"EMAIL_FROM",
 ];
 
-requiredEnvVars.forEach((varName) => {
-	if (!process.env[varName]) {
-		console.error(`Environment variable ${varName} is not set.`);
-		process.exit(1);
-	}
-});
+// Only validate in production runtime, not during build
+if (process.env.NODE_ENV === "production" && typeof window === "undefined" && !process.env.NEXT_PHASE) {
+	requiredEnvVars.forEach((varName) => {
+		if (!process.env[varName]) {
+			console.error(`Environment variable ${varName} is not set.`);
+			// Don't exit during build, just warn
+			if (process.env.NEXT_RUNTIME !== "edge") {
+				console.warn(`Warning: ${varName} is required for email functionality`);
+			}
+		}
+	});
+}
 
 type EmailPayload = {
 	to: string;
