@@ -1,9 +1,14 @@
-import { getPosts } from "@/ghost/ghost-utils";
-import BlogItem from "@/components/atoms/BlogItem";
+// import { getPosts } from "@/ghost/ghost-utils";
+// import BlogItem from "@/components/atoms/BlogItem";
 import Breadcrumbs from "@/components/atoms/Breadcrumbs";
 import Image from "next/image";
 import { Metadata } from "next";
-import { Blog } from "@/types/blog";
+// import { Blog } from "@/types/blog";
+
+// ============================================================================
+// GHOST CMS TEMPORARILY DISABLED
+// Uncomment when Ghost CMS is properly configured
+// ============================================================================
 
 export const metadata: Metadata = {
 	title: `Blog - ${process.env.SITE_NAME}`,
@@ -11,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 const BlogGrid = async () => {
-	const posts = await getPosts();
+	// const posts = await getPosts();
 
 	return (
 		<main>
@@ -36,11 +41,16 @@ const BlogGrid = async () => {
 					</div>
 				</div>
 
-				<Breadcrumbs title='Blog' pages={["Home", "Blog Grids"]} />
+				<Breadcrumbs title='Blog' pages={["Home", "Blog"]} />
 
 				<div className='mx-auto w-full max-w-[1170px] px-4 sm:px-8 xl:px-0'>
+					<div className='text-center py-20'>
+						<h2 className='text-3xl font-bold mb-4'>Blog Coming Soon</h2>
+						<p className='text-gray-600'>Ghost CMS integration is currently being configured.</p>
+					</div>
+
+					{/* GHOST CMS VERSION - COMMENTED OUT
 					<div className='gap-x-7.5 grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-3'>
-						{/* Blog Item */}
 						{posts?.length > 0 ? (
 							posts.map((item: any, key: number) => (
 								<BlogItem key={key} blog={item} />
@@ -49,6 +59,7 @@ const BlogGrid = async () => {
 							<p>No posts available!</p>
 						)}
 					</div>
+					*/}
 				</div>
 			</section>
 		</main>

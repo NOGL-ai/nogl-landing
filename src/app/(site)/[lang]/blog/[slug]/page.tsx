@@ -1,11 +1,11 @@
 import React from "react";
-import { getPostBySlug, imageBuilder } from "@/ghost/ghost-utils";
-import RenderBodyContent from "@/components/atoms/RenderBodyContent";
+// import { getPostBySlug, imageBuilder } from "@/ghost/ghost-utils";
+// import RenderBodyContent from "@/components/atoms/RenderBodyContent";
 import Link from "next/link";
-import Image from "next/image";
-import { structuredAlgoliaHtmlData } from "@/lib/crawlIndex";
-import CopyToClipboard from "@/components/atoms/CopyToClipboard";
-import SocialShare from "@/components/atoms/SocialShare";
+// import Image from "next/image";
+// import { structuredAlgoliaHtmlData } from "@/lib/crawlIndex";
+// import CopyToClipboard from "@/components/atoms/CopyToClipboard";
+// import SocialShare from "@/components/atoms/SocialShare";
 
 type Props = {
 	params: Promise<{
@@ -13,16 +13,27 @@ type Props = {
 	}>;
 };
 
+// ============================================================================
+// GHOST CMS TEMPORARILY DISABLED
+// Uncomment when Ghost CMS is properly configured
+// ============================================================================
+
 // Disable static generation for this page during build if Ghost is not configured
 export const dynamicParams = true;
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: Props) {
-	const { slug } = await params;
-	const post = await getPostBySlug(slug);
+	// const { slug } = await params;
+	// const post = await getPostBySlug(slug);
 	const siteURL = process.env.SITE_URL;
 	const authorName = process.env.AUTHOR_NAME;
 
+	return {
+		title: "Blog Post | NOGL",
+		description: "Read our latest blog posts and insights",
+	};
+
+	/* GHOST CMS VERSION - COMMENTED OUT
 	if (post) {
 		return {
 			title: `${
@@ -84,10 +95,27 @@ export async function generateMetadata({ params }: Props) {
 			description: "No blog article has been found",
 		};
 	}
+	*/
 }
 
 const SingleBlog = async ({ params }: Props) => {
 	const { slug } = await params;
+	
+	// GHOST CMS DISABLED - Show placeholder
+	return (
+		<main className='py-35'>
+			<div className='mx-auto w-full max-w-[1170px] px-4 text-center'>
+				<h1 className='text-3xl font-bold mb-4'>Blog Feature Coming Soon</h1>
+				<p className='mt-4 text-gray-600'>Ghost CMS integration is currently being configured.</p>
+				<p className='mt-2'>Slug: <code className='bg-gray-100 px-2 py-1 rounded'>{slug}</code></p>
+				<Link href='/blog' className='mt-6 inline-block text-blue-600 hover:underline'>
+					← Back to Blog
+				</Link>
+			</div>
+		</main>
+	);
+
+	/* GHOST CMS VERSION - COMMENTED OUT
 	const post = await getPostBySlug(slug);
 	
 	// Handle missing post
@@ -120,8 +148,8 @@ const SingleBlog = async ({ params }: Props) => {
 	return (
 		<main>
 			{/* <!-- ===== Blog Details Section Start ===== --> */}
+			{/* GHOST CMS SECTION - COMMENTED OUT
 			<section className='lg:ub-pb-22.5 z-1 pb-17.5 pt-35 xl:pb-27.5 relative overflow-hidden'>
-				{/* <!-- bg shapes --> */}
 				<div>
 					<div className='-z-1 absolute left-0 top-0'>
 						<Image
@@ -265,8 +293,10 @@ const SingleBlog = async ({ params }: Props) => {
 					</div>
 				</div>
 			</section>
+			*/}
 		</main>
 	);
+	*/
 };
 
 export default SingleBlog;
