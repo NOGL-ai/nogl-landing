@@ -13,6 +13,10 @@ type Props = {
 	}>;
 };
 
+// Disable static generation for this page during build if Ghost is not configured
+export const dynamicParams = true;
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata({ params }: Props) {
 	const { slug } = await params;
 	const post = await getPostBySlug(slug);
@@ -85,15 +89,33 @@ export async function generateMetadata({ params }: Props) {
 const SingleBlog = async ({ params }: Props) => {
 	const { slug } = await params;
 	const post = await getPostBySlug(slug);
-	const postURL = `${process.env.SITE_URL}blog/${post?.slug?.current}`;
+	
+	// Handle missing post
+	if (!post) {
+		return (
+			<main className='py-35'>
+				<div className='mx-auto w-full max-w-[1170px] px-4 text-center'>
+					<h1 className='text-3xl font-bold'>Post Not Found</h1>
+					<p className='mt-4'>The blog post you're looking for doesn't exist.</p>
+				</div>
+			</main>
+		);
+	}
+	
+	const postURL = `${process.env.SITE_URL}/blog/${post?.slug}`;
 
-	await structuredAlgoliaHtmlData({
-		type: "blog",
-		title: post?.title || "",
-		htmlString: post?.metadata || "",
-		pageUrl: `${process.env.SITE_URL}/blog/${post?.slug?.current}`,
-		imageURL: imageBuilder(post?.mainImage).url() as string,
-	});
+	// Only index to Algolia if configured
+	try {
+		await structuredAlgoliaHtmlData({
+			type: "blog",
+			title: post?.title || "",
+			htmlString: post?.html || "",
+			pageUrl: `${process.env.SITE_URL}/blog/${post?.slug}`,
+			imageURL: imageBuilder(post?.feature_image || "").url() as string,
+		});
+	} catch (error) {
+		console.error("Error indexing to Algolia:", error);
+	}
 
 	return (
 		<main>
@@ -123,7 +145,7 @@ const SingleBlog = async ({ params }: Props) => {
 					<div className='mb-12.5 mx-auto w-full max-w-[770px] text-center'>
 						<div className='mb-5 flex flex-wrap items-center justify-center gap-6'>
 							<Link
-								href={`/blog/author/${post?.author?.slug?.current}`}
+								href={`/blog/author/${post?.primary_author?.slug}`}
 								className='font-satoshi dark:text-gray-5 flex items-center gap-2 font-medium -tracking-[0.2px] text-black'
 							>
 								<svg
@@ -145,12 +167,11 @@ const SingleBlog = async ({ params }: Props) => {
 										d='M10.3245 10.2082C8.39653 10.2082 6.62026 10.6464 5.30403 11.3868C4.0074 12.1161 3.03283 13.2216 3.03283 14.5832L3.03277 14.6681C3.03183 15.6363 3.03065 16.8515 4.0965 17.7195C4.62106 18.1466 5.35489 18.4504 6.34633 18.6511C7.34054 18.8523 8.63635 18.9582 10.3245 18.9582C12.0126 18.9582 13.3084 18.8523 14.3027 18.6511C15.2941 18.4504 16.0279 18.1466 16.5525 17.7195C17.6183 16.8515 17.6172 15.6363 17.6162 14.6681L17.6162 14.5832C17.6162 13.2216 16.6416 12.1161 15.345 11.3868C14.0287 10.6464 12.2525 10.2082 10.3245 10.2082ZM4.28283 14.5832C4.28283 13.8737 4.80064 13.1041 5.91686 12.4763C7.01349 11.8594 8.57055 11.4582 10.3245 11.4582C12.0784 11.4582 13.6355 11.8594 14.7321 12.4763C15.8483 13.1041 16.3662 13.8737 16.3662 14.5832C16.3662 15.673 16.3326 16.2865 15.7632 16.7502C15.4544 17.0016 14.9382 17.2471 14.0547 17.4259C13.1739 17.6042 11.9697 17.7082 10.3245 17.7082C8.67931 17.7082 7.47511 17.6042 6.59432 17.4259C5.71076 17.2471 5.19459 17.0016 4.88582 16.7502C4.31642 16.2865 4.28283 15.673 4.28283 14.5832Z'
 									/>
 								</svg>
-								{post?.author?.name.charAt(0).toUpperCase() +
-									post?.author?.name.slice(1).toLowerCase()}
+								{post?.primary_author?.name || "Author"}
 							</Link>
 
 							<Link
-								href={`/blog/author/${post?.author?.slug?.current}`}
+								href={`/blog/author/${post?.primary_author?.slug}`}
 								className='font-satoshi dark:text-gray-5 flex items-center gap-2 font-medium -tracking-[0.2px] text-black'
 							>
 								<svg
@@ -205,10 +226,10 @@ const SingleBlog = async ({ params }: Props) => {
 						<div className='border-stroke dark:border-stroke-dark mt-10 flex flex-wrap items-center justify-between gap-10 border-t pt-9'>
 							<div className='flex items-center gap-5'>
 								<div className='h-15 w-full max-w-[60px] overflow-hidden rounded-full'>
-									<Link href={`/blog/author/${post?.author?.slug?.current}`}>
+									<Link href={`/blog/author/${post?.primary_author?.slug}`}>
 										<Image
-											src={imageBuilder(post?.author?.image).url() as string}
-											alt={post?.author?.name}
+											src={imageBuilder(post?.primary_author?.profile_image || "").url() as string}
+											alt={post?.primary_author?.name || "Author"}
 											width={60}
 											height={60}
 										/>
@@ -217,14 +238,14 @@ const SingleBlog = async ({ params }: Props) => {
 
 								<div className='w-full'>
 									<Link
-										href={`/blog/author/${post?.author?.slug?.current}`}
+										href={`/blog/author/${post?.primary_author?.slug}`}
 										className='font-satoshi block text-lg font-medium capitalize text-black dark:text-white'
 									>
-										{post?.author?.name}
+										{post?.primary_author?.name || "Author"}
 									</Link>
 									<span className='dark:text-gray-5 block'>
 										{" "}
-										{post?.author?.bio}{" "}
+										{post?.primary_author?.bio || ""}{" "}
 									</span>
 								</div>
 							</div>
