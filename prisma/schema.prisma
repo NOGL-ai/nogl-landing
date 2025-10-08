@@ -6,6 +6,7 @@ datasource db {
   provider          = "postgresql"
   url               = env("DATABASE_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  schemas           = ["public", "nogl"]
 }
 
 model User {
@@ -36,6 +37,7 @@ model User {
   sessions              Session[]
 
   @@index([role])
+  @@schema("nogl")
 }
 
 model Account {
@@ -55,6 +57,7 @@ model Account {
 
   @@unique([provider, providerAccountId])
   @@index([userId])
+  @@schema("nogl")
 }
 
 model Session {
@@ -65,6 +68,7 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+  @@schema("nogl")
 }
 
 model VerificationToken {
@@ -73,6 +77,7 @@ model VerificationToken {
   expires    DateTime
 
   @@id([identifier, token])
+  @@schema("nogl")
 }
 
 model ApiKey {
@@ -85,6 +90,7 @@ model ApiKey {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+  @@schema("nogl")
 }
 
 model product_images_normalized {
@@ -98,6 +104,7 @@ model product_images_normalized {
   products    products? @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([product_id], map: "idx_product_images_product_id")
+  @@schema("public")
 }
 
 model product_sizes {
@@ -113,6 +120,7 @@ model product_sizes {
   products    products? @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([product_id], map: "idx_product_sizes_product_id")
+  @@schema("public")
 }
 
 model products {
@@ -174,6 +182,7 @@ model products {
   @@index([extraction_timestamp], map: "idx_products_extraction_timestamp")
   @@index([product_discount_price], map: "idx_products_price")
   @@index([product_id], map: "idx_products_product_id")
+  @@schema("public")
 }
 
 // Note: BigQuery Foreign Data Wrapper table exists in nogl schema
@@ -233,10 +242,13 @@ model shopify_product_variants_bq {
   row_hash                      Int?
 
   @@map("shopify_product_variants_bq")
+  @@schema("nogl")
 }
 
 enum UserRole {
   USER
   EXPERT
   ADMIN
+
+  @@schema("nogl")
 }
