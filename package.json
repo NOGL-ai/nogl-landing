@@ -6,9 +6,9 @@
 		"node": ">=18.0.0"
 	},
 	"scripts": {
-		"dev": "next dev",
-		"build": "prisma generate && next build",
-		"start": "next start",
+		"dev": "cross-env NEXT_TELEMETRY_DISABLED=1 next dev",
+		"build": "cross-env NEXT_TELEMETRY_DISABLED=1 prisma generate && next build",
+		"start": "cross-env NEXT_TELEMETRY_DISABLED=1 next start",
 		"stripe:listen": "stripe listen --forward-to http://nogl.ai:3000/api/stripe/webhook",
 		"check-format": "prettier --check .",
 		"check-lint": "eslint .",
@@ -152,6 +152,7 @@
 		"autoprefixer": "^10.4.21",
 		"chromatic": "^13.3.0",
 		"copy-webpack-plugin": "^13.0.1",
+		"cross-env": "^10.1.0",
 		"eslint": "^9.36.0",
 		"eslint-config-next": "^15.5.4",
 		"eslint-config-prettier": "^10.1.8",

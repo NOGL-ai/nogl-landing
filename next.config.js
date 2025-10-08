@@ -4,6 +4,8 @@ const nextConfig = {
 	reactStrictMode: true,
 	typedRoutes: true,
 	output: 'standalone',
+	// Additional Windows compatibility
+	poweredByHeader: false,
 	async headers() {
 		return [
 			{
