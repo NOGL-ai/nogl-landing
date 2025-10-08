@@ -1,13 +1,16 @@
 "use client";
-import { useState, useEffect } from "react";
-import Script from "next/script";
-import Cookies from "js-cookie";
-import dynamic from "next/dynamic";
+import { useState } from "react";
+// COMMENTED OUT - Mailchimp integration disabled
+// import { useEffect } from "react";
+// import Script from "next/script";
+// import Cookies from "js-cookie";
+// import dynamic from "next/dynamic";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { AnimatedSubscribeButton } from "@/components/ui/animated-subscribe-button";
 import { ErrorBoundary } from "@/components/organisms/ErrorBoundary";
 
+/* MAILCHIMP TYPE DECLARATIONS - COMMENTED OUT
 // Add this type declaration at the top of your file
 declare global {
 	interface Window {
@@ -29,6 +32,7 @@ interface MailchimpLoader {
 		uniqueMethods: boolean;
 	}) => void;
 }
+*/
 
 interface NewsletterProps {
 	dictionary: {
@@ -48,6 +52,7 @@ export default function Newsletter({ dictionary }: NewsletterProps) {
 	const [email, setEmail] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 	
+	/* MAILCHIMP POPUP LOGIC - COMMENTED OUT
 	// Initialize hasSeenPopup based on cookie value
 	const [hasSeenPopup, setHasSeenPopup] = useState(() => {
 		if (typeof window === 'undefined') return true; // SSR safety
@@ -74,6 +79,7 @@ export default function Newsletter({ dictionary }: NewsletterProps) {
 			});
 		}
 	}, [hasSeenPopup]);
+	*/
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();

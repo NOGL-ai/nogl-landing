@@ -52,19 +52,21 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 					src="https://cdn-cookieyes.com/client_data/4b51d26e7c5cf7c0c591c9b4/script.js"
 				/> */}
 
-				{/* Mailchimp Connected Site Script - Only load in production */}
-				{process.env.NODE_ENV === 'production' && (
-					<Script
-						id='mcjs'
-						strategy='afterInteractive'
-						dangerouslySetInnerHTML={{
-							__html: `!function(c,h,i,m,p){m=c.createElement(h),
+			{/* Mailchimp Connected Site Script - Only load in production */}
+			{/* COMMENTED OUT - Mailchimp integration disabled
+			{process.env.NODE_ENV === 'production' && (
+				<Script
+					id='mcjs'
+					strategy='afterInteractive'
+					dangerouslySetInnerHTML={{
+						__html: `!function(c,h,i,m,p){m=c.createElement(h),
             p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,
             p.parentNode.insertBefore(m,p)}
             (document,"script","https://chimpstatic.com/mcjs-connected/js/users/730e2a5d4570de0714aa9bc71/c2b0a256050dd1866548b97fd.js");`,
-						}}
-					/>
-				)}
+					}}
+				/>
+			)}
+			*/}
 
 				{/* Google Analytics Scripts */}
 				<Script
