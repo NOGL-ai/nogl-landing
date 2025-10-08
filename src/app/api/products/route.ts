@@ -83,12 +83,12 @@ export const GET = withRequestLogging(
 
     if (search) {
       params.push(`%${search}%`);
-      whereConditions.push(`(product_title ILIKE $${paramIndex} OR sku ILIKE $${paramIndex} OR vendor ILIKE $${paramIndex})`);
+      whereConditions.push(`(product_title ILIKE $${paramIndex} OR variant_sku ILIKE $${paramIndex} OR brand_name ILIKE $${paramIndex})`);
       paramIndex++;
     }
     if (status) {
       params.push(status);
-      whereConditions.push(`available = $${paramIndex}::boolean`);
+      whereConditions.push(`variant_available = $${paramIndex}::boolean`);
       paramIndex++;
     }
     if (channel) {
@@ -98,17 +98,17 @@ export const GET = withRequestLogging(
     }
     if (brandId) {
       params.push(brandId);
-      whereConditions.push(`vendor = $${paramIndex}`);
+      whereConditions.push(`brand_name = $${paramIndex}`);
       paramIndex++;
     }
     if (minPrice) {
       params.push(minPrice);
-      whereConditions.push(`price >= $${paramIndex}::numeric`);
+      whereConditions.push(`variant_price >= $${paramIndex}::numeric`);
       paramIndex++;
     }
     if (maxPrice) {
       params.push(maxPrice);
-      whereConditions.push(`price <= $${paramIndex}::numeric`);
+      whereConditions.push(`variant_price <= $${paramIndex}::numeric`);
       paramIndex++;
     }
 
@@ -116,13 +116,13 @@ export const GET = withRequestLogging(
     
     // Map sortBy to actual column name in BigQuery table
     const sortColumn = getSortField(sortBy) === 'product_title' ? 'product_title' : 
-                      getSortField(sortBy) === 'product_original_price' ? 'price' : 
-                      getSortField(sortBy) === 'product_discount_price' ? 'compare_at_price' : 
+                      getSortField(sortBy) === 'product_original_price' ? 'variant_price' : 
+                      getSortField(sortBy) === 'product_discount_price' ? 'variant_compare_at_price' : 
                       getSortField(sortBy) === 'id' ? 'variant_id' : 'variant_id';
 
     // Get products and total count in parallel using raw SQL for BigQuery table
     const [productsResult, totalResult] = await Promise.all([
-      prisma.$queryRawUnsafe<any[]>(
+      prisma.$queryRawUnsafe(
         `SELECT * FROM nogl.shopify_product_variants_bq 
          ${whereClause}
          ORDER BY ${sortColumn} ${sortOrder.toUpperCase()}
@@ -131,47 +131,52 @@ export const GET = withRequestLogging(
         limit,
         skip
       ),
-      prisma.$queryRawUnsafe<any[]>(
+      prisma.$queryRawUnsafe(
         `SELECT COUNT(*) as count FROM nogl.shopify_product_variants_bq ${whereClause}`,
         ...params
       ),
-    ]);
+    ]) as [any[], any[]];
 
     const products = productsResult;
     const total = parseInt(totalResult[0]?.count || '0');
 
     // Map products from BigQuery table to ProductDTO format expected by the catalog
     const mappedProducts = products.map((product: any) => {
-      // Generate logo URL from vendor/brand name
+      // Generate logo URL from brand_name
       let logoUrl: string | null = null;
       
-      if (product.vendor) {
-        // Generate logo using vendor name
-        logoUrl = generateLogoUrl(product.vendor, {
+      if (product.brand_name) {
+        // Generate logo using brand name
+        logoUrl = generateLogoUrl(product.brand_name, {
           format: 'png',
           size: 64
         });
       }
       
-      // Construct image URL from product handle if available
+      // Use featured_image_src if available, otherwise construct from handle
       let imageUrl: string | null = null;
-      if (product.handle) {
-        // Construct Shopify image URL pattern: https://cdn.shopify.com/s/files/1/{shop_id}/files/{handle}-{variant_id}.jpg
-        // This is a common pattern, adjust based on your actual image URL structure
+      if (product.featured_image_src) {
+        imageUrl = product.featured_image_src;
+      } else if (product.product_image_urls_csv) {
+        // Get first image from CSV if available
+        const images = product.product_image_urls_csv.split(',');
+        imageUrl = images[0]?.trim() || null;
+      } else if (product.handle) {
+        // Fallback: Construct Shopify image URL pattern
         imageUrl = `https://cdn.shopify.com/s/files/1/placeholder/files/${product.handle}-${product.variant_id || 'main'}.jpg`;
       }
 
       return {
         id: product.variant_id?.toString() || product.product_id?.toString(),
         name: product.product_title || product.variant_title || 'Untitled Product',
-        sku: product.sku || 'N/A',
+        sku: product.variant_sku || 'N/A',
         image: imageUrl,
-        price: product.price ? parseFloat(product.price.toString()) : 0,
+        price: product.variant_price ? parseFloat(product.variant_price.toString()) : 0,
         currency: 'EUR', // Changed to EUR based on your sample data
         channel: 'shopify',
-        brand: product.vendor ? {
-          id: product.vendor.toLowerCase().replace(/\s+/g, '-'),
-          name: product.vendor,
+        brand: product.brand_name ? {
+          id: product.brand_name.toLowerCase().replace(/\s+/g, '-'),
+          name: product.brand_name,
           logo: logoUrl
         } : null,
         category: product.product_type ? {

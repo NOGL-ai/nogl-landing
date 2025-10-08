@@ -178,42 +178,62 @@ model products {
 
 // Note: BigQuery Foreign Data Wrapper table exists in nogl schema
 // We access it via raw SQL queries in the API route
-// Commenting out the model to avoid schema configuration issues
-/*
 model shopify_product_variants_bq {
-  id                   BigInt    @id
-  product_id           BigInt?
-  variant_id           BigInt?
-  title                String?
-  sku                  String?
-  price                Decimal?  @db.Decimal(10, 2)
-  compare_at_price     Decimal?  @db.Decimal(10, 2)
-  vendor               String?
-  product_type         String?
-  tags                 String?
-  created_at           DateTime? @db.Timestamptz(6)
-  updated_at           DateTime? @db.Timestamptz(6)
-  published_at         DateTime? @db.Timestamptz(6)
-  image_src            String?
-  inventory_quantity   Int?
-  available            Boolean?
-  option1              String?
-  option2              String?
-  option3              String?
-  fulfillment_service  String?
-  inventory_management String?
-  requires_shipping    Boolean?
-  taxable              Boolean?
-  barcode              String?
-  weight               Decimal?  @db.Decimal(10, 2)
-  weight_unit          String?
-  admin_graphql_api_id String?
-  handle               String?
-  status               String?
+  product_id                    Int       @id
+  product_title                 String?
+  handle                        String?
+  body_html                     String?
+  published_at                  DateTime? @db.Timestamptz(6)
+  product_created_at            DateTime? @db.Timestamptz(6)
+  product_updated_at            DateTime? @db.Timestamptz(6)
+  brand_name                    String?
+  product_type                  String?
+  tags_csv                      String?
+  variant_count                 Int?
+  is_active                     Boolean?
+  variant_id                    Int?
+  variant_title                 String?
+  variant_sku                   String?
+  variant_position              Int?
+  variant_grams                 Int?
+  variant_option1               String?
+  variant_option2               String?
+  variant_option3               String?
+  variant_requires_shipping     Boolean?
+  variant_taxable               Boolean?
+  variant_available             Boolean?
+  variant_price                 Decimal?  @db.Decimal(10, 2)
+  variant_compare_at_price      Decimal?  @db.Decimal(10, 2)
+  discount_amount               Decimal?  @db.Decimal(10, 2)
+  discount_percent              Decimal?  @db.Decimal(10, 2)
+  is_on_sale                    Boolean?
+  featured_image_id             Int?
+  featured_image_product_id     Int?
+  featured_image_position       Int?
+  featured_image_created_at     DateTime? @db.Timestamptz(6)
+  featured_image_updated_at     DateTime? @db.Timestamptz(6)
+  featured_image_alt            String?
+  featured_image_width          Int?
+  featured_image_height         Int?
+  featured_image_src            String?
+  product_image_ids_csv         String?
+  product_image_urls_csv        String?
+  product_image_positions_csv   String?
+  variant_image_ids_csv         String?
+  variant_image_urls_csv        String?
+  option_name_1                 String?
+  option_values_1_csv           String?
+  option_name_2                 String?
+  option_values_2_csv           String?
+  option_name_3                 String?
+  option_values_3_csv           String?
+  material_inferred             String?
+  has_real_variant              Boolean?
+  last_updated_at               DateTime? @db.Timestamptz(6)
+  row_hash                      Int?
 
   @@map("shopify_product_variants_bq")
 }
-*/
 
 enum UserRole {
   USER

@@ -11,7 +11,20 @@ import DashboardWidgetGrid, { DashboardSection } from "./DashboardWidgetGrid";
 import ColorWidget from "../molecules/ColorWidget";
 
 interface DashboardPageClientProps {
-	dict: unknown;
+	dict: {
+		dashboard: {
+			title: string;
+			overpricedProduct: string;
+			samePriceProducts: string;
+			competitiveProducts: string;
+			priceChangesSummary: string;
+			products: string;
+			priceGroups: string;
+			profitStatus: string;
+			competitorPriceChanges: string;
+			vendorStockChanges: string;
+		};
+	};
 	priceChangesData: any[];
 	pieChartData: any[];
 	competitorColumns: any[];
@@ -33,12 +46,7 @@ export default function DashboardPageClient({
 }: DashboardPageClientProps) {
 	const [isColorWidgetOpen, setIsColorWidgetOpen] = useState(false);
 	const [selectedColor, setSelectedColor] = useState<string>("");
-	const [mounted, setMounted] = useState(false);
-
-	// Prevent hydration mismatch
-	useEffect(() => {
-		setMounted(true);
-	}, []);
+	const [mounted, setMounted] = useState(true);
 
 	const handleColorToggle = () => {
 		setIsColorWidgetOpen(true);
