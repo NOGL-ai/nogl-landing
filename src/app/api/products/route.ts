@@ -230,9 +230,16 @@ export const GET = withRequestLogging(
           cacheHit: false
         });
         
-        // Performance categorization
+        // Performance categorization with indexing recommendations
         if (queryTime > 10000) {
           console.warn('⚠️ Very slow query:', queryTime, 'ms - Consider adding indexes');
+          console.warn('💡 Index recommendations:');
+          if (search) console.warn('   - CREATE INDEX idx_product_title ON nogl.shopify_product_variants_bq(product_title);');
+          if (search) console.warn('   - CREATE INDEX idx_variant_sku ON nogl.shopify_product_variants_bq(variant_sku);');
+          if (search) console.warn('   - CREATE INDEX idx_brand_name ON nogl.shopify_product_variants_bq(brand_name);');
+          if (status) console.warn('   - CREATE INDEX idx_variant_available ON nogl.shopify_product_variants_bq(variant_available);');
+          if (channel) console.warn('   - CREATE INDEX idx_product_type ON nogl.shopify_product_variants_bq(product_type);');
+          if (minPrice || maxPrice) console.warn('   - CREATE INDEX idx_variant_price ON nogl.shopify_product_variants_bq(variant_price);');
         } else if (queryTime > 5000) {
           console.warn('⚠️ Slow query:', queryTime, 'ms - Monitor for optimization');
         } else if (queryTime > 1000) {
@@ -333,6 +340,7 @@ export const GET = withRequestLogging(
         const cachedResponse = withSecurityHeaders(NextResponse.json(responseData));
         cachedResponse.headers.set('Cache-Control', 'public, max-age=300, s-maxage=300'); // 5 minutes cache
         cachedResponse.headers.set('ETag', `"${Date.now()}-${page}-${limit}"`);
+        cachedResponse.headers.set('Vary', 'Accept-Encoding'); // Support different encodings
         
         return cachedResponse;
       } catch (error) {
