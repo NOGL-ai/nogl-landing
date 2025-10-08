@@ -1,0 +1,34 @@
+# ============================================
+# Development Dockerfile
+# Optimized for hot reload and development workflow
+# ============================================
+
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apk add --no-cache libc6-compat openssl git
+
+# Copy package files
+COPY package*.json ./
+
+# Install all dependencies (including dev dependencies)
+RUN npm ci --legacy-peer-deps
+
+# Copy Prisma schema and generate client
+COPY prisma ./prisma
+RUN npx prisma generate
+
+# Copy source code (will be overridden by volume in docker-compose)
+COPY . .
+
+# Expose development port
+EXPOSE 3000
+
+# Set environment
+ENV NODE_ENV=development
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Start development server
+CMD ["npm", "run", "dev"]
