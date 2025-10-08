@@ -4,6 +4,10 @@ import { withRequestLogging, withSecurityHeaders } from "@/middlewares/security"
 import { withRateLimit } from "@/middlewares/rateLimit";
 import { generateLogoUrl, extractDomainFromUrl, extractMainDomain, isMarketplaceDomain } from "@/lib/logoService";
 
+// In-memory cache for query results
+const queryCache = new Map<string, { data: any; timestamp: number }>();
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
 // GET /api/products - List products with filtering, sorting, and pagination (no auth required)
 export const GET = withRequestLogging(
   withRateLimit(100, 15 * 60 * 1000)(
@@ -124,6 +128,17 @@ export const GET = withRequestLogging(
                         getSortField(sortBy) === 'id' ? 'variant_id' : 'variant_id';
 
       const startTime = Date.now();
+      
+      // Create cache key for this query
+      const cacheKey = `products_${JSON.stringify({ page, limit, search, status, featured, channel, categoryId, brandId, minPrice, maxPrice, sortBy, sortOrder })}`;
+      
+      // Check cache first
+      const cached = queryCache.get(cacheKey);
+      if (cached && (Date.now() - cached.timestamp) < CACHE_TTL) {
+        console.log('Cache hit - returning cached data');
+        return withSecurityHeaders(NextResponse.json(cached.data));
+      }
+      
     try {
       // Get products and total count in parallel using raw SQL for Supabase FDW table
       console.log('Supabase FDW query starting...');
@@ -234,7 +249,8 @@ export const GET = withRequestLogging(
           };
         });
 
-        const response = NextResponse.json({
+        // Store in cache
+        const responseData = {
           products: mappedProducts,
           pagination: {
             page,
@@ -252,10 +268,23 @@ export const GET = withRequestLogging(
             minPrice,
             maxPrice,
           },
+        };
+        
+        queryCache.set(cacheKey, {
+          data: responseData,
+          timestamp: Date.now()
         });
-
+        
+        // Clean old cache entries (keep only last 100)
+        if (queryCache.size > 100) {
+          const entries = Array.from(queryCache.entries());
+          entries.sort((a, b) => b[1].timestamp - a[1].timestamp);
+          queryCache.clear();
+          entries.slice(0, 100).forEach(([key, value]) => queryCache.set(key, value));
+        }
+        
         // Add caching headers for better performance
-        const cachedResponse = withSecurityHeaders(response);
+        const cachedResponse = withSecurityHeaders(NextResponse.json(responseData));
         cachedResponse.headers.set('Cache-Control', 'public, max-age=300, s-maxage=300'); // 5 minutes cache
         cachedResponse.headers.set('ETag', `"${Date.now()}-${page}-${limit}"`);
         
