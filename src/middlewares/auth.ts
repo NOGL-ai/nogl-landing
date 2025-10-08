@@ -16,6 +16,15 @@ export function withAuth<T extends any[] = []>(
 ) {
   return async (request: NextRequest, ...args: T) => {
     try {
+      // Check if we're in a build context
+      if (typeof window === 'undefined' && !request.headers) {
+        // During build time, skip auth check
+        return NextResponse.json(
+          { error: "Build time - auth skipped" },
+          { status: 200 }
+        );
+      }
+
       const session = await getServerSession(authOptions);
       
       if (!session?.user?.id) {

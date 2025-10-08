@@ -436,10 +436,20 @@ export default function CompetitorPage() {
   const [selectedRows, setSelectedRows] = React.useState<Set<number>>(new Set([0, 1, 2, 5, 6]));
   const [activeTab, setActiveTab] = React.useState<'all' | 'monitored' | 'unmonitored'>('all');
   const [searchQuery, setSearchQuery] = React.useState('');
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = React.useState('');
   const [focusedRowIndex, setFocusedRowIndex] = React.useState<number | null>(null);
   const [productSort, setProductSort] = React.useState<'none' | 'asc' | 'desc'>('none');
   const [priceSort, setPriceSort] = React.useState<'none' | 'asc' | 'desc'>('none');
   const [trendSort, setTrendSort] = React.useState<'none' | 'asc' | 'desc'>('none');
+
+  // Debounce search query to avoid excessive filtering
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 300); // 300ms delay
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   // API data state
   const [products, setProducts] = React.useState<any[]>([]);
@@ -458,10 +468,24 @@ export default function CompetitorPage() {
   // Fetch products from API
   React.useEffect(() => {
     const fetchProducts = async () => {
+      const startTime = performance.now();
+      
       try {
         setIsLoading(true);
         setError(null);
+        
+        // Validate parameters before API call
+        if (currentPage < 1 || pageLimit < 1 || pageLimit > 100) {
+          throw new Error('Invalid pagination parameters');
+        }
+        
+        console.log(`🚀 Fetching products - Page: ${currentPage}, Limit: ${pageLimit}`);
         const response = await getProducts({ page: currentPage, limit: pageLimit });
+        
+        // Validate API response structure
+        if (!response || !response.products || !Array.isArray(response.products)) {
+          throw new Error('Invalid API response structure');
+        }
         
         // Store pagination data
         setPagination({
@@ -472,56 +496,75 @@ export default function CompetitorPage() {
         });
         
         // Map ProductDTO to the expected format for monitored URLs
-        const mappedProducts = response.products.map((product: ProductDTO, index: number) => ({
-          id: product.id || `product-${index}`,
-          name: product.name,
-          domain: product.brand?.name ? `${product.brand.name.toLowerCase().replace(/\s+/g, '')}.com` : 'unknown.com',
-          avatar: product.image,
-          sku: product.sku,
-          image: product.image,
-          brand: product.brand ? {
-            name: product.brand.name,
-            logo: product.brand.logo,
-          } : {
-            name: 'Unknown Brand',
-            logo: null,
-          },
-          variants: 1, // Default to 1 since variants not in ProductDTO
-          competitorCount: product._count?.competitors || 0,
-          competitors: product.competitors && product.competitors.length > 0 ? {
-            prices: product.competitors.map(c => c.cheapest || c.avg || 0),
-            avg: product.competitors.reduce((sum, c) => sum + (c.avg || 0), 0) / product.competitors.length || 0,
-            cheapest: Math.min(...product.competitors.map(c => c.cheapest || c.avg || 0)),
-            highest: Math.max(...product.competitors.map(c => c.highest || c.avg || 0)),
-          } : {
-            prices: [0],
-            avg: 0,
-            cheapest: 0,
-            highest: 0,
-          },
-          products: 1,
-          position: 50 + (index % 50), // More realistic position range
-          trend: product.competitors && product.competitors.length > 0 ? 
-            ((product.price - (product.competitors[0]?.avg || product.price)) / (product.competitors[0]?.avg || product.price)) * 100 : 0,
-          trendUp: product.competitors && product.competitors.length > 0 ? 
-            product.price > (product.competitors[0]?.avg || product.price) : false,
-          date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
-          categories: product.category ? ['Active', 'In Stock', 'Tracking', product.category.name] : ['Active', 'In Stock', 'Tracking'],
-          competitorPrice: product.competitors && product.competitors.length > 0 ? 
-            product.competitors[0]?.cheapest || product.competitors[0]?.avg || product.price * 0.9 : product.price * 0.9,
-          myPrice: product.price,
-          channel: product.channel || 'unknown',
-          currency: product.currency || 'EUR',
-          status: 'Active',
-        }));
+        const mappedProducts = response.products.map((product: ProductDTO, index: number) => {
+          // Validate required fields
+          if (!product.id || !product.name) {
+            console.warn(`Invalid product data at index ${index}:`, product);
+            return null;
+          }
+          
+          return {
+            id: product.id || `product-${index}`,
+            name: product.name,
+            domain: product.brand?.name ? `${product.brand.name.toLowerCase().replace(/\s+/g, '')}.com` : 'unknown.com',
+            avatar: product.image,
+            sku: product.sku,
+            image: product.image,
+            brand: product.brand ? {
+              name: product.brand.name,
+              logo: product.brand.logo,
+            } : {
+              name: 'Unknown Brand',
+              logo: null,
+            },
+            variants: 1, // Default to 1 since variants not in ProductDTO
+            competitorCount: product._count?.competitors || 0,
+            competitors: product.competitors && product.competitors.length > 0 ? {
+              prices: product.competitors.map(c => c.cheapest || c.avg || 0),
+              avg: product.competitors.reduce((sum, c) => sum + (c.avg || 0), 0) / product.competitors.length || 0,
+              cheapest: Math.min(...product.competitors.map(c => c.cheapest || c.avg || 0)),
+              highest: Math.max(...product.competitors.map(c => c.highest || c.avg || 0)),
+            } : {
+              prices: [0],
+              avg: 0,
+              cheapest: 0,
+              highest: 0,
+            },
+            products: 1,
+            position: 50 + (index % 50), // More realistic position range
+            trend: product.competitors && product.competitors.length > 0 ? 
+              ((product.price - (product.competitors[0]?.avg || product.price)) / (product.competitors[0]?.avg || product.price)) * 100 : 0,
+            trendUp: product.competitors && product.competitors.length > 0 ? 
+              product.price > (product.competitors[0]?.avg || product.price) : false,
+            date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+            categories: product.category ? ['Active', 'In Stock', 'Tracking', product.category.name] : ['Active', 'In Stock', 'Tracking'],
+            competitorPrice: product.competitors && product.competitors.length > 0 ? 
+              product.competitors[0]?.cheapest || product.competitors[0]?.avg || product.price * 0.9 : product.price * 0.9,
+            myPrice: product.price,
+            channel: product.channel || 'unknown',
+            currency: product.currency || 'EUR',
+            status: 'Active',
+          };
+        }).filter(Boolean); // Remove null entries
         
         setProducts(mappedProducts);
+        
+        const endTime = performance.now();
+        console.log(`✅ Products loaded in ${(endTime - startTime).toFixed(2)}ms - ${mappedProducts.length} products`);
       } catch (err) {
         console.error('Error fetching products:', err);
-        setError('Failed to load products');
-        toast.error('Failed to load products');
-        // Fallback to mock data on error
-        setProducts(competitors);
+        const errorMessage = err instanceof Error ? err.message : 'Failed to load products';
+        setError(errorMessage);
+        toast.error(errorMessage);
+        
+        // Only fallback to mock data in development or if explicitly configured
+        if (process.env.NODE_ENV === 'development') {
+          console.warn('Falling back to mock data due to error');
+          setProducts(competitors);
+        } else {
+          // In production, show empty state instead of mock data
+          setProducts([]);
+        }
       } finally {
         setIsLoading(false);
         setIsInitialLoading(false);
@@ -600,14 +643,18 @@ export default function CompetitorPage() {
 
   // Filter competitors based on search query (memoized for performance)
   const filteredCompetitors = React.useMemo(() => {
-    const q = searchQuery.trim().toLowerCase();
+    const q = debouncedSearchQuery.trim().toLowerCase();
     if (!q) return currentData;
-    return currentData.filter(competitor =>
-      competitor.name.toLowerCase().includes(q) ||
-      competitor.domain.toLowerCase().includes(q) ||
-      (competitor.sku && competitor.sku.toLowerCase().includes(q))
-    );
-  }, [searchQuery, currentData]);
+    
+    // Use more efficient filtering with early returns
+    return currentData.filter(competitor => {
+      const name = competitor.name?.toLowerCase() || '';
+      const domain = competitor.domain?.toLowerCase() || '';
+      const sku = competitor.sku?.toLowerCase() || '';
+      
+      return name.includes(q) || domain.includes(q) || sku.includes(q);
+    });
+  }, [debouncedSearchQuery, currentData]);
 
   // Sort according to product, price or trend toggle
   const sortedCompetitors = React.useMemo(() => {
@@ -987,69 +1034,85 @@ export default function CompetitorPage() {
           aria-labelledby="all-products-tab"
           hidden={activeTab !== 'all'}
         >
-          <TanStackTable
-            data={sortedCompetitors}
-            selectedRows={selectedRows}
-            onRowSelectionChange={setSelectedRows}
-            onSortChange={(sorting) => {
-              if (sorting.column === 'name') {
-                setProductSort(sorting.direction);
-                setPriceSort('none');
-                setTrendSort('none');
-              } else if (sorting.column === 'competitorPrice') {
-                setPriceSort(sorting.direction);
-                setProductSort('none');
-                setTrendSort('none');
-              } else if (sorting.column === 'trend') {
-                setTrendSort(sorting.direction);
-                setProductSort('none');
-                setPriceSort('none');
-              }
-            }}
-            onRowClick={(row) => setFocusedRowIndex(sortedCompetitors.findIndex(c => c.id === row.id))}
-            onRowKeyDown={(e, row, index) => handleKeyDown(e, row.id, index)}
-            focusedRowIndex={focusedRowIndex ?? -1}
-            maxProducts={maxProducts}
-            badgeClasses={badgeClasses}
-            ProductsCell={({ competitor, maxProducts }) => {
-              const comp: any = competitor;
-              return (
-                <JewelryProductCell 
-                  product={{
-                    id: comp.id,
-                    name: comp.name,
-                    image: comp.avatar || comp.image,
-                    sku: comp.sku || `SKU-${comp.id}`,
-                    brand: {
-                      name: comp.brand?.name || 'Unknown Brand',
-                      logo: comp.brand?.logo
-                    },
-                    myPrice: comp.myPrice || comp.competitorPrice,
-                    competitorCount: comp.competitorCount || 0,
-                    status: comp.status || 'Active',
-                    currency: comp.currency || 'EUR',
-                    categories: comp.categories || []
-                  }}
-                  showPrice={false}
-                  showStatus={true}
-                  showCompetitorCount={false}
-                  showTooltip={true}
-                  size="lg"
-                />
-              );
-            }}
-            PricePositionCell={PricePositionCell}
-            computeTrend={computeTrend}
-            formatPercentDetailed={formatPercentDetailed}
-            formatPercentCompact={formatPercentCompact}
-            showProductsColumn={false}
-            showCompetitorsColumn={true}
-            showMaterialsColumn={false}
-            showBrandColumn={true}
-            brandColumnHeader="Brand"
-            showChannelColumn={true}
-            firstColumnHeader="Product"
-          />
+          {/* Show loading skeleton for better UX */}
+          {isLoading && sortedCompetitors.length === 0 ? (
+            <div className="space-y-4 p-6">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="flex items-center space-x-4 animate-pulse">
+                  <div className="w-12 h-12 bg-gray-200 rounded-lg"></div>
+                  <div className="flex-1 space-y-2">
+                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                    <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                  </div>
+                  <div className="w-20 h-8 bg-gray-200 rounded"></div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <TanStackTable
+              data={sortedCompetitors}
+              selectedRows={selectedRows}
+              onRowSelectionChange={setSelectedRows}
+              onSortChange={(sorting) => {
+                if (sorting.column === 'name') {
+                  setProductSort(sorting.direction);
+                  setPriceSort('none');
+                  setTrendSort('none');
+                } else if (sorting.column === 'competitorPrice') {
+                  setPriceSort(sorting.direction);
+                  setProductSort('none');
+                  setTrendSort('none');
+                } else if (sorting.column === 'trend') {
+                  setTrendSort(sorting.direction);
+                  setProductSort('none');
+                  setPriceSort('none');
+                }
+              }}
+              onRowClick={(row) => setFocusedRowIndex(sortedCompetitors.findIndex(c => c.id === row.id))}
+              onRowKeyDown={(e, row, index) => handleKeyDown(e, row.id, index)}
+              focusedRowIndex={focusedRowIndex ?? -1}
+              maxProducts={maxProducts}
+              badgeClasses={badgeClasses}
+              ProductsCell={({ competitor, maxProducts }) => {
+                const comp: any = competitor;
+                return (
+                  <JewelryProductCell 
+                    product={{
+                      id: comp.id,
+                      name: comp.name,
+                      image: comp.avatar || comp.image,
+                      sku: comp.sku || `SKU-${comp.id}`,
+                      brand: {
+                        name: comp.brand?.name || 'Unknown Brand',
+                        logo: comp.brand?.logo
+                      },
+                      myPrice: comp.myPrice || comp.competitorPrice,
+                      competitorCount: comp.competitorCount || 0,
+                      status: comp.status || 'Active',
+                      currency: comp.currency || 'EUR',
+                      categories: comp.categories || []
+                    }}
+                    showPrice={false}
+                    showStatus={true}
+                    showCompetitorCount={false}
+                    showTooltip={true}
+                    size="lg"
+                  />
+                );
+              }}
+              PricePositionCell={PricePositionCell}
+              computeTrend={computeTrend}
+              formatPercentDetailed={formatPercentDetailed}
+              formatPercentCompact={formatPercentCompact}
+              showProductsColumn={false}
+              showCompetitorsColumn={true}
+              showMaterialsColumn={false}
+              showBrandColumn={true}
+              brandColumnHeader="Brand"
+              showChannelColumn={true}
+              firstColumnHeader="Product"
+            />
+          )}
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border-secondary px-4 md:px-6 py-3">

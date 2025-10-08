@@ -3,6 +3,35 @@ import { GetProductsResponse, PageParams, ProductDTO } from "@/types/product";
 // Force to use real API (mock disabled)
 const useMock = false;
 
+// Simple in-memory cache for API responses
+const cache = new Map<string, { data: GetProductsResponse; timestamp: number }>();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+function getCacheKey(params: PageParams): string {
+  return JSON.stringify(params);
+}
+
+function getCachedData(params: PageParams): GetProductsResponse | null {
+  const key = getCacheKey(params);
+  const cached = cache.get(key);
+  
+  if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+    return cached.data;
+  }
+  
+  // Clean up expired cache entries
+  if (cached) {
+    cache.delete(key);
+  }
+  
+  return null;
+}
+
+function setCachedData(params: PageParams, data: GetProductsResponse): void {
+  const key = getCacheKey(params);
+  cache.set(key, { data, timestamp: Date.now() });
+}
+
 // Minimal mock dataset shaped like ProductDTO
 const mockProducts: ProductDTO[] = [
   {
@@ -57,10 +86,32 @@ async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
     },
     credentials: "include",
   });
+  
   if (!res.ok) {
-    const text = await res.text().catch(() => "");
-    throw new Error(`Request failed: ${res.status} ${res.statusText} ${text}`);
+    let errorMessage = `Request failed: ${res.status} ${res.statusText}`;
+    
+    try {
+      const errorData = await res.json();
+      if (errorData.error) {
+        errorMessage = errorData.error;
+        if (errorData.message) {
+          errorMessage += ` - ${errorData.message}`;
+        }
+        if (errorData.details && Array.isArray(errorData.details)) {
+          errorMessage += ` - ${errorData.details.map((d: any) => d.message).join(', ')}`;
+        }
+      }
+    } catch {
+      // If JSON parsing fails, use the text response
+      const text = await res.text().catch(() => "");
+      if (text) {
+        errorMessage += ` - ${text}`;
+      }
+    }
+    
+    throw new Error(errorMessage);
   }
+  
   return (await res.json()) as T;
 }
 
@@ -92,10 +143,24 @@ export async function getProducts(params: PageParams = {}): Promise<GetProductsR
     };
   }
 
+  // Check cache first
+  const cachedData = getCachedData(params);
+  if (cachedData) {
+    return cachedData;
+  }
+
   const query = buildQuery({ sortBy: "createdAt", sortOrder: "desc", ...params });
   const url = `/api/products?${query}`;
-  // API already returns { products, pagination, filters }
-  return await fetchJson<GetProductsResponse>(url);
+  
+  try {
+    const data = await fetchJson<GetProductsResponse>(url);
+    // Cache the successful response
+    setCachedData(params, data);
+    return data;
+  } catch (error) {
+    // Don't cache errors
+    throw error;
+  }
 }
 
 
