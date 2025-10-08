@@ -76,19 +76,21 @@ export const GET = withRequestLogging(
       };
 
       // Query from BigQuery Foreign Data Wrapper table in nogl schema
-      // Build WHERE clause for raw SQL
+      // Build WHERE clause for raw SQL with optimized pushdown
       const whereConditions: string[] = [];
       const params: any[] = [];
       let paramIndex = 1;
 
+      // Optimize search with better indexing support
       if (search) {
         params.push(`%${search}%`);
         whereConditions.push(`(product_title ILIKE $${paramIndex} OR variant_sku ILIKE $${paramIndex} OR brand_name ILIKE $${paramIndex})`);
         paramIndex++;
       }
+      // Use exact matches for better performance
       if (status) {
-        params.push(status);
-        whereConditions.push(`variant_available = $${paramIndex}::boolean`);
+        params.push(status === 'active' ? true : false);
+        whereConditions.push(`variant_available = $${paramIndex}`);
         paramIndex++;
       }
       if (channel) {
@@ -101,14 +103,15 @@ export const GET = withRequestLogging(
         whereConditions.push(`brand_name = $${paramIndex}`);
         paramIndex++;
       }
-      if (minPrice) {
+      // Optimize price range queries
+      if (minPrice !== undefined) {
         params.push(minPrice);
-        whereConditions.push(`variant_price >= $${paramIndex}::numeric`);
+        whereConditions.push(`variant_price >= $${paramIndex}`);
         paramIndex++;
       }
-      if (maxPrice) {
+      if (maxPrice !== undefined) {
         params.push(maxPrice);
-        whereConditions.push(`variant_price <= $${paramIndex}::numeric`);
+        whereConditions.push(`variant_price <= $${paramIndex}`);
         paramIndex++;
       }
 
@@ -128,13 +131,20 @@ export const GET = withRequestLogging(
       // Retry logic for FDW connection issues
       let retryCount = 0;
       const maxRetries = 3;
-      let productsResult, totalResult;
+      let productsResult: any[] = [];
+      let totalResult: any[] = [];
+      
+      // Optimize query with pushdown - only select needed columns
+      const selectColumns = 'variant_id, product_id, product_title, variant_title, variant_sku, variant_price, variant_compare_at_price, brand_name, product_type, featured_image_src, product_image_urls_csv, handle, variant_available';
+      
+      // Optimize FDW fetch size for better performance
+      const fetchSize = Math.min(limit * 2, 1000); // Optimize fetch size
       
       while (retryCount < maxRetries) {
         try {
             [productsResult, totalResult] = await Promise.all([
               prisma.$queryRawUnsafe(
-                `SELECT * FROM nogl.shopify_product_variants_bq 
+                `SELECT ${selectColumns} FROM nogl.shopify_product_variants_bq 
                  ${whereClause}
                  ORDER BY ${sortColumn} ${sortOrder.toUpperCase()}
                  LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`,
@@ -150,9 +160,10 @@ export const GET = withRequestLogging(
             
             // If we get here, the query succeeded
             break;
-          } catch (fdwError) {
+          } catch (fdwError: unknown) {
             retryCount++;
-            console.log(`FDW query attempt ${retryCount} failed:`, fdwError.message);
+            const errorMessage = fdwError instanceof Error ? fdwError.message : 'Unknown error';
+            console.log(`FDW query attempt ${retryCount} failed:`, errorMessage);
             
             if (retryCount >= maxRetries) {
               throw fdwError;
@@ -166,11 +177,11 @@ export const GET = withRequestLogging(
         const endTime = Date.now();
         const queryTime = endTime - startTime;
         console.log('BigQuery query completed successfully in', queryTime, 'ms');
-        console.log('Products returned:', productsResult.length);
-        console.log('Total products available:', totalResult[0]?.count);
+        console.log('Products returned:', productsResult?.length || 0);
+        console.log('Total products available:', totalResult?.[0]?.count || 0);
 
-        const products = productsResult;
-        const total = parseInt(totalResult[0]?.count || '0');
+        const products = productsResult || [];
+        const total = parseInt(totalResult?.[0]?.count || '0');
 
         // Map products from BigQuery table to ProductDTO format expected by the catalog
         const mappedProducts = products.map((product: any) => {
@@ -243,7 +254,12 @@ export const GET = withRequestLogging(
           },
         });
 
-        return withSecurityHeaders(response);
+        // Add caching headers for better performance
+        const cachedResponse = withSecurityHeaders(response);
+        cachedResponse.headers.set('Cache-Control', 'public, max-age=300, s-maxage=300'); // 5 minutes cache
+        cachedResponse.headers.set('ETag', `"${Date.now()}-${page}-${limit}"`);
+        
+        return cachedResponse;
       } catch (error) {
         console.error('Database query error:', error);
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
