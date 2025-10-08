@@ -1,3 +1,16 @@
+// ============================================
+// STRIPE WEBHOOK - TEMPORARILY DISABLED
+// Uncomment when Stripe is configured
+// ============================================
+
+export async function POST(request: Request) {
+	return new Response(
+		JSON.stringify({ error: "Stripe functionality is currently disabled" }),
+		{ status: 503, headers: { "Content-Type": "application/json" } }
+	);
+}
+
+/*
 import { prisma } from "@/lib/prismaDb";
 import { stripe } from "@/lib/stripe";
 import { sendEmail } from "@/lib/email";
@@ -8,7 +21,7 @@ import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import type Stripe from "stripe";
 
-export async function POST(request: Request) {
+export async function POST_DISABLED(request: Request) {
 	const body = await request.text();
 	const headersList = await headers();
 	const signature = headersList.get("Stripe-Signature") ?? "";
@@ -168,3 +181,4 @@ async function processWebhookEvent(event: Stripe.Event) {
 		console.error("Error revalidating path:", error);
 	}
 }
+*/

@@ -1,10 +1,30 @@
+// ============================================
+// STRIPE PAYMENT - TEMPORARILY DISABLED
+// Uncomment when Stripe is configured
+// ============================================
+
 import { NextResponse } from "next/server";
+
+export async function POST(request: Request) {
+	return NextResponse.json(
+		{ error: "Stripe functionality is currently disabled" },
+		{ status: 503 }
+	);
+}
+
+/*
 import Stripe from "stripe";
 import { headers } from "next/headers";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-	apiVersion: "2023-10-16",
-});
+// Lazy initialization - only create Stripe instance when the route is called
+function getStripe(): Stripe {
+	if (!process.env.STRIPE_SECRET_KEY) {
+		throw new Error("STRIPE_SECRET_KEY is not set");
+	}
+	return new Stripe(process.env.STRIPE_SECRET_KEY, {
+		apiVersion: "2023-10-16",
+	});
+}
 
 async function getBaseUrl() {
 	return (
@@ -19,7 +39,7 @@ async function getBaseUrl() {
 	);
 }
 
-export async function POST(request: Request) {
+export async function POST_DISABLED(request: Request) {
 	if (!process.env.STRIPE_SECRET_KEY) {
 		console.error("Missing Stripe secret key");
 		return NextResponse.json(
@@ -52,6 +72,9 @@ export async function POST(request: Request) {
 		const totalAmount = Math.round(
 			(basePrice * participants + recordingPrice * recordingCount) * 100
 		);
+
+		// Get Stripe instance (lazy initialization)
+		const stripe = getStripe();
 
 		// Create a Stripe Checkout Session
 		const session = await stripe.checkout.sessions.create({
@@ -128,3 +151,4 @@ export async function POST(request: Request) {
 		);
 	}
 }
+*/
