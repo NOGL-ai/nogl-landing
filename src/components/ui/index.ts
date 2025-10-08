@@ -9,7 +9,7 @@ export { Input } from "./input";
 
 // Checkbox
 export { default as Checkbox } from "./checkbox";
-export { Checkbox as CheckboxComponent } from "./checkbox";
+export { default as CheckboxComponent } from "./checkbox";
 
 // Tables
 export {
