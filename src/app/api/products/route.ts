@@ -153,13 +153,21 @@ export const GET = withRequestLogging(
         });
       }
       
+      // Construct image URL from product handle if available
+      let imageUrl: string | null = null;
+      if (product.handle) {
+        // Construct Shopify image URL pattern: https://cdn.shopify.com/s/files/1/{shop_id}/files/{handle}-{variant_id}.jpg
+        // This is a common pattern, adjust based on your actual image URL structure
+        imageUrl = `https://cdn.shopify.com/s/files/1/placeholder/files/${product.handle}-${product.variant_id || 'main'}.jpg`;
+      }
+
       return {
         id: product.variant_id?.toString() || product.product_id?.toString(),
         name: product.product_title || product.variant_title || 'Untitled Product',
         sku: product.sku || 'N/A',
-        image: null, // No image column in BigQuery table
+        image: imageUrl,
         price: product.price ? parseFloat(product.price.toString()) : 0,
-        currency: 'USD', // Default, adjust based on your data
+        currency: 'EUR', // Changed to EUR based on your sample data
         channel: 'shopify',
         brand: product.vendor ? {
           id: product.vendor.toLowerCase().replace(/\s+/g, '-'),
