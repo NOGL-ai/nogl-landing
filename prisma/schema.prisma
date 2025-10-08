@@ -176,6 +176,45 @@ model products {
   @@index([product_id], map: "idx_products_product_id")
 }
 
+// Note: BigQuery Foreign Data Wrapper table exists in nogl schema
+// We access it via raw SQL queries in the API route
+// Commenting out the model to avoid schema configuration issues
+/*
+model shopify_product_variants_bq {
+  id                   BigInt    @id
+  product_id           BigInt?
+  variant_id           BigInt?
+  title                String?
+  sku                  String?
+  price                Decimal?  @db.Decimal(10, 2)
+  compare_at_price     Decimal?  @db.Decimal(10, 2)
+  vendor               String?
+  product_type         String?
+  tags                 String?
+  created_at           DateTime? @db.Timestamptz(6)
+  updated_at           DateTime? @db.Timestamptz(6)
+  published_at         DateTime? @db.Timestamptz(6)
+  image_src            String?
+  inventory_quantity   Int?
+  available            Boolean?
+  option1              String?
+  option2              String?
+  option3              String?
+  fulfillment_service  String?
+  inventory_management String?
+  requires_shipping    Boolean?
+  taxable              Boolean?
+  barcode              String?
+  weight               Decimal?  @db.Decimal(10, 2)
+  weight_unit          String?
+  admin_graphql_api_id String?
+  handle               String?
+  status               String?
+
+  @@map("shopify_product_variants_bq")
+}
+*/
+
 enum UserRole {
   USER
   EXPERT

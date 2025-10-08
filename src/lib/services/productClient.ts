@@ -92,7 +92,7 @@ export async function getProducts(params: PageParams = {}): Promise<GetProductsR
     };
   }
 
-  const query = buildQuery({ limit: 20, page: 1, sortBy: "createdAt", sortOrder: "desc", ...params });
+  const query = buildQuery({ sortBy: "createdAt", sortOrder: "desc", ...params });
   const url = `/api/products?${query}`;
   // API already returns { products, pagination, filters }
   return await fetchJson<GetProductsResponse>(url);

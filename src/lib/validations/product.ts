@@ -33,7 +33,7 @@ export const updateProductSchema = productSchema.partial().shape({
 // Product query parameters schema
 export const productQuerySchema = yup.object({
   page: yup.number().integer().min(1).default(1),
-  limit: yup.number().integer().min(1).max(100).default(10),
+  limit: yup.number().integer().min(1).max(100).default(20),
   search: yup.string().optional(),
   status: yup.string().oneOf(["ACTIVE", "INACTIVE", "DRAFT", "ARCHIVED"]).optional(),
   featured: yup.boolean().optional(),

@@ -444,7 +444,16 @@ export default function CompetitorPage() {
   // API data state
   const [products, setProducts] = React.useState<any[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [isInitialLoading, setIsInitialLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [pageLimit] = React.useState(100);
+  const [pagination, setPagination] = React.useState({
+    page: 1,
+    limit: 100,
+    total: 0,
+    totalPages: 0
+  });
 
   // Fetch products from API
   React.useEffect(() => {
@@ -452,13 +461,21 @@ export default function CompetitorPage() {
       try {
         setIsLoading(true);
         setError(null);
-        const response = await getProducts({ page: 1, limit: 100 });
+        const response = await getProducts({ page: currentPage, limit: pageLimit });
+        
+        // Store pagination data
+        setPagination({
+          page: response.pagination.page,
+          limit: response.pagination.limit,
+          total: response.pagination.total,
+          totalPages: response.pagination.totalPages
+        });
         
         // Map ProductDTO to the expected format for monitored URLs
         const mappedProducts = response.products.map((product: ProductDTO, index: number) => ({
-          id: index,
+          id: product.id || `product-${index}`,
           name: product.name,
-          domain: 'yourstore.com', // Default domain
+          domain: product.brand?.name ? `${product.brand.name.toLowerCase().replace(/\s+/g, '')}.com` : 'unknown.com',
           avatar: product.image,
           sku: product.sku,
           image: product.image,
@@ -466,26 +483,34 @@ export default function CompetitorPage() {
             name: product.brand.name,
             logo: product.brand.logo,
           } : {
-            name: 'Your Brand',
+            name: 'Unknown Brand',
             logo: null,
           },
-          variants: 1,
-          competitorCount: product._count?.competitors || 1,
-          competitors: {
-            prices: [product.price * 0.9],
-            avg: product.price * 0.9,
-            cheapest: product.price * 0.9,
-            highest: product.price * 0.9,
+          variants: 1, // Default to 1 since variants not in ProductDTO
+          competitorCount: product._count?.competitors || 0,
+          competitors: product.competitors && product.competitors.length > 0 ? {
+            prices: product.competitors.map(c => c.cheapest || c.avg || 0),
+            avg: product.competitors.reduce((sum, c) => sum + (c.avg || 0), 0) / product.competitors.length || 0,
+            cheapest: Math.min(...product.competitors.map(c => c.cheapest || c.avg || 0)),
+            highest: Math.max(...product.competitors.map(c => c.highest || c.avg || 0)),
+          } : {
+            prices: [0],
+            avg: 0,
+            cheapest: 0,
+            highest: 0,
           },
           products: 1,
-          position: 60 + index,
-          trend: Math.random() * 10 - 2, // Random trend between -2 and 8
-          trendUp: Math.random() > 0.5,
+          position: 50 + (index % 50), // More realistic position range
+          trend: product.competitors && product.competitors.length > 0 ? 
+            ((product.price - (product.competitors[0]?.avg || product.price)) / (product.competitors[0]?.avg || product.price)) * 100 : 0,
+          trendUp: product.competitors && product.competitors.length > 0 ? 
+            product.price > (product.competitors[0]?.avg || product.price) : false,
           date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
           categories: product.category ? ['Active', 'In Stock', 'Tracking', product.category.name] : ['Active', 'In Stock', 'Tracking'],
-          competitorPrice: product.price * 0.9, // Mock competitor price
+          competitorPrice: product.competitors && product.competitors.length > 0 ? 
+            product.competitors[0]?.cheapest || product.competitors[0]?.avg || product.price * 0.9 : product.price * 0.9,
           myPrice: product.price,
-          channel: product.channel || 'shopify',
+          channel: product.channel || 'unknown',
           currency: product.currency || 'EUR',
           status: 'Active',
         }));
@@ -494,15 +519,17 @@ export default function CompetitorPage() {
       } catch (err) {
         console.error('Error fetching products:', err);
         setError('Failed to load products');
+        toast.error('Failed to load products');
         // Fallback to mock data on error
         setProducts(competitors);
       } finally {
         setIsLoading(false);
+        setIsInitialLoading(false);
       }
     };
 
     fetchProducts();
-  }, []);
+  }, [currentPage, pageLimit]);
 
   // Use API products data instead of hardcoded data
   const currentData = products.length > 0 ? products : competitors;
@@ -631,8 +658,25 @@ export default function CompetitorPage() {
     setTrendSort('none');
   };
 
-  // Show loading state
-  if (isLoading) {
+  // Pagination handlers
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(prev => prev - 1);
+      // Scroll to top of the page for better UX
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < pagination.totalPages) {
+      setCurrentPage(prev => prev + 1);
+      // Scroll to top of the page for better UX
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  // Show loading state only on initial load
+  if (isInitialLoading) {
     return (
       <main className="mx-auto w-full min-h-screen space-y-6 md:space-y-8 bg-background px-4 md:px-8 pt-6 md:pt-8 pb-8 md:pb-12 text-foreground transition-colors">
         <div className="flex items-center justify-center min-h-[400px]">
@@ -937,7 +981,7 @@ export default function CompetitorPage() {
         </div>
 
         <div 
-          className="overflow-x-auto"
+          className={`overflow-x-auto transition-opacity duration-200 ${isLoading ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}
           role="tabpanel"
           id="all-products-panel"
           aria-labelledby="all-products-tab"
@@ -1010,25 +1054,57 @@ export default function CompetitorPage() {
 
         <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border-secondary px-4 md:px-6 py-3">
           <div className="text-xs md:text-sm font-medium text-muted-foreground dark:text-gray-300">
-            Page 1 of {Math.max(1, Math.ceil(sortedCompetitors.length / 10))}
+            {pagination.total > 0 ? (
+              <>
+                Showing {((currentPage - 1) * pageLimit) + 1}-{Math.min(currentPage * pageLimit, pagination.total)} of {pagination.total} products
+                <span className="ml-2 text-muted-foreground/70">
+                  (Page {currentPage} of {pagination.totalPages})
+                </span>
+              </>
+            ) : (
+              'No products found'
+            )}
             <span className="sr-only">
-              Showing {filteredCompetitors.length} of {currentData.length} products
+              Page {currentPage} of {pagination.totalPages || 1}
               {searchQuery && ` matching "${searchQuery}"`}
             </span>
           </div>
           <div className="flex items-center gap-2 md:gap-3">
             <button
+              onClick={handlePreviousPage}
               className="inline-flex items-center justify-center gap-1 rounded-lg border border-border-secondary bg-background px-3 py-2 text-xs md:text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40 disabled:cursor-not-allowed disabled:opacity-60"
               aria-label="Go to previous page"
-              disabled
+              disabled={currentPage <= 1 || isLoading}
             >
-              Previous
+              {isLoading ? (
+                <>
+                  <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  <span className="hidden sm:inline">Loading...</span>
+                </>
+              ) : (
+                'Previous'
+              )}
             </button>
             <button
+              onClick={handleNextPage}
               className="inline-flex items-center justify-center gap-1 rounded-lg border border-border-secondary bg-background px-3 py-2 text-xs md:text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40 disabled:cursor-not-allowed disabled:opacity-60"
               aria-label="Go to next page"
+              disabled={currentPage >= pagination.totalPages || isLoading}
             >
-              Next
+              {isLoading ? (
+                <>
+                  <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  <span className="hidden sm:inline">Loading...</span>
+                </>
+              ) : (
+                'Next'
+              )}
             </button>
           </div>
         </div>

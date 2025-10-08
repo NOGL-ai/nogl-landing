@@ -84,7 +84,7 @@ describe('Validation Middleware', () => {
   describe('withQueryValidation', () => {
     const querySchema = yup.object({
       page: yup.number().integer().min(1).default(1),
-      limit: yup.number().integer().min(1).max(100).default(10),
+      limit: yup.number().integer().min(1).max(100).default(20),
       search: yup.string().optional(),
       featured: yup.boolean().optional(),
     })

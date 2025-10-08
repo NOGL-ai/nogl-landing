@@ -75,60 +75,101 @@ export const GET = withRequestLogging(
       [getSortField(sortBy)]: sortOrder,
     };
 
-    // Get products and total count in parallel
-    const [products, total] = await Promise.all([
-      (prisma as any).products.findMany({
-        where,
-        orderBy,
-        skip,
-        take: limit,
-      }),
-      (prisma as any).products.count({ where }),
+    // Query from BigQuery Foreign Data Wrapper table in nogl schema
+    // Build WHERE clause for raw SQL
+    const whereConditions: string[] = [];
+    const params: any[] = [];
+    let paramIndex = 1;
+
+    if (search) {
+      params.push(`%${search}%`);
+      whereConditions.push(`(product_title ILIKE $${paramIndex} OR sku ILIKE $${paramIndex} OR vendor ILIKE $${paramIndex})`);
+      paramIndex++;
+    }
+    if (status) {
+      params.push(status);
+      whereConditions.push(`available = $${paramIndex}::boolean`);
+      paramIndex++;
+    }
+    if (channel) {
+      params.push(channel);
+      whereConditions.push(`product_type = $${paramIndex}`);
+      paramIndex++;
+    }
+    if (brandId) {
+      params.push(brandId);
+      whereConditions.push(`vendor = $${paramIndex}`);
+      paramIndex++;
+    }
+    if (minPrice) {
+      params.push(minPrice);
+      whereConditions.push(`price >= $${paramIndex}::numeric`);
+      paramIndex++;
+    }
+    if (maxPrice) {
+      params.push(maxPrice);
+      whereConditions.push(`price <= $${paramIndex}::numeric`);
+      paramIndex++;
+    }
+
+    const whereClause = whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : '';
+    
+    // Map sortBy to actual column name in BigQuery table
+    const sortColumn = getSortField(sortBy) === 'product_title' ? 'product_title' : 
+                      getSortField(sortBy) === 'product_original_price' ? 'price' : 
+                      getSortField(sortBy) === 'product_discount_price' ? 'compare_at_price' : 
+                      getSortField(sortBy) === 'id' ? 'variant_id' : 'variant_id';
+
+    // Get products and total count in parallel using raw SQL for BigQuery table
+    const [productsResult, totalResult] = await Promise.all([
+      prisma.$queryRawUnsafe<any[]>(
+        `SELECT * FROM nogl.shopify_product_variants_bq 
+         ${whereClause}
+         ORDER BY ${sortColumn} ${sortOrder.toUpperCase()}
+         LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`,
+        ...params,
+        limit,
+        skip
+      ),
+      prisma.$queryRawUnsafe<any[]>(
+        `SELECT COUNT(*) as count FROM nogl.shopify_product_variants_bq ${whereClause}`,
+        ...params
+      ),
     ]);
 
-    // Map products to ProductDTO format expected by the catalog
+    const products = productsResult;
+    const total = parseInt(totalResult[0]?.count || '0');
+
+    // Map products from BigQuery table to ProductDTO format expected by the catalog
     const mappedProducts = products.map((product: any) => {
-      // Generate logo URL from brand name or domain
+      // Generate logo URL from vendor/brand name
       let logoUrl: string | null = null;
       
-      if (product.product_brand) {
-        // Priority 1: Try to extract domain from product URL
-        let domain = extractDomainFromUrl(product.product_url);
-        
-        // If domain is from a CDN or subdomain, extract the main domain
-        if (domain) {
-          domain = extractMainDomain(domain);
-        }
-        // Ignore marketplace/platform domains to avoid wrong brand logos
-        if (domain && isMarketplaceDomain(domain)) {
-          domain = null;
-        }
-        
-        // Priority 2: Use brand name as fallback
-        // Generate logo using extracted domain or brand name
-        logoUrl = generateLogoUrl(domain || product.product_brand, {
+      if (product.vendor) {
+        // Generate logo using vendor name
+        logoUrl = generateLogoUrl(product.vendor, {
           format: 'png',
           size: 64
         });
       }
       
       return {
-        id: product.product_id,
-        name: product.product_title || 'Untitled Product',
-        sku: product.product_sku || 'N/A',
-        image: product.product_page_image_url,
-        price: product.product_original_price ? parseFloat(product.product_original_price.toString()) : 0,
-        currency: product.product_currency || 'EUR',
-        channel: product.product_display_mode,
-        brand: product.product_brand ? {
-          id: product.product_brand.toLowerCase().replace(/\s+/g, '-'),
-          name: product.product_brand,
+        id: product.variant_id?.toString() || product.product_id?.toString(),
+        name: product.product_title || product.variant_title || 'Untitled Product',
+        sku: product.sku || 'N/A',
+        image: null, // No image column in BigQuery table
+        price: product.price ? parseFloat(product.price.toString()) : 0,
+        currency: 'USD', // Default, adjust based on your data
+        channel: 'shopify',
+        brand: product.vendor ? {
+          id: product.vendor.toLowerCase().replace(/\s+/g, '-'),
+          name: product.vendor,
           logo: logoUrl
         } : null,
-        category: product.product_category ? {
-          id: product.product_category.toLowerCase().replace(/\s+/g, '-'),
-          name: product.product_category,
-          slug: product.product_category.toLowerCase().replace(/\s+/g, '-')
+        category: product.product_type ? {
+          id: product.product_type.toLowerCase().replace(/\s+/g, '-'),
+          name: product.product_type,
+          slug: product.product_type.toLowerCase().replace(/\s+/g, '-')
         } : null,
         competitors: [], // No competitor data in current table structure
         _count: {
