@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { GoogleSigninButton } from "../atoms";
 import { SignupWithPassword } from "../molecules";
+import type { Route } from "next";
 
 export default function Signup() {
 	return (
@@ -32,12 +32,15 @@ export default function Signup() {
 					<div className="flex size-full flex-col items-center">
 						<div className="flex w-full flex-col items-center py-0">
 							<div className="flex w-full max-w-[360px] flex-col items-center gap-6 sm:gap-8">
-				{/* Text and supporting text */}
-				<div className="flex w-full flex-col items-start gap-3">
-					<h1 className="w-full text-[36px] font-semibold leading-[44px] tracking-[-0.72px] text-[#181d27] dark:text-white">
-						Sign up
-					</h1>
-				</div>
+								{/* Text and supporting text */}
+								<div className="flex w-full flex-col items-start gap-3">
+									<h1 className="w-full text-2xl font-semibold leading-8 text-[#181d27] dark:text-white sm:text-[30px] sm:leading-[38px]">
+										Sign up
+									</h1>
+									<p className="w-full text-sm font-normal leading-5 text-[#535862] dark:text-gray-300 sm:text-base sm:leading-6">
+										Start your 30-day free trial.
+									</p>
+								</div>
 
 				{/* Content */}
 				<div className="flex w-full flex-col items-center gap-6 rounded-xl">
@@ -53,7 +56,7 @@ export default function Signup() {
 						Already have an account?
 					</p>
 				<Link
-					href={"/auth/signin" as any}
+					href={"/auth/signin" as Route}
 					className="text-[14px] font-semibold leading-5 text-[#6941c6] hover:underline"
 				>
 					Log in
