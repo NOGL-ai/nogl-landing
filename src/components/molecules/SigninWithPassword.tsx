@@ -5,7 +5,7 @@ import FormButton from "@/components/atoms/FormButton";
 import InputGroup from "@/components/molecules/InputGroup";
 import toast from "react-hot-toast";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Loader from "../atoms/Loader";
 import validator from "validator";
 // Removed DOMPurify import - using validator for sanitization instead
@@ -26,6 +26,7 @@ export default function SigninWithPassword() {
 	const [loading, setLoading] = useState(false);
 
 	const router = useRouter();
+	const pathname = usePathname();
 
 	// Handle input changes and validation
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,23 +106,52 @@ export default function SigninWithPassword() {
 		setErrors((prev) => ({ ...prev, general: "" }));
 
 		const sanitizedData = sanitizeData();
+		const locale = pathname?.split("/")[1] || "en";
+		const fallbackUrl = `/${locale}/dashboard`;
 
-		const callback = await signIn("credentials", {
-			...sanitizedData,
-			redirect: false,
-		});
+		try {
+			console.log("Attempting signin with:", { email: sanitizedData.email, hasPassword: !!sanitizedData.password });
+			
+			const callback = await signIn("credentials", {
+				email: sanitizedData.email,
+				password: sanitizedData.password,
+				redirect: false,
+				callbackUrl: fallbackUrl,
+			});
 
-		if (callback?.error) {
-			setErrors((prev) => ({ ...prev, general: callback.error || "" }));
+			console.log("SignIn callback result:", callback);
+
+			if (!callback) {
+				throw new Error("Unable to complete sign in. Please try again.");
+			}
+
+			if (callback.error) {
+				const message = typeof callback.error === "string" && callback.error.trim().length > 0
+					? callback.error
+					: "Unable to sign in with the provided credentials.";
+				console.error("SignIn error:", callback.error);
+				setErrors((prev) => ({ ...prev, general: message }));
+				toast.error(message);
+				return;
+			}
+
+			if (callback.ok) {
+				toast.success("Logged in successfully");
+				setData({ email: "", password: "", remember: false });
+				setErrors({ email: "", password: "", general: "" });
+				const destination = callback.url ?? fallbackUrl;
+				router.push(destination);
+			}
+		} catch (error) {
+			console.error("SignIn exception:", error);
+			const message =
+				error instanceof Error && error.message
+					? error.message
+					: "Something went wrong while signing in.";
+			setErrors((prev) => ({ ...prev, general: message }));
+			toast.error(message);
+		} finally {
 			setLoading(false);
-		}
-
-		if (callback?.ok && !callback?.error) {
-			toast.success("Logged in successfully");
-			setLoading(false);
-			setData({ email: "", password: "", remember: false });
-			setErrors({ email: "", password: "", general: "" });
-			router.push("/admin");
 		}
 	};
 

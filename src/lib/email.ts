@@ -150,6 +150,9 @@ If you did not sign up for this account, you can ignore this email.
 };
 
 export const formatEmail = (email: string) => {
+	if (!email || typeof email !== 'string') {
+		return '';
+	}
 	return email.replace(/\s+/g, "").toLowerCase().trim();
 };
 

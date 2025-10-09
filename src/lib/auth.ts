@@ -11,7 +11,7 @@ import { User } from "@prisma/client";
 import { createTransport } from "nodemailer";
 import { getMagicLinkEmail } from "@/lib/emailTemplates/magicLinkEmail";
 import { getBookingConfirmationEmail } from "@/lib/emailTemplates/bookingConfirmationEmail";
-import { sendEmail } from "@/lib/email";
+import { sendEmail, formatEmail } from "@/lib/email";
 
 declare module "next-auth" {
 	interface User {
@@ -45,37 +45,57 @@ export const authOptions: NextAuthOptions = {
 			},
 
 			async authorize(credentials) {
-				if (!credentials?.email || !credentials?.password) {
-					throw new Error("Please enter an email or password");
-				}
+				try {
+					if (!credentials?.email || !credentials?.password) {
+						throw new Error("Please enter an email or password");
+					}
+
+					const formattedEmail = formatEmail(credentials.email);
+
+					if (!formattedEmail) {
+						throw new Error("Invalid email format");
+					}
 
 				const user = await prisma.user.findUnique({
 					where: {
-						email: credentials.email,
+						email: formattedEmail,
 					},
 				});
 
-				if (!user || !user.password) {
+				if (!user) {
 					throw new Error("No user found");
 				}
 
-				const passwordMatch = await bcrypt.compare(
-					credentials.password,
-					user.password
-				);
-
-				if (!passwordMatch) {
-					throw new Error("Incorrect password");
+				if (!user.password) {
+					throw new Error("This account was created with Google. Please use 'Sign in with Google' button instead.");
 				}
 
-				// Ensure the returned object matches the User type
-				return {
-					id: user.id,
-					name: user.name!,
-					email: user.email!,
-					emailVerified: user.emailVerified,
-					image: user.image,
-				};
+					const passwordMatch = await bcrypt.compare(
+						credentials.password,
+						user.password
+					);
+
+					if (!passwordMatch) {
+						throw new Error("Incorrect password");
+					}
+
+					// Ensure all required fields are present
+					if (!user.id || !user.email) {
+						throw new Error("Invalid user data");
+					}
+
+					// Ensure the returned object matches the User type
+					return {
+						id: user.id,
+						name: user.name || "",
+						email: user.email,
+						emailVerified: user.emailVerified || null,
+						image: user.image || null,
+					};
+				} catch (error) {
+					console.error("Credentials authorize error:", error);
+					throw error;
+				}
 			},
 		}),
 
@@ -252,7 +272,12 @@ export const authOptions: NextAuthOptions = {
 
 	callbacks: {
 		jwt: async ({ token, user }) => {
-			if (user) {
+			// Ensure token is always an object
+			if (!token) {
+				token = {};
+			}
+
+			if (user && user.id) {
 				token.id = user.id;
 
 				// Fetch additional user data from database
@@ -275,6 +300,7 @@ export const authOptions: NextAuthOptions = {
 						if (dbUser.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(dbUser.email)) {
 							token.email = dbUser.email;
 						} else {
+							console.warn('Invalid email format for user:', dbUser.id);
 							token.emailError = "Invalid email";
 						}
 					}
@@ -286,17 +312,29 @@ export const authOptions: NextAuthOptions = {
 		},
 
 		async signIn({ user, account, profile, email, credentials }) {
+			// Ensure user object exists
+			if (!user) {
+				console.error("signIn callback: user is undefined");
+				return false;
+			}
+
 			if (account?.provider === "google") {
 				try {
+					// Ensure email is available
+					if (!user.email) {
+						console.error("Google sign in: user email is missing");
+						return false;
+					}
+
 					const existingUser = await prisma.user.findUnique({
-						where: { email: user.email! },
+						where: { email: user.email },
 					});
 
 					// If user exists and email is verified by Google, we can safely link accounts
-					if (existingUser && (profile as any).email_verified) {
+					if (existingUser && (profile as any)?.email_verified) {
 						// Update existing user with Google information
 						await prisma.user.update({
-							where: { email: user.email! },
+							where: { email: user.email },
 							data: {
 								// Preserve existing role and community status
 								name: existingUser.name || user.name,
@@ -340,9 +378,18 @@ export const authOptions: NextAuthOptions = {
 		},
 
 		session: async ({ session, token }) => {
-			// Safely handle null/undefined session (when user is not logged in)
-			if (!session) {
-				return session;
+			// Ensure session and session.user exist
+			if (!session || !session.user) {
+				// Return a minimal valid session structure
+				return {
+					user: {
+						id: token.sub || '',
+						email: token.email || null,
+						name: token.name || null,
+						image: token.picture || null,
+					},
+					expires: session?.expires || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+				};
 			}
 
 			// Ensure user object exists before accessing it

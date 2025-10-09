@@ -148,7 +148,7 @@ const SignupWithPassword = () => {
 				if (response.data.exists) {
 					setErrors((prev) => ({
 						...prev,
-						email: "This email is already registered.",
+						email: "This email is already registered. Try signing in instead, or use 'Sign in with Google' if you registered with Google.",
 					}));
 				}
 			} catch (error) {
@@ -187,11 +187,31 @@ const SignupWithPassword = () => {
 			}
 		} catch (error: unknown) {
 			console.error("Registration error:", error);
-			const errorMessage = axios.isAxiosError(error) && error.response?.data
-				? typeof error.response.data === "string"
-					? error.response.data
-					: JSON.stringify(error.response.data)
-				: "An error occurred during registration";
+
+			let errorMessage = "An error occurred during registration";
+
+			if (axios.isAxiosError(error)) {
+				const responseData = error.response?.data;
+				const statusCode = error.response?.status;
+
+				if (typeof responseData === "string") {
+					errorMessage = responseData;
+				} else if (
+					responseData &&
+					typeof responseData === "object" &&
+					"error" in responseData &&
+					typeof (responseData as { error?: unknown }).error === "string"
+				) {
+					errorMessage = (responseData as { error: string }).error;
+				} else if (error.message) {
+					errorMessage = error.message;
+				}
+
+				if (statusCode === 409) {
+					setErrors((prev) => ({ ...prev, email: errorMessage }));
+				}
+			}
+
 			toast.error(errorMessage);
 		} finally {
 			setLoading(false);
