@@ -66,10 +66,18 @@ export const SubmenuPanel: React.FC<SubmenuPanelProps> = ({
             id={`nav-panel-${item.id}`}
             onMouseEnter={onMouseEnter}
             onMouseLeave={(e) => {
-                // Don't close if clicking inside the submenu
-                if (e.relatedTarget && panelRef.current?.contains(e.relatedTarget as Node)) {
+                const nextTarget = e.relatedTarget;
+
+                if (
+                    panelRef.current &&
+                    nextTarget &&
+                    typeof Node !== "undefined" &&
+                    nextTarget instanceof Node &&
+                    panelRef.current.contains(nextTarget)
+                ) {
                     return;
                 }
+
                 onMouseLeave?.();
             }}
             onClick={(e) => e.stopPropagation()}

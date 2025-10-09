@@ -193,10 +193,17 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
     }, [clearHoverTimeout, scheduleClosePanel]);
 
     const handleIconBlur = useCallback((event: React.FocusEvent) => {
-        const nextTarget = event.relatedTarget as Node | null;
-        if (nextTarget && (sidebarRef.current?.contains(nextTarget) || submenuPanelRef.current?.contains(nextTarget))) {
+        const nextTarget = event.relatedTarget;
+
+        if (
+            nextTarget &&
+            typeof Node !== "undefined" &&
+            nextTarget instanceof Node &&
+            (sidebarRef.current?.contains(nextTarget) || submenuPanelRef.current?.contains(nextTarget))
+        ) {
             return;
         }
+
         clearHoverTimeout();
         scheduleClosePanel();
     }, [clearHoverTimeout, scheduleClosePanel]);

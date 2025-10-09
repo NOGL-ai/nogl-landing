@@ -8,42 +8,42 @@ export default function Signup() {
 	return (
 		<section className="flex min-h-screen w-full items-stretch overflow-hidden bg-white dark:bg-[#071025]">
 			{/* Left: Sign-up form */}
-			<div className="relative flex w-full flex-1 flex-col items-center justify-center self-stretch lg:min-w-[480px]">
-				{/* Logo - absolutely positioned */}
-				<div className="absolute left-4 top-6 flex items-center gap-2 sm:left-8 sm:top-8 sm:gap-3">
+			<div className="relative flex w-full flex-1 flex-col items-center self-stretch lg:min-w-[480px] lg:justify-center">
+				{/* Logo - absolutely positioned on desktop, inline on mobile */}
+				<div className="flex w-full items-center gap-2 px-4 pt-12 pb-8 lg:absolute lg:left-8 lg:top-8 lg:w-auto lg:p-0">
 					<Image
 						src="/images/logo/logo.svg"
 						alt="NOGL"
-						width={32}
-						height={32}
-						className="h-7 w-7 sm:h-8 sm:w-8"
+						width={40}
+						height={40}
+						className="h-10 w-10 rounded-[10px]"
 					/>
-					<span className="text-lg font-semibold text-[#181d27] dark:text-white sm:text-xl">
+					<span className="text-xl font-semibold text-[#181d27] dark:text-white lg:hidden">
 						NOGL
 					</span>
 				</div>
 
-				{/* Copyright - absolutely positioned */}
-				<p className="absolute bottom-8 left-4 text-sm font-normal leading-5 text-[#535862] dark:text-gray-400 sm:bottom-[52px] sm:left-8">
+				{/* Copyright - absolutely positioned on desktop only */}
+				<p className="hidden text-sm font-normal leading-5 text-[#535862] dark:text-gray-400 lg:absolute lg:bottom-[52px] lg:left-8 lg:block">
 					© Nogl.ai 2025
 				</p>
 
-				<div className="w-full px-4 sm:px-8">
+				<div className="w-full flex-1 px-4 pb-12 lg:flex-initial lg:px-8 lg:pb-0">
 					<div className="flex size-full flex-col items-center">
-						<div className="flex w-full flex-col items-center py-0">
-							<div className="flex w-full max-w-[360px] flex-col items-center gap-6 sm:gap-8">
+						<div className="flex w-full flex-col items-center">
+							<div className="flex w-full max-w-[360px] flex-col items-center gap-8">
 								{/* Text and supporting text */}
-								<div className="flex w-full flex-col items-start gap-3">
-									<h1 className="w-full text-2xl font-semibold leading-8 text-[#181d27] dark:text-white sm:text-[30px] sm:leading-[38px]">
+								<div className="flex w-full flex-col items-start gap-2">
+									<h1 className="w-full text-2xl font-semibold leading-8 text-[#181d27] dark:text-white">
 										Sign up
 									</h1>
-								<p className="w-full text-sm font-normal leading-5 text-[#535862] dark:text-gray-300 sm:text-base sm:leading-6">
-									Join 100+ fashion brands using AI.
-								</p>
+									<p className="w-full text-base font-normal leading-6 text-[#535862] dark:text-gray-300">
+										Join 100+ fashion brands using AI.
+									</p>
 								</div>
 
 								{/* Content */}
-				<div className="flex w-full flex-col items-center gap-6 rounded-xl">
+								<div className="flex w-full flex-col items-center gap-6 rounded-xl">
 									{/* Form */}
 									<div className="w-full">
 										<SignupWithPassword />
@@ -51,20 +51,23 @@ export default function Signup() {
 								</div>
 
 								{/* Row - Sign in link */}
-				<div className="flex w-full items-center justify-center gap-1">
-					<p className="text-[14px] font-normal leading-5 text-[#535862] dark:text-gray-300">
+								<div className="flex w-full items-center justify-center gap-1">
+									<p className="text-sm font-normal leading-5 text-[#535862] dark:text-gray-300">
 										Already have an account?
 									</p>
 									<Link
-					href={"/auth/signin" as Route}
-					className="text-[14px] font-semibold leading-5 text-[#6941c6] hover:underline"
+										href={"/auth/signin" as Route}
+										className="text-sm font-semibold leading-5 text-[#6941c6] hover:underline"
 									>
 										Log in
 									</Link>
-				</div>
+								</div>
 							</div>
+						</div>
+					</div>
+				</div>
 
-				{/* Hand-drawn Arrow */}
+				{/* Hand-drawn Arrow - desktop only */}
 				<div className="absolute left-[500px] top-[610px] hidden lg:flex lg:items-center lg:justify-center">
 					<div className="rotate-[330deg]">
 						<img
@@ -73,9 +76,6 @@ export default function Signup() {
 							className="h-[158.491px] w-[240px]"
 							style={{ filter: 'drop-shadow(0 2px 4px rgba(158, 119, 237, 0.3))' }}
 						/>
-								</div>
-							</div>
-						</div>
 					</div>
 				</div>
 			</div>

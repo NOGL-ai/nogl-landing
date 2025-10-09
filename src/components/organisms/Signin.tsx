@@ -8,65 +8,65 @@ export default function Signin() {
 	return (
 		<section className="flex min-h-screen w-full items-stretch overflow-hidden bg-white dark:bg-[#071025]">
 		{/* Left: Sign-in form */}
-		<div className="relative flex w-full flex-1 flex-col items-center justify-center self-stretch lg:min-w-[480px]">
-		{/* Logo - absolutely positioned */}
-		<div className="absolute left-4 top-6 flex items-center gap-2 sm:left-8 sm:top-8 sm:gap-3">
+		<div className="relative flex w-full flex-1 flex-col items-center self-stretch lg:min-w-[480px] lg:justify-center">
+		{/* Logo - absolutely positioned on desktop, inline on mobile */}
+		<div className="flex w-full items-center gap-2 px-4 pt-12 pb-8 lg:absolute lg:left-8 lg:top-8 lg:w-auto lg:p-0">
 			<Image
 				src="/images/logo/logo.svg"
 				alt="NOGL"
-				width={32}
-				height={32}
-				className="h-7 w-7 sm:h-8 sm:w-8"
+				width={40}
+				height={40}
+				className="h-10 w-10 rounded-[10px]"
 			/>
-			<span className="text-lg font-semibold text-[#181d27] dark:text-white sm:text-xl">
+			<span className="text-xl font-semibold text-[#181d27] dark:text-white lg:hidden">
 				NOGL
 			</span>
 		</div>
 
-			{/* Copyright - absolutely positioned */}
-			<p className="absolute bottom-8 left-4 text-sm font-normal leading-5 text-[#535862] dark:text-gray-400 sm:bottom-[52px] sm:left-8">
+			{/* Copyright - absolutely positioned on desktop only */}
+			<p className="hidden text-sm font-normal leading-5 text-[#535862] dark:text-gray-400 lg:absolute lg:bottom-[52px] lg:left-8 lg:block">
 				© Nogl.ai 2025
 			</p>
 
-			<div className="w-full px-4 sm:px-8">
+			<div className="w-full flex-1 px-4 pb-12 lg:flex-initial lg:px-8 lg:pb-0">
 				<div className="flex size-full flex-col items-center">
-					<div className="flex w-full flex-col items-center py-0">
-						<div className="flex w-full max-w-[360px] flex-col items-center gap-6 sm:gap-8">
+					<div className="flex w-full flex-col items-center">
+						<div className="flex w-full max-w-[360px] flex-col items-center gap-8">
 							{/* Text and supporting text */}
-							<div className="flex w-full flex-col items-start gap-3">
-								<h1 className="w-full text-2xl font-semibold leading-8 text-[#181d27] dark:text-white sm:text-[30px] sm:leading-[38px]">
+							<div className="flex w-full flex-col items-start gap-2">
+								<h1 className="w-full text-2xl font-semibold leading-8 text-[#181d27] dark:text-white">
 									Welcome back
 								</h1>
-								<p className="w-full text-sm font-normal leading-5 text-[#535862] dark:text-gray-300 sm:text-base sm:leading-6">
+								<p className="w-full text-base font-normal leading-6 text-[#535862] dark:text-gray-300">
 									Continue forecasting fashion trends.
 								</p>
 							</div>
 
 							{/* Content */}
-							<div className="flex w-full flex-col items-center gap-5 rounded-xl sm:gap-6">
-									{/* Form */}
-									<div className="w-full">
-										<SigninWithPassword />
-									</div>
-
-									{/* Actions */}
-									<div className="flex w-full flex-col items-start gap-4">
-										<GoogleSigninButton text="Sign in with Google" />
-									</div>
+							<div className="flex w-full flex-col items-center gap-6 rounded-xl">
+								{/* Form */}
+								<div className="w-full">
+									<SigninWithPassword />
 								</div>
 
-								{/* Row - Sign up link */}
-								<div className="flex w-full items-baseline justify-center gap-1">
-									<p className="text-sm font-normal leading-5 text-[#535862] dark:text-gray-300">
-										Don&apos;t have an account?
-									</p>
+								{/* Actions */}
+								<div className="flex w-full flex-col items-start gap-4">
+									<GoogleSigninButton text="Sign in with Google" />
+								</div>
+							</div>
+
+							{/* Row - Sign up link */}
+							<div className="flex w-full items-center justify-center gap-1">
+								<p className="text-sm font-normal leading-5 text-[#535862] dark:text-gray-300">
+									Don&apos;t have an account?
+								</p>
 								<Link
 									href={"/auth/signup" as any}
 									className="text-sm font-semibold leading-5 text-[#6941c6] hover:underline"
 								>
-										Sign up
-									</Link>
-								</div>
+									Sign up
+								</Link>
+							</div>
 						</div>
 					</div>
 				</div>
