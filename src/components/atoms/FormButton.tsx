@@ -11,7 +11,7 @@ export default function FormButton({ height, children, disabled, onClick }: Form
 	return (
 		<button
 			type='submit'
-			className='bg-primary-500 font-satoshi hover:bg-primary-600 border-primary-400 flex w-full items-center justify-center gap-2 rounded-lg border px-10 py-3.5 text-base font-medium tracking-[-.2px] text-white shadow-lg duration-300 disabled:opacity-50 disabled:cursor-not-allowed'
+			className='flex w-full items-center justify-center gap-2 rounded-lg border-2 border-[rgba(255,255,255,0.12)] bg-[#7f56d9] px-4 py-2.5 text-[16px] font-semibold leading-6 text-white shadow-[inset_0px_0px_0px_1px_rgba(10,13,18,0.18),inset_0px_-2px_0px_0px_rgba(10,13,18,0.05),0px_1px_2px_0px_rgba(10,13,18,0.05)] duration-300 hover:bg-[#6941c6] disabled:cursor-not-allowed disabled:opacity-50'
 			style={{ height: height }}
 			disabled={disabled}
 			onClick={onClick}

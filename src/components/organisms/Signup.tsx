@@ -32,41 +32,33 @@ export default function Signup() {
 					<div className="flex size-full flex-col items-center">
 						<div className="flex w-full flex-col items-center py-0">
 							<div className="flex w-full max-w-[360px] flex-col items-center gap-6 sm:gap-8">
-								{/* Text and supporting text */}
-								<div className="flex w-full flex-col items-start gap-3">
-									<h1 className="w-full text-2xl font-semibold leading-8 text-[#181d27] dark:text-white sm:text-[30px] sm:leading-[38px]">
-										Sign up
-									</h1>
-									<p className="w-full text-sm font-normal leading-5 text-[#535862] dark:text-gray-300 sm:text-base sm:leading-6">
-										Start your 30-day free trial.
-									</p>
-								</div>
+				{/* Text and supporting text */}
+				<div className="flex w-full flex-col items-start gap-3">
+					<h1 className="w-full text-[36px] font-semibold leading-[44px] tracking-[-0.72px] text-[#181d27] dark:text-white">
+						Sign up
+					</h1>
+				</div>
 
-								{/* Content */}
-								<div className="flex w-full flex-col items-center gap-5 rounded-xl sm:gap-6">
-									{/* Form */}
-									<div className="w-full">
-										<SignupWithPassword />
-									</div>
+				{/* Content */}
+				<div className="flex w-full flex-col items-center gap-6 rounded-xl">
+					{/* Form */}
+					<div className="w-full">
+						<SignupWithPassword />
+					</div>
+				</div>
 
-									{/* Actions */}
-									<div className="flex w-full flex-col items-start gap-4">
-										<GoogleSigninButton text="Sign up with Google" />
-									</div>
-								</div>
-
-								{/* Row - Sign in link */}
-								<div className="flex w-full items-baseline justify-center gap-1">
-									<p className="text-sm font-normal leading-5 text-[#535862] dark:text-gray-300">
-										Already have an account?
-									</p>
-									<Link
-										href="/auth/signin"
-										className="text-sm font-semibold leading-5 text-[#6941c6] hover:underline"
-									>
-										Log in
-									</Link>
-								</div>
+				{/* Row - Sign in link */}
+				<div className="flex w-full items-center justify-center gap-1">
+					<p className="text-[14px] font-normal leading-5 text-[#535862] dark:text-gray-300">
+						Already have an account?
+					</p>
+				<Link
+					href={"/auth/signin" as any}
+					className="text-[14px] font-semibold leading-5 text-[#6941c6] hover:underline"
+				>
+					Log in
+				</Link>
+				</div>
 							</div>
 						</div>
 					</div>

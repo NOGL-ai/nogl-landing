@@ -34,7 +34,7 @@ export default function InputGroup(props: InputGroupProps) {
 		<>
 			<label
 				htmlFor={name}
-				className='font-satoshi text-dark mb-2.5 block text-base font-medium dark:text-white'
+				className='mb-1.5 block text-[14px] font-medium leading-5 text-[#414651] dark:text-white'
 			>
 				{label} {required && <span className='text-red-500'>*</span>}
 			</label>
@@ -51,7 +51,7 @@ export default function InputGroup(props: InputGroupProps) {
 						}
 					}}
 					name={name}
-					className={`border-gray-3 px-5.5 text-dark focus:shadow-input focus:ring-primary/20 dark:border-stroke-dark w-full rounded-lg border py-3 outline-none ring-offset-1 duration-300 dark:bg-transparent dark:text-white dark:focus:border-transparent`}
+					className={`w-full rounded-lg border border-[#d5d7da] bg-white px-[14px] py-2.5 text-[16px] leading-6 text-[#181d27] placeholder:text-[#717680] shadow-[0px_1px_2px_0px_rgba(10,13,18,0.05)] outline-none focus:border-[#7f56d9] focus:ring-1 focus:ring-[#7f56d9] dark:border-stroke-dark dark:bg-transparent dark:text-white dark:focus:border-[#7f56d9]`}
 					style={{ height: height }}
 					required={required}
 					maxLength={maxlength}

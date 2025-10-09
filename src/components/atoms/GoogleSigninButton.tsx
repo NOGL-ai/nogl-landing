@@ -8,7 +8,7 @@ export default function GoogleSigninButton({ text }: { text: string }) {
 	return (
 		<button
 			onClick={handleGoogleSignIn}
-			className='font-satoshi flex h-12 w-full items-center justify-center gap-2 rounded-lg border-2 border-gray-300 bg-white text-base font-medium text-gray-700 shadow-md duration-300 hover:border-gray-400 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-gray-500 dark:hover:bg-gray-700'
+			className='flex h-11 w-full items-center justify-center gap-3 rounded-lg border border-[#d5d7da] bg-white px-4 py-2.5 text-[16px] font-semibold leading-6 text-[#414651] shadow-[inset_0px_0px_0px_1px_rgba(10,13,18,0.18),inset_0px_-2px_0px_0px_rgba(10,13,18,0.05),0px_1px_2px_0px_rgba(10,13,18,0.05)] duration-300 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700'
 		>
 			<svg
 				width='24'

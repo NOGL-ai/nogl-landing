@@ -8,6 +8,7 @@ import Loader from "../atoms/Loader";
 import { signIn } from "next-auth/react";
 import validator from "validator";
 import { debounce } from "lodash";
+import { GoogleSigninButton } from "../atoms";
 
 const SignupWithPassword = () => {
 	const [data, setData] = useState({
@@ -198,63 +199,70 @@ const SignupWithPassword = () => {
 	};
 
 	return (
-		<form className='flex w-full flex-col gap-5' onSubmit={handleSubmit} noValidate>
-			{errors.name && errors.email && errors.password && (
-				<div className='rounded-lg border border-red-200 bg-red-50 p-3 text-center text-sm text-red-600 dark:border-red-800 dark:bg-red-900/20 dark:text-red-400'>
-					Please fix the errors below
-				</div>
-			)}
-
-			<InputGroup
-				label='Name'
-				placeholder='Enter your name'
-				maxlength={30}
-				type='text'
-				name='name'
-				required
-				height='44px'
-				handleChange={handleChange}
-				value={data.name}
-				error={errors.name}
-			/>
-
-			<InputGroup
-				label='Email'
-				placeholder='Enter your email'
-				type='email'
-				name='email'
-				required
-				height='44px'
-				handleChange={handleChange}
-				value={data.email}
-				error={errors.email}
-			/>
-
-			<InputGroup
-				label='Password'
-				placeholder='••••••••'
-				type='password'
-				name='password'
-				required
-				height='44px'
-				handleChange={handleChange}
-				value={data.password}
-				error={errors.password}
-			/>
-
-			<p className='text-sm font-normal leading-5 text-[#535862] dark:text-gray-300'>
-				Must be at least 8 characters.
-			</p>
-
-			<FormButton height='44px' disabled={loading}>
-				{loading ? (
-					<>
-						Getting started <Loader style='dark:border-primary border-white' />
-					</>
-				) : (
-					"Get started"
+		<form className='flex w-full flex-col gap-6' onSubmit={handleSubmit} noValidate>
+			<div className='flex w-full flex-col gap-5'>
+				{errors.name && errors.email && errors.password && (
+					<div className='rounded-lg border border-red-200 bg-red-50 p-3 text-center text-sm text-red-600 dark:border-red-800 dark:bg-red-900/20 dark:text-red-400'>
+						Please fix the errors below
+					</div>
 				)}
-			</FormButton>
+
+				<InputGroup
+					label='Name'
+					placeholder='Enter your name'
+					maxlength={30}
+					type='text'
+					name='name'
+					required
+					height='44px'
+					handleChange={handleChange}
+					value={data.name}
+					error={errors.name}
+				/>
+
+				<InputGroup
+					label='Email'
+					placeholder='Enter your email'
+					type='email'
+					name='email'
+					required
+					height='44px'
+					handleChange={handleChange}
+					value={data.email}
+					error={errors.email}
+				/>
+
+				<div className='flex w-full flex-col gap-1.5'>
+					<InputGroup
+						label='Password'
+						placeholder='Create a password'
+						type='password'
+						name='password'
+						required
+						height='44px'
+						handleChange={handleChange}
+						value={data.password}
+						error={errors.password}
+					/>
+					<p className='text-[14px] font-normal leading-5 text-[#535862] dark:text-gray-300'>
+						Must be at least 8 characters.
+					</p>
+				</div>
+			</div>
+
+			<div className='flex w-full flex-col gap-4'>
+				<FormButton height='44px' disabled={loading}>
+					{loading ? (
+						<>
+							Get started <Loader style='dark:border-primary border-white' />
+						</>
+					) : (
+						"Get started"
+					)}
+				</FormButton>
+
+				<GoogleSigninButton text="Sign up with Google" />
+			</div>
 		</form>
 	);
 };
