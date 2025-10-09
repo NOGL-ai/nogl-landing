@@ -136,3 +136,4 @@ import Pricing from "@/lemonSqueezy/LsBilling";
 **Reason for Disabling**: Build errors during Docker image creation  
 **Impact**: No payment processing until re-enabled  
 **Risk**: Low - all code preserved in comments, easy to restore
+

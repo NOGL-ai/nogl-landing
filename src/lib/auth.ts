@@ -317,6 +317,28 @@ export const authOptions: NextAuthOptions = {
 			return true;
 		},
 
+		async redirect({ url, baseUrl }) {
+			// Get the default locale
+			const defaultLocale = "en";
+			
+			// If url is relative, make it absolute
+			if (url.startsWith("/")) {
+				return `${baseUrl}/${defaultLocale}/dashboard`;
+			}
+			
+			// If url already contains the callback, parse it
+			if (url.includes("callbackUrl=")) {
+				const urlObj = new URL(url);
+				const callbackUrl = urlObj.searchParams.get("callbackUrl");
+				if (callbackUrl) {
+					return callbackUrl.startsWith("/") ? `${baseUrl}/${defaultLocale}/dashboard` : callbackUrl;
+				}
+			}
+			
+			// Default redirect to dashboard with locale
+			return `${baseUrl}/${defaultLocale}/dashboard`;
+		},
+
 		session: async ({ session, token }) => {
 			// Safely handle null/undefined session (when user is not logged in)
 			if (!session) {

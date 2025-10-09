@@ -75,3 +75,4 @@ Changed from USD to EUR based on your sample data showing German jewelry product
 - `prisma/schema.prisma` - Added commented BigQuery table schema for reference
 
 The migration is complete and should now show all 82k products from your BigQuery table!
+

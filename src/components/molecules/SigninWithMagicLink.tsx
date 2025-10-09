@@ -42,7 +42,7 @@ export default function SigninWithMagicLink() {
 			const callback = await signIn("email", {
 				email,
 				redirect: false,
-				callbackUrl: decodeURIComponent(`${window.location.origin}/onboarding`),
+				callbackUrl: decodeURIComponent(`${window.location.origin}/en/dashboard`),
 			});
 
 			if (callback?.ok) {

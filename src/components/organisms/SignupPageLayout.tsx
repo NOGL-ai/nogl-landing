@@ -140,7 +140,7 @@ const MagicLinkSignup = () => {
 			const callback = await signIn("email", {
 				email,
 				redirect: false,
-				callbackUrl: `${window.location.origin}/onboarding`,
+				callbackUrl: `${window.location.origin}/en/dashboard`,
 			});
 
 			if (callback?.ok) {
@@ -444,7 +444,7 @@ export default function SignupPageLayout() {
 				await signIn("email", {
 					email: sanitizedData.email,
 					redirect: false,
-					callbackUrl: `${window.location.origin}/onboarding`,
+					callbackUrl: `${window.location.origin}/en/dashboard`,
 				});
 			}
 		} catch (error: unknown) {
