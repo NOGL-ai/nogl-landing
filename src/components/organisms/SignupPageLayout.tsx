@@ -392,7 +392,7 @@ export default function SignupPageLayout() {
 	const [loading, setLoading] = useState(false);
 	const [recaptchaVerified, setRecaptchaVerified] = useState(false);
 	const [_passwordStrength, setPasswordStrength] = useState(0);
-	const [_showSocialLogin, setShowSocialLogin] = useState(true);
+	const [showSocialLogin, setShowSocialLogin] = useState(true);
 	const [signupMethod, setSignupMethod] = useState<"form" | "magic-link">(
 		"form"
 	);

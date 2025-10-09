@@ -2,76 +2,76 @@
 import Link from "next/link";
 import Image from "next/image";
 import { GoogleSigninButton } from "../atoms";
-import { SigninWithPassword } from "../molecules";
+import { SignupWithPassword } from "../molecules";
 
-export default function Signin() {
+export default function Signup() {
 	return (
 		<section className="flex min-h-screen w-full items-stretch overflow-hidden bg-white dark:bg-[#071025]">
-		{/* Left: Sign-in form */}
-		<div className="relative flex w-full flex-1 flex-col items-center justify-center self-stretch lg:min-w-[480px]">
-		{/* Logo - absolutely positioned */}
-		<div className="absolute left-4 top-6 flex items-center gap-2 sm:left-8 sm:top-8 sm:gap-3">
-			<Image
-				src="/images/logo/logo.svg"
-				alt="NOGL"
-				width={32}
-				height={32}
-				className="h-7 w-7 sm:h-8 sm:w-8"
-			/>
-			<span className="text-lg font-semibold text-[#181d27] dark:text-white sm:text-xl">
-				NOGL
-			</span>
-		</div>
+			{/* Left: Sign-up form */}
+			<div className="relative flex w-full flex-1 flex-col items-center justify-center self-stretch lg:min-w-[480px]">
+				{/* Logo - absolutely positioned */}
+				<div className="absolute left-4 top-6 flex items-center gap-2 sm:left-8 sm:top-8 sm:gap-3">
+					<Image
+						src="/images/logo/logo.svg"
+						alt="NOGL"
+						width={32}
+						height={32}
+						className="h-7 w-7 sm:h-8 sm:w-8"
+					/>
+					<span className="text-lg font-semibold text-[#181d27] dark:text-white sm:text-xl">
+						NOGL
+					</span>
+				</div>
 
-			{/* Copyright - absolutely positioned */}
-			<p className="absolute bottom-8 left-4 text-sm font-normal leading-5 text-[#535862] dark:text-gray-400 sm:bottom-[52px] sm:left-8">
-				© Nogl.ai 2025
-			</p>
+				{/* Copyright - absolutely positioned */}
+				<p className="absolute bottom-8 left-4 text-sm font-normal leading-5 text-[#535862] dark:text-gray-400 sm:bottom-[52px] sm:left-8">
+					© Nogl.ai 2025
+				</p>
 
-			<div className="w-full px-4 sm:px-8">
-				<div className="flex size-full flex-col items-center">
-					<div className="flex w-full flex-col items-center py-0">
-						<div className="flex w-full max-w-[360px] flex-col items-center gap-6 sm:gap-8">
-							{/* Text and supporting text */}
-							<div className="flex w-full flex-col items-start gap-3">
-								<h1 className="w-full text-2xl font-semibold leading-8 text-[#181d27] dark:text-white sm:text-[30px] sm:leading-[38px]">
-									Welcome back
-								</h1>
-								<p className="w-full text-sm font-normal leading-5 text-[#535862] dark:text-gray-300 sm:text-base sm:leading-6">
-									Welcome back! Please enter your details.
-								</p>
-							</div>
+				<div className="w-full px-4 sm:px-8">
+					<div className="flex size-full flex-col items-center">
+						<div className="flex w-full flex-col items-center py-0">
+							<div className="flex w-full max-w-[360px] flex-col items-center gap-6 sm:gap-8">
+								{/* Text and supporting text */}
+								<div className="flex w-full flex-col items-start gap-3">
+									<h1 className="w-full text-2xl font-semibold leading-8 text-[#181d27] dark:text-white sm:text-[30px] sm:leading-[38px]">
+										Sign up
+									</h1>
+									<p className="w-full text-sm font-normal leading-5 text-[#535862] dark:text-gray-300 sm:text-base sm:leading-6">
+										Start your 30-day free trial.
+									</p>
+								</div>
 
-							{/* Content */}
-							<div className="flex w-full flex-col items-center gap-5 rounded-xl sm:gap-6">
+								{/* Content */}
+								<div className="flex w-full flex-col items-center gap-5 rounded-xl sm:gap-6">
 									{/* Form */}
 									<div className="w-full">
-										<SigninWithPassword />
+										<SignupWithPassword />
 									</div>
 
 									{/* Actions */}
 									<div className="flex w-full flex-col items-start gap-4">
-										<GoogleSigninButton text="Sign in with Google" />
+										<GoogleSigninButton text="Sign up with Google" />
 									</div>
 								</div>
 
-								{/* Row - Sign up link */}
+								{/* Row - Sign in link */}
 								<div className="flex w-full items-baseline justify-center gap-1">
 									<p className="text-sm font-normal leading-5 text-[#535862] dark:text-gray-300">
-										Don&apos;t have an account?
+										Already have an account?
 									</p>
 									<Link
-										href="/auth/signup"
+										href="/auth/signin"
 										className="text-sm font-semibold leading-5 text-[#6941c6] hover:underline"
 									>
-										Sign up
+										Log in
 									</Link>
 								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
 
 			{/* Right: Image + Testimonial */}
 			<div className="relative hidden flex-1 self-stretch lg:flex lg:min-w-[640px]">
@@ -163,3 +163,4 @@ export default function Signin() {
 		</section>
 	);
 }
+

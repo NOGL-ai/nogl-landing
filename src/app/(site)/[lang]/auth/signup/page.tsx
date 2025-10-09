@@ -1,4 +1,5 @@
-import SignupPageLayout from "@/components/organisms/SignupPageLayout";
+import React from "react";
+import Signup from "@/components/organisms/Signup";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -7,11 +8,7 @@ export const metadata: Metadata = {
 };
 
 const SignupPage = () => {
-	return (
-		<main className='min-h-screen'>
-			<SignupPageLayout />
-		</main>
-	);
+	return <Signup />;
 };
 
 export default SignupPage;
