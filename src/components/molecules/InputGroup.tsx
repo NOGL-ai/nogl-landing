@@ -11,6 +11,7 @@ interface InputGroupProps {
 	height?: string;
 	required?: boolean;
 	maxlength?: number;
+	error?: string;
 }
 
 export default function InputGroup(props: InputGroupProps) {
@@ -24,6 +25,7 @@ export default function InputGroup(props: InputGroupProps) {
 		height = "52px",
 		required,
 		maxlength,
+		error,
 	} = props;
 	const [inputType, setInputType] = useState(type);
 	const [inputValue, setInputValue] = useState(value);
@@ -98,6 +100,9 @@ export default function InputGroup(props: InputGroupProps) {
 					</span>
 				)}
 			</div>
+			{error && (
+				<p className='mt-1 text-sm text-red-500'>{error}</p>
+			)}
 		</>
 	);
 }

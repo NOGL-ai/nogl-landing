@@ -192,7 +192,7 @@ const SignupWithPassword = () => {
 			}
 		} catch (error: unknown) {
 			console.error("Registration error:", error);
-			const errorMessage = error.response?.data
+			const errorMessage = axios.isAxiosError(error) && error.response?.data
 				? typeof error.response.data === "string"
 					? error.response.data
 					: JSON.stringify(error.response.data)
@@ -209,7 +209,7 @@ const SignupWithPassword = () => {
 				<InputGroup
 					label='Name'
 					placeholder='Enter your username'
-					maxLength={30}
+					maxlength={30}
 					type='text'
 					name='name'
 					required
