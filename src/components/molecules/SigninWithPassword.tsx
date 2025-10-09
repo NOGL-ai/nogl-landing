@@ -140,7 +140,7 @@ export default function SigninWithPassword() {
 				setData({ email: "", password: "", remember: false });
 				setErrors({ email: "", password: "", general: "" });
 				const destination = callback.url ?? fallbackUrl;
-				router.push(destination);
+				router.push(destination as any);
 			}
 		} catch (error) {
 			console.error("SignIn exception:", error);
@@ -228,7 +228,7 @@ export default function SigninWithPassword() {
 				</label>
 
 				<Link
-					href='/auth/forgot-password'
+					href={'/auth/forgot-password' as any}
 					className='text-sm font-semibold leading-5 text-[#6941c6] hover:underline'
 				>
 					Forgot password
