@@ -84,7 +84,7 @@ export default function OnboardingPage() {
 	useEffect(() => {
 		if (status === "authenticated") {
 			if (session.user?.onboardingCompleted) {
-				router.push("/"); // Redirect to homepage
+				router.push("/" as any); // Redirect to homepage
 				return;
 			}
 		} else if (status === "unauthenticated") {
@@ -258,7 +258,7 @@ export default function OnboardingPage() {
 					},
 				});
 
-				router.push("/"); // Redirect to homepage after onboarding
+				router.push("/" as any); // Redirect to homepage after onboarding
 			} else {
 				const errorData = await res.json();
 				toast.error(

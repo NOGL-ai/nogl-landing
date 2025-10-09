@@ -60,10 +60,10 @@ export default function Signin() {
 									<p className="text-sm font-normal leading-5 text-[#535862] dark:text-gray-300">
 										Don&apos;t have an account?
 									</p>
-									<Link
-										href="/auth/signup"
-										className="text-sm font-semibold leading-5 text-[#6941c6] hover:underline"
-									>
+								<Link
+									href={"/auth/signup" as any}
+									className="text-sm font-semibold leading-5 text-[#6941c6] hover:underline"
+								>
 										Sign up
 									</Link>
 								</div>
