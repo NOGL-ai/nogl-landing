@@ -77,6 +77,39 @@ export default function Signup() {
 					className="absolute inset-0 size-full object-cover object-center"
 				/>
 
+				{/* Decorative Grid Pattern Overlay */}
+				<div className="absolute left-1/2 top-0 size-[960px] -translate-x-1/2 opacity-20 pointer-events-none">
+					<div className="flex flex-col overflow-clip">
+						{/* 10 rows of blocks based on Figma pattern */}
+						{[...Array(10)].map((_, rowIndex) => (
+							<div key={rowIndex} className="flex">
+								{[...Array(10)].map((_, colIndex) => {
+									// Define which blocks should be white (filled) - from Figma design
+									const whiteBlocks = [
+										[1,2], [1,8],           // Row 1: positions 2, 8
+										[2,0], [2,6],           // Row 2: positions 0, 6  
+										[3,9],                  // Row 3: position 9
+										[4,3],                  // Row 4: position 3
+										[5,0], [5,6],           // Row 5: positions 0, 6
+										[7,3], [7,9],           // Row 7: positions 3, 9
+										[8,0], [8,6]            // Row 8: positions 0, 6
+									];
+									const isWhite = whiteBlocks.some(([r, c]) => r === rowIndex && c === colIndex);
+									
+									return (
+										<div
+											key={colIndex}
+											className={`relative size-24 shrink-0 ${isWhite ? 'bg-white' : ''}`}
+										>
+											<div className="pointer-events-none absolute inset-0 border-b border-r border-white" />
+										</div>
+									);
+								})}
+							</div>
+						))}
+					</div>
+				</div>
+
 				{/* Decorative Stars - Top Left */}
 				<div className="absolute left-16 top-16 h-20 w-20">
 					<svg className="absolute left-0 top-0 size-20" viewBox="0 0 80 80" fill="none">
