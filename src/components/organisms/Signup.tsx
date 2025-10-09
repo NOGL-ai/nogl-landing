@@ -37,30 +37,30 @@ export default function Signup() {
 									<h1 className="w-full text-2xl font-semibold leading-8 text-[#181d27] dark:text-white sm:text-[30px] sm:leading-[38px]">
 										Sign up
 									</h1>
-									<p className="w-full text-sm font-normal leading-5 text-[#535862] dark:text-gray-300 sm:text-base sm:leading-6">
-										Start your 30-day free trial.
-									</p>
+								<p className="w-full text-sm font-normal leading-5 text-[#535862] dark:text-gray-300 sm:text-base sm:leading-6">
+									Join 100+ fashion brands using AI.
+								</p>
 								</div>
 
-				{/* Content */}
+								{/* Content */}
 				<div className="flex w-full flex-col items-center gap-6 rounded-xl">
-					{/* Form */}
-					<div className="w-full">
-						<SignupWithPassword />
-					</div>
-				</div>
+									{/* Form */}
+									<div className="w-full">
+										<SignupWithPassword />
+									</div>
+								</div>
 
-				{/* Row - Sign in link */}
+								{/* Row - Sign in link */}
 				<div className="flex w-full items-center justify-center gap-1">
 					<p className="text-[14px] font-normal leading-5 text-[#535862] dark:text-gray-300">
-						Already have an account?
-					</p>
-				<Link
+										Already have an account?
+									</p>
+									<Link
 					href={"/auth/signin" as Route}
 					className="text-[14px] font-semibold leading-5 text-[#6941c6] hover:underline"
-				>
-					Log in
-				</Link>
+									>
+										Log in
+									</Link>
 				</div>
 							</div>
 
@@ -73,8 +73,8 @@ export default function Signup() {
 							className="h-[158.491px] w-[240px]"
 							style={{ filter: 'drop-shadow(0 2px 4px rgba(158, 119, 237, 0.3))' }}
 						/>
-					</div>
-				</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -138,15 +138,15 @@ export default function Signup() {
 				{/* Bottom Panel with Content */}
 				<div className="absolute bottom-0 left-0 right-0 flex flex-col items-center justify-center bg-gradient-to-b from-transparent to-black/40 px-16 py-24">
 					<div className="flex w-full flex-col gap-8">
-						{/* Heading and Subtext */}
-						<div className="flex w-full flex-col gap-5 text-white">
-							<h2 className="text-[60px] font-semibold leading-[72px] tracking-[-1.2px]">
-								Start turning your ideas into reality.
-							</h2>
-							<p className="text-lg font-medium leading-7">
-								Create a free account and get full access to all features for 30-days. No credit card needed. Get started in 2 minutes.
-							</p>
-						</div>
+				{/* Heading and Subtext */}
+				<div className="flex w-full flex-col gap-5 text-white">
+					<h2 className="text-[60px] font-semibold leading-[72px] tracking-[-1.2px]">
+						Predict what sells. Before it trends.
+					</h2>
+					<p className="text-lg font-medium leading-7">
+						AI-powered fashion forecasting. Free for 30 days. No card needed.
+					</p>
+				</div>
 
 						{/* Avatars and Reviews */}
 						<div className="flex items-center gap-4">
@@ -213,7 +213,7 @@ export default function Signup() {
 									</div>
 									<span className="text-base font-semibold text-white">5.0</span>
 								</div>
-								<p className="text-base font-medium text-white">from 200+ reviews</p>
+								<p className="text-base font-medium text-white">from 100+ fashion brands</p>
 							</div>
 						</div>
 					</div>
