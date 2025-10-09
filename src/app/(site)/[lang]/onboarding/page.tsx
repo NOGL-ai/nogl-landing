@@ -96,22 +96,18 @@ export default function OnboardingPage() {
 	const validateForm = () => {
 		const errors: { [key: string]: string } = {};
 
-		// Display Name validation
-		if (!formData.displayName.trim()) {
-			errors.displayName = VALIDATION_MESSAGES.displayName.required;
-		} else if (formData.displayName.length < 2) {
-			errors.displayName = VALIDATION_MESSAGES.displayName.minLength;
-		} else if (formData.displayName.length > 50) {
+		// Display Name validation (lenient for OAuth users)
+		if (formData.displayName.length > 50) {
 			errors.displayName = VALIDATION_MESSAGES.displayName.maxLength;
 		}
 
-		// Bio validation (now mandatory)
-		if (!formData.bio?.trim()) {
-			errors.bio = VALIDATION_MESSAGES.bio.required;
-		} else if (formData.bio.length < 10) {
-			errors.bio = VALIDATION_MESSAGES.bio.minLength;
-		} else if (formData.bio.length > 500) {
-			errors.bio = VALIDATION_MESSAGES.bio.maxLength;
+		// Bio validation (only check if provided)
+		if (formData.bio && formData.bio.trim()) {
+			if (formData.bio.length < 10) {
+				errors.bio = VALIDATION_MESSAGES.bio.minLength;
+			} else if (formData.bio.length > 500) {
+				errors.bio = VALIDATION_MESSAGES.bio.maxLength;
+			}
 		}
 
 		// User Type validation
