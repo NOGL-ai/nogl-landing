@@ -63,6 +63,18 @@ export default function Signup() {
 				</Link>
 				</div>
 							</div>
+
+				{/* Hand-drawn Arrow */}
+				<div className="absolute left-[500px] top-[610px] hidden lg:flex lg:items-center lg:justify-center">
+					<div className="rotate-[330deg]">
+						<img
+							src="https://www.figma.com/api/mcp/asset/6865b12a-6164-4ebc-9d4d-d8e33a8f8d5d"
+							alt="Arrow pointing to hero"
+							className="h-[158.491px] w-[240px]"
+							style={{ filter: 'drop-shadow(0 2px 4px rgba(158, 119, 237, 0.3))' }}
+						/>
+					</div>
+				</div>
 						</div>
 					</div>
 				</div>
