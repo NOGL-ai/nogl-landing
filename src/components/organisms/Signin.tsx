@@ -9,38 +9,41 @@ export default function Signin() {
 		<section className="flex min-h-screen w-full items-stretch overflow-hidden bg-white dark:bg-[#071025]">
 		{/* Left: Sign-in form */}
 		<div className="relative flex w-full flex-1 flex-col items-center justify-center self-stretch lg:min-w-[480px]">
-			{/* Logo - absolutely positioned */}
-			<div className="absolute left-8 top-8">
-				<Image
-					src="/images/logo/logo.svg"
-					alt="NOGL"
-					width={120}
-					height={32}
-					className="h-8 w-auto"
-				/>
-			</div>
+		{/* Logo - absolutely positioned */}
+		<div className="absolute left-4 top-6 flex items-center gap-2 sm:left-8 sm:top-8 sm:gap-3">
+			<Image
+				src="/images/logo/logo.svg"
+				alt="NOGL"
+				width={32}
+				height={32}
+				className="h-7 w-7 sm:h-8 sm:w-8"
+			/>
+			<span className="text-lg font-semibold text-[#181d27] dark:text-white sm:text-xl">
+				NOGL
+			</span>
+		</div>
 
 			{/* Copyright - absolutely positioned */}
-			<p className="absolute bottom-[52px] left-8 text-sm font-normal leading-5 text-[#535862] dark:text-gray-400">
+			<p className="absolute bottom-8 left-4 text-sm font-normal leading-5 text-[#535862] dark:text-gray-400 sm:bottom-[52px] sm:left-8">
 				© Nogl.ai 2025
 			</p>
 
-			<div className="w-full">
+			<div className="w-full px-4 sm:px-8">
 				<div className="flex size-full flex-col items-center">
-					<div className="flex w-full flex-col items-center px-8 py-0">
-						<div className="flex w-full max-w-[360px] flex-col items-center gap-8">
-								{/* Text and supporting text */}
-								<div className="flex w-full flex-col items-start gap-3">
-									<h1 className="w-full text-[30px] font-semibold leading-[38px] text-[#181d27] dark:text-white">
-										Welcome back
-									</h1>
-									<p className="w-full text-base font-normal leading-6 text-[#535862] dark:text-gray-300">
-										Welcome back! Please enter your details.
-									</p>
-								</div>
+					<div className="flex w-full flex-col items-center py-0">
+						<div className="flex w-full max-w-[360px] flex-col items-center gap-6 sm:gap-8">
+							{/* Text and supporting text */}
+							<div className="flex w-full flex-col items-start gap-3">
+								<h1 className="w-full text-2xl font-semibold leading-8 text-[#181d27] dark:text-white sm:text-[30px] sm:leading-[38px]">
+									Welcome back
+								</h1>
+								<p className="w-full text-sm font-normal leading-5 text-[#535862] dark:text-gray-300 sm:text-base sm:leading-6">
+									Welcome back! Please enter your details.
+								</p>
+							</div>
 
-								{/* Content */}
-								<div className="flex w-full flex-col items-center gap-6 rounded-xl">
+							{/* Content */}
+							<div className="flex w-full flex-col items-center gap-5 rounded-xl sm:gap-6">
 									{/* Form */}
 									<div className="w-full">
 										<SigninWithPassword />
