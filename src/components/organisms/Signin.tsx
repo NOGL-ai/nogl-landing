@@ -87,14 +87,14 @@ export default function Signin() {
 					<div className="relative w-full rounded-2xl border border-white/30 bg-white/30 backdrop-blur-md">
 						<div className="flex w-full flex-col items-start gap-6 p-5">
 							<p className="w-full text-[30px] font-semibold leading-[38px] text-white">
-								&ldquo;We&apos;ve been using Untitled to kickstart every new project and can&apos;t imagine working without it. It&apos;s incredible.&rdquo;
+								&ldquo;NOGL transformed our forecasting accuracy. We reduced markdowns by 40% and our inventory turns improved dramatically. The AI-powered demand insights are game-changing.&rdquo;
 							</p>
 
 							<div className="flex w-full flex-col items-start gap-2">
 								{/* Name and stars */}
 								<div className="flex w-full items-start gap-4">
 									<p className="min-w-0 flex-1 text-2xl font-semibold leading-8 text-white">
-										Fleur Cook
+										Sarah Chen
 									</p>
 									{/* Stars */}
 									<div className="flex items-center gap-1 shrink-0">
@@ -115,8 +115,8 @@ export default function Signin() {
 								{/* Supporting text and arrows */}
 								<div className="flex w-full items-start gap-3">
 									<div className="flex min-w-0 flex-1 flex-col items-start gap-1 text-white">
-										<p className="w-full text-base font-semibold leading-6">Founder, Catalog</p>
-										<p className="w-full text-sm font-medium leading-5">Web Design Agency</p>
+										<p className="w-full text-base font-semibold leading-6">VP of Merchandising</p>
+										<p className="w-full text-sm font-medium leading-5">Premium Fashion Retail</p>
 									</div>
 
 									{/* Arrows */}
