@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import Image from "next/image";
+import Logo from "@/shared/Logo";
 import { GoogleSigninButton } from "../atoms";
 import { SigninWithPassword } from "../molecules";
 
@@ -11,13 +11,7 @@ export default function Signin() {
 		<div className="relative flex w-full flex-1 flex-col items-center self-stretch lg:min-w-[480px] lg:justify-center">
 		{/* Logo - absolutely positioned on desktop, inline on mobile */}
 		<div className="flex w-full items-center gap-2 px-4 pt-12 pb-8 lg:absolute lg:left-8 lg:top-8 lg:w-auto lg:p-0">
-			<Image
-				src="/images/logo/logo.svg"
-				alt="NOGL"
-				width={40}
-				height={40}
-				className="h-10 w-10 rounded-[10px]"
-			/>
+			<Logo size="md" showText={false} className="h-10 w-10" />
 			<span className="text-xl font-semibold text-[#181d27] dark:text-white lg:hidden">
 				NOGL
 			</span>
