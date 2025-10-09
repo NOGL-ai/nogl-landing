@@ -126,9 +126,11 @@ export default function SigninWithPassword() {
 	};
 
 	return (
-		<form className='mb-5 space-y-4' onSubmit={handleSubmit} noValidate>
+		<form className='flex w-full flex-col gap-5' onSubmit={handleSubmit} noValidate>
 			{errors.general && (
-				<div className='error-message text-center'>{errors.general}</div>
+				<div className='rounded-lg border border-red-200 bg-red-50 p-3 text-center text-sm text-red-600 dark:border-red-800 dark:bg-red-900/20 dark:text-red-400'>
+					{errors.general}
+				</div>
 			)}
 
 			<InputGroup
@@ -137,7 +139,7 @@ export default function SigninWithPassword() {
 				type='email'
 				name='email'
 				required
-				height='50px'
+				height='44px'
 				handleChange={handleChange}
 				value={data.email}
 				error={errors.email}
@@ -145,20 +147,20 @@ export default function SigninWithPassword() {
 
 			<InputGroup
 				label='Password'
-				placeholder='Enter your password'
+				placeholder='••••••••'
 				type='password'
 				name='password'
 				required
-				height='50px'
+				height='44px'
 				handleChange={handleChange}
 				value={data.password}
 				error={errors.password}
 			/>
 
-			<div className='flex items-center justify-between gap-2 py-2'>
+			<div className='flex w-full items-center justify-between'>
 				<label
 					htmlFor='remember'
-					className='font-satoshi text-dark flex cursor-pointer select-none items-center text-base font-medium dark:text-white'
+					className='flex cursor-pointer select-none items-center gap-2'
 				>
 					<input
 						type='checkbox'
@@ -169,30 +171,47 @@ export default function SigninWithPassword() {
 						checked={data.remember}
 					/>
 					<span
-						className={`h-5.5 w-5.5 border-stroke peer-checked:border-primary peer-checked:bg-primary dark:border-stroke-dark mr-2.5 inline-flex items-center justify-center rounded-md border bg-white text-white text-opacity-0 peer-checked:text-opacity-100 dark:bg-white/5 ${
-							data.remember ? "bg-primary" : ""
+						className={`flex size-4 items-center justify-center rounded border border-[#d5d7da] bg-white dark:border-stroke-dark dark:bg-white/5 ${
+							data.remember ? "border-[#7f56d9] bg-[#7f56d9]" : ""
 						}`}
 					>
-						{/* SVG for checkbox */}
+						{data.remember && (
+							<svg
+								className="size-3"
+								viewBox="0 0 12 12"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M10 3L4.5 8.5L2 6"
+									stroke="white"
+									strokeWidth="1.6666"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+								/>
+							</svg>
+						)}
 					</span>
-					Remember me
+					<span className='text-sm font-medium leading-5 text-[#414651] dark:text-white'>
+						Remember for 30 days
+					</span>
 				</label>
 
 				<Link
 					href='/auth/forgot-password'
-					className='font-satoshi text-dark hover:text-primary dark:hover:text-primary select-none text-base font-medium duration-300 dark:text-white'
+					className='text-sm font-semibold leading-5 text-[#6941c6] hover:underline'
 				>
-					Forgot Password?
+					Forgot password
 				</Link>
 			</div>
 
-			<FormButton height='50px' disabled={loading}>
+			<FormButton height='44px' disabled={loading}>
 				{loading ? (
 					<>
-						Signing In <Loader style='dark:border-primary border-white' />
+						Signing in <Loader style='dark:border-primary border-white' />
 					</>
 				) : (
-					"Sign In"
+					"Sign in"
 				)}
 			</FormButton>
 		</form>

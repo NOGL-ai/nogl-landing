@@ -7,9 +7,14 @@ const FooterWrapper = () => {
 	const params = useParams();
 	const lang = params?.lang as string;
 
+	// Check if current path is an auth route
+	const isAuthRoute = pathname.includes("/auth/");
+
 	return (
 		<>
-			{!pathname.startsWith("/admin") && !pathname.startsWith("/user") && (
+			{!pathname.startsWith("/admin") && 
+			 !pathname.startsWith("/user") && 
+			 !isAuthRoute && (
 				<Footer lang={lang} />
 			)}
 		</>

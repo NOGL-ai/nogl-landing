@@ -22,11 +22,15 @@ export const HeaderWrapper = () => {
 	// Check if current path is an app route (has sidebar)
 	const isAppRoute = appRoutes.some((route) => pathname.includes(route));
 
+	// Check if current path is an auth route
+	const isAuthRoute = pathname.includes("/auth/");
+
 	return (
 		<>
 			{!pathname.startsWith("/admin") &&
 				!pathname.startsWith("/user") &&
-				!isAppRoute && <Header />}
+				!isAppRoute &&
+				!isAuthRoute && <Header />}
 		</>
 	);
 };
