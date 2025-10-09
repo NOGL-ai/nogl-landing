@@ -2,11 +2,24 @@
 
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "@/components/atoms/ThemeProvider";
+import { Session } from "next-auth";
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({ 
+	children,
+	session 
+}: { 
+	children: React.ReactNode;
+	session: Session | null;
+}) {
 	return (
 		<ThemeProvider>
-			<SessionProvider>{children}</SessionProvider>
+			<SessionProvider 
+				session={session}
+				refetchInterval={0}
+				refetchOnWindowFocus={false}
+			>
+				{children}
+			</SessionProvider>
 		</ThemeProvider>
 	);
 }

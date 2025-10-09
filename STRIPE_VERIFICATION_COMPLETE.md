@@ -192,3 +192,6 @@ docker build -t nogl-landing:latest .
 **Date:** 2025-10-08  
 **Status:** ✅ READY FOR DOCKER BUILD  
 **Next Step:** Run `docker build` command
+
+
+

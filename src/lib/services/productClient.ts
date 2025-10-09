@@ -78,41 +78,50 @@ function buildQuery(params: PageParams = {}): string {
 }
 
 async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(url, {
-    ...init,
-    headers: {
-      "Content-Type": "application/json",
-      ...(init?.headers || {}),
-    },
-    credentials: "include",
-  });
-  
-  if (!res.ok) {
-    let errorMessage = `Request failed: ${res.status} ${res.statusText}`;
-    
-    try {
-      const errorData = await res.json();
-      if (errorData.error) {
-        errorMessage = errorData.error;
-        if (errorData.message) {
-          errorMessage += ` - ${errorData.message}`;
+  try {
+    const res = await fetch(url, {
+      ...init,
+      headers: {
+        "Content-Type": "application/json",
+        ...(init?.headers || {}),
+      },
+      credentials: "include",
+    });
+
+    if (!res.ok) {
+      let errorMessage = `Request failed: ${res.status} ${res.statusText}`;
+
+      try {
+        const errorData = await res.json();
+        if (errorData && (errorData.error || errorData.message)) {
+          errorMessage = `${errorData.error ?? errorData.message}`;
+          if (errorData.message && errorData.error) {
+            errorMessage += ` - ${errorData.message}`;
+          }
+          if (errorData.details && Array.isArray(errorData.details)) {
+            errorMessage += ` - ${errorData.details.map((d: any) => d.message).join(', ')}`;
+          }
         }
-        if (errorData.details && Array.isArray(errorData.details)) {
-          errorMessage += ` - ${errorData.details.map((d: any) => d.message).join(', ')}`;
+      } catch {
+        // If JSON parsing fails, use the text response
+        const text = await res.text().catch(() => "");
+        if (text) {
+          errorMessage += ` - ${text}`;
         }
       }
-    } catch {
-      // If JSON parsing fails, use the text response
-      const text = await res.text().catch(() => "");
-      if (text) {
-        errorMessage += ` - ${text}`;
-      }
+
+      throw new Error(errorMessage);
     }
-    
-    throw new Error(errorMessage);
+
+    return (await res.json()) as T;
+  } catch (err: any) {
+    // Normalize network/fetch errors
+    if (err instanceof Error && err.message === 'Failed to fetch') {
+      throw new Error('Network error: failed to reach the API. Please check your dev server or network connection.');
+    }
+    // Re-throw other errors with safe message
+    throw new Error(err?.message ?? 'Unknown error while fetching data');
   }
-  
-  return (await res.json()) as T;
 }
 
 export async function getProducts(params: PageParams = {}): Promise<GetProductsResponse> {
@@ -151,16 +160,51 @@ export async function getProducts(params: PageParams = {}): Promise<GetProductsR
 
   const query = buildQuery({ sortBy: "createdAt", sortOrder: "desc", ...params });
   const url = `/api/products?${query}`;
-  
+
   try {
     const data = await fetchJson<GetProductsResponse>(url);
+    // Basic validation of shape
+    if (!data || !Array.isArray((data as any).products)) {
+      throw new Error('Invalid API response');
+    }
     // Cache the successful response
     setCachedData(params, data);
     return data;
-  } catch (error) {
-    // Don't cache errors
+  } catch (error: any) {
+    // In development fall back to mock data instead of throwing
+    console.error('getProducts error:', error?.message ?? error);
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('getProducts: falling back to mock products due to API error');
+      const page = params.page ?? 1;
+      const limit = params.limit ?? 10;
+      const start = (page - 1) * limit;
+      const end = start + limit;
+      const items = mockProducts.slice(start, end);
+      const response: GetProductsResponse = {
+        products: items,
+        pagination: {
+          page,
+          limit,
+          total: mockProducts.length,
+          totalPages: Math.ceil(mockProducts.length / limit),
+        },
+        filters: {
+          search: params.search,
+          status: params.status as any,
+          featured: params.featured,
+          channel: params.channel,
+          categoryId: params.categoryId,
+          brandId: params.brandId,
+          minPrice: params.minPrice,
+          maxPrice: params.maxPrice,
+        },
+      };
+      // Cache the fallback to improve subsequent loads in dev
+      setCachedData(params, response);
+      return response;
+    }
+
+    // In production propagate the error so callers can handle it
     throw error;
   }
 }
-
-

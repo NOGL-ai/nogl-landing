@@ -8,16 +8,19 @@ import FooterWrapper from "@/components/molecules/FooterWrapper";
 import { HeaderWrapper } from "@/components/molecules/HeaderWrapper";
 // import AuthCheck from "./AuthCheck";
 import { Metadata } from "next";
+import { getAuthSession } from "@/lib/auth";
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: {
 	children: React.ReactNode;
 }) {
+	const session = await getAuthSession();
+
 	return (
 		<>
 			<Loader />
-			<Providers>
+			<Providers session={session}>
 				{/* <AuthCheck> */}
 				<NextTopLoader
 					color='#635BFF'

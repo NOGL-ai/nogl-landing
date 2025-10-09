@@ -254,6 +254,33 @@ export const authOptions: NextAuthOptions = {
 		jwt: async ({ token, user }) => {
 			if (user) {
 				token.id = user.id;
+
+				// Fetch additional user data from database
+				try {
+					const dbUser = await prisma.user.findUnique({
+						where: { id: user.id },
+						select: {
+							id: true,
+							email: true,
+							onboardingCompleted: true,
+							role: true,
+						},
+					});
+
+					if (dbUser) {
+						token.onboardingCompleted = dbUser.onboardingCompleted;
+						token.role = dbUser.role;
+						
+						// Validate email
+						if (dbUser.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(dbUser.email)) {
+							token.email = dbUser.email;
+						} else {
+							token.emailError = "Invalid email";
+						}
+					}
+				} catch (error) {
+					console.error('Error fetching user data in jwt callback:', error);
+				}
 			}
 			return token;
 		},
@@ -291,10 +318,26 @@ export const authOptions: NextAuthOptions = {
 		},
 
 		session: async ({ session, token }) => {
-			if (session?.user && token.sub) {
-				session.user.id = token.sub;
-				session.user.image = token.picture;
+			// Safely handle null/undefined session (when user is not logged in)
+			if (!session) {
+				return session;
 			}
+
+			// Ensure user object exists before accessing it
+			if (session.user) {
+				if (token.sub) {
+					session.user.id = token.sub;
+				}
+				if (token.picture) {
+					session.user.image = token.picture;
+				}
+				
+				// Add custom fields to session
+				(session.user as any).onboardingCompleted = token.onboardingCompleted;
+				(session.user as any).role = token.role;
+				(session.user as any).emailError = (token as any).emailError;
+			}
+			
 			return session;
 		},
 	},

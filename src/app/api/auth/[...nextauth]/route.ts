@@ -1,69 +1,8 @@
 import NextAuth from "next-auth/next";
-import type { NextAuthOptions } from "next-auth";
-import type { JWT } from "next-auth/jwt";
-import type { Session } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { prisma } from "@/lib/prismaDb";
 
-const extendedAuthOptions: NextAuthOptions = {
-	...authOptions,
-	callbacks: {
-		async jwt({ token, user }) {
-			if (user) {
-				const dbUser = await prisma.user.findUnique({
-					where: { id: user.id },
-					select: {
-						id: true,
-						email: true,
-						onboardingCompleted: true,
-						role: true,
-					},
-				});
+// Initialize NextAuth handler with the base auth options
+// All customizations should be done in @/lib/auth.ts
+const handler = NextAuth(authOptions);
 
-				if (
-					!dbUser?.email ||
-					!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(dbUser.email)
-				) {
-					return {
-						...token,
-						emailError: "Invalid email",
-					};
-				}
-
-				return {
-					...token,
-					id: dbUser.id,
-					email: dbUser.email,
-					onboardingCompleted: dbUser.onboardingCompleted,
-					role: dbUser.role,
-				};
-			}
-			return token;
-		},
-
-		async session({
-			session,
-			token,
-		}: {
-			session: Session;
-			token: JWT & { emailError?: string };
-		}) {
-			const safeSession = (session ?? ({} as Partial<Session>)) as any;
-			const safeUser = (safeSession?.user ?? {}) as Record<string, any>;
-			return {
-				...(safeSession as object),
-				user: {
-					...safeUser,
-					id: (token?.id as string | undefined) ?? safeUser.id,
-					email: (token?.email as string | undefined) ?? safeUser.email,
-					onboardingCompleted: (token as any)?.onboardingCompleted ?? (safeUser as any)?.onboardingCompleted,
-					role: (token as any)?.role ?? (safeUser as any)?.role,
-					emailError: (token as any)?.emailError,
-				},
-			};
-		},
-	},
-};
-
-const handler = NextAuth(extendedAuthOptions);
 export { handler as GET, handler as POST };
