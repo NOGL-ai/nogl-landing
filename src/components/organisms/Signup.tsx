@@ -150,46 +150,41 @@ export default function Signup() {
 
 						{/* Avatars and Reviews */}
 						<div className="flex items-center gap-4">
-						{/* Avatar Group */}
+						{/* Avatar Group - Fashion Brand Logos */}
 						<div className="flex items-center">
-							<div className="relative -mr-3 size-10 overflow-hidden rounded-full border-2 border-white shadow-sm">
-								<div className="absolute inset-0 bg-[#CFCBDC]" />
+							<div className="relative -mr-3 size-10 overflow-hidden rounded-full border-2 border-white bg-white shadow-sm p-1.5">
 								<img 
-									src="https://www.figma.com/api/mcp/asset/f9e50da7-a809-4496-8574-94f4ad2423bd" 
-									alt="User 1" 
-									className="absolute inset-0 size-full object-cover"
+									src="https://img.logo.dev/zara.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ" 
+									alt="Zara" 
+									className="size-full object-contain"
 								/>
 							</div>
-							<div className="relative -mr-3 size-10 overflow-hidden rounded-full border-2 border-white shadow-sm">
-								<div className="absolute inset-0 bg-[#D6CFB7]" />
+							<div className="relative -mr-3 size-10 overflow-hidden rounded-full border-2 border-white bg-white shadow-sm p-1.5">
 								<img 
-									src="https://www.figma.com/api/mcp/asset/7c9277a7-4093-46fa-a783-f9a964f6bd33" 
-									alt="User 2" 
-									className="absolute inset-0 size-full object-cover"
+									src="https://img.logo.dev/hm.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ" 
+									alt="H&M" 
+									className="size-full object-contain"
 								/>
 							</div>
-							<div className="relative -mr-3 size-10 overflow-hidden rounded-full border-2 border-white shadow-sm">
-								<div className="absolute inset-0 bg-[#D7E3E8]" />
+							<div className="relative -mr-3 size-10 overflow-hidden rounded-full border-2 border-white bg-white shadow-sm p-1.5">
 								<img 
-									src="https://www.figma.com/api/mcp/asset/7511f3f3-2207-487f-9860-07953690894e" 
-									alt="User 3" 
-									className="absolute inset-0 size-full object-cover"
+									src="https://img.logo.dev/nike.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ" 
+									alt="Nike" 
+									className="size-full object-contain"
 								/>
 							</div>
-							<div className="relative -mr-3 size-10 overflow-hidden rounded-full border-2 border-white shadow-sm">
-								<div className="absolute inset-0 bg-[#DADCD6]" />
+							<div className="relative -mr-3 size-10 overflow-hidden rounded-full border-2 border-white bg-white shadow-sm p-1.5">
 								<img 
-									src="https://www.figma.com/api/mcp/asset/305c1f63-2cf9-4a6d-b58b-a0e53d87d96c" 
-									alt="User 4" 
-									className="absolute inset-0 size-full object-cover"
+									src="https://img.logo.dev/gap.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ" 
+									alt="Gap" 
+									className="size-full object-contain"
 								/>
 							</div>
-							<div className="relative size-10 overflow-hidden rounded-full border-2 border-white shadow-sm">
-								<div className="absolute inset-0 bg-[#D9D0E6]" />
+							<div className="relative size-10 overflow-hidden rounded-full border-2 border-white bg-white shadow-sm p-1.5">
 								<img 
-									src="https://www.figma.com/api/mcp/asset/79084a64-759c-414b-abae-b42042fac10f" 
-									alt="User 5" 
-									className="absolute inset-0 size-full object-cover"
+									src="https://img.logo.dev/mango.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ" 
+									alt="Mango" 
+									className="size-full object-contain"
 								/>
 							</div>
 						</div>
