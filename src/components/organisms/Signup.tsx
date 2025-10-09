@@ -68,88 +68,107 @@ export default function Signup() {
 				</div>
 			</div>
 
-			{/* Right: Image + Testimonial */}
+			{/* Right: Hero Section */}
 			<div className="relative hidden flex-1 self-stretch lg:flex lg:min-w-[640px]">
 				{/* Background Image */}
 				<img
-					src="/images/testimonial/Polina_Sergeeva.jpeg"
+					src="https://www.figma.com/api/mcp/asset/6213fa51-9e98-4799-98a1-d5f6fd0bde00"
 					alt=""
 					className="absolute inset-0 size-full object-cover object-center"
 				/>
 
-				{/* Bottom Panel with Testimonial */}
-				<div className="absolute bottom-0 left-0 right-0 flex flex-col items-center justify-center bg-gradient-to-b from-transparent to-black/40 px-5 pb-5 pt-24">
-					<div className="relative w-full rounded-2xl border border-white/30 bg-white/30 backdrop-blur-md">
-						<div className="flex w-full flex-col items-start gap-6 p-5">
-							<p className="w-full text-[30px] font-semibold leading-[38px] text-white">
-								&ldquo;We&apos;ve been using Untitled to kickstart every new project and can&apos;t imagine working without it. It&apos;s incredible.&rdquo;
-							</p>
+				{/* Decorative Stars - Top Left */}
+				<div className="absolute left-16 top-16 h-20 w-20">
+					<svg className="absolute left-0 top-0 size-20" viewBox="0 0 80 80" fill="none">
+						<path d="M40 0L43.09 36.91L80 40L43.09 43.09L40 80L36.91 43.09L0 40L36.91 36.91L40 0Z" fill="#FEC84B"/>
+					</svg>
+					<svg className="absolute left-0 top-0 size-6" viewBox="0 0 24 24" fill="none">
+						<path d="M12 0L13.854 10.146L24 12L13.854 13.854L12 24L10.146 13.854L0 12L10.146 10.146L12 0Z" fill="#FEC84B"/>
+					</svg>
+					<svg className="absolute left-16 top-4 size-4" viewBox="0 0 16 16" fill="none">
+						<path d="M8 0L9.236 6.764L16 8L9.236 9.236L8 16L6.764 9.236L0 8L6.764 6.764L8 0Z" fill="#FEC84B"/>
+					</svg>
+				</div>
 
-							<div className="flex w-full flex-col items-start gap-2">
-								{/* Name and stars */}
-								<div className="flex w-full items-start gap-4">
-									<p className="min-w-0 flex-1 text-2xl font-semibold leading-8 text-white">
-										Fleur Cook
-									</p>
+				{/* Bottom Panel with Content */}
+				<div className="absolute bottom-0 left-0 right-0 flex flex-col items-center justify-center bg-gradient-to-b from-transparent to-black/40 px-16 py-24">
+					<div className="flex w-full flex-col gap-8">
+						{/* Heading and Subtext */}
+						<div className="flex w-full flex-col gap-5 text-white">
+							<h2 className="text-[60px] font-semibold leading-[72px] tracking-[-1.2px]">
+								Start turning your ideas into reality.
+							</h2>
+							<p className="text-lg font-medium leading-7">
+								Create a free account and get full access to all features for 30-days. No credit card needed. Get started in 2 minutes.
+							</p>
+						</div>
+
+						{/* Avatars and Reviews */}
+						<div className="flex items-center gap-4">
+						{/* Avatar Group */}
+						<div className="flex items-center">
+							<div className="relative -mr-3 size-10 overflow-hidden rounded-full border-2 border-white shadow-sm">
+								<div className="absolute inset-0 bg-[#CFCBDC]" />
+								<img 
+									src="https://www.figma.com/api/mcp/asset/f9e50da7-a809-4496-8574-94f4ad2423bd" 
+									alt="User 1" 
+									className="absolute inset-0 size-full object-cover"
+								/>
+							</div>
+							<div className="relative -mr-3 size-10 overflow-hidden rounded-full border-2 border-white shadow-sm">
+								<div className="absolute inset-0 bg-[#D6CFB7]" />
+								<img 
+									src="https://www.figma.com/api/mcp/asset/7c9277a7-4093-46fa-a783-f9a964f6bd33" 
+									alt="User 2" 
+									className="absolute inset-0 size-full object-cover"
+								/>
+							</div>
+							<div className="relative -mr-3 size-10 overflow-hidden rounded-full border-2 border-white shadow-sm">
+								<div className="absolute inset-0 bg-[#D7E3E8]" />
+								<img 
+									src="https://www.figma.com/api/mcp/asset/7511f3f3-2207-487f-9860-07953690894e" 
+									alt="User 3" 
+									className="absolute inset-0 size-full object-cover"
+								/>
+							</div>
+							<div className="relative -mr-3 size-10 overflow-hidden rounded-full border-2 border-white shadow-sm">
+								<div className="absolute inset-0 bg-[#DADCD6]" />
+								<img 
+									src="https://www.figma.com/api/mcp/asset/305c1f63-2cf9-4a6d-b58b-a0e53d87d96c" 
+									alt="User 4" 
+									className="absolute inset-0 size-full object-cover"
+								/>
+							</div>
+							<div className="relative size-10 overflow-hidden rounded-full border-2 border-white shadow-sm">
+								<div className="absolute inset-0 bg-[#D9D0E6]" />
+								<img 
+									src="https://www.figma.com/api/mcp/asset/79084a64-759c-414b-abae-b42042fac10f" 
+									alt="User 5" 
+									className="absolute inset-0 size-full object-cover"
+								/>
+							</div>
+						</div>
+
+							{/* Reviews */}
+							<div className="flex flex-col gap-1">
+								<div className="flex items-center gap-2">
 									{/* Stars */}
-									<div className="flex items-center gap-1 shrink-0">
+									<div className="flex items-center gap-1">
 										{[...Array(5)].map((_, i) => (
 											<svg
 												key={i}
 												className="size-5"
 												viewBox="0 0 20 20"
-												fill="#FDB022"
+												fill="#FEC84B"
 												xmlns="http://www.w3.org/2000/svg"
 											>
 												<path d="M9.53834 1.60996C9.70914 1.19932 10.2909 1.19932 10.4617 1.60996L12.5278 6.57744C12.5998 6.75056 12.7626 6.86885 12.9495 6.88383L18.3123 7.31376C18.7556 7.3493 18.9354 7.90256 18.5976 8.19189L14.5117 11.6919C14.3693 11.8139 14.3071 12.0053 14.3506 12.1876L15.5989 17.4208C15.7021 17.8534 15.2315 18.1954 14.8519 17.9635L10.2606 15.1592C10.1006 15.0615 9.89938 15.0615 9.73937 15.1592L5.14806 17.9635C4.76851 18.1954 4.29788 17.8534 4.40108 17.4208L5.64939 12.1876C5.69289 12.0053 5.6307 11.8139 5.48831 11.6919L1.40241 8.19189C1.06464 7.90256 1.24441 7.3493 1.68773 7.31376L7.05054 6.88383C7.23744 6.86885 7.40024 6.75056 7.47225 6.57744L9.53834 1.60996Z" />
 											</svg>
 										))}
 									</div>
+									<span className="text-base font-semibold text-white">5.0</span>
 								</div>
-
-								{/* Supporting text and arrows */}
-								<div className="flex w-full items-start gap-3">
-									<div className="flex min-w-0 flex-1 flex-col items-start gap-1 text-white">
-										<p className="w-full text-base font-semibold leading-6">Founder, Catalog</p>
-										<p className="w-full text-sm font-medium leading-5">Web Design Agency</p>
-									</div>
-
-									{/* Arrows */}
-									<div className="flex shrink-0 items-start gap-6">
-										<button
-											className="flex size-14 items-center justify-center rounded-full border border-white/50"
-											aria-label="Previous testimonial"
-										>
-											<svg
-												className="size-6"
-												viewBox="0 0 24 24"
-												fill="none"
-												stroke="white"
-												strokeWidth="2"
-												strokeLinecap="round"
-												strokeLinejoin="round"
-											>
-												<path d="M19 12H5M12 19l-7-7 7-7" />
-											</svg>
-										</button>
-										<button
-											className="flex size-14 items-center justify-center rounded-full border border-white/50"
-											aria-label="Next testimonial"
-										>
-											<svg
-												className="size-6"
-												viewBox="0 0 24 24"
-												fill="none"
-												stroke="white"
-												strokeWidth="2"
-												strokeLinecap="round"
-												strokeLinejoin="round"
-											>
-												<path d="M5 12h14M12 5l7 7-7 7" />
-											</svg>
-										</button>
-									</div>
-								</div>
+								<p className="text-base font-medium text-white">from 200+ reviews</p>
 							</div>
 						</div>
 					</div>
