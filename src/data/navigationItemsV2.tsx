@@ -19,7 +19,10 @@ import {
     FileX01,
     Package,
     LayersThree01,
-    RefreshCw01
+    RefreshCw01,
+    TrendUp02,
+    ShoppingCart01,
+    Truck01
 } from "@untitledui/icons";
 import type { ReactNode } from "react";
 
@@ -76,11 +79,39 @@ export const navigationStructure: NavigationSection[] = [
                         icon: RefreshCw01,
                     },
                     {
-                        label: 'Data Management',
-                        href: '#',
-                        icon: null,
-                        isSubHeading: true,
+                        label: 'Reports',
+                        href: '/reports',
+                        icon: FileX01,
                     },
+                ],
+            },
+            {
+                id: 'market-research',
+                label: 'Market Research',
+                icon: TrendUp02,
+                subItems: [
+                    {
+                        label: 'Market Intelligence',
+                        href: '/market-research/intelligence',
+                        icon: LineChartUp03,
+                    },
+                    {
+                        label: 'Trends Dashboard',
+                        href: '/market-research/trends',
+                        icon: BarChartSquare02,
+                    },
+                    {
+                        label: 'Customer Insights',
+                        href: '/market-research/insights',
+                        icon: UserSquare,
+                    },
+                ],
+            },
+            {
+                id: 'products',
+                label: 'Products',
+                icon: Package,
+                subItems: [
                     {
                         label: 'Product Catalog',
                         href: '/catalog',
@@ -92,9 +123,31 @@ export const navigationStructure: NavigationSection[] = [
                         icon: LayersThree01,
                     },
                     {
-                        label: 'Reports',
-                        href: '/reports',
-                        icon: FileX01,
+                        label: 'Product Management',
+                        href: '/products/management',
+                        icon: Grid03,
+                    },
+                ],
+            },
+            {
+                id: 'supply-chain',
+                label: 'Supply Chain',
+                icon: Truck01,
+                subItems: [
+                    {
+                        label: 'Demand Forecasting',
+                        href: '/supply-chain/forecasting',
+                        icon: LineChartUp03,
+                    },
+                    {
+                        label: 'Inventory Planning',
+                        href: '/supply-chain/inventory',
+                        icon: LayersThree01,
+                    },
+                    {
+                        label: 'Procurement',
+                        href: '/supply-chain/procurement',
+                        icon: ShoppingCart01,
                     },
                 ],
             },
