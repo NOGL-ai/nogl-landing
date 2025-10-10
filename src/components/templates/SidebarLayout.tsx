@@ -177,7 +177,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 				aria-label="Mobile navigation menu"
 			>
 				{/* Background overlay with blur effect */}
-				<div 
+				<div
 					className={`fixed inset-0 backdrop-blur sidebar-backdrop transition-opacity duration-300 ${
 						isMobileOpen ? 'sidebar-fade-in' : 'sidebar-fade-out'
 					}`}
@@ -186,6 +186,29 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 				>
 					<div className="absolute inset-0 bg-black/40 dark:bg-black/70" />
 				</div>
+
+				{/* Floating close button in overlay, aligned to panel edge */}
+				<button
+					className="fixed z-[60] lg:hidden rounded-lg p-2 text-white/90 hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 transition-colors"
+					onClick={(e) => { e.stopPropagation(); closeMobile(); }}
+					aria-label="Close mobile navigation menu"
+					style={{
+						left: 'min(calc(100vw - 44px), calc(20rem + 12px))',
+						top: 'calc(env(safe-area-inset-top, 0px) + 12px)'
+					}}
+				>
+					<svg
+						className="h-6 w-6"
+						fill="none"
+						viewBox="0 0 24 24"
+						strokeWidth="2"
+						stroke="currentColor"
+						aria-hidden="true"
+						focusable="false"
+					>
+						<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+					</svg>
+				</button>
 				
 				{/* Mobile sidebar content */}
 				<div 
@@ -196,28 +219,6 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 						transform: isMobileOpen ? 'translateX(0)' : 'translateX(-100%)'
 					}}
 				>
-					{/* Close button */}
-					<button
-						className="absolute box-border cursor-pointer flex gap-2 items-center justify-center overflow-clip p-2 right-2 rounded-[8px] top-3 z-10 text-[#414651] dark:text-[#d5d7da]"
-						onClick={closeMobile}
-						aria-label="Close mobile navigation menu"
-					>
-						<svg
-							className="h-6 w-6"
-							fill="none"
-							viewBox="0 0 24 24"
-							strokeWidth="1.5"
-							stroke="currentColor"
-							aria-hidden="true"
-							focusable="false"
-						>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								d="M6 18L18 6M6 6l12 12"
-							/>
-						</svg>
-					</button>
 
 					<div className="flex flex-col h-full pt-16">
 						{/* Mobile Search */}
