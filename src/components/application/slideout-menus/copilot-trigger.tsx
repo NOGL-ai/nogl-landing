@@ -61,7 +61,7 @@ export const CopilotTrigger = ({
                 )}
                 aria-label="Open AI Copilot"
             >
-                <Stars02 className="size-5 text-[#a4a7ae] dark:text-[#717680]" />
+                <Stars02 className="size-5 text-[#717680] dark:text-[#a4a7ae]" />
             </Button>
         );
     };

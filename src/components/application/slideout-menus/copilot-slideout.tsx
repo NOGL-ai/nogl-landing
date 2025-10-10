@@ -14,6 +14,8 @@ import {
     ItalicSquare as Square
 } from "@untitledui/icons";
 import { DialogTrigger } from "react-aria-components";
+import { useTheme } from "next-themes";
+import Image from "next/image";
 import { SlideoutMenu } from "./slideout-menu";
 import { BadgeWithIcon } from "@/components/base/badges/badges";
 import { TextAreaBase } from "@/components/base/textarea/textarea";
@@ -37,70 +39,22 @@ const prompts = [
     { id: "more", label: "More", icon: Stars02, color: "gray" as const },
 ];
 
-const CopilotLogo = () => (
-    <div className="flex size-14 items-center justify-center rounded-full bg-gray-950 shadow-lg dark:bg-gray-900">
-        <div
-            className="size-14"
-            style={{
-                background: `
-                    radial-gradient(75% 75% at 50% 0%, rgba(255, 255, 255, 0.00) 0%, rgba(255, 255, 255, 0.00) 50%, rgba(255, 255, 255, 0.10) 99%, rgba(255, 255, 255, 0.00) 100%),
-                    radial-gradient(43.75% 43.75% at 50% 28.75%, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.00) 100%),
-                    radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.00) 74.66%, rgba(255, 255, 255, 0.30) 100%)
-                `,
-            }}
-        >
-            <div className="flex size-full items-center justify-center">
-                <svg width="30" height="38" viewBox="0 0 38 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-md">
-                    <g filter="url(#filter0_d_copilot)">
-                        <path
-                            d="M3.96094 18.9997C3.96094 15.7542 4.98877 12.7489 6.73669 10.2913H14.2526V11.6997C11.8695 13.2535 10.2943 15.9426 10.2943 18.9997C10.2943 23.8092 14.1931 27.708 19.0026 27.708V34.0413C10.6953 34.0413 3.96094 27.307 3.96094 18.9997Z"
-                            fill="url(#paint0_linear_copilot)"
-                        />
-                        <path
-                            d="M31.2685 27.708C33.0164 25.2505 34.0443 22.2451 34.0443 18.9997C34.0443 10.6924 27.3099 3.95801 19.0026 3.95801V10.2913C23.8121 10.2913 27.7109 14.1902 27.7109 18.9997C27.7109 22.0567 25.6357 24.7459 23.2526 26.2997V27.708H31.2685Z"
-                            fill="url(#paint1_linear_copilot)"
-                        />
-                    </g>
-                    <defs>
-                        <filter id="filter0_d_copilot" x="0.794271" y="-0.791667" width="36.4166" height="44.3333" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
-                            <feFlood floodOpacity="0" result="BackgroundImageFix"/>
-                            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-                            <feMorphology radius="1.58333" operator="erode" in="SourceAlpha" result="effect1_dropShadow_copilot"/>
-                            <feOffset dy="2.375"/>
-                            <feGaussianBlur stdDeviation="2.375"/>
-                            <feComposite in2="hardAlpha" operator="out"/>
-                            <feColorMatrix type="matrix" values="0 0 0 0 0.141176 0 0 0 0 0.141176 0 0 0 0 0.141176 0 0 0 0.1 0"/>
-                            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_copilot"/>
-                            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_copilot" result="shape"/>
-                        </filter>
-                        <linearGradient id="paint0_linear_copilot" x1="19.0026" y1="3.95801" x2="19.0026" y2="34.0413" gradientUnits="userSpaceOnUse">
-                            <stop stopColor="white" stopOpacity="0.8"/>
-                            <stop offset="1" stopColor="white" stopOpacity="0.5"/>
-                        </linearGradient>
-                        <linearGradient id="paint1_linear_copilot" x1="19.0026" y1="3.95801" x2="19.0026" y2="34.0413" gradientUnits="userSpaceOnUse">
-                            <stop stopColor="white" stopOpacity="0.8"/>
-                            <stop offset="1" stopColor="white" stopOpacity="0.5"/>
-                        </linearGradient>
-                    </defs>
-                </svg>
-            </div>
-            {/* Reflection gradient overlay */}
-            <svg width="34" height="11" viewBox="0 0 34 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute left-1/2 top-1.5 -translate-x-1/2">
-                <path
-                    d="M33.8 9.14462C33.8 13.8639 26.2783 10.8536 17 10.8536C7.72157 10.8536 0.199951 13.8639 0.199951 9.14462C0.199951 4.42534 7.72157 0.599609 17 0.599609C26.2783 0.599609 33.8 4.42534 33.8 9.14462Z"
-                    fill="url(#paint0_reflection)"
-                    fillOpacity="0.6"
-                />
-                <defs>
-                    <linearGradient id="paint0_reflection" x1="17" y1="0.599609" x2="17" y2="11.7996" gradientUnits="userSpaceOnUse">
-                        <stop stopColor="white"/>
-                        <stop offset="1" stopColor="white" stopOpacity="0.1"/>
-                    </linearGradient>
-                </defs>
-            </svg>
-        </div>
+const CopilotLogo = () => {
+    const { theme, resolvedTheme } = useTheme();
+    const currentTheme = resolvedTheme || theme;
+    
+    return (
+        <div className="relative flex size-14 items-center justify-center rounded-full bg-gray-100 shadow-lg dark:bg-gray-800">
+            <Image
+                src={currentTheme === "dark" ? "/images/logo/logo-light.svg" : "/images/logo/logo.svg"}
+                alt="Logo"
+                width={40}
+                height={40}
+                className="object-contain"
+            />
     </div>
 );
+};
 
 export const CopilotSlideout = ({ userName = "Olivia", userAvatar, onPromptClick, onMessageSend, trigger }: CopilotSlideoutProps) => {
     const [message, setMessage] = useState("");
