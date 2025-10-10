@@ -2,7 +2,7 @@
 
 > **A comprehensive guide to our hybrid component architecture combining Untitled UI Design System with Atomic Design principles**
 
-## 🎯 Architecture Philosophy
+## 🎯 Architecture **Philosophy**
 
 Our component architecture is built on **five core principles**:
 
