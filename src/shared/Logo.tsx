@@ -1,6 +1,10 @@
+"use client";
+
 import React, { useId } from "react";
 import Link from "next/link";
 import { Route } from "@/routers/types";
+import { usePathname } from "next/navigation";
+import { i18n } from "@/i18n";
 
 type LogoVariant = "light" | "dark" | "auto";
 type LogoSize = "sm" | "md" | "lg" | "xl";
@@ -120,9 +124,14 @@ const Logo: React.FC<LogoProps> = ({
 			: "text-slate-950 transition-colors duration-200 dark:text-white";
 	const spacing = showText ? gap : "gap-0";
 
+	// Determine current locale from the first URL segment
+	const pathname = usePathname() || "/";
+	const firstSegment = pathname.split("/").filter(Boolean)[0] || "";
+	const locale = (i18n.locales as readonly string[]).includes(firstSegment) ? firstSegment : i18n.defaultLocale;
+
 	return (
 		<Link
-			href={"/" as Route}
+			href={("/" + locale) as Route}
 			className={`ttnc-logo inline-flex items-center ${spacing} focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-500 ${className}`}
 			aria-label='NOGL logo'
 		>
