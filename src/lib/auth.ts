@@ -414,6 +414,21 @@ export const authOptions: NextAuthOptions = {
 
 export const getAuthSession = async () => {
 	try {
+		// Development bypass for local testing
+		if (process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_BYPASS_AUTH === 'true') {
+			console.log('⚠️ Auth bypass enabled - returning mock session');
+			return {
+				user: {
+					id: 'dev-user-id',
+					name: 'Dev User',
+					email: 'dev@test.com',
+					image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face&auto=format',
+					emailVerified: new Date(),
+				},
+				expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+			};
+		}
+
 		// Check if required environment variables are present
 		if (!process.env.NEXTAUTH_SECRET) {
 			console.warn('NEXTAUTH_SECRET is not set');

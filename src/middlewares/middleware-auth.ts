@@ -37,6 +37,12 @@ function getProtectedRoutes(protectedPaths: string[], locales: Locale[]) {
 
 export function withAuthMiddleware(middleware: CustomMiddleware) {
 	return async (request: NextRequest, event: NextFetchEvent) => {
+		// Development bypass for local testing
+		if (process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_BYPASS_AUTH === 'true') {
+			console.log('⚠️ Auth middleware bypassed for development');
+			return middleware(request, event, NextResponse.next());
+		}
+
 		// Create a response object to pass down the chain
 		const response = NextResponse.next();
 
