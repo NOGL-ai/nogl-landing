@@ -8,17 +8,17 @@ import { cx } from "@/utils/cx";
 interface CopilotTriggerProps {
     userName?: string;
     userAvatar?: string;
-    onPromptClick?: (prompt: string) => void;
-    onMessageSend?: (message: string) => void;
     className?: string;
     variant?: "floating" | "button" | "icon";
+    /**
+     * Note: onPromptClick and onMessageSend removed.
+     * Thread component inside slideout handles all interactions.
+     */
 }
 
 export const CopilotTrigger = ({ 
     userName, 
     userAvatar, 
-    onPromptClick, 
-    onMessageSend, 
     className,
     variant = "floating" 
 }: CopilotTriggerProps) => {
@@ -70,8 +70,6 @@ export const CopilotTrigger = ({
         <CopilotSlideout
             userName={userName}
             userAvatar={userAvatar}
-            onPromptClick={onPromptClick}
-            onMessageSend={onMessageSend}
             trigger={renderTrigger()}
         />
     );
