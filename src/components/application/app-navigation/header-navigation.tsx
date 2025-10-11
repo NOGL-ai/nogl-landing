@@ -59,7 +59,7 @@ export const HeaderNavigationBase = ({
     return (
         <>
             <MobileNavigationHeader>
-                <aside className="flex h-full max-w-full flex-col justify-between overflow-auto border-r border-secondary bg-primary pt-4 lg:pt-6">
+                <aside className="flex h-full max-w-full flex-col justify-between overflow-auto border-r border-secondary bg-background pt-4 lg:pt-6">
                     <div className="flex flex-col gap-5 px-4 lg:px-5">
                         <Logo size="md" />
                         <Input shortcut size="sm" aria-label="Search" placeholder="Search" icon={SearchLg} />
@@ -97,7 +97,7 @@ export const HeaderNavigationBase = ({
             <header className="max-lg:hidden">
                 <section
                     className={cx(
-                        "flex h-16 w-full items-center justify-center bg-primary md:h-18",
+                        "flex h-16 w-full items-center justify-center bg-background md:h-18",
                         (!hideBorder || showSecondaryNav) && "border-b border-secondary",
                     )}
                 >
@@ -180,7 +180,7 @@ export const HeaderNavigationBase = ({
                 </section>
 
                 {showSecondaryNav && (
-                    <section className={cx("flex h-16 w-full items-center justify-center bg-primary", !hideBorder && "border-b border-secondary")}>
+                    <section className={cx("flex h-16 w-full items-center justify-center bg-background", !hideBorder && "border-b border-secondary")}>
                         <div className="flex w-full max-w-container items-center justify-between gap-8 px-8">
                             <nav>
                                 <ul className="flex items-center gap-0.5">

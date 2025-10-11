@@ -112,7 +112,7 @@ export const AvatarProfilePhoto = ({
     return (
         <div
             className={cx(
-                "relative flex shrink-0 items-center justify-center rounded-full bg-primary ring-1 ring-secondary_alt",
+                "relative flex shrink-0 items-center justify-center rounded-full bg-background ring-1 ring-secondary_alt",
                 styles[size].root,
                 (!src || isFailed) && styles[size].rootWithPlaceholder,
                 className,

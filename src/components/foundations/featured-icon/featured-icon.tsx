@@ -63,7 +63,7 @@ const styles = sortCx({
     },
 
     modern: {
-        base: "bg-primary shadow-xs-skeumorphic ring-1 ring-inset",
+        base: "bg-background shadow-xs-skeumorphic ring-1 ring-inset",
         sizes: {
             sm: "size-8 rounded-md",
             md: "size-10 rounded-lg",
@@ -72,7 +72,7 @@ const styles = sortCx({
         },
         colors: {
             brand: "",
-            gray: "text-fg-secondary ring-primary",
+            gray: "text-fg-secondary ring-border",
             error: "",
             warning: "",
             success: "",
@@ -92,7 +92,7 @@ const styles = sortCx({
         },
         colors: {
             brand: "",
-            gray: "text-fg-secondary ring-primary",
+            gray: "text-fg-secondary ring-border",
             error: "",
             warning: "",
             success: "",

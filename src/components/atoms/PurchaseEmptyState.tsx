@@ -209,12 +209,12 @@ export default function PurchaseEmptyState() {
 						Please purchase any plan to see the history! Thank you
 					</p>
 
-					<Link
-						className='text-md bg-primary px-5.5 font-satoshi hover:bg-primary-dark mt-4 inline-block rounded-md py-2 font-medium text-white duration-300'
-						href='/#pricing'
-					>
-						Pricing
-					</Link>
+				<Link
+					className='text-md bg-brand-solid px-5.5 font-satoshi hover:bg-brand-solid_hover mt-4 inline-block rounded-md py-2 font-medium text-white duration-300'
+					href='/#pricing'
+				>
+					Pricing
+				</Link>
 				</div>
 			</Card>
 		</div>

@@ -48,12 +48,12 @@ export default function PurchaseTable({ data }: unknown) {
 									<span className='text-body dark:text-gray-5'>Amount:</span>$
 									{data?.unit_amount / 100}{" "}
 								</span>
-								<span className='block xl:hidden'>
-									<span className='text-body dark:text-gray-5'>Action:</span>
-									<button className='h-8.5 bg-primary px-4.5 font-satoshi hover:bg-primary-dark ml-auto flex items-center justify-center rounded-md text-sm font-medium tracking-[-.1px] text-white duration-300'>
-										Download
-									</button>
-								</span>
+							<span className='block xl:hidden'>
+								<span className='text-body dark:text-gray-5'>Action:</span>
+								<button className='h-8.5 bg-brand-solid px-4.5 font-satoshi hover:bg-brand-solid_hover ml-auto flex items-center justify-center rounded-md text-sm font-medium tracking-[-.1px] text-white duration-300'>
+									Download
+								</button>
+							</span>
 							</td>
 							<td className='text-dark hidden p-5 text-left tracking-[-.16px] xl:table-cell dark:text-white'>
 								{new Date(data?.currentPeriodEnd as Date).toDateString()}
@@ -64,11 +64,11 @@ export default function PurchaseTable({ data }: unknown) {
 							<td className='text-dark hidden p-5 text-left tracking-[-.16px] xl:table-cell dark:text-white'>
 								${data?.unit_amount / 100}
 							</td>
-							<td className='pr-7.5 text-dark hidden p-5 text-right tracking-[-.16px] dark:text-white'>
-								<button className='h-8.5 bg-primary px-4.5 font-satoshi hover:bg-primary-dark ml-auto flex items-center justify-center rounded-md text-sm font-medium tracking-[-.1px] text-white duration-300'>
-									Download
-								</button>
-							</td>
+						<td className='pr-7.5 text-dark hidden p-5 text-right tracking-[-.16px] dark:text-white'>
+							<button className='h-8.5 bg-brand-solid px-4.5 font-satoshi hover:bg-brand-solid_hover ml-auto flex items-center justify-center rounded-md text-sm font-medium tracking-[-.1px] text-white duration-300'>
+								Download
+							</button>
+						</td>
 						</tr>
 					</tbody>
 				</table>

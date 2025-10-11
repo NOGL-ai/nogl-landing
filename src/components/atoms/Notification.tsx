@@ -1,7 +1,7 @@
 export default function Notification() {
 	return (
 		<div className='rounded-10 px-7.5 dark:bg-gray-dark mb-4 flex gap-5 bg-white py-6 shadow-[0px_1px_3px_0px_rgba(0,0,0,0.08)]'>
-			<div className='h-11.5 w-11.5 bg-primary hidden items-center justify-center rounded-full text-white md:flex'>
+			<div className='h-11.5 w-11.5 bg-brand-solid hidden items-center justify-center rounded-full text-white md:flex'>
 				<svg
 					width='20'
 					height='20'

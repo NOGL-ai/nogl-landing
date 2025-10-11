@@ -13,11 +13,11 @@ import { isReactComponent } from "@/utils/is-react-component";
 export const styles = sortCx({
     common: {
         root: [
-            "group/button-group inline-flex h-max cursor-pointer items-center bg-primary font-semibold whitespace-nowrap text-secondary shadow-skeumorphic ring-1 ring-primary outline-brand transition duration-100 ease-linear ring-inset",
+            "group/button-group inline-flex h-max cursor-pointer items-center bg-background font-semibold whitespace-nowrap text-secondary shadow-skeumorphic ring-1 ring-border outline-brand transition duration-100 ease-linear ring-inset",
             // Hover and focus styles
             "hover:bg-primary_hover hover:text-secondary_hover focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-2",
             // Disabled styles
-            "disabled:cursor-not-allowed disabled:bg-primary disabled:text-disabled",
+            "disabled:cursor-not-allowed disabled:bg-background disabled:text-disabled",
             // Selected styles
             "selected:bg-active selected:text-secondary_hover selected:disabled:bg-disabled_subtle",
         ].join(" "),

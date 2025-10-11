@@ -88,12 +88,12 @@ const VideoLoader = ({
 							data-block-id={b.id}
 							key={b.id}
 							transition={TRANSITION}
-							style={{
-								width: BLOCK_SIZE,
-								height: BLOCK_SIZE,
-							}}
-							className='bg-primary'
-						/>
+					style={{
+						width: BLOCK_SIZE,
+						height: BLOCK_SIZE,
+					}}
+					className='bg-brand-solid'
+				/>
 					))}
 				</div>
 				<AnimatePresence mode='wait'>

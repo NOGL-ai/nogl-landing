@@ -17,8 +17,8 @@ const baseClasses: Record<Theme, { root?: string; addon?: string; icon?: string 
         addon: "rounded-full ring-1 ring-inset",
     },
     modern: {
-        root: "rounded-[10px] bg-primary text-secondary shadow-xs ring-1 ring-inset ring-primary hover:bg-secondary",
-        addon: "flex items-center rounded-md bg-primary shadow-xs ring-1 ring-inset ring-primary",
+        root: "rounded-[10px] bg-background text-secondary shadow-xs ring-1 ring-inset ring-border hover:bg-secondary",
+        addon: "flex items-center rounded-md bg-background shadow-xs ring-1 ring-inset ring-border",
         icon: "text-utility-gray-500",
     },
 };
@@ -60,27 +60,27 @@ const colorClasses: Record<Theme, Record<Color, { root?: string; addon?: string;
     light: {
         brand: {
             root: "bg-utility-brand-50 text-utility-brand-700 ring-utility-brand-200 hover:bg-utility-brand-100",
-            addon: "bg-primary text-current ring-utility-brand-200",
+            addon: "bg-background text-current ring-utility-brand-200",
             icon: "text-utility-brand-500",
         },
         gray: {
             root: "bg-utility-gray-50 text-utility-gray-700 ring-utility-gray-200 hover:bg-utility-gray-100",
-            addon: "bg-primary text-current ring-utility-gray-200",
+            addon: "bg-background text-current ring-utility-gray-200",
             icon: "text-utility-gray-500",
         },
         error: {
             root: "bg-utility-error-50 text-utility-error-700 ring-utility-error-200 hover:bg-utility-error-100",
-            addon: "bg-primary text-current ring-utility-error-200",
+            addon: "bg-background text-current ring-utility-error-200",
             icon: "text-utility-error-500",
         },
         warning: {
             root: "bg-utility-warning-50 text-utility-warning-700 ring-utility-warning-200 hover:bg-utility-warning-100",
-            addon: "bg-primary text-current ring-utility-warning-200",
+            addon: "bg-background text-current ring-utility-warning-200",
             icon: "text-utility-warning-500",
         },
         success: {
             root: "bg-utility-success-50 text-utility-success-700 ring-utility-success-200 hover:bg-utility-success-100",
-            addon: "bg-primary text-current ring-utility-success-200",
+            addon: "bg-background text-current ring-utility-success-200",
             icon: "text-utility-success-500",
         },
     },
