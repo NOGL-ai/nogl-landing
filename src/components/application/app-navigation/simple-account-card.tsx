@@ -291,7 +291,12 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
 
                 {/* Account Settings */}
                 <div className="box-border content-stretch flex items-center px-[6px] py-0 relative shrink-0 w-full" data-name="_Nav account card menu item">
-                  <div className="box-border content-stretch flex flex-[1_0_0] gap-[12px] items-center min-h-px min-w-px overflow-clip p-[8px] relative rounded-[6px] shrink-0" data-name="Content">
+                  <a
+                    href="/account/settings"
+                    className="box-border content-stretch flex flex-[1_0_0] gap-[12px] items-center min-h-px min-w-px overflow-clip p-[8px] relative rounded-[6px] shrink-0 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors w-full"
+                    data-name="Content"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
                     <div className="content-stretch flex flex-[1_0_0] gap-[8px] items-center min-h-px min-w-px relative shrink-0" data-name="Icon and text">
                       <div className="overflow-clip relative shrink-0 size-[20px]" data-name="settings-01">
                         <div className="absolute inset-[8.333%]" data-name="Icon">
@@ -310,7 +315,7 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
                         ⌘S
                       </p>
                     </div>
-                  </div>
+                  </a>
                 </div>
 
                 {/* Documentation */}

@@ -1,41 +1,23 @@
 import { Metadata } from "next";
-import GlassParticlePage from "@/components/templates/GlassParticlePage";
+import AccountSettingsTemplate from "@/components/templates/AccountSettingsTemplate";
 
 export const metadata: Metadata = {
-	title: "Account Settings | Nogl",
-	description:
-		"Configure your account settings, security, and privacy preferences",
+	title: "Settings | Nogl",
+	description: "Manage your account settings, profile, and preferences",
 	keywords: [
+		"settings",
 		"account settings",
-		"security",
-		"privacy",
+		"profile",
 		"preferences",
-		"configuration",
+		"user settings",
 	],
 	openGraph: {
-		title: "Account Settings | Nogl",
-		description:
-			"Configure your account settings, security, and privacy preferences",
+		title: "Settings | Nogl",
+		description: "Manage your account settings, profile, and preferences",
 		type: "website",
 	},
 };
 
-export default function AccountSettingsPage() {
-	return (
-		<GlassParticlePage>
-			<div className='container mx-auto px-4 py-24'>
-				<div className='mx-auto max-w-4xl text-center'>
-					<div className='mb-16'>
-						<h1 className='mb-6 text-4xl font-bold text-gray-900 md:text-6xl dark:text-white'>
-							Account Settings
-						</h1>
-						<p className='mb-8 text-lg text-gray-600 dark:text-gray-300'>
-							Configure your account security, privacy settings, and personal
-							preferences.
-						</p>
-					</div>
-				</div>
-			</div>
-		</GlassParticlePage>
-	);
+export default function SettingsPage() {
+	return <AccountSettingsTemplate />;
 }
