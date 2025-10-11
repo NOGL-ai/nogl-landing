@@ -83,7 +83,8 @@ export const InputBase = ({
             ref={groupRef}
             className={({ isFocusWithin, isDisabled, isInvalid }) =>
                 cx(
-                    "relative flex w-full flex-row place-content-center place-items-center rounded-lg bg-primary shadow-xs ring-1 ring-primary transition-shadow duration-100 ease-linear ring-inset",
+                    // Use semantic background/border tokens so light theme stays light
+                    "relative flex w-full flex-row place-content-center place-items-center rounded-lg bg-background shadow-xs ring-1 ring-border transition-shadow duration-100 ease-linear ring-inset",
 
                     isFocusWithin && !isDisabled && "ring-2 ring-brand",
 

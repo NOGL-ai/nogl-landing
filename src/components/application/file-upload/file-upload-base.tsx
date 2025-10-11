@@ -218,7 +218,7 @@ export const FileUploadDropZone = ({
             onDragEnd={handleDragOut}
             onDrop={handleDrop}
             className={cx(
-                "relative flex flex-col items-center gap-3 rounded-xl bg-primary dark:bg-gray-800 px-6 py-4 text-tertiary dark:text-gray-300 ring-1 ring-secondary dark:ring-gray-600 transition duration-100 ease-linear ring-inset focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40",
+                "relative flex flex-col items-center gap-3 rounded-xl bg-background dark:bg-gray-800 px-6 py-4 text-tertiary dark:text-gray-300 ring-1 ring-secondary dark:ring-gray-600 transition duration-100 ease-linear ring-inset focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40",
                 !isDisabled && "cursor-pointer",
                 isDraggingOver && "ring-2 ring-brand dark:ring-blue-500",
                 isDisabled && "cursor-not-allowed bg-disabled_subtle dark:bg-gray-700 ring-disabled_subtle dark:ring-gray-600",
@@ -282,7 +282,7 @@ export const FileListItemProgressBar = ({ name, size, progress, failed, type, fi
         <motion.li
             layout="position"
             className={cx(
-                "relative flex gap-3 rounded-xl bg-primary dark:bg-gray-800 p-4 ring-1 ring-secondary dark:ring-gray-600 transition-shadow duration-100 ease-linear ring-inset",
+                "relative flex gap-3 rounded-xl bg-background dark:bg-gray-800 p-4 ring-1 ring-secondary dark:ring-gray-600 transition-shadow duration-100 ease-linear ring-inset",
                 failed && "ring-2 ring-error dark:ring-red-500",
                 className,
             )}
@@ -336,7 +336,7 @@ export const FileListItemProgressFill = ({ name, size, progress, failed, type, f
     const isComplete = progress === 100;
 
     return (
-        <motion.li layout="position" className={cx("relative flex gap-3 overflow-hidden rounded-xl bg-primary dark:bg-gray-800 p-4", className)}>
+        <motion.li layout="position" className={cx("relative flex gap-3 overflow-hidden rounded-xl bg-background dark:bg-gray-800 p-4", className)}>
             {/* Progress fill. */}
             <div
                 style={{ transform: `translateX(-${100 - progress}%)` }}

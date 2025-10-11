@@ -11,7 +11,7 @@ export const DateInput = (props: DateInputProps) => {
         <AriaDateInput
             {...props}
             className={cx(
-                "flex rounded-lg bg-primary px-2.5 py-2 text-md shadow-xs ring-1 ring-primary ring-inset focus-within:ring-2 focus-within:ring-brand",
+                "flex rounded-lg bg-background px-2.5 py-2 text-md shadow-xs ring-1 ring-border ring-inset focus-within:ring-2 focus-within:ring-brand",
                 typeof props.className === "string" && props.className,
             )}
         >
