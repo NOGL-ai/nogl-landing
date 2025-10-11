@@ -19,7 +19,6 @@ import Image from "next/image";
 import { SlideoutMenu } from "./slideout-menu";
 import { BadgeWithIcon } from "@/components/base/badges/badges";
 import { TextAreaBase } from "@/components/base/textarea/textarea";
-import { Avatar } from "@/components/base/avatar/avatar";
 import { cx } from "@/utils/cx";
 
 interface CopilotSlideoutProps {
@@ -172,12 +171,27 @@ export const CopilotSlideout = ({ userName = "Olivia", userAvatar, onPromptClick
                             <div className="flex w-full items-center gap-3 px-3 pb-2">
                                 {/* Left side - Avatar and name */}
                                 <div className="flex flex-1 items-center gap-2">
-                                    <div className="flex items-center gap-1">
-                                        <Avatar size="xs" src={userAvatar} alt={userName} initials={userName?.charAt(0)} />
-                                        <div className="flex items-center gap-0.5">
-                                            <span className="text-xs font-semibold text-[#535862] dark:text-gray-400">{userName}</span>
-                                            <ChevronDown className="size-3 text-[#A4A7AE] dark:text-gray-500" />
-                                        </div>
+                                    <button
+                                        type="button"
+                                        className="flex w-4 h-4 items-center justify-center rounded-full border border-[rgba(0,0,0,0.08)] dark:border-[rgba(255,255,255,0.08)] overflow-hidden transition-all duration-200"
+                                    >
+                                        {userAvatar ? (
+                                            <img
+                                                src={userAvatar}
+                                                alt={userName || 'User'}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                                                <span className="text-white text-[8px] font-medium">
+                                                    {userName?.charAt(0)?.toUpperCase() || 'U'}
+                                                </span>
+                                            </div>
+                                        )}
+                                    </button>
+                                    <div className="flex items-center gap-0.5">
+                                        <span className="text-xs font-semibold text-[#535862] dark:text-gray-400">{userName}</span>
+                                        <ChevronDown className="size-3 text-[#A4A7AE] dark:text-gray-500" />
                                     </div>
                                 </div>
 
