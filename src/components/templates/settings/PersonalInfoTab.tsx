@@ -120,7 +120,7 @@ export function PersonalInfoTab() {
 		<div className="flex flex-col gap-6">
 			{/* Section */}
 			<div className="flex flex-col gap-6">
-				<div className="flex flex-col gap-6 px-4 lg:px-8">
+				<div className="flex flex-col gap-6 px-8">
 					{/* Section Header */}
 					<div className="flex flex-col gap-5">
 						<div className="flex flex-wrap items-start gap-x-4 gap-y-5">
@@ -427,7 +427,7 @@ export function PersonalInfoTab() {
 			{/* Section Footer */}
 			<div className="flex flex-col items-center gap-5">
 				<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
-				<div className="flex w-full items-center justify-end gap-5 px-4 lg:px-8">
+				<div className="flex w-full items-center justify-end gap-5 px-8">
 					<div className="flex w-full items-center justify-end gap-3 lg:w-auto">
 						<Button size="md" color="secondary" className="flex-1 lg:flex-initial">
 							Cancel

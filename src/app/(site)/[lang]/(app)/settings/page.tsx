@@ -13,9 +13,9 @@ export const metadata: Metadata = {
 
 export default function SettingsPage() {
 	return (
-		<div className='mx-auto w-full max-w-7xl space-y-6 p-4 transition-all duration-300 lg:p-6'>
+		<div className='mx-auto w-full max-w-7xl flex flex-col gap-8 pt-8 pb-12'>
 			{/* Page Header */}
-			<div className='rounded-xl border border-[#F2F2F2] bg-white p-6 shadow-sm transition-shadow duration-200 hover:shadow-md lg:p-8 dark:border-gray-700 dark:bg-gray-800'>
+			<div className='rounded-xl border border-[#F2F2F2] bg-white px-8 py-6 shadow-sm transition-shadow duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800'>
 				<div className='text-center'>
 					<h1 className='mb-4 text-3xl font-bold text-gray-900 lg:text-4xl dark:text-white'>
 						Settings
@@ -27,7 +27,7 @@ export default function SettingsPage() {
 			</div>
 
 			{/* Content will go here */}
-			<div className='rounded-xl border border-[#F2F2F2] bg-white p-6 shadow-sm transition-shadow duration-200 hover:shadow-md lg:p-8 dark:border-gray-700 dark:bg-gray-800'>
+			<div className='rounded-xl border border-[#F2F2F2] bg-white px-8 py-6 shadow-sm transition-shadow duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800'>
 				<p className='text-center text-gray-600 dark:text-gray-300'>
 					Settings functionality coming soon...
 				</p>
