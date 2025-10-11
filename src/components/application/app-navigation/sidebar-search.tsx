@@ -73,7 +73,7 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
                 className="flex-1 bg-transparent border-none outline-none text-base font-normal leading-6 min-h-0 min-w-0 overflow-ellipsis whitespace-nowrap text-[#717680] placeholder:text-[#717680]"
               />
             </div>
-            <div className="border rounded px-1 py-0.5 shrink-0 border-[#e9eaeb] mix-blend-multiply dark:border-[#252b37]">
+            <div className="hidden lg:inline-flex border rounded px-1 py-0.5 shrink-0 border-[#e9eaeb] dark:border-[#252b37]">
               <span className="text-xs font-medium leading-[18px] text-[#a4a7ae] dark:text-[#717680]">
                 ⌘K
               </span>
@@ -102,7 +102,7 @@ export const SidebarSearch: React.FC<SidebarSearchProps> = ({
               className="flex-1 bg-transparent border-none outline-none text-base font-normal leading-6 min-h-0 min-w-0 overflow-ellipsis whitespace-nowrap text-[#717680] placeholder:text-[#717680]"
             />
           </div>
-          <div className="border rounded px-1 py-0.5 shrink-0 border-[#e9eaeb] mix-blend-multiply dark:border-[#252b37]">
+          <div className="hidden lg:inline-flex border rounded px-1 py-0.5 shrink-0 border-[#e9eaeb] dark:border-[#252b37]">
             <span className="text-xs font-medium leading-[18px] text-[#a4a7ae] dark:text-[#717680]">
               ⌘K
             </span>

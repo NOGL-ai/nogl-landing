@@ -143,11 +143,13 @@ Testing strategy, setup, and guides:
 Database and system migration documentation:
 
 - **[BigQuery Migration Summary](migrations/BIGQUERY_MIGRATION_SUMMARY.md)** - BigQuery integration details
+- **[Theme Token Migration Complete](migrations/THEME_TOKEN_MIGRATION_COMPLETE.md)** - Complete migration from hardcoded to semantic theme tokens
 
 ### Migration Topics
 - Database schema changes
 - Data migrations
 - API migrations
+- Theme and styling migrations
 - Breaking changes
 
 ---
@@ -311,6 +313,7 @@ Configure authentication            → authentication/
 Integrate Stripe                    → integrations/STRIPE_*.md
 Run tests                          → testing/TESTING_STRATEGY_2025.md
 Migrate database                   → migrations/BIGQUERY_MIGRATION_SUMMARY.md
+Understand theme token migration   → migrations/THEME_TOKEN_MIGRATION_COMPLETE.md
 See implementation examples        → examples/
 ```
 
@@ -318,17 +321,18 @@ See implementation examples        → examples/
 
 ## 📊 Documentation Statistics
 
-- **Total Documents**: 39 markdown files
+- **Total Documents**: 40 markdown files
 - **Categories**: 8 main categories
-- **Last Updated**: October 2025
+- **Last Updated**: January 2025
 - **Organization Status**: ✅ Fully organized and categorized
 
 ---
 
 ## ✨ What's New
 
-### Recent Documentation Updates (October 2025)
+### Recent Documentation Updates (January 2025)
 
+- ✅ **Theme Token Migration Documentation** - Complete guide for semantic token migration
 - ✅ Complete documentation reorganization
 - ✅ New authentication flow documentation
 - ✅ Docker deployment guide added

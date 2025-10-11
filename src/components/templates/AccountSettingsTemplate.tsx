@@ -38,15 +38,14 @@ export default function AccountSettingsTemplate() {
 									Settings
 								</h1>
 							</div>
-							<div className="w-full lg:min-w-[200px] lg:max-w-[320px] lg:flex-1">
-								<Input
-									size="md"
-									icon={SearchMd}
-									placeholder="Search"
-									shortcut="⌘K"
-									className="w-full"
-								/>
-							</div>
+						<div className="w-full lg:min-w-[200px] lg:max-w-[320px] lg:flex-1">
+							<Input
+								size="md"
+								icon={SearchMd}
+								placeholder="Search"
+								className="w-full"
+							/>
+						</div>
 						</div>
 					</div>
 
