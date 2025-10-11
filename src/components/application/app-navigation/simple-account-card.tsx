@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useLayoutEffect, useCallback, memo, useMemo } from "react";
+import React, { useState, useRef, useEffect, useCallback, memo, useMemo } from "react";
 import { UserProfile } from "@/types/navigation";
 
 interface SimpleAccountCardProps {
@@ -77,6 +77,7 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
 }) => {
   const [internalIsMenuOpen, setInternalIsMenuOpen] = useState(false);
   const [dropdownPlacement, setDropdownPlacement] = useState<"overlay" | "right">("overlay");
+  const [mounted, setMounted] = useState(false);
 
   // Use external state if provided, otherwise use internal state
   const isMenuOpen = externalDropdownState !== undefined ? externalDropdownState : internalIsMenuOpen;
@@ -103,7 +104,7 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
 
   // Memoized dropdown placement calculation
   const updateDropdownPlacement = useCallback(() => {
-    if (!isMenuOpen || typeof window === 'undefined') {
+    if (!isMenuOpen || !mounted || typeof window === 'undefined') {
       return;
     }
     const cardElement = cardRef.current;
@@ -119,9 +120,13 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
     } else {
       setDropdownPlacement('overlay');
     }
-  }, [isMenuOpen]);
+  }, [isMenuOpen, mounted]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
     if (!isMenuOpen) {
       setDropdownPlacement('overlay');
       return;

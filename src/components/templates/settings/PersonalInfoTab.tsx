@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { Clock, HelpCircle, Mail } from "@untitledui/icons";
+import { useState, useId, useRef } from "react";
+import { Clock, HelpCircle, Mail01 } from "@untitledui/icons";
 import { Button } from "@/components/base/buttons/button";
 import { Input } from "@/components/base/input/input";
 import { Select } from "@/components/base/select/select";
-import { TextArea } from "@/components/base/textarea/textarea";
+import { RichTextEditor } from "@/components/base/rich-text-editor/rich-text-editor";
 import { FileUploadDropZone } from "@/components/application/file-upload/file-upload-base";
 import { Avatar } from "@/components/base/avatar/avatar";
 
@@ -34,6 +34,10 @@ const timezoneOptions = [
 ];
 
 export function PersonalInfoTab() {
+	// SSR-safe ID generation
+	const idPrefix = useId();
+	const fileCounterRef = useRef(0);
+
 	const [formData, setFormData] = useState<PersonalInfoFormData>({
 		firstName: "",
 		lastName: "Tim",
@@ -46,8 +50,8 @@ export function PersonalInfoTab() {
 
 	const [uploadedFiles, setUploadedFiles] = useState<Array<{ id: string; name: string; size: number; progress: number; status: "uploading" | "complete" }>>([
 		{ id: "1", name: "Brand voice guidelines.pdf", size: 204800, progress: 100, status: "complete" },
-		{ id: "2", name: "Jewelry ad shooting.mp4", size: 6710886, progress: 40, status: "uploading" },
-		{ id: "3", name: "New styles guide.fig", size: 3565158, progress: 80, status: "uploading" },
+		{ id: "2", name: "Jewelry ad shooting.mp4", size: 16777216, progress: 40, status: "uploading" }, // 16 MB total
+		{ id: "3", name: "New styles guide.fig", size: 4404019, progress: 80, status: "uploading" }, // 4.2 MB total
 	]);
 
 	const handleInputChange = (field: keyof PersonalInfoFormData, value: string) => {
@@ -55,13 +59,16 @@ export function PersonalInfoTab() {
 	};
 
 	const handleFileUpload = (files: FileList) => {
-		const newFiles = Array.from(files).map((file, index) => ({
-			id: `${Date.now()}-${index}`,
-			name: file.name,
-			size: file.size,
-			progress: 0,
-			status: "uploading" as const,
-		}));
+		const newFiles = Array.from(files).map((file) => {
+			fileCounterRef.current += 1;
+			return {
+				id: `${idPrefix}-file-${fileCounterRef.current}`,
+				name: file.name,
+				size: file.size,
+				progress: 0,
+				status: "uploading" as const,
+			};
+		});
 
 		setUploadedFiles((prev) => [...prev, ...newFiles]);
 
@@ -140,7 +147,7 @@ export function PersonalInfoTab() {
 					{/* Form */}
 					<div className="flex flex-col gap-5">
 						{/* Name */}
-						<div className="flex flex-wrap items-start gap-x-8 gap-y-4">
+						<div className="flex flex-wrap items-start gap-y-4 gap-x-8">
 							<div className="flex min-w-[200px] max-w-[280px] flex-1 flex-col">
 								<div className="flex items-center gap-0.5">
 									<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Name</p>
@@ -166,7 +173,7 @@ export function PersonalInfoTab() {
 						<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
 
 						{/* Email Address */}
-						<div className="flex flex-wrap items-start gap-x-8 gap-y-4">
+						<div className="flex flex-wrap items-start gap-y-4 gap-x-8">
 							<div className="flex min-w-[200px] max-w-[280px] flex-1 flex-col">
 								<div className="flex items-center gap-0.5">
 									<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Email address</p>
@@ -176,7 +183,7 @@ export function PersonalInfoTab() {
 							<div className="flex min-w-[480px] max-w-[512px] flex-1">
 								<Input
 									size="md"
-									icon={Mail}
+									icon={Mail01}
 									value={formData.email}
 									onChange={(e) => handleInputChange("email", e.target.value)}
 									className="w-full"
@@ -187,13 +194,13 @@ export function PersonalInfoTab() {
 						<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
 
 						{/* Your Photo */}
-						<div className="flex flex-wrap items-start gap-x-8 gap-y-4">
+						<div className="flex flex-wrap items-start gap-y-4 gap-x-8">
 							<div className="flex min-w-[200px] max-w-[280px] flex-1 flex-col">
 								<div className="flex items-center gap-0.5">
 									<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Your photo</p>
 									<span className="text-sm font-semibold text-brand-600">*</span>
 									<button type="button" className="ml-0.5 flex size-4 items-center justify-center">
-										<HelpCircle className="size-4 text-gray-400" />
+										<HelpCircle className="size-4 text-gray-400 dark:text-gray-500" />
 									</button>
 								</div>
 								<p className="text-sm text-gray-600 dark:text-gray-400">
@@ -207,7 +214,7 @@ export function PersonalInfoTab() {
 										hint="SVG, PNG, JPG or GIF (max. 800x400px)"
 										accept="image/*"
 										onDropFiles={handleFileUpload}
-										className="border-2 border-dashed border-brand-600 bg-white hover:bg-brand-50"
+										className="border-2 border-dashed border-brand-600 bg-white hover:bg-brand-50 dark:bg-gray-900 dark:hover:bg-gray-800"
 									/>
 								</div>
 							</div>
@@ -216,7 +223,7 @@ export function PersonalInfoTab() {
 						<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
 
 						{/* Role */}
-						<div className="flex flex-wrap items-start gap-x-8 gap-y-4">
+						<div className="flex flex-wrap items-start gap-y-4 gap-x-8">
 							<div className="flex min-w-[200px] max-w-[280px] flex-1 flex-col">
 								<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Role</p>
 							</div>
@@ -233,7 +240,7 @@ export function PersonalInfoTab() {
 						<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
 
 						{/* Country */}
-						<div className="flex flex-wrap items-start gap-x-8 gap-y-4">
+						<div className="flex flex-wrap items-start gap-y-4 gap-x-8">
 							<div className="flex min-w-[200px] max-w-[280px] flex-1 flex-col">
 								<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Country</p>
 							</div>
@@ -253,12 +260,12 @@ export function PersonalInfoTab() {
 						<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
 
 						{/* Timezone */}
-						<div className="flex flex-wrap items-start gap-x-8 gap-y-4">
+						<div className="flex flex-wrap items-start gap-y-4 gap-x-8">
 							<div className="flex min-w-[200px] max-w-[280px] flex-1 flex-col">
 								<div className="flex items-center gap-0.5">
 									<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Timezone</p>
 									<button type="button" className="ml-0.5 flex size-4 items-center justify-center">
-										<HelpCircle className="size-4 text-gray-400" />
+										<HelpCircle className="size-4 text-gray-400 dark:text-gray-500" />
 									</button>
 								</div>
 							</div>
@@ -279,7 +286,7 @@ export function PersonalInfoTab() {
 						<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
 
 						{/* Bio */}
-						<div className="flex flex-wrap items-start gap-x-8 gap-y-4">
+						<div className="flex flex-wrap items-start gap-y-4 gap-x-8">
 							<div className="flex min-w-[200px] max-w-[280px] flex-1 flex-col">
 								<div className="flex items-center gap-0.5">
 									<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Bio</p>
@@ -289,23 +296,20 @@ export function PersonalInfoTab() {
 									Write a short introduction.
 								</p>
 							</div>
-							<div className="flex min-w-[480px] max-w-[512px] flex-1 flex-col gap-2">
-								<TextArea
-									rows={8}
+							<div className="flex min-w-[480px] max-w-[512px] flex-1">
+								<RichTextEditor
 									value={formData.bio}
-									onChange={(e) => handleInputChange("bio", e.target.value)}
-									className="w-full resize-none"
+									onChange={(value) => handleInputChange("bio", value)}
+									maxLength={1000}
+									className="w-full"
 								/>
-								<p className="text-sm text-gray-600 dark:text-gray-400">
-									{1000 - formData.bio.length} characters left
-								</p>
 							</div>
 						</div>
 
 						<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
 
 						{/* Knowledge Uploads */}
-						<div className="flex flex-wrap items-start gap-x-8 gap-y-4">
+						<div className="flex flex-wrap items-start gap-y-4 gap-x-8">
 							<div className="flex min-w-[200px] max-w-[280px] flex-1 flex-col">
 								<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Knowledge uploads</p>
 								<p className="text-sm text-gray-600 dark:text-gray-400">
@@ -358,14 +362,14 @@ export function PersonalInfoTab() {
 																			</svg>
 																			<span className="text-sm font-medium text-green-600">Complete</span>
 																		</>
-																	) : (
-																		<>
-																			<svg className="size-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-																				<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-																			</svg>
-																			<span className="text-sm font-medium text-gray-600">Uploading...</span>
-																		</>
-																	)}
+													) : (
+														<>
+															<svg className="size-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+																<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+															</svg>
+															<span className="text-sm font-medium text-gray-600 dark:text-gray-400">Uploading...</span>
+														</>
+													)}
 																</div>
 															</div>
 														</div>

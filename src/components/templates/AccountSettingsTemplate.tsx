@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { MagnifyingGlass } from "@untitledui/icons";
+import { SearchMd } from "@untitledui/icons";
 import { Tabs } from "@/components/application/tabs/tabs";
 import { Input } from "@/components/base/input/input";
 import { PersonalInfoTab } from "./settings/PersonalInfoTab";
@@ -24,13 +24,13 @@ export default function AccountSettingsTemplate() {
 								</h1>
 							</div>
 							<div className="flex min-w-[200px] max-w-[320px] flex-1">
-								<Input
-									size="sm"
-									icon={MagnifyingGlass}
-									placeholder="Search"
-									shortcut="⌘K"
-									className="w-full"
-								/>
+									<Input
+										size="sm"
+										icon={SearchMd}
+										placeholder="Search"
+										shortcut="⌘K"
+										className="w-full"
+									/>
 							</div>
 						</div>
 					</div>
