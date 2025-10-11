@@ -4,8 +4,23 @@ import { useState } from "react";
 import { SearchMd } from "@untitledui/icons";
 import { Tabs } from "@/components/application/tabs/tabs";
 import { Input } from "@/components/base/input/input";
+import { Select } from "@/components/base/select/select";
 import { PersonalInfoTab } from "./settings/PersonalInfoTab";
 import { PlaceholderTab } from "./settings/PlaceholderTab";
+
+// Tab items configuration for both dropdown and tabs
+const tabItems = [
+	{ id: "my-details", label: "My details" },
+	{ id: "profile", label: "Profile" },
+	{ id: "password", label: "Password" },
+	{ id: "team", label: "Team" },
+	{ id: "plan", label: "Plan" },
+	{ id: "billing", label: "Billing" },
+	{ id: "email", label: "Email" },
+	{ id: "notifications", label: "Notifications", badge: 2 },
+	{ id: "integrations", label: "Integrations" },
+	{ id: "api", label: "API" },
+];
 
 export default function AccountSettingsTemplate() {
 	const [selectedTab, setSelectedTab] = useState("my-details");
@@ -14,28 +29,39 @@ export default function AccountSettingsTemplate() {
 		<div className="flex min-h-screen flex-col gap-8 bg-white px-0 pb-12 pt-8 dark:bg-gray-950">
 			{/* Header Section */}
 			<div className="flex flex-col gap-6">
-				<div className="flex flex-col gap-5 px-8">
+				<div className="flex flex-col gap-5 px-4 lg:px-8">
 					{/* Page Header */}
 					<div className="flex flex-col gap-4">
-						<div className="flex flex-wrap items-start gap-x-4 gap-y-5">
-							<div className="flex min-w-[320px] flex-1 flex-col gap-1">
-								<h1 className="text-display-xs font-semibold text-gray-900 dark:text-white">
+						<div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-start lg:gap-x-4 lg:gap-y-5">
+							<div className="flex flex-col gap-0.5 lg:min-w-[320px] lg:flex-1 lg:gap-1">
+								<h1 className="text-[20px] leading-[30px] font-semibold text-gray-900 dark:text-white lg:text-display-xs lg:leading-[32px]">
 									Settings
 								</h1>
 							</div>
-							<div className="flex min-w-[200px] max-w-[320px] flex-1">
-									<Input
-										size="sm"
-										icon={SearchMd}
-										placeholder="Search"
-										shortcut="⌘K"
-										className="w-full"
-									/>
+							<div className="w-full lg:min-w-[200px] lg:max-w-[320px] lg:flex-1">
+								<Input
+									size="md"
+									icon={SearchMd}
+									placeholder="Search"
+									shortcut="⌘K"
+									className="w-full"
+								/>
 							</div>
 						</div>
 					</div>
 
-					{/* Horizontal Tabs */}
+					{/* Mobile: Dropdown Navigation */}
+					<Select
+						size="md"
+						selectedKey={selectedTab}
+						onSelectionChange={(key) => setSelectedTab(key as string)}
+						items={tabItems}
+						className="w-full lg:hidden"
+					>
+						{(item) => <Select.Item {...item}>{item.label}</Select.Item>}
+					</Select>
+
+					{/* Desktop: Horizontal Tabs */}
 					<Tabs
 						selectedKey={selectedTab}
 						onSelectionChange={(key) => setSelectedTab(key as string)}
@@ -44,19 +70,8 @@ export default function AccountSettingsTemplate() {
 							size="sm"
 							type="button-minimal"
 							orientation="horizontal"
-							items={[
-								{ id: "my-details", label: "My details" },
-								{ id: "profile", label: "Profile" },
-								{ id: "password", label: "Password" },
-								{ id: "team", label: "Team" },
-								{ id: "plan", label: "Plan" },
-								{ id: "billing", label: "Billing" },
-								{ id: "email", label: "Email" },
-								{ id: "notifications", label: "Notifications", badge: 2 },
-								{ id: "integrations", label: "Integrations" },
-								{ id: "api", label: "API" },
-							]}
-							className="w-full rounded-lg border border-gray-200 bg-gray-50 p-0.5 dark:border-gray-800 dark:bg-gray-900"
+							items={tabItems}
+							className="hidden lg:flex w-full rounded-lg border border-gray-200 bg-gray-50 p-0.5 dark:border-gray-800 dark:bg-gray-900"
 						>
 							{(item) => (
 								<Tabs.Item {...item}>{item.label}</Tabs.Item>

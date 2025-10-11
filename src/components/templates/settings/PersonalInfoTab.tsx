@@ -120,26 +120,38 @@ export function PersonalInfoTab() {
 		<div className="flex flex-col gap-6">
 			{/* Section */}
 			<div className="flex flex-col gap-6">
-				<div className="flex flex-col gap-6 px-8">
+				<div className="flex flex-col gap-6 px-4 lg:px-8">
 					{/* Section Header */}
 					<div className="flex flex-col gap-5">
-						<div className="flex items-start gap-4">
-							<div className="flex flex-1 flex-col justify-center gap-0.5">
+						<div className="flex flex-wrap items-start gap-x-4 gap-y-5">
+							<div className="flex min-w-[320px] flex-1 flex-col gap-1">
 								<h2 className="text-lg font-semibold text-gray-900 dark:text-white">
 									Personal info
 								</h2>
-								<p className="truncate text-sm text-gray-600 dark:text-gray-400">
+								<p className="text-sm text-gray-600 dark:text-gray-400">
 									Update your photo and personal details here.
 								</p>
 							</div>
-							<div className="flex items-center gap-3">
-								<Button size="md" hierarchy="secondary">
-									Cancel
-								</Button>
-								<Button size="md" hierarchy="primary">
-									Save
-								</Button>
-							</div>
+							
+						{/* Mobile: Show buttons at top */}
+						<div className="flex w-full items-center gap-3 lg:hidden">
+							<Button size="md" color="secondary" className="flex-1">
+								Cancel
+							</Button>
+							<Button size="md" color="primary" className="flex-1">
+								Save
+							</Button>
+						</div>
+						
+						{/* Desktop: Show buttons on right */}
+						<div className="hidden items-center gap-3 lg:flex">
+							<Button size="md" color="secondary">
+								Cancel
+							</Button>
+							<Button size="md" color="primary">
+								Save
+							</Button>
+						</div>
 						</div>
 						<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
 					</div>
@@ -147,25 +159,25 @@ export function PersonalInfoTab() {
 					{/* Form */}
 					<div className="flex flex-col gap-5">
 						{/* Name */}
-						<div className="flex flex-wrap items-start gap-y-4 gap-x-8">
-							<div className="flex min-w-[200px] max-w-[280px] flex-1 flex-col">
+						<div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-start lg:gap-y-4 lg:gap-x-8">
+							<div className="flex flex-col lg:min-w-[200px] lg:max-w-[280px] lg:flex-1">
 								<div className="flex items-center gap-0.5">
 									<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Name</p>
 									<span className="text-sm font-semibold text-brand-600">*</span>
 								</div>
 							</div>
-							<div className="flex min-w-[480px] max-w-[512px] flex-1 items-start gap-6">
+							<div className="flex w-full flex-col items-start gap-5 lg:min-w-[480px] lg:max-w-[512px] lg:flex-1 lg:flex-row lg:gap-6">
 								<Input
 									size="md"
 									value={formData.firstName}
-									onChange={(e) => handleInputChange("firstName", e.target.value)}
-									className="flex-1"
+									onChange={(value) => handleInputChange("firstName", value)}
+									className="w-full lg:flex-1"
 								/>
 								<Input
 									size="md"
 									value={formData.lastName}
-									onChange={(e) => handleInputChange("lastName", e.target.value)}
-									className="flex-1"
+									onChange={(value) => handleInputChange("lastName", value)}
+									className="w-full lg:flex-1"
 								/>
 							</div>
 						</div>
@@ -173,19 +185,19 @@ export function PersonalInfoTab() {
 						<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
 
 						{/* Email Address */}
-						<div className="flex flex-wrap items-start gap-y-4 gap-x-8">
-							<div className="flex min-w-[200px] max-w-[280px] flex-1 flex-col">
+						<div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-start lg:gap-y-4 lg:gap-x-8">
+							<div className="flex flex-col lg:min-w-[200px] lg:max-w-[280px] lg:flex-1">
 								<div className="flex items-center gap-0.5">
 									<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Email address</p>
 									<span className="text-sm font-semibold text-brand-600">*</span>
 								</div>
 							</div>
-							<div className="flex min-w-[480px] max-w-[512px] flex-1">
+							<div className="flex w-full lg:min-w-[480px] lg:max-w-[512px] lg:flex-1">
 								<Input
 									size="md"
 									icon={Mail01}
 									value={formData.email}
-									onChange={(e) => handleInputChange("email", e.target.value)}
+									onChange={(value) => handleInputChange("email", value)}
 									className="w-full"
 								/>
 							</div>
@@ -194,8 +206,8 @@ export function PersonalInfoTab() {
 						<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
 
 						{/* Your Photo */}
-						<div className="flex flex-wrap items-start gap-y-4 gap-x-8">
-							<div className="flex min-w-[200px] max-w-[280px] flex-1 flex-col">
+						<div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-start lg:gap-y-4 lg:gap-x-8">
+							<div className="flex flex-col lg:min-w-[200px] lg:max-w-[280px] lg:flex-1">
 								<div className="flex items-center gap-0.5">
 									<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Your photo</p>
 									<span className="text-sm font-semibold text-brand-600">*</span>
@@ -207,14 +219,18 @@ export function PersonalInfoTab() {
 									This will be displayed on your profile.
 								</p>
 							</div>
-							<div className="flex min-w-[480px] max-w-[512px] flex-1 items-start gap-5">
-								<Avatar size="2xl" src="https://i.pravatar.cc/300" alt="User Avatar" />
-								<div className="flex-1">
+							<div className="flex w-full flex-col items-center gap-5 lg:min-w-[480px] lg:max-w-[512px] lg:flex-1 lg:flex-row lg:items-start">
+								{/* Mobile: 64px avatar */}
+								<Avatar size="lg" src="https://i.pravatar.cc/300" alt="User Avatar" className="lg:hidden" />
+								{/* Desktop: 96px avatar */}
+								<Avatar size="2xl" src="https://i.pravatar.cc/300" alt="User Avatar" className="hidden lg:block" />
+								
+								<div className="flex w-full lg:flex-1">
 									<FileUploadDropZone
 										hint="SVG, PNG, JPG or GIF (max. 800x400px)"
 										accept="image/*"
 										onDropFiles={handleFileUpload}
-										className="border-2 border-dashed border-brand-600 bg-white hover:bg-brand-50 dark:bg-gray-900 dark:hover:bg-gray-800"
+										className="w-full border-2 border-dashed border-brand-600 bg-white hover:bg-brand-50 dark:bg-gray-900 dark:hover:bg-gray-800"
 									/>
 								</div>
 							</div>
@@ -223,15 +239,15 @@ export function PersonalInfoTab() {
 						<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
 
 						{/* Role */}
-						<div className="flex flex-wrap items-start gap-y-4 gap-x-8">
-							<div className="flex min-w-[200px] max-w-[280px] flex-1 flex-col">
+						<div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-start lg:gap-y-4 lg:gap-x-8">
+							<div className="flex flex-col lg:min-w-[200px] lg:max-w-[280px] lg:flex-1">
 								<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Role</p>
 							</div>
-							<div className="flex min-w-[480px] max-w-[512px] flex-1">
+							<div className="flex w-full lg:min-w-[480px] lg:max-w-[512px] lg:flex-1">
 								<Input
 									size="md"
 									value={formData.role}
-									onChange={(e) => handleInputChange("role", e.target.value)}
+									onChange={(value) => handleInputChange("role", value)}
 									className="w-full"
 								/>
 							</div>
@@ -240,11 +256,11 @@ export function PersonalInfoTab() {
 						<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
 
 						{/* Country */}
-						<div className="flex flex-wrap items-start gap-y-4 gap-x-8">
-							<div className="flex min-w-[200px] max-w-[280px] flex-1 flex-col">
+						<div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-start lg:gap-y-4 lg:gap-x-8">
+							<div className="flex flex-col lg:min-w-[200px] lg:max-w-[280px] lg:flex-1">
 								<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Country</p>
 							</div>
-							<div className="flex min-w-[480px] max-w-[512px] flex-1">
+							<div className="flex w-full lg:min-w-[480px] lg:max-w-[512px] lg:flex-1">
 								<Select
 									size="md"
 									selectedKey={formData.country}
@@ -260,8 +276,8 @@ export function PersonalInfoTab() {
 						<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
 
 						{/* Timezone */}
-						<div className="flex flex-wrap items-start gap-y-4 gap-x-8">
-							<div className="flex min-w-[200px] max-w-[280px] flex-1 flex-col">
+						<div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-start lg:gap-y-4 lg:gap-x-8">
+							<div className="flex flex-col lg:min-w-[200px] lg:max-w-[280px] lg:flex-1">
 								<div className="flex items-center gap-0.5">
 									<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Timezone</p>
 									<button type="button" className="ml-0.5 flex size-4 items-center justify-center">
@@ -269,7 +285,7 @@ export function PersonalInfoTab() {
 									</button>
 								</div>
 							</div>
-							<div className="flex min-w-[480px] max-w-[512px] flex-1">
+							<div className="flex w-full lg:min-w-[480px] lg:max-w-[512px] lg:flex-1">
 								<Select
 									size="md"
 									placeholderIcon={Clock}
@@ -286,8 +302,8 @@ export function PersonalInfoTab() {
 						<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
 
 						{/* Bio */}
-						<div className="flex flex-wrap items-start gap-y-4 gap-x-8">
-							<div className="flex min-w-[200px] max-w-[280px] flex-1 flex-col">
+						<div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-start lg:gap-y-4 lg:gap-x-8">
+							<div className="flex flex-col lg:min-w-[200px] lg:max-w-[280px] lg:flex-1">
 								<div className="flex items-center gap-0.5">
 									<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Bio</p>
 									<span className="text-sm font-semibold text-brand-600">*</span>
@@ -296,7 +312,7 @@ export function PersonalInfoTab() {
 									Write a short introduction.
 								</p>
 							</div>
-							<div className="flex min-w-[480px] max-w-[512px] flex-1">
+							<div className="flex w-full lg:min-w-[480px] lg:max-w-[512px] lg:flex-1">
 								<RichTextEditor
 									value={formData.bio}
 									onChange={(value) => handleInputChange("bio", value)}
@@ -309,14 +325,14 @@ export function PersonalInfoTab() {
 						<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
 
 						{/* Knowledge Uploads */}
-						<div className="flex flex-wrap items-start gap-y-4 gap-x-8">
-							<div className="flex min-w-[200px] max-w-[280px] flex-1 flex-col">
+						<div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-start lg:gap-y-4 lg:gap-x-8">
+							<div className="flex flex-col lg:min-w-[200px] lg:max-w-[280px] lg:flex-1">
 								<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Knowledge uploads</p>
 								<p className="text-sm text-gray-600 dark:text-gray-400">
 									Add files to the knowledge base.
 								</p>
 							</div>
-							<div className="flex min-w-[480px] max-w-[512px] flex-1 flex-col gap-4">
+							<div className="flex w-full flex-col gap-4 lg:min-w-[480px] lg:max-w-[512px] lg:flex-1">
 								<FileUploadDropZone
 									hint="SVG, PNG, JPG, or PDF (max. 10MB)"
 									accept=".pdf,.jpg,.png,.svg,.mp4,.fig"
@@ -408,20 +424,20 @@ export function PersonalInfoTab() {
 					</div>
 				</div>
 
-				{/* Section Footer */}
-				<div className="flex flex-col items-center gap-5">
-					<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
-					<div className="flex w-full items-center justify-end gap-5 px-8">
-						<div className="flex flex-1 items-center justify-end gap-3">
-							<Button size="md" hierarchy="secondary">
-								Cancel
-							</Button>
-							<Button size="md" hierarchy="primary">
-								Save
-							</Button>
-						</div>
+			{/* Section Footer */}
+			<div className="flex flex-col items-center gap-5">
+				<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
+				<div className="flex w-full items-center justify-end gap-5 px-4 lg:px-8">
+					<div className="flex w-full items-center justify-end gap-3 lg:w-auto">
+						<Button size="md" color="secondary" className="flex-1 lg:flex-initial">
+							Cancel
+						</Button>
+						<Button size="md" color="primary" className="flex-1 lg:flex-initial">
+							Save
+						</Button>
 					</div>
 				</div>
+			</div>
 			</div>
 		</div>
 	);
