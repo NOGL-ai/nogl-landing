@@ -5,6 +5,7 @@ import { useTheme } from "next-themes";
 import { NavItemBase } from "@/components/application/app-navigation/base-components/nav-item";
 import { navigationStructure, isSubItemActive, getActiveIconMenuItem } from "@/data/navigationItemsV2";
 import { ChevronDown, ChevronUp } from "@untitledui/icons";
+import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 
 interface MobileNavigationProps {
     activeUrl: string;
@@ -76,6 +77,23 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
                         const isExpanded = expandedItems.has(item.id);
                         const hasSubItems = item.subItems && item.subItems.length > 0;
                         const isActive = isItemActive(item);
+                        const isThemeToggle = item.id === 'theme-toggle';
+
+                        // Special handling for theme toggle
+                        if (isThemeToggle) {
+                            return (
+                                <div key={item.id} className="flex items-center py-[2px]">
+                                    <div className="flex items-center gap-3 px-3 py-2 rounded-md w-full">
+                                        <div className="flex items-center gap-3 w-full">
+                                            <AnimatedThemeToggler className="w-5 h-5 text-[#a4a7ae] dark:text-[#717680] pointer-events-auto" />
+                                            <span className="flex-1 text-left font-semibold text-base text-[#414651] dark:text-[#d5d7da] pointer-events-none">
+                                                {item.label}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        }
 
                         return (
                             <div key={item.id} className="flex flex-col">

@@ -26,7 +26,7 @@ export default function AccountSettingsTemplate() {
 	const [selectedTab, setSelectedTab] = useState("my-details");
 
 	return (
-		<div className="flex min-h-screen flex-col gap-8 bg-white px-0 pb-12 pt-8 dark:bg-gray-950">
+		<div className="flex min-h-screen flex-col gap-8 px-0 pb-12 pt-8">
 			{/* Header Section */}
 			<div className="flex flex-col gap-6">
 				<div className="flex flex-col gap-5 px-4 lg:px-8">
