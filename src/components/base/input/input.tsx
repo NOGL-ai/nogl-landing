@@ -109,7 +109,7 @@ export const InputBase = ({
             {Icon && (
                 <Icon
                     className={cx(
-                        "pointer-events-none absolute size-5 text-fg-quaternary",
+                        "pointer-events-none absolute size-5 text-gray-600 dark:text-gray-400",
                         isDisabled && "text-fg-disabled",
                         sizes[inputSize].iconLeading,
                         context?.iconClassName,
