@@ -182,7 +182,7 @@ export const Tab = (props: TabComponentProps) => {
             {...otherProps}
             className={(prop) =>
                 cx(
-                    "z-10 flex h-max cursor-pointer items-center justify-center gap-2 rounded-md whitespace-nowrap text-quaternary transition duration-100 ease-linear",
+                    "z-10 flex h-max cursor-pointer items-center justify-center gap-2 rounded-md whitespace-nowrap text-tertiary transition duration-100 ease-linear",
                     "group-orientation-vertical:justify-start",
                     fullWidth && "w-full flex-1",
                     sizes[size][type],
