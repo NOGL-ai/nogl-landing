@@ -46,7 +46,7 @@ const CopilotLogo = () => {
     return (
         <div className="relative flex size-14 items-center justify-center rounded-full bg-gray-100 shadow-lg dark:bg-gray-800">
             <Image
-                src={currentTheme === "dark" ? "/images/logo/logo-light.svg" : "/images/logo/logo.svg"}
+                src={currentTheme === "dark" ? "/images/logo/logo.svg" : "/images/logo/logo-light.svg"}
                 alt="Logo"
                 width={40}
                 height={40}
@@ -75,23 +75,23 @@ export const CopilotSlideout = ({ userName = "Olivia", userAvatar, onPromptClick
             {trigger}
             <SlideoutMenu
                 className="md:pl-10"
-                dialogClassName="max-w-full md:max-w-[440px]"
+                dialogClassName="max-w-full md:max-w-[440px] gap-0"
             >
                 {({ close }) => (
                 <>
                     {/* Header */}
-                    <div className="flex w-full flex-col items-center gap-8 bg-primary px-4 pb-8 pt-12 md:px-6 md:pb-8 md:pt-16">
+                    <div className="flex w-full flex-col items-center gap-8 bg-white px-4 pb-8 pt-12 md:px-6 md:pb-8 md:pt-16 dark:bg-gray-950">
                         <div className="flex w-full flex-col items-center gap-5">
                             <CopilotLogo />
-                            
+
                             <div className="flex w-full flex-col items-start gap-2">
-                                <h2 className="w-full text-center font-sans text-lg font-semibold text-gray-500 dark:text-gray-400">
+                                <h2 className="w-full text-center font-sans text-lg font-semibold text-[#717680] dark:text-gray-400">
                                     Hi {userName},
                                 </h2>
-                                <h3 className="w-full text-center font-sans text-lg font-semibold text-gray-900 dark:text-gray-100">
+                                <h3 className="w-full text-center font-sans text-lg font-semibold text-[#181D27] dark:text-gray-100">
                                     Welcome back! How can I help?
                                 </h3>
-                                <p className="w-full text-center font-sans text-sm font-normal text-gray-600 dark:text-gray-400">
+                                <p className="w-full text-center font-sans text-sm font-normal text-[#535862] dark:text-gray-400">
                                     I&apos;m here to help tackle your tasks. Choose from the prompts below or tell me what you need!
                                 </p>
                             </div>
@@ -100,7 +100,7 @@ export const CopilotSlideout = ({ userName = "Olivia", userAvatar, onPromptClick
                         {/* Close button */}
                         <button
                             onClick={close}
-                            className="absolute right-3 top-3 flex size-10 items-center justify-center rounded-lg p-2 text-gray-400 transition-colors duration-100 hover:bg-gray-100 dark:text-gray-500 dark:hover:bg-gray-800"
+                            className="absolute right-3 top-3 flex size-10 items-center justify-center rounded-lg p-2 text-[#A4A7AE] transition-colors duration-100 hover:bg-gray-100 dark:text-gray-500 dark:hover:bg-gray-800"
                             aria-label="Close copilot"
                         >
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -110,7 +110,7 @@ export const CopilotSlideout = ({ userName = "Olivia", userAvatar, onPromptClick
                     </div>
 
                     {/* Content - Badge Prompts */}
-                    <div className="flex w-full flex-1 flex-col gap-6 overflow-y-auto px-4 py-0 md:px-6">
+                    <div className="flex w-full flex-1 flex-col gap-6 overflow-y-auto bg-white px-4 py-0 md:px-6 dark:bg-gray-950">
                         <div className="flex flex-wrap items-start justify-center gap-2">
                             {prompts.map((prompt) => (
                                 <button
@@ -134,26 +134,33 @@ export const CopilotSlideout = ({ userName = "Olivia", userAvatar, onPromptClick
                     </div>
 
                     {/* Footer */}
-                    <div className="flex w-full flex-col items-center gap-3 bg-primary px-4 pb-3 md:px-6 md:pb-5">
-                        <div className="flex h-40 w-full flex-col items-center rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
+                    <div className="flex w-full flex-col items-center gap-3 bg-white px-4 pb-3 md:px-6 md:pb-5 dark:bg-gray-950">
+                        <div className="flex h-40 w-full flex-col items-center rounded-xl border border-[#E9EAEB] bg-[#FAFAFA] dark:border-gray-700 dark:bg-gray-900">
                             {/* Textarea */}
                             <div className="flex flex-1 flex-col items-start gap-1.5 self-stretch p-0">
                                 <div className="flex flex-1 flex-col items-start gap-1.5 self-stretch">
-                                    <div className="relative flex flex-1 items-start gap-2 self-stretch rounded-lg border border-gray-300 bg-primary p-3.5 shadow-xs ring-1 ring-gray-300 dark:border-gray-600 dark:ring-gray-600">
+                                    <div className="relative flex flex-1 items-start gap-2 self-stretch rounded-lg border border-[#D5D7DA] bg-white p-3.5 pr-10 shadow-xs dark:border-gray-600 dark:bg-gray-950">
                                         <textarea
                                             value={message}
                                             onChange={(e) => setMessage(e.target.value)}
                                             placeholder="Message"
                                             rows={3}
-                                            className="w-full flex-1 resize-none bg-transparent text-base text-gray-900 outline-hidden placeholder:text-gray-500 dark:text-gray-100 dark:placeholder:text-gray-400"
+                                            className="w-full flex-1 resize-none bg-transparent text-base text-[#0A0D12] outline-hidden placeholder:text-[#717680] dark:text-gray-100 dark:placeholder:text-gray-500"
                                             onKeyDown={(e) => {
                                                 if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
                                                     handleSendMessage();
                                                 }
                                             }}
                                         />
+                                        {/* Voice input button - inside textarea */}
+                                        <button
+                                            className="absolute right-2 top-2 flex size-7 items-center justify-center rounded-lg p-1.5 text-[#A4A7AE] outline-focus-ring transition-colors hover:bg-gray-100 dark:text-gray-500 dark:hover:bg-gray-800 focus-visible:outline-2"
+                                            aria-label="Voice input"
+                                        >
+                                            <Microphone02 className="size-4" />
+                                        </button>
                                         {/* Resize handle */}
-                                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute bottom-1.5 right-1.5 text-gray-300 dark:text-gray-600">
+                                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute bottom-1.5 right-1.5 text-[#D5D7DA] dark:text-gray-600">
                                             <path d="M10 2L2 10" stroke="currentColor" strokeLinecap="round"/>
                                             <path d="M11 7L7 11" stroke="currentColor" strokeLinecap="round"/>
                                         </svg>
@@ -168,31 +175,23 @@ export const CopilotSlideout = ({ userName = "Olivia", userAvatar, onPromptClick
                                     <div className="flex items-center gap-1">
                                         <Avatar size="xs" src={userAvatar} alt={userName} initials={userName?.charAt(0)} />
                                         <div className="flex items-center gap-0.5">
-                                            <span className="text-xs font-semibold text-gray-600 dark:text-gray-400">{userName}</span>
-                                            <ChevronDown className="size-3 text-gray-400 dark:text-gray-500" />
+                                            <span className="text-xs font-semibold text-[#535862] dark:text-gray-400">{userName}</span>
+                                            <ChevronDown className="size-3 text-[#A4A7AE] dark:text-gray-500" />
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* Right side - Actions */}
                                 <div className="flex items-center gap-3">
-                                    <button className="flex items-center gap-1 text-xs font-semibold text-gray-600 outline-focus-ring transition-colors hover:text-gray-700 focus-visible:outline-2 dark:text-gray-400 dark:hover:text-gray-300">
+                                    <button className="flex items-center gap-1 text-xs font-semibold text-[#535862] outline-focus-ring transition-colors hover:text-[#414651] focus-visible:outline-2 dark:text-gray-400 dark:hover:text-gray-300">
                                         <Square className="size-4" />
                                         <span>Shortcuts</span>
                                     </button>
-                                    <button className="flex items-center gap-1 text-xs font-semibold text-gray-600 outline-focus-ring transition-colors hover:text-gray-700 focus-visible:outline-2 dark:text-gray-400 dark:hover:text-gray-300">
+                                    <button className="flex items-center gap-1 text-xs font-semibold text-[#535862] outline-focus-ring transition-colors hover:text-[#414651] focus-visible:outline-2 dark:text-gray-400 dark:hover:text-gray-300">
                                         <Attachment01 className="size-4" />
                                         <span>Attach</span>
                                     </button>
                                 </div>
-
-                                {/* Voice input button */}
-                                <button
-                                    className="flex size-7 items-center justify-center rounded-lg p-1.5 text-gray-400 outline-focus-ring transition-colors hover:bg-gray-100 dark:text-gray-500 dark:hover:bg-gray-700 focus-visible:outline-2"
-                                    aria-label="Voice input"
-                                >
-                                    <Microphone02 className="size-4" />
-                                </button>
                             </div>
                         </div>
                     </div>
