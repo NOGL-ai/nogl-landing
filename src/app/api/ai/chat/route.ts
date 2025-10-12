@@ -3,6 +3,7 @@ import { getAuthSession } from "@/lib/auth";
 import { ChatRequestSchema } from "@/types/copilot";
 import { rateLimit } from "@/lib/rate-limit";
 import { sanitizeInput } from "@/lib/security";
+import { mastra, selectAgent } from "@/mastra";
 
 export const maxDuration = 30;
 
@@ -70,66 +71,31 @@ export async function POST(req: NextRequest) {
       );
     }
     
-    // 5. n8n Webhook Configuration
-    const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL;
+    // 5. Select appropriate Mastra agent
+    const agentName = selectAgent(userMessage);
+    const agent = mastra.getAgent(agentName);
     
-    if (!n8nWebhookUrl) {
-      console.error("N8N_WEBHOOK_URL not configured");
+    if (!agent) {
+      console.error(`Agent '${agentName}' not found`);
       return NextResponse.json(
         { error: "AI service temporarily unavailable" },
         { status: 503 }
       );
     }
     
-    // 6. Call n8n Workflow
-    const response = await fetch(n8nWebhookUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...(process.env.N8N_API_KEY && {
-          "Authorization": `Bearer ${process.env.N8N_API_KEY}`
-        }),
-      },
-      body: JSON.stringify({
-        message: userMessage,
-        conversationHistory: messages.slice(0, -1).map((m) => ({
-          role: m.role,
-          content: m.content
-            .filter((c) => c.type === "text")
-            .map((c) => c.text)
-            .join("\n"),
-        })),
-        userId,
-        timestamp: new Date().toISOString(),
-        metadata: {
-          userAgent: req.headers.get("user-agent"),
-          referer: req.headers.get("referer"),
-        },
-      }),
-      signal: AbortSignal.timeout(25000), // 25s timeout
-    });
+    // 6. Convert messages to Mastra format
+    const mastraMessages = messages.map((m) => ({
+      role: m.role as "user" | "assistant" | "system",
+      content: m.content
+        .filter((c) => c.type === "text")
+        .map((c) => c.text)
+        .join("\n"),
+    }));
     
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("n8n workflow error:", {
-        status: response.status,
-        statusText: response.statusText,
-        error: errorText,
-      });
+    // 7. Stream response using Mastra agent
+    try {
+      const result = await agent.stream(mastraMessages);
       
-      return NextResponse.json(
-        { 
-          error: "AI service error. Please try again.",
-          retryable: response.status >= 500
-        },
-        { status: response.status }
-      );
-    }
-    
-    const contentType = response.headers.get("content-type");
-    
-    // 7. Handle Streaming Response
-    if (contentType?.includes("text/event-stream") || contentType?.includes("text/plain")) {
       const duration = Date.now() - startTime;
       
       // Log analytics (non-blocking)
@@ -140,42 +106,28 @@ export async function POST(req: NextRequest) {
           messageLength: userMessage.length,
           duration,
           streaming: true,
+          agent: agentName,
         }).catch(console.error);
       }
       
-      return new Response(response.body, {
-        headers: {
-          "Content-Type": "text/plain",
-          "Cache-Control": "no-cache, no-transform",
-          "X-Content-Type-Options": "nosniff",
-        },
+      // Return Mastra's streaming response
+      return result.toDataStreamResponse();
+      
+    } catch (agentError: any) {
+      console.error("Mastra agent error:", {
+        agent: agentName,
+        error: agentError.message,
+        stack: agentError.stack,
       });
+      
+      return NextResponse.json(
+        { 
+          error: "AI service error. Please try again.",
+          retryable: true
+        },
+        { status: 500 }
+      );
     }
-    
-    // 8. Handle JSON Response
-    const data = await response.json();
-    const duration = Date.now() - startTime;
-    
-    // Log analytics
-    if (process.env.ENABLE_COPILOT_ANALYTICS === "true") {
-      logAnalytics({
-        event: "copilot_message",
-        userId,
-        messageLength: userMessage.length,
-        responseLength: data.reply?.length || 0,
-        duration,
-        streaming: false,
-      }).catch(console.error);
-    }
-    
-    return NextResponse.json({
-      text: data.reply || data.message || data.text || "No response",
-      metadata: {
-        duration,
-        tokens: data.tokens,
-        model: data.model,
-      },
-    });
     
   } catch (error: any) {
     const duration = Date.now() - startTime;

@@ -6,6 +6,7 @@ const nextConfig = {
 	output: 'standalone',
 	// Additional Windows compatibility
 	poweredByHeader: false,
+	serverExternalPackages: ["@mastra/*"],
 	async headers() {
 		return [
 			{

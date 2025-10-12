@@ -29,14 +29,14 @@ import type { ReactNode } from "react";
 import toast from "react-hot-toast";
 
 /**
- * N8n Chat Model Adapter
+ * Mastra Chat Model Adapter
  * 
- * Connects LocalRuntime to n8n via /api/ai/chat endpoint.
+ * Connects LocalRuntime to Mastra agents via /api/ai/chat endpoint.
  * 
  * How it works:
  * 1. LocalRuntime calls run() when user sends message
- * 2. Fetch /api/ai/chat (validates, rate limits, calls n8n)
- * 3. n8n returns streaming or JSON response
+ * 2. Fetch /api/ai/chat (validates, rate limits, calls Mastra agent)
+ * 3. Mastra agent returns streaming response
  * 4. Yield chunks incrementally
  * 5. LocalRuntime updates Thread UI automatically
  * 
@@ -46,7 +46,7 @@ import toast from "react-hot-toast";
  * - 500+: Service unavailable
  * - AbortError: User cancelled
  */
-const N8nAdapter: ChatModelAdapter = {
+const MastraAdapter: ChatModelAdapter = {
   async *run({ messages, abortSignal }) {
     try {
       // Call secure API endpoint with validation and rate limiting
@@ -144,7 +144,7 @@ const N8nAdapter: ChatModelAdapter = {
  */
 export function CopilotRuntimeProvider({ children }: { children: ReactNode }) {
   /**
-   * Initialize LocalRuntime with N8n adapter and attachment support
+   * Initialize LocalRuntime with Mastra adapter and attachment support
    * 
    * LocalRuntime automatically handles:
    * - Message state management
@@ -154,7 +154,7 @@ export function CopilotRuntimeProvider({ children }: { children: ReactNode }) {
    * - Built-in actions (copy, retry, cancel)
    * - File attachments (with adapter)
    */
-  const runtime = useLocalRuntime(N8nAdapter, {
+  const runtime = useLocalRuntime(MastraAdapter, {
     maxSteps: 5, // Max tool call iterations
     adapters: {
       /**
