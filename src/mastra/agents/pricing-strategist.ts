@@ -117,19 +117,19 @@ When providing pricing insights:
 Remember: Your goal is to help maximize revenue and market position through intelligent pricing decisions. Always provide clear business justification for recommendations and respect the need for human approval on all pricing changes.
 `,
   model: openai("gpt-4o"),
-  tools: [
+  tools: {
     // Plan approval tools
-    updateTodosTool,
-    askForPlanApprovalTool,
+    updateTodos: updateTodosTool,
+    askForPlanApproval: askForPlanApprovalTool,
     
     // Pricing analysis tools
-    analyzePriceGapsTool,
-    getPricingTrendsTool,
-    suggestPriceChangesTool,
-    updateProductPricesTool,
+    analyzePriceGaps: analyzePriceGapsTool,
+    getPricingTrends: getPricingTrendsTool,
+    suggestPriceChanges: suggestPriceChangesTool,
+    updateProductPrices: updateProductPricesTool,
     
     // Communication tools
-    sendPricingReportTool,
-    sendAlertEmailTool,
-  ],
+    sendPricingReport: sendPricingReportTool,
+    sendAlertEmail: sendAlertEmailTool,
+  },
 });

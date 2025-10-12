@@ -12,6 +12,7 @@ import {
   VolumeXIcon,
   ThumbsUpIcon,
   ThumbsDownIcon,
+  HelpCircleIcon,
 } from "lucide-react";
 
 import {
@@ -31,6 +32,7 @@ import { Button } from "@/components/ui/button";
 import { MarkdownText } from "@/components/markdown-text";
 import { ToolFallback } from "@/components/tool-fallback";
 import { TooltipIconButton } from "@/components/tooltip-icon-button";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import {
   ComposerAddAttachment,
   ComposerAttachments,
@@ -39,12 +41,125 @@ import {
 import { AttachmentUI } from "@/components/attachment";
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
 import { ScrollBar } from "@/components/ui/scroll-area";
+import { makeAssistantToolUI } from "@assistant-ui/react";
+import { PlanApprovalUI } from "@/components/tools/plan-approval";
+import { CompetitorApprovalUI } from "@/components/tools/competitor-approval";
+import { EmailApprovalUI } from "@/components/tools/email-approval";
 
 import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import { useAssistantApi, useAssistantState } from "@assistant-ui/react";
+
+// Keyboard shortcuts hook
+const useThreadKeyboardShortcuts = () => {
+  const api = useAssistantApi();
+  const isRunning = useAssistantState(({ thread }) => thread.isRunning);
+  const composerText = useAssistantState(({ composer }) => composer.text);
+  const messages = useAssistantState(({ thread }) => thread.messages);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Cmd/Ctrl+Enter to send message
+      if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+        e.preventDefault();
+        if (!isRunning && composerText.trim().length > 0) {
+          api.composer().send();
+        }
+      }
+
+      // Escape to cancel running generation
+      if (e.key === "Escape" && isRunning) {
+        e.preventDefault();
+        api.thread().cancelRun();
+      }
+
+      // Up arrow to edit last message (when composer is empty and focused)
+      if (e.key === "ArrowUp" && composerText.trim().length === 0) {
+        const activeElement = document.activeElement;
+        const isComposerFocused = activeElement?.closest(".aui-composer-root");
+        
+        if (isComposerFocused) {
+          e.preventDefault();
+          const lastUserMessage = messages
+            .slice()
+            .reverse()
+            .find((m) => m.role === "user");
+          
+          if (lastUserMessage) {
+            // Trigger edit mode on last user message
+            api.thread().message({ id: lastUserMessage.id }).composer.beginEdit();
+          }
+        }
+      }
+
+      // Cmd/Ctrl+K to focus composer
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        const composerInput = document.querySelector(
+          ".aui-composer-input"
+        ) as HTMLTextAreaElement;
+        composerInput?.focus();
+      }
+
+      // Forward slash to focus composer (when not already in input)
+      if (e.key === "/" && !isRunning) {
+        const activeElement = document.activeElement;
+        const isInputFocused = 
+          activeElement?.tagName === "INPUT" ||
+          activeElement?.tagName === "TEXTAREA";
+        
+        if (!isInputFocused) {
+          e.preventDefault();
+          const composerInput = document.querySelector(
+            ".aui-composer-input"
+          ) as HTMLTextAreaElement;
+          composerInput?.focus();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [api, isRunning, composerText, messages]);
+};
+
+// Keyboard shortcuts help tooltip
+const KeyboardShortcutsHelp: FC = () => {
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button
+          className="text-muted-foreground hover:text-foreground size-5 rounded p-0.5 transition-colors"
+          aria-label="Keyboard shortcuts"
+        >
+          <HelpCircleIcon className="size-4" />
+        </button>
+      </TooltipTrigger>
+      <TooltipContent side="top" className="max-w-xs">
+        <div className="space-y-1 text-xs">
+          <p className="font-semibold">Keyboard Shortcuts</p>
+          <div className="grid grid-cols-2 gap-x-2 gap-y-1">
+            <span className="text-muted-foreground">Send message:</span>
+            <span>⌘/Ctrl + Enter</span>
+            <span className="text-muted-foreground">Cancel:</span>
+            <span>Escape</span>
+            <span className="text-muted-foreground">Edit last:</span>
+            <span>↑ Arrow</span>
+            <span className="text-muted-foreground">Focus input:</span>
+            <span>⌘/Ctrl + K or /</span>
+          </div>
+        </div>
+      </TooltipContent>
+    </Tooltip>
+  );
+};
 
 export const Thread: FC = () => {
   const threadMaxWidth = "min(100%, calc(100vw - 3.5rem))";
+  
+  // Add keyboard shortcuts
+  useThreadKeyboardShortcuts();
 
   return (
     <LazyMotion features={domAnimation}>
@@ -120,9 +235,10 @@ const ThreadWelcome: FC = () => {
   const firstName = name?.trim()?.split(" ")[0] ?? "there";
 
   return (
-    <div className="aui-thread-welcome-root mx-auto my-auto flex w-full max-w-[var(--thread-max-width)] flex-grow flex-col">
-      <div className="aui-thread-welcome-center flex w-full flex-grow flex-col items-center justify-center">
-        <div className="aui-thread-welcome-message flex size-full flex-col justify-center px-8">
+    <div className="aui-thread-welcome-root flex h-full w-full flex-col">
+      {/* Greeting - Centered vertically */}
+      <div className="flex flex-1 flex-col items-center justify-center px-8">
+        <div className="aui-thread-welcome-message flex flex-col justify-center">
           <m.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -142,6 +258,8 @@ const ThreadWelcome: FC = () => {
           </m.div>
         </div>
       </div>
+      
+      {/* Suggestions - Anchored to bottom */}
       <ThreadSuggestions />
     </div>
   );
@@ -205,6 +323,8 @@ const ThreadSuggestions: FC = () => {
 };
 
 const Composer: FC = () => {
+  const isRunning = useAssistantState(({ thread }) => thread.isRunning);
+
   return (
     <div className="aui-composer-wrapper sticky bottom-0 mx-auto flex w-full max-w-[var(--thread-max-width)] flex-col gap-4 overflow-visible rounded-t-3xl bg-background px-3 pb-4 md:px-4 md:pb-6">
       <ThreadScrollToBottom />
@@ -217,6 +337,19 @@ const Composer: FC = () => {
           autoFocus
           aria-label="Message input"
         />
+        {/* Add keyboard hint */}
+        {!isRunning && (
+          <div className="flex items-center gap-1 px-3.5 pb-1">
+            <span className="text-muted-foreground text-xs">
+              <kbd className="bg-muted rounded px-1 py-0.5 text-xs">
+                {navigator.platform.includes("Mac") ? "⌘" : "Ctrl"}
+              </kbd>{" "}
+              +{" "}
+              <kbd className="bg-muted rounded px-1 py-0.5 text-xs">↵</kbd> to
+              send
+            </span>
+          </div>
+        )}
         <ComposerAction />
       </ComposerPrimitive.Root>
     </div>
@@ -226,7 +359,10 @@ const Composer: FC = () => {
 const ComposerAction: FC = () => {
   return (
     <div className="aui-composer-action-wrapper relative mt-2 mb-2 flex w-full items-center justify-between gap-2 px-2">
-      <ComposerAddAttachment />
+      <div className="flex items-center gap-2">
+        <ComposerAddAttachment />
+        <KeyboardShortcutsHelp />
+      </div>
 
       <ThreadPrimitive.If running={false}>
         <ComposerPrimitive.Send asChild>
@@ -311,7 +447,21 @@ const AssistantMessage: FC = () => {
           <MessagePrimitive.Parts
             components={{
               Text: MarkdownText,
-              tools: { Fallback: ToolFallback },
+              tools: { 
+                Fallback: ToolFallback,
+                // Register HITL tool UIs
+                updateTodos: makeAssistantToolUI(PlanApprovalUI),
+                askForPlanApproval: makeAssistantToolUI(PlanApprovalUI),
+                createCompetitor: makeAssistantToolUI(CompetitorApprovalUI),
+                updateCompetitor: makeAssistantToolUI(CompetitorApprovalUI),
+                deleteCompetitor: makeAssistantToolUI(CompetitorApprovalUI),
+                addCompetitorNote: makeAssistantToolUI(CompetitorApprovalUI),
+                suggestPriceChanges: makeAssistantToolUI(PlanApprovalUI),
+                updateProductPrices: makeAssistantToolUI(PlanApprovalUI),
+                sendCompetitorEmail: makeAssistantToolUI(EmailApprovalUI),
+                sendPricingReport: makeAssistantToolUI(EmailApprovalUI),
+                sendAlertEmail: makeAssistantToolUI(EmailApprovalUI),
+              },
               ToolGroup,
             }}
           />

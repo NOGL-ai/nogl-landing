@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 import StatWidget from "../atoms/StatWidget";
 import StackedBarChart from "../molecules/StackedBarChart";
 import PieChart from "../molecules/PieChart";
@@ -70,16 +71,36 @@ export default function DashboardPageClient({
 		// Add your edit widgets logic here
 	};
 
+	// Dynamic title only for dashboard page
+	const DashboardTitle: React.FC<{
+		dict: DashboardPageClientProps["dict"];
+		onColorToggle?: () => void;
+		onFullscreenToggle?: () => void;
+		onEditWidgets?: () => void;
+	}> = ({ dict, onColorToggle, onFullscreenToggle, onEditWidgets }) => {
+		const { data: session } = useSession();
+		const rawName = session?.user?.name || session?.user?.email || "";
+		const firstName = React.useMemo(() => {
+			if (!rawName) return "";
+			const namePart = rawName.includes("@") ? rawName.split("@")[0] : rawName;
+			return namePart.split(" ")[0];
+		}, [rawName]);
+		const title = firstName ? `Welcome back, ${firstName}` : dict.dashboard.title;
+		return (
+			<DashboardPageHeader
+				title={title}
+				onColorToggle={onColorToggle}
+				onFullscreenToggle={onFullscreenToggle}
+				onEditWidgets={onEditWidgets}
+			/>
+		);
+	};
+
 	return (
 		<>
 			<div className='mx-auto w-full max-w-none space-y-6 px-3 py-4 sm:px-4 lg:px-6 xl:px-8 2xl:px-10 transition-all duration-300'>
 				{/* Page Header */}
-				<DashboardPageHeader
-					title={dict.dashboard.title}
-					onColorToggle={handleColorToggle}
-					onFullscreenToggle={handleFullscreenToggle}
-					onEditWidgets={handleEditWidgets}
-				/>
+				<DashboardTitle dict={dict} onColorToggle={handleColorToggle} onFullscreenToggle={handleFullscreenToggle} onEditWidgets={handleEditWidgets} />
 
 				{/* Key Metrics Section */}
 				<DashboardSection>

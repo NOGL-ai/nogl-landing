@@ -6,6 +6,7 @@ export { Button } from "./button";
 
 // Inputs
 export { Input } from "./input";
+export { Textarea } from "./textarea";
 
 // Checkbox
 export { default as Checkbox } from "./checkbox";

@@ -6,12 +6,13 @@
  * 
  * Key Features:
  * - LocalRuntime with built-in state management
- * - N8n adapter for AI backend integration
+ * - Mastra adapter for AI backend integration
  * - Streaming response support
  * - Error handling with user-friendly toasts
+ * - HITL (Human-in-the-Loop) approval workflows
  * 
  * Architecture:
- * User Input → Thread → LocalRuntime → N8nAdapter → /api/ai/chat → n8n → AI
+ * User Input → Thread → LocalRuntime → MastraAdapter → /api/ai/chat → Mastra Agent → AI
  * 
  * Documentation:
  * - LocalRuntime: https://www.assistant-ui.com/docs/runtimes/custom/local

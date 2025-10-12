@@ -78,10 +78,10 @@ When presenting data, use this structure:
 Remember: You're helping users make better business decisions through competitor intelligence. Always provide context and explain the "so what" behind the data.
 `,
   model: openai("gpt-4o"),
-  tools: [
-    getCompetitorListTool,
-    getCompetitorDetailsTool,
-    analyzePriceGapsTool,
-    getPricingTrendsTool,
-  ],
+  tools: {
+    getCompetitorList: getCompetitorListTool,
+    getCompetitorDetails: getCompetitorDetailsTool,
+    analyzePriceGaps: analyzePriceGapsTool,
+    getPricingTrends: getPricingTrendsTool,
+  },
 });

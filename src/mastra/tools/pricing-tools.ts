@@ -5,29 +5,30 @@
  * recommendations with user approval for all modifications.
  */
 
+import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
 import { getPrismaContext, requireProductModification } from "../utils/prisma-context";
 
 /**
  * Analyze price gaps tool - READ ONLY (no approval needed)
  */
-export const analyzePriceGapsTool = {
-  name: "analyzePriceGaps",
+export const analyzePriceGapsTool = createTool({
+  id: "analyzePriceGaps",
   description: "Analyze pricing gaps between our products and competitors to identify opportunities.",
-  parameters: z.object({
+  inputSchema: z.object({
     productIds: z.array(z.string()).optional().describe("Specific product IDs to analyze (optional)"),
     competitorIds: z.array(z.string()).optional().describe("Specific competitor IDs to compare against (optional)"),
     category: z.string().optional().describe("Product category to analyze"),
     minPriceDiff: z.number().optional().default(10).describe("Minimum price difference to consider significant"),
     days: z.number().optional().default(30).describe("Number of days of pricing data to analyze"),
   }),
-  execute: async (params: {
-    productIds?: string[];
-    competitorIds?: string[];
-    category?: string;
-    minPriceDiff?: number;
-    days?: number;
-  }) => {
+  outputSchema: z.object({
+    success: z.boolean(),
+    analysis: z.any(),
+    message: z.string(),
+  }),
+  execute: async ({ context }) => {
+    const params = context;
     const { prisma } = await getPrismaContext();
     
     const cutoffDate = new Date(Date.now() - (params.days || 30) * 24 * 60 * 60 * 1000);
@@ -138,26 +139,29 @@ export const analyzePriceGapsTool = {
       message: `Found ${productGaps.length} products with significant pricing gaps`,
     };
   },
-};
+});
 
 /**
  * Get pricing trends tool - READ ONLY (no approval needed)
  */
-export const getPricingTrendsTool = {
-  name: "getPricingTrends",
+export const getPricingTrendsTool = createTool({
+  id: "getPricingTrends",
   description: "Get pricing trends for products and competitors over time.",
-  parameters: z.object({
+  inputSchema: z.object({
     productIds: z.array(z.string()).optional().describe("Product IDs to analyze"),
     competitorIds: z.array(z.string()).optional().describe("Competitor IDs to include"),
     days: z.number().optional().default(90).describe("Number of days to analyze"),
     groupBy: z.enum(["day", "week", "month"]).optional().default("week").describe("Group data by time period"),
   }),
-  execute: async (params: {
-    productIds?: string[];
-    competitorIds?: string[];
-    days?: number;
-    groupBy?: "day" | "week" | "month";
-  }) => {
+  outputSchema: z.object({
+    success: z.boolean(),
+    trends: z.array(z.any()),
+    period: z.string(),
+    totalPeriods: z.number(),
+    message: z.string(),
+  }),
+  execute: async ({ context }) => {
+    const params = context;
     const { prisma } = await getPrismaContext();
     
     const cutoffDate = new Date(Date.now() - (params.days || 90) * 24 * 60 * 60 * 1000);
@@ -246,26 +250,31 @@ export const getPricingTrendsTool = {
       message: `Analyzed pricing trends over ${trends.length} ${params.groupBy} periods`,
     };
   },
-};
+});
 
 /**
  * Suggest price changes tool - REQUIRES APPROVAL
  */
-export const suggestPriceChangesTool = {
-  name: "suggestPriceChanges",
+export const suggestPriceChangesTool = createTool({
+  id: "suggestPriceChanges",
   description: "Suggest price changes based on competitor analysis. This requires user approval.",
-  parameters: z.object({
+  inputSchema: z.object({
     productIds: z.array(z.string()).describe("Product IDs to suggest changes for"),
     strategy: z.enum(["COMPETITIVE", "PREMIUM", "BUDGET", "MATCH_LOWEST"]).describe("Pricing strategy to apply"),
     maxChangePercent: z.number().optional().default(20).describe("Maximum percentage change allowed"),
     reason: z.string().optional().describe("Reason for the price changes"),
   }),
-  execute: async (params: {
-    productIds: string[];
-    strategy: "COMPETITIVE" | "PREMIUM" | "BUDGET" | "MATCH_LOWEST";
-    maxChangePercent?: number;
-    reason?: string;
-  }) => {
+  outputSchema: z.object({
+    success: z.boolean(),
+    requiresApproval: z.boolean().optional(),
+    action: z.string().optional(),
+    data: z.any().optional(),
+    preview: z.string().optional(),
+    message: z.string().optional(),
+    error: z.string().optional(),
+  }),
+  execute: async ({ context }) => {
+    const params = context;
     const { userRole } = await getPrismaContext();
     requireProductModification(userRole);
     
@@ -415,15 +424,15 @@ export const suggestPriceChangesTool = {
       message: `I need approval to suggest price changes for ${suggestions.length} products`,
     };
   },
-};
+});
 
 /**
  * Update product prices tool - REQUIRES APPROVAL
  */
-export const updateProductPricesTool = {
-  name: "updateProductPrices",
+export const updateProductPricesTool = createTool({
+  id: "updateProductPrices",
   description: "Update product prices based on approved suggestions. This requires user approval.",
-  parameters: z.object({
+  inputSchema: z.object({
     updates: z.array(z.object({
       productId: z.string().describe("Product ID to update"),
       newPrice: z.number().describe("New price to set"),
@@ -432,15 +441,17 @@ export const updateProductPricesTool = {
     })).describe("List of price updates to apply"),
     batchId: z.string().optional().describe("Optional batch ID for tracking"),
   }),
-  execute: async (params: {
-    updates: Array<{
-      productId: string;
-      newPrice: number;
-      updateOriginalPrice?: boolean;
-      reason: string;
-    }>;
-    batchId?: string;
-  }) => {
+  outputSchema: z.object({
+    success: z.boolean(),
+    requiresApproval: z.boolean().optional(),
+    action: z.string().optional(),
+    data: z.any().optional(),
+    preview: z.any().optional(),
+    summary: z.any().optional(),
+    message: z.string().optional(),
+  }),
+  execute: async ({ context }) => {
+    const params = context;
     const { userRole } = await getPrismaContext();
     requireProductModification(userRole);
     
@@ -514,14 +525,14 @@ export const updateProductPricesTool = {
       message: `I need approval to update prices for ${updatePreview.length} products`,
     };
   },
-};
+});
 
 /**
- * All pricing tools exported as array for easy registration
+ * All pricing tools exported as named object for agent registration
  */
-export const pricingTools = [
-  analyzePriceGapsTool,
-  getPricingTrendsTool,
-  suggestPriceChangesTool,
-  updateProductPricesTool,
-];
+export const pricingTools = {
+  analyzePriceGaps: analyzePriceGapsTool,
+  getPricingTrends: getPricingTrendsTool,
+  suggestPriceChanges: suggestPriceChangesTool,
+  updateProductPrices: updateProductPricesTool,
+};

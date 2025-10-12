@@ -5,6 +5,7 @@
  * user approval for all modifications. Read operations don't require approval.
  */
 
+import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
 import { getPrismaContext, requireCompetitorModification } from "../utils/prisma-context";
 import { CompetitorStatus } from "@prisma/client";
@@ -12,26 +13,23 @@ import { CompetitorStatus } from "@prisma/client";
 /**
  * Get competitor list tool - READ ONLY (no approval needed)
  */
-export const getCompetitorListTool = {
-  name: "getCompetitorList",
+export const getCompetitorListTool = createTool({
+  id: "getCompetitorList",
   description: "Get a list of competitors with optional filtering. This is a read-only operation.",
-  parameters: z.object({
+  inputSchema: z.object({
     status: z.nativeEnum(CompetitorStatus).optional().describe("Filter by competitor status"),
     limit: z.number().optional().default(50).describe("Maximum number of competitors to return"),
     search: z.string().optional().describe("Search term for competitor name or domain"),
     includeInactive: z.boolean().optional().default(false).describe("Include inactive competitors"),
   }),
-  execute: async ({ 
-    status, 
-    limit = 50, 
-    search, 
-    includeInactive = false 
-  }: { 
-    status?: CompetitorStatus; 
-    limit?: number; 
-    search?: string; 
-    includeInactive?: boolean; 
-  }) => {
+  outputSchema: z.object({
+    success: z.boolean(),
+    competitors: z.array(z.any()),
+    count: z.number(),
+    message: z.string(),
+  }),
+  execute: async ({ context }) => {
+    const { status, limit = 50, search, includeInactive = false } = context;
     const { prisma } = await getPrismaContext();
     
     const where: any = {};
@@ -77,28 +75,28 @@ export const getCompetitorListTool = {
       message: `Found ${competitors.length} competitors`,
     };
   },
-};
+});
 
 /**
  * Get competitor details tool - READ ONLY (no approval needed)
  */
-export const getCompetitorDetailsTool = {
-  name: "getCompetitorDetails",
+export const getCompetitorDetailsTool = createTool({
+  id: "getCompetitorDetails",
   description: "Get detailed information about a specific competitor including pricing data.",
-  parameters: z.object({
+  inputSchema: z.object({
     competitorId: z.string().describe("ID of the competitor to get details for"),
     includePricing: z.boolean().optional().default(true).describe("Include recent pricing comparisons"),
     pricingDays: z.number().optional().default(30).describe("Number of days of pricing data to include"),
   }),
-  execute: async ({ 
-    competitorId, 
-    includePricing = true, 
-    pricingDays = 30 
-  }: { 
-    competitorId: string; 
-    includePricing?: boolean; 
-    pricingDays?: number; 
-  }) => {
+  outputSchema: z.object({
+    success: z.boolean(),
+    competitor: z.any().optional(),
+    error: z.string().optional(),
+    competitorId: z.string().optional(),
+    message: z.string().optional(),
+  }),
+  execute: async ({ context }) => {
+    const { competitorId, includePricing = true, pricingDays = 30 } = context;
     const { prisma } = await getPrismaContext();
     
     const competitor = await prisma.competitor.findUnique({
@@ -138,15 +136,15 @@ export const getCompetitorDetailsTool = {
       message: `Retrieved details for ${competitor.name}`,
     };
   },
-};
+});
 
 /**
  * Create competitor tool - REQUIRES APPROVAL
  */
-export const createCompetitorTool = {
-  name: "createCompetitor",
+export const createCompetitorTool = createTool({
+  id: "createCompetitor",
   description: "Create a new competitor entry. This requires user approval before execution.",
-  parameters: z.object({
+  inputSchema: z.object({
     name: z.string().min(1).describe("Competitor name"),
     domain: z.string().min(1).describe("Competitor domain (e.g., 'nike.com')"),
     website: z.string().url().optional().describe("Full website URL"),
@@ -156,16 +154,16 @@ export const createCompetitorTool = {
     marketShare: z.number().optional().describe("Estimated market share percentage"),
     dataSource: z.string().optional().describe("Source of competitor data"),
   }),
-  execute: async (params: {
-    name: string;
-    domain: string;
-    website?: string;
-    description?: string;
-    categories?: string[];
-    marketPosition?: number;
-    marketShare?: number;
-    dataSource?: string;
-  }) => {
+  outputSchema: z.object({
+    success: z.boolean(),
+    requiresApproval: z.boolean(),
+    action: z.string(),
+    data: z.any(),
+    preview: z.string(),
+    message: z.string(),
+  }),
+  execute: async ({ context }) => {
+    const params = context;
     const { userRole } = await getPrismaContext();
     requireCompetitorModification(userRole);
     
@@ -179,15 +177,15 @@ export const createCompetitorTool = {
       message: `I need approval to create a new competitor: ${params.name}`,
     };
   },
-};
+});
 
 /**
  * Update competitor tool - REQUIRES APPROVAL
  */
-export const updateCompetitorTool = {
-  name: "updateCompetitor",
+export const updateCompetitorTool = createTool({
+  id: "updateCompetitor",
   description: "Update an existing competitor. This requires user approval before execution.",
-  parameters: z.object({
+  inputSchema: z.object({
     competitorId: z.string().describe("ID of the competitor to update"),
     name: z.string().optional().describe("New competitor name"),
     domain: z.string().optional().describe("New domain"),
@@ -199,18 +197,19 @@ export const updateCompetitorTool = {
     marketShare: z.number().optional().describe("Updated market share"),
     isMonitoring: z.boolean().optional().describe("Whether to monitor this competitor"),
   }),
-  execute: async (params: {
-    competitorId: string;
-    name?: string;
-    domain?: string;
-    website?: string;
-    description?: string;
-    status?: CompetitorStatus;
-    categories?: string[];
-    marketPosition?: number;
-    marketShare?: number;
-    isMonitoring?: boolean;
-  }) => {
+  outputSchema: z.object({
+    success: z.boolean(),
+    requiresApproval: z.boolean().optional(),
+    action: z.string().optional(),
+    data: z.any().optional(),
+    currentData: z.any().optional(),
+    preview: z.string().optional(),
+    message: z.string().optional(),
+    error: z.string().optional(),
+    competitorId: z.string().optional(),
+  }),
+  execute: async ({ context }) => {
+    const params = context;
     const { userRole } = await getPrismaContext();
     requireCompetitorModification(userRole, params.competitorId);
     
@@ -239,24 +238,33 @@ export const updateCompetitorTool = {
       message: `I need approval to update competitor: ${currentCompetitor.name}`,
     };
   },
-};
+});
 
 /**
  * Delete competitor tool - REQUIRES APPROVAL + CONFIRMATION
  */
-export const deleteCompetitorTool = {
-  name: "deleteCompetitor",
+export const deleteCompetitorTool = createTool({
+  id: "deleteCompetitor",
   description: "Delete a competitor and all associated data. This requires user approval and confirmation.",
-  parameters: z.object({
+  inputSchema: z.object({
     competitorId: z.string().describe("ID of the competitor to delete"),
     reason: z.string().describe("Reason for deletion"),
     deletePricingData: z.boolean().optional().default(true).describe("Whether to delete associated pricing data"),
   }),
-  execute: async (params: {
-    competitorId: string;
-    reason: string;
-    deletePricingData?: boolean;
-  }) => {
+  outputSchema: z.object({
+    success: z.boolean(),
+    requiresApproval: z.boolean().optional(),
+    action: z.string().optional(),
+    data: z.any().optional(),
+    competitorData: z.any().optional(),
+    preview: z.string().optional(),
+    warning: z.string().optional(),
+    message: z.string().optional(),
+    error: z.string().optional(),
+    competitorId: z.string().optional(),
+  }),
+  execute: async ({ context }) => {
+    const params = context;
     const { userRole } = await getPrismaContext();
     requireCompetitorModification(userRole, params.competitorId);
     
@@ -292,26 +300,34 @@ export const deleteCompetitorTool = {
       message: `I need approval to delete competitor: ${competitor.name}. This action cannot be undone.`,
     };
   },
-};
+});
 
 /**
  * Add competitor note tool - REQUIRES APPROVAL (for sensitive data)
  */
-export const addCompetitorNoteTool = {
-  name: "addCompetitorNote",
+export const addCompetitorNoteTool = createTool({
+  id: "addCompetitorNote",
   description: "Add a note to a competitor. Requires approval if the note contains sensitive information.",
-  parameters: z.object({
+  inputSchema: z.object({
     competitorId: z.string().describe("ID of the competitor"),
     note: z.string().min(1).describe("Note content"),
     category: z.string().optional().describe("Note category (e.g., 'strategy', 'pricing', 'general')"),
     isSensitive: z.boolean().optional().default(false).describe("Whether this note contains sensitive information"),
   }),
-  execute: async (params: {
-    competitorId: string;
-    note: string;
-    category?: string;
-    isSensitive?: boolean;
-  }) => {
+  outputSchema: z.object({
+    success: z.boolean(),
+    requiresApproval: z.boolean().optional(),
+    action: z.string().optional(),
+    data: z.any().optional(),
+    competitorData: z.any().optional(),
+    preview: z.string().optional(),
+    message: z.string().optional(),
+    note: z.any().optional(),
+    error: z.string().optional(),
+    competitorId: z.string().optional(),
+  }),
+  execute: async ({ context }) => {
+    const params = context;
     const { userRole, userId } = await getPrismaContext();
     requireCompetitorModification(userRole, params.competitorId);
     
@@ -364,16 +380,16 @@ export const addCompetitorNoteTool = {
       message: `Note added to ${competitor.name}`,
     };
   },
-};
+});
 
 /**
- * All competitor tools exported as array for easy registration
+ * All competitor tools exported as named object for agent registration
  */
-export const competitorTools = [
-  getCompetitorListTool,
-  getCompetitorDetailsTool,
-  createCompetitorTool,
-  updateCompetitorTool,
-  deleteCompetitorTool,
-  addCompetitorNoteTool,
-];
+export const competitorTools = {
+  getCompetitorList: getCompetitorListTool,
+  getCompetitorDetails: getCompetitorDetailsTool,
+  createCompetitor: createCompetitorTool,
+  updateCompetitor: updateCompetitorTool,
+  deleteCompetitor: deleteCompetitorTool,
+  addCompetitorNote: addCompetitorNoteTool,
+};

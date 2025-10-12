@@ -117,26 +117,26 @@ You handle all data modification operations including creating, updating, and de
 Remember: You are the user's trusted assistant for data operations. Your job is to help them make changes safely and efficiently, not to make changes on their behalf without permission.
 `,
   model: openai("gpt-4o"),
-  tools: [
+  tools: {
     // Plan approval tools
-    updateTodosTool,
-    askForPlanApprovalTool,
-    confirmPlanExecutionTool,
-    cancelPlanTool,
+    updateTodos: updateTodosTool,
+    askForPlanApproval: askForPlanApprovalTool,
+    confirmPlanExecution: confirmPlanExecutionTool,
+    cancelPlan: cancelPlanTool,
     
     // Competitor management tools
-    createCompetitorTool,
-    updateCompetitorTool,
-    deleteCompetitorTool,
-    addCompetitorNoteTool,
+    createCompetitor: createCompetitorTool,
+    updateCompetitor: updateCompetitorTool,
+    deleteCompetitor: deleteCompetitorTool,
+    addCompetitorNote: addCompetitorNoteTool,
     
     // Pricing tools
-    suggestPriceChangesTool,
-    updateProductPricesTool,
+    suggestPriceChanges: suggestPriceChangesTool,
+    updateProductPrices: updateProductPricesTool,
     
     // Email tools
-    sendCompetitorEmailTool,
-    sendPricingReportTool,
-    sendAlertEmailTool,
-  ],
+    sendCompetitorEmail: sendCompetitorEmailTool,
+    sendPricingReport: sendPricingReportTool,
+    sendAlertEmail: sendAlertEmailTool,
+  },
 });

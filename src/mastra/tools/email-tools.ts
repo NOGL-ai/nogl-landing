@@ -5,16 +5,17 @@
  * All email sending requires explicit user confirmation.
  */
 
+import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
 import { getPrismaContext, requireEmailSending } from "../utils/prisma-context";
 
 /**
  * Send competitor analysis email tool - REQUIRES APPROVAL
  */
-export const sendCompetitorEmailTool = {
-  name: "sendCompetitorEmail",
+export const sendCompetitorEmailTool = createTool({
+  id: "sendCompetitorEmail",
   description: "Send a competitor analysis email to stakeholders. This requires user approval.",
-  parameters: z.object({
+  inputSchema: z.object({
     to: z.string().email().describe("Recipient email address"),
     cc: z.array(z.string().email()).optional().describe("CC recipients"),
     bcc: z.array(z.string().email()).optional().describe("BCC recipients"),
@@ -25,17 +26,16 @@ export const sendCompetitorEmailTool = {
     competitorIds: z.array(z.string()).optional().describe("Competitor IDs referenced in the email"),
     includeCharts: z.boolean().optional().default(false).describe("Whether to include pricing charts"),
   }),
-  execute: async (params: {
-    to: string;
-    cc?: string[];
-    bcc?: string[];
-    subject: string;
-    body: string;
-    attachments?: string[];
-    priority?: "low" | "normal" | "high";
-    competitorIds?: string[];
-    includeCharts?: boolean;
-  }) => {
+  outputSchema: z.object({
+    success: z.boolean(),
+    requiresApproval: z.boolean().optional(),
+    action: z.string().optional(),
+    data: z.any().optional(),
+    preview: z.any().optional(),
+    message: z.string().optional(),
+  }),
+  execute: async ({ context }) => {
+    const params = context;
     const { userRole, userId } = await getPrismaContext();
     requireEmailSending(userRole);
     
@@ -85,15 +85,15 @@ export const sendCompetitorEmailTool = {
       message: `I need approval to send an email to ${params.to} about competitor analysis`,
     };
   },
-};
+});
 
 /**
  * Send pricing report email tool - REQUIRES APPROVAL
  */
-export const sendPricingReportTool = {
-  name: "sendPricingReport",
+export const sendPricingReportTool = createTool({
+  id: "sendPricingReport",
   description: "Send a pricing analysis report to stakeholders. This requires user approval.",
-  parameters: z.object({
+  inputSchema: z.object({
     to: z.string().email().describe("Recipient email address"),
     cc: z.array(z.string().email()).optional().describe("CC recipients"),
     bcc: z.array(z.string().email()).optional().describe("BCC recipients"),
@@ -104,17 +104,16 @@ export const sendPricingReportTool = {
     includeCharts: z.boolean().optional().default(true).describe("Whether to include pricing charts"),
     customMessage: z.string().optional().describe("Custom message to include in the email"),
   }),
-  execute: async (params: {
-    to: string;
-    cc?: string[];
-    bcc?: string[];
-    reportType: "WEEKLY" | "MONTHLY" | "QUARTERLY" | "CUSTOM";
-    productIds?: string[];
-    competitorIds?: string[];
-    includeRecommendations?: boolean;
-    includeCharts?: boolean;
-    customMessage?: string;
-  }) => {
+  outputSchema: z.object({
+    success: z.boolean(),
+    requiresApproval: z.boolean().optional(),
+    action: z.string().optional(),
+    data: z.any().optional(),
+    preview: z.any().optional(),
+    message: z.string().optional(),
+  }),
+  execute: async ({ context }) => {
+    const params = context;
     const { userRole, userId } = await getPrismaContext();
     requireEmailSending(userRole);
     
@@ -224,15 +223,15 @@ export const sendPricingReportTool = {
       message: `I need approval to send a ${params.reportType} pricing report to ${params.to}`,
     };
   },
-};
+});
 
 /**
  * Send alert email tool - REQUIRES APPROVAL
  */
-export const sendAlertEmailTool = {
-  name: "sendAlertEmail",
+export const sendAlertEmailTool = createTool({
+  id: "sendAlertEmail",
   description: "Send an alert email about significant pricing changes or market events. This requires user approval.",
-  parameters: z.object({
+  inputSchema: z.object({
     to: z.string().email().describe("Recipient email address"),
     cc: z.array(z.string().email()).optional().describe("CC recipients"),
     bcc: z.array(z.string().email()).optional().describe("BCC recipients"),
@@ -245,19 +244,16 @@ export const sendAlertEmailTool = {
     actionRequired: z.boolean().optional().default(false).describe("Whether immediate action is required"),
     suggestedActions: z.array(z.string()).optional().describe("Suggested actions to take"),
   }),
-  execute: async (params: {
-    to: string;
-    cc?: string[];
-    bcc?: string[];
-    alertType: "PRICE_CHANGE" | "COMPETITOR_ACTIVITY" | "MARKET_SHIFT" | "SYSTEM_ALERT";
-    severity: "low" | "medium" | "high" | "critical";
-    title: string;
-    description: string;
-    affectedProducts?: string[];
-    affectedCompetitors?: string[];
-    actionRequired?: boolean;
-    suggestedActions?: string[];
-  }) => {
+  outputSchema: z.object({
+    success: z.boolean(),
+    requiresApproval: z.boolean().optional(),
+    action: z.string().optional(),
+    data: z.any().optional(),
+    preview: z.any().optional(),
+    message: z.string().optional(),
+  }),
+  execute: async ({ context }) => {
+    const params = context;
     const { userRole, userId } = await getPrismaContext();
     requireEmailSending(userRole);
     
@@ -382,13 +378,13 @@ export const sendAlertEmailTool = {
       message: `I need approval to send a ${params.severity} alert email to ${params.to}`,
     };
   },
-};
+});
 
 /**
- * All email tools exported as array for easy registration
+ * All email tools exported as named object for agent registration
  */
-export const emailTools = [
-  sendCompetitorEmailTool,
-  sendPricingReportTool,
-  sendAlertEmailTool,
-];
+export const emailTools = {
+  sendCompetitorEmail: sendCompetitorEmailTool,
+  sendPricingReport: sendPricingReportTool,
+  sendAlertEmail: sendAlertEmailTool,
+};
