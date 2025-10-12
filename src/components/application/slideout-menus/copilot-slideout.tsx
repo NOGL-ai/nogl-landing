@@ -14,7 +14,7 @@ import { DialogTrigger } from "react-aria-components";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import { SlideoutMenu } from "./slideout-menu";
-import { Thread } from "@assistant-ui/react-ui";
+import { Thread } from "@/components/thread";
 import { CopilotRuntimeProvider } from "./copilot-runtime-provider";
 import "@assistant-ui/react-ui/styles/index.css";
 
@@ -46,8 +46,7 @@ export const CopilotSlideout = ({ userName = "Olivia", userAvatar, trigger }: Co
         <DialogTrigger>
             {trigger}
             <SlideoutMenu
-                className="md:pl-10"
-                dialogClassName="max-w-full md:max-w-[440px] gap-0"
+                dialogClassName="gap-0"
             >
                 {({ close }) => (
                     /**
@@ -59,23 +58,13 @@ export const CopilotSlideout = ({ userName = "Olivia", userAvatar, trigger }: Co
                      * - Provides built-in features (copy, retry, cancel)
                      */
                     <CopilotRuntimeProvider>
-                        <div className="flex h-full flex-col">
+                        <div className="flex h-full w-full flex-col">
                     {/* Header */}
                     <div className="flex w-full flex-col items-center gap-8 bg-white px-4 pb-8 pt-12 md:px-6 md:pb-8 md:pt-16 dark:bg-gray-950">
                         <div className="flex w-full flex-col items-center gap-5">
                             <CopilotLogo />
 
-                            <div className="flex w-full flex-col items-start gap-2">
-                                <h2 className="w-full text-center font-sans text-lg font-semibold text-[#717680] dark:text-gray-400">
-                                    Hi {userName},
-                                </h2>
-                                <h3 className="w-full text-center font-sans text-lg font-semibold text-[#181D27] dark:text-gray-100">
-                                    Welcome back! How can I help?
-                                </h3>
-                                <p className="w-full text-center font-sans text-sm font-normal text-[#535862] dark:text-gray-400">
-                                            I&apos;m here to help tackle your tasks. Ask me anything!
-                                </p>
-                            </div>
+                            <div className="flex w-full flex-col items-start gap-2" />
                         </div>
                         
                         {/* Close button */}

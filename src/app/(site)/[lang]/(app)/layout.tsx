@@ -1,5 +1,6 @@
 import React from "react";
 import SidebarLayout from "@/components/templates/SidebarLayout";
+import HideFooterOnApp from "@/components/molecules/HideFooterOnApp";
 import { getAuthSession } from "@/lib/auth";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
@@ -25,6 +26,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
 	return (
 		<SidebarLayout user={user}>
+			<HideFooterOnApp />
 			{children}
 		</SidebarLayout>
 	);

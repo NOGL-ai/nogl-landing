@@ -457,10 +457,21 @@ export default function CompetitorPage() {
   const [isInitialLoading, setIsInitialLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
   const [currentPage, setCurrentPage] = React.useState(1);
-  const [pageLimit] = React.useState(100);
+  const [pageLimit, setPageLimit] = React.useState(() => {
+    // Load from localStorage or default based on screen size
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('monitored-urls-page-size');
+      if (saved) {
+        return parseInt(saved, 10);
+      }
+      // Mobile optimization: smaller default on mobile
+      return window.innerWidth < 768 ? 10 : 25;
+    }
+    return 25;
+  });
   const [pagination, setPagination] = React.useState({
     page: 1,
-    limit: 100,
+    limit: 25,
     total: 0,
     totalPages: 0
   });
@@ -720,6 +731,18 @@ export default function CompetitorPage() {
       // Scroll to top of the page for better UX
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+  };
+
+  // Handle page limit change
+  const handlePageLimitChange = (newLimit: number) => {
+    setPageLimit(newLimit);
+    setCurrentPage(1); // Reset to first page
+    // Save to localStorage
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('monitored-urls-page-size', newLimit.toString());
+    }
+    // Scroll to top for better UX
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // Show loading state only on initial load
@@ -1116,21 +1139,43 @@ export default function CompetitorPage() {
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border-secondary px-4 md:px-6 py-3">
-          <div className="text-xs md:text-sm font-medium text-muted-foreground dark:text-gray-300">
-            {pagination.total > 0 ? (
-              <>
-                Showing {((currentPage - 1) * pageLimit) + 1}-{Math.min(currentPage * pageLimit, pagination.total)} of {pagination.total} products
-                <span className="ml-2 text-muted-foreground/70">
-                  (Page {currentPage} of {pagination.totalPages})
-                </span>
-              </>
-            ) : (
-              'No products found'
-            )}
-            <span className="sr-only">
-              Page {currentPage} of {pagination.totalPages || 1}
-              {searchQuery && ` matching "${searchQuery}"`}
-            </span>
+          <div className="flex items-center gap-2 md:gap-3">
+            {/* Page size selector */}
+            <div className="flex items-center gap-2">
+              <label htmlFor="page-size" className="text-sm text-muted-foreground">
+                Rows per page:
+              </label>
+              <select
+                id="page-size"
+                value={pageLimit}
+                onChange={(e) => handlePageLimitChange(Number(e.target.value))}
+                className="rounded-md border border-border-secondary px-2 py-1 text-sm bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring/40"
+                disabled={isLoading}
+              >
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+                <option value={50}>50</option>
+                <option value={100}>100</option>
+              </select>
+            </div>
+            
+            {/* Pagination info */}
+            <div className="text-xs md:text-sm font-medium text-muted-foreground dark:text-gray-300">
+              {pagination.total > 0 ? (
+                <>
+                  Showing {((currentPage - 1) * pageLimit) + 1}-{Math.min(currentPage * pageLimit, pagination.total)} of {pagination.total} products
+                  <span className="ml-2 text-muted-foreground/70">
+                    (Page {currentPage} of {pagination.totalPages})
+                  </span>
+                </>
+              ) : (
+                'No products found'
+              )}
+              <span className="sr-only">
+                Page {currentPage} of {pagination.totalPages || 1}
+                {searchQuery && ` matching "${searchQuery}"`}
+              </span>
+            </div>
           </div>
           <div className="flex items-center gap-2 md:gap-3">
             <button

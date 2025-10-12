@@ -182,3 +182,14 @@ input[type="search"]::-webkit-search-cancel-button {
     animation: none;
     mix-blend-mode: normal;
 }
+
+/* Radix Scroll Area - Thread Viewport Content Wrapper */
+/* This styles the intermediate div that Radix UI Scroll Area creates */
+.thread-viewport > [data-radix-scroll-area-content] {
+  @apply flex flex-col items-center self-stretch bg-inherit;
+}
+
+/* Hide marketing footer on app pages */
+body.app-hide-footer footer {
+  display: none !important;
+}

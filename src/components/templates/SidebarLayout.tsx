@@ -9,6 +9,7 @@ import { SidebarSearch } from "@/components/application/app-navigation/sidebar-s
 import CollapsedSidebar from "@/components/application/app-navigation/collapsed-sidebar";
 import { MobileNavigation } from "@/components/application/app-navigation/mobile-navigation";
 import { MobileHeader } from "@/components/application/app-navigation/mobile-header";
+import { CopilotLayoutWrapper } from "@/components/application/slideout-menus";
 import { navItemsWithSectionsSubheadings } from "@/data/navigationItems";
 import { usePathname } from "next/navigation";
 import { ErrorBoundary } from "@/components/base/error-boundary";
@@ -145,7 +146,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 
 
 	return (
-		<div className={`flex h-screen ${className}`} onKeyDown={handleKeyDown}>
+		<div className={`flex h-full min-h-0 ${className}`} onKeyDown={handleKeyDown}>
 			{/* Skip to main content link for screen readers */}
 			<a
 				href="#main-content"
@@ -282,6 +283,14 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 				{children}
 			</div>
 		</main>
+
+		{/* Floating AI Copilot Button - Only visible on mobile/tablet (< lg breakpoint) */}
+		<div className="lg:hidden">
+			<CopilotLayoutWrapper 
+				userName={user?.name}
+				userAvatar={user?.avatar}
+			/>
+		</div>
 		</div>
 	);
 };

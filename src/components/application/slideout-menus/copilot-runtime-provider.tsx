@@ -144,7 +144,7 @@ const N8nAdapter: ChatModelAdapter = {
  */
 export function CopilotRuntimeProvider({ children }: { children: ReactNode }) {
   /**
-   * Initialize LocalRuntime with N8n adapter
+   * Initialize LocalRuntime with N8n adapter and attachment support
    * 
    * LocalRuntime automatically handles:
    * - Message state management
@@ -152,9 +152,44 @@ export function CopilotRuntimeProvider({ children }: { children: ReactNode }) {
    * - Loading states
    * - Error states
    * - Built-in actions (copy, retry, cancel)
+   * - File attachments (with adapter)
    */
   const runtime = useLocalRuntime(N8nAdapter, {
     maxSteps: 5, // Max tool call iterations
+    adapters: {
+      /**
+       * Attachment Adapter - UI-only file handling
+       * 
+       * This enables file attachment UI in the composer.
+       * Files are stored in memory for display but not uploaded to backend.
+       * 
+       * To enable actual file uploads:
+       * 1. Create /api/ai/upload endpoint
+       * 2. Update this adapter to POST files to that endpoint
+       * 3. Return the uploaded file URL from backend
+       * 4. Include attachment data in messages sent to n8n
+       * 
+       * Supported file types:
+       * - Images: .jpg, .jpeg, .png, .gif, .webp
+       * - Documents: .pdf, .txt, .doc, .docx
+       * - Other: Add to accept string below
+       */
+      attachments: {
+        accept: "image/*,application/pdf,text/plain,.doc,.docx",
+        async upload(file: File) {
+          // For UI-only: Create temporary preview URL
+          // File will be available for display but not sent to backend
+          return {
+            id: crypto.randomUUID(),
+            name: file.name,
+            size: file.size,
+            type: file.type,
+            // Create temporary URL for preview (revoked on page refresh)
+            url: URL.createObjectURL(file),
+          };
+        },
+      },
+    },
   });
 
   return (

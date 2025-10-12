@@ -27,7 +27,7 @@ export const CopilotTrigger = ({
             return (
                 <Button
                     className={cx(
-                        "fixed bottom-6 right-6 z-[70] flex size-14 items-center justify-center rounded-full bg-brand-600 text-white shadow-lg transition-all duration-200 hover:bg-brand-700 hover:shadow-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 pressed:scale-95",
+                        "fixed bottom-6 right-6 z-[70] flex size-14 items-center justify-center rounded-full bg-brand-600 text-white shadow-2xl transition-all duration-200 hover:bg-brand-700 hover:shadow-2xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 pressed:scale-95 ring-2 ring-white/20",
                         className
                     )}
                     aria-label="Open AI Copilot"
