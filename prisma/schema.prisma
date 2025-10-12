@@ -7,7 +7,7 @@ datasource db {
   url               = env("DATABASE_URL")
   directUrl         = env("DIRECT_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
-  schemas           = ["public", "nogl"]
+  schemas           = ["nogl", "public"]
 }
 
 model User {
@@ -105,6 +105,7 @@ model product_images_normalized {
   products    products? @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([product_id], map: "idx_product_images_product_id")
+  @@index([product_id, image_order], map: "idx_product_images_product_order")
   @@schema("public")
 }
 
@@ -186,63 +187,332 @@ model products {
   @@schema("public")
 }
 
-// Note: BigQuery Foreign Data Wrapper table exists in nogl schema
-// We access it via raw SQL queries in the API route
-model shopify_product_variants_bq {
-  product_id                    Int       @id
-  product_title                 String?
-  handle                        String?
-  body_html                     String?
-  published_at                  DateTime? @db.Timestamptz(6)
-  product_created_at            DateTime? @db.Timestamptz(6)
-  product_updated_at            DateTime? @db.Timestamptz(6)
-  brand_name                    String?
-  product_type                  String?
-  tags_csv                      String?
-  variant_count                 Int?
-  is_active                     Boolean?
-  variant_id                    Int?
-  variant_title                 String?
-  variant_sku                   String?
-  variant_position              Int?
-  variant_grams                 Int?
-  variant_option1               String?
-  variant_option2               String?
-  variant_option3               String?
-  variant_requires_shipping     Boolean?
-  variant_taxable               Boolean?
-  variant_available             Boolean?
-  variant_price                 Decimal?  @db.Decimal(10, 2)
-  variant_compare_at_price      Decimal?  @db.Decimal(10, 2)
-  discount_amount               Decimal?  @db.Decimal(10, 2)
-  discount_percent              Decimal?  @db.Decimal(10, 2)
-  is_on_sale                    Boolean?
-  featured_image_id             Int?
-  featured_image_product_id     Int?
-  featured_image_position       Int?
-  featured_image_created_at     DateTime? @db.Timestamptz(6)
-  featured_image_updated_at     DateTime? @db.Timestamptz(6)
-  featured_image_alt            String?
-  featured_image_width          Int?
-  featured_image_height         Int?
-  featured_image_src            String?
-  product_image_ids_csv         String?
-  product_image_urls_csv        String?
-  product_image_positions_csv   String?
-  variant_image_ids_csv         String?
-  variant_image_urls_csv        String?
-  option_name_1                 String?
-  option_values_1_csv           String?
-  option_name_2                 String?
-  option_values_2_csv           String?
-  option_name_3                 String?
-  option_values_3_csv           String?
-  material_inferred             String?
-  has_real_variant              Boolean?
-  last_updated_at               DateTime? @db.Timestamptz(6)
-  row_hash                      Int?
+model Competitor {
+  id                     String                      @id @default(cuid())
+  name                   String                      @unique
+  domain                 String                      @unique
+  website                String?
+  description            String?
+  productCount           Int                         @default(0)
+  marketPosition         Int?
+  marketShare            Decimal?                    @db.Decimal(5, 2)
+  status                 CompetitorStatus            @default(ACTIVE)
+  isMonitoring           Boolean                     @default(true)
+  monitoringStartDate    DateTime?
+  categories             String[]
+  tags                   Json?
+  dataSource             String?
+  lastScrapedAt          DateTime?
+  scrapingConfig         Json?
+  deletedAt              DateTime?
+  deletedBy              String?
+  deletionReason         String?
+  createdAt              DateTime                    @default(now())
+  updatedAt              DateTime                    @updatedAt
+  createdBy              String?
+  updatedBy              String?
+  CompetitorNote         CompetitorNote[]
+  priceComparisons       CompetitorPriceComparison[]
+  CompetitorPriceHistory CompetitorPriceHistory[]
 
-  @@map("shopify_product_variants_bq")
+  @@index([domain])
+  @@index([createdAt])
+  @@index([marketPosition])
+  @@index([status, deletedAt])
+  @@schema("nogl")
+}
+
+model CompetitorPriceComparison {
+  id              String     @id @default(cuid())
+  competitorId    String
+  productId       String?
+  productSku      String?
+  productName     String?
+  competitorPrice Decimal    @db.Decimal(10, 2)
+  myPrice         Decimal    @db.Decimal(10, 2)
+  currency        String     @default("EUR") @db.VarChar(3)
+  priceDiff       Decimal?   @db.Decimal(10, 2)
+  priceDiffPct    Decimal?   @db.Decimal(5, 2)
+  trend           Decimal?   @db.Decimal(5, 2)
+  isWinning       Boolean?
+  priceDate       DateTime   @default(now())
+  competitorUrl   String?
+  notes           String?
+  confidence      String?    @default("HIGH")
+  deletedAt       DateTime?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  competitor      Competitor @relation(fields: [competitorId], references: [id], onDelete: Cascade)
+
+  @@index([priceDate])
+  @@index([competitorId, deletedAt])
+  @@index([isWinning])
+  @@index([productId, deletedAt])
+  @@index([productSku, deletedAt])
+  @@schema("nogl")
+}
+
+model CompetitorNote {
+  id           String     @id
+  competitorId String
+  note         String
+  category     String?
+  createdBy    String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime
+  Competitor   Competitor @relation(fields: [competitorId], references: [id], onDelete: Cascade)
+
+  @@index([competitorId, createdAt])
+  @@schema("nogl")
+}
+
+model CompetitorPriceHistory {
+  id           String     @id
+  competitorId String
+  averagePrice Decimal    @db.Decimal(10, 2)
+  minPrice     Decimal?   @db.Decimal(10, 2)
+  maxPrice     Decimal?   @db.Decimal(10, 2)
+  productCount Int
+  recordDate   DateTime   @default(now())
+  Competitor   Competitor @relation(fields: [competitorId], references: [id], onDelete: Cascade)
+
+  @@index([competitorId, recordDate])
+  @@schema("nogl")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model nogl_staging_products_variants {
+  product_id                  BigInt?
+  product_title               String?
+  handle                      String?
+  body_html                   String?
+  published_at                DateTime? @db.Timestamptz(6)
+  product_created_at          DateTime? @db.Timestamptz(6)
+  product_updated_at          DateTime? @db.Timestamptz(6)
+  brand_name                  String?
+  product_type                String?
+  tags_csv                    String?
+  variant_count               Int?
+  is_active                   Boolean?
+  variant_id                  BigInt?
+  variant_title               String?
+  variant_sku                 String?
+  variant_position            Int?
+  variant_grams               Int?
+  variant_option1             String?
+  variant_option2             String?
+  variant_option3             String?
+  variant_requires_shipping   Boolean?
+  variant_taxable             Boolean?
+  variant_available           Boolean?
+  variant_price               Decimal?  @db.Decimal
+  variant_compare_at_price    Decimal?  @db.Decimal
+  discount_amount             Decimal?  @db.Decimal
+  discount_percent            Decimal?  @db.Decimal
+  is_on_sale                  Boolean?
+  featured_image_id           BigInt?
+  featured_image_product_id   BigInt?
+  featured_image_position     Int?
+  featured_image_created_at   DateTime? @db.Timestamptz(6)
+  featured_image_updated_at   DateTime? @db.Timestamptz(6)
+  featured_image_alt          String?
+  featured_image_width        Int?
+  featured_image_height       Int?
+  featured_image_src          String?
+  product_image_ids_csv       String?
+  product_image_urls_csv      String?
+  product_image_positions_csv String?
+  variant_image_ids_csv       String?
+  variant_image_urls_csv      String?
+  option_name_1               String?
+  option_values_1_csv         String?
+  option_name_2               String?
+  option_values_2_csv         String?
+  option_name_3               String?
+  option_values_3_csv         String?
+  material_inferred           String?
+  has_real_variant            Boolean?
+  last_updated_at             DateTime? @db.Timestamptz(6)
+  row_hash                    BigInt?
+
+  @@map("staging_products_variants")
+  @@ignore
+  @@schema("nogl")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model nogl_sync_state {
+  last_cutoff DateTime @db.Timestamptz(6)
+
+  @@map("sync_state")
+  @@ignore
+  @@schema("nogl")
+}
+
+model public_Account {
+  id                String      @id
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  User              public_User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+  @@map("Account")
+  @@schema("public")
+}
+
+model public_ApiKey {
+  id        String      @id
+  name      String
+  key       String      @unique
+  userId    String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime
+  User      public_User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("ApiKey")
+  @@schema("public")
+}
+
+model public_Session {
+  id           String      @id
+  sessionToken String      @unique
+  userId       String
+  expires      DateTime
+  User         public_User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("Session")
+  @@schema("public")
+}
+
+model public_User {
+  id                    String           @id
+  name                  String?
+  username              String?          @unique
+  email                 String           @unique
+  emailVerified         DateTime?
+  image                 String?
+  password              String?
+  passwordResetToken    String?          @unique
+  passwordResetTokenExp DateTime?
+  role                  public_UserRole  @default(USER)
+  onboardingCompleted   Boolean          @default(false)
+  bio                   String?
+  isCommunityMember     Boolean          @default(false)
+  userType              String?
+  referralSource        String?
+  otherReferralSource   String?
+  socialLinks           String?
+  expertise             String?
+  subscriptionId        String?
+  currentPeriodEnd      DateTime?
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime
+  Account               public_Account[]
+  ApiKey                public_ApiKey[]
+  Session               public_Session[]
+
+  @@index([role])
+  @@map("User")
+  @@schema("public")
+}
+
+model public_VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@id([identifier, token])
+  @@map("VerificationToken")
+  @@schema("public")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model public_staging_products_variants {
+  product_id                  BigInt?
+  product_title               String?
+  handle                      String?
+  body_html                   String?
+  published_at                DateTime? @db.Timestamptz(6)
+  product_created_at          DateTime? @db.Timestamptz(6)
+  product_updated_at          DateTime? @db.Timestamptz(6)
+  brand_name                  String?
+  product_type                String?
+  tags_csv                    String?
+  variant_count               Int?
+  is_active                   Boolean?
+  variant_id                  BigInt?
+  variant_title               String?
+  variant_sku                 String?
+  variant_position            Int?
+  variant_grams               Int?
+  variant_option1             String?
+  variant_option2             String?
+  variant_option3             String?
+  variant_requires_shipping   Boolean?
+  variant_taxable             Boolean?
+  variant_available           Boolean?
+  variant_price               Decimal?  @db.Decimal
+  variant_compare_at_price    Decimal?  @db.Decimal
+  discount_amount             Decimal?  @db.Decimal
+  discount_percent            Decimal?  @db.Decimal
+  is_on_sale                  Boolean?
+  featured_image_id           BigInt?
+  featured_image_product_id   BigInt?
+  featured_image_position     Int?
+  featured_image_created_at   DateTime? @db.Timestamptz(6)
+  featured_image_updated_at   DateTime? @db.Timestamptz(6)
+  featured_image_alt          String?
+  featured_image_width        Int?
+  featured_image_height       Int?
+  featured_image_src          String?
+  product_image_ids_csv       String?
+  product_image_urls_csv      String?
+  product_image_positions_csv String?
+  variant_image_ids_csv       String?
+  variant_image_urls_csv      String?
+  option_name_1               String?
+  option_values_1_csv         String?
+  option_name_2               String?
+  option_values_2_csv         String?
+  option_name_3               String?
+  option_values_3_csv         String?
+  material_inferred           String?
+  has_real_variant            Boolean?
+  last_updated_at             DateTime? @db.Timestamptz(6)
+  row_hash                    BigInt?
+
+  @@map("staging_products_variants")
+  @@ignore
+  @@schema("public")
+}
+
+model public_sync_state {
+  store_id    BigInt   @id
+  last_cutoff DateTime @default(dbgenerated("'1970-01-01 00:00:00+00'::timestamp with time zone")) @db.Timestamptz(6)
+
+  @@map("sync_state")
+  @@schema("public")
+}
+
+enum CompetitorStatus {
+  ACTIVE
+  INACTIVE
+  MONITORING
+  PAUSED
+  ARCHIVED
+
   @@schema("nogl")
 }
 
@@ -252,4 +522,13 @@ enum UserRole {
   ADMIN
 
   @@schema("nogl")
+}
+
+enum public_UserRole {
+  USER
+  EXPERT
+  ADMIN
+
+  @@map("UserRole")
+  @@schema("public")
 }

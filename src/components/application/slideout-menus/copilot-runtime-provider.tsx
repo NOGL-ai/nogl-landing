@@ -189,6 +189,49 @@ export function CopilotRuntimeProvider({ children }: { children: ReactNode }) {
           };
         },
       },
+      /**
+       * Speech Synthesis Adapter - Text-to-Speech
+       * 
+       * Enables users to have assistant messages read aloud.
+       * Uses browser's built-in speech synthesis API.
+       */
+      speech: {
+        speak(text: string) {
+          const utterance = new SpeechSynthesisUtterance(text);
+          utterance.rate = 0.9; // Slightly slower for better comprehension
+          utterance.pitch = 1.0;
+          utterance.volume = 0.8;
+          speechSynthesis.speak(utterance);
+        },
+        stop() {
+          speechSynthesis.cancel();
+        },
+      },
+      /**
+       * Feedback Adapter - Message Rating
+       * 
+       * Enables users to rate assistant messages with thumbs up/down.
+       * Feedback is sent to backend for analytics and model improvement.
+       */
+      feedback: {
+        async submit({ messageId, type }) {
+          try {
+            await fetch('/api/ai/feedback', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ 
+                messageId, 
+                rating: type === 'positive' ? 1 : -1,
+                timestamp: new Date().toISOString()
+              }),
+            });
+            toast.success('Feedback submitted!');
+          } catch (error) {
+            console.error('Failed to submit feedback:', error);
+            toast.error('Failed to submit feedback');
+          }
+        },
+      },
     },
   });
 

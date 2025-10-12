@@ -19,6 +19,8 @@ import { useTheme } from "next-themes";
 import { signOut } from "next-auth/react";
 import { i18n } from "@/i18n";
 import "@/styles/sidebar-animations.css";
+import GlassBackground from "@/components/molecules/GlassBackground";
+import ParticlesCanvas from "@/components/molecules/ParticlesCanvas";
 
 interface SidebarLayoutProps {
 	children: React.ReactNode;
@@ -146,7 +148,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 
 
 	return (
-		<div className={`flex h-full min-h-0 ${className}`} onKeyDown={handleKeyDown}>
+		<div className={`relative isolate flex h-full min-h-0 w-full overflow-x-hidden ${className}`} onKeyDown={handleKeyDown}>
 			{/* Skip to main content link for screen readers */}
 			<a
 				href="#main-content"
@@ -155,9 +157,13 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 				Skip to main content
 			</a>
 
+			{/* Background layers */}
+			<GlassBackground />
+			<ParticlesCanvas />
+
 			{/* Desktop Sidebar - Two-Level Navigation - Hidden on mobile */}
-			<div className="hidden lg:block">
-				<CollapsedSidebar 
+			<div className="hidden lg:block relative z-10">
+				<CollapsedSidebar
 					user={user}
 					onLogout={handleLogout}
 					onNavigate={handleNavigation}
@@ -274,12 +280,12 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 		{/* Main Content */}
 		<main
 			id="main-content"
-			className="flex flex-1 flex-col overflow-hidden transition-all duration-300 ease-in-out lg:ml-[72px] pt-16 lg:pt-0"
+			className="flex flex-1 flex-col overflow-hidden transition-all duration-300 ease-in-out lg:ml-[72px] pt-16 lg:pt-0 relative z-1"
 			role="main"
 			aria-label="Main content"
 		>
 			{/* Page content */}
-			<div className="flex-1 overflow-y-auto lg:rounded-tl-[40px]">
+			<div className="flex-1 overflow-y-auto lg:rounded-tl-[40px] bg-background/85">
 				{children}
 			</div>
 		</main>

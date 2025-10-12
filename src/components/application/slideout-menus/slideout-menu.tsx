@@ -18,7 +18,7 @@ export const ModalOverlay = (props: ModalOverlayProps) => {
             {...props}
             className={(state) =>
                 cx(
-                    "fixed inset-0 flex min-h-dvh w-full items-center justify-end bg-overlay/70 pl-6 outline-hidden ease-linear md:pl-10",
+                    "fixed inset-0 flex min-h-dvh w-full items-center justify-end bg-overlay/70 pl-0 outline-hidden ease-linear sm:pl-6 md:pl-10",
                     state.isEntering && "duration-300 animate-in fade-in",
                     state.isExiting && "duration-500 animate-out fade-out",
                     typeof props.className === "function" ? props.className(state) : props.className,
@@ -36,7 +36,7 @@ export const Modal = (props: ModalProps) => (
         {...props}
         className={(state) =>
             cx(
-                "fixed inset-y-0 right-0 left-auto h-full w-full max-w-[400px] shadow-xl transition",
+                "fixed inset-y-0 right-0 left-auto h-dvh w-full max-w-full overflow-hidden shadow-xl transition sm:max-w-[420px]",
                 state.isEntering && "duration-300 animate-in slide-in-from-right",
                 state.isExiting && "duration-500 animate-out slide-out-to-right",
                 typeof props.className === "function" ? props.className(state) : props.className,
@@ -53,7 +53,7 @@ export const Dialog = (props: DialogProps) => (
         role="dialog"
         {...props}
         className={cx(
-            "relative flex size-full flex-col items-start gap-6 overflow-y-auto bg-background ring-1 ring-secondary_alt outline-hidden",
+            "relative flex size-full flex-col items-start gap-6 overflow-x-hidden overflow-y-auto bg-background ring-1 ring-secondary_alt outline-hidden",
             props.className,
         )}
     />

@@ -24,7 +24,7 @@ export default async function RootLayout({
 		<>
 			<Loader />
 			<Providers session={session}>
-				<div className="flex flex-col min-h-screen">
+				<div className="flex flex-col min-h-screen overflow-x-hidden">
 					{/* <AuthCheck> */}
 					<NextTopLoader
 						color='#635BFF'

@@ -13,401 +13,10 @@ import {
 import { computeTrend, formatPercentCompact, formatPercentDetailed } from '@/utils/priceTrend';
 import Checkbox from '@/components/ui/checkbox';
 import TanStackTable from '@/components/application/table/tanstack-table';
+import { getCompetitors } from '@/lib/services/competitorClient';
+import { CompetitorDTO } from '@/types/product';
 
-const competitors = [
-  {
-    id: 0,
-    name: 'Pilgrim',
-    domain: 'pilgrim.net',
-    avatar: 'https://img.logo.dev/pilgrim.net?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 85,
-    position: 25,
-    trend: 12,
-    trendUp: true,
-    date: '22 Jan 2025',
-    categories: ['Active', 'Jewelry', 'Watches', '+4'],
-    competitorPrice: 29.90,
-    myPrice: 42.00,
-  },
-  {
-    id: 1,
-    name: 'Amoonic',
-    domain: 'amoonic.de',
-    avatar: 'https://img.logo.dev/amoonic.de?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 42,
-    position: 78,
-    trend: 3,
-    trendUp: false,
-    date: '20 Jan 2025',
-    categories: ['Active', 'Jewelry', 'Fashion', '+4'],
-    competitorPrice: 35.50,
-    myPrice: 32.00,
-  },
-  {
-    id: 2,
-    name: 'Cluse',
-    domain: 'cluse.com',
-    avatar: 'https://img.logo.dev/cluse.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 65,
-    position: 35,
-    trend: 15,
-    trendUp: true,
-    date: '24 Jan 2025',
-    categories: ['Active', 'Watches', 'Accessories'],
-    competitorPrice: 45.00,
-    myPrice: 45.00,
-  },
-  {
-    id: 3,
-    name: 'Eastside',
-    domain: 'eastsidewatches.com',
-    avatar: 'https://img.logo.dev/eastsidewatches.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 28,
-    position: 88,
-    trend: 2,
-    trendUp: true,
-    date: '26 Jan 2025',
-    categories: ['Active', 'Watches', 'Luxury'],
-    competitorPrice: 52.00,
-    myPrice: 48.00,
-  },
-  {
-    id: 4,
-    name: 'Engelssinn',
-    domain: 'engelsinn.de',
-    avatar: 'https://img.logo.dev/engelsinn.de?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 38,
-    position: 82,
-    trend: 1,
-    trendUp: false,
-    date: '18 Jan 2025',
-    categories: ['Active', 'Jewelry', 'Fashion', '+4'],
-    competitorPrice: 28.00,
-    myPrice: 35.50,
-  },
-  {
-    id: 5,
-    name: 'fejn',
-    domain: 'fejn.com',
-    avatar: 'https://img.logo.dev/fejn.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 52,
-    position: 65,
-    trend: 8,
-    trendUp: true,
-    date: '28 Jan 2025',
-    categories: ['Active', 'Jewelry', 'Design', '+4'],
-    competitorPrice: 39.99,
-    myPrice: 42.00,
-  },
-  {
-    id: 6,
-    name: 'float',
-    domain: 'float.to',
-    avatar: 'https://img.logo.dev/float.to?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 15,
-    position: 92,
-    trend: 1,
-    trendUp: true,
-    date: '16 Jan 2025',
-    categories: ['Inactive', 'Jewelry', 'Minimalist'],
-    competitorPrice: 55.00,
-    myPrice: 49.99,
-  },
-  {
-    id: 7,
-    name: 'Golden Strawberry',
-    domain: 'goldenstrawberry.de',
-    avatar: 'https://img.logo.dev/goldenstrawberry.de?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 35,
-    position: 85,
-    trend: 4,
-    trendUp: true,
-    date: '25 Jan 2025',
-    categories: ['Active', 'Jewelry', 'Fashion'],
-    competitorPrice: 28.00,
-    myPrice: 35.50,
-  },
-  {
-    id: 8,
-    name: 'Heideman',
-    domain: 'heideman-store.de',
-    avatar: 'https://img.logo.dev/heideman-store.de?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 48,
-    position: 75,
-    trend: 2,
-    trendUp: false,
-    date: '19 Jan 2025',
-    categories: ['Active', 'Jewelry', 'Luxury', '+4'],
-    competitorPrice: 39.99,
-    myPrice: 42.00,
-  },
-  {
-    id: 9,
-    name: 'Hey Happiness',
-    domain: 'heyhappiness.com',
-    avatar: 'https://img.logo.dev/heyhappiness.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 45,
-    position: 80,
-    trend: 6,
-    trendUp: true,
-    date: '27 Jan 2025',
-    categories: ['Active', 'Jewelry', 'Fashion'],
-    competitorPrice: 45.00,
-    myPrice: 45.00,
-  },
-  {
-    id: 10,
-    name: 'Jukserei',
-    domain: 'jukserei.com',
-    avatar: 'https://img.logo.dev/jukserei.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 22,
-    position: 90,
-    trend: 3,
-    trendUp: true,
-    date: '21 Jan 2025',
-    categories: ['Active', 'Jewelry', 'Design'],
-    competitorPrice: 52.00,
-    myPrice: 48.00,
-  },
-  {
-    id: 11,
-    name: 'Luamaya',
-    domain: 'luamaya.com',
-    avatar: 'https://img.logo.dev/luamaya.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 32,
-    position: 88,
-    trend: 4,
-    trendUp: false,
-    date: '23 Jan 2025',
-    categories: ['Active', 'Jewelry', 'Fashion', '+4'],
-    competitorPrice: 28.00,
-    myPrice: 35.50,
-  },
-  {
-    id: 12,
-    name: 'Nialaya',
-    domain: 'nialaya.com',
-    avatar: 'https://img.logo.dev/nialaya.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 28,
-    position: 90,
-    trend: 5,
-    trendUp: true,
-    date: '26 Jan 2025',
-    categories: ['Active', 'Jewelry', 'Design'],
-    competitorPrice: 39.99,
-    myPrice: 42.00,
-  },
-  {
-    id: 13,
-    name: 'Nonu Berlin',
-    domain: 'nonu.shop',
-    avatar: 'https://img.logo.dev/nonu.shop?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 42,
-    position: 82,
-    trend: 7,
-    trendUp: true,
-    date: '24 Jan 2025',
-    categories: ['Active', 'Jewelry', 'Fashion', '+4'],
-    competitorPrice: 45.00,
-    myPrice: 45.00,
-  },
-  {
-    id: 14,
-    name: 'Orelia',
-    domain: 'orelia.co.uk',
-    avatar: 'https://img.logo.dev/orelia.co.uk?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 95,
-    position: 40,
-    trend: 18,
-    trendUp: true,
-    date: '28 Jan 2025',
-    categories: ['Active', 'Jewelry', 'Fashion'],
-    competitorPrice: 52.00,
-    myPrice: 48.00,
-  },
-  {
-    id: 15,
-    name: 'Pico Kopenhagen',
-    domain: 'picocopenhagen.com',
-    avatar: 'https://img.logo.dev/picocopenhagen.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 35,
-    position: 85,
-    trend: 2,
-    trendUp: false,
-    date: '20 Jan 2025',
-    categories: ['Active', 'Jewelry', 'Design', '+4'],
-    competitorPrice: 28.00,
-    myPrice: 35.50,
-  },
-  {
-    id: 16,
-    name: 'Purelei',
-    domain: 'purelei.com',
-    avatar: 'https://img.logo.dev/purelei.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 58,
-    position: 70,
-    trend: 9,
-    trendUp: true,
-    date: '25 Jan 2025',
-    categories: ['Active', 'Jewelry', 'Fashion'],
-    competitorPrice: 39.99,
-    myPrice: 42.00,
-  },
-  {
-    id: 17,
-    name: 'Singaluru',
-    domain: 'singularu.com',
-    avatar: 'https://img.logo.dev/singularu.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 18,
-    position: 95,
-    trend: 3,
-    trendUp: true,
-    date: '22 Jan 2025',
-    categories: ['Active', 'Jewelry', 'Design'],
-    competitorPrice: 55.00,
-    myPrice: 49.99,
-  },
-  {
-    id: 18,
-    name: 'The Silver Collective',
-    domain: 'thesilvercollective.com',
-    avatar: 'https://img.logo.dev/thesilvercollective.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 72,
-    position: 60,
-    trend: 11,
-    trendUp: true,
-    date: '27 Jan 2025',
-    categories: ['Active', 'Jewelry', 'Silver', '+4'],
-    competitorPrice: 28.00,
-    myPrice: 35.50,
-  },
-  {
-    id: 19,
-    name: 'Wunderklein',
-    domain: 'wunderklein.com',
-    avatar: 'https://img.logo.dev/wunderklein.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 38,
-    position: 80,
-    trend: 4,
-    trendUp: false,
-    date: '19 Jan 2025',
-    categories: ['Active', 'Jewelry', 'Fashion'],
-    competitorPrice: 45.00,
-    myPrice: 45.00,
-  },
-  {
-    id: 20,
-    name: 'Bynouk',
-    domain: 'bynouck.com',
-    avatar: 'https://img.logo.dev/bynouck.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 25,
-    position: 90,
-    trend: 5,
-    trendUp: true,
-    date: '23 Jan 2025',
-    categories: ['Active', 'Jewelry', 'Design', '+4'],
-    competitorPrice: 52.00,
-    myPrice: 48.00,
-  },
-  {
-    id: 21,
-    name: 'Nana KAY',
-    domain: 'nana-kay.com',
-    avatar: 'https://img.logo.dev/nana-kay.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 32,
-    position: 88,
-    trend: 6,
-    trendUp: true,
-    date: '26 Jan 2025',
-    categories: ['Active', 'Jewelry', 'Fashion'],
-    competitorPrice: 28.00,
-    myPrice: 35.50,
-  },
-  {
-    id: 22,
-    name: 'Rafaela Donata',
-    domain: 'rafaela-donata.com',
-    avatar: 'https://img.logo.dev/rafaela-donata.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 15,
-    position: 95,
-    trend: 2,
-    trendUp: false,
-    date: '21 Jan 2025',
-    categories: ['Active', 'Jewelry', 'Design'],
-    competitorPrice: 39.99,
-    myPrice: 42.00,
-  },
-  {
-    id: 23,
-    name: 'Wanderlust + Co',
-    domain: 'wanderlustandco.com',
-    avatar: 'https://img.logo.dev/wanderlustandco.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 88,
-    position: 50,
-    trend: 14,
-    trendUp: true,
-    date: '28 Jan 2025',
-    categories: ['Active', 'Jewelry', 'Fashion', '+4'],
-    competitorPrice: 45.00,
-    myPrice: 45.00,
-  },
-  {
-    id: 24,
-    name: 'Engelsrufer',
-    domain: 'engelsrufer.de',
-    avatar: 'https://img.logo.dev/engelsrufer.de?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 12,
-    position: 98,
-    trend: 1,
-    trendUp: true,
-    date: '18 Jan 2025',
-    categories: ['Inactive', 'Jewelry', 'Fashion'],
-    competitorPrice: 55.00,
-    myPrice: 49.99,
-  },
-  {
-    id: 25,
-    name: 'Makaro',
-    domain: 'makarojewelry.com',
-    avatar: 'https://img.logo.dev/makarojewelry.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 45,
-    position: 75,
-    trend: 8,
-    trendUp: true,
-    date: '24 Jan 2025',
-    categories: ['Active', 'Jewelry', 'Design', '+4'],
-    competitorPrice: 52.00,
-    myPrice: 48.00,
-  },
-  {
-    id: 26,
-    name: 'Bruna The Label',
-    domain: 'brunathelabel.com',
-    avatar: 'https://img.logo.dev/brunathelabel.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 28,
-    position: 88,
-    trend: 3,
-    trendUp: false,
-    date: '22 Jan 2025',
-    categories: ['Active', 'Jewelry', 'Fashion'],
-    competitorPrice: 28.00,
-    myPrice: 35.50,
-  },
-  {
-    id: 27,
-    name: 'PDPaola',
-    domain: 'pdpaola.com',
-    avatar: 'https://img.logo.dev/pdpaola.com?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ',
-    products: 125,
-    position: 35,
-    trend: 22,
-    trendUp: true,
-    date: '27 Jan 2025',
-    categories: ['Active', 'Jewelry', 'Fashion', '+4'],
-    competitorPrice: 39.99,
-    myPrice: 42.00,
-  },
-];
+// Hardcoded data removed - now using API
 
 const badgeClasses: Record<string, string> = {
   Active: 'border-[#ABEFC6] bg-[#ECFDF3] text-[#067647]',
@@ -727,7 +336,7 @@ const PricePositionCell = ({
 };
 
 export default function CompetitorPage() {
-  const [selectedRows, setSelectedRows] = React.useState<Set<number>>(new Set([0, 1, 2, 5, 6]));
+  const [selectedRows, setSelectedRows] = React.useState<Set<number>>(new Set());
   const [activeTab, setActiveTab] = React.useState<'all' | 'monitored' | 'unmonitored'>('all');
   const [searchQuery, setSearchQuery] = React.useState('');
   const [focusedRowIndex, setFocusedRowIndex] = React.useState<number | null>(null);
@@ -735,12 +344,79 @@ export default function CompetitorPage() {
   const [priceSort, setPriceSort] = React.useState<'none' | 'asc' | 'desc'>('none');
   const [trendSort, setTrendSort] = React.useState<'none' | 'asc' | 'desc'>('none');
   const [currentPage, setCurrentPage] = React.useState(1);
-  const [itemsPerPage] = React.useState(10);
+  const [itemsPerPage, setItemsPerPage] = React.useState(() => {
+    // Load from localStorage or default based on screen size
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('competitor-page-size');
+      if (saved) {
+        return parseInt(saved, 10);
+      }
+      // Mobile optimization: smaller default on mobile
+      return window.innerWidth < 768 ? 10 : 25;
+    }
+    return 25;
+  });
+  
+  // API state
+  const [competitors, setCompetitors] = React.useState<any[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
+  const [totalPages, setTotalPages] = React.useState(1);
+  const [total, setTotal] = React.useState(0);
+
+  // Fetch competitors from API
+  React.useEffect(() => {
+    async function fetchCompetitors() {
+      try {
+        setIsLoading(true);
+        setError(null);
+        
+        const response = await getCompetitors({
+          page: currentPage,
+          limit: itemsPerPage,
+          search: searchQuery,
+          status: activeTab === 'all' ? undefined : activeTab === 'monitored' ? 'ACTIVE' : 'INACTIVE',
+          sortBy: 'createdAt',
+          sortOrder: 'desc',
+        });
+
+        // Map API response to expected format
+        const mapped = response.competitors.map((comp: CompetitorDTO, index: number) => ({
+          id: index, // Use array index as numeric ID for compatibility
+          _dbId: comp.id, // Keep original DB ID
+          name: comp.name,
+          domain: comp.domain,
+          avatar: `https://img.logo.dev/${comp.domain}?format=png&size=64&token=pk_bjGBOZlPTmCYjnqmgu3OpQ`,
+          products: comp.productCount,
+          position: comp.marketPosition || 50,
+          trend: 5, // Default trend - could be calculated from price history
+          trendUp: true,
+          date: new Date(comp.updatedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+          categories: comp.categories,
+          competitorPrice: 35.00, // Default price - could be fetched from latest price comparison
+          myPrice: 42.00,
+        }));
+
+        setCompetitors(mapped);
+        setTotalPages(response.pagination.totalPages);
+        setTotal(response.pagination?.total || 0);
+      } catch (err) {
+        console.error('Error fetching competitors:', err);
+        setError(err instanceof Error ? err.message : 'Failed to load competitors');
+        setCompetitors([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchCompetitors();
+  }, [currentPage, itemsPerPage, searchQuery, activeTab]);
 
   // Calculate max products for relative scaling
   const maxProducts = React.useMemo(() => {
+    if (competitors.length === 0) return 1;
     return Math.max(...competitors.map(c => c.products));
-  }, []);
+  }, [competitors]);
 
   const toggleRow = (id: number) => {
     setSelectedRows(prev => {
@@ -842,32 +518,13 @@ export default function CompetitorPage() {
     return list;
   }, [filteredCompetitors, productSort, priceSort, trendSort]);
 
-  // Pagination logic
-  const totalPages = Math.ceil(sortedCompetitors.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const paginatedCompetitors = sortedCompetitors.slice(startIndex, endIndex);
+  // Pagination logic - now using server-side pagination
+  const paginatedCompetitors = competitors; // Data is already paginated from API
 
   // Reset to first page when search or filters change
   React.useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery, activeTab, productSort, priceSort, trendSort]);
-
-  const goToPage = (page: number) => {
-    setCurrentPage(Math.max(1, Math.min(page, totalPages)));
-  };
-
-  const goToNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const goToPreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
+  }, [searchQuery, activeTab]);
 
   const togglePriceSort = () => {
     setPriceSort(prev => (prev === 'none' ? 'asc' : prev === 'asc' ? 'desc' : 'none'));
@@ -886,6 +543,73 @@ export default function CompetitorPage() {
     setPriceSort('none');
     setTrendSort('none');
   };
+
+  // Pagination functions
+  const goToPage = (page: number) => {
+    setCurrentPage(Math.max(1, Math.min(page, totalPages)));
+  };
+
+  const goToNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePageSizeChange = (newSize: number) => {
+    setItemsPerPage(newSize);
+    setCurrentPage(1); // Reset to first page
+    // Save to localStorage
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('competitor-page-size', newSize.toString());
+    }
+    // Scroll to top for better UX
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const goToPreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <main className="mx-auto w-full min-h-screen space-y-6 md:space-y-8 bg-background px-4 md:px-8 pt-6 md:pt-8 pb-8 md:pb-12 text-foreground transition-colors">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Loading competitors...</p>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <main className="mx-auto w-full min-h-screen space-y-6 md:space-y-8 bg-background px-4 md:px-8 pt-6 md:pt-8 pb-8 md:pb-12 text-foreground transition-colors">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <div className="text-red-500 mb-4">
+              <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-semibold mb-2">Failed to load competitors</h3>
+            <p className="text-muted-foreground mb-4">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <>
@@ -919,146 +643,6 @@ export default function CompetitorPage() {
           </button>
         </div>
       </header>
-      <section className="grid grid-cols-1 gap-4 md:gap-6 lg:grid-cols-3">
-        <article className="lg:col-span-2 rounded-xl border border-border-secondary bg-card shadow-sm transition-colors">
-          <div className="border-b border-border-secondary p-6">
-            <div className="flex items-start justify-between">
-              <div className="flex items-start gap-3">
-                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gray-200">
-                  <svg className="h-8 w-8 text-gray-600" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
-                    <path d="M12 2L2 7L12 12L22 7L12 2Z" />
-                    <path d="M2 17L12 22L22 17" />
-                    <path d="M2 12L12 17L22 12" />
-                  </svg>
-                </div>
-                <div>
-                  <h2 className="text-lg font-semibold text-foreground">Competitor breakdown</h2>
-                  <p className="mt-1 text-sm text-muted-foreground">Monitor competitor pricing, product counts, and market positioning.</p>
-                </div>
-              </div>
-              <button className={compactIconButtonClasses} aria-label="More actions">
-                <svg className="h-5 w-5 text-quaternary" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-                  <circle cx="10" cy="10" r="1.5" />
-                  <circle cx="10" cy="4" r="1.5" />
-                  <circle cx="10" cy="16" r="1.5" />
-                </svg>
-              </button>
-            </div>
-          </div>
-          <div className="p-6">
-            <div className="relative flex h-[184px] items-end">
-              <div className="absolute bottom-6 left-0 top-0 w-10 text-right text-xs text-muted-foreground">
-                <div className="flex h-full flex-col justify-between">
-                  {[100, 80, 60, 40, 20, 0].map(label => (
-                    <div key={label}>{label}</div>
-                  ))}
-                </div>
-              </div>
-              <div className="ml-12 h-[132px] flex-1">
-                <div className="absolute inset-0 ml-12 flex h-[132px] flex-col justify-between">
-                  {[0, 1, 2, 3, 4, 5].map(i => (
-                    <div key={i} className="h-px bg-muted" />
-                  ))}
-                </div>
-                <div className="relative ml-12 flex h-[132px] items-end justify-between px-5">
-                  {[
-                    { h1: 84, h2: 60, h3: 32 },
-                    { h1: 116, h2: 82, h3: 44 },
-                    { h1: 52, h2: 32, h3: 14 },
-                    { h1: 92, h2: 60, h3: 32 },
-                    { h1: 52, h2: 32, h3: 14 },
-                    { h1: 108, h2: 76, h3: 40 },
-                    { h1: 84, h2: 60, h3: 32 },
-                    { h1: 92, h2: 60, h3: 32 },
-                    { h1: 84, h2: 60, h3: 32 },
-                    { h1: 100, h2: 68, h3: 36 },
-                    { h1: 116, h2: 82, h3: 44 },
-                    { h1: 76, h2: 52, h3: 28 },
-                  ].map((bar, index) => (
-                    <div key={index} className="relative w-8" style={{ height: bar.h1 }}>
-                      <div className="absolute inset-0 rounded-t-md bg-border-secondary dark:bg-border-secondary" />
-                      <div className="absolute inset-x-0 bottom-0 rounded-t-md bg-purple-400 dark:bg-purple-600" style={{ height: bar.h2 }} />
-                      <div className="absolute inset-x-0 bottom-0 rounded-t-md bg-purple-600 dark:bg-purple-700" style={{ height: bar.h3 }} />
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="absolute bottom-0 left-12 right-0 flex justify-between px-6 text-xs text-muted-foreground">
-                {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map(month => (
-                  <div key={month}>{month}</div>
-                ))}
-              </div>
-            </div>
-            <div className="mt-2 text-center text-xs font-medium text-muted-foreground">Month</div>
-          </div>
-          <div className="flex justify-end border-t border-border-secondary p-6">
-            <button className={secondaryButtonClasses}>
-              View full report
-            </button>
-          </div>
-        </article>
-
-        <article className="rounded-xl border border-border-secondary bg-card shadow-sm transition-colors">
-          <div className="border-b border-border-secondary p-6">
-            <div className="flex items-start justify-between">
-              <div>
-                <h2 className="text-lg font-semibold text-foreground">Products monitored</h2>
-                <p className="mt-1 text-sm text-muted-foreground">You're monitoring 80% of your inventory.</p>
-              </div>
-              <button className={compactIconButtonClasses} aria-label="More actions">
-                <svg className="h-5 w-5 text-quaternary" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-                  <circle cx="10" cy="10" r="1.5" />
-                  <circle cx="10" cy="4" r="1.5" />
-                  <circle cx="10" cy="16" r="1.5" />
-                </svg>
-              </button>
-            </div>
-          </div>
-          <div className="space-y-8 p-6">
-            <div className="flex items-start justify-between">
-              <div className="relative w-[200px]">
-                <svg className="h-auto w-full" viewBox="0 0 200 110" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                  <path
-                    d="M190 100C190 88.181 187.672 76.4778 183.149 65.5585C178.626 54.6392 171.997 44.7177 163.64 36.3604C155.282 28.0031 145.361 21.3738 134.442 16.8508C123.522 12.3279 111.819 10 100 10C88.181 9.99999 76.4779 12.3279 65.5585 16.8508C54.6392 21.3737 44.7177 28.0031 36.3604 36.3604C28.0031 44.7176 21.3738 54.6391 16.8509 65.5584C12.3279 76.4777 10 88.181 10 100"
-                    stroke="currentColor"
-                    className="text-border-secondary"
-                    strokeWidth="20"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M10 100C10 80.9939 16.017 62.4756 27.1885 47.0993C38.36 31.723 54.1126 20.2781 72.1885 14.4049C90.2644 8.53169 109.736 8.5317 127.812 14.4049C145.887 20.2781 161.64 31.7231 172.812 47.0994"
-                    stroke="currentColor"
-                    className="text-purple-600"
-                    strokeWidth="20"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                <div className="absolute left-1/2 top-[60px] -translate-x-1/2 text-[30px] font-semibold text-primary">240</div>
-              </div>
-              <div className="flex items-center gap-1">
-                <svg className="h-4 w-4" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                  <path d="M14.6673 4.66663L9.42156 9.91238C9.15755 10.1764 9.02555 10.3084 8.87333 10.3579C8.73943 10.4014 8.5952 10.4014 8.46131 10.3579C8.30909 10.3084 8.17708 10.1764 7.91307 9.91238L6.08823 8.08754C5.82422 7.82353 5.69221 7.69152 5.54 7.64206C5.4061 7.59856 5.26187 7.59856 5.12797 7.64206C4.97575 7.69152 4.84375 7.82353 4.57974 8.08754L1.33398 11.3333M14.6673 4.66663H10.0007M14.6673 4.66663V9.33329" stroke="currentColor" className="text-green-600" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                <span className="text-sm font-medium text-green-700 dark:text-green-300">10%</span>
-              </div>
-            </div>
-            <div>
-              <h3 className="text-base font-medium text-foreground">You've almost reached your goal</h3>
-              <p className="mt-1 text-sm text-muted-foreground">You have used 80% of your goal.</p>
-            </div>
-          </div>
-          <div className="flex justify-end border-t border-border-secondary p-6">
-            <button className={secondaryButtonClasses}>
-              <svg className="h-5 w-5 text-quaternary" fill="none" stroke="currentColor" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.67} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-              Upgrade plan
-            </button>
-          </div>
-        </article>
-      </section>
 
       <section className="rounded-xl border border-border-secondary bg-card shadow-sm transition-colors">
         <div className="border-b border-border-secondary p-4 md:p-6">
@@ -1067,7 +651,7 @@ export default function CompetitorPage() {
               <div className="flex flex-wrap items-center gap-2">
                 <h2 className="text-base md:text-lg font-semibold text-foreground">Competitor monitored</h2>
                 <span className="inline-flex items-center rounded-full border border-border-secondary bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
-                  {sortedCompetitors.length} competitors
+                  {total > 0 ? total : sortedCompetitors.length} competitors
                 </span>
               </div>
               <p className="mt-1 text-xs md:text-sm text-muted-foreground">Monitor competitor pricing and stay competitive with real-time price tracking.</p>
@@ -1202,59 +786,80 @@ export default function CompetitorPage() {
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border-secondary px-4 md:px-6 py-3">
-          <div className="text-xs md:text-sm font-medium text-muted-foreground dark:text-gray-300">
-            Page {currentPage} of {totalPages}
-            <span className="sr-only">
-              Showing {startIndex + 1}-{Math.min(endIndex, sortedCompetitors.length)} of {sortedCompetitors.length} competitors
-              {searchQuery && ` matching "${searchQuery}"`}
-            </span>
+          <div className="flex items-center gap-2 md:gap-3">
+            {/* Page size selector */}
+            <div className="flex items-center gap-2">
+              <label htmlFor="page-size" className="text-sm text-muted-foreground">
+                Rows per page:
+              </label>
+              <select
+                id="page-size"
+                value={itemsPerPage}
+                onChange={(e) => handlePageSizeChange(Number(e.target.value))}
+                className="rounded-md border border-border-secondary px-2 py-1 text-sm bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring/40"
+                disabled={isLoading}
+              >
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+                <option value={50}>50</option>
+                <option value={100}>100</option>
+              </select>
+            </div>
+            
+            {/* Pagination info */}
+            <div className="text-xs md:text-sm font-medium text-muted-foreground dark:text-gray-300">
+              {total > 0 ? (
+                <>
+                  Showing {((currentPage - 1) * itemsPerPage) + 1}-{Math.min(currentPage * itemsPerPage, total)} of {total}
+                  <span className="ml-2 text-muted-foreground/70">
+                    (Page {currentPage} of {totalPages})
+                  </span>
+                </>
+              ) : (
+                'No competitors found'
+              )}
+              <span className="sr-only">
+                Page {currentPage} of {totalPages || 1}
+                {searchQuery && ` matching "${searchQuery}"`}
+              </span>
+            </div>
           </div>
           <div className="flex items-center gap-2 md:gap-3">
             <button
               onClick={goToPreviousPage}
-              disabled={currentPage === 1}
               className="inline-flex items-center justify-center gap-1 rounded-lg border border-border-secondary bg-background px-3 py-2 text-xs md:text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40 disabled:cursor-not-allowed disabled:opacity-60"
               aria-label="Go to previous page"
+              disabled={currentPage <= 1 || isLoading}
             >
-              Previous
+              {isLoading ? (
+                <>
+                  <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  <span className="hidden sm:inline">Loading...</span>
+                </>
+              ) : (
+                'Previous'
+              )}
             </button>
-            <div className="flex items-center gap-1">
-              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                let pageNum;
-                if (totalPages <= 5) {
-                  pageNum = i + 1;
-                } else if (currentPage <= 3) {
-                  pageNum = i + 1;
-                } else if (currentPage >= totalPages - 2) {
-                  pageNum = totalPages - 4 + i;
-                } else {
-                  pageNum = currentPage - 2 + i;
-                }
-                
-                return (
-                  <button
-                    key={pageNum}
-                    onClick={() => goToPage(pageNum)}
-                    className={`inline-flex items-center justify-center w-8 h-8 rounded-lg text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring/40 ${
-                      currentPage === pageNum
-                        ? 'bg-primary text-primary-foreground'
-                        : 'text-foreground hover:bg-muted'
-                    }`}
-                    aria-label={`Go to page ${pageNum}`}
-                    aria-current={currentPage === pageNum ? 'page' : undefined}
-                  >
-                    {pageNum}
-                  </button>
-                );
-              })}
-            </div>
             <button
               onClick={goToNextPage}
-              disabled={currentPage === totalPages}
               className="inline-flex items-center justify-center gap-1 rounded-lg border border-border-secondary bg-background px-3 py-2 text-xs md:text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40 disabled:cursor-not-allowed disabled:opacity-60"
               aria-label="Go to next page"
+              disabled={currentPage >= totalPages || isLoading}
             >
-              Next
+              {isLoading ? (
+                <>
+                  <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  <span className="hidden sm:inline">Loading...</span>
+                </>
+              ) : (
+                'Next'
+              )}
             </button>
           </div>
         </div>

@@ -81,4 +81,47 @@ export type GetProductsResponse = {
   filters: ProductFilters;
 };
 
+// Competitor types
+export type CompetitorStatus = 'ACTIVE' | 'INACTIVE' | 'MONITORING' | 'PAUSED';
+
+export type CompetitorDTO = {
+  id: string;
+  name: string;
+  domain: string;
+  website?: string | null;
+  description?: string | null;
+  productCount: number;
+  marketPosition?: number | null;
+  status: CompetitorStatus;
+  categories: string[];
+  lastScrapedAt?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  _count?: {
+    priceComparisons: number;
+  };
+};
+
+export type CompetitorPriceComparisonDTO = {
+  id: string;
+  competitorId: string;
+  productId?: string | null;
+  competitorPrice: number;
+  myPrice: number;
+  priceDate: string;
+  currency: string;
+  trend?: number | null;
+  notes?: string | null;
+  sourceUrl?: string | null;
+};
+
+export type GetCompetitorsResponse = {
+  competitors: CompetitorDTO[];
+  pagination: PageMeta;
+  filters: {
+    search?: string;
+    status?: string;
+  };
+};
+
 

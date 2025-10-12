@@ -26,23 +26,10 @@ export const GET = withAuth(async (request: NextRequest, { params }: { params: {
           slug: true,
         },
       },
-      competitors: {
-        select: {
-          id: true,
-          name: true,
-          cheapest: true,
-          avg: true,
-          highest: true,
-          cheapestColor: true,
-        },
-      },
-      priceHistory: {
-        orderBy: { createdAt: "desc" },
-        take: 10,
-      },
       _count: {
         select: {
-          competitors: true,
+          product_images_normalized: true,
+          product_sizes: true,
         },
       },
     },
@@ -116,19 +103,10 @@ export const PUT = withAuth(
             slug: true,
           },
         },
-        competitors: {
-          select: {
-            id: true,
-            name: true,
-            cheapest: true,
-            avg: true,
-            highest: true,
-            cheapestColor: true,
-          },
-        },
         _count: {
           select: {
-            competitors: true,
+            product_images_normalized: true,
+            product_sizes: true,
           },
         },
       },

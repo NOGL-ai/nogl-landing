@@ -8,6 +8,10 @@ import {
   PencilIcon,
   RefreshCwIcon,
   Square,
+  Volume2Icon,
+  VolumeXIcon,
+  ThumbsUpIcon,
+  ThumbsDownIcon,
 } from "lucide-react";
 
 import {
@@ -32,6 +36,7 @@ import {
   ComposerAttachments,
   UserMessageAttachments,
 } from "@/components/attachment";
+import { AttachmentUI } from "@/components/attachment";
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
 import { ScrollBar } from "@/components/ui/scroll-area";
 
@@ -39,6 +44,8 @@ import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
 
 export const Thread: FC = () => {
+  const threadMaxWidth = "min(100%, calc(100vw - 3.5rem))";
+
   return (
     <LazyMotion features={domAnimation}>
       <MotionConfig reducedMotion="user">
@@ -46,11 +53,14 @@ export const Thread: FC = () => {
           <ThreadPrimitive.Root
             className="aui-root aui-thread-root @container flex h-full flex-col bg-background"
             style={{
-              ["--thread-max-width" as string]: "100%",
+              ["--thread-max-width" as string]: threadMaxWidth,
             }}
           >
             <ScrollAreaPrimitive.Viewport className="thread-viewport" asChild>
-              <ThreadPrimitive.Viewport className="aui-thread-viewport relative flex flex-1 flex-col overflow-x-auto px-4">
+              <ThreadPrimitive.Viewport 
+                autoScroll={true}
+                className="aui-thread-viewport relative flex flex-1 flex-col overflow-x-auto px-4"
+              >
                 <ThreadPrimitive.If empty>
                   <ThreadWelcome />
                 </ThreadPrimitive.If>
@@ -62,6 +72,15 @@ export const Thread: FC = () => {
                     AssistantMessage,
                   }}
                 />
+
+
+                <ThreadPrimitive.If disabled>
+                  <div className="aui-thread-disabled mx-auto w-full max-w-[var(--thread-max-width)] px-2 py-4">
+                    <div className="aui-thread-disabled-content rounded-lg border border-destructive/20 bg-destructive/5 p-3 text-center text-sm text-destructive">
+                      <span>AI is temporarily unavailable. Please try again later.</span>
+                    </div>
+                  </div>
+                </ThreadPrimitive.If>
 
                 <ThreadPrimitive.If empty={false}>
                   <div className="aui-thread-viewport-spacer min-h-8 grow" />
@@ -187,9 +206,9 @@ const ThreadSuggestions: FC = () => {
 
 const Composer: FC = () => {
   return (
-    <div className="aui-composer-wrapper sticky bottom-0 mx-auto flex w-full max-w-[var(--thread-max-width)] flex-col gap-4 overflow-visible rounded-t-3xl bg-background pb-4 md:pb-6">
+    <div className="aui-composer-wrapper sticky bottom-0 mx-auto flex w-full max-w-[var(--thread-max-width)] flex-col gap-4 overflow-visible rounded-t-3xl bg-background px-3 pb-4 md:px-4 md:pb-6">
       <ThreadScrollToBottom />
-      <ComposerPrimitive.Root className="aui-composer-root relative flex w-full flex-col rounded-3xl border border-border bg-muted px-1 pt-2 shadow-[0_9px_9px_0px_rgba(0,0,0,0.01),0_2px_5px_0px_rgba(0,0,0,0.06)] dark:border-muted-foreground/15">
+      <ComposerPrimitive.Root className="aui-composer-root relative flex w-full flex-col rounded-3xl border border-border bg-muted px-3 pt-3 shadow-[0_9px_9px_0px_rgba(0,0,0,0.01),0_2px_5px_0px_rgba(0,0,0,0.06)] dark:border-muted-foreground/15">
         <ComposerAttachments />
         <ComposerPrimitive.Input
           placeholder="Send a message..."
@@ -206,7 +225,7 @@ const Composer: FC = () => {
 
 const ComposerAction: FC = () => {
   return (
-    <div className="aui-composer-action-wrapper relative mx-1 mt-2 mb-2 flex items-center justify-between">
+    <div className="aui-composer-action-wrapper relative mt-2 mb-2 flex w-full items-center justify-between gap-2 px-2">
       <ComposerAddAttachment />
 
       <ThreadPrimitive.If running={false}>
@@ -296,12 +315,17 @@ const AssistantMessage: FC = () => {
               ToolGroup,
             }}
           />
+          <MessagePrimitive.Attachments components={{ Attachment: AttachmentUI }} />
           <MessageError />
         </div>
 
         <div className="aui-assistant-message-footer mt-2 ml-2 flex">
-          <BranchPicker />
-          <AssistantActionBar />
+          <MessagePrimitive.If hasBranches>
+            <BranchPicker />
+          </MessagePrimitive.If>
+          <MessagePrimitive.If lastOrHover>
+            <AssistantActionBar />
+          </MessagePrimitive.If>
         </div>
       </div>
     </MessagePrimitive.Root>
@@ -331,6 +355,26 @@ const AssistantActionBar: FC = () => {
           <RefreshCwIcon />
         </TooltipIconButton>
       </ActionBarPrimitive.Reload>
+      <ActionBarPrimitive.Speak asChild>
+        <TooltipIconButton tooltip="Read aloud">
+          <Volume2Icon />
+        </TooltipIconButton>
+      </ActionBarPrimitive.Speak>
+      <ActionBarPrimitive.StopSpeaking asChild>
+        <TooltipIconButton tooltip="Stop reading">
+          <VolumeXIcon />
+        </TooltipIconButton>
+      </ActionBarPrimitive.StopSpeaking>
+      <ActionBarPrimitive.FeedbackPositive asChild>
+        <TooltipIconButton tooltip="Good response">
+          <ThumbsUpIcon />
+        </TooltipIconButton>
+      </ActionBarPrimitive.FeedbackPositive>
+      <ActionBarPrimitive.FeedbackNegative asChild>
+        <TooltipIconButton tooltip="Poor response">
+          <ThumbsDownIcon />
+        </TooltipIconButton>
+      </ActionBarPrimitive.FeedbackNegative>
     </ActionBarPrimitive.Root>
   );
 };
@@ -348,12 +392,16 @@ const UserMessage: FC = () => {
           <div className="aui-user-message-content rounded-3xl bg-muted px-5 py-2.5 break-words text-foreground">
             <MessagePrimitive.Parts />
           </div>
-          <div className="aui-user-action-bar-wrapper absolute top-1/2 left-0 -translate-x-full -translate-y-1/2 pr-2">
-            <UserActionBar />
-          </div>
+          <MessagePrimitive.If lastOrHover>
+            <div className="aui-user-action-bar-wrapper absolute top-1/2 left-0 -translate-x-full -translate-y-1/2 pr-2">
+              <UserActionBar />
+            </div>
+          </MessagePrimitive.If>
         </div>
 
-        <BranchPicker className="aui-user-branch-picker col-span-full col-start-1 row-start-3 -mr-1 justify-end" />
+        <MessagePrimitive.If hasBranches>
+          <BranchPicker className="aui-user-branch-picker col-span-full col-start-1 row-start-3 -mr-1 justify-end" />
+        </MessagePrimitive.If>
       </div>
     </MessagePrimitive.Root>
   );

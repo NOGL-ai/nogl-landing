@@ -122,7 +122,7 @@ const AttachmentThumb: FC = () => {
   );
 };
 
-const AttachmentUI: FC = () => {
+export const AttachmentUI: FC = () => {
   const attachment = useAttachment();
   const isImage = attachment.type === "image";
   
