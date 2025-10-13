@@ -1,5 +1,7 @@
 'use client';
 
+'use client';
+
 import React from 'react';
 import {
   ArrowDown,
@@ -9,6 +11,8 @@ import {
   Search,
   Settings,
   Upload,
+  Loader2,
+  Search as SearchIcon,
 } from 'lucide-react';
 import { computeTrend, formatPercentCompact, formatPercentDetailed } from '@/utils/priceTrend';
 import Checkbox from '@/components/ui/checkbox';
@@ -16,6 +20,10 @@ import TanStackTable from '@/components/application/table/tanstack-table';
 import JewelryProductCell from '@/components/application/table/JewelryProductCell';
 import { getProducts } from '@/lib/services/productClient';
 import { ProductDTO } from '@/types/product';
+import { SimilaritySearchResult } from '@/types/market-intelligence';
+import SimilaritySearchResults from '@/components/competitor/SimilaritySearchResults';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import toast from 'react-hot-toast';
 
 // Competitor Products Data - for monitored URLs
@@ -476,6 +484,20 @@ export default function CompetitorPage() {
     totalPages: 0
   });
 
+  // Similarity search state
+  const [searchResults, setSearchResults] = React.useState<Map<string, SimilaritySearchResult>>(new Map());
+  const [isSearching, setIsSearching] = React.useState<Set<string>>(new Set());
+  const [expandedResultsRow, setExpandedResultsRow] = React.useState<string | null>(null);
+  const [isLoadingSimilarity, setIsLoadingSimilarity] = React.useState(false);
+  const [similarityErrors, setSimilarityErrors] = React.useState<Map<string, string>>(new Map());
+
+  // Trigger similarity search when products are loaded
+  React.useEffect(() => {
+    if (competitors.length > 0 && !isLoadingSimilarity) {
+      performBatchSimilaritySearch(competitors);
+    }
+  }, [competitors.length]); // Only trigger when competitors are first loaded
+
   // Fetch products from API
   React.useEffect(() => {
     const fetchProducts = async () => {
@@ -745,6 +767,161 @@ export default function CompetitorPage() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Handle similarity search
+  const handleFindSimilar = async (product: any) => {
+    const productId = product.id.toString();
+    const imageUrl = product.image || product.avatar || product.product_page_image_url;
+    
+    if (!imageUrl) {
+      toast.error('Product has no image for similarity search');
+      return;
+    }
+
+    // Check if already searching or has results
+    if (isSearching.has(productId) || searchResults.has(productId)) {
+      return;
+    }
+
+    setIsSearching(prev => new Set(prev).add(productId));
+    
+    try {
+      const response = await fetch('/api/market-intelligence/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          imageUrl,
+          threshold: 0.75,
+          limit: 10,
+        }),
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Search failed');
+      }
+      
+      const data: SimilaritySearchResult = await response.json();
+      
+      setSearchResults(prev => new Map(prev).set(productId, data));
+      setExpandedResultsRow(productId);
+      
+      if (data.success && data.totalMatches > 0) {
+        toast.success(`Found ${data.totalMatches} similar products`);
+      } else {
+        toast('No similar products found above 75% threshold', { icon: 'ℹ️' });
+      }
+    } catch (error) {
+      console.error('Similarity search error:', error);
+      toast.error(error instanceof Error ? error.message : 'Failed to search for similar products');
+    } finally {
+      setIsSearching(prev => {
+        const next = new Set(prev);
+        next.delete(productId);
+        return next;
+      });
+    }
+  };
+
+  // Toggle expanded results row
+  const toggleExpandedResults = (productId: string) => {
+    setExpandedResultsRow(prev => prev === productId ? null : productId);
+  };
+
+  // Helper function to validate image URLs
+  const isValidImageUrl = (url: any): boolean => {
+    if (!url || typeof url !== 'string') return false;
+    try {
+      const urlObj = new URL(url);
+      return urlObj.protocol === 'http:' || urlObj.protocol === 'https:';
+    } catch {
+      return false;
+    }
+  };
+
+  // Automatic similarity search for all products on page load
+  const performBatchSimilaritySearch = async (products: any[]) => {
+    const productsWithImages = products.filter(product => {
+      const imageUrl = product.image || product.avatar || product.product_page_image_url;
+      return isValidImageUrl(imageUrl);
+    });
+
+    if (productsWithImages.length === 0) return;
+
+    setIsLoadingSimilarity(true);
+    setSimilarityErrors(new Map());
+
+    // Process in batches of 5 to avoid overwhelming the API
+    const batchSize = 5;
+    const batches = [];
+    for (let i = 0; i < productsWithImages.length; i += batchSize) {
+      batches.push(productsWithImages.slice(i, i + batchSize));
+    }
+
+    for (const batch of batches) {
+      const promises = batch.map(async (product) => {
+        const productId = product.id.toString();
+        const imageUrl = product.image || product.avatar || product.product_page_image_url;
+
+        if (!isValidImageUrl(imageUrl)) {
+          console.warn(`Skipping product ${productId}: Invalid image URL format`);
+          return;
+        }
+
+        try {
+          const response = await fetch('/api/market-intelligence/search', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              imageUrl,
+              threshold: 0.75,
+              limit: 10,
+            }),
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Search failed');
+          }
+
+          const data: SimilaritySearchResult = await response.json();
+
+          setSearchResults(prev => new Map(prev).set(productId, data));
+
+          // Calculate prices from similarity results
+          if (data.success && data.matches.length > 0) {
+            const prices = data.matches
+              .map(match => match.price)
+              .filter((price): price is number => typeof price === 'number' && price > 0);
+
+            if (prices.length > 0) {
+              const minPrice = Math.min(...prices);
+              const closestPrice = data.closestMatch?.price ?? data.matches.find(match => typeof match.price === 'number')?.price ?? minPrice;
+
+              // Update the product data with calculated prices
+              // This will be reflected in the table automatically
+              product.competitorPrice = minPrice;
+              product.myPrice = closestPrice;
+            }
+          }
+        } catch (error) {
+          console.error(`Similarity search error for product ${productId}:`, error);
+          setSimilarityErrors(prev => new Map(prev).set(productId, 
+            error instanceof Error ? error.message : 'Search failed'
+          ));
+        }
+      });
+
+      await Promise.all(promises);
+      
+      // Small delay between batches to be respectful to the API
+      if (batches.indexOf(batch) < batches.length - 1) {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+    }
+
+    setIsLoadingSimilarity(false);
+  };
+
   // Show loading state only on initial load
   if (isInitialLoading) {
     return (
@@ -794,7 +971,7 @@ export default function CompetitorPage() {
       {/* Header */}
       <header className="flex flex-wrap items-start justify-between gap-3 md:gap-4">
         <div className="min-w-[200px] md:min-w-[280px] flex-1">
-          <h1 className="text-xl md:text-2xl font-semibold text-foreground">Welcome back, Tim</h1>
+          <h1 className="text-xl md:text-2xl font-semibold text-foreground">Monitored Products</h1>
         </div>
         <div className="flex items-center gap-2 md:gap-3">
           <button className="hidden md:flex p-2.5 rounded-lg hover:bg-muted transition-colors" aria-label="Search">
@@ -994,9 +1171,22 @@ export default function CompetitorPage() {
               brandColumnHeader="Brand"
               showChannelColumn={true}
               firstColumnHeader="Product"
+              searchResults={searchResults}
             />
           )}
         </div>
+
+        {/* Similarity Search Status */}
+        {isLoadingSimilarity && (
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 mx-4 md:mx-6 mb-4">
+            <div className="flex items-center gap-2">
+              <Loader2 className="h-4 w-4 animate-spin text-blue-600" />
+              <span className="text-sm text-blue-800 dark:text-blue-200">
+                Searching for similar products... This may take a moment.
+              </span>
+            </div>
+          </div>
+        )}
 
         <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border-secondary px-4 md:px-6 py-3">
           <div className="flex items-center gap-2 md:gap-3">

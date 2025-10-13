@@ -44,3 +44,4 @@ describe("Mastra Integration", () => {
     expect(() => mastra.getAgent("invalidAgent")).toThrow();
   });
 });
+

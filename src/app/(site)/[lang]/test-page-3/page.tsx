@@ -147,7 +147,7 @@ export default function TestPage3() {
         <div className="mb-6">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="min-w-[320px] flex-1">
-              <h1 className="text-2xl font-semibold text-[#181D27]">Welcome back, Tim</h1>
+              <h1 className="text-2xl font-semibold text-[#181D27]">Test Page 3</h1>
             </div>
             <div className="flex items-center gap-3">
               <button className="p-2.5 rounded-lg transition-colors hover:bg-gray-50" aria-label="Search">

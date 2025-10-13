@@ -5,7 +5,14 @@ import Notifications from "../molecules/Notifications";
 import ThemeToggler from "../atoms/ThemeToggler";
 import { useSession } from "next-auth/react";
 
-export default function Header({ openSidebar, setOpenSidebar }: unknown) {
+type HeaderProps = {
+  openSidebar: boolean;
+  setOpenSidebar: (open: boolean) => void;
+  title?: string;
+  showGreeting?: boolean;
+};
+
+export default function Header({ openSidebar, setOpenSidebar, title, showGreeting = false }: HeaderProps) {
 	const { data: session } = useSession();
 
 	return (
@@ -19,9 +26,11 @@ export default function Header({ openSidebar, setOpenSidebar }: unknown) {
 					</span>
 				</span>
 			</div>
-			<p className='font-satoshi text-dark hidden whitespace-nowrap text-xl font-medium capitalize lg:block dark:text-white'>
-				Welcome {session?.user?.name}! 👋
-			</p>
+			{(showGreeting || title) && (
+				<p className='font-satoshi text-dark hidden whitespace-nowrap text-xl font-medium capitalize lg:block dark:text-white'>
+					{title ?? `Welcome ${session?.user?.name ?? ''}! 👋`}
+				</p>
+			)}
 
 			<div className='flex w-full items-center justify-end gap-4'>
 				<ThemeToggler />

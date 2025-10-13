@@ -486,3 +486,4 @@ case "SEND_EMAIL":
 - [Assistant UI Documentation](https://www.assistant-ui.com/docs)
 - [Prisma Documentation](https://www.prisma.io/docs)
 - [Next.js API Routes](https://nextjs.org/docs/api-routes/introduction)
+

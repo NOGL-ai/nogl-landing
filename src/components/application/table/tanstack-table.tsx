@@ -15,8 +15,10 @@ import {
   type ColumnFiltersState,
 } from '@tanstack/react-table';
 import { ArrowDown, ArrowUp, ChevronsUpDown } from 'lucide-react';
+import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import Checkbox from '@/components/ui/checkbox';
 import type { TrendComputation } from '@/utils/priceTrend';
+import type { SimilarityMatch } from '@/types/market-intelligence';
 import {
   DndContext,
   closestCenter,
@@ -79,6 +81,7 @@ interface TanStackTableProps {
   firstColumnHeader?: string;
   enableDragDrop?: boolean;
   onDragEnd?: (event: DragEndEvent) => void;
+  searchResults?: Map<string, any>;
 }
 
 const columnHelper = createColumnHelper<Competitor>();
@@ -108,6 +111,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
   firstColumnHeader = 'Product',
   enableDragDrop = false,
   onDragEnd,
+  searchResults = new Map(),
 }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
@@ -150,9 +154,10 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
     onRowSelectionChange(newSelectedRows);
   };
 
-  // Define columns
+
+  // Define all columns in a single useMemo
   const columns = useMemo<ColumnDef<Competitor>[]>(() => {
-    const baseColumns: ColumnDef<Competitor>[] = [
+    const allColumns: ColumnDef<Competitor>[] = [
       {
         accessorKey: 'name',
         id: 'select',
@@ -204,7 +209,14 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
                 </div>
               </div>
               <div id={`competitor-${row.original.id}-info`} className="min-w-0 flex-1">
-                <div className="text-sm font-medium text-foreground truncate">{row.original.name}</div>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="max-w-[150px] sm:max-w-[210px] md:max-w-[270px] text-sm font-medium text-foreground truncate" title={row.original.name}>
+                      {row.original.name}
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent sideOffset={8}>{row.original.name}</TooltipContent>
+                </Tooltip>
                 <div className="text-sm text-muted-foreground truncate">
                   {row.original.sku ? `SKU: ${row.original.sku}` : `Code: ${row.original.domain}`}
                 </div>
@@ -220,7 +232,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
 
     // Add Products column only if showProductsColumn is true
     if (showProductsColumn) {
-      baseColumns.push({
+      allColumns.push({
         accessorKey: 'products',
         id: 'products',
         header: productsColumnHeader,
@@ -243,7 +255,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
 
     // Add Materials column only if showMaterialsColumn is true
     if (showMaterialsColumn) {
-      baseColumns.push({
+      allColumns.push({
         accessorKey: 'variants',
         id: 'variants',
         header: 'Materials',
@@ -334,95 +346,10 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
     }
 
 
-    // Add Competitor Count column (Untitled UI inspired) - conditional
-    if (showCompetitorsColumn) {
-      baseColumns.push({
-        accessorKey: 'competitorCount',
-        id: 'competitorCount',
-        header: 'Competitors',
-        cell: ({ row }) => {
-          const product = row.original as any;
-          const competitorCount = product.competitorCount || 0;
-          
-          if (competitorCount === 0) {
-            return (
-              <div className="flex items-center justify-center">
-                <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                  <span className="text-sm font-medium text-gray-400">—</span>
-                </div>
-              </div>
-            );
-          }
-
-          // Calculate progress percentage (max 10 competitors for 100% fill)
-          const maxCompetitors = 10;
-          const progressPercentage = Math.min((competitorCount / maxCompetitors) * 100, 100);
-          const circumference = 2 * Math.PI * 16; // radius = 16
-          const strokeDasharray = `${(progressPercentage / 100) * circumference} ${circumference}`;
-          
-          return (
-            <div className="group relative flex items-center justify-center">
-              {/* Circular Progress Chart - Untitled UI Style */}
-              <div className="relative w-10 h-10">
-                <svg width="40" height="40" className="transform -rotate-90">
-                  {/* Background circle */}
-                  <circle
-                    cx="20"
-                    cy="20"
-                    r="16"
-                    fill="none"
-                    stroke="#E9EAEB"
-                    strokeWidth="3"
-                  />
-                  {/* Progress circle */}
-                  <circle
-                    cx="20"
-                    cy="20"
-                    r="16"
-                    fill="none"
-                    stroke="#7F56D9"
-                    strokeWidth="3"
-                    strokeDasharray={strokeDasharray}
-                    strokeDashoffset="0"
-                    strokeLinecap="round"
-                    className="transition-all duration-300 ease-out"
-                  />
-                </svg>
-                
-                {/* Center count - Untitled UI typography */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                    {competitorCount}
-                  </span>
-                </div>
-              </div>
-
-              {/* Hover tooltip */}
-              <div className="absolute left-1/2 top-full mt-2 hidden group-hover:block z-50 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs rounded-lg px-3 py-2 shadow-lg whitespace-nowrap transform -translate-x-1/2">
-                <div className="space-y-1">
-                  <div className="font-semibold">Competitor Analysis</div>
-                  <div className="text-gray-300 dark:text-gray-600">
-                    {competitorCount} competitor{competitorCount !== 1 ? 's' : ''} found
-                  </div>
-                  {product.competitors?.competitorNames && (
-                    <div className="text-gray-300 dark:text-gray-600">
-                      Top: {product.competitors.competitorNames.slice(0, 3).join(', ')}
-                      {product.competitors.competitorNames.length > 3 && ` +${product.competitors.competitorNames.length - 3} more`}
-                    </div>
-                  )}
-                </div>
-                <div className="absolute -top-1 left-1/2 w-2 h-2 bg-gray-900 dark:bg-gray-100 rotate-45 transform -translate-x-1/2"></div>
-              </div>
-            </div>
-          );
-        },
-        enableSorting: true,
-      });
-    }
 
     // Add Brand/Country column - conditional
     if (showBrandColumn) {
-      baseColumns.push({
+      allColumns.push({
         accessorKey: 'brand',
         id: 'brand',
         header: brandColumnHeader,
@@ -552,7 +479,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
 
     // Add Channel column - conditional
     if (showChannelColumn) {
-      baseColumns.push({
+      allColumns.push({
         accessorKey: 'channel',
         id: 'channel',
         header: 'Channel',
@@ -629,7 +556,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
     }
 
     // Add remaining columns
-    baseColumns.push(
+    allColumns.push(
       {
         accessorKey: 'competitorPrice',
         header: 'Price Analysis',
@@ -777,8 +704,132 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
       }
     );
 
-    return baseColumns;
-  }, [selectedRows, maxProducts, badgeClasses, ProductsCell, PricePositionCell, computeTrend, formatPercentDetailed, formatPercentCompact, showProductsColumn]);
+    // Add Competitor Count column (Untitled UI inspired) - conditional
+    if (showCompetitorsColumn) {
+      allColumns.push({
+        accessorKey: 'competitorCount',
+        id: 'competitorCount',
+        header: 'Competitors',
+        cell: ({ row }) => {
+          const product = row.original as any;
+          const productId = product.id.toString();
+          const similarityResult = searchResults?.get?.(productId);
+          const competitorCount = similarityResult?.totalMatches || product.competitorCount || 0;
+          const formatMatchPrice = (price?: number, currency = 'EUR') => {
+            if (typeof price !== 'number') {
+              return null;
+            }
+
+            return new Intl.NumberFormat('de-DE', {
+              style: 'currency',
+              currency,
+              minimumFractionDigits: 2,
+            }).format(price);
+          };
+
+          if (competitorCount === 0) {
+            return (
+              <div className="flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                  <span className="text-sm font-medium text-gray-400">—</span>
+                </div>
+              </div>
+            );
+          }
+
+          // Calculate progress percentage (max 10 competitors for 100% fill)
+          const maxCompetitors = 10;
+          const progressPercentage = Math.min((competitorCount / maxCompetitors) * 100, 100);
+          const circumference = 2 * Math.PI * 16; // radius = 16
+          const strokeDasharray = `${(progressPercentage / 100) * circumference} ${circumference}`;
+          
+          return (
+            <div className="group relative flex items-center justify-center">
+              {/* Circular Progress Chart - Untitled UI Style */}
+              <div className="relative w-10 h-10">
+                <svg width="40" height="40" className="transform -rotate-90">
+                  {/* Background circle */}
+                  <circle
+                    cx="20"
+                    cy="20"
+                    r="16"
+                    fill="none"
+                    stroke="#E9EAEB"
+                    strokeWidth="3"
+                  />
+                  {/* Progress circle */}
+                  <circle
+                    cx="20"
+                    cy="20"
+                    r="16"
+                    fill="none"
+                    stroke="#7F56D9"
+                    strokeWidth="3"
+                    strokeDasharray={strokeDasharray}
+                    strokeDashoffset="0"
+                    strokeLinecap="round"
+                    className="transition-all duration-300 ease-out"
+                  />
+                </svg>
+                
+                {/* Center count - Untitled UI typography */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                    {competitorCount}
+                  </span>
+                </div>
+              </div>
+
+              {/* Hover tooltip */}
+              <div className="absolute left-1/2 top-full mt-2 hidden group-hover:block z-50 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs rounded-lg px-3 py-2 shadow-lg whitespace-nowrap transform -translate-x-1/2 max-w-xs">
+                <div className="space-y-1">
+                  <div className="font-semibold">
+                    {similarityResult ? 'Similarity Search Results' : 'Competitor Analysis'}
+                  </div>
+                  <div className="text-gray-300 dark:text-gray-600">
+                    {competitorCount} similar product{competitorCount !== 1 ? 's' : ''} found
+                  </div>
+                  {similarityResult && similarityResult.matches && similarityResult.matches.length > 0 && (
+                    <div className="text-gray-300 dark:text-gray-600">
+                      <div className="font-medium mb-1">Top Matches:</div>
+                      {similarityResult.matches.slice(0, 3).map((match: SimilarityMatch, index: number) => {
+                        const formattedPrice = formatMatchPrice(match.price, match.currency || 'EUR');
+
+                        return (
+                          <div key={index} className="text-xs">
+                            • {match.name || 'Unknown Product'}
+                            {formattedPrice && ` (${formattedPrice})`}
+                            <span className="text-gray-400 ml-1">
+                              ({(match.score * 100).toFixed(1)}%)
+                            </span>
+                          </div>
+                        );
+                      })}
+                      {similarityResult.matches.length > 3 && (
+                        <div className="text-xs text-gray-400">
+                          +{similarityResult.matches.length - 3} more matches
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  {!similarityResult && product.competitors?.competitorNames && (
+                    <div className="text-gray-300 dark:text-gray-600">
+                      Top: {product.competitors.competitorNames.slice(0, 3).join(', ')}
+                      {product.competitors.competitorNames.length > 3 && ` +${product.competitors.competitorNames.length - 3} more`}
+                    </div>
+                  )}
+                </div>
+                <div className="absolute -top-1 left-1/2 w-2 h-2 bg-gray-900 dark:bg-gray-100 rotate-45 transform -translate-x-1/2"></div>
+              </div>
+            </div>
+          );
+        },
+        enableSorting: true,
+      });
+    }
+
+    return allColumns;
+  }, [selectedRows, maxProducts, badgeClasses, ProductsCell, PricePositionCell, computeTrend, formatPercentDetailed, formatPercentCompact, showProductsColumn, showCompetitorsColumn, searchResults]);
 
   // Sortable Row Component
   const SortableRow = ({ row, index }: { row: any; index: number }) => {

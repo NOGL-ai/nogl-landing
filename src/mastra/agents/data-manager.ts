@@ -7,7 +7,7 @@
  */
 
 import { Agent } from "@mastra/core/agent";
-import { openai } from "@ai-sdk/openai";
+import { openai } from "@/lib/ai-config";
 import { 
   updateTodosTool,
   askForPlanApprovalTool,

@@ -142,3 +142,4 @@ export function requireEmailSending(userRole: string): void {
     throw new Error("You don't have permission to send emails");
   }
 }
+

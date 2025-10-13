@@ -11,7 +11,7 @@ type Props = {
   className?: string;
 };
 
-export default function Checkbox({ checked = false, indeterminate = false, onChange, ariaLabel, id, className = '' }: Props) {
+function Checkbox({ checked = false, indeterminate = false, onChange, ariaLabel, id, className = '' }: Props) {
   const ref = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
@@ -55,3 +55,5 @@ export default function Checkbox({ checked = false, indeterminate = false, onCha
     </label>
   );
 }
+
+export default Checkbox;

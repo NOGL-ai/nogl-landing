@@ -246,3 +246,4 @@ If you encounter issues with HITL workflows:
 4. **Submit a support ticket** for technical problems
 
 Remember: HITL is designed to keep you in control. When in doubt, reject the operation and ask for clarification.
+

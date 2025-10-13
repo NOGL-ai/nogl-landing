@@ -4,6 +4,7 @@ import { ChatRequestSchema } from "@/types/copilot";
 import { rateLimit } from "@/lib/rate-limit";
 import { sanitizeInput } from "@/lib/security";
 import { mastra, selectAgent } from "@/mastra";
+// AI SDK imports removed - using Mastra's built-in streaming
 
 export const maxDuration = 30;
 
@@ -73,7 +74,7 @@ export async function POST(req: NextRequest) {
     
     // 5. Select appropriate Mastra agent
     const agentName = selectAgent(userMessage);
-    const agent = mastra.getAgent(agentName);
+    const agent = mastra.getAgent(agentName as "competitorAnalyst" | "dataManager" | "pricingStrategist");
     
     if (!agent) {
       console.error(`Agent '${agentName}' not found`);
@@ -83,19 +84,17 @@ export async function POST(req: NextRequest) {
       );
     }
     
-    // 6. Convert messages to Mastra format
-    const mastraMessages = messages.map((m) => ({
-      role: m.role as "user" | "assistant" | "system",
-      content: m.content
-        .filter((c) => c.type === "text")
-        .map((c) => c.text)
-        .join("\n"),
-    }));
-    
-    // 7. Stream response using Mastra agent
+    // 6. Stream response using Mastra agent with proper UI stream format
     try {
-      const result = await agent.stream(mastraMessages);
-      
+      const stream = await agent.stream(messages as any, {    
+        format: "aisdk",
+        maxSteps: 10,
+        modelSettings: {},
+        onError: ({ error }: { error: any }) => {
+          console.error("Mastra stream onError", error);
+        },
+      });
+
       const duration = Date.now() - startTime;
       
       // Log analytics (non-blocking)
@@ -110,8 +109,8 @@ export async function POST(req: NextRequest) {
         }).catch(console.error);
       }
       
-      // Return Mastra's streaming response
-      return result.toDataStreamResponse();
+      // Return proper UI message stream response
+      return stream.toUIMessageStreamResponse();
       
     } catch (agentError: any) {
       console.error("Mastra agent error:", {

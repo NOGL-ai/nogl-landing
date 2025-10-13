@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prismaDb";
+import { prisma, isPrismaAvailable } from "@/lib/prismaDb";
 import { withRequestLogging, withSecurityHeaders } from "@/middlewares/security";
 import { withRateLimit } from "@/middlewares/rateLimit";
 import { generateLogoUrl, extractDomainFromUrl, extractMainDomain, isMarketplaceDomain } from "@/lib/logoService";
@@ -51,6 +51,37 @@ export const GET = withRequestLogging(
         sortBy,
         sortOrder,
       } = query;
+
+      const filters = {
+        search,
+        status,
+        featured,
+        channel,
+        categoryId,
+        brandId,
+        minPrice,
+        maxPrice,
+      };
+
+      if (!isPrismaAvailable) {
+        return withSecurityHeaders(
+          NextResponse.json(
+            {
+              error: "Database not configured",
+              message: "Set DATABASE_URL to enable product queries.",
+              products: [],
+              pagination: {
+                page,
+                limit,
+                total: 0,
+                totalPages: 0,
+              },
+              filters,
+            },
+            { status: 503 }
+          )
+        );
+      }
 
       const skip = (page - 1) * limit;
 
@@ -255,7 +286,7 @@ export const GET = withRequestLogging(
         const mappedProducts = products.map((product: any) => {
           // Generate logo URL from brand_name
           let logoUrl: string | null = null;
-          
+
           if (product.brand_name) {
             // Generate logo using brand name
             logoUrl = generateLogoUrl(product.brand_name, {
@@ -263,7 +294,7 @@ export const GET = withRequestLogging(
               size: 64
             });
           }
-          
+
           // Use featured_image_src if available, otherwise construct from handle
           let imageUrl: string | null = null;
           if (product.featured_image_src) {
@@ -277,13 +308,28 @@ export const GET = withRequestLogging(
             imageUrl = `https://cdn.shopify.com/s/files/1/placeholder/files/${product.handle}-${product.variant_id || 'main'}.jpg`;
           }
 
+          // Normalize numeric prices
+          const priceNum = product.variant_price ? parseFloat(product.variant_price.toString()) : 0;
+          const compareAtRaw = product.variant_compare_at_price;
+          const compareAt = compareAtRaw != null ? parseFloat(compareAtRaw.toString()) : null;
+
+          // Build a competitor-like entry from compare_at price when available
+          const competitorsArr = compareAt && Number.isFinite(compareAt) && compareAt > 0 ? [{
+            id: `cmp-${product.variant_id?.toString() || product.product_id?.toString() || 'unknown'}`,
+            name: 'Market',
+            cheapest: compareAt,
+            avg: compareAt,
+            highest: compareAt,
+            cheapestColor: compareAt < priceNum ? 'green' : compareAt > priceNum ? 'red' : 'yellow',
+          }] : [];
+
           return {
             id: product.variant_id?.toString() || product.product_id?.toString(),
             name: product.product_title || product.variant_title || 'Untitled Product',
             sku: product.variant_sku || 'N/A',
             image: imageUrl,
-            price: product.variant_price ? parseFloat(product.variant_price.toString()) : 0,
-            currency: 'EUR', // Changed to EUR based on your sample data
+            price: priceNum,
+            currency: 'EUR',
             channel: 'shopify',
             brand: product.brand_name ? {
               id: product.brand_name.toLowerCase().replace(/\s+/g, '-'),
@@ -295,9 +341,9 @@ export const GET = withRequestLogging(
               name: product.product_type,
               slug: product.product_type.toLowerCase().replace(/\s+/g, '-')
             } : null,
-            competitors: [], // No competitor data in current table structure
+            competitors: competitorsArr,
             _count: {
-              competitors: 0
+              competitors: competitorsArr.length
             }
           };
         });
@@ -311,16 +357,7 @@ export const GET = withRequestLogging(
             total,
             totalPages: Math.ceil(total / limit),
           },
-          filters: {
-            search,
-            status,
-            featured,
-            channel,
-            categoryId,
-            brandId,
-            minPrice,
-            maxPrice,
-          },
+          filters,
         };
         
         queryCache.set(cacheKey, {
