@@ -141,7 +141,7 @@ const nextConfig = {
 	typescript: {
 		ignoreBuildErrors: true,
 	},
-	transpilePackages: ["undici"],
+	transpilePackages: ["undici", "mermaid"],
 };
 
 module.exports = nextConfig;
