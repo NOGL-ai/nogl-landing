@@ -130,7 +130,10 @@ NEXT_PUBLIC_GOOGLE_TAG_ID=G-XXXXXXXXXX
 ### AI Services (Optional)
 
 ```env
-OPENAI_API_KEY=sk-your-openai-api-key
+# Priority order: MASTRA_OPENAI_API_KEY > NOGL_OPENAI_API_KEY > OPENAI_API_KEY
+MASTRA_OPENAI_API_KEY=sk-your-openai-api-key  # Recommended: Mastra-specific, won't conflict
+# NOGL_OPENAI_API_KEY=sk-your-openai-api-key  # Alternative: Project-specific
+# OPENAI_API_KEY=sk-your-openai-api-key       # Fallback: Standard (may get overridden)
 ```
 
 ## Production Environment
