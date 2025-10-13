@@ -1,8 +1,8 @@
 'use client';
 
-'use client';
-
-import React from 'react';
+/// <reference types="react" />
+import * as React from 'react';
+import type { ChangeEvent, KeyboardEvent } from 'react';
 import {
   ArrowDown,
   ArrowUp,
@@ -25,6 +25,54 @@ import SimilaritySearchResults from '@/components/competitor/SimilaritySearchRes
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import toast from 'react-hot-toast';
+
+// TypeScript Interface Definitions
+interface CompetitorBrand {
+  name: string;
+  logo: string | null;
+}
+
+interface CompetitorPrices {
+  prices: number[];
+  avg: number;
+  cheapest: number;
+  highest: number;
+}
+
+interface CompetitorProduct {
+  id: number;
+  name: string;
+  sku: string;
+  domain: string;
+  avatar: string;
+  brand: CompetitorBrand;
+  variants: number;
+  competitorCount: number;
+  competitors: CompetitorPrices;
+  products: number;
+  position: number;
+  trend: number;
+  trendUp: boolean;
+  date: string;
+  categories: string[];
+  competitorPrice: number;
+  myPrice: number;
+  channel: string;
+  image?: string;
+  status?: string;
+  currency?: string;
+  product_page_image_url?: string;
+}
+
+interface SortingState {
+  column: string;
+  direction: 'asc' | 'desc' | 'none';
+}
+
+interface ProductsCellProps {
+  competitor: CompetitorProduct;
+  maxProducts: number;
+}
 
 // Competitor Products Data - for monitored URLs
 const competitorProducts = [
@@ -460,7 +508,7 @@ export default function CompetitorPage() {
   }, [searchQuery]);
 
   // API data state
-  const [products, setProducts] = React.useState<any[]>([]);
+  const [products, setProducts] = React.useState<CompetitorProduct[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [isInitialLoading, setIsInitialLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
@@ -537,7 +585,7 @@ export default function CompetitorPage() {
           }
           
           return {
-            id: product.id || `product-${index}`,
+            id: typeof product.id === 'number' ? product.id : parseInt(product.id) || index + 1000,
             name: product.name,
             domain: product.brand?.name ? `${product.brand.name.toLowerCase().replace(/\s+/g, '')}.com` : 'unknown.com',
             avatar: product.image,
@@ -578,7 +626,7 @@ export default function CompetitorPage() {
             currency: product.currency || 'EUR',
             status: 'Active',
           };
-        }).filter(Boolean); // Remove null entries
+        }).filter((product) => product !== null) as CompetitorProduct[];
         
         setProducts(mappedProducts);
         
@@ -591,7 +639,7 @@ export default function CompetitorPage() {
         toast.error(errorMessage);
         
         // Only fallback to mock data in development or if explicitly configured
-        if (process.env.NODE_ENV === 'development') {
+        if (typeof process !== 'undefined' && process.env && (process.env as any).NODE_ENV === 'development') {
           console.warn('Falling back to mock data due to error');
           setProducts(competitors);
         } else {
@@ -612,11 +660,11 @@ export default function CompetitorPage() {
 
   // Calculate max products for relative scaling
   const maxProducts = React.useMemo(() => {
-    return Math.max(...currentData.map(c => c.products));
+    return Math.max(...currentData.map((c: CompetitorProduct) => c.products));
   }, [currentData]);
 
   const toggleRow = (id: number) => {
-    setSelectedRows(prev => {
+    setSelectedRows((prev: Set<number>) => {
       const next = new Set(prev);
       if (next.has(id)) {
         next.delete(id);
@@ -628,10 +676,10 @@ export default function CompetitorPage() {
   };
 
   const toggleAll = (force?: boolean) => {
-    setSelectedRows(prev => {
+    setSelectedRows((prev: Set<number>) => {
       // Select/Deselect only currently visible (sorted) rows
-      const visibleIds = new Set(sortedCompetitors.map(item => item.id));
-      const allVisibleSelected = sortedCompetitors.every(item => prev.has(item.id));
+      const visibleIds = new Set(sortedCompetitors.map((item: CompetitorProduct) => item.id));
+      const allVisibleSelected = sortedCompetitors.every((item: CompetitorProduct) => prev.has(item.id));
 
       const next = new Set(prev);
       const shouldSelect = typeof force === 'boolean' ? force : !allVisibleSelected;
@@ -680,10 +728,10 @@ export default function CompetitorPage() {
     if (!q) return currentData;
     
     // Use more efficient filtering with early returns
-    return currentData.filter(competitor => {
-      const name = competitor.name?.toLowerCase() || '';
-      const domain = competitor.domain?.toLowerCase() || '';
-      const sku = competitor.sku?.toLowerCase() || '';
+    return currentData.filter((competitor: CompetitorProduct) => {
+      const name = (competitor.name as string)?.toLowerCase() || '';
+      const domain = (competitor.domain as string)?.toLowerCase() || '';
+      const sku = (competitor.sku as string)?.toLowerCase() || '';
       
       return name.includes(q) || domain.includes(q) || sku.includes(q);
     });
@@ -721,19 +769,19 @@ export default function CompetitorPage() {
   }, [filteredCompetitors, productSort, priceSort, trendSort]);
 
   const togglePriceSort = () => {
-    setPriceSort(prev => (prev === 'none' ? 'asc' : prev === 'asc' ? 'desc' : 'none'));
+    setPriceSort((prev: 'none' | 'asc' | 'desc') => (prev === 'none' ? 'asc' : prev === 'asc' ? 'desc' : 'none'));
     setProductSort('none');
     setTrendSort('none'); // Reset trend sort when price sort is active
   };
 
   const toggleTrendSort = () => {
-    setTrendSort(prev => (prev === 'none' ? 'asc' : prev === 'asc' ? 'desc' : 'none'));
+    setTrendSort((prev: 'none' | 'asc' | 'desc') => (prev === 'none' ? 'asc' : prev === 'asc' ? 'desc' : 'none'));
     setProductSort('none');
     setPriceSort('none'); // Reset price sort when trend sort is active
   };
 
   const toggleProductSort = () => {
-    setProductSort(prev => (prev === 'none' ? 'asc' : prev === 'asc' ? 'desc' : 'none'));
+    setProductSort((prev: 'none' | 'asc' | 'desc') => (prev === 'none' ? 'asc' : prev === 'asc' ? 'desc' : 'none'));
     setPriceSort('none');
     setTrendSort('none');
   };
@@ -741,7 +789,7 @@ export default function CompetitorPage() {
   // Pagination handlers
   const handlePreviousPage = () => {
     if (currentPage > 1) {
-      setCurrentPage(prev => prev - 1);
+      setCurrentPage((prev: number) => prev - 1);
       // Scroll to top of the page for better UX
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -749,7 +797,7 @@ export default function CompetitorPage() {
 
   const handleNextPage = () => {
     if (currentPage < pagination.totalPages) {
-      setCurrentPage(prev => prev + 1);
+      setCurrentPage((prev: number) => prev + 1);
       // Scroll to top of the page for better UX
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -768,7 +816,7 @@ export default function CompetitorPage() {
   };
 
   // Handle similarity search
-  const handleFindSimilar = async (product: any) => {
+  const handleFindSimilar = async (product: CompetitorProduct) => {
     const productId = product.id.toString();
     const imageUrl = product.image || product.avatar || product.product_page_image_url;
     
@@ -782,7 +830,7 @@ export default function CompetitorPage() {
       return;
     }
 
-    setIsSearching(prev => new Set(prev).add(productId));
+    setIsSearching((prev: Set<string>) => new Set(prev).add(productId));
     
     try {
       const response = await fetch('/api/market-intelligence/search', {
@@ -802,7 +850,7 @@ export default function CompetitorPage() {
       
       const data: SimilaritySearchResult = await response.json();
       
-      setSearchResults(prev => new Map(prev).set(productId, data));
+      setSearchResults((prev: Map<string, SimilaritySearchResult>) => new Map(prev).set(productId, data));
       setExpandedResultsRow(productId);
       
       if (data.success && data.totalMatches > 0) {
@@ -814,7 +862,7 @@ export default function CompetitorPage() {
       console.error('Similarity search error:', error);
       toast.error(error instanceof Error ? error.message : 'Failed to search for similar products');
     } finally {
-      setIsSearching(prev => {
+      setIsSearching((prev: Set<string>) => {
         const next = new Set(prev);
         next.delete(productId);
         return next;
@@ -824,11 +872,11 @@ export default function CompetitorPage() {
 
   // Toggle expanded results row
   const toggleExpandedResults = (productId: string) => {
-    setExpandedResultsRow(prev => prev === productId ? null : productId);
+    setExpandedResultsRow((prev: string | null) => prev === productId ? null : productId);
   };
 
   // Helper function to validate image URLs
-  const isValidImageUrl = (url: any): boolean => {
+  const isValidImageUrl = (url: unknown): boolean => {
     if (!url || typeof url !== 'string') return false;
     try {
       const urlObj = new URL(url);
@@ -839,7 +887,7 @@ export default function CompetitorPage() {
   };
 
   // Automatic similarity search for all products on page load
-  const performBatchSimilaritySearch = async (products: any[]) => {
+  const performBatchSimilaritySearch = async (products: CompetitorProduct[]) => {
     const productsWithImages = products.filter(product => {
       const imageUrl = product.image || product.avatar || product.product_page_image_url;
       return isValidImageUrl(imageUrl);
@@ -885,7 +933,7 @@ export default function CompetitorPage() {
 
           const data: SimilaritySearchResult = await response.json();
 
-          setSearchResults(prev => new Map(prev).set(productId, data));
+          setSearchResults((prev: Map<string, SimilaritySearchResult>) => new Map(prev).set(productId, data));
 
           // Calculate prices from similarity results
           if (data.success && data.matches.length > 0) {
@@ -905,7 +953,7 @@ export default function CompetitorPage() {
           }
         } catch (error) {
           console.error(`Similarity search error for product ${productId}:`, error);
-          setSimilarityErrors(prev => new Map(prev).set(productId, 
+          setSimilarityErrors((prev: Map<string, string>) => new Map(prev).set(productId, 
             error instanceof Error ? error.message : 'Search failed'
           ));
         }
@@ -1064,7 +1112,7 @@ export default function CompetitorPage() {
                 id="search-input"
                 type="text"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
                 placeholder="Search products, URLs, SKU"
                 className="w-full rounded-lg border border-border-secondary bg-background py-2 pl-8 md:pl-10 pr-10 md:pr-16 text-sm md:text-base text-foreground placeholder:text-muted-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-ring/40"
                 aria-describedby="search-help"
@@ -1113,7 +1161,7 @@ export default function CompetitorPage() {
               data={sortedCompetitors}
               selectedRows={selectedRows}
               onRowSelectionChange={setSelectedRows}
-              onSortChange={(sorting) => {
+              onSortChange={(sorting: SortingState) => {
                 if (sorting.column === 'name') {
                   setProductSort(sorting.direction);
                   setPriceSort('none');
@@ -1128,29 +1176,28 @@ export default function CompetitorPage() {
                   setPriceSort('none');
                 }
               }}
-              onRowClick={(row) => setFocusedRowIndex(sortedCompetitors.findIndex(c => c.id === row.id))}
-              onRowKeyDown={(e, row, index) => handleKeyDown(e, row.id, index)}
+              onRowClick={(row: any) => setFocusedRowIndex(sortedCompetitors.findIndex((c: CompetitorProduct) => c.id === row.id))}
+              onRowKeyDown={(e: KeyboardEvent, row: any, index: number) => handleKeyDown(e, row.id, index)}
               focusedRowIndex={focusedRowIndex ?? -1}
               maxProducts={maxProducts}
               badgeClasses={badgeClasses}
-              ProductsCell={({ competitor, maxProducts }) => {
-                const comp: any = competitor;
+              ProductsCell={({ competitor, maxProducts }: any) => {
                 return (
                   <JewelryProductCell 
                     product={{
-                      id: comp.id,
-                      name: comp.name,
-                      image: comp.avatar || comp.image,
-                      sku: comp.sku || `SKU-${comp.id}`,
+                      id: competitor.id,
+                      name: competitor.name,
+                      image: competitor.avatar || competitor.image || '',
+                      sku: competitor.sku || `SKU-${competitor.id}`,
                       brand: {
-                        name: comp.brand?.name || 'Unknown Brand',
-                        logo: comp.brand?.logo
+                        name: competitor.brand?.name || 'Unknown Brand',
+                        logo: competitor.brand?.logo || undefined
                       },
-                      myPrice: comp.myPrice || comp.competitorPrice,
-                      competitorCount: comp.competitorCount || 0,
-                      status: comp.status || 'Active',
-                      currency: comp.currency || 'EUR',
-                      categories: comp.categories || []
+                      myPrice: competitor.myPrice || competitor.competitorPrice,
+                      competitorCount: competitor.competitorCount || 0,
+                      status: (competitor.status as 'Active' | 'Inactive' | 'Out of Stock' | 'Low Stock') || 'Active',
+                      currency: competitor.currency || 'EUR',
+                      categories: competitor.categories || []
                     }}
                     showPrice={false}
                     showStatus={true}
@@ -1198,7 +1245,7 @@ export default function CompetitorPage() {
               <select
                 id="page-size"
                 value={pageLimit}
-                onChange={(e) => handlePageLimitChange(Number(e.target.value))}
+                onChange={(e: ChangeEvent<HTMLSelectElement>) => handlePageLimitChange(Number(e.target.value))}
                 className="rounded-md border border-border-secondary px-2 py-1 text-sm bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring/40"
                 disabled={isLoading}
               >

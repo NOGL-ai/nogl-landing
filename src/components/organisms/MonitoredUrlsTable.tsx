@@ -409,7 +409,7 @@ export default function MonitoredUrlsTable() {
 						{table.getHeaderGroups().map((headerGroup) => (
 							<TableRow key={headerGroup.id}>
 								{headerGroup.headers.map((header) => (
-									<TableHead key={header.id}>
+									<TableHead key={`${headerGroup.id}_${header.id}`}>
 										{header.isPlaceholder
 											? null
 											: flexRender(
@@ -429,7 +429,7 @@ export default function MonitoredUrlsTable() {
 									data-state={row.getIsSelected() && "selected"}
 								>
 									{row.getVisibleCells().map((cell) => (
-										<TableCell key={cell.id}>
+										<TableCell key={`${row.id}_${cell.id}`}>
 											{flexRender(
 												cell.column.columnDef.cell,
 												cell.getContext()

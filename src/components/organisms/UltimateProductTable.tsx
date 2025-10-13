@@ -1209,7 +1209,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 										>
 											{row.getVisibleCells().map((cell) => (
 												<TableCell
-													key={cell.id}
+													key={`${row.id}_${cell.column.id}` }
 													className='whitespace-nowrap'
 													style={{ width: cell.column.getSize() }}
 												>

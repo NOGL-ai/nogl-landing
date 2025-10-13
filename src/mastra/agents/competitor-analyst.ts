@@ -6,7 +6,7 @@
  * without requiring user approval for queries.
  */
 
-import { Agent } from "@mastra/core/agent";
+import { Agent } from "@mastra/core";
 import { openai } from "@/lib/ai-config";
 import { 
   getCompetitorListTool, 

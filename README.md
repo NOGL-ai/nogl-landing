@@ -44,6 +44,30 @@ This project includes comprehensive documentation organized for optimal develope
 
 ## 📦 Installation
 
+### Prerequisites
+
+**Node.js Version Requirements:**
+- **Minimum**: Node.js v20.19.0 or higher
+- **Recommended**: Node.js v20.x LTS or v22.x LTS
+
+> ⚠️ **Important**: This project requires Node.js v20.19.0+ due to dependency requirements (Vite 7.x, Cheerio 1.1.2, etc.). Using older versions will cause EBADENGINE warnings.
+
+**Upgrading Node.js (if needed):**
+
+**Option A: Using nvm (Node Version Manager) - Recommended**
+```bash
+# Install nvm for Windows from: https://github.com/coreybutler/nvm-windows
+nvm install 20.19.0
+nvm use 20.19.0
+```
+
+**Option B: Direct Download**
+- Download Node.js v20.19.0+ from https://nodejs.org/
+- Run installer
+- Verify: `node -v` should show v20.19.0 or higher
+
+### Installation Steps
+
 1. Clone the repository
 2. Install dependencies: `npm install`
 3. Set up environment variables (see [Environment Setup Guide](./docs/guides/ENV_SETUP_GUIDE.md))

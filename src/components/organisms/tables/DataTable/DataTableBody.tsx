@@ -45,7 +45,7 @@ export function DataTableBody<TData>({
 						>
 							{row.getVisibleCells().map((cell, cellIndex) => (
 								<UntitledTable.Cell
-									key={cell.id}
+									key={`${row.id}_${cell.column.id}` }
 									role="gridcell"
 									aria-colindex={cellIndex + 1}
 									aria-describedby={cell.column.id}

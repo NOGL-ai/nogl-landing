@@ -6,7 +6,7 @@
  * with explicit user approval for all changes.
  */
 
-import { Agent } from "@mastra/core/agent";
+import { Agent } from "@mastra/core";
 import { openai } from "@/lib/ai-config";
 import { 
   updateTodosTool,

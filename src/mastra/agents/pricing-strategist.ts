@@ -6,7 +6,7 @@
  * with HITL approval for pricing recommendations and updates.
  */
 
-import { Agent } from "@mastra/core/agent";
+import { Agent } from "@mastra/core";
 import { openai } from "@/lib/ai-config";
 import { 
   updateTodosTool,
