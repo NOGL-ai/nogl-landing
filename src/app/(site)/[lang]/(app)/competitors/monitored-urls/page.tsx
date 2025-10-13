@@ -491,12 +491,12 @@ export default function CompetitorPage() {
   const [isLoadingSimilarity, setIsLoadingSimilarity] = React.useState(false);
   const [similarityErrors, setSimilarityErrors] = React.useState<Map<string, string>>(new Map());
 
-  // Trigger similarity search when products are loaded
+  // Trigger similarity search when API products are loaded
   React.useEffect(() => {
-    if (competitors.length > 0 && !isLoadingSimilarity) {
-      performBatchSimilaritySearch(competitors);
+    if (products.length > 0 && !isLoadingSimilarity && searchResults.size === 0) {
+      performBatchSimilaritySearch(products);
     }
-  }, [competitors.length]); // Only trigger when competitors are first loaded
+  }, [products.length, searchResults.size, isLoadingSimilarity]); // Trigger when API products are loaded
 
   // Fetch products from API
   React.useEffect(() => {
