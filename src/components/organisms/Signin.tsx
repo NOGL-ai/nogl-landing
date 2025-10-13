@@ -71,7 +71,7 @@ export default function Signin() {
 			<div className="relative hidden flex-1 self-stretch lg:flex lg:min-w-[640px]">
 				{/* Background Image */}
 				<img
-					src="/images/testimonial/Runway Elegance.png"
+					src="/images/testimonial/Runway Fashion Show.png"
 					alt="Fashion runway scene with models"
 					className="absolute inset-0 size-full object-cover object-center"
 				/>
