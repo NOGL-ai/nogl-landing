@@ -291,12 +291,15 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 		</main>
 
 		{/* Floating AI Copilot Button - Only visible on mobile/tablet (< lg breakpoint) */}
+		{/* COMMENTED OUT: Now using permanent AssistantSidebar in app layout instead of slideout modal */}
+		{/* 
 		<div className="lg:hidden">
 			<CopilotLayoutWrapper 
 				userName={user?.name}
 				userAvatar={user?.avatar}
 			/>
 		</div>
+		*/}
 		</div>
 	);
 };

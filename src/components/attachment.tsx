@@ -7,8 +7,10 @@ import {
   AttachmentPrimitive,
   ComposerPrimitive,
   MessagePrimitive,
-  useAttachment,
+  useAssistantState,
+  useAssistantApi,
 } from "@assistant-ui/react";
+import { useShallow } from "zustand/shallow";
 import {
   Tooltip,
   TooltipContent,
@@ -45,14 +47,18 @@ const useFileSrc = (file: File | undefined) => {
 };
 
 const useAttachmentSrc = () => {
-  const attachment = useAttachment();
-  const fileSrc = useFileSrc(attachment.file);
-  
-  if (attachment.type !== "image") return undefined;
-  if (fileSrc) return fileSrc;
-  
-  const src = attachment.content?.filter((c: any) => c.type === "image")[0]?.image;
-  return src;
+  const { file, src } = useAssistantState(
+    useShallow(({ attachment }): { file?: File; src?: string } => {
+      if (attachment.type !== "image") return {};
+      if (attachment.file) return { file: attachment.file };
+      const src = attachment.content?.filter((c) => c.type === "image")[0]
+        ?.image;
+      if (!src) return {};
+      return { src };
+    }),
+  );
+
+  return useFileSrc(file) ?? src;
 };
 
 type AttachmentPreviewProps = {
@@ -104,8 +110,9 @@ const AttachmentPreviewDialog: FC<PropsWithChildren> = ({ children }) => {
 };
 
 const AttachmentThumb: FC = () => {
-  const attachment = useAttachment();
-  const isImage = attachment.type === "image";
+  const isImage = useAssistantState(
+    ({ attachment }) => attachment.type === "image",
+  );
   const src = useAttachmentSrc();
 
   return (
@@ -122,11 +129,14 @@ const AttachmentThumb: FC = () => {
   );
 };
 
-export const AttachmentUI: FC = () => {
-  const attachment = useAttachment();
-  const isImage = attachment.type === "image";
-  
-  const typeLabel = (() => {
+const AttachmentUI: FC = () => {
+  const api = useAssistantApi();
+  const isComposer = api.attachment.source === "composer";
+
+  const isImage = useAssistantState(
+    ({ attachment }) => attachment.type === "image",
+  );
+  const typeLabel = useAssistantState(({ attachment }) => {
     const type = attachment.type;
     switch (type) {
       case "image":
@@ -136,9 +146,10 @@ export const AttachmentUI: FC = () => {
       case "file":
         return "File";
       default:
-        return "File";
+        const _exhaustiveCheck: never = type;
+        throw new Error(`Unknown attachment type: ${_exhaustiveCheck}`);
     }
-  })();
+  });
 
   return (
     <Tooltip>
@@ -154,6 +165,8 @@ export const AttachmentUI: FC = () => {
             <div
               className={cn(
                 "aui-attachment-tile size-14 cursor-pointer overflow-hidden rounded-[14px] border bg-muted transition-opacity hover:opacity-75",
+                isComposer &&
+                  "aui-attachment-tile-composer border-foreground/20",
               )}
               role="button"
               id="attachment-tile"
@@ -163,7 +176,7 @@ export const AttachmentUI: FC = () => {
             </div>
           </TooltipTrigger>
         </AttachmentPreviewDialog>
-        <AttachmentRemove />
+        {isComposer && <AttachmentRemove />}
       </AttachmentPrimitive.Root>
       <TooltipContent side="top">
         <AttachmentPrimitive.Name />

@@ -41,28 +41,40 @@ export async function POST(req: NextRequest) {
       );
     }
     
-    // 3. Request Validation
+    // 3. Request Validation - Accept AI SDK v5 format directly
     const body = await req.json();
-    const validationResult = ChatRequestSchema.safeParse(body);
     
-    if (!validationResult.success) {
+    // Debug logging to see what we're receiving
+    console.log('[API-DEBUG] Received request body:', JSON.stringify(body, null, 2));
+    
+    // Accept AI SDK v5 format messages directly
+    const messages = body.messages;
+    
+    if (!messages || !Array.isArray(messages) || messages.length === 0) {
       return NextResponse.json(
         { 
-          error: "Invalid request format",
-          details: validationResult.error.issues
+          error: "Invalid request format - missing messages array"
         },
         { status: 400 }
       );
     }
     
-    const { messages } = validationResult.data;
-    
     // 4. Input Sanitization
     const lastMessage = messages[messages.length - 1];
-    const userMessage = lastMessage.content
-      .filter((c) => c.type === "text")
-      .map((c) => sanitizeInput(c.text || ""))
-      .join("\n");
+    let userMessage;
+    
+    // Handle AI SDK v5 format where content is a string
+    if (typeof lastMessage.content === 'string') {
+      userMessage = sanitizeInput(lastMessage.content);
+    } else if (Array.isArray(lastMessage.content)) {
+      // Handle legacy format where content is an array
+      userMessage = lastMessage.content
+        .filter((c: any) => c.type === "text")
+        .map((c: any) => sanitizeInput(c.text || ""))
+        .join("\n");
+    } else {
+      userMessage = sanitizeInput(String(lastMessage.content || ''));
+    }
     
     // Validate message length
     if (userMessage.length > 4000) {

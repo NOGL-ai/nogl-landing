@@ -2,6 +2,8 @@ import React from "react";
 import SidebarLayout from "@/components/templates/SidebarLayout";
 import HideFooterOnApp from "@/components/molecules/HideFooterOnApp";
 import { getAuthSession } from "@/lib/auth";
+import { AssistantSidebar } from "@/components/assistant-sidebar";
+import { CopilotRuntimeProvider } from "@/components/application/slideout-menus/copilot-runtime-provider";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
 	let session = null;
@@ -25,9 +27,13 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 	};
 
 	return (
-		<SidebarLayout user={user}>
-			<HideFooterOnApp />
-			{children}
-		</SidebarLayout>
+		<CopilotRuntimeProvider>
+			<AssistantSidebar>
+				<SidebarLayout user={user}>
+					<HideFooterOnApp />
+					{children}
+				</SidebarLayout>
+			</AssistantSidebar>
+		</CopilotRuntimeProvider>
 	);
 }

@@ -38,7 +38,6 @@ import {
   ComposerAttachments,
   UserMessageAttachments,
 } from "@/components/attachment";
-import { AttachmentUI } from "@/components/attachment";
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
 import { ScrollBar } from "@/components/ui/scroll-area";
 import { makeAssistantToolUI } from "@assistant-ui/react";
@@ -49,6 +48,8 @@ import { EmailApprovalUI } from "@/components/tools/email-approval";
 import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
+import { useTheme } from "next-themes";
+import Image from "next/image";
 import { useAssistantApi, useAssistantState } from "@assistant-ui/react";
 
 // Keyboard shortcuts hook
@@ -226,6 +227,23 @@ const ThreadScrollToBottom: FC = () => {
   );
 };
 
+const CopilotLogo = () => {
+  const { theme, resolvedTheme } = useTheme();
+  const currentTheme = resolvedTheme || theme;
+  
+  return (
+    <div className="relative flex size-14 items-center justify-center rounded-full bg-gray-100 shadow-lg dark:bg-gray-800 mb-6">
+      <Image
+        src={currentTheme === "dark" ? "/images/logo/logo.svg" : "/images/logo/logo-light.svg"}
+        alt="Logo"
+        width={40}
+        height={40}
+        className="object-contain"
+      />
+    </div>
+  );
+};
+
 const ThreadWelcome: FC = () => {
   // Personalize greeting with authenticated user's name
   // Uses next-auth session available via Providers in app
@@ -238,11 +256,22 @@ const ThreadWelcome: FC = () => {
     <div className="aui-thread-welcome-root flex h-full w-full flex-col">
       {/* Greeting - Centered vertically */}
       <div className="flex flex-1 flex-col items-center justify-center px-8">
+        {/* Logo */}
+        <m.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 10 }}
+          transition={{ delay: 0.05 }}
+        >
+          <CopilotLogo />
+        </m.div>
+        
         <div className="aui-thread-welcome-message flex flex-col justify-center">
           <m.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
+            transition={{ delay: 0.1 }}
             className="aui-thread-welcome-message-motion-1 text-2xl font-semibold"
           >
             Hi {firstName},
@@ -251,7 +280,7 @@ const ThreadWelcome: FC = () => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
-            transition={{ delay: 0.1 }}
+            transition={{ delay: 0.15 }}
             className="aui-thread-welcome-message-motion-2 text-2xl text-muted-foreground/65"
           >
             How can I assist you with competitor insights today?
@@ -342,7 +371,7 @@ const Composer: FC = () => {
           <div className="flex items-center gap-1 px-3.5 pb-1">
             <span className="text-muted-foreground text-xs">
               <kbd className="bg-muted rounded px-1 py-0.5 text-xs">
-                {navigator.platform.includes("Mac") ? "⌘" : "Ctrl"}
+                {typeof window !== 'undefined' && navigator.platform.includes("Mac") ? "⌘" : "Ctrl"}
               </kbd>{" "}
               +{" "}
               <kbd className="bg-muted rounded px-1 py-0.5 text-xs">↵</kbd> to
@@ -465,7 +494,7 @@ const AssistantMessage: FC = () => {
               ToolGroup,
             }}
           />
-          <MessagePrimitive.Attachments components={{ Attachment: AttachmentUI }} />
+          <UserMessageAttachments />
           <MessageError />
         </div>
 
