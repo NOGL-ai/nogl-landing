@@ -19,7 +19,7 @@ import type { IconMenuItem } from "@/data/navigationItemsV2";
 import { SubmenuPanel } from "./submenu-panel";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import Logo from "@/shared/Logo";
-import { CopilotTrigger } from "@/components/application/slideout-menus/copilot-trigger";
+import { CopilotToggleButton } from "./copilot-toggle-button";
 
 interface CollapsedSidebarProps {
     user?: {
@@ -408,11 +408,7 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
                     {/* Footer Navigation Items - Figma: gap: 2px */}
                     <div className="flex flex-col gap-0.5 items-center">
                         {/* AI Copilot Button */}
-                        <CopilotTrigger
-                            userName={user?.name}
-                            userAvatar={user?.avatar}
-                            variant="icon"
-                        />
+                        <CopilotToggleButton />
                         
                         {navigationStructure
                             .filter(section => section.section === 'footer')
