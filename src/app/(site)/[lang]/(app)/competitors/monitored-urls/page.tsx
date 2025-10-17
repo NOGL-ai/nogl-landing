@@ -488,6 +488,19 @@ const PricePositionCell = ({
   );
 };
 
+// Validate if image URL is accessible
+const checkImageAccessibility = async (url: string): Promise<boolean> => {
+  try {
+    const response = await fetch(url, { 
+      method: 'HEAD',
+      signal: AbortSignal.timeout(3000) // 3 second timeout
+    });
+    return response.ok;
+  } catch (error) {
+    return false;
+  }
+};
+
 export default function CompetitorPage() {
   const [selectedRows, setSelectedRows] = React.useState<Set<number>>(new Set([0, 1, 2, 5, 6]));
   const [activeTab, setActiveTab] = React.useState<'all' | 'monitored' | 'unmonitored'>('all');
@@ -910,8 +923,26 @@ export default function CompetitorPage() {
         const productId = product.id.toString();
         const imageUrl = product.image || product.avatar || product.product_page_image_url;
 
+        // Early return if no image URL
+        if (!imageUrl) {
+          console.warn(`Skipping product ${productId}: No image URL available`);
+          return;
+        }
+
+        // Validate URL format (also acts as type guard)
         if (!isValidImageUrl(imageUrl)) {
           console.warn(`Skipping product ${productId}: Invalid image URL format`);
+          return;
+        }
+
+        // TypeScript now knows imageUrl is definitely a non-null string
+        // Check if image is accessible
+        const isAccessible = await checkImageAccessibility(imageUrl);
+        if (!isAccessible) {
+          console.warn(`Skipping product ${productId}: Image URL not accessible - ${imageUrl}`);
+          setSimilarityErrors((prev: Map<string, string>) => 
+            new Map(prev).set(productId, 'Image not accessible')
+          );
           return;
         }
 
@@ -928,7 +959,8 @@ export default function CompetitorPage() {
 
           if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.error || 'Search failed');
+            const errorMessage = errorData.error || errorData.detail || errorData.message || 'Search failed';
+            throw new Error(`API request failed: ${response.status} ${response.statusText} - ${errorMessage}`);
           }
 
           const data: SimilaritySearchResult = await response.json();

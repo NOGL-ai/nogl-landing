@@ -139,7 +139,13 @@ class MarketIntelligenceClient {
       clearTimeout(timeoutId);
 
       if (!response.ok) {
-        const errorText = await response.text();
+        let errorText;
+        try {
+          const errorJson = await response.json();
+          errorText = JSON.stringify(errorJson);
+        } catch {
+          errorText = await response.text();
+        }
         throw new Error(`API request failed: ${response.status} ${response.statusText} - ${errorText}`);
       }
 
