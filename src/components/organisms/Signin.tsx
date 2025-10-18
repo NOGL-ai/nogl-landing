@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import Logo from "@/shared/Logo";
 import { GoogleSigninButton } from "../atoms";
 import { SigninWithPassword } from "../molecules";
@@ -68,12 +69,15 @@ export default function Signin() {
 		</div>
 
 			{/* Right: Image + Testimonial */}
-			<div className="relative hidden flex-1 self-stretch lg:flex lg:min-w-[640px]">
+			<div className="relative hidden flex-1 self-stretch lg:flex lg:min-w-[560px] xl:min-w-[640px]">
 				{/* Background Image */}
-				<img
-					src="/images/testimonial/Runway Fashion Show.png"
+				<Image
+					src="/images/testimonial/Runway%20Fashion%20Show.png"
 					alt="Fashion runway scene with models"
-					className="absolute inset-0 size-full object-cover object-center"
+					fill
+					priority
+					sizes="(min-width: 1280px) 640px, (min-width: 1024px) 560px, 100vw"
+					className="object-cover object-center"
 				/>
 
 				{/* Bottom Panel with Testimonial */}

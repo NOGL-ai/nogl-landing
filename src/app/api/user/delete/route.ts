@@ -1,7 +1,6 @@
 import { prisma } from "@/lib/prismaDb";
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { getAuthSession } from "@/lib/auth";
 
 export async function DELETE(request: Request) {
 	const body = await request.json();
@@ -11,7 +10,7 @@ export async function DELETE(request: Request) {
 		return new NextResponse("Missing Fields", { status: 400 });
 	}
 
-	const session = await getServerSession(authOptions);
+	const session = await getAuthSession();
 	const formatedEmail = email.toLowerCase();
 
 	const user = await prisma.user.findUnique({

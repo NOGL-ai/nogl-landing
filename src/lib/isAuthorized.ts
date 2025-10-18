@@ -1,7 +1,6 @@
-import { authOptions } from "./auth";
-import { getServerSession } from "next-auth";
+import { getAuthSession } from "./auth";
 
 export const isAuthorized = async () => {
-	const session = await getServerSession(authOptions);
+	const session = await getAuthSession();
 	return session?.user;
 };

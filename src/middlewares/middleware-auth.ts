@@ -24,6 +24,14 @@ function getProtectedRoutes(protectedPaths: string[], locales: Locale[]) {
 
 export function withAuthMiddleware(middleware: CustomMiddleware) {
 	return async (request: NextRequest, event: NextFetchEvent) => {
+		// Development-only bypass: Skip auth checks in local development
+		// This will NEVER run in production due to NODE_ENV check
+		if (process.env.NODE_ENV === 'development') {
+			console.log('🔓 Development mode: Auth checks disabled');
+			return middleware(request, event, NextResponse.next());
+		}
+
+		// Production auth logic below
 		// Create a response object to pass down the chain
 		const response = NextResponse.next();
 

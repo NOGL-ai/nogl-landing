@@ -16,6 +16,17 @@ export function withAuth<T extends any[] = []>(
 ) {
   return async (request: NextRequest, ...args: T) => {
     try {
+      // Development bypass: allow all requests in local development
+      if (process.env.NODE_ENV === 'development') {
+        const devRequest = request as AuthenticatedRequest;
+        devRequest.user = {
+          id: 'dev-user-id',
+          email: 'dev@test.com',
+          role: UserRole.ADMIN,
+        };
+        return handler(devRequest, ...args);
+      }
+
       // Check if we're in a build context
       if (typeof window === 'undefined' && !request.headers) {
         // During build time, skip auth check
@@ -26,7 +37,7 @@ export function withAuth<T extends any[] = []>(
       }
 
       const session = await getServerSession(authOptions);
-      
+
       if (!session?.user?.id) {
         return NextResponse.json(
           { error: "Unauthorized" },

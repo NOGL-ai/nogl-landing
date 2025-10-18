@@ -1,16 +1,12 @@
 "use client";
 
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
 import type { FC, PropsWithChildren } from "react";
 import { Thread } from "@/components/thread";
-import { createContext, useContext, useRef, useCallback, useState } from "react";
+import { createContext, useContext, useCallback, useState, useEffect, useRef } from "react";
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 import type { ImperativePanelHandle } from "react-resizable-panels";
 
-// Context to control sidebar from anywhere
+// Context to control copilot sidebar from anywhere
 const AssistantSidebarContext = createContext<{
   toggleCollapse: () => void;
   isCollapsed: boolean;
@@ -24,39 +20,92 @@ export const useAssistantSidebar = () => {
   return context;
 };
 
+/**
+ * AssistantSidebar Component
+ *
+ * VSCode/Cursor-style split-pane layout with resizable copilot sidebar:
+ * - Split-pane layout where main content and copilot share viewport space
+ * - Content reflows when sidebar opens/closes (no overlay)
+ * - Resizable with native drag handle
+ * - Collapsible with smooth animations
+ * - Programmatic control via context
+ *
+ * Usage: Wrap your entire app with this component
+ */
 export const AssistantSidebar: FC<PropsWithChildren> = ({ children }) => {
+  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
   const panelRef = useRef<ImperativePanelHandle>(null);
-  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleCollapse = useCallback(() => {
     if (panelRef.current) {
-      if (isCollapsed) {
-        panelRef.current.expand();
-      } else {
+      panelRef.current.isCollapsed() 
+        ? panelRef.current.expand() 
+        : panelRef.current.collapse();
+    }
+  }, []);
+
+  // Handle client-side hydration and responsive behavior
+  useEffect(() => {
+    setIsMounted(true);
+
+    // Auto-collapse on small screens when resizing
+    const mediaQuery = window.matchMedia('(min-width: 1280px)');
+    const handleChange = (e: MediaQueryListEvent | MediaQueryList) => {
+      const isLargeScreen = 'matches' in e ? e.matches : (e as MediaQueryList).matches;
+      if (panelRef.current && !isLargeScreen) {
+        // Only auto-collapse on small screens, never auto-expand
         panelRef.current.collapse();
       }
-    }
-  }, [isCollapsed]);
+    };
+
+    mediaQuery.addEventListener('change', handleChange as (ev: MediaQueryListEvent) => void);
+    return () => {
+      mediaQuery.removeEventListener('change', handleChange as (ev: MediaQueryListEvent) => void);
+    };
+  }, []);
 
   return (
     <AssistantSidebarContext.Provider value={{ toggleCollapse, isCollapsed }}>
-      <ResizablePanelGroup direction="horizontal" className="h-screen">
-        <ResizablePanel defaultSize={75} minSize={50}>
-          {children}
-        </ResizablePanel>
-        <ResizableHandle withHandle />
-        <ResizablePanel 
-          ref={panelRef}
-          defaultSize={25} 
-          minSize={20} 
-          maxSize={40}
-          collapsible
-          onCollapse={() => setIsCollapsed(true)}
-          onExpand={() => setIsCollapsed(false)}
+      {isMounted ? (
+        <ResizablePanelGroup 
+          direction="horizontal" 
+          className="fixed inset-0 w-full h-screen"
         >
-          <Thread />
-        </ResizablePanel>
-      </ResizablePanelGroup>
+          {/* Main Content Panel */}
+          <ResizablePanel 
+            defaultSize={70} 
+            minSize={30}
+            className="overflow-auto"
+          >
+            {children}
+          </ResizablePanel>
+          
+          {/* Resize Handle */}
+          <ResizableHandle 
+            withHandle 
+            className="w-1 bg-border hover:bg-primary transition-colors" 
+          />
+          
+          {/* Copilot Sidebar Panel */}
+          <ResizablePanel 
+            ref={panelRef}
+            collapsible={true}
+            defaultSize={30}
+            minSize={20}
+            maxSize={50}
+            collapsedSize={0}
+            onCollapse={() => setIsCollapsed(true)}
+            onExpand={() => setIsCollapsed(false)}
+            className="border-l bg-background/60 backdrop-blur supports-[backdrop-filter]:bg-background/40 flex flex-col"
+          >
+            <Thread />
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      ) : (
+        // SSR fallback
+        children
+      )}
     </AssistantSidebarContext.Provider>
   );
 };

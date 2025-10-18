@@ -2,8 +2,7 @@
 
 import { prisma } from "@/lib/prismaDb";
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { getAuthSession } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 
 export async function POST(request: Request) {
@@ -23,7 +22,7 @@ export async function POST(request: Request) {
 			onboardingCompleted,
 		} = body;
 
-		const session = await getServerSession(authOptions);
+		const session = await getAuthSession();
 
 		if (!session?.user) {
 			console.error("User not authenticated");

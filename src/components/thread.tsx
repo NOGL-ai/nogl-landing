@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -142,7 +144,7 @@ const KeyboardShortcutsHelp: FC = () => {
           <p className="font-semibold">Keyboard Shortcuts</p>
           <div className="grid grid-cols-2 gap-x-2 gap-y-1">
             <span className="text-muted-foreground">Send message:</span>
-            <span>⌘/Ctrl + Enter</span>
+            <span>��/Ctrl + Enter</span>
             <span className="text-muted-foreground">Cancel:</span>
             <span>Escape</span>
             <span className="text-muted-foreground">Edit last:</span>
@@ -157,8 +159,8 @@ const KeyboardShortcutsHelp: FC = () => {
 };
 
 export const Thread: FC = () => {
-  const threadMaxWidth = "min(100%, calc(100vw - 3.5rem))";
-  
+  const threadMaxWidth = "min(100%, calc(100% - 2rem))";
+
   // Add keyboard shortcuts
   useThreadKeyboardShortcuts();
 
@@ -172,10 +174,11 @@ export const Thread: FC = () => {
               ["--thread-max-width" as string]: threadMaxWidth,
             }}
           >
+            {/* Messages Container - Scrollable */}
             <ScrollAreaPrimitive.Viewport className="thread-viewport" asChild>
-              <ThreadPrimitive.Viewport 
+              <ThreadPrimitive.Viewport
                 autoScroll={true}
-                className="aui-thread-viewport relative flex flex-1 flex-col overflow-x-auto px-4"
+                className="aui-thread-viewport relative flex flex-1 flex-col overflow-x-auto overflow-y-auto px-4"
               >
                 <ThreadPrimitive.If empty>
                   <ThreadWelcome />
@@ -189,7 +192,6 @@ export const Thread: FC = () => {
                   }}
                 />
 
-
                 <ThreadPrimitive.If disabled>
                   <div className="aui-thread-disabled mx-auto w-full max-w-[var(--thread-max-width)] px-2 py-4">
                     <div className="aui-thread-disabled-content rounded-lg border border-destructive/20 bg-destructive/5 p-3 text-center text-sm text-destructive">
@@ -201,11 +203,13 @@ export const Thread: FC = () => {
                 <ThreadPrimitive.If empty={false}>
                   <div className="aui-thread-viewport-spacer min-h-8 grow" />
                 </ThreadPrimitive.If>
-
-                <Composer />
               </ThreadPrimitive.Viewport>
             </ScrollAreaPrimitive.Viewport>
+
             <ScrollBar />
+
+            {/* Composer - Sticky to Bottom (outside viewport) */}
+            <Composer />
           </ThreadPrimitive.Root>
         </ScrollAreaPrimitive.Root>
       </MotionConfig>
@@ -355,24 +359,22 @@ const Composer: FC = () => {
   const isRunning = useAssistantState(({ thread }) => thread.isRunning);
 
   return (
-    <div className="aui-composer-wrapper sticky bottom-0 mx-auto flex w-full max-w-[var(--thread-max-width)] flex-col gap-4 overflow-visible rounded-t-3xl bg-background px-3 pb-4 md:px-4 md:pb-6">
+    <div className="aui-composer-wrapper flex flex-shrink-0 w-full flex-col gap-4 rounded-t-3xl bg-background px-3 pb-4 md:px-4 md:pb-6 border-t border-border">
       <ThreadScrollToBottom />
-      <ComposerPrimitive.Root className="aui-composer-root relative flex w-full flex-col rounded-3xl border border-border bg-muted px-3 pt-3 shadow-[0_9px_9px_0px_rgba(0,0,0,0.01),0_2px_5px_0px_rgba(0,0,0,0.06)] dark:border-muted-foreground/15">
+      <ComposerPrimitive.Root className="aui-composer-root relative flex w-full max-w-[var(--thread-max-width)] mx-auto flex-col rounded-3xl border border-border bg-muted px-3 pt-3 shadow-[0_9px_9px_0px_rgba(0,0,0,0.01),0_2px_5px_0px_rgba(0,0,0,0.06)] dark:border-muted-foreground/15">
         <ComposerAttachments />
         <ComposerPrimitive.Input
           placeholder="Send a message..."
-          className="aui-composer-input mb-1 max-h-32 min-h-10 w-full resize-none bg-transparent px-3.5 pt-2 pb-2 text-base outline-none placeholder:text-muted-foreground focus:outline-primary"
+          className="aui-composer-input mb-1 max-h-32 min-h-10 w-full bg-transparent px-3.5 pt-2 pb-2 text-base outline-none placeholder:text-muted-foreground focus:outline-primary resize-vertical"
           rows={1}
           autoFocus
           aria-label="Message input"
         />
-        {/* Add keyboard hint */}
+        {/* Keyboard hint - hidden while running */}
         {!isRunning && (
           <div className="flex items-center gap-1 px-3.5 pb-1">
             <span className="text-muted-foreground text-xs">
-              <kbd className="bg-muted rounded px-1 py-0.5 text-xs">
-                {typeof window !== 'undefined' && navigator.platform.includes("Mac") ? "⌘" : "Ctrl"}
-              </kbd>{" "}
+              <kbd className="bg-muted rounded px-1 py-0.5 text-xs">⌘/Ctrl</kbd>{" "}
               +{" "}
               <kbd className="bg-muted rounded px-1 py-0.5 text-xs">↵</kbd> to
               send

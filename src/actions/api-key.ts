@@ -1,11 +1,10 @@
 "use server";
 
 import { prisma } from "@/lib/prismaDb";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { getAuthSession } from "@/lib/auth";
 
 export async function createApiKey(name: string) {
-	const session = await getServerSession(authOptions);
+	const session = await getAuthSession();
 
 	if (!session?.user?.id) {
 		throw new Error("Unauthorized");
@@ -31,7 +30,7 @@ export async function createApiKey(name: string) {
 }
 
 export async function getApiKeys() {
-	const session = await getServerSession(authOptions);
+	const session = await getAuthSession();
 
 	if (!session?.user?.id) {
 		throw new Error("Unauthorized");
@@ -55,7 +54,7 @@ export async function getApiKeys() {
 }
 
 export async function deleteApiKey(id: string) {
-	const session = await getServerSession(authOptions);
+	const session = await getAuthSession();
 
 	if (!session?.user?.id) {
 		throw new Error("Unauthorized");

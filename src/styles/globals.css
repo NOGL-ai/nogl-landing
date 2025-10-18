@@ -191,6 +191,14 @@ input[type="search"]::-webkit-search-cancel-button {
   @apply flex flex-col items-center self-stretch bg-inherit;
 }
 
+/* Force assistant-ui ScrollArea viewport to fill available space */
+/* This ensures the composer stays at the bottom on all screen sizes */
+.aui-thread-root .thread-viewport {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
 /* Hide marketing footer on app pages */
 body.app-hide-footer footer {
   display: none !important;

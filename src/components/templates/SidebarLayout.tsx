@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback, useEffect, useRef, Suspense } from "react";
 import { useSidebar } from "@/hooks/useSidebar";
+import { useAssistantSidebar } from "@/components/assistant-sidebar";
 import { UserProfile } from "@/types/navigation";
 import { SidebarNavigationSectionsSubheadings } from "@/components/application/app-navigation/sidebar-navigation/sidebar-sections-subheadings";
 import { SidebarFooter } from "@/components/application/app-navigation/sidebar-footer";
@@ -36,7 +37,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 	className = "",
 }) => {
 	const {
-		isCollapsed,
+		isCollapsed: sidebarCollapsed,
 		isMobileOpen,
 		isHovered,
 		toggleCollapse,
@@ -46,18 +47,40 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 		setHovered,
 	} = useSidebar();
 
+	const { isCollapsed: copilotCollapsed, copilotWidth } = useAssistantSidebar();
+
 	const pathname = usePathname();
 	const sidebarRef = useRef<HTMLDivElement>(null);
 	const toggleButtonRef = useRef<HTMLButtonElement>(null);
 	const mobileToggleRef = useRef<HTMLButtonElement>(null);
 	const [isKeyboardUser, setIsKeyboardUser] = useState(false);
-	const [mounted, setMounted] = useState(true);
+	const [mounted, setMounted] = useState(false);
+	const [copilotPaddingStyle, setCopilotPaddingStyle] = useState({ paddingRight: "0px" });
 	const { theme, setTheme } = useTheme();
 	const { isMobile, isTablet, isDesktop } = useResponsive();
+
+	// Update main content padding based on copilot state, width, and screen size
+	useEffect(() => {
+		const updatePadding = () => {
+			const isLargeScreen = window.matchMedia('(min-width: 1280px)').matches;
+			setCopilotPaddingStyle({
+				paddingRight: !copilotCollapsed && isLargeScreen ? `${copilotWidth}px` : "0px",
+			});
+		};
+
+		updatePadding();
+		window.addEventListener('resize', updatePadding);
+		return () => window.removeEventListener('resize', updatePadding);
+	}, [copilotCollapsed, copilotWidth]);
 
 	const toggleTheme = useCallback(() => {
 		setTheme(theme === 'light' ? 'dark' : 'light');
 	}, [theme, setTheme]);
+
+	// Mark component as mounted to avoid hydration mismatch
+	useEffect(() => {
+		setMounted(true);
+	}, []);
 
 	// Detect keyboard usage for better UX
 	useEffect(() => {
@@ -86,7 +109,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 			if (isMobileOpen) {
 				closeMobile();
 				mobileToggleRef.current?.focus();
-			} else if (isCollapsed) {
+			} else if (sidebarCollapsed) {
 				toggleCollapse();
 				toggleButtonRef.current?.focus();
 			}
@@ -106,7 +129,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 			e.preventDefault();
 			toggleTheme();
 		}
-	}, [isMobileOpen, isCollapsed, closeMobile, toggleCollapse, toggleMobile, toggleTheme]);
+	}, [isMobileOpen, sidebarCollapsed, closeMobile, toggleCollapse, toggleMobile, toggleTheme]);
 
 	// Focus management
 	useEffect(() => {
@@ -277,10 +300,14 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 				</div>
 			</div>
 
-		{/* Main Content */}
+		{/* Main Content with responsive right padding for copilot */}
 		<main
 			id="main-content"
 			className="flex flex-1 flex-col overflow-hidden transition-all duration-300 ease-in-out lg:ml-[72px] pt-16 lg:pt-0 relative z-1"
+			style={{
+				...copilotPaddingStyle,
+				transition: "padding-right 300ms cubic-bezier(0.4, 0, 0.2, 1)",
+			}}
 			role="main"
 			aria-label="Main content"
 		>

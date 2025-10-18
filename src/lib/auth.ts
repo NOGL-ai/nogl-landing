@@ -415,7 +415,7 @@ export const authOptions: NextAuthOptions = {
 export const getAuthSession = async () => {
 	try {
 		// Development bypass for local testing
-		if (process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_BYPASS_AUTH === 'true') {
+		if (process.env.NODE_ENV === 'development') {
 			console.log('⚠️ Auth bypass enabled - returning mock session');
 			return {
 				user: {
