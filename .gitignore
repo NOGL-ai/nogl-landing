@@ -59,3 +59,10 @@ Icon?
 
 # Builder configuration
 builder.config.json
+
+# Database artifacts and backups
+*.sql
+*.backup.prisma
+
+# Temporary test scripts
+test-*.js
