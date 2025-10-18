@@ -33,8 +33,8 @@ const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
 						<ThemeToggler />
 						<SearchDropdown className='flex items-center' />
 						<div className='px-1' />
-						<ButtonPrimary className='self-center' href={"/login" as Route}>
-							Sign up
+						<ButtonPrimary className='self-center' href={"/auth/signin" as Route}>
+							Sign In
 						</ButtonPrimary>
 					</div>
 

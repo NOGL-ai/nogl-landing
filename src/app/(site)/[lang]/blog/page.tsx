@@ -11,8 +11,8 @@ import { Metadata } from "next";
 // ============================================================================
 
 export const metadata: Metadata = {
-	title: `Blog - ${process.env.SITE_NAME}`,
-	description: `This is Blog page for ${process.env.SITE_NAME}`,
+	title: `Help Center - ${process.env.SITE_NAME}`,
+	description: `Find help articles, guides, and documentation for ${process.env.SITE_NAME}`,
 };
 
 const BlogGrid = async () => {
@@ -41,12 +41,12 @@ const BlogGrid = async () => {
 					</div>
 				</div>
 
-				<Breadcrumbs title='Blog' pages={["Home", "Blog"]} />
+				<Breadcrumbs title='Help Center' pages={["Dashboard", "Help Center"]} />
 
 				<div className='mx-auto w-full max-w-[1170px] px-4 sm:px-8 xl:px-0'>
 					<div className='text-center py-20'>
-						<h2 className='text-3xl font-bold mb-4'>Blog Coming Soon</h2>
-						<p className='text-gray-600'>Ghost CMS integration is currently being configured.</p>
+						<h2 className='text-3xl font-bold mb-4'>Help Center & Knowledge Base</h2>
+						<p className='text-gray-600'>Browse guides, tutorials, and documentation to help you get the most out of the platform.</p>
 					</div>
 
 					{/* GHOST CMS VERSION - COMMENTED OUT

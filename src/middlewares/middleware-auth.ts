@@ -59,6 +59,25 @@ export function withAuthMiddleware(middleware: CustomMiddleware) {
 		request.nextauth.token = token;
 		const pathname = request.nextUrl.pathname;
 
+		// Handle root route redirect based on auth state
+		// Check if pathname is exactly /{locale} or /{locale}/
+		const isRootRoute = i18n.locales.some(
+			(locale) => pathname === `/${locale}` || pathname === `/${locale}/`
+		);
+
+		if (isRootRoute) {
+			if (!token) {
+				// Unauthenticated: redirect to signin
+				return NextResponse.redirect(new URL(`${pathname.endsWith('/') ? pathname : pathname + '/'}auth/signin`, request.url));
+			} else if (isAdmin) {
+				// Admin: redirect to admin dashboard
+				return NextResponse.redirect(new URL(`${pathname.endsWith('/') ? pathname : pathname + '/'}admin`, request.url));
+			} else {
+				// Regular user: redirect to dashboard
+				return NextResponse.redirect(new URL(`${pathname.endsWith('/') ? pathname : pathname + '/'}dashboard`, request.url));
+			}
+		}
+
 		const protectedPathsWithLocale = getProtectedRoutes(protectedPaths, [
 			...i18n.locales,
 		]);

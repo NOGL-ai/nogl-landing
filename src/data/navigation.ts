@@ -3,41 +3,51 @@ import { NavItemType } from "@/shared/Navigation/NavigationItem";
 
 export const NAVIGATION_DEMO: NavItemType[] = [
 	{
-		id: "home",
-		name: "Home",
-		href: "/",
+		id: "dashboard",
+		name: "Dashboard",
+		href: "/dashboard",
 	},
 	{
-		id: "account",
-		name: "Account",
+		id: "help",
+		name: "Help Center",
+		href: "/blog",
+	},
+	{
+		id: "legal",
+		name: "Legal",
 		href: "#",
 		children: [
 			{
-				id: "profile",
-				name: "Profile Settings",
-				href: "/user",
+				id: "privacy",
+				name: "Privacy Policy",
+				href: "/privacy-policy",
+			},
+			{
+				id: "terms",
+				name: "Terms of Service",
+				href: "/tos",
+			},
+			{
+				id: "impressum",
+				name: "Impressum",
+				href: "/impressum",
+			},
+			{
+				id: "datenschutz",
+				name: "Datenschutz",
+				href: "/datenschutz",
+			},
+			{
+				id: "agb",
+				name: "AGB",
+				href: "/agb",
 			},
 		],
-	},
-	{
-		id: "support",
-		name: "Support",
-		href: "/support",
 	},
 ];
 
 // Secondary navigation for footer or other areas
 export const NAVIGATION_DEMO_2: NavItemType[] = [
-	{
-		id: "about",
-		name: "About Us",
-		href: "/about",
-	},
-	{
-		id: "contact",
-		name: "Contact",
-		href: "/contact",
-	},
 	{
 		id: "privacy",
 		name: "Privacy Policy",
@@ -52,5 +62,20 @@ export const NAVIGATION_DEMO_2: NavItemType[] = [
 		id: "terms",
 		name: "Terms of Service",
 		href: "/tos",
+	},
+	{
+		id: "impressum",
+		name: "Impressum",
+		href: "/impressum",
+	},
+	{
+		id: "agb",
+		name: "AGB",
+		href: "/agb",
+	},
+	{
+		id: "help",
+		name: "Help Center",
+		href: "/blog",
 	},
 ];
