@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useContext, useState, useCallback, ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, useMemo, ReactNode } from "react";
 import { usePathname } from "next/navigation";
 
 interface ScreenContextValue {
@@ -24,11 +24,11 @@ export function ScreenContextProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const [pageData, setPageData] = useState<Record<string, any>>({});
   
-  // Map routes to page names
-  const pageName = getPageName(pathname);
+  // Map routes to page names (memoized for stability)
+  const pageName = useMemo(() => getPageName(pathname), [pathname]);
   
-  // Determine available data types based on route
-  const availableDataTypes = getAvailableDataTypes(pathname);
+  // Determine available data types based on route (memoized for stability)
+  const availableDataTypes = useMemo(() => getAvailableDataTypes(pathname), [pathname]);
   
   const getData = useCallback((type: string) => {
     return pageData[type] || null;
@@ -38,14 +38,15 @@ export function ScreenContextProvider({ children }: { children: ReactNode }) {
     setPageData(prev => ({ ...prev, [type]: data }));
   }, []);
   
-  const value = {
+  // ✅ FIX: Memoize the context value to prevent unnecessary re-renders
+  const value = useMemo(() => ({
     route: pathname,
     pageName,
     availableDataTypes,
     pageData,
     getData,
     setData,
-  };
+  }), [pathname, pageName, availableDataTypes, pageData, getData, setData]);
   
   return (
     <ScreenContext.Provider value={value}>

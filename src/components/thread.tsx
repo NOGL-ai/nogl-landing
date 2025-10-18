@@ -53,6 +53,7 @@ import { useEffect } from "react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import { useAssistantApi, useAssistantState } from "@assistant-ui/react";
+import { useDynamicSuggestions } from "@/hooks/useDynamicSuggestions";
 
 // Keyboard shortcuts hook
 const useThreadKeyboardShortcuts = () => {
@@ -299,30 +300,12 @@ const ThreadWelcome: FC = () => {
 };
 
 const ThreadSuggestions: FC = () => {
+  // ✅ Context-aware suggestions that adapt to current screen data
+  const suggestions = useDynamicSuggestions();
+  
   return (
     <div className="aui-thread-welcome-suggestions grid w-full gap-2 px-4 pb-4 @md:grid-cols-2">
-      {[
-        {
-          title: "📊 Analyze pricing",
-          label: "trends",
-          action: "Analyze competitor pricing trends from this month and identify key patterns",
-        },
-        {
-          title: "⚖️ Compare prices",
-          label: "with top 5",
-          action: "Compare my current prices with the top 5 competitors and show where I'm winning or losing",
-        },
-        {
-          title: "💡 Find opportunities",
-          label: "to optimize",
-          action: "Identify pricing opportunities where I can increase margins or gain market share",
-        },
-        {
-          title: "🎯 Market insights",
-          label: "& trends",
-          action: "Provide market insights and competitive pricing recommendations for launching new products",
-        },
-      ].map((suggestedAction, index) => (
+      {suggestions.map((suggestedAction, index) => (
         <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
