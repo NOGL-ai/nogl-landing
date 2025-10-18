@@ -4,6 +4,7 @@ import HideFooterOnApp from "@/components/molecules/HideFooterOnApp";
 import { getAuthSession } from "@/lib/auth";
 import { AssistantSidebar } from "@/components/assistant-sidebar";
 import { CopilotRuntimeProvider } from "@/components/application/slideout-menus/copilot-runtime-provider";
+import { ScreenContextProvider } from "@/context/ScreenContext";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
 	let session = null;
@@ -27,13 +28,15 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 	};
 
 	return (
-		<CopilotRuntimeProvider>
-			<AssistantSidebar>
-				<SidebarLayout user={user}>
-					<HideFooterOnApp />
-					{children}
-				</SidebarLayout>
-			</AssistantSidebar>
-		</CopilotRuntimeProvider>
+		<ScreenContextProvider>
+			<CopilotRuntimeProvider>
+				<AssistantSidebar>
+					<SidebarLayout user={user}>
+						<HideFooterOnApp />
+						{children}
+					</SidebarLayout>
+				</AssistantSidebar>
+			</CopilotRuntimeProvider>
+		</ScreenContextProvider>
 	);
 }

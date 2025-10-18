@@ -24,7 +24,18 @@ import { AssistantRuntimeProvider } from "@assistant-ui/react";
 import { useChatRuntime, AssistantChatTransport } from "@assistant-ui/react-ai-sdk";
 import type { ReactNode } from "react";
 import toast from "react-hot-toast";
+import { useScreenContext } from "@/context/ScreenContext";
+import { useScreenDataTools } from "@/hooks/useScreenDataTools";
 
+
+/**
+ * Inner component that registers tools after runtime is available
+ */
+function ToolRegistration({ children }: { children: ReactNode }) {
+  // ✅ Register screen data tools with runtime (inside AssistantRuntimeProvider)
+  useScreenDataTools();
+  return <>{children}</>;
+}
 
 /**
  * Copilot Runtime Provider Component
@@ -38,6 +49,8 @@ import toast from "react-hot-toast";
  * </CopilotRuntimeProvider>
  */
 export function CopilotRuntimeProvider({ children }: { children: ReactNode }) {
+  const screenContext = useScreenContext();
+  
   /**
    * Initialize useChatRuntime with AI SDK v5 integration
    * 
@@ -53,6 +66,26 @@ export function CopilotRuntimeProvider({ children }: { children: ReactNode }) {
   const runtime = useChatRuntime({
     transport: new AssistantChatTransport({
       api: "/api/ai/chat",
+      // ✅ VERIFIED: Custom fetch to inject system message with screen context
+      async fetch(url, options) {
+        try {
+          const body = JSON.parse(options?.body as string || "{}");
+          
+          // ✅ VERIFIED: Inject lightweight screen context
+          body.system = `User is currently viewing: ${screenContext.pageName} (route: ${screenContext.route}).
+Available data on this page: ${screenContext.availableDataTypes.join(", ") || "none"}.
+${screenContext.availableDataTypes.length > 0 ? "Use the appropriate tools to fetch detailed data when needed." : ""}`;
+          
+          return fetch(url, {
+            ...options,
+            body: JSON.stringify(body),
+          });
+        } catch (error) {
+          console.error("[Transport] Error injecting context:", error);
+          // Fallback to original request
+          return fetch(url, options);
+        }
+      }
     }),
     onError: (error) => {
       console.error("[Slideout Copilot] Error:", error);
@@ -64,8 +97,9 @@ export function CopilotRuntimeProvider({ children }: { children: ReactNode }) {
 
   return (
     <AssistantRuntimeProvider runtime={runtime}>
-      {children}
+      <ToolRegistration>
+        {children}
+      </ToolRegistration>
     </AssistantRuntimeProvider>
   );
 }
-

@@ -41,14 +41,18 @@ export async function POST(req: NextRequest) {
       );
     }
     
-    // 3. Request Validation - Accept AI SDK v5 format directly
+    // 3. Request Validation - Accept AI SDK v5 format with system & tools
     const body = await req.json();
     
-    // Debug logging to see what we're receiving
-    console.log('[API-DEBUG] Received request body:', JSON.stringify(body, null, 2));
+    // ✅ VERIFIED: Accept messages, system, and tools from request body
+    const { messages, system, tools } = body;
     
-    // Accept AI SDK v5 format messages directly
-    const messages = body.messages;
+    // Debug logging to see what we're receiving
+    console.log('[API-DEBUG] Received request:', {
+      messagesCount: messages?.length,
+      hasSystem: !!system,
+      toolsCount: tools ? Object.keys(tools).length : 0,
+    });
     
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
       return NextResponse.json(
@@ -98,9 +102,18 @@ export async function POST(req: NextRequest) {
     
     // 6. Stream response using Mastra agent with proper UI stream format
     try {
+      // ✅ VERIFIED: Pass system context to Mastra agent
+      // Note: Tools registered via registerModelContextProvider run on frontend, not passed to backend
+      console.log("[API] Streaming with context:", {
+        agent: agentName,
+        systemContext: system ? "Present" : "Not provided",
+        frontendToolsCount: tools ? Object.keys(tools).length : 0,
+      });
+      
       const stream = await agent.stream(messages as any, {    
         format: "aisdk",
         maxSteps: 10,
+        system,  // ✅ Pass screen context to agent
         modelSettings: {},
         onError: ({ error }: { error: any }) => {
           console.error("Mastra stream onError", error);
@@ -118,6 +131,8 @@ export async function POST(req: NextRequest) {
           duration,
           streaming: true,
           agent: agentName,
+          hasSystemContext: !!system,
+          toolsCount: tools ? Object.keys(tools).length : 0,
         }).catch(console.error);
       }
       
@@ -190,4 +205,3 @@ async function logAnalytics(data: any) {
   // });
   console.log("[Analytics]", data);
 }
-

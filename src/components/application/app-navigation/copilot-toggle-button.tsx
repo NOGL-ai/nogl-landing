@@ -20,7 +20,7 @@ export const CopilotToggleButton = ({ className }: CopilotToggleButtonProps) => 
                 isCollapsed && "bg-[#fafafa] dark:bg-[#252b37]/50", // Highlight when collapsed
                 className
             )}
-            aria-label={isCollapsed ? "Show AI Copilot" : "Hide AI Copilot"}
+            aria-label="Toggle AI Copilot"
         >
             <Stars02 className="size-5 text-[#717680] dark:text-[#a4a7ae]" />
         </Button>

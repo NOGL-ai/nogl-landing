@@ -119,6 +119,24 @@ export const AssistantSidebar: FC<PropsWithChildren> = ({ children }) => {
           direction="horizontal" 
           className="fixed inset-0 w-full h-screen"
           autoSaveId="assistant-sidebar-layout"
+          storage={{
+            getItem: (name: string) => {
+              try {
+                const value = localStorage.getItem(name);
+                return value;
+              } catch (error) {
+                console.warn('Failed to read panel layout from localStorage:', error);
+                return null;
+              }
+            },
+            setItem: (name: string, value: string) => {
+              try {
+                localStorage.setItem(name, value);
+              } catch (error) {
+                console.warn('Failed to save panel layout to localStorage:', error);
+              }
+            }
+          }}
         >
           {/* Main Content Panel */}
           <ResizablePanel 

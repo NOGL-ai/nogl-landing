@@ -15,6 +15,7 @@ import Checkbox from '@/components/ui/checkbox';
 import TanStackTable from '@/components/application/table/tanstack-table';
 import { getCompetitors } from '@/lib/services/competitorClient';
 import { CompetitorDTO } from '@/types/product';
+import { useScreenContext } from '@/context/ScreenContext';
 
 // Hardcoded data removed - now using API
 
@@ -336,6 +337,7 @@ const PricePositionCell = ({
 };
 
 export default function CompetitorPage() {
+  const screenContext = useScreenContext();
   const [selectedRows, setSelectedRows] = React.useState<Set<number>>(new Set());
   const [activeTab, setActiveTab] = React.useState<'all' | 'monitored' | 'unmonitored'>('all');
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -411,6 +413,37 @@ export default function CompetitorPage() {
 
     fetchCompetitors();
   }, [currentPage, itemsPerPage, searchQuery, activeTab]);
+
+  // ✅ Pass visible competitor data to ScreenContext for AI Copilot
+  React.useEffect(() => {
+    if (!isLoading && competitors.length > 0) {
+      screenContext.setData("competitors", {
+        competitors: competitors.map(c => ({
+          name: c.name,
+          domain: c.domain,
+          products: c.products,
+          position: c.position,
+          priceComparison: {
+            competitorPrice: c.competitorPrice,
+            myPrice: c.myPrice,
+            difference: c.myPrice - c.competitorPrice,
+            percentageDiff: ((c.myPrice - c.competitorPrice) / c.competitorPrice) * 100,
+            status: c.myPrice < c.competitorPrice ? "winning" : c.myPrice === c.competitorPrice ? "equal" : "losing",
+          },
+          categories: c.categories,
+          lastUpdated: c.date,
+        })),
+        summary: {
+          total: total,
+          currentPage: currentPage,
+          totalPages: totalPages,
+          filter: activeTab,
+          searchQuery: searchQuery || null,
+        },
+        visibleAt: new Date().toISOString(),
+      });
+    }
+  }, [isLoading, competitors, total, currentPage, totalPages, activeTab, searchQuery, screenContext]);
 
   // Calculate max products for relative scaling
   const maxProducts = React.useMemo(() => {
