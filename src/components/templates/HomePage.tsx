@@ -1,4 +1,5 @@
-import HomeHero from "@/components/organisms/HomeHero";
+// import HomeHero from "@/components/organisms/HomeHero";
+import NOGLHero from "@/components/organisms/NOGLHero";
 import HomeCounter from "@/components/organisms/HomeCounter";
 import HomeCallToAction from "@/components/organisms/HomeCallToAction";
 import FAQ from "@/components/organisms/FAQ";
@@ -77,7 +78,8 @@ const Home: React.FC<HomeProps> = ({ dictionary }) => {
 				color={"#4F46E5"}
 			/>
 			<GlassmorphismBackground />
-			<HomeHero dictionary={dictionary} />
+			{/* <HomeHero dictionary={dictionary} /> */}
+			<NOGLHero />
 			<HomeCounter dictionary={dictionary} />
 
 			<HomeCallToAction dictionary={dictionary} />

@@ -12,6 +12,8 @@ const config = {
 				sans: ["Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Arial", "sans-serif"],
 				mono: ["JetBrains Mono", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"],
 				serif: ["Georgia", "Times New Roman", "serif"],
+				'perfect-dark': ["Perfect Dark BRK", "sans-serif"],
+				'azonix': ["Azonix", "sans-serif"],
 			},
 			animation: {
 				"shimmer-slide":

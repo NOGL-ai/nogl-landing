@@ -6,6 +6,7 @@ import ClientLayout from "./ClientLayout";
 import { ThemeProvider } from "@/components/atoms/ThemeProvider";
 import "@/styles/globals.css";
 import "@/styles/sidebar-submenu-animations.css";
+import "@/styles/hero-fonts.css";
 
 const inter = Inter({
 	subsets: ["latin"],

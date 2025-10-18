@@ -1,0 +1,16 @@
+@font-face {
+  font-family: 'Perfect Dark BRK';
+  src: url('/fonts/PerfectDarkBRK.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Azonix';
+  src: url('/fonts/Azonix.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+

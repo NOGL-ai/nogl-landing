@@ -1,3 +1,7 @@
+// OLD HERO COMPONENT - COMMENTED OUT FOR REFERENCE
+// Replaced with NOGLHero component
+
+/*
 "use client";
 
 // Removed custom components - using standard HTML elements instead
@@ -87,3 +91,4 @@ export default function HeroSection({ dictionary }: HeroProps) {
 		</section>
 	);
 }
+*/

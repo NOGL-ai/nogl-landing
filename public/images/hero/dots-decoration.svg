@@ -1,0 +1,31 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 109 129" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="dots">
+<path id="Line 9" opacity="0.25" d="M2 2H27" stroke="var(--stroke-0, white)" stroke-width="4" stroke-linecap="round"/>
+<g id="Group 881">
+<mask id="mask0_0_5" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="25" width="64" height="4">
+<path id="Line 10" d="M2 27H62" stroke="var(--stroke-0, white)" stroke-width="4" stroke-linecap="round"/>
+</mask>
+<g mask="url(#mask0_0_5)">
+<path id="Line 11" d="M2 27H109" stroke="var(--stroke-0, white)" stroke-width="4" stroke-linecap="round"/>
+</g>
+</g>
+<g id="Group 882">
+<mask id="mask1_0_5" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="50" width="111" height="4">
+<path id="Line 11_2" d="M2 52H109" stroke="var(--stroke-0, white)" stroke-width="4" stroke-linecap="round"/>
+</mask>
+<g mask="url(#mask1_0_5)">
+<path id="Line 12" opacity="0.25" d="M2 52H27" stroke="var(--stroke-0, white)" stroke-width="4" stroke-linecap="round"/>
+</g>
+</g>
+<g id="Group 883">
+<mask id="mask2_0_5" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="75" width="29" height="4">
+<path id="Line 12_2" d="M2 77H27" stroke="var(--stroke-0, white)" stroke-width="4" stroke-linecap="round"/>
+</mask>
+<g mask="url(#mask2_0_5)">
+<path id="Line 13" opacity="0.25" d="M2 77H109" stroke="var(--stroke-0, white)" stroke-width="4" stroke-linecap="round"/>
+</g>
+</g>
+<path id="Line 13_2" opacity="0.25" d="M2 102H27" stroke="var(--stroke-0, white)" stroke-width="4" stroke-linecap="round"/>
+<path id="Line 14" opacity="0.25" d="M2 127H27" stroke="var(--stroke-0, white)" stroke-width="4" stroke-linecap="round"/>
+</g>
+</svg>
