@@ -23,7 +23,7 @@ export const useSidebar = (
 	options: UseSidebarOptions = {}
 ): UseSidebarReturn => {
 	const {
-		defaultCollapsed = false,
+		defaultCollapsed = true,
 		persistState = true,
 		storageKey = "sidebar-collapsed",
 	} = options;

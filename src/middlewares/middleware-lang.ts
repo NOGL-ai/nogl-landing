@@ -6,13 +6,13 @@ import { i18n } from "@/i18n";
 import { match as matchLocale } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
 import { CustomMiddleware } from "./chain";
+import { LocaleError, logMiddlewareError } from "@/lib/middleware-errors";
 
 function getLocale(request: NextRequest): string | undefined {
 	const negotiatorHeaders: Record<string, string> = {};
 	request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
 
-	// @ts-ignore next-line
-	const locales: string[] = i18n.locales;
+	const locales = [...i18n.locales] as string[];
 	const languages = new Negotiator({ headers: negotiatorHeaders }).languages();
 
 	// Filter out invalid locales and ensure we have valid language codes
@@ -35,7 +35,11 @@ function getLocale(request: NextRequest): string | undefined {
 		return locale;
 	} catch (error) {
 		// If locale matching fails, return default locale
-		console.warn("Locale matching failed:", error);
+		logMiddlewareError(
+			new LocaleError('Locale matching failed', { validLanguages }),
+			request,
+			'i18n'
+		);
 		return i18n.defaultLocale;
 	}
 }

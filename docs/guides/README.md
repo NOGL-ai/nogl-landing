@@ -209,7 +209,7 @@ const {
 	toggleMobile, // Function: toggle mobile sidebar
 	setHovered, // Function: manually control hover state
 } = useSidebar({
-	defaultCollapsed: false, // Initial collapsed state
+	defaultCollapsed: true, // Initial collapsed state
 	persistState: true, // Save state to localStorage
 	storageKey: "sidebar-collapsed", // localStorage key
 });

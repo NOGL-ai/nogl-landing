@@ -3,21 +3,8 @@ import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 import { Locale, i18n } from "@/i18n";
 import { CustomMiddleware } from "./chain";
-
-const protectedPaths = [
-	"/admin",
-	"/user",
-	"/dashboard",
-	"/account",
-	"/catalog",
-	"/competitors",
-	"/notifications",
-	"/product-feed",
-	"/profile",
-	"/reports",
-	"/repricing",
-	"/settings",
-];
+import { getProtectedPaths } from "@/config/routes.config";
+import { setAuthHeaders } from "@/types/middleware.types";
 
 function getProtectedRoutes(protectedPaths: string[], locales: Locale[]) {
 	let protectedPathsWithLocale = [...protectedPaths];
@@ -37,12 +24,6 @@ function getProtectedRoutes(protectedPaths: string[], locales: Locale[]) {
 
 export function withAuthMiddleware(middleware: CustomMiddleware) {
 	return async (request: NextRequest, event: NextFetchEvent) => {
-		// Development bypass for local testing
-		if (process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_BYPASS_AUTH === 'true') {
-			console.log('⚠️ Auth middleware bypassed for development');
-			return middleware(request, event, NextResponse.next());
-		}
-
 		// Create a response object to pass down the chain
 		const response = NextResponse.next();
 
@@ -53,10 +34,9 @@ export function withAuthMiddleware(middleware: CustomMiddleware) {
 		const isAdmin = token?.role === "ADMIN";
 		const isUser = token?.role === "USER";
 
-		// @ts-ignore
-		request.nextauth = request.nextauth || {};
-		// @ts-ignore
-		request.nextauth.token = token;
+		// Set auth information in response headers (type-safe)
+		setAuthHeaders(response, token);
+		
 		const pathname = request.nextUrl.pathname;
 
 		// Handle root route redirect based on auth state
@@ -78,7 +58,7 @@ export function withAuthMiddleware(middleware: CustomMiddleware) {
 			}
 		}
 
-		const protectedPathsWithLocale = getProtectedRoutes(protectedPaths, [
+		const protectedPathsWithLocale = getProtectedRoutes(getProtectedPaths(), [
 			...i18n.locales,
 		]);
 

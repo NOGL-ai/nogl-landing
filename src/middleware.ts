@@ -3,11 +3,13 @@ import type { NextRequest } from "next/server";
 import { chain } from "@/middlewares/chain";
 import { withAuthMiddleware } from "@/middlewares/middleware-auth";
 import withI18nMiddleware from "@/middlewares/middleware-lang";
+import { withSecurityHeaders } from "@/middlewares/middleware-security";
 
-// Create middleware chain
+// Create middleware chain - security headers wrap everything
 const middlewareChain = chain([
 	withI18nMiddleware, // Handle locale first
 	withAuthMiddleware, // Then handle auth
+	withSecurityHeaders, // Add security headers last
 ]);
 
 export async function middleware(request: NextRequest) {
