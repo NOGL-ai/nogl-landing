@@ -59,18 +59,36 @@ export default function MapboxWorldMap({
 	const hoverTimeouts = useRef<Map<string, NodeJS.Timeout>>(new Map());
 	const { resolvedTheme } = useTheme();
 	const [mapLoaded, setMapLoaded] = useState(false);
+	const mapInitStartTime = useRef<number>(0);
+
+	// Detect mobile viewport
+	const isMobile = useMemo(() => {
+		if (typeof window === "undefined") return false;
+		return window.innerWidth < 768;
+	}, []);
+
+	// Mobile-responsive map configuration
+	const mapConfig = useMemo(() => ({
+		center: [9.9937, 53.5511] as [number, number], // Hamburg, Germany
+		zoom: isMobile ? 3.5 : 4.5, // Zoom out more on mobile
+		minZoom: isMobile ? 1 : 2,
+		maxZoom: isMobile ? 8 : 10,
+	}), [isMobile]);
 
 	// Initialize map
 	useEffect(() => {
 		if (!mapContainer.current || map.current) return;
 
+		// Performance tracking: Start timer
+		mapInitStartTime.current = performance.now();
+
 		const mapInstance = new mapboxgl.Map({
 			container: mapContainer.current,
 			style: getMapStyle(resolvedTheme === "dark" ? "dark" : "light"),
-			center: [9.9937, 53.5511], // Hamburg, Germany - perfect view of all European markers
-			zoom: 4.5,
-			minZoom: 2,
-			maxZoom: 10,
+			center: mapConfig.center,
+			zoom: mapConfig.zoom,
+			minZoom: mapConfig.minZoom,
+			maxZoom: mapConfig.maxZoom,
 			maxBounds: [[-180, -85], [180, 85]], // Constrain to world bounds
 			dragRotate: false, // Disable rotation
 			touchPitch: false, // Disable tilt on mobile
@@ -87,6 +105,31 @@ export default function MapboxWorldMap({
 
 		mapInstance.on("load", () => {
 			setMapLoaded(true);
+			
+			// Performance tracking: Calculate load time
+			const loadTime = performance.now() - mapInitStartTime.current;
+			console.info(`[Mapbox Performance] Map loaded in ${loadTime.toFixed(2)}ms`);
+			
+			// Track in analytics if available
+			if (typeof window !== "undefined" && (window as any).analytics?.track) {
+				(window as any).analytics.track("map_loaded", {
+					loadTime,
+					theme: resolvedTheme,
+					isMobile,
+					markerCount: locations.length,
+				});
+			}
+		});
+
+		// Track map errors
+		mapInstance.on("error", (e) => {
+			console.error("[Mapbox Error]", e.error);
+			if (typeof window !== "undefined" && (window as any).analytics?.track) {
+				(window as any).analytics.track("map_error", {
+					error: e.error?.message || "Unknown error",
+					theme: resolvedTheme,
+				});
+			}
 		});
 
 		map.current = mapInstance;
@@ -116,6 +159,19 @@ export default function MapboxWorldMap({
 			setMapLoaded(true); // Trigger marker re-addition
 		});
 	}, [resolvedTheme]);
+
+	// Handle window resize - debounced for performance
+	useEffect(() => {
+		if (!map.current) return;
+
+		const debouncedResize = debounce(() => {
+			map.current?.resize();
+			console.debug("[Mapbox] Map resized");
+		}, 100);
+
+		window.addEventListener("resize", debouncedResize);
+		return () => window.removeEventListener("resize", debouncedResize);
+	}, []);
 
 	// Create custom marker element
 	const createMarkerElement = useCallback((locationId: string, isHovered: boolean) => {
