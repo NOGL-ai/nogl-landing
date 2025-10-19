@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useTheme } from "next-themes";
@@ -13,6 +13,33 @@ import { CountryFlag } from "@/components/atoms/CountryFlags";
 if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN) {
 	mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 }
+
+// Utility: Announce to screen readers
+const announceToScreenReader = (message: string) => {
+	if (typeof window === "undefined") return;
+	
+	const announcement = document.createElement("div");
+	announcement.setAttribute("role", "status");
+	announcement.setAttribute("aria-live", "polite");
+	announcement.setAttribute("aria-atomic", "true");
+	announcement.className = "sr-only";
+	announcement.style.cssText = "position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden;";
+	announcement.textContent = message;
+	document.body.appendChild(announcement);
+	setTimeout(() => announcement.remove(), 1000);
+};
+
+// Utility: Debounce function
+const debounce = <T extends (...args: any[]) => any>(
+	func: T,
+	wait: number
+): ((...args: Parameters<T>) => void) => {
+	let timeout: NodeJS.Timeout | null = null;
+	return (...args: Parameters<T>) => {
+		if (timeout) clearTimeout(timeout);
+		timeout = setTimeout(() => func(...args), wait);
+	};
+};
 
 interface MapboxWorldMapProps {
 	locations: WinningProductLocation[];

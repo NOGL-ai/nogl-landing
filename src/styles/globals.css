@@ -209,51 +209,72 @@ body.app-hide-footer footer {
    Mapbox GL JS Custom Styling - Untitled UI Integration
    ======================================================================== */
 
-/* Mapbox controls styling to match Untitled UI design system */
+/* Mapbox controls styling - DEFAULT (works for both themes) - HIGH CONTRAST */
 .mapboxgl-ctrl-group {
-	background: var(--color-bg-primary) !important;
-	border: 1px solid var(--color-border-primary) !important;
+	background: rgba(255, 255, 255, 0.98) !important;
+	border: 2px solid rgba(0, 0, 0, 0.1) !important;
 	border-radius: 8px !important;
-	box-shadow: var(--shadow-sm) !important;
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15) !important;
 }
 
 .mapboxgl-ctrl-group button {
-	color: var(--color-text-secondary) !important;
-	width: 32px !important;
-	height: 32px !important;
+	position: relative !important;
+	width: 36px !important;
+	height: 36px !important;
+	background: transparent !important;
+	transition: all 0.2s ease !important;
 }
 
 .mapboxgl-ctrl-group button + button {
-	border-top: 1px solid var(--color-border-primary) !important;
+	border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
 }
 
 .mapboxgl-ctrl-group button:hover {
-	background: var(--color-bg-secondary) !important;
+	background: rgba(0, 0, 0, 0.05) !important;
+	transform: scale(1.05) !important;
+}
+
+.mapboxgl-ctrl-group button:active {
+	background: rgba(0, 0, 0, 0.1) !important;
+	transform: scale(0.98) !important;
 }
 
 .mapboxgl-ctrl-group button:focus {
-	outline: 2px solid var(--color-border-brand) !important;
+	outline: 2px solid #7F56D9 !important;
 	outline-offset: 2px !important;
 }
 
-/* Zoom control icons */
+/* Zoom control icons - BOLD and VISIBLE */
 .mapboxgl-ctrl-zoom-in .mapboxgl-ctrl-icon,
 .mapboxgl-ctrl-zoom-out .mapboxgl-ctrl-icon {
 	background-image: none !important;
+	display: none !important;
 }
 
 .mapboxgl-ctrl-zoom-in::after {
 	content: '+';
-	font-size: 20px;
-	font-weight: 600;
-	color: var(--color-text-secondary);
+	position: absolute !important;
+	top: 50% !important;
+	left: 50% !important;
+	transform: translate(-50%, -50%) !important;
+	font-size: 26px !important;
+	font-weight: 700 !important;
+	color: #1a1a1a !important;
+	line-height: 1 !important;
+	pointer-events: none !important;
 }
 
 .mapboxgl-ctrl-zoom-out::after {
 	content: '−';
-	font-size: 20px;
-	font-weight: 600;
-	color: var(--color-text-secondary);
+	position: absolute !important;
+	top: 50% !important;
+	left: 50% !important;
+	transform: translate(-50%, -50%) !important;
+	font-size: 30px !important;
+	font-weight: 700 !important;
+	color: #1a1a1a !important;
+	line-height: 1 !important;
+	pointer-events: none !important;
 }
 
 /* Mapbox popup styling - Figma-perfect tooltips */
@@ -316,10 +337,21 @@ body.app-hide-footer footer {
 	will-change: transform;
 }
 
-/* Dark mode adjustments */
+/* Dark mode adjustments - HIGH CONTRAST */
 :where(.dark, .dark-mode) .mapboxgl-ctrl-group {
-	background: var(--color-bg-primary) !important;
-	border-color: var(--color-border-primary) !important;
+	background: rgba(255, 255, 255, 0.95) !important;
+	border: 2px solid rgba(255, 255, 255, 0.2) !important;
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4) !important;
+}
+
+:where(.dark, .dark-mode) .mapboxgl-ctrl-group button {
+	color: #1a1a1a !important;
+}
+
+:where(.dark, .dark-mode) .mapboxgl-ctrl-zoom-in::after,
+:where(.dark, .dark-mode) .mapboxgl-ctrl-zoom-out::after {
+	color: #1a1a1a !important;
+	font-weight: 700 !important; /* Ensure bold in dark mode */
 }
 
 :where(.dark, .dark-mode) .mapboxgl-popup-content {

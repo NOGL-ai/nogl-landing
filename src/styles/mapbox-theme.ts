@@ -1,8 +1,8 @@
 /**
  * Mapbox Custom Theme Styles
  * 
- * Custom map styles for light and dark themes matching Untitled UI design system.
- * These replace the default Mapbox styles with our brand colors.
+ * Official Mapbox style URLs for light and dark themes.
+ * These provide optimal performance and visibility for SaaS dashboards.
  */
 
 export interface MapboxStyle {
