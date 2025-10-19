@@ -174,7 +174,7 @@ export default function MapboxWorldMap({
 	}, []);
 
 	// Create custom marker element
-	const createMarkerElement = useCallback((locationId: string, isHovered: boolean) => {
+	const createMarkerElement = useCallback((locationId: string, isHovered: boolean, location: WinningProductLocation) => {
 		const el = document.createElement("div");
 		el.className = "custom-marker";
 		el.style.width = "48px";
@@ -182,8 +182,16 @@ export default function MapboxWorldMap({
 		el.style.cursor = "pointer";
 		el.style.transition = "transform 0.3s ease";
 		
+		// Accessibility: Make keyboard accessible
+		el.setAttribute("tabindex", "0");
+		el.setAttribute("role", "button");
+		el.setAttribute("aria-label", `Product location in ${location.city}, ${location.country}. Press Enter to view details.`);
+		
 		if (isHovered) {
 			el.style.transform = "scale(1.1)";
+			el.setAttribute("aria-pressed", "true");
+		} else {
+			el.setAttribute("aria-pressed", "false");
 		}
 
 		// Create ripple circles
@@ -267,7 +275,7 @@ export default function MapboxWorldMap({
 			const isHovered = hoveredMarkerId === location.id;
 
 			// Create custom marker element
-			const el = createMarkerElement(location.id, isHovered);
+			const el = createMarkerElement(location.id, isHovered, location);
 			
 			const marker = new mapboxgl.Marker({
 				element: el,
@@ -291,6 +299,24 @@ export default function MapboxWorldMap({
 					hoverTimeouts.current.delete(location.id);
 				}
 				onMarkerHover(null);
+			});
+
+			// Accessibility: Keyboard navigation
+			el.addEventListener("keydown", (e) => {
+				if (e.key === "Enter" || e.key === " ") {
+					e.preventDefault();
+					onMarkerHover(location.id);
+					// Announce to screen readers
+					announceToScreenReader(`Selected ${location.city}, ${location.country}. Website: ${location.website}`);
+				} else if (e.key === "Escape") {
+					onMarkerHover(null);
+					announceToScreenReader("Closed location details");
+				}
+			});
+
+			// Accessibility: Click/touch events
+			el.addEventListener("click", () => {
+				announceToScreenReader(`Viewing ${location.city}, ${location.country}`);
 			});
 
 			// Create Figma-styled popup with country flag

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import WorldMapSVG from "./WorldMapSVG";
+import MapboxErrorBoundary from "./MapboxErrorBoundary";
 import { CountryFlag } from "@/components/atoms/CountryFlags";
 import type { WinningProductLocation, CountryBreakdown } from "@/data/winningProducts";
 
@@ -67,11 +68,13 @@ export default function WorldMap({ totalCount, countryData, locations }: WorldMa
 					>
 						{/* Render Mapbox if available and no errors, otherwise fallback to SVG */}
 						{useMapbox && !mapLoadError && process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN ? (
-							<MapboxWorldMap
-								locations={locations}
-								onMarkerHover={setHoveredMarkerId}
-								hoveredMarkerId={hoveredMarkerId}
-							/>
+							<MapboxErrorBoundary>
+								<MapboxWorldMap
+									locations={locations}
+									onMarkerHover={setHoveredMarkerId}
+									hoveredMarkerId={hoveredMarkerId}
+								/>
+							</MapboxErrorBoundary>
 						) : (
 							<>
 								{/* Fallback SVG Map */}
