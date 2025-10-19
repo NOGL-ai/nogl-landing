@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import RepricingRulesCard, {
 	RepricingRule,
 } from "../molecules/RepricingRulesCard";
@@ -72,6 +73,7 @@ const sampleRules: RepricingRule[] = [
 ];
 
 const RepricingRules: React.FC = () => {
+	const router = useRouter();
 	const [rules, setRules] = useState<RepricingRule[]>(sampleRules);
 	const [selectedRules, setSelectedRules] = useState<Set<string>>(new Set());
 
@@ -92,19 +94,23 @@ const RepricingRules: React.FC = () => {
 	};
 
 	const handleManageRule = (id: string) => {
-		// Handle manage action
+		// Navigate to manage page with rule ID for editing
+		router.push(`/repricing/manage?id=${id}`);
 	};
 
 	const handleDownloadRule = (id: string) => {
 		// Handle download action
+		console.log("Download rule:", id);
 	};
 
 	const handleRunPreview = (id: string) => {
 		// Handle run preview action
+		console.log("Run preview for rule:", id);
 	};
 
-	const handleAddReports = () => {
-		// Handle add reports action
+	const handleAddRule = () => {
+		// Navigate to manage page for creating new rule
+		router.push("/repricing/manage");
 	};
 
 	return (
@@ -163,7 +169,7 @@ const RepricingRules: React.FC = () => {
 
 					<Button
 						className='flex items-center justify-center gap-0.5 px-3 py-2 text-white'
-						onClick={handleAddReports}
+						onClick={handleAddRule}
 						style={{
 							borderRadius: "5px",
 							background: "#335CFF",
@@ -183,7 +189,7 @@ const RepricingRules: React.FC = () => {
 								letterSpacing: "-0.07px",
 							}}
 						>
-							Add Reports
+							Add Rule
 						</span>
 					</Button>
 				</div>

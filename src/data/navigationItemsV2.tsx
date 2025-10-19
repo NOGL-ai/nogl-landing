@@ -75,7 +75,7 @@ export const navigationStructure: NavigationSection[] = [
                     },
                     {
                         label: 'Price Rules',
-                        href: '/repricing',
+                        href: '/repricing/auto-rules',
                         icon: RefreshCw01,
                     },
                     {

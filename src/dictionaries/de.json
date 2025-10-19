@@ -398,5 +398,153 @@
 		"description": "Verwalten und optimieren Sie Ihre Produkt-Feeds für bessere Marktreichweite",
 		"metaTitle": "Produkt-Feed | Nogl",
 		"metaDescription": "Verwalten und optimieren Sie Ihre Produkt-Feeds für bessere Marktreichweite"
+	},
+	"repricing": {
+		"manage": {
+			"title": "Repricing-Regel erstellen / bearbeiten",
+			"subtitle": "Verwenden Sie diese Seite, um Ihre Preisregel zu erstellen oder zu bearbeiten",
+			"back": "Zurück",
+			"saveRule": "Regel speichern",
+			"saveRulePreview": "Regel speichern & Vorschau",
+			"saving": "Wird gespeichert...",
+			"step1": {
+				"title": "Schritt 1 - Regelname",
+				"subtitle": "Bitte geben Sie einen erkennbaren Namen für diese Regel ein",
+				"placeholder": "1% unter meinem günstigsten Konkurrenten",
+				"helpLink": "So funktioniert's"
+			},
+			"step2": {
+				"title": "Schritt 2 - Repricing",
+				"subtitle": "Wählen Sie aus, welche Aktionen wir für Ihre Preise durchführen sollen",
+				"setNewPrice": "Neuen Preis festlegen",
+				"priceDirection": {
+					"plus": "Plus",
+					"minus": "Minus",
+					"percentage": "%",
+					"fixed": "€"
+				},
+				"comparisonSource": {
+					"myPrice": "Mein Preis",
+					"cheapest": "Günstigster Konkurrent",
+					"average": "Durchschnittlicher Konkurrentenpreis",
+					"specific": "Bestimmter Konkurrent"
+				},
+				"comparisonLogic": {
+					"equal": "Gleich",
+					"above": "Über",
+					"below": "Unter"
+				},
+				"example": "Beispiel: Ihr Produkt kostet € {current}, Konkurrenzpreis ist € {competitor}, neuer Preis wird € {new} sein"
+			},
+			"step3": {
+				"title": "Schritt 3 - Konkurrenten auswählen",
+				"subtitle": "Wählen Sie aus, welche Konkurrenten für diese Regel verfolgt werden sollen",
+				"selectAll": "Alle auswählen",
+				"deselectAll": "Alle abwählen",
+				"addCompetitor": "Neuen Konkurrenten hinzufügen",
+				"searchPlaceholder": "Konkurrenten suchen...",
+				"noCompetitors": "Keine Konkurrenten verfügbar. Fügen Sie einen hinzu, um zu beginnen.",
+				"lastChecked": "Zuletzt geprüft: {time}"
+			},
+			"step4": {
+				"title": "Schritt 4 - Stoppbedingung",
+				"subtitle": "Wählen Sie aus, wann diese Regel angehalten werden soll",
+				"types": {
+					"price": "Neuer Preis",
+					"none": "Keine Bedingung"
+				},
+				"minMaxSetting": "Min/Max-Werte-Einstellung",
+				"enableSection": "Bitte wählen Sie Min / Max / Min-Max als Stoppbedingung aus, um diesen Bereich zu aktivieren"
+			},
+			"minMaxMethods": {
+				"manual": {
+					"title": "Manuell zuweisen",
+					"description": "Geben Sie Ihre Min/Max-Preise für alle Artikel manuell an, die dieser Repricing-Regel über die Produktseite oder die Massen-Upload-Option auf der Importseite zugewiesen sind"
+				},
+				"grossMargin": {
+					"title": "Aufschlag",
+					"description": "Legen Sie Ihre Min/Max-Preise automatisch für alle Artikel fest, die dieser Repricing-Regel zugewiesen sind, indem Sie einen festen oder prozentualen Aufschlagswert basierend auf Ihren Produktkosten verwenden"
+				},
+				"cost": {
+					"title": "Artikelkosten",
+					"description": "Legen Sie Ihre Min/Max-Preise automatisch für alle dieser Repricing-Regel zugewiesenen Artikel basierend auf dem Prozentsatz der individuellen Kosten des Artikels fest"
+				},
+				"price": {
+					"title": "Artikelpreis",
+					"description": "Legen Sie Ihre Min/Max-Preise automatisch für alle dieser Repricing-Regel zugewiesenen Artikel basierend auf dem Prozentsatz des individuellen Preises des Artikels fest"
+				},
+				"map": {
+					"title": "MAP",
+					"description": "Legen Sie Ihre Min/Max-Preise automatisch für alle dieser Repricing-Regel zugewiesenen Artikel basierend auf dem MAP fest, den Sie Ihrem Produkt zugewiesen haben"
+				}
+			},
+			"step5": {
+				"title": "Schritt 5 - Auf Produkte anwenden",
+				"subtitle": "Wählen Sie aus, welche Produkte berücksichtigt oder ausgeschlossen werden sollen",
+				"allProducts": "Alle Produkte",
+				"specificCategories": "Bestimmte Kategorien",
+				"individualProducts": "Einzelne Produkte",
+				"selectedCount": "{count} Produkte ausgewählt"
+			},
+			"step7": {
+				"title": "Schritt 7 - Repricing-Methode",
+				"subtitle": "Wählen Sie, ob Pricefy den neuen Preis automatisch auf Ihrer Plattform anwenden oder nur vorschlagen soll",
+				"semiAutomatic": {
+					"title": "Semi-Automatisch",
+					"description": "Pricefy schlägt Ihnen den neuen Preis vor, den Sie mit nur einem Klick anwenden können."
+				},
+				"autopilot": {
+					"title": "Autopilot",
+					"description": "Der Preis wird von Pricefy automatisch jeden Tag gemäß dieser Regel geändert.",
+					"upgrade": "Upgrade für Freischaltung",
+					"afterImport": "Jedes Mal, wenn ein Katalog-Import abgeschlossen ist",
+					"fixedTime": "Jeden Tag um",
+					"timezone": "Europa/Berlin"
+				}
+			},
+			"step8": {
+				"title": "Schritt 8 - Optionen",
+				"subtitle": "Optionen, um Ihre Preise attraktiver zu gestalten. Hinweis: Die Optionen werden VOR der Analyse der Stoppbedingung angewendet",
+				"adjustPrice": {
+					"title": "\"Neuen Preis\" anpassen",
+					"newPrice": "Neuer Preis",
+					"plus": "Plus",
+					"minus": "Minus",
+					"example": "Beispiel: Wenn die Repricing-Regel den neuen Preis als € {calculated} berechnet, wird Pricefy den Verkaufspreis auf € {adjusted} setzen"
+				},
+				"roundingPrice": {
+					"title": "Repricing-Produktpreise beenden",
+					"example": "Beispiel: Wenn die Repricing-Regel den neuen Preis auf € {calculated} setzt, wird Pricefy den Preis als € {rounded} auf Ihrer Plattform auflisten"
+				}
+			},
+			"step9": {
+				"title": "Schritt 9 - Export-Einstellungen",
+				"subtitle": "Konfigurieren Sie, wie Sie Ihre Repricing-Ergebnisse erhalten möchten",
+				"enableExport": "Export aktivieren",
+				"format": "Export-Format",
+				"formats": {
+					"csv": "CSV (Kommagetrennte Werte)",
+					"excel": "Excel (.xlsx)",
+					"xml": "XML",
+					"json": "JSON"
+				},
+				"emailNotification": "Export per E-Mail senden",
+				"emailAddress": "E-Mail-Adresse",
+				"emailPlaceholder": "ihre@email.de",
+				"autopilotRequired": "Export funktioniert nur, wenn Autopilot aktiviert ist (Schritt 7)",
+				"premiumRequired": "Upgrade auf Premium, um die Export-Funktion freizuschalten",
+				"scheduleInfo": "Export wird generiert: {schedule}",
+				"helpLink": "So funktioniert's"
+			},
+			"validation": {
+				"nameRequired": "Regelname ist erforderlich",
+				"priceRequired": "Preiswert ist erforderlich",
+				"pricePositive": "Preis muss positiv sein",
+				"competitorsRequired": "Mindestens ein Konkurrent muss ausgewählt werden",
+				"productsRequired": "Mindestens ein Produkt muss ausgewählt werden"
+			},
+			"success": "Repricing-Regel erfolgreich gespeichert",
+			"error": "Fehler beim Speichern der Repricing-Regel. Bitte versuchen Sie es erneut."
+		}
 	}
 }

@@ -329,5 +329,153 @@
 		"description": "Manage and optimize your product feeds for better market reach",
 		"metaTitle": "Product Feed | Nogl",
 		"metaDescription": "Manage and optimize your product feeds for better market reach"
+	},
+	"repricing": {
+		"manage": {
+			"title": "Create / Edit Repricing Rule",
+			"subtitle": "Use this page to create or edit your pricing rule",
+			"back": "Back",
+			"saveRule": "Save Rule",
+			"saveRulePreview": "Save Rule & Preview",
+			"saving": "Saving...",
+			"step1": {
+				"title": "Step 1 - Rule name",
+				"subtitle": "Please enter a recognizable name for this rule",
+				"placeholder": "1% Below my cheapest competitor",
+				"helpLink": "How it works"
+			},
+			"step2": {
+				"title": "Step 2 - Repricing",
+				"subtitle": "Select what actions we must perform on your prices",
+				"setNewPrice": "Set new price",
+				"priceDirection": {
+					"plus": "Plus",
+					"minus": "Minus",
+					"percentage": "%",
+					"fixed": "€"
+				},
+				"comparisonSource": {
+					"myPrice": "My Price",
+					"cheapest": "Cheapest Competitor",
+					"average": "Average Competitor Price",
+					"specific": "Specific Competitor"
+				},
+				"comparisonLogic": {
+					"equal": "Equal to",
+					"above": "Above",
+					"below": "Below"
+				},
+				"example": "Example: Your product costs € {current}, competitor price is € {competitor}, new price will be € {new}"
+			},
+			"step3": {
+				"title": "Step 3 - Select Competitors",
+				"subtitle": "Choose which competitors to track for this rule",
+				"selectAll": "Select All",
+				"deselectAll": "Deselect All",
+				"addCompetitor": "Add New Competitor",
+				"searchPlaceholder": "Search competitors...",
+				"noCompetitors": "No competitors available. Add one to get started.",
+				"lastChecked": "Last checked: {time}"
+			},
+			"step4": {
+				"title": "Step 4 - Stop Condition",
+				"subtitle": "Choose when this rule must be halted",
+				"types": {
+					"price": "New Price",
+					"none": "No Condition"
+				},
+				"minMaxSetting": "Min/Max Values Setting",
+				"enableSection": "Please select Min / Max / Min-Max as stop condition to enable this section"
+			},
+			"minMaxMethods": {
+				"manual": {
+					"title": "Manually Assign",
+					"description": "Manually specify your Min/Max prices for all items assigned this repricing rule via products page or using the bulk upload option in the import page"
+				},
+				"grossMargin": {
+					"title": "Markup",
+					"description": "Automatically specify your Min/Max prices for all items assigned this repricing rule using a Markup fixed or percentage value based on your product Cost"
+				},
+				"cost": {
+					"title": "Item Cost",
+					"description": "Automatically specify your Min/Max prices for all items assigned this repricing rule based on percentage of the individual cost of the item"
+				},
+				"price": {
+					"title": "Item Price",
+					"description": "Automatically specify your Min/Max prices for all items assigned this repricing rule based on percentage of the individual price of the item"
+				},
+				"map": {
+					"title": "MAP",
+					"description": "Automatically specify your Min/Max prices for all items assigned this repricing rule based on the MAP you assigned to your product"
+				}
+			},
+			"step5": {
+				"title": "Step 5 - Apply to products",
+				"subtitle": "Select which product(s) must be considered or excluded",
+				"allProducts": "All Products",
+				"specificCategories": "Specific Categories",
+				"individualProducts": "Individual Products",
+				"selectedCount": "{count} products selected"
+			},
+			"step7": {
+				"title": "Step 7 - Repricing Method",
+				"subtitle": "Choose if Pricefy will apply the new price automatically on your platform or will just suggest it",
+				"semiAutomatic": {
+					"title": "Semi-Automatic",
+					"description": "Pricefy will suggest you the new price which you could apply with just a click."
+				},
+				"autopilot": {
+					"title": "Autopilot",
+					"description": "Price will be automatically changed by Pricefy, every day, according to this rule.",
+					"upgrade": "Upgrade to unlock",
+					"afterImport": "Every time a catalog import terminates",
+					"fixedTime": "Every day at",
+					"timezone": "Europe/Berlin"
+				}
+			},
+			"step8": {
+				"title": "Step 8 - Options",
+				"subtitle": "Options to let your prices be more attractive. Note: The options are applied BEFORE the stop condition analysis",
+				"adjustPrice": {
+					"title": "Adjust \"New Price\"",
+					"newPrice": "New Price",
+					"plus": "Plus",
+					"minus": "Minus",
+					"example": "Example: If the repricing rule calculates the new price as € {calculated}, Pricefy will reprice the sale price at € {adjusted}"
+				},
+				"roundingPrice": {
+					"title": "End repriced product prices",
+					"example": "Example: If the repricing rule sets the new price at € {calculated}, Pricefy will list the price as € {rounded} on your platform"
+				}
+			},
+			"step9": {
+				"title": "Step 9 - Export Settings",
+				"subtitle": "Configure how you want to receive your repricing results",
+				"enableExport": "Enable export",
+				"format": "Export format",
+				"formats": {
+					"csv": "CSV (Comma-separated values)",
+					"excel": "Excel (.xlsx)",
+					"xml": "XML",
+					"json": "JSON"
+				},
+				"emailNotification": "Send export by email",
+				"emailAddress": "Email address",
+				"emailPlaceholder": "your@email.com",
+				"autopilotRequired": "Export only works when Autopilot is enabled (Step 7)",
+				"premiumRequired": "Upgrade to premium to unlock export functionality",
+				"scheduleInfo": "Export will be generated: {schedule}",
+				"helpLink": "How it works"
+			},
+			"validation": {
+				"nameRequired": "Rule name is required",
+				"priceRequired": "Price value is required",
+				"pricePositive": "Price must be positive",
+				"competitorsRequired": "At least one competitor must be selected",
+				"productsRequired": "At least one product must be selected"
+			},
+			"success": "Repricing rule saved successfully",
+			"error": "Failed to save repricing rule. Please try again."
+		}
 	}
 }
