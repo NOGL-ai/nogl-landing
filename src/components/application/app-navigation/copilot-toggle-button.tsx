@@ -10,14 +10,14 @@ interface CopilotToggleButtonProps {
 }
 
 export const CopilotToggleButton = ({ className }: CopilotToggleButtonProps) => {
-    const { toggleCollapse, isCollapsed } = useAssistantSidebar();
+    const { toggleCollapse, isCollapsed, isMounted } = useAssistantSidebar();
 
     return (
         <Button
             onPress={toggleCollapse}
             className={cx(
                 "flex size-10 items-center justify-center rounded-md transition-colors duration-200 hover:bg-[#fafafa] dark:hover:bg-[#252b37]/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 pressed:bg-[#fafafa] dark:pressed:bg-[#252b37]",
-                isCollapsed && "bg-[#fafafa] dark:bg-[#252b37]/50", // Highlight when collapsed
+                isMounted && isCollapsed && "bg-[#fafafa] dark:bg-[#252b37]/50", // Highlight when collapsed (only after hydration)
                 className
             )}
             aria-label="Toggle AI Copilot"

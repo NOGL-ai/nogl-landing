@@ -14,6 +14,9 @@ if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
 	mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 }
 
+// Singleton to prevent duplicate map initialization in React Strict Mode (development)
+let globalMapInstance: mapboxgl.Map | null = null;
+
 // Utility: Announce to screen readers
 const announceToScreenReader = (message: string) => {
 	if (typeof window === "undefined") return;
@@ -60,6 +63,14 @@ export default function MapboxWorldMap({
 	const { resolvedTheme } = useTheme();
 	const [mapLoaded, setMapLoaded] = useState(false);
 	const mapInitStartTime = useRef<number>(0);
+	const isMountedRef = useRef(true);
+	const onMarkerHoverRef = useRef(onMarkerHover);
+	const currentStyleRef = useRef<string | null>(null); // Track current map style to prevent duplicates
+
+	// Keep onMarkerHoverRef up to date
+	useEffect(() => {
+		onMarkerHoverRef.current = onMarkerHover;
+	}, [onMarkerHover]);
 
 	// Detect mobile viewport
 	const isMobile = useMemo(() => {
@@ -77,14 +88,27 @@ export default function MapboxWorldMap({
 
 	// Initialize map
 	useEffect(() => {
-		if (!mapContainer.current || map.current) return;
+		// Prevent re-initialization in React Strict Mode - use singleton
+		if (globalMapInstance) {
+			map.current = globalMapInstance;
+			isMountedRef.current = true;
+			// Valid use case: we need to set loaded state when reusing existing map
+			setMapLoaded(true);
+			return;
+		}
+		
+		if (!mapContainer.current) return;
 
+		isMountedRef.current = true;
 		// Performance tracking: Start timer
 		mapInitStartTime.current = performance.now();
 
+		const initialStyle = getMapStyle(resolvedTheme === "dark" ? "dark" : "light");
+		currentStyleRef.current = initialStyle; // Track the initial style
+		
 		const mapInstance = new mapboxgl.Map({
 			container: mapContainer.current,
-			style: getMapStyle(resolvedTheme === "dark" ? "dark" : "light"),
+			style: initialStyle,
 			center: mapConfig.center,
 			zoom: mapConfig.zoom,
 			minZoom: mapConfig.minZoom,
@@ -133,31 +157,86 @@ export default function MapboxWorldMap({
 		});
 
 		map.current = mapInstance;
+		globalMapInstance = mapInstance; // Store in singleton
 
 		return () => {
-			// Clear all hover timeouts
+			isMountedRef.current = false;
+
+			// Clear all timeouts
 			hoverTimeouts.current.forEach((timeout) => clearTimeout(timeout));
 			hoverTimeouts.current.clear();
-			
-			if (map.current) {
-				map.current.remove();
-				map.current = null;
+
+			// Remove all markers explicitly
+			markers.current.forEach((marker) => {
+				try {
+					marker.remove();
+				} catch (error) {
+					// Marker already removed, ignore
+				}
+			});
+			markers.current.clear();
+
+			// Remove all popups explicitly
+			popups.current.forEach((popup) => {
+				try {
+					popup.remove();
+				} catch (error) {
+					// Popup already removed, ignore
+				}
+			});
+			popups.current.clear();
+
+			// Remove map instance (only on actual unmount, not Strict Mode's first unmount)
+			if (map.current && !globalMapInstance) {
+				try {
+					map.current.remove();
+				} catch (error) {
+					// Suppress expected AbortError
+					if (error instanceof Error && error.name === 'AbortError') {
+						console.debug('[Mapbox Cleanup] AbortError suppressed (expected during unmount)');
+					} else {
+						console.error('[Mapbox Cleanup Error]', error);
+					}
+				} finally {
+					map.current = null;
+				}
 			}
 		};
 	}, []); // Only initialize once, never recreate the map
 
 	// Update map style when theme changes
 	useEffect(() => {
-		if (!map.current || !mapLoaded) return;
+		if (!map.current || !mapLoaded || !isMountedRef.current) return;
 
-		setMapLoaded(false); // Temporarily set to false while style loads
 		const newStyle = getMapStyle(resolvedTheme === "dark" ? "dark" : "light");
-		map.current.setStyle(newStyle);
 		
-		// Re-add markers after style loads
-		map.current.once('style.load', () => {
-			setMapLoaded(true); // Trigger marker re-addition
-		});
+		// Skip if the style is already set to avoid duplicate requests
+		if (currentStyleRef.current === newStyle) {
+			return;
+		}
+
+		try {
+			setMapLoaded(false); // Temporarily set to false while style loads
+			currentStyleRef.current = newStyle; // Update tracked style
+			map.current.setStyle(newStyle);
+			
+			// Re-add markers after style loads
+			map.current.once('style.load', () => {
+				if (isMountedRef.current) {
+					setMapLoaded(true); // Trigger marker re-addition
+				}
+			});
+		} catch (error) {
+			if (error instanceof Error && error.name === 'AbortError') {
+				console.debug('[Mapbox Style] AbortError during style change (component unmounting)');
+			} else {
+				console.error('[Mapbox Style Error]', error);
+			}
+			// Restore mapLoaded state on error
+			if (isMountedRef.current) {
+				setMapLoaded(true);
+			}
+		}
 	}, [resolvedTheme]);
 
 	// Handle window resize - debounced for performance
@@ -261,7 +340,7 @@ export default function MapboxWorldMap({
 
 	// Add/update markers
 	useEffect(() => {
-		if (!map.current || !mapLoaded) return;
+		if (!map.current || !mapLoaded || !isMountedRef.current) return;
 
 		// Clear existing markers
 		markers.current.forEach((marker) => marker.remove());
@@ -287,7 +366,7 @@ export default function MapboxWorldMap({
 			// Add hover events with delay
 			el.addEventListener("mouseenter", () => {
 				const timeout = setTimeout(() => {
-					onMarkerHover(location.id);
+					onMarkerHoverRef.current(location.id);
 				}, 200); // 200ms delay for better UX
 				hoverTimeouts.current.set(location.id, timeout);
 			});
@@ -298,18 +377,18 @@ export default function MapboxWorldMap({
 					clearTimeout(timeout);
 					hoverTimeouts.current.delete(location.id);
 				}
-				onMarkerHover(null);
+				onMarkerHoverRef.current(null);
 			});
 
 			// Accessibility: Keyboard navigation
 			el.addEventListener("keydown", (e) => {
 				if (e.key === "Enter" || e.key === " ") {
 					e.preventDefault();
-					onMarkerHover(location.id);
+					onMarkerHoverRef.current(location.id);
 					// Announce to screen readers
 					announceToScreenReader(`Selected ${location.city}, ${location.country}. Website: ${location.website}`);
 				} else if (e.key === "Escape") {
-					onMarkerHover(null);
+					onMarkerHoverRef.current(null);
 					announceToScreenReader("Closed location details");
 				}
 			});
@@ -387,11 +466,11 @@ export default function MapboxWorldMap({
 			markers.current.set(location.id, marker);
 			popups.current.set(location.id, popup);
 		});
-	}, [locations, mapLoaded, hoveredMarkerId, onMarkerHover, createMarkerElement]);
+	}, [locations, mapLoaded, hoveredMarkerId, createMarkerElement]);
 
 	// Show/hide popup based on hover
 	useEffect(() => {
-		if (!map.current || !mapLoaded) return;
+		if (!map.current || !mapLoaded || !isMountedRef.current) return;
 
 		popups.current.forEach((popup, locationId) => {
 			if (locationId === hoveredMarkerId) {

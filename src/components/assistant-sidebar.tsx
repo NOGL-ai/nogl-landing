@@ -36,6 +36,7 @@ const setStoredCollapsedState = (isCollapsed: boolean): void => {
 const AssistantSidebarContext = createContext<{
   toggleCollapse: () => void;
   isCollapsed: boolean;
+  isMounted: boolean;
 } | null>(null);
 
 export const useAssistantSidebar = () => {
@@ -113,7 +114,7 @@ export const AssistantSidebar: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   return (
-    <AssistantSidebarContext.Provider value={{ toggleCollapse, isCollapsed }}>
+    <AssistantSidebarContext.Provider value={{ toggleCollapse, isCollapsed, isMounted }}>
       {isMounted ? (
         <ResizablePanelGroup 
           direction="horizontal" 
