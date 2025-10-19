@@ -119,7 +119,7 @@ const JewelryProductCell: React.FC<JewelryProductCellProps> = ({
             }}
           />
           <div 
-            className={`${sizeClasses.imageInner} rounded-md bg-gray-200 items-center justify-center font-semibold text-gray-600 hidden`}
+            className={`${sizeClasses.imageInner} rounded-md bg-border items-center justify-center font-semibold text-tertiary hidden`}
             style={{ display: 'none', fontSize: size === 'sm' ? '10px' : size === 'lg' ? '16px' : '12px' }}
           >
             {product.name.charAt(0).toUpperCase()}
@@ -127,7 +127,7 @@ const JewelryProductCell: React.FC<JewelryProductCellProps> = ({
           
           {/* Status indicator */}
           {showStatus && (
-            <div className={`absolute ${sizeClasses.statusIndicator} rounded-full bg-white border border-gray-200 flex items-center justify-center`}>
+            <div className={`absolute ${sizeClasses.statusIndicator} rounded-full bg-white border border-border flex items-center justify-center`}>
               <span 
                 className={`text-green-600 dark:text-green-400`}
                 style={{ fontSize: size === 'sm' ? '6px' : size === 'lg' ? '10px' : '8px' }}
@@ -144,20 +144,20 @@ const JewelryProductCell: React.FC<JewelryProductCellProps> = ({
         {/* Product Name & Price */}
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0 flex-1">
-            <h3 className={`${sizeClasses.title} font-semibold text-gray-900 truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors`}>
+            <h3 className={`${sizeClasses.title} font-semibold text-primary truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors`}>
               {product.name}
             </h3>
             <p className={`${sizeClasses.subtitle} text-tertiary truncate`}>{product.brand.name}</p>
           </div>
           {showPrice && (
             <div className="text-right flex-shrink-0">
-              <div className={`${sizeClasses.price} font-bold text-gray-900`}>
+              <div className={`${sizeClasses.price} font-bold text-primary`}>
                 {product.myPrice.toLocaleString('de-DE', { 
                   style: 'currency', 
                   currency: product.currency || 'EUR' 
                 })}
               </div>
-              <div className={`${sizeClasses.priceLabel} text-gray-500`}>Your price</div>
+              <div className={`${sizeClasses.priceLabel} text-tertiary`}>Your price</div>
             </div>
           )}
         </div>
@@ -165,11 +165,11 @@ const JewelryProductCell: React.FC<JewelryProductCellProps> = ({
         {/* SKU & Competitor Info */}
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <span className={`${sizeClasses.subtitle} text-gray-500 font-mono`}>#{product.sku}</span>
+            <span className={`${sizeClasses.subtitle} text-tertiary font-mono`}>#{product.sku}</span>
             {showCompetitorCount && (
               <>
-                <div className="w-1 h-1 rounded-full bg-gray-300"></div>
-                <span className={`${sizeClasses.subtitle} text-gray-500`}>
+                <div className="w-1 h-1 rounded-full bg-border"></div>
+                <span className={`${sizeClasses.subtitle} text-tertiary`}>
                   {product.competitorCount} competitor{product.competitorCount !== 1 ? 's' : ''}
                 </span>
               </>
@@ -188,13 +188,13 @@ const JewelryProductCell: React.FC<JewelryProductCellProps> = ({
 
       {/* Hover tooltip with more details */}
       {showTooltip && (
-        <div className={`absolute left-0 top-full mt-2 hidden group-hover:block z-50 bg-gray-900 text-white rounded-lg shadow-lg whitespace-nowrap ${sizeClasses.tooltip}`}>
+        <div className={`absolute left-0 top-full mt-2 hidden group-hover:block z-50 bg-background text-white rounded-lg shadow-lg whitespace-nowrap ${sizeClasses.tooltip}`}>
           <div className="space-y-1">
             <div className="font-semibold">{product.name}</div>
-            <div className="text-gray-300">{product.brand.name}</div>
-            <div className="text-gray-300">SKU: {product.sku}</div>
+            <div className="text-tertiary">{product.brand.name}</div>
+            <div className="text-tertiary">SKU: {product.sku}</div>
             {showPrice && (
-              <div className="text-gray-300">
+              <div className="text-tertiary">
                 Price: {product.myPrice.toLocaleString('de-DE', { 
                   style: 'currency', 
                   currency: product.currency || 'EUR' 
@@ -202,16 +202,16 @@ const JewelryProductCell: React.FC<JewelryProductCellProps> = ({
               </div>
             )}
             {showCompetitorCount && (
-              <div className="text-gray-300">{product.competitorCount} competitors monitoring</div>
+              <div className="text-tertiary">{product.competitorCount} competitors monitoring</div>
             )}
             {product.categories && product.categories.length > 0 && (
-              <div className="text-gray-300">
+              <div className="text-tertiary">
                 Categories: {product.categories.slice(0, 2).join(', ')}
                 {product.categories.length > 2 && ` +${product.categories.length - 2} more`}
               </div>
             )}
           </div>
-          <div className="absolute -top-1 left-4 w-2 h-2 bg-gray-900 rotate-45"></div>
+          <div className="absolute -top-1 left-4 w-2 h-2 bg-background rotate-45"></div>
         </div>
       )}
     </div>

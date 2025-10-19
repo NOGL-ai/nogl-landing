@@ -36,8 +36,8 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({
 				};
 			case "disabled":
 				return {
-					bg: "bg-gray-100",
-					text: "text-gray-600",
+					bg: "bg-secondary_bg",
+					text: "text-tertiary",
 					dot: "fill-gray-400",
 				};
 			default:

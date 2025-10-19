@@ -6,7 +6,6 @@ import TextAlign from "@tiptap/extension-text-align";
 import { Color } from "@tiptap/extension-color";
 import { useState, useEffect } from "react";
 import { cx } from "@/utils/cx";
-
 interface RichTextEditorProps {
 	value: string;
 	onChange: (value: string) => void;

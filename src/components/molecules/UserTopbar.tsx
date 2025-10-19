@@ -99,7 +99,7 @@ export default function UserTopbar() {
 								);
 								setFilterValue(item?.value);
 							}}
-							className={`bg-gray-1 font-satoshi inline-flex h-10 items-center justify-center gap-2 rounded-lg border pl-3 pr-4 text-sm font-medium capitalize dark:bg-white/5 ${
+							className={`bg-secondary_bg font-satoshi inline-flex h-10 items-center justify-center gap-2 rounded-lg border pl-3 pr-4 text-sm font-medium capitalize dark:bg-white/5 ${
 								filterValue === item?.value
 									? "text-primary shadow-input border-transparent"
 									: "border-stroke text-body dark:border-stroke-dark"
@@ -136,7 +136,7 @@ export default function UserTopbar() {
 							<input
 								type='search'
 								placeholder='Search user'
-								className='border-stroke bg-gray-1 pr-4.5 focus:shadow-input focus:ring-primary/20 dark:border-stroke-dark h-11 w-full rounded-lg border pl-11 outline-none ring-offset-1 duration-300 focus:ring-2 dark:bg-transparent dark:focus:border-transparent'
+								className='border-stroke bg-secondary_bg pr-4.5 focus:shadow-input focus:ring-primary/20 dark:border-stroke-dark h-11 w-full rounded-lg border pl-11 outline-none ring-offset-1 duration-300 focus:ring-2 dark:bg-transparent dark:focus:border-transparent'
 								onChange={(e: unknown) => setSearch(e.target.value)}
 							/>
 

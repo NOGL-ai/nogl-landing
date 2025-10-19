@@ -201,21 +201,21 @@ export function TeamTab() {
 		<div className="flex flex-col gap-6">
 			<div className="flex flex-col gap-6 px-4 lg:px-8">
 				{/* Card */}
-				<div className="flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-xs">
+				<div className="flex flex-col overflow-hidden rounded-xl border border-border bg-white shadow-xs">
 					{/* Card Header */}
 					<div className="flex flex-col gap-5 bg-white px-4 pt-5 lg:px-6">
 						<div className="flex flex-col items-start gap-4">
 							{/* Title and Description */}
 							<div className="flex flex-col gap-0.5 self-stretch">
 								<div className="flex items-center gap-2">
-									<h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+									<h2 className="text-lg font-semibold text-primary dark:text-white">
 										Team members
 									</h2>
 									<BadgeWithDot type="modern" size="sm" color="gray">
 										48 users
 									</BadgeWithDot>
 								</div>
-								<p className="text-sm text-gray-600">
+								<p className="text-sm text-tertiary">
 									Manage your team members and their account permissions here.
 								</p>
 							</div>
@@ -246,7 +246,7 @@ export function TeamTab() {
 						</div>
 
 						{/* Divider */}
-						<div className="h-px w-full bg-gray-200" />
+						<div className="h-px w-full bg-border" />
 					</div>
 
 					{/* Table */}
@@ -255,7 +255,7 @@ export function TeamTab() {
 						<div className="hidden overflow-x-auto lg:block">
 							<table className="w-full">
 								<thead>
-									<tr className="border-b border-gray-200 bg-white">
+									<tr className="border-b border-border bg-white">
 										<th className="px-6 py-3 text-left">
 											<div className="flex items-center gap-3">
 												<Checkbox
@@ -265,23 +265,23 @@ export function TeamTab() {
 													onChange={handleSelectAll}
 													aria-label="Select all team members"
 												/>
-												<span className="text-xs font-semibold text-gray-700">
+												<span className="text-xs font-semibold text-secondary">
 													Name
 												</span>
 											</div>
 										</th>
 										<th className="px-6 py-3 text-left">
-											<span className="text-xs font-semibold text-gray-700">
+											<span className="text-xs font-semibold text-secondary">
 												Status
 											</span>
 										</th>
 										<th className="px-6 py-3 text-left">
-											<span className="text-xs font-semibold text-gray-700">
+											<span className="text-xs font-semibold text-secondary">
 												Email address
 											</span>
 										</th>
 										<th className="px-6 py-3 text-left">
-											<span className="text-xs font-semibold text-gray-700">
+											<span className="text-xs font-semibold text-secondary">
 												Teams
 											</span>
 										</th>
@@ -293,9 +293,9 @@ export function TeamTab() {
 										<tr
 											key={member.id}
 											className={cx(
-												"border-b border-gray-200",
+												"border-b border-border",
 												index % 2 === 0
-													? "bg-gray-25"
+													? "bg-secondary_bg"
 													: "bg-white"
 											)}
 										>
@@ -316,10 +316,10 @@ export function TeamTab() {
 														contrastBorder
 													/>
 													<div className="flex flex-col">
-														<span className="text-sm font-medium text-gray-900 dark:text-white">
+														<span className="text-sm font-medium text-primary dark:text-white">
 															{member.name}
 														</span>
-														<span className="text-sm text-gray-600">
+														<span className="text-sm text-tertiary">
 															{member.username}
 														</span>
 													</div>
@@ -333,7 +333,7 @@ export function TeamTab() {
 
 											{/* Email Column */}
 											<td className="px-6 py-4">
-												<span className="text-sm text-gray-600">
+												<span className="text-sm text-tertiary">
 													{member.email}
 												</span>
 											</td>
@@ -359,14 +359,14 @@ export function TeamTab() {
 												<div className="flex items-center gap-0.5">
 													<button
 														onClick={() => handleDeleteMember(member.id)}
-														className="rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-gray-50 hover:text-gray-600"
+														className="rounded-lg p-1.5 text-tertiary transition-colors hover:bg-secondary_bg hover:text-tertiary"
 														aria-label={`Delete ${member.name}`}
 													>
 														<Trash01 className="size-4" />
 													</button>
 													<button
 														onClick={() => handleEditMember(member.id)}
-														className="rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-gray-50 hover:text-gray-600"
+														className="rounded-lg p-1.5 text-tertiary transition-colors hover:bg-secondary_bg hover:text-tertiary"
 														aria-label={`Edit ${member.name}`}
 													>
 														<Edit01 className="size-4" />
@@ -382,7 +382,7 @@ export function TeamTab() {
 						{/* Mobile List - Visible only on mobile */}
 						<div className="flex flex-col lg:hidden">
 							{/* Mobile Header */}
-							<div className="flex items-center gap-3 border-b border-gray-200 bg-white px-4 py-3">
+							<div className="flex items-center gap-3 border-b border-border bg-white px-4 py-3">
 								<Checkbox
 									size="md"
 									isSelected={isAllSelected}
@@ -390,7 +390,7 @@ export function TeamTab() {
 									onChange={handleSelectAll}
 									aria-label="Select all team members"
 								/>
-								<span className="text-xs font-semibold text-gray-700">
+								<span className="text-xs font-semibold text-secondary">
 									Name
 								</span>
 							</div>
@@ -400,9 +400,9 @@ export function TeamTab() {
 								<div
 									key={member.id}
 									className={cx(
-										"flex items-center gap-3 border-b border-gray-200 px-4 py-4",
+										"flex items-center gap-3 border-b border-border px-4 py-4",
 										index % 2 === 0
-											? "bg-gray-25"
+											? "bg-secondary_bg"
 											: "bg-white"
 									)}
 								>
@@ -420,10 +420,10 @@ export function TeamTab() {
 										contrastBorder
 									/>
 									<div className="flex flex-col">
-										<span className="text-sm font-medium text-gray-900 dark:text-white">
+										<span className="text-sm font-medium text-primary dark:text-white">
 											{member.name}
 										</span>
-										<span className="text-sm text-gray-600">
+										<span className="text-sm text-tertiary">
 											{member.username}
 										</span>
 									</div>
@@ -438,30 +438,30 @@ export function TeamTab() {
 							currentPage={currentPage}
 							totalPages={totalPages}
 							onPageChange={setCurrentPage}
-							className="border-t border-gray-200"
+							className="border-t border-border"
 						/>
 					</div>
 
 					{/* Mobile Pagination */}
-					<div className="flex items-center justify-between border-t border-gray-200 px-4 pt-4 lg:hidden">
+					<div className="flex items-center justify-between border-t border-border px-4 pt-4 lg:hidden">
 						<button
 							disabled={currentPage <= 1}
 							onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)}
 							aria-label="Previous page"
-							className="flex items-center justify-center rounded-lg border border-gray-300 bg-white p-2 shadow-xs transition-colors hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+							className="flex items-center justify-center rounded-lg border border-border bg-white p-2 shadow-xs transition-colors hover:bg-secondary_bg disabled:opacity-50 disabled:cursor-not-allowed"
 						>
-							<ArrowLeft className="size-5 text-gray-400" />
+							<ArrowLeft className="size-5 text-tertiary" />
 						</button>
-						<span className="text-sm font-medium text-gray-700">
+						<span className="text-sm font-medium text-secondary">
 							Page {currentPage} of {totalPages}
 						</span>
 						<button
 							disabled={currentPage >= totalPages}
 							onClick={() => currentPage < totalPages && setCurrentPage(currentPage + 1)}
 							aria-label="Next page"
-							className="flex items-center justify-center rounded-lg border border-gray-300 bg-white p-2 shadow-xs transition-colors hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+							className="flex items-center justify-center rounded-lg border border-border bg-white p-2 shadow-xs transition-colors hover:bg-secondary_bg disabled:opacity-50 disabled:cursor-not-allowed"
 						>
-							<ArrowRight className="size-5 text-gray-400" />
+							<ArrowRight className="size-5 text-tertiary" />
 						</button>
 					</div>
 				</div>

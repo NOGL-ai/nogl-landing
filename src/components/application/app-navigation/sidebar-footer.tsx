@@ -102,7 +102,7 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
               className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors duration-200 group ${
                 currentTheme === 'dark' 
                   ? "bg-[#0a0d12] hover:bg-[#252b37]" 
-                  : "bg-gray-50 hover:bg-gray-100"
+                  : "bg-secondary_bg hover:bg-secondary_bg"
               }`}
             >
               <div className={`transition-colors ${
@@ -145,7 +145,7 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
               className={`p-2 rounded-md transition-colors duration-200 group relative ${
                 currentTheme === 'dark' 
                   ? "bg-[#0a0d12] hover:bg-[#252b37]" 
-                  : "bg-gray-50 hover:bg-gray-100"
+                  : "bg-secondary_bg hover:bg-secondary_bg"
               }`}
               title={item.label}
             >

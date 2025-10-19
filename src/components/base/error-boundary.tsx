@@ -31,7 +31,7 @@ export class ErrorBoundary extends Component<Props, State> {
 	render() {
 		if (this.state.hasError) {
 			return this.props.fallback || (
-				<div className="flex items-center justify-center min-h-screen bg-gray-50">
+				<div className="flex items-center justify-center min-h-screen bg-secondary_bg">
 					<div className="text-center">
 						<div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
 							<svg
@@ -49,10 +49,10 @@ export class ErrorBoundary extends Component<Props, State> {
 								/>
 							</svg>
 						</div>
-						<h2 className="mt-2 text-lg font-semibold text-gray-900">
+						<h2 className="mt-2 text-lg font-semibold text-primary">
 							Something went wrong
 						</h2>
-						<p className="mt-1 text-sm text-gray-500">
+						<p className="mt-1 text-sm text-tertiary">
 							We're sorry, but something unexpected happened. Please try refreshing the page.
 						</p>
 						<div className="mt-6">

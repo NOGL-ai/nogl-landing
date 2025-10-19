@@ -4,7 +4,7 @@ export default function GithubSigninButton({ text }: { text: string }) {
 	return (
 		<button
 			onClick={() => signIn("github", { callbackUrl: "/" })}
-			className='border-stroke font-satoshi text-dark hover:bg-gray-1 dark:border-stroke-dark flex h-12 w-full items-center justify-center gap-2 rounded-lg border text-base font-medium duration-300 dark:text-white dark:hover:bg-white/5 '
+			className='border-stroke font-satoshi text-dark hover:bg-secondary_bg dark:border-stroke-dark flex h-12 w-full items-center justify-center gap-2 rounded-lg border text-base font-medium duration-300 dark:text-white dark:hover:bg-white/5 '
 		>
 			<svg
 				width='20'

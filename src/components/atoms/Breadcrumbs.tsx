@@ -10,12 +10,12 @@ const Breadcrumbs = ({ title, pages }: { title: string; pages: string[] }) => {
 
 			<ul className='flex items-center justify-center gap-2'>
 				<li>
-					<Link className='dark:text-gray-5' href='/'>
+					<Link className='dark:text-tertiary' href='/'>
 						{pages[0]}
 					</Link>
 				</li>
 				{pages?.slice(1).map((page, index) => (
-					<li className='dark:text-gray-5' key={index}>
+					<li className='dark:text-tertiary' key={index}>
 						/ {page}
 					</li>
 				))}

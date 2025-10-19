@@ -37,10 +37,10 @@ export default function Notifications({ role }: { role: string }) {
 			<button
 				aria-label='Notification'
 				onClick={handleShowNotification}
-				className='border-stroke bg-gray-2 text-dark hover:bg-gray-3 dark:border-stroke-dark xsm:flex relative hidden aspect-square w-12 cursor-pointer items-center justify-center rounded-full border dark:text-white'
+				className='border-stroke bg-secondary_bg text-dark hover:bg-secondary_bg dark:border-stroke-dark xsm:flex relative hidden aspect-square w-12 cursor-pointer items-center justify-center rounded-full border dark:text-white'
 			>
 				<span
-					className={`border-gray-2 bg-red-light dark:border-stroke-dark absolute right-[13px] top-3 aspect-square w-2.5  rounded-full border-2 ${
+					className={`border-border bg-red-light dark:border-stroke-dark absolute right-[13px] top-3 aspect-square w-2.5  rounded-full border-2 ${
 						!showDot ? "hidden" : ""
 					}`}
 				></span>

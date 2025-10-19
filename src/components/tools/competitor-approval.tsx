@@ -149,7 +149,7 @@ export function CompetitorApprovalUI({ addResult, args }: CompetitorApprovalProp
       case "DELETE_COMPETITOR":
         return "text-red-600";
       default:
-        return "text-gray-600";
+        return "text-tertiary";
     }
   };
 
@@ -178,10 +178,10 @@ export function CompetitorApprovalUI({ addResult, args }: CompetitorApprovalProp
         {/* Current Data (for updates) */}
         {args.currentData && args.action === "UPDATE_COMPETITOR" && (
           <div className="space-y-2">
-            <h4 className="text-sm font-medium text-gray-700">
+            <h4 className="text-sm font-medium text-secondary">
               Current Data:
             </h4>
-            <div className="p-3 bg-gray-50 rounded-lg">
+            <div className="p-3 bg-secondary_bg rounded-lg">
               <div className="grid grid-cols-2 gap-2 text-sm">
                 <div>
                   <span className="font-medium">Name:</span> {args.currentData.name}
@@ -207,7 +207,7 @@ export function CompetitorApprovalUI({ addResult, args }: CompetitorApprovalProp
         {/* Competitor Data (for deletion) */}
         {args.competitorData && args.action === "DELETE_COMPETITOR" && (
           <div className="space-y-2">
-            <h4 className="text-sm font-medium text-gray-700">
+            <h4 className="text-sm font-medium text-secondary">
               Competitor to Delete:
             </h4>
             <div className="p-3 bg-red-50 dark:bg-red-950 rounded-lg border border-red-200 dark:border-red-800">
@@ -236,7 +236,7 @@ export function CompetitorApprovalUI({ addResult, args }: CompetitorApprovalProp
         {args.action !== "DELETE_COMPETITOR" && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h4 className="text-sm font-medium text-gray-700">
+              <h4 className="text-sm font-medium text-secondary">
                 {args.action === "CREATE_COMPETITOR" ? "New Competitor Data:" : "Updated Data:"}
               </h4>
               <Button
@@ -357,7 +357,7 @@ export function CompetitorApprovalUI({ addResult, args }: CompetitorApprovalProp
                     {isEditing && (
                       <button
                         onClick={() => removeCategory(category)}
-                        className="ml-1 text-gray-500 hover:text-gray-700"
+                        className="ml-1 text-tertiary hover:text-secondary"
                       >
                         <XIcon className="h-3 w-3" />
                       </button>
@@ -381,7 +381,7 @@ export function CompetitorApprovalUI({ addResult, args }: CompetitorApprovalProp
 
         {/* Action Buttons */}
         <div className="flex items-center justify-between pt-4 border-t">
-          <div className="text-sm text-gray-500">
+          <div className="text-sm text-tertiary">
             {isEditing ? "You can modify the data above" : "Review the operation above"}
           </div>
           <div className="flex gap-2">

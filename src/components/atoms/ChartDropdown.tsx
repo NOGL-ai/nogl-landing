@@ -42,7 +42,7 @@ const ChartDropdown: React.FC<ChartDropdownProps> = ({
 		<div className={`relative ${className}`}>
 			<button
 				onClick={() => setIsOpen(!isOpen)}
-				className='flex items-center gap-0.5 rounded-lg border border-[#E1E4EA] bg-white px-2.5 py-1.5 shadow-[0_1px_2px_0_rgba(10,13,20,0.03)] transition-colors hover:bg-gray-50 dark:shadow-[0_1px_2px_0_rgba(0,0,0,0.1)]'
+				className='flex items-center gap-0.5 rounded-lg border border-[#E1E4EA] bg-white px-2.5 py-1.5 shadow-[0_1px_2px_0_rgba(10,13,20,0.03)] transition-colors hover:bg-secondary_bg dark:shadow-[0_1px_2px_0_rgba(0,0,0,0.1)]'
 			>
 				<span
 					className='text-sm font-normal text-[#0E121B]'
@@ -75,10 +75,10 @@ const ChartDropdown: React.FC<ChartDropdownProps> = ({
 									onChange(option.value);
 									setIsOpen(false);
 								}}
-								className={`w-full px-3 py-2 text-left text-sm transition-colors hover:bg-gray-50 ${
+								className={`w-full px-3 py-2 text-left text-sm transition-colors hover:bg-secondary_bg ${
 									option.value === value
 										? "bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-300"
-										: "text-gray-700"
+										: "text-secondary"
 								}`}
 								style={{
 									fontFamily: "Inter",

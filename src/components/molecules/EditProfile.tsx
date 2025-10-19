@@ -169,7 +169,7 @@ export default function EditProfile() {
 					<div className='relative mb-9 flex items-center gap-8'>
 						<label
 							htmlFor='profilePhoto'
-							className='border-stroke bg-gray-2 text-dark hover:bg-gray-3 dark:border-stroke-dark relative flex aspect-square w-[130px] cursor-pointer items-center justify-center rounded-full border dark:bg-white/5 dark:text-white'
+							className='border-stroke bg-secondary_bg text-dark hover:bg-secondary_bg dark:border-stroke-dark relative flex aspect-square w-[130px] cursor-pointer items-center justify-center rounded-full border dark:bg-white/5 dark:text-white'
 						>
 							{data?.profilePhoto ? (
 								<>

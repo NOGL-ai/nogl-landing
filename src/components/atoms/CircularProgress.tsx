@@ -62,7 +62,7 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
 			</svg>
 			{showText && (
 				<div
-					className='absolute inset-0 flex items-center justify-center text-sm font-medium text-gray-900 dark:text-white'
+					className='absolute inset-0 flex items-center justify-center text-sm font-medium text-primary dark:text-white'
 					style={{
 						fontSize: "14px",
 						lineHeight: "20px",

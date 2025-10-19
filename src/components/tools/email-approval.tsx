@@ -155,7 +155,7 @@ export function EmailApprovalUI({ addResult, args }: EmailApprovalProps) {
       case "high":
         return "text-red-600 bg-red-50 dark:bg-red-950";
       case "low":
-        return "text-gray-600 bg-gray-50";
+        return "text-tertiary bg-secondary_bg";
       default:
         return "text-blue-600 bg-blue-50 dark:bg-blue-950";
     }
@@ -192,9 +192,9 @@ export function EmailApprovalUI({ addResult, args }: EmailApprovalProps) {
               <div className="space-y-3">
                 <div className="flex items-center justify-between border-b pb-2">
                   <div className="flex items-center gap-2">
-                    <MailIcon className="h-4 w-4 text-gray-500" />
+                    <MailIcon className="h-4 w-4 text-tertiary" />
                     <span className="text-sm font-medium">From:</span>
-                    <span className="text-sm text-gray-600">
+                    <span className="text-sm text-tertiary">
                       {args.preview.from}
                     </span>
                   </div>
@@ -281,7 +281,7 @@ export function EmailApprovalUI({ addResult, args }: EmailApprovalProps) {
                   <select
                     value={formData.priority || "normal"}
                     onChange={(e) => updateField("priority", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white"
+                    className="w-full px-3 py-2 border border-border rounded-md bg-white"
                   >
                     <option value="low">Low</option>
                     <option value="normal">Normal</option>
@@ -322,7 +322,7 @@ export function EmailApprovalUI({ addResult, args }: EmailApprovalProps) {
                       {email}
                       <button
                         onClick={() => removeRecipient("cc", email)}
-                        className="ml-1 text-gray-500 hover:text-gray-700"
+                        className="ml-1 text-tertiary hover:text-secondary"
                       >
                         <XIcon className="h-3 w-3" />
                       </button>
@@ -354,7 +354,7 @@ export function EmailApprovalUI({ addResult, args }: EmailApprovalProps) {
                       {email}
                       <button
                         onClick={() => removeRecipient("bcc", email)}
-                        className="ml-1 text-gray-500 hover:text-gray-700"
+                        className="ml-1 text-tertiary hover:text-secondary"
                       >
                         <XIcon className="h-3 w-3" />
                       </button>
@@ -372,7 +372,7 @@ export function EmailApprovalUI({ addResult, args }: EmailApprovalProps) {
                   rows={10}
                   className="font-mono text-sm"
                 />
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-tertiary">
                   HTML tags are supported for formatting
                 </p>
               </div>
@@ -382,7 +382,7 @@ export function EmailApprovalUI({ addResult, args }: EmailApprovalProps) {
 
         {/* Action Buttons */}
         <div className="flex items-center justify-between pt-4 border-t">
-          <div className="text-sm text-gray-500">
+          <div className="text-sm text-tertiary">
             Review the email above before sending
           </div>
           <div className="flex gap-2">

@@ -185,11 +185,11 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
 
       <CardContent className="space-y-4">
         {/* Progress Summary */}
-        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+        <div className="flex items-center justify-between p-3 bg-secondary_bg rounded-lg">
           <span className="text-sm font-medium">
             Progress: {completedCount} of {totalCount} tasks
           </span>
-          <div className="w-32 bg-gray-200 rounded-full h-2">
+          <div className="w-32 bg-border rounded-full h-2">
             <div 
               className="bg-blue-600 h-2 rounded-full transition-all duration-300"
               style={{ width: `${totalCount > 0 ? (completedCount / totalCount) * 100 : 0}%` }}
@@ -206,7 +206,7 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
                 "flex items-start gap-3 p-3 rounded-lg border transition-colors",
                 todo.completed 
                   ? "bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800" 
-                  : "bg-white border-gray-200"
+                  : "bg-white border-border"
               )}
             >
               <Checkbox
@@ -218,7 +218,7 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
               
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-gray-500">
+                  <span className="text-sm font-medium text-tertiary">
                     {index + 1}.
                   </span>
                   {editingTodoId === todo.id ? (
@@ -247,12 +247,12 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
                     <div className="flex-1">
                       <p className={cn(
                         "text-sm font-medium",
-                        todo.completed ? "line-through text-gray-500" : "text-gray-900"
+                        todo.completed ? "line-through text-tertiary" : "text-primary"
                       )}>
                         {todo.title}
                       </p>
                       {todo.description && (
-                        <p className="text-xs text-gray-500 mt-1">
+                        <p className="text-xs text-tertiary mt-1">
                           {todo.description}
                         </p>
                       )}
@@ -301,7 +301,7 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
 
         {/* Add New Todo */}
         {editing && (
-          <div className="p-3 border-2 border-dashed border-gray-300 rounded-lg">
+          <div className="p-3 border-2 border-dashed border-border rounded-lg">
             <div className="space-y-2">
               <Input
                 value={newTodoTitle}
@@ -338,7 +338,7 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
 
         {/* Action Buttons */}
         <div className="flex items-center justify-between pt-4 border-t">
-          <div className="text-sm text-gray-500">
+          <div className="text-sm text-tertiary">
             {editing ? "You can modify the plan above" : "Review the plan above"}
           </div>
           <div className="flex gap-2">

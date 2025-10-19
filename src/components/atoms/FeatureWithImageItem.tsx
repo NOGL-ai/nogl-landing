@@ -15,7 +15,7 @@ const FeatureItem = ({ data }: { data: FeatureWithImg }) => {
 				<h3 className='mb-4.5 font-satoshi xl:text-heading-4 text-2xl font-bold text-black lg:text-3xl dark:text-white'>
 					{data?.title}
 				</h3>
-				<p className='dark:text-gray-5'>{data?.description}</p>
+				<p className='dark:text-tertiary'>{data?.description}</p>
 
 				<ul className='mt-7.5 flex flex-col gap-3'>
 					{data?.checklist?.map((list, key) => (

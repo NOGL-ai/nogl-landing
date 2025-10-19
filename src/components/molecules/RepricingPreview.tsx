@@ -396,7 +396,7 @@ const RepricingPreview: React.FC = () => {
 	};
 
 	return (
-		<div className='bg-gray-3 w-full p-6'>
+		<div className='bg-secondary_bg w-full p-6'>
 			{/* Header */}
 			<div className='mb-5'>
 				<div className='mb-6 flex items-start gap-3 rounded-xl border border-[#F2F2F2] bg-white p-6'>

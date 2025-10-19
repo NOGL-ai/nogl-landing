@@ -183,10 +183,10 @@ export function CompetitorTrackModal({
 					{/* Close Button */}
 					<button
 						onClick={onClose}
-						className="absolute flex items-center justify-center rounded-lg hover:bg-gray-50 w-11 h-11 right-3 top-3"
+						className="absolute flex items-center justify-center rounded-lg hover:bg-secondary_bg w-11 h-11 right-3 top-3"
 					>
 						<svg
-							className="w-6 h-6 text-gray-400"
+							className="w-6 h-6 text-tertiary"
 							width="24"
 							height="24"
 							viewBox="0 0 24 24"
@@ -214,7 +214,7 @@ export function CompetitorTrackModal({
 						{/* Competitor Name */}
 						<div className="flex w-full flex-col items-start gap-1.5 self-stretch">
 							<label
-								className="text-gray-700 text-sm font-medium leading-5"
+								className="text-secondary text-sm font-medium leading-5"
 								style={{
 									fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
 								}}
@@ -226,7 +226,7 @@ export function CompetitorTrackModal({
 								placeholder="What is the name of your competitor?"
 								value={formData.name}
 								onChange={(e) => updateField("name", e.target.value)}
-								className="flex w-full items-center gap-2 self-stretch outline-hidden px-3.5 py-2.5 rounded-lg border border-gray-300 bg-white shadow-sm text-gray-900 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-base leading-6"
+								className="flex w-full items-center gap-2 self-stretch outline-hidden px-3.5 py-2.5 rounded-lg border border-border bg-white shadow-sm text-primary placeholder:text-tertiary dark:placeholder:text-tertiary text-base leading-6"
 								style={{
 									fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
 								}}
@@ -238,7 +238,7 @@ export function CompetitorTrackModal({
 							{/* Competitor Library */}
 							<div className="flex flex-1 flex-col items-start gap-1.5 self-stretch sm:max-w-[280px]">
 								<label
-									className="text-gray-700 text-sm font-medium leading-5"
+									className="text-secondary text-sm font-medium leading-5"
 									style={{
 										fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
 									}}
@@ -246,9 +246,9 @@ export function CompetitorTrackModal({
 									Competitor Library
 								</label>
 								<div
-									className="flex w-full items-center gap-2 self-stretch px-3.5 py-2.5 rounded-lg border border-gray-300 bg-white shadow-sm"
+									className="flex w-full items-center gap-2 self-stretch px-3.5 py-2.5 rounded-lg border border-border bg-white shadow-sm"
 								>
-									<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-gray-400">
+									<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-tertiary">
 										<path
 											d="M17.5 17.5L14.5834 14.5833M16.6667 9.58333C16.6667 13.4954 13.4954 16.6667 9.58333 16.6667C5.67132 16.6667 2.5 13.4954 2.5 9.58333C2.5 5.67132 5.67132 2.5 9.58333 2.5C13.4954 2.5 16.6667 5.67132 16.6667 9.58333Z"
 											stroke="currentColor"
@@ -262,7 +262,7 @@ export function CompetitorTrackModal({
 										placeholder="Search for competitor company"
 										value={formData.library || ""}
 										onChange={(e) => updateField("library", e.target.value)}
-										className="flex-1 bg-transparent outline-hidden text-gray-900 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-base leading-6"
+										className="flex-1 bg-transparent outline-hidden text-primary placeholder:text-tertiary dark:placeholder:text-tertiary text-base leading-6"
 										style={{
 											fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
 										}}
@@ -273,7 +273,7 @@ export function CompetitorTrackModal({
 							{/* Competitor Website */}
 							<div className="flex flex-1 flex-col items-start gap-1.5 self-stretch">
 								<label
-									className="text-gray-700 text-sm font-medium leading-5"
+									className="text-secondary text-sm font-medium leading-5"
 									style={{
 										fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
 									}}
@@ -281,7 +281,7 @@ export function CompetitorTrackModal({
 									Competitor Website
 								</label>
 								<div
-									className="flex w-full items-start self-stretch overflow-hidden rounded-lg border border-gray-300 bg-white shadow-sm"
+									className="flex w-full items-start self-stretch overflow-hidden rounded-lg border border-border bg-white shadow-sm"
 								>
 									<div
 										className="flex items-center px-3 py-2.5 text-tertiary text-base leading-6"
@@ -296,7 +296,7 @@ export function CompetitorTrackModal({
 										placeholder="www.competitor.com"
 										value={formData.website}
 										onChange={(e) => updateField("website", e.target.value)}
-										className="flex-1 self-stretch border-l border-gray-300 bg-transparent outline-hidden px-3.5 py-2.5 text-gray-900 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-base leading-6"
+										className="flex-1 self-stretch border-l border-border bg-transparent outline-hidden px-3.5 py-2.5 text-primary placeholder:text-tertiary dark:placeholder:text-tertiary text-base leading-6"
 										style={{
 											fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
 										}}
@@ -310,7 +310,7 @@ export function CompetitorTrackModal({
 							{/* Competitor Location */}
 							<div className="flex flex-1 flex-col items-start gap-1.5 self-stretch sm:max-w-[280px]">
 								<label
-									className="text-gray-700 text-sm font-medium leading-5"
+									className="text-secondary text-sm font-medium leading-5"
 									style={{
 										fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
 									}}
@@ -318,9 +318,9 @@ export function CompetitorTrackModal({
 									Competitor Location
 								</label>
 								<div
-									className="flex w-full items-center gap-2 self-stretch px-3.5 py-2.5 rounded-lg border border-gray-300 bg-white shadow-sm"
+									className="flex w-full items-center gap-2 self-stretch px-3.5 py-2.5 rounded-lg border border-border bg-white shadow-sm"
 								>
-									<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-gray-400">
+									<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-tertiary">
 										<path
 											d="M17.5 17.5L14.5834 14.5833M16.6667 9.58333C16.6667 13.4954 13.4954 16.6667 9.58333 16.6667C5.67132 16.6667 2.5 13.4954 2.5 9.58333C2.5 5.67132 5.67132 2.5 9.58333 2.5C13.4954 2.5 16.6667 5.67132 16.6667 9.58333Z"
 											stroke="currentColor"
@@ -334,7 +334,7 @@ export function CompetitorTrackModal({
 										placeholder="Search for competitor country"
 										value={formData.location || ""}
 										onChange={(e) => updateField("location", e.target.value)}
-										className="flex-1 bg-transparent outline-hidden text-gray-900 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-base leading-6"
+										className="flex-1 bg-transparent outline-hidden text-primary placeholder:text-tertiary dark:placeholder:text-tertiary text-base leading-6"
 										style={{
 											fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
 										}}
@@ -345,7 +345,7 @@ export function CompetitorTrackModal({
 							{/* Channel */}
 							<div className="flex w-full flex-col items-start gap-1.5 self-stretch sm:w-32">
 								<label
-									className="text-gray-700 text-sm font-medium leading-5"
+									className="text-secondary text-sm font-medium leading-5"
 									style={{
 										fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
 									}}
@@ -356,7 +356,7 @@ export function CompetitorTrackModal({
 									<select
 										value={formData.channel}
 										onChange={(e) => updateField("channel", e.target.value)}
-										className="flex w-full cursor-pointer appearance-none items-center gap-2 self-stretch outline-hidden px-3.5 py-2.5 rounded-lg border border-gray-300 bg-white shadow-sm text-gray-900 text-base font-medium leading-6"
+										className="flex w-full cursor-pointer appearance-none items-center gap-2 self-stretch outline-hidden px-3.5 py-2.5 rounded-lg border border-border bg-white shadow-sm text-primary text-base font-medium leading-6"
 										style={{
 											fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
 										}}
@@ -365,14 +365,14 @@ export function CompetitorTrackModal({
 											<option 
 												key={option.id} 
 												value={option.id}
-												className="bg-white text-gray-900"
+												className="bg-white text-primary"
 											>
 												{option.label}
 											</option>
 										))}
 									</select>
 									<svg
-										className="pointer-events-none absolute w-5 h-5 right-3.5 top-1/2 -translate-y-1/2 text-gray-400"
+										className="pointer-events-none absolute w-5 h-5 right-3.5 top-1/2 -translate-y-1/2 text-tertiary"
 										width="20"
 										height="20"
 										viewBox="0 0 20 20"
@@ -388,7 +388,7 @@ export function CompetitorTrackModal({
 						{/* Competitor Title */}
 						<div className="flex w-full flex-col items-start gap-1.5 self-stretch">
 							<label
-								className="text-gray-700 text-sm font-medium leading-5"
+								className="text-secondary text-sm font-medium leading-5"
 								style={{
 									fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
 								}}
@@ -400,7 +400,7 @@ export function CompetitorTrackModal({
 								placeholder="What is the title of the competitor?"
 								value={formData.title}
 								onChange={(e) => updateField("title", e.target.value)}
-								className="flex w-full items-center gap-2 self-stretch outline-hidden px-3.5 py-2.5 rounded-lg border border-gray-300 bg-white shadow-sm text-gray-900 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-base leading-6"
+								className="flex w-full items-center gap-2 self-stretch outline-hidden px-3.5 py-2.5 rounded-lg border border-border bg-white shadow-sm text-primary placeholder:text-tertiary dark:placeholder:text-tertiary text-base leading-6"
 								style={{
 									fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
 								}}
@@ -411,7 +411,7 @@ export function CompetitorTrackModal({
 						<div className="flex w-full flex-col items-start gap-1.5 self-stretch">
 							<div className="flex items-center gap-0.5">
 								<label
-									className="text-gray-700 text-sm font-medium leading-5"
+									className="text-secondary text-sm font-medium leading-5"
 									style={{
 										fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
 									}}
@@ -419,7 +419,7 @@ export function CompetitorTrackModal({
 									Competitor Description
 								</label>
 								<div className="flex items-center justify-center w-4 h-4">
-									<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-gray-400">
+									<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-tertiary">
 										<g clipPath="url(#clip0_15110_8091)">
 											<path
 												d="M6.06016 5.99967C6.2169 5.55412 6.52626 5.17841 6.93347 4.9391C7.34067 4.69978 7.81943 4.6123 8.28495 4.69215C8.75047 4.772 9.17271 5.01402 9.47688 5.37536C9.78106 5.7367 9.94753 6.19402 9.94683 6.66634C9.94683 7.99967 7.94683 8.66634 7.94683 8.66634M8.00016 11.333H8.00683M14.6668 7.99967C14.6668 11.6816 11.6821 14.6663 8.00016 14.6663C4.31826 14.6663 1.3335 11.6816 1.3335 7.99967C1.3335 4.31778 4.31826 1.33301 8.00016 1.33301C11.6821 1.33301 14.6668 4.31778 14.6668 7.99967Z"
@@ -442,13 +442,13 @@ export function CompetitorTrackModal({
 									placeholder="e.g. I joined Competitor's Customer Success team to enhance their product offerings. My focus was on onboarding new clients and addressing their concerns."
 									value={formData.description}
 									onChange={(e) => updateField("description", e.target.value)}
-									className="h-full w-full resize-none self-stretch outline-hidden px-3.5 py-3 rounded-lg border border-gray-300 bg-white shadow-sm text-gray-900 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-base leading-6"
+									className="h-full w-full resize-none self-stretch outline-hidden px-3.5 py-3 rounded-lg border border-border bg-white shadow-sm text-primary placeholder:text-tertiary dark:placeholder:text-tertiary text-base leading-6"
 									style={{
 										fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
 									}}
 								/>
 								<svg
-									className="pointer-events-none absolute w-3 h-3 right-5 bottom-[18px] text-gray-300"
+									className="pointer-events-none absolute w-3 h-3 right-5 bottom-[18px] text-tertiary"
 									width="12"
 									height="12"
 									viewBox="0 0 12 12"
@@ -470,9 +470,9 @@ export function CompetitorTrackModal({
 						<button
 							onClick={handleSaveDraft}
 							disabled={isSubmitting}
-							className="flex flex-1 items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg border border-gray-300 bg-white shadow-[0_0_0_1px_rgba(10,13,18,0.18)_inset,0_-2px_0_0_rgba(10,13,18,0.05)_inset,0_1px_2px_0_rgba(10,13,18,0.05)] dark:shadow-[0_0_0_1px_rgba(255,255,255,0.1)_inset,0_-2px_0_0_rgba(255,255,255,0.05)_inset,0_1px_2px_0_rgba(0,0,0,0.2)] disabled:cursor-not-allowed disabled:opacity-50"
+							className="flex flex-1 items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg border border-border bg-white shadow-[0_0_0_1px_rgba(10,13,18,0.18)_inset,0_-2px_0_0_rgba(10,13,18,0.05)_inset,0_1px_2px_0_rgba(10,13,18,0.05)] dark:shadow-[0_0_0_1px_rgba(255,255,255,0.1)_inset,0_-2px_0_0_rgba(255,255,255,0.05)_inset,0_1px_2px_0_rgba(0,0,0,0.2)] disabled:cursor-not-allowed disabled:opacity-50"
 						>
-							<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-gray-400">
+							<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-tertiary">
 								<path
 									d="M5.83333 2.5V5.33333C5.83333 5.80004 5.83333 6.0334 5.92416 6.21166C6.00406 6.36846 6.13154 6.49594 6.28834 6.57584C6.4666 6.66667 6.69996 6.66667 7.16667 6.66667H12.8333C13.3 6.66667 13.5334 6.66667 13.7117 6.57584C13.8685 6.49594 13.9959 6.36846 14.0758 6.21166C14.1667 6.0334 14.1667 5.80004 14.1667 5.33333V3.33333M14.1667 17.5V12.1667C14.1667 11.7 14.1667 11.4666 14.0758 11.2883C13.9959 11.1315 13.8685 11.0041 13.7117 10.9242C13.5334 10.8333 13.3 10.8333 12.8333 10.8333H7.16667C6.69996 10.8333 6.4666 10.8333 6.28834 10.9242C6.13154 11.0041 6.00406 11.1315 5.92416 11.2883C5.83333 11.4666 5.83333 11.7 5.83333 12.1667V17.5M17.5 7.77124V13.5C17.5 14.9001 17.5 15.6002 17.2275 16.135C16.9878 16.6054 16.6054 16.9878 16.135 17.2275C15.6002 17.5 14.9001 17.5 13.5 17.5H6.5C5.09987 17.5 4.3998 17.5 3.86502 17.2275C3.39462 16.9878 3.01217 16.6054 2.77248 16.135C2.5 15.6002 2.5 14.9001 2.5 13.5V6.5C2.5 5.09987 2.5 4.3998 2.77248 3.86502C3.01217 3.39462 3.39462 3.01217 3.86502 2.77248C4.3998 2.5 5.09987 2.5 6.5 2.5H12.2288C12.6364 2.5 12.8402 2.5 13.0321 2.54605C13.2021 2.58688 13.3647 2.65422 13.5138 2.7456C13.682 2.84867 13.8261 2.9928 14.1144 3.28105L16.719 5.88562C17.0072 6.17387 17.1513 6.318 17.2544 6.48619C17.3458 6.63531 17.4131 6.79789 17.4539 6.96795C17.5 7.15976 17.5 7.36358 17.5 7.77124Z"
 									stroke="currentColor"
@@ -482,7 +482,7 @@ export function CompetitorTrackModal({
 								/>
 							</svg>
 							<span
-								className="text-gray-700 text-base font-semibold leading-6"
+								className="text-secondary text-base font-semibold leading-6"
 								style={{
 									fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
 								}}

@@ -39,9 +39,9 @@ const AccountMenu = ({ user }: unknown) => {
 						<li key={item?.id} className='mx-2.5 mb-1'>
 							<Link
 								href={`${item?.path}`}
-								className={`font-satoshi text-body hover:bg-gray-2 hover:text-dark dark:hover:bg-primary flex w-full items-center gap-2 rounded-lg px-3.5 py-2.5 font-medium dark:hover:text-white ${
+								className={`font-satoshi text-body hover:bg-secondary_bg hover:text-dark dark:hover:bg-primary flex w-full items-center gap-2 rounded-lg px-3.5 py-2.5 font-medium dark:hover:text-white ${
 									pathname === item?.path
-										? "bg-gray-2 text-dark dark:bg-primary dark:text-white"
+										? "bg-secondary_bg text-dark dark:bg-primary dark:text-white"
 										: ""
 								}`}
 							>
@@ -52,7 +52,7 @@ const AccountMenu = ({ user }: unknown) => {
 					))}
 					<li className='border-stroke dark:border-stroke-dark mt-2.5 border-t pt-2.5'>
 						<button className='mx-2.5 w-[92%]' onClick={() => signOut()}>
-							<span className='font-satoshi text-body hover:bg-gray-2 hover:text-dark dark:hover:bg-primary flex w-full items-center gap-2 rounded-lg px-3.5 py-2 font-medium dark:hover:text-white'>
+							<span className='font-satoshi text-body hover:bg-secondary_bg hover:text-dark dark:hover:bg-primary flex w-full items-center gap-2 rounded-lg px-3.5 py-2 font-medium dark:hover:text-white'>
 								<span>
 									<svg
 										width='18'

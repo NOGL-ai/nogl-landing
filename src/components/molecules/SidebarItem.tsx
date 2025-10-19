@@ -190,7 +190,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
 									"ml-2 rounded px-1.5 py-0.5 text-xs",
 									item.badge.variant === "new" && "bg-red-500 text-white",
 									item.badge.variant === "soon" && "bg-blue-500 text-white",
-									item.badge.variant === "default" && "bg-gray-500 text-white"
+									item.badge.variant === "default" && "bg-border text-white"
 								)}
 							>
 								{item.badge.text}

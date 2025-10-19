@@ -103,10 +103,10 @@ const VideoLoader = ({
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.5 }}
 					>
-						<p className='text-xl font-semibold text-gray-800'>
+						<p className='text-xl font-semibold text-secondary'>
 							{message}
 						</p>
-						<p className='text-sm text-gray-600'>
+						<p className='text-sm text-tertiary'>
 							{subMessage}
 						</p>
 					</motion.div>

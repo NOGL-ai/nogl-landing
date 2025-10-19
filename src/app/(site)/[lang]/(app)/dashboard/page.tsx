@@ -3,6 +3,7 @@ import { getDictionary } from "@/lib/dictionary";
 import { Locale } from "@/i18n";
 import { getAuthSession } from "@/lib/auth";
 import AnalyticsDashboard from "@/components/organisms/AnalyticsDashboard";
+import { mockWinningProductsData } from "@/data/winningProducts";
 
 export default async function DashboardPage({
 	params,
@@ -38,14 +39,8 @@ export default async function DashboardPage({
 		},
 	];
 
-	// Sample country data
-	const countryData = [
-		{ country: "Germany", code: "DE", percentage: 50 },
-		{ country: "France", code: "FR", percentage: 30 },
-		{ country: "Spain", code: "ES", percentage: 20 },
-		{ country: "Italy", code: "IT", percentage: 10 },
-		{ country: "Netherlands", code: "NL", percentage: 10 },
-	];
+	// Winning products data (from mock API)
+	const winningProductsData = mockWinningProductsData;
 
 	// Pricing data by channel (B2B, B2C, D2C)
 	const pricingDataByChannel = {
@@ -104,7 +99,7 @@ export default async function DashboardPage({
 		<AnalyticsDashboard
 			userName={userName}
 			metrics={metricsData}
-			countryData={countryData}
+			winningProductsData={winningProductsData}
 			pricingBarChartData={pricingDataByChannel}
 			pricingOverviewData={pricingOverviewData}
 		/>

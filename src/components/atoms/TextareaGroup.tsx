@@ -17,7 +17,7 @@ export default function TextareaGroup(props: unknown) {
 					value={value}
 					onChange={handleChange}
 					rows={rows}
-					className={`border-gray-3 px-5.5 text-dark focus:shadow-input focus:ring-primary/20 dark:border-stroke-dark w-full resize-none rounded-lg border py-3 outline-none ring-offset-1 duration-300 focus:ring-2 dark:bg-transparent dark:text-white dark:focus:border-transparent`}
+					className={`border-border px-5.5 text-dark focus:shadow-input focus:ring-primary/20 dark:border-stroke-dark w-full resize-none rounded-lg border py-3 outline-none ring-offset-1 duration-300 focus:ring-2 dark:bg-transparent dark:text-white dark:focus:border-transparent`}
 				/>
 			</div>
 		</div>

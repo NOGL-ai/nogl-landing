@@ -14,7 +14,8 @@ const SECURITY_CONFIG = {
 		style-src 'self' 'unsafe-inline';
 		img-src 'self' blob: data: https: http:;
 		font-src 'self' data:;
-		connect-src 'self' https://accounts.google.com https://*.googleapis.com wss://localhost:* ws://localhost:*;
+		connect-src 'self' https://accounts.google.com https://*.googleapis.com https://api.mapbox.com https://*.tiles.mapbox.com https://events.mapbox.com https://*.basemaps.cartocdn.com wss://localhost:* ws://localhost:*;
+		worker-src blob: 'self';
 		frame-src 'self' https://accounts.google.com;
 		frame-ancestors 'self';
 		object-src 'none';

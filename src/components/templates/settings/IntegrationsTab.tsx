@@ -42,7 +42,7 @@ function ToggleSwitch({ checked, onChange, ariaLabel }: { checked: boolean; onCh
       }}
       className={cx(
         "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer items-center rounded-full transition-colors focus:outline-2 focus:outline-offset-2",
-        checked ? "bg-brand-600" : "bg-gray-200",
+        checked ? "bg-brand-600" : "bg-border",
       )}
     >
       <span
@@ -81,7 +81,7 @@ export function IntegrationsTab() {
             )}>
               Request integration
             </Button>
-            <button aria-label="More options" className="rounded-md p-2 hover:bg-gray-100 sm:block hidden">
+            <button aria-label="More options" className="rounded-md p-2 hover:bg-secondary_bg sm:block hidden">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10.0013 10.8333C10.4615 10.8333 10.8346 10.4602 10.8346 9.99998C10.8346 9.53974 10.4615 9.16665 10.0013 9.16665C9.54106 9.16665 9.16797 9.53974 9.16797 9.99998C9.16797 10.4602 9.54106 10.8333 10.0013 10.8333Z" stroke="#A4A7AE" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
                 <path d="M10.0013 4.99998C10.4615 4.99998 10.8346 4.62688 10.8346 4.16665C10.8346 3.70641 10.4615 3.33331 10.0013 3.33331C9.54106 3.33331 9.16797 3.70641 9.16797 4.16665C9.16797 4.62688 9.54106 4.99998 10.0013 4.99998Z" stroke="#A4A7AE" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
@@ -95,11 +95,11 @@ export function IntegrationsTab() {
         <div className="hidden sm:block mt-4 w-full border-b border-border">
           <nav className="flex gap-3 overflow-auto" role="tablist">
             <button role="tab" aria-selected="true" className="pb-3 px-1 text-sm font-semibold text-brand-700 border-b-2 border-brand-600 whitespace-nowrap">View all</button>
-            <button role="tab" aria-selected="false" className="pb-3 px-1 text-sm font-semibold text-gray-500 border-b-2 border-transparent hover:text-gray-700 whitespace-nowrap">Developer tools</button>
-            <button role="tab" aria-selected="false" className="pb-3 px-1 text-sm font-semibold text-gray-500 border-b-2 border-transparent hover:text-gray-700 whitespace-nowrap">Communication</button>
-            <button role="tab" aria-selected="false" className="pb-3 px-1 text-sm font-semibold text-gray-500 border-b-2 border-transparent hover:text-gray-700 whitespace-nowrap">Productivity</button>
-            <button role="tab" aria-selected="false" className="pb-3 px-1 text-sm font-semibold text-gray-500 border-b-2 border-transparent hover:text-gray-700 whitespace-nowrap">Browser tools</button>
-            <button role="tab" aria-selected="false" className="pb-3 px-1 text-sm font-semibold text-gray-500 border-b-2 border-transparent hover:text-gray-700 whitespace-nowrap">Marketplace</button>
+            <button role="tab" aria-selected="false" className="pb-3 px-1 text-sm font-semibold text-tertiary border-b-2 border-transparent hover:text-secondary whitespace-nowrap">Developer tools</button>
+            <button role="tab" aria-selected="false" className="pb-3 px-1 text-sm font-semibold text-tertiary border-b-2 border-transparent hover:text-secondary whitespace-nowrap">Communication</button>
+            <button role="tab" aria-selected="false" className="pb-3 px-1 text-sm font-semibold text-tertiary border-b-2 border-transparent hover:text-secondary whitespace-nowrap">Productivity</button>
+            <button role="tab" aria-selected="false" className="pb-3 px-1 text-sm font-semibold text-tertiary border-b-2 border-transparent hover:text-secondary whitespace-nowrap">Browser tools</button>
+            <button role="tab" aria-selected="false" className="pb-3 px-1 text-sm font-semibold text-tertiary border-b-2 border-transparent hover:text-secondary whitespace-nowrap">Marketplace</button>
           </nav>
         </div>
       </div>
@@ -107,11 +107,11 @@ export function IntegrationsTab() {
       {/* Cards - mobile: stacked, desktop: grid */}
       <div className="flex flex-col gap-5 sm:grid sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
         {integrations.map((it) => (
-          <div key={it.id} className="flex flex-col rounded-xl border border-gray-200 bg-white shadow-sm">
+          <div key={it.id} className="flex flex-col rounded-xl border border-border bg-white shadow-sm">
             <div className="flex flex-col gap-6 p-5 sm:p-5">
               <div className="flex items-start gap-2 sm:gap-3">
                 <div className="flex-shrink-0">
-                  <div className="w-12 h-12 rounded-lg bg-white border border-gray-200 overflow-hidden flex items-center justify-center dark:bg-white shadow-sm" aria-label={`${it.name} logo`}>
+                  <div className="w-12 h-12 rounded-lg bg-white border border-border overflow-hidden flex items-center justify-center dark:bg-white shadow-sm" aria-label={`${it.name} logo`}>
                     {it.domain ? (
                       <>
                         <img
@@ -128,12 +128,12 @@ export function IntegrationsTab() {
                             target.nextElementSibling && (target.nextElementSibling as HTMLElement).classList.add("hidden");
                           }}
                         />
-                        <div className="w-8 h-8 rounded hidden items-center justify-center text-xs font-semibold text-gray-600">
+                        <div className="w-8 h-8 rounded hidden items-center justify-center text-xs font-semibold text-tertiary">
                           {it.name.charAt(0).toUpperCase()}
                         </div>
                       </>
                     ) : (
-                      <div className="w-8 h-8 flex items-center justify-center text-xs font-semibold text-gray-600">
+                      <div className="w-8 h-8 flex items-center justify-center text-xs font-semibold text-tertiary">
                         {it.name.charAt(0).toUpperCase()}
                       </div>
                     )}
@@ -153,7 +153,7 @@ export function IntegrationsTab() {
             </div>
 
             <div className="flex flex-col gap-4 pb-4">
-              <div className="h-px w-full bg-gray-200" />
+              <div className="h-px w-full bg-border" />
               <div className="flex items-center justify-end px-6">
                 <Button size="md" color="link-color" aria-label={`View ${it.name} integration details`}>View integration</Button>
               </div>
@@ -163,21 +163,21 @@ export function IntegrationsTab() {
       </div>
 
       {/* MCP suggestions (proactive guidance) - hidden on mobile */}
-      <div className="hidden sm:block mt-2 rounded-lg border border-dashed border-gray-200 bg-gray-50 p-4 text-sm text-gray-700">
+      <div className="hidden sm:block mt-2 rounded-lg border border-dashed border-border bg-secondary_bg p-4 text-sm text-secondary">
         <p className="font-semibold">Recommended integrations to connect</p>
         <p className="mt-2 text-sm text-tertiary">
           For database and auth, prefer Supabase or Neon. For content and CMS workflows use Builder.io. For automation and workflows consider Zapier. For design to code, use the Figma plugin. For deployment use Netlify. For error monitoring use Sentry. For developer productivity and issue tracking connect Linear and Notion.
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
-          <a href="#open-mcp-popover" className="rounded bg-white px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-gray-50" aria-label="Connect to Supabase integration">Connect to Supabase</a>
-          <a href="#open-mcp-popover" className="rounded bg-white px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-gray-50" aria-label="Connect to Neon integration">Connect to Neon</a>
-          <a href="#open-mcp-popover" className="rounded bg-white px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-gray-50" aria-label="Connect to Netlify integration">Connect to Netlify</a>
-          <a href="#open-mcp-popover" className="rounded bg-white px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-gray-50" aria-label="Connect to Zapier integration">Connect to Zapier</a>
-          <a href="#open-mcp-popover" className="rounded bg-white px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-gray-50" aria-label="Connect to Figma integration">Connect to Figma</a>
-          <a href="#open-mcp-popover" className="rounded bg-white px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-gray-50" aria-label="Connect to Builder.io integration">Connect to Builder.io</a>
-          <a href="#open-mcp-popover" className="rounded bg-white px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-gray-50" aria-label="Connect to Linear integration">Connect to Linear</a>
-          <a href="#open-mcp-popover" className="rounded bg-white px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-gray-50" aria-label="Connect to Notion integration">Connect to Notion</a>
-          <a href="#open-mcp-popover" className="rounded bg-white px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-gray-50" aria-label="Connect to Sentry integration">Connect to Sentry</a>
+          <a href="#open-mcp-popover" className="rounded bg-white px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-secondary_bg" aria-label="Connect to Supabase integration">Connect to Supabase</a>
+          <a href="#open-mcp-popover" className="rounded bg-white px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-secondary_bg" aria-label="Connect to Neon integration">Connect to Neon</a>
+          <a href="#open-mcp-popover" className="rounded bg-white px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-secondary_bg" aria-label="Connect to Netlify integration">Connect to Netlify</a>
+          <a href="#open-mcp-popover" className="rounded bg-white px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-secondary_bg" aria-label="Connect to Zapier integration">Connect to Zapier</a>
+          <a href="#open-mcp-popover" className="rounded bg-white px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-secondary_bg" aria-label="Connect to Figma integration">Connect to Figma</a>
+          <a href="#open-mcp-popover" className="rounded bg-white px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-secondary_bg" aria-label="Connect to Builder.io integration">Connect to Builder.io</a>
+          <a href="#open-mcp-popover" className="rounded bg-white px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-secondary_bg" aria-label="Connect to Linear integration">Connect to Linear</a>
+          <a href="#open-mcp-popover" className="rounded bg-white px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-secondary_bg" aria-label="Connect to Notion integration">Connect to Notion</a>
+          <a href="#open-mcp-popover" className="rounded bg-white px-3 py-1.5 text-sm font-medium shadow-sm hover:bg-secondary_bg" aria-label="Connect to Sentry integration">Connect to Sentry</a>
         </div>
       </div>
     </div>

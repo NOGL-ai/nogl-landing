@@ -133,6 +133,44 @@ const nextConfig = {
 				port: "",
 				pathname: "/**",
 			},
+			// Mapbox GL JS
+			{
+				protocol: "https",
+				hostname: "api.mapbox.com",
+				port: "",
+				pathname: "/**",
+			},
+			{
+				protocol: "https",
+				hostname: "*.tiles.mapbox.com",
+				port: "",
+				pathname: "/**",
+			},
+			// CartoDB tiles for Mapbox (used in custom styles)
+			{
+				protocol: "https",
+				hostname: "a.basemaps.cartocdn.com",
+				port: "",
+				pathname: "/**",
+			},
+			{
+				protocol: "https",
+				hostname: "b.basemaps.cartocdn.com",
+				port: "",
+				pathname: "/**",
+			},
+			{
+				protocol: "https",
+				hostname: "c.basemaps.cartocdn.com",
+				port: "",
+				pathname: "/**",
+			},
+			{
+				protocol: "https",
+				hostname: "d.basemaps.cartocdn.com",
+				port: "",
+				pathname: "/**",
+			},
 		],
 	},
 	eslint: {

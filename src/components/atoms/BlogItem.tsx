@@ -43,7 +43,7 @@ const BlogItem = ({ blog }: { blog: Blog }) => {
 				<h3 className='mb-4'>
 					<Link
 						href={blogUrl as Route}
-						className='hover:text-primary-600 dark:hover:text-primary-600 text-xl font-bold text-gray-900 dark:text-white'
+						className='hover:text-primary-600 dark:hover:text-primary-600 text-xl font-bold text-primary dark:text-white'
 					>
 						{blog?.title || "Untitled Post"}
 					</Link>

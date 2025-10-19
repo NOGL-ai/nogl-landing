@@ -61,7 +61,7 @@ export default function SendNewsletterCard() {
 									<select
 										name='name'
 										id='select'
-										className='border-stroke bg-gray-1 text-dark focus:shadow-input focus:ring-primary/20 dark:border-stroke-dark relative h-12 w-full appearance-none rounded-md border pl-4 pr-10 outline-none ring-offset-1 duration-300 focus:ring-2 dark:bg-white/5 dark:text-white dark:focus:border-transparent'
+										className='border-stroke bg-secondary_bg text-dark focus:shadow-input focus:ring-primary/20 dark:border-stroke-dark relative h-12 w-full appearance-none rounded-md border pl-4 pr-10 outline-none ring-offset-1 duration-300 focus:ring-2 dark:bg-white/5 dark:text-white dark:focus:border-transparent'
 									>
 										<option value='all-users' className='dark:bg-dark'>
 											All Users

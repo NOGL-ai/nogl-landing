@@ -32,7 +32,7 @@ export default function InputSelect(props: unknown) {
 					value={value}
 					onChange={onChange}
 					required={required}
-					className='border-gray-3 pl-5.5 text-dark focus:shadow-input focus:ring-primary/20 dark:border-stroke-dark relative z-20 h-[52px] w-full appearance-none rounded-lg border bg-transparent py-3 outline-none  ring-offset-1 duration-300 dark:text-white dark:focus:border-transparent'
+					className='border-border pl-5.5 text-dark focus:shadow-input focus:ring-primary/20 dark:border-stroke-dark relative z-20 h-[52px] w-full appearance-none rounded-lg border bg-transparent py-3 outline-none  ring-offset-1 duration-300 dark:text-white dark:focus:border-transparent'
 				>
 					<option value='Select Option' className='dark:bg-dark'>
 						Select option

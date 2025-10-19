@@ -43,7 +43,7 @@ const StatWidget: React.FC<StatWidgetProps> = ({
 
 	return (
 		<div
-			className={`rounded-xl border border-[#E1E4EA] bg-white shadow-[0_1px_2px_0_rgba(10,13,20,0.03)] transition-all duration-200 hover:border-[#D0D5DD] hover:shadow-lg dark:shadow-[0_1px_2px_0_rgba(0,0,0,0.1)] dark:hover:border-gray-600 ${className}`}
+			className={`rounded-xl border border-[#E1E4EA] bg-white shadow-[0_1px_2px_0_rgba(10,13,20,0.03)] transition-all duration-200 hover:border-[#D0D5DD] hover:shadow-lg dark:shadow-[0_1px_2px_0_rgba(0,0,0,0.1)] dark:hover:border-border ${className}`}
 			style={{ padding: "20px 16px" }}
 		>
 			<div className='flex h-full flex-col justify-between'>
@@ -67,7 +67,7 @@ const StatWidget: React.FC<StatWidgetProps> = ({
 						{showSeeAll && (
 							<button
 								onClick={onSeeAllClick}
-								className='flex items-center justify-center gap-0.5 rounded-lg border border-[#E1E4EA] bg-white px-1.5 py-1.5 shadow-[0_1px_2px_0_rgba(10,13,20,0.03)] transition-all duration-200 hover:scale-105 hover:bg-gray-50 hover:shadow-md dark:shadow-[0_1px_2px_0_rgba(0,0,0,0.1)]'
+								className='flex items-center justify-center gap-0.5 rounded-lg border border-[#E1E4EA] bg-white px-1.5 py-1.5 shadow-[0_1px_2px_0_rgba(10,13,20,0.03)] transition-all duration-200 hover:scale-105 hover:bg-secondary_bg hover:shadow-md dark:shadow-[0_1px_2px_0_rgba(0,0,0,0.1)]'
 							>
 								<span
 									className='px-1 text-sm font-medium text-[#525866]'
@@ -108,7 +108,7 @@ const StatWidget: React.FC<StatWidgetProps> = ({
 							}}
 						>
 							<span
-								className='text-3xl font-bold text-gray-900 transition-colors duration-200 dark:text-white'
+								className='text-3xl font-bold text-primary transition-colors duration-200 dark:text-white'
 								style={{
 									fontSize: "34px",
 								}}
