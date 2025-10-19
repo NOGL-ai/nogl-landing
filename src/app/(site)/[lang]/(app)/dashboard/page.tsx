@@ -1,7 +1,8 @@
 import React from "react";
-import DashboardThemeWrapper from "@/components/organisms/DashboardThemeWrapper";
 import { getDictionary } from "@/lib/dictionary";
 import { Locale } from "@/i18n";
+import { getAuthSession } from "@/lib/auth";
+import AnalyticsDashboard from "@/components/organisms/AnalyticsDashboard";
 
 export default async function DashboardPage({
 	params,
@@ -10,196 +11,102 @@ export default async function DashboardPage({
 }) {
 	const { lang } = await params;
 	const dict = await getDictionary(lang);
+	const session = await getAuthSession();
 
-	// Sample data for widgets
-	const priceChangesData = [
+	// Get user's first name from session
+	const userName = session?.user?.name?.split(" ")[0] || "User";
+
+	// Sample metrics data
+	const metricsData = [
 		{
-			month: dict.dashboard.months.jan,
-			overpriced: 16,
-			samePrice: 65,
-			competitive: 80,
+			label: "Users",
+			value: "20.8k",
+			change: { value: "12%", trend: "positive" as const },
+			compareText: "vs last month",
 		},
 		{
-			month: dict.dashboard.months.feb,
-			overpriced: 29,
-			samePrice: 34,
-			competitive: 54,
+			label: "Sessions",
+			value: "26.4k",
+			change: { value: "2%", trend: "negative" as const },
+			compareText: "vs last month",
 		},
 		{
-			month: dict.dashboard.months.mar,
-			overpriced: 45,
-			samePrice: 32,
-			competitive: 82,
-		},
-		{
-			month: dict.dashboard.months.apr,
-			overpriced: 16,
-			samePrice: 22,
-			competitive: 76,
-		},
-		{
-			month: dict.dashboard.months.may,
-			overpriced: 36,
-			samePrice: 44,
-			competitive: 80,
-		},
-		{
-			month: dict.dashboard.months.jun,
-			overpriced: 28,
-			samePrice: 21,
-			competitive: 58,
-		},
-		{
-			month: dict.dashboard.months.jul,
-			overpriced: 16,
-			samePrice: 48,
-			competitive: 80,
-		},
-		{
-			month: dict.dashboard.months.aug,
-			overpriced: 16,
-			samePrice: 44,
-			competitive: 45,
-		},
-		{
-			month: dict.dashboard.months.sep,
-			overpriced: 16,
-			samePrice: 32,
-			competitive: 17,
-		},
-		{
-			month: dict.dashboard.months.oct,
-			overpriced: 30,
-			samePrice: 54,
-			competitive: 80,
-		},
-		{
-			month: dict.dashboard.months.nov,
-			overpriced: 16,
-			samePrice: 18,
-			competitive: 80,
-		},
-		{
-			month: dict.dashboard.months.dec,
-			overpriced: 16,
-			samePrice: 65,
-			competitive: 80,
+			label: "Session duration",
+			value: "3m 52s",
+			change: { value: "2%", trend: "positive" as const },
+			compareText: "vs last month",
 		},
 	];
 
-	const pieChartData = [
-		{
-			label: dict.dashboard.pieChartLabels.overpriced,
-			value: 1105,
-			percentage: 87.5,
-			color: "#FB3748",
-		},
-		{
-			label: dict.dashboard.pieChartLabels.samePrice,
-			value: 158,
-			percentage: 12.5,
-			color: "#CACFD8",
-		},
-		{
-			label: dict.dashboard.pieChartLabels.competitive,
-			value: 95,
-			percentage: 7.5,
-			color: "#1FC16B",
-		},
+	// Sample country data
+	const countryData = [
+		{ country: "Germany", code: "DE", percentage: 50 },
+		{ country: "France", code: "FR", percentage: 30 },
+		{ country: "Spain", code: "ES", percentage: 20 },
+		{ country: "Italy", code: "IT", percentage: 10 },
+		{ country: "Netherlands", code: "NL", percentage: 10 },
 	];
 
-	const competitorColumns = [
-		{
-			id: "product",
-			label: dict.dashboard.product,
-			sortable: true,
-			width: "300px",
-		},
-		{
-			id: "competitor",
-			label: dict.dashboard.competitor,
-			sortable: true,
-			width: "180px",
-		},
-		{ id: "currency", label: "Currency", sortable: true, width: "80px" },
-		{
-			id: "change",
-			label: dict.dashboard.change,
-			sortable: true,
-			width: "180px",
-		},
-		{ id: "time", label: dict.dashboard.time, sortable: true, width: "100px" },
-	];
+	// Pricing data by channel (B2B, B2C, D2C)
+	const pricingDataByChannel = {
+		B2B: [
+			{ month: "Jan", comparable: 48, competitive: 97, premium: 145 },
+			{ month: "Feb", comparable: 57, competitive: 116, premium: 177 },
+			{ month: "Mar", comparable: 39, competitive: 76, premium: 113 },
+			{ month: "Apr", comparable: 50, competitive: 101, premium: 153 },
+			{ month: "May", comparable: 39, competitive: 76, premium: 113 },
+			{ month: "Jun", comparable: 55, competitive: 111, premium: 169 },
+			{ month: "Jul", comparable: 48, competitive: 96, premium: 145 },
+			{ month: "Aug", comparable: 50, competitive: 101, premium: 153 },
+			{ month: "Sep", comparable: 48, competitive: 96, premium: 145 },
+			{ month: "Oct", comparable: 53, competitive: 106, premium: 161 },
+			{ month: "Nov", comparable: 57, competitive: 116, premium: 177 },
+			{ month: "Dec", comparable: 46, competitive: 91, premium: 137 },
+		],
+		B2C: [
+			{ month: "Jan", comparable: 35, competitive: 80, premium: 120 },
+			{ month: "Feb", comparable: 42, competitive: 95, premium: 140 },
+			{ month: "Mar", comparable: 28, competitive: 65, premium: 95 },
+			{ month: "Apr", comparable: 38, competitive: 85, premium: 125 },
+			{ month: "May", comparable: 30, competitive: 68, premium: 100 },
+			{ month: "Jun", comparable: 45, competitive: 98, premium: 145 },
+			{ month: "Jul", comparable: 36, competitive: 82, premium: 122 },
+			{ month: "Aug", comparable: 40, competitive: 88, premium: 130 },
+			{ month: "Sep", comparable: 38, competitive: 84, premium: 126 },
+			{ month: "Oct", comparable: 42, competitive: 92, premium: 138 },
+			{ month: "Nov", comparable: 48, competitive: 102, premium: 152 },
+			{ month: "Dec", comparable: 38, competitive: 80, premium: 118 },
+		],
+		D2C: [
+			{ month: "Jan", comparable: 40, competitive: 88, premium: 130 },
+			{ month: "Feb", comparable: 48, competitive: 105, premium: 155 },
+			{ month: "Mar", comparable: 32, competitive: 70, premium: 105 },
+			{ month: "Apr", comparable: 44, competitive: 92, premium: 138 },
+			{ month: "May", comparable: 34, competitive: 72, premium: 108 },
+			{ month: "Jun", comparable: 50, competitive: 105, premium: 158 },
+			{ month: "Jul", comparable: 42, competitive: 90, premium: 135 },
+			{ month: "Aug", comparable: 45, competitive: 95, premium: 142 },
+			{ month: "Sep", comparable: 42, competitive: 92, premium: 138 },
+			{ month: "Oct", comparable: 48, competitive: 100, premium: 150 },
+			{ month: "Nov", comparable: 52, competitive: 110, premium: 165 },
+			{ month: "Dec", comparable: 42, competitive: 88, premium: 128 },
+		],
+	};
 
-	const competitorData = [
-		{
-			product: {
-				name: "Dior Sauvage Eau de Toilette 75ml Special Edition",
-				brand: `${dict.dashboard.brand}: Dior`,
-				image:
-					"https://images.unsplash.com/photo-1541643600914-78b084683601?w=40&h=40&fit=crop&auto=format",
-			},
-			competitor: {
-				name: "deloox.com",
-				logo: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=32&h=32&fit=crop&auto=format",
-			},
-			currency: "USD",
-			change: { from: "110.49", to: "99.49" },
-			time: `3 ${dict.dashboard.daysAgo}`,
-		},
-	];
-
-	const stockColumns = [
-		{
-			id: "product",
-			label: dict.dashboard.product,
-			sortable: true,
-			width: "300px",
-		},
-		{
-			id: "competitor",
-			label: dict.dashboard.competitor,
-			sortable: true,
-			width: "200px",
-		},
-		{
-			id: "stockChange",
-			label: dict.dashboard.stockChange,
-			sortable: true,
-			width: "400px",
-		},
-		{ id: "time", label: dict.dashboard.time, sortable: true, width: "120px" },
-	];
-
-	const stockData = [
-		{
-			product: {
-				name: "Dior Sauvage Eau de Toilette 75ml Special Edition",
-				brand: `${dict.dashboard.brand}: Dior`,
-				image:
-					"https://images.unsplash.com/photo-1541643600914-78b084683601?w=40&h=40&fit=crop&auto=format",
-			},
-			competitor: {
-				name: "deloox.com",
-				logo: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=32&h=32&fit=crop&auto=format",
-			},
-			stockChange: {
-				from: dict.dashboard.inStock,
-				to: dict.dashboard.outOfStock,
-			},
-			time: `3 ${dict.dashboard.daysAgo}`,
-		},
+	// Pricing overview pie chart data - Only 3 pricing tiers
+	const pricingOverviewData = [
+		{ label: "Premium pricing", value: 40, colorVar: "--color-brand-700" },
+		{ label: "Competitive pricing", value: 35, colorVar: "--color-brand-500" },
+		{ label: "Comparable pricing", value: 25, colorVar: "--color-brand-200" },
 	];
 
 	return (
-		<DashboardThemeWrapper
-			dict={dict}
-			priceChangesData={priceChangesData}
-			pieChartData={pieChartData}
-			competitorColumns={competitorColumns}
-			competitorData={competitorData}
-			stockColumns={stockColumns}
-			stockData={stockData}
+		<AnalyticsDashboard
+			userName={userName}
+			metrics={metricsData}
+			countryData={countryData}
+			pricingBarChartData={pricingDataByChannel}
+			pricingOverviewData={pricingOverviewData}
 		/>
 	);
 }

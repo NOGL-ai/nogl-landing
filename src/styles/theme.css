@@ -566,9 +566,8 @@
 	--radius: 0.5rem;
 }
 
-@layer base {
-	/* DARK MODE VARIABLES */
-	:where(.dark, .dark-mode) {
+/* ✅ UNTITLED UI PATTERN: .dark selector (higher specificity than :root) */
+.dark, .dark-mode {
 		--color-alpha-white: rgb(12 14 18);
 		--color-alpha-black: rgb(255 255 255);
 
@@ -649,5 +648,4 @@
 		--color-border-error_alt: var(--color-error-700);
 		--color-border-error_subtle: var(--color-error-900);
 		--color-border-disabled_subtle: var(--color-gray-800);
-	}
 }
