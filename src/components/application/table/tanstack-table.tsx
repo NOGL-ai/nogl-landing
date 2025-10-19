@@ -135,16 +135,16 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
     }
   };
 
-  // Handle row selection
-  const handleSelectAll = (checked: boolean) => {
+  // ✅ Stable row selection handlers with useCallback
+  const handleSelectAll = React.useCallback((checked: boolean) => {
     if (checked) {
       onRowSelectionChange(new Set(data.map(item => item.id)));
     } else {
       onRowSelectionChange(new Set());
     }
-  };
+  }, [data, onRowSelectionChange]);
 
-  const handleRowSelect = (rowId: number, checked: boolean) => {
+  const handleRowSelect = React.useCallback((rowId: number, checked: boolean) => {
     const newSelectedRows = new Set(selectedRows);
     if (checked) {
       newSelectedRows.add(rowId);
@@ -152,7 +152,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
       newSelectedRows.delete(rowId);
     }
     onRowSelectionChange(newSelectedRows);
-  };
+  }, [selectedRows, onRowSelectionChange]);
 
 
   // Define all columns in a single useMemo
@@ -828,7 +828,30 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
     );
 
     return allColumns;
-  }, [selectedRows, maxProducts, badgeClasses, ProductsCell, PricePositionCell, computeTrend, formatPercentDetailed, formatPercentCompact, showProductsColumn, showCompetitorsColumn, searchResults]);
+  }, [
+    // Config props (stable)
+    firstColumnHeader,
+    showProductsColumn, 
+    productsColumnHeader,
+    showMaterialsColumn,
+    showCompetitorsColumn,
+    showBrandColumn,
+    brandColumnHeader,
+    showChannelColumn,
+    maxProducts,
+    // Stable handlers
+    handleSelectAll,
+    handleRowSelect,
+    // Selection state (needed for checkbox rendering)
+    selectedRows,
+    // Style config (should be stable object)
+    badgeClasses,
+    // Component props (should be stable references)
+    ProductsCell,
+    PricePositionCell,
+    // External data (Map should be stable reference)
+    searchResults,
+  ]);
 
   // Sortable Row Component
   const SortableRow = ({ row, index }: { row: any; index: number }) => {

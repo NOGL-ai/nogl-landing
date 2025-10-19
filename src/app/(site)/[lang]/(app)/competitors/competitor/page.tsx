@@ -358,13 +358,16 @@ export default function CompetitorPage() {
     }
     return 25;
   });
-  
+
   // API state
   const [competitors, setCompetitors] = React.useState<any[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
   const [totalPages, setTotalPages] = React.useState(1);
   const [total, setTotal] = React.useState(0);
+
+  // Track if we've already sent competitors to screen context to prevent infinite loops
+  const screenContextSentRef = React.useRef<string | null>(null);
 
   // Fetch competitors from API
   React.useEffect(() => {
@@ -414,9 +417,28 @@ export default function CompetitorPage() {
     fetchCompetitors();
   }, [currentPage, itemsPerPage, searchQuery, activeTab]);
 
-  // ✅ Pass visible competitor data to ScreenContext for AI Copilot
+  // ✅ Debounce screen context updates to prevent infinite loops
   React.useEffect(() => {
-    if (!isLoading && competitors.length > 0) {
+    if (isLoading || competitors.length === 0) {
+      return;
+    }
+
+    // Only compare key identifiers to prevent unnecessary re-renders
+    const stateKey = JSON.stringify({
+      ids: competitors.map(c => c.id),
+      total,
+      currentPage,
+      totalPages,
+      activeTab,
+      searchQuery,
+    });
+
+    if (screenContextSentRef.current === stateKey) {
+      return; // Skip if same state was already sent
+    }
+
+    // ✅ Use longer debounce delay for better stability (100ms instead of 0ms)
+    const timer = setTimeout(() => {
       screenContext.setData("competitors", {
         competitors: competitors.map(c => ({
           name: c.name,
@@ -442,14 +464,17 @@ export default function CompetitorPage() {
         },
         visibleAt: new Date().toISOString(),
       });
-    }
-  }, [isLoading, competitors, total, currentPage, totalPages, activeTab, searchQuery, screenContext]);
+      screenContextSentRef.current = stateKey;
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [isLoading, competitors, total, currentPage, totalPages, activeTab, searchQuery, screenContext.setData]);
 
   // Calculate max products for relative scaling
   const maxProducts = React.useMemo(() => {
     if (competitors.length === 0) return 1;
     return Math.max(...competitors.map(c => c.products));
-  }, [competitors]);
+  }, [competitors.length]);
 
   const toggleRow = (id: number) => {
     setSelectedRows(prev => {
