@@ -178,10 +178,10 @@ export function CompetitorApprovalUI({ addResult, args }: CompetitorApprovalProp
         {/* Current Data (for updates) */}
         {args.currentData && args.action === "UPDATE_COMPETITOR" && (
           <div className="space-y-2">
-            <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <h4 className="text-sm font-medium text-gray-700">
               Current Data:
             </h4>
-            <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+            <div className="p-3 bg-gray-50 rounded-lg">
               <div className="grid grid-cols-2 gap-2 text-sm">
                 <div>
                   <span className="font-medium">Name:</span> {args.currentData.name}
@@ -207,7 +207,7 @@ export function CompetitorApprovalUI({ addResult, args }: CompetitorApprovalProp
         {/* Competitor Data (for deletion) */}
         {args.competitorData && args.action === "DELETE_COMPETITOR" && (
           <div className="space-y-2">
-            <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <h4 className="text-sm font-medium text-gray-700">
               Competitor to Delete:
             </h4>
             <div className="p-3 bg-red-50 dark:bg-red-950 rounded-lg border border-red-200 dark:border-red-800">
@@ -236,7 +236,7 @@ export function CompetitorApprovalUI({ addResult, args }: CompetitorApprovalProp
         {args.action !== "DELETE_COMPETITOR" && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              <h4 className="text-sm font-medium text-gray-700">
                 {args.action === "CREATE_COMPETITOR" ? "New Competitor Data:" : "Updated Data:"}
               </h4>
               <Button

@@ -299,7 +299,7 @@ export const FileListItemProgressBar = ({ name, size, progress, failed, type, fi
             <div className="flex min-w-0 flex-1 flex-col items-start">
                 <div className="flex w-full max-w-full min-w-0 flex-1">
                     <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-medium text-secondary dark:text-gray-200">{name}</p>
+                        <p className="truncate text-sm font-medium text-secondary">{name}</p>
 
                         <div className="mt-0.5 flex items-center gap-2">
                             <p className="truncate text-sm whitespace-nowrap text-tertiary">{getReadableFileSize(size)}</p>
@@ -311,7 +311,7 @@ export const FileListItemProgressBar = ({ name, size, progress, failed, type, fi
                                 {isComplete && <p className="text-sm font-medium text-success-primary dark:text-green-400">Complete</p>}
 
                                 {!isComplete && !failed && <UploadCloud02 className="size-4 stroke-[2.5px] text-fg-quaternary dark:text-fg-white" />}
-                                {!isComplete && !failed && <p className="text-sm font-medium text-quaternary dark:text-gray-500">Uploading...</p>}
+                                {!isComplete && !failed && <p className="text-sm font-medium text-quaternary">Uploading...</p>}
 
                                 {failed && <XCircle className="size-4 text-fg-error-primary dark:text-red-400" />}
                                 {failed && <p className="text-sm font-medium text-error-primary dark:text-red-400">Failed</p>}
@@ -355,7 +355,7 @@ export const FileListItemProgressFill = ({ name, size, progress, failed, type, f
             {/* Inner ring. */}
             <div
                 className={cx(
-                    "absolute inset-0 size-full rounded-[inherit] ring-1 ring-secondary dark:ring-gray-600 transition duration-100 ease-linear ring-inset",
+                    "absolute inset-0 size-full rounded-[inherit] ring-1 ring-secondary transition duration-100 ease-linear ring-inset",
                     failed && "ring-2 ring-error dark:ring-red-500",
                 )}
             />
@@ -365,7 +365,7 @@ export const FileListItemProgressFill = ({ name, size, progress, failed, type, f
             <div className="relative flex min-w-0 flex-1">
                 <div className="relative flex min-w-0 flex-1 flex-col items-start">
                     <div className="w-full min-w-0 flex-1">
-                        <p className="truncate text-sm font-medium text-secondary dark:text-gray-200">{name}</p>
+                        <p className="truncate text-sm font-medium text-secondary">{name}</p>
 
                         <div className="mt-0.5 flex items-center gap-2">
                             <p className="text-sm text-tertiary">{failed ? "Upload failed, please try again" : getReadableFileSize(size)}</p>

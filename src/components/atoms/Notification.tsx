@@ -23,11 +23,11 @@ export default function Notification() {
 				<h5 className='font-satoshi text-dark text-lg font-bold dark:text-white'>
 					New Update is here!
 				</h5>
-				<p className='text-body dark:text-gray-4 tracking-[-.16px]'>
+				<p className='text-body tracking-[-.16px]'>
 					Lorem Ipsum is simply dummy text of the printing and typesetting
 					industry.
 				</p>
-				<span className='text-body dark:text-gray-4 text-sm font-medium'>
+				<span className='text-body text-sm font-medium'>
 					5 min ago
 				</span>
 			</div>

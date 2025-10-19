@@ -38,7 +38,7 @@ const FAQ: React.FC<FAQProps> = ({ dictionary }) => {
 					{dictionary.faq.items?.map((faq, key) => (
 						<div
 							key={key}
-							className='rounded-lg border border-gray-100 bg-white shadow-[0px_5px_15px_0px_rgba(7,10,46,0.04)] backdrop-blur-sm dark:border-border dark:bg-white/5'
+							className='rounded-lg border border-border bg-white shadow-[0px_5px_15px_0px_rgba(7,10,46,0.04)] backdrop-blur-sm dark:border-border dark:bg-white/5'
 						>
 							<FaqItem
 								faq={faq}

@@ -88,7 +88,7 @@ export function DataTableGlobalSearch<TData>({
 				placeholder={placeholder}
 				value={globalFilter}
 				onChange={(e) => handleSearchChange(e.target.value)}
-				className={`w-full border-border bg-white pl-10 pr-10 text-primary placeholder-gray-500 transition-colors dark:border-border dark:bg-secondary_bg dark:text-gray-100 dark:placeholder-gray-400 ${
+				className={`w-full border-border bg-white pl-10 pr-10 text-primary placeholder:text-tertiary transition-colors dark:border-border dark:bg-secondary_bg ${
 					isFiltered
 						? "border-blue-300 focus:border-blue-500 dark:border-blue-500 dark:focus:border-blue-400"
 						: ""
@@ -105,7 +105,7 @@ export function DataTableGlobalSearch<TData>({
 					variant="ghost"
 					size="sm"
 					onClick={clearSearch}
-					className="absolute right-1 top-1/2 h-6 w-6 -translate-y-1/2 p-0 hover:bg-secondary_bg dark:hover:bg-gray-700"
+					className="absolute right-1 top-1/2 h-6 w-6 -translate-y-1/2 p-0 hover:bg-secondary_bg"
 					aria-label="Clear search"
 				>
 					<Icon name="X" className="h-3 w-3" aria-hidden={true} />

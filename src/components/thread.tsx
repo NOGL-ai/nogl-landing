@@ -237,7 +237,7 @@ const CopilotLogo = () => {
   const currentTheme = resolvedTheme || theme;
   
   return (
-    <div className="relative flex size-14 items-center justify-center rounded-full bg-gray-100 shadow-lg dark:bg-gray-800 mb-6">
+    <div className="relative flex size-14 items-center justify-center rounded-full bg-gray-100 shadow-lg mb-6">
       <Image
         src={currentTheme === "dark" ? "/images/logo/logo.svg" : "/images/logo/logo-light.svg"}
         alt="Logo"

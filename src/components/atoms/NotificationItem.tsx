@@ -25,7 +25,7 @@ export default function Notification({ link }: unknown) {
 				<h5 className='font-satoshi text-dark text-lg dark:text-white'>
 					You just download latest version 2.20...
 				</h5>
-				<span className='text-body dark:text-gray-4 text-sm font-medium'>
+				<span className='text-body text-sm font-medium'>
 					5 min ago
 				</span>
 			</Link>

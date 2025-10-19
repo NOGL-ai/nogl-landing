@@ -204,7 +204,7 @@ export default function UserEmptyState() {
 					<h2 className='font-satoshi text-heading-5 text-dark mb-3.5 font-bold tracking-[-.5px] dark:text-white'>
 						You don’t have any registered user yet!
 					</h2>
-					<p className='text-body dark:text-gray-5 text-sm tracking-[-.14px]'>
+					<p className='text-body text-sm tracking-[-.14px]'>
 						If any one register to your site then you can see them in here
 					</p>
 				</div>

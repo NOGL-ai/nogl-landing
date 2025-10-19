@@ -78,7 +78,7 @@ export default function ResetPassword({ token }: { token: string }) {
 					<h3 className='font-satoshi text-heading-5 text-dark mb-4 font-bold dark:text-white'>
 						Create New Password
 					</h3>
-					<p className='dark:text-gray-5 text-base'>
+					<p className='dark:text-tertiary text-base'>
 						Create new password to save your account
 					</p>
 				</div>

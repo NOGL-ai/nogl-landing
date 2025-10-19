@@ -43,7 +43,7 @@ const StatWidget: React.FC<StatWidgetProps> = ({
 
 	return (
 		<div
-			className={`rounded-xl border border-[#E1E4EA] bg-white shadow-[0_1px_2px_0_rgba(10,13,20,0.03)] transition-all duration-200 hover:border-[#D0D5DD] hover:shadow-lg dark:border-gray-700 dark:bg-gray-800 dark:shadow-[0_1px_2px_0_rgba(0,0,0,0.1)] dark:hover:border-gray-600 ${className}`}
+			className={`rounded-xl border border-[#E1E4EA] bg-white shadow-[0_1px_2px_0_rgba(10,13,20,0.03)] transition-all duration-200 hover:border-[#D0D5DD] hover:shadow-lg dark:shadow-[0_1px_2px_0_rgba(0,0,0,0.1)] dark:hover:border-gray-600 ${className}`}
 			style={{ padding: "20px 16px" }}
 		>
 			<div className='flex h-full flex-col justify-between'>
@@ -52,7 +52,7 @@ const StatWidget: React.FC<StatWidgetProps> = ({
 					<div className='flex items-center justify-between'>
 						<div className='flex items-center gap-1'>
 							<span
-								className='text-base font-medium leading-6 text-[#54565B] dark:text-gray-300'
+								className='text-base font-medium leading-6 text-[#54565B]'
 								style={{
 									fontFamily: "Inter",
 									fontSize: "16px",
@@ -67,10 +67,10 @@ const StatWidget: React.FC<StatWidgetProps> = ({
 						{showSeeAll && (
 							<button
 								onClick={onSeeAllClick}
-								className='flex items-center justify-center gap-0.5 rounded-lg border border-[#E1E4EA] bg-white px-1.5 py-1.5 shadow-[0_1px_2px_0_rgba(10,13,20,0.03)] transition-all duration-200 hover:scale-105 hover:bg-gray-50 hover:shadow-md dark:border-gray-600 dark:bg-gray-700 dark:shadow-[0_1px_2px_0_rgba(0,0,0,0.1)] dark:hover:bg-gray-600'
+								className='flex items-center justify-center gap-0.5 rounded-lg border border-[#E1E4EA] bg-white px-1.5 py-1.5 shadow-[0_1px_2px_0_rgba(10,13,20,0.03)] transition-all duration-200 hover:scale-105 hover:bg-gray-50 hover:shadow-md dark:shadow-[0_1px_2px_0_rgba(0,0,0,0.1)]'
 							>
 								<span
-									className='px-1 text-sm font-medium text-[#525866] dark:text-gray-300'
+									className='px-1 text-sm font-medium text-[#525866]'
 									style={{
 										fontFamily: "Inter",
 										fontSize: "14px",
@@ -100,7 +100,7 @@ const StatWidget: React.FC<StatWidgetProps> = ({
 					</div>
 					<div className='flex flex-1 flex-col justify-between'>
 						<div
-							className='text-[#3D5067] dark:text-gray-200'
+							className='text-[#3D5067]'
 							style={{
 								fontFamily: "Inter",
 								fontSize: "18px",
@@ -115,7 +115,7 @@ const StatWidget: React.FC<StatWidgetProps> = ({
 							>
 								{value.toLocaleString()}
 							</span>
-							<span className='ml-1 text-lg font-normal text-[#3D5067] transition-colors duration-200 dark:text-gray-400'>
+							<span className='ml-1 text-lg font-normal text-[#3D5067] transition-colors duration-200'>
 								/{total.toLocaleString()}
 							</span>
 						</div>

@@ -69,7 +69,7 @@ const DashboardPageHeader: React.FC<DashboardPageHeaderProps> = ({
 					<div className='relative hidden items-center gap-[4.375px] sm:flex'>
 						<button
 							onClick={handleThemeToggle}
-							className='flex h-8 w-8 items-center justify-center rounded-[5px] bg-[rgba(10,15,41,0.04)] transition-colors hover:bg-[rgba(10,15,41,0.08)] dark:bg-gray-700 dark:hover:bg-gray-600'
+							className='flex h-8 w-8 items-center justify-center rounded-[5px] bg-[rgba(10,15,41,0.04)] transition-colors hover:bg-[rgba(10,15,41,0.08)]'
 							title={mounted ? (theme === "dark" ? "Switch to light mode" : "Switch to dark mode") : "Theme toggle"}
 							aria-label={mounted ? (theme === "dark" ? "Switch to light mode" : "Switch to dark mode") : "Theme toggle"}
 						>
@@ -105,7 +105,7 @@ const DashboardPageHeader: React.FC<DashboardPageHeaderProps> = ({
 						{/* Fullscreen Button */}
 						<button
 							onClick={handleFullscreenToggle}
-							className='flex items-center justify-center gap-0.5 rounded-[5px] bg-[rgba(10,15,41,0.04)] p-2 px-2.5 transition-colors hover:bg-[rgba(10,15,41,0.08)] dark:bg-gray-700 dark:hover:bg-gray-600'
+							className='flex items-center justify-center gap-0.5 rounded-[5px] bg-[rgba(10,15,41,0.04)] p-2 px-2.5 transition-colors hover:bg-[rgba(10,15,41,0.08)]'
 							title='Toggle Fullscreen'
 						>
 							<FullscreenIcon />
@@ -114,7 +114,7 @@ const DashboardPageHeader: React.FC<DashboardPageHeaderProps> = ({
 						{/* Edit Widgets Button */}
 						<button
 							onClick={onEditWidgets}
-							className='flex h-8 w-auto items-center justify-center gap-0.5 rounded-[5px] border border-[#E2E4E9] bg-white p-1.5 px-2.5 shadow-[0_1px_2px_0_rgba(20,21,26,0.05)] transition-colors hover:bg-secondary_bg sm:w-[131px] dark:border-border dark:bg-gray-700 dark:hover:bg-gray-600'
+							className='flex h-8 w-auto items-center justify-center gap-0.5 rounded-[5px] border border-[#E2E4E9] bg-white p-1.5 px-2.5 shadow-[0_1px_2px_0_rgba(20,21,26,0.05)] transition-colors hover:bg-secondary_bg sm:w-[131px] dark:border-border'
 						>
 							<div className='flex h-4 w-4 flex-shrink-0 items-center justify-center p-[1.333px]'>
 								<CustomizeIcon />

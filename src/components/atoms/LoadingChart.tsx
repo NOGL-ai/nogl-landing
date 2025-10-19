@@ -30,7 +30,7 @@ const LoadingChart: React.FC<LoadingChartProps> = ({
 
 	return (
 		<div
-			className={`relative overflow-hidden rounded-2xl border border-[#E2E4E9] bg-white p-5 dark:border-gray-700 dark:bg-gray-800 ${className}`}
+			className={`relative overflow-hidden rounded-2xl border border-[#E2E4E9] bg-white p-5 ${className}`}
 			style={{ height }}
 		>
 			{/* Title */}
@@ -50,7 +50,7 @@ const LoadingChart: React.FC<LoadingChartProps> = ({
 
 			{/* Loading Overlay - positioned to cover the bottom part */}
 			<div
-				className='absolute bottom-0 left-0 right-0 flex flex-col items-center justify-center rounded-b-[11px] bg-white bg-opacity-30 backdrop-blur-[10px] dark:bg-gray-800 dark:bg-opacity-50'
+				className='absolute bottom-0 left-0 right-0 flex flex-col items-center justify-center rounded-b-[11px] bg-white bg-opacity-30 backdrop-blur-[10px] dark:bg-opacity-50'
 				style={{
 					height: "calc(100% - 80px)", // Leave space for title
 				}}
@@ -68,7 +68,7 @@ const LoadingChart: React.FC<LoadingChartProps> = ({
 						Missing data from input feed
 					</h4>
 					<p
-						className='max-w-[280px] text-sm font-normal leading-5 text-[#646978] dark:text-gray-400'
+						className='max-w-[280px] text-sm font-normal leading-5 text-[#646978]'
 						style={{
 							fontFamily: "Inter",
 							fontSize: "14px",

@@ -34,7 +34,7 @@ const BlogItem = ({ blog }: { blog: Blog }) => {
 				<div className='mb-3 flex flex-wrap items-center gap-6'>
 					<Link
 						href={authorUrl as Route}
-						className='font-satoshi dark:text-gray-5 flex items-center gap-2 text-sm font-medium -tracking-[0.1px]'
+						className='font-satoshi flex items-center gap-2 text-sm font-medium -tracking-[0.1px]'
 					>
 						{blog?.primary_author?.name || "Anonymous"}
 					</Link>

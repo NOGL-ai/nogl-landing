@@ -155,7 +155,7 @@ export function EmailApprovalUI({ addResult, args }: EmailApprovalProps) {
       case "high":
         return "text-red-600 bg-red-50 dark:bg-red-950";
       case "low":
-        return "text-gray-600 bg-gray-50 dark:bg-gray-800";
+        return "text-gray-600 bg-gray-50";
       default:
         return "text-blue-600 bg-blue-50 dark:bg-blue-950";
     }
@@ -188,13 +188,13 @@ export function EmailApprovalUI({ addResult, args }: EmailApprovalProps) {
 
           <TabsContent value="preview" className="space-y-4">
             {/* Email Preview */}
-            <div className="border rounded-lg p-4 bg-white dark:bg-gray-900">
+            <div className="border rounded-lg p-4 bg-white">
               <div className="space-y-3">
                 <div className="flex items-center justify-between border-b pb-2">
                   <div className="flex items-center gap-2">
                     <MailIcon className="h-4 w-4 text-gray-500" />
                     <span className="text-sm font-medium">From:</span>
-                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                    <span className="text-sm text-gray-600">
                       {args.preview.from}
                     </span>
                   </div>
@@ -281,7 +281,7 @@ export function EmailApprovalUI({ addResult, args }: EmailApprovalProps) {
                   <select
                     value={formData.priority || "normal"}
                     onChange={(e) => updateField("priority", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white"
                   >
                     <option value="low">Low</option>
                     <option value="normal">Normal</option>

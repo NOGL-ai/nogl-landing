@@ -13,8 +13,8 @@ export function PlaceholderTab({ title, description }: PlaceholderTabProps) {
 				<p className="max-w-md text-sm text-tertiary">
 					{description}
 				</p>
-			<div className="mt-4 rounded-lg bg-gray-100 px-4 py-8 dark:bg-gray-800" aria-live="polite">
-				<p className="text-sm text-gray-500 dark:text-gray-400">
+			<div className="mt-4 rounded-lg bg-gray-100 px-4 py-8" aria-live="polite">
+				<p className="text-sm text-gray-500">
 					This section is coming soon
 				</p>
 			</div>

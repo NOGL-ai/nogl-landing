@@ -161,7 +161,7 @@ export function ProductTableAdvancedFilters({
 					<div className="grid grid-cols-1 gap-4 md:grid-cols-3">
 						{/* Price Range Filter */}
 						<div className="space-y-2">
-							<label className="text-sm font-medium text-primary dark:text-gray-100">
+							<label className="text-sm font-medium text-primary">
 								Price Range
 							</label>
 							<div className="px-3">
@@ -183,7 +183,7 @@ export function ProductTableAdvancedFilters({
 
 						{/* Brand Filter */}
 						<div className="space-y-2">
-							<label className="text-sm font-medium text-primary dark:text-gray-100">
+							<label className="text-sm font-medium text-primary">
 								Brands
 							</label>
 							<div className="space-y-1">
@@ -210,7 +210,7 @@ export function ProductTableAdvancedFilters({
 
 						{/* Currency Filter */}
 						<div className="space-y-2">
-							<label className="text-sm font-medium text-primary dark:text-gray-100">
+							<label className="text-sm font-medium text-primary">
 								Currency
 							</label>
 							<div className="space-y-1">
@@ -237,7 +237,7 @@ export function ProductTableAdvancedFilters({
 
 						{/* Quick Filters */}
 						<div className="space-y-2">
-							<label className="text-sm font-medium text-primary dark:text-gray-100">
+							<label className="text-sm font-medium text-primary">
 								Quick Filters
 							</label>
 							<div className="grid grid-cols-2 gap-2">
@@ -248,7 +248,7 @@ export function ProductTableAdvancedFilters({
 										handlePriceRangeChange([0, 50]);
 										handleCategoryFilter("Rings", true);
 									}}
-									className="border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700"
+									className="border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary"
 									aria-label="Filter products under €50"
 								>
 									<Icon name="Minus" className="mr-1 h-3 w-3" aria-hidden={true} />
@@ -261,7 +261,7 @@ export function ProductTableAdvancedFilters({
 										handlePriceRangeChange([100, 1000]);
 										handleBrandFilter("Stilnest", true);
 									}}
-									className="border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700"
+									className="border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary"
 									aria-label="Filter premium products"
 								>
 									<Icon name="Star" className="mr-1 h-3 w-3" aria-hidden={true} />
@@ -274,7 +274,7 @@ export function ProductTableAdvancedFilters({
 										// This would need more complex logic in a real app
 										console.log("Filter with data");
 									}}
-									className="border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700"
+									className="border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary"
 									aria-label="Filter products with competitor data"
 								>
 									<Icon name="TrendingUp" className="mr-1 h-3 w-3" aria-hidden={true} />
@@ -287,7 +287,7 @@ export function ProductTableAdvancedFilters({
 										handleBrandFilter("Stilnest", true);
 										handleCategoryFilter("Rings", true);
 									}}
-									className="border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700"
+									className="border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary"
 									aria-label="Filter Stilnest products"
 								>
 									<Icon name="Target" className="mr-1 h-3 w-3" aria-hidden={true} />

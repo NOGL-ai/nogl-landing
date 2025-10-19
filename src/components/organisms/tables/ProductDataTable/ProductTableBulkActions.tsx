@@ -137,7 +137,7 @@ export function ProductTableBulkActions({
 						variant="secondary"
 						size="sm"
 						onClick={handleExport}
-						className="border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700"
+						className="border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary"
 						aria-label={`Export ${selectedCount} selected products`}
 					>
 						<Icon name="Download" className="mr-2 h-4 w-4" aria-hidden={true} />
@@ -147,7 +147,7 @@ export function ProductTableBulkActions({
 						variant="secondary"
 						size="sm"
 						onClick={handleBulkEdit}
-						className="border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700"
+						className="border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary"
 						aria-label={`Edit ${selectedCount} selected products`}
 					>
 						<Icon name="Edit" className="mr-2 h-4 w-4" aria-hidden={true} />
@@ -157,7 +157,7 @@ export function ProductTableBulkActions({
 						variant="secondary"
 						size="sm"
 						onClick={handleBulkDelete}
-						className="border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700"
+						className="border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary"
 						aria-label={`Delete ${selectedCount} selected products`}
 					>
 						<Icon name="Trash2" className="mr-2 h-4 w-4" aria-hidden={true} />

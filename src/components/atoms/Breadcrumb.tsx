@@ -10,11 +10,11 @@ export default function Breadcrumb({ pageTitle }: { pageTitle: string }) {
 					</h2>
 					<ol className='flex items-center justify-center'>
 						<li>
-							<Link href='/' className='text-body dark:text-gray-5 text-base'>
+							<Link href='/' className='text-body text-base'>
 								Home
 							</Link>
 						</li>
-						<li className='text-body dark:text-gray-5 relative text-base before:mx-2 before:inline-block before:px-2 before:content-["/"]'>
+						<li className='text-body relative text-base before:mx-2 before:inline-block before:px-2 before:content-["/"]'>
 							{pageTitle}
 						</li>
 					</ol>

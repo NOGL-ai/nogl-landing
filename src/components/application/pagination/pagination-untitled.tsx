@@ -119,8 +119,8 @@ export function UntitledPagination({
 							className={cx(
 								"flex h-10 w-10 items-center justify-center rounded-lg text-sm font-medium transition-colors",
 								isActive
-									? "bg-gray-50 text-gray-700 dark:bg-gray-800 dark:text-gray-200"
-									: "text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800"
+									? "bg-gray-50 text-gray-700"
+									: "text-gray-700 hover:bg-gray-50"
 							)}
 						>
 							{item}

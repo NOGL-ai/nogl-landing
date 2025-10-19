@@ -71,7 +71,7 @@ export default function TrackCompetitorModal({ open, onOpenChange }: TrackCompet
 				<div className="absolute -left-[120px] -top-[120px] w-[336px] h-[336px] pointer-events-none hidden sm:block z-0">
 					<div className="absolute inset-0 flex items-center justify-center">
 						<div className="absolute inset-0 rounded-full bg-gradient-radial from-black/10 to-transparent dark:from-white/10" />
-						<svg className="w-full h-full stroke-gray-200 dark:stroke-gray-700" viewBox="0 0 336 336" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<svg className="w-full h-full stroke-gray-200" viewBox="0 0 336 336" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<circle cx="168" cy="168" r="47.5" className="stroke-inherit" />
 							<circle cx="168" cy="168" r="71.5" className="stroke-inherit" />
 							<circle cx="168" cy="168" r="95.5" className="stroke-inherit" />
@@ -92,13 +92,13 @@ export default function TrackCompetitorModal({ open, onOpenChange }: TrackCompet
 
 							{/* Title and Description (accessible) */}
 							<div className="flex flex-col gap-0.5">
-								<DialogTitle className="text-base font-semibold text-primary dark:text-gray-100">Add Competitor</DialogTitle>
+								<DialogTitle className="text-base font-semibold text-primary">Add Competitor</DialogTitle>
 								<DialogDescription className="text-sm text-tertiary">Share the companies you compete.</DialogDescription>
 							</div>
 						</div>
 
 						{/* Close Button */}
-						<DialogClose className="absolute right-3 top-3 sm:right-3 sm:top-3 flex items-center justify-center w-11 h-11 p-2 rounded-lg hover:bg-secondary_bg dark:hover:bg-gray-700 transition-colors">
+						<DialogClose className="absolute right-3 top-3 sm:right-3 sm:top-3 flex items-center justify-center w-11 h-11 p-2 rounded-lg hover:bg-secondary_bg transition-colors">
 							<XClose className="w-6 h-6 text-tertiary dark:text-tertiary" />
 							<span className="sr-only">Close</span>
 						</DialogClose>
@@ -134,7 +134,7 @@ export default function TrackCompetitorModal({ open, onOpenChange }: TrackCompet
 											</div>
 											<input
 												type="text"
-												className="flex-1 px-3.5 py-2.5 text-base text-primary dark:text-gray-100 placeholder:text-tertiary dark:placeholder:text-tertiary focus:outline-none border border-border dark:border-border bg-white dark:bg-secondary_bg rounded-r-lg"
+												className="flex-1 px-3.5 py-2.5 text-base text-primary placeholder:text-tertiary dark:placeholder:text-tertiary focus:outline-none border border-border dark:border-border bg-white dark:bg-secondary_bg rounded-r-lg"
 												placeholder="www.example.com"
 												value={formData.website}
 												onChange={(e) => setFormData({ ...formData, website: e.target.value })}
@@ -204,7 +204,7 @@ export default function TrackCompetitorModal({ open, onOpenChange }: TrackCompet
 												</div>
 												<input
 													type="text"
-													className="flex-1 px-3.5 py-2.5 text-base text-primary dark:text-gray-100 placeholder:text-tertiary dark:placeholder:text-tertiary focus:outline-none border border-border dark:border-border bg-white dark:bg-secondary_bg rounded-r-lg"
+													className="flex-1 px-3.5 py-2.5 text-base text-primary placeholder:text-tertiary dark:placeholder:text-tertiary focus:outline-none border border-border dark:border-border bg-white dark:bg-secondary_bg rounded-r-lg"
 													placeholder="www.competitor.com"
 													value={formData.website}
 													onChange={(e) => setFormData({ ...formData, website: e.target.value })}
@@ -265,7 +265,7 @@ export default function TrackCompetitorModal({ open, onOpenChange }: TrackCompet
 										onClick={() => setCurrentPage(index)}
 										className={cx(
 											"w-2.5 h-2.5 rounded-full transition-colors",
-											currentPage === index ? "bg-purple-700 dark:bg-purple-600" : "bg-border dark:bg-gray-700"
+											currentPage === index ? "bg-purple-700 dark:bg-purple-600" : "bg-border"
 										)}
 										aria-label={`Go to page ${index + 1}`}
 									/>

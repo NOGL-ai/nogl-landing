@@ -66,7 +66,7 @@ export default function ForgotPassword() {
 				<h3 className='font-satoshi text-heading-5 text-dark mb-4 font-bold dark:text-white'>
 					Forgot Password?
 				</h3>
-				<p className='dark:text-gray-5 text-base'>
+				<p className='dark:text-tertiary text-base'>
 					Enter your email address and we'll send you a link to reset your
 					password.
 				</p>

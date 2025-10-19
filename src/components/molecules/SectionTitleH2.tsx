@@ -34,7 +34,7 @@ export default function SectionTitleH2(props: PropsType) {
 			<p
 				className={`${
 					largePara ? "text-base md:text-lg" : "text-base"
-				} text-body dark:text-gray-4 ${paraWidth && center ? "mx-auto" : ""}`}
+				} text-body ${paraWidth && center ? "mx-auto" : ""}`}
 				style={{ maxWidth: paraWidth }}
 			>
 				{paragraph}

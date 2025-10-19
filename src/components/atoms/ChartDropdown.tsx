@@ -42,10 +42,10 @@ const ChartDropdown: React.FC<ChartDropdownProps> = ({
 		<div className={`relative ${className}`}>
 			<button
 				onClick={() => setIsOpen(!isOpen)}
-				className='flex items-center gap-0.5 rounded-lg border border-[#E1E4EA] bg-white px-2.5 py-1.5 shadow-[0_1px_2px_0_rgba(10,13,20,0.03)] transition-colors hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:shadow-[0_1px_2px_0_rgba(0,0,0,0.1)] dark:hover:bg-gray-600'
+				className='flex items-center gap-0.5 rounded-lg border border-[#E1E4EA] bg-white px-2.5 py-1.5 shadow-[0_1px_2px_0_rgba(10,13,20,0.03)] transition-colors hover:bg-gray-50 dark:shadow-[0_1px_2px_0_rgba(0,0,0,0.1)]'
 			>
 				<span
-					className='text-sm font-normal text-[#0E121B] dark:text-gray-200'
+					className='text-sm font-normal text-[#0E121B]'
 					style={{
 						fontFamily: "Inter",
 						fontSize: "14px",
@@ -67,7 +67,7 @@ const ChartDropdown: React.FC<ChartDropdownProps> = ({
 					/>
 
 					{/* Dropdown Menu */}
-					<div className='absolute right-0 top-full z-20 mt-1 min-w-[140px] rounded-lg border border-[#E1E4EA] bg-white py-1 shadow-lg dark:border-gray-600 dark:bg-gray-800 dark:shadow-[0_4px_12px_0_rgba(0,0,0,0.3)]'>
+					<div className='absolute right-0 top-full z-20 mt-1 min-w-[140px] rounded-lg border border-[#E1E4EA] bg-white py-1 shadow-lg dark:shadow-[0_4px_12px_0_rgba(0,0,0,0.3)]'>
 						{options.map((option) => (
 							<button
 								key={option.value}
@@ -75,10 +75,10 @@ const ChartDropdown: React.FC<ChartDropdownProps> = ({
 									onChange(option.value);
 									setIsOpen(false);
 								}}
-								className={`w-full px-3 py-2 text-left text-sm transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 ${
+								className={`w-full px-3 py-2 text-left text-sm transition-colors hover:bg-gray-50 ${
 									option.value === value
 										? "bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-300"
-										: "text-gray-700 dark:text-gray-300"
+										: "text-gray-700"
 								}`}
 								style={{
 									fontFamily: "Inter",

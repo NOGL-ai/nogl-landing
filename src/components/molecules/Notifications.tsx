@@ -37,7 +37,7 @@ export default function Notifications({ role }: { role: string }) {
 			<button
 				aria-label='Notification'
 				onClick={handleShowNotification}
-				className='border-stroke bg-gray-2 text-dark hover:bg-gray-3 dark:border-stroke-dark dark:bg-gray-dark xsm:flex relative hidden aspect-square w-12 cursor-pointer items-center justify-center rounded-full border dark:text-white'
+				className='border-stroke bg-gray-2 text-dark hover:bg-gray-3 dark:border-stroke-dark xsm:flex relative hidden aspect-square w-12 cursor-pointer items-center justify-center rounded-full border dark:text-white'
 			>
 				<span
 					className={`border-gray-2 bg-red-light dark:border-stroke-dark absolute right-[13px] top-3 aspect-square w-2.5  rounded-full border-2 ${
@@ -64,7 +64,7 @@ export default function Notifications({ role }: { role: string }) {
 			<div
 				className={`${
 					showNotification ? "block" : "hidden"
-				} z-99999 dark:bg-gray-dark md:top-17.5 absolute left-0 right-0 top-12 mx-auto w-[250px] rounded-md bg-white px-4 shadow-md md:left-auto md:w-[400px] dark:shadow-[0px_1px_4px_1px_rgba(255,200,255,0.08)]`}
+				} z-99999 md:top-17.5 absolute left-0 right-0 top-12 mx-auto w-[250px] rounded-md bg-white px-4 shadow-md md:left-auto md:w-[400px] dark:shadow-[0px_1px_4px_1px_rgba(255,200,255,0.08)]`}
 			>
 				<div className='mb-4'>
 					<h3 className='text-md border-stroke text-dark dark:border-stroke-dark border-b p-4 dark:text-white'>

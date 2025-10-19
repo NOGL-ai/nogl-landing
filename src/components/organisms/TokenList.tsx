@@ -25,7 +25,7 @@ export default function TokenList({ tokens }: { tokens: ApiKey[] }) {
 
 	return (
 		<>
-			<div className='rounded-10 shadow-1 dark:bg-gray-dark bg-white lg:w-3/5'>
+			<div className='rounded-10 shadow-1 bg-white lg:w-3/5'>
 				{tokens.length > 0 && (
 					<>
 						<div className='border-stroke dark:border-stroke-dark border-b px-9 py-5'>
@@ -36,13 +36,13 @@ export default function TokenList({ tokens }: { tokens: ApiKey[] }) {
 						<table className='w-full'>
 							<thead className='border-stroke dark:border-stroke-dark border-b'>
 								<tr>
-									<th className='font-satoshi text-body dark:text-gray-5 p-3 pl-9 text-left text-base font-medium'>
+									<th className='font-satoshi text-body p-3 pl-9 text-left text-base font-medium'>
 										Name
 									</th>
-									<th className='font-satoshi text-body dark:text-gray-5 hidden p-3 text-left text-base font-medium md:table-cell'>
+									<th className='font-satoshi text-body hidden p-3 text-left text-base font-medium md:table-cell'>
 										Date
 									</th>
-									<th className='font-satoshi text-body dark:text-gray-5 p-3 pr-9 text-right text-base font-medium'>
+									<th className='font-satoshi text-body p-3 pr-9 text-right text-base font-medium'>
 										Action
 									</th>
 								</tr>
@@ -54,12 +54,12 @@ export default function TokenList({ tokens }: { tokens: ApiKey[] }) {
 										className='border-stroke dark:border-stroke-dark border-b last-of-type:border-b-0'
 									>
 										<td className='p-4.5 text-dark pl-9 text-left tracking-[-.16px] dark:text-white'>
-											<span className='text-body dark:text-gray-5 md:hidden'>
+											<span className='text-body md:hidden'>
 												Name:{" "}
 											</span>
 											{token?.name}
 											<span className='block md:hidden'>
-												<span className='text-body dark:text-gray-5'>
+												<span className='text-body'>
 													Date:{" "}
 													{new Date(token?.createdAt).toLocaleDateString()}
 												</span>
@@ -117,7 +117,7 @@ export default function TokenList({ tokens }: { tokens: ApiKey[] }) {
 				)}
 				<div>
 					{tokens?.length === 0 && (
-						<p className='text-body dark:text-gray-5 flex justify-center px-9 py-20 tracking-[-.16px]'>
+						<p className='text-body flex justify-center px-9 py-20 tracking-[-.16px]'>
 							No active token available!
 						</p>
 					)}

@@ -14,13 +14,13 @@ export default function Breadcrumb({ pageTitle }: PropsType) {
 					<li>
 						<Link
 							href='/'
-							className='text-body hover:text-primary dark:text-gray-5 dark:hover:text-primary text-sm'
+							className='text-body hover:text-primary dark:hover:text-primary text-sm'
 						>
 							Home
 						</Link>
 					</li>
 
-					<li className='text-body dark:text-gray-5 text-sm'>
+					<li className='text-body text-sm'>
 						<span className='px-2'>/</span>
 						{pageTitle}
 					</li>

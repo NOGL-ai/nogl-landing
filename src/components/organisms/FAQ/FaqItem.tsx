@@ -17,7 +17,7 @@ export default function FaqItem({
 
 	return (
 		<>
-			<div className='shadow-1 dark:bg-gray-dark rounded-lg bg-white'>
+			<div className='shadow-1 rounded-lg bg-white'>
 				<button
 					onClick={() => {
 						handleFaqToggle(id);

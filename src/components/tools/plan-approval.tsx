@@ -185,11 +185,11 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
 
       <CardContent className="space-y-4">
         {/* Progress Summary */}
-        <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
           <span className="text-sm font-medium">
             Progress: {completedCount} of {totalCount} tasks
           </span>
-          <div className="w-32 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+          <div className="w-32 bg-gray-200 rounded-full h-2">
             <div 
               className="bg-blue-600 h-2 rounded-full transition-all duration-300"
               style={{ width: `${totalCount > 0 ? (completedCount / totalCount) * 100 : 0}%` }}
@@ -206,7 +206,7 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
                 "flex items-start gap-3 p-3 rounded-lg border transition-colors",
                 todo.completed 
                   ? "bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800" 
-                  : "bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700"
+                  : "bg-white border-gray-200"
               )}
             >
               <Checkbox
@@ -247,7 +247,7 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
                     <div className="flex-1">
                       <p className={cn(
                         "text-sm font-medium",
-                        todo.completed ? "line-through text-gray-500" : "text-gray-900 dark:text-gray-100"
+                        todo.completed ? "line-through text-gray-500" : "text-gray-900"
                       )}>
                         {todo.title}
                       </p>
@@ -301,7 +301,7 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
 
         {/* Add New Todo */}
         {editing && (
-          <div className="p-3 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg">
+          <div className="p-3 border-2 border-dashed border-gray-300 rounded-lg">
             <div className="space-y-2">
               <Input
                 value={newTodoTitle}

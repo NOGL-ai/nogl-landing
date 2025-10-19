@@ -27,7 +27,7 @@ export default function SendNewsletterCard() {
 						<h3 className='font-satoshi text-custom-2xl text-dark mb-1.5 font-bold tracking-[-.5px] dark:text-white'>
 							Newsletter Content
 						</h3>
-						<p className='text-body dark:text-gray-4'>
+						<p className='text-body'>
 							Type your message that you want to your audience
 						</p>
 					</div>

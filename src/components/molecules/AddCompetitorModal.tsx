@@ -80,7 +80,7 @@ export default function AddCompetitorModal({
 
 									<div className='mb-6 flex flex-wrap items-center justify-center gap-4'>
 										{/* Amazon Logo */}
-										<div className='flex h-12 w-12 items-center justify-center rounded-md bg-secondary_bg transition-colors group-hover:bg-white dark:bg-gray-700 dark:hover:bg-gray-600'>
+										<div className='flex h-12 w-12 items-center justify-center rounded-md bg-secondary_bg transition-colors group-hover:bg-white'>
 											<svg
 												className='h-8 w-8 text-tertiary dark:text-tertiary'
 												viewBox='0 0 24 24'
@@ -91,7 +91,7 @@ export default function AddCompetitorModal({
 										</div>
 
 										{/* Google Logo */}
-										<div className='flex h-12 w-12 items-center justify-center rounded-md bg-secondary_bg transition-colors group-hover:bg-white dark:bg-gray-700 dark:hover:bg-gray-600'>
+										<div className='flex h-12 w-12 items-center justify-center rounded-md bg-secondary_bg transition-colors group-hover:bg-white'>
 											<svg
 												className='h-8 w-8 text-tertiary dark:text-tertiary'
 												viewBox='0 0 24 24'
@@ -105,7 +105,7 @@ export default function AddCompetitorModal({
 										</div>
 
 										{/* eBay Logo */}
-										<div className='flex h-12 w-12 items-center justify-center rounded-md bg-secondary_bg transition-colors group-hover:bg-white dark:bg-gray-700 dark:hover:bg-gray-600'>
+										<div className='flex h-12 w-12 items-center justify-center rounded-md bg-secondary_bg transition-colors group-hover:bg-white'>
 											<svg
 												className='h-8 w-8 text-tertiary dark:text-tertiary'
 												viewBox='0 0 24 24'
@@ -136,7 +136,7 @@ export default function AddCompetitorModal({
 										eCommerce Website
 									</h3>
 
-									<div className='mb-6 flex h-16 w-16 items-center justify-center rounded-md bg-secondary_bg transition-colors group-hover:bg-white dark:bg-gray-700 dark:hover:bg-gray-600'>
+									<div className='mb-6 flex h-16 w-16 items-center justify-center rounded-md bg-secondary_bg transition-colors group-hover:bg-white'>
 										{/* Storefront Icon */}
 										<svg
 											className='h-12 w-12 text-tertiary dark:text-tertiary'

@@ -460,7 +460,7 @@ export default function MonitoredUrlsTable() {
 				</div>
 				<div className='flex flex-wrap items-center gap-3 sm:gap-6 lg:gap-8'>
 					<div className='flex items-center gap-2'>
-						<p className='text-sm font-medium text-primary dark:text-gray-100'>
+						<p className='text-sm font-medium text-primary'>
 							Rows
 						</p>
 						<select
@@ -484,7 +484,7 @@ export default function MonitoredUrlsTable() {
 						>
 							Prev
 						</Button>
-						<div className='text-sm font-medium text-primary dark:text-gray-100'>
+						<div className='text-sm font-medium text-primary'>
 							Page {table.getState().pagination.pageIndex + 1} of{" "}
 							{table.getPageCount()}
 						</div>

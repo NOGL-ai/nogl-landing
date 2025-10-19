@@ -74,7 +74,7 @@ const DataTable: React.FC<DataTableProps> = ({
 					</div>
 					<div className='flex flex-1 flex-col items-start justify-center gap-0.5'>
 						<div
-							className='max-w-full truncate text-sm font-medium leading-5 text-[#14151A] dark:text-gray-100'
+							className='max-w-full truncate text-sm font-medium leading-5 text-[#14151A]'
 							style={{
 								fontFamily: "Inter",
 								fontSize: "14px",
@@ -106,7 +106,7 @@ const DataTable: React.FC<DataTableProps> = ({
 					<img src={value.logo} alt={value.name} className='h-8 w-8' />
 					<div className='flex flex-1 flex-col items-start justify-center gap-0.5'>
 						<div
-							className='text-sm font-normal leading-5 text-[#14151A] dark:text-gray-100'
+							className='text-sm font-normal leading-5 text-[#14151A]'
 							style={{
 								fontFamily: "Inter",
 								fontSize: "14px",
@@ -125,7 +125,7 @@ const DataTable: React.FC<DataTableProps> = ({
 			return (
 				<div className='flex flex-1 flex-col items-center justify-center gap-0.5'>
 					<span
-						className='text-sm font-medium leading-5 text-[#14151A] dark:text-gray-100'
+						className='text-sm font-medium leading-5 text-[#14151A]'
 						style={{
 							fontFamily: "Inter",
 							fontSize: "14px",
@@ -237,7 +237,7 @@ const DataTable: React.FC<DataTableProps> = ({
 					<div className='flex flex-shrink-0 items-center gap-3'>
 						<StockIcon inStock={value.from === "In stock"} />
 						<span
-							className='whitespace-nowrap text-sm font-normal leading-5 text-[#14151A] dark:text-gray-100'
+							className='whitespace-nowrap text-sm font-normal leading-5 text-[#14151A]'
 							style={{
 								fontFamily: "Inter",
 								fontSize: "14px",
@@ -254,7 +254,7 @@ const DataTable: React.FC<DataTableProps> = ({
 					<div className='flex flex-shrink-0 items-center gap-3'>
 						<StockIcon inStock={isInStock} />
 						<span
-							className='whitespace-nowrap text-sm font-normal leading-5 text-[#14151A] dark:text-gray-100'
+							className='whitespace-nowrap text-sm font-normal leading-5 text-[#14151A]'
 							style={{
 								fontFamily: "Inter",
 								fontSize: "14px",
@@ -273,7 +273,7 @@ const DataTable: React.FC<DataTableProps> = ({
 			return (
 				<div className='flex flex-1 flex-col items-start justify-center gap-0.5'>
 					<span
-						className='text-sm font-normal leading-5 text-[#14151A] dark:text-gray-100'
+						className='text-sm font-normal leading-5 text-[#14151A]'
 						style={{
 							fontFamily: "Inter",
 							fontSize: "14px",
@@ -288,18 +288,18 @@ const DataTable: React.FC<DataTableProps> = ({
 		}
 
 		return (
-			<span className='text-sm text-[#14151A] dark:text-gray-100'>{value}</span>
+			<span className='text-sm text-[#14151A]'>{value}</span>
 		);
 	};
 
 	return (
 		<div
-			className={`rounded-lg border border-[#E2E4E9] bg-white p-4 dark:border-border dark:bg-secondary_bg ${className}`}
+			className={`rounded-lg border border-[#E2E4E9] bg-white p-4 dark:bg-secondary_bg ${className}`}
 		>
 			{/* Title */}
 			<div className='mb-5'>
 				<h3
-					className='text-base font-medium leading-6 text-[#111827] dark:text-gray-100'
+					className='text-base font-medium leading-6 text-[#111827]'
 					style={{
 						fontFamily: "Inter",
 						fontSize: "16px",
@@ -313,7 +313,7 @@ const DataTable: React.FC<DataTableProps> = ({
 
 			{/* Table */}
 			<div
-				className='overflow-hidden rounded-[10px] border border-[#EAEDF2] bg-white dark:border-border dark:bg-secondary_bg'
+				className='overflow-hidden rounded-[10px] border border-[#EAEDF2] bg-white dark:bg-secondary_bg'
 				style={{ height: maxHeight }}
 			>
 				<div className='flex h-full overflow-hidden'>
@@ -330,10 +330,10 @@ const DataTable: React.FC<DataTableProps> = ({
 								}}
 							>
 								{/* Header */}
-								<div className='flex h-10 flex-shrink-0 items-center justify-between gap-3 border-b border-[#E9EAEC] bg-[#F7F7F8] px-3 py-2.5 dark:border-border dark:bg-gray-700'>
+								<div className='flex h-10 flex-shrink-0 items-center justify-between gap-3 border-b border-[#E9EAEC] bg-[#F7F7F8] px-3 py-2.5'>
 									<div className='flex items-center gap-0.5'>
 										<span
-											className='text-sm font-normal leading-5 text-[#0F1324] opacity-60 dark:text-gray-200'
+											className='text-sm font-normal leading-5 text-[#0F1324] opacity-60'
 											style={{
 												fontFamily: "Inter",
 												fontSize: "14px",
@@ -352,7 +352,7 @@ const DataTable: React.FC<DataTableProps> = ({
 									{data.map((row, rowIndex) => (
 										<div
 											key={rowIndex}
-											className='flex items-center border-b border-[#E9EAEC] bg-white px-3 py-4 last:border-b-0 dark:border-border dark:bg-secondary_bg'
+											className='flex items-center border-b border-[#E9EAEC] bg-white px-3 py-4 last:border-b-0 dark:bg-secondary_bg'
 											style={{ minHeight: "60px" }}
 										>
 											<div className='w-full'>

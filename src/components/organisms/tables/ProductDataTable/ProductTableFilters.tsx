@@ -84,7 +84,7 @@ export function ProductTableFilters() {
 							variant={isActive ? "primary" : "secondary"}
 							size="sm"
 							onClick={() => handleFilterToggle(filter.id)}
-							className={isActive ? "" : "border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700"}
+							className={isActive ? "" : "border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary"}
 							aria-pressed={isActive}
 							aria-label={`${isActive ? 'Remove' : 'Apply'} ${filter.label} filter`}
 						>

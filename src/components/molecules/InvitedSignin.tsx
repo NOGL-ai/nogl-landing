@@ -53,7 +53,7 @@ const InvitedSignin = () => {
 				<h3 className='font-satoshi text-heading-5 text-dark mb-4 font-bold dark:text-white'>
 					Invited Signin
 				</h3>
-				<p className='dark:text-gray-5 text-base'>
+				<p className='dark:text-tertiary text-base'>
 					Enter your password to sign in
 				</p>
 			</div>

@@ -57,9 +57,9 @@ const LangDropdown: FC<LangDropdownProps> = ({
 							switchLanguage(item.id);
 							close();
 						}}
-						className={`-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-secondary_bg focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 dark:hover:bg-gray-700 ${
+						className={`-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-secondary_bg focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 ${
 							pathname?.startsWith(`/${item.id}`)
-								? "bg-secondary_bg dark:bg-gray-700"
+								? "bg-secondary_bg"
 								: "opacity-80"
 						}`}
 					>
@@ -83,8 +83,8 @@ const LangDropdown: FC<LangDropdownProps> = ({
 						key={index}
 						href={item.href}
 						onClick={() => close()}
-						className={`-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-secondary_bg focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 dark:hover:bg-gray-700 ${
-							item.active ? "bg-secondary_bg dark:bg-gray-700" : "opacity-80"
+						className={`-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-secondary_bg focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 ${
+							item.active ? "bg-secondary_bg" : "opacity-80"
 						}`}
 					>
 						<item.icon className='h-[18px] w-[18px] ' />

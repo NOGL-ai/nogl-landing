@@ -12,7 +12,7 @@ const Footer = ({ lang = "en" }: { lang?: string }) => {
 				<div className='flex flex-wrap gap-10 lg:justify-between xl:flex-nowrap xl:gap-20'>
 					<div className='w-full max-w-[275px]'>
 						<Logo variant='dark' size='lg' />
-						<p className='text-gray-5 mt-5'>
+						<p className='text-tertiary mt-5'>
 							© {new Date().getFullYear()} Nogl - AI-Powered Fashion Intelligence Platform
 						</p>
 
@@ -67,7 +67,7 @@ const Footer = ({ lang = "en" }: { lang?: string }) => {
 								<li>
 									<Link
 										href='/blog'
-										className='text-gray-5 duration-200 ease-out hover:text-white'
+										className='text-tertiary duration-200 ease-out hover:text-white'
 									>
 										Help Center
 									</Link>
@@ -75,7 +75,7 @@ const Footer = ({ lang = "en" }: { lang?: string }) => {
 								<li>
 									<Link
 										href='/dashboard'
-										className='text-gray-5 duration-200 ease-out hover:text-white'
+										className='text-tertiary duration-200 ease-out hover:text-white'
 									>
 										Dashboard
 									</Link>
@@ -92,7 +92,7 @@ const Footer = ({ lang = "en" }: { lang?: string }) => {
 								<li>
 									<Link
 										href={lang === "de" ? "/datenschutz" : "/privacy-policy"}
-										className='text-gray-5 duration-200 ease-out hover:text-white'
+										className='text-tertiary duration-200 ease-out hover:text-white'
 									>
 										{lang === "de" ? "Datenschutzerklärung" : "Privacy Policy"}
 									</Link>
@@ -100,7 +100,7 @@ const Footer = ({ lang = "en" }: { lang?: string }) => {
 								<li>
 									<Link
 										href={lang === "de" ? "/agb" : "/tos"}
-										className='text-gray-5 duration-200 ease-out hover:text-white'
+										className='text-tertiary duration-200 ease-out hover:text-white'
 									>
 										{lang === "de"
 											? "Allgemeine Geschäftsbedingungen"
@@ -110,7 +110,7 @@ const Footer = ({ lang = "en" }: { lang?: string }) => {
 								<li>
 									<Link
 										href='/impressum'
-										className='text-gray-5 duration-200 ease-out hover:text-white'
+										className='text-tertiary duration-200 ease-out hover:text-white'
 									>
 										Impressum
 									</Link>

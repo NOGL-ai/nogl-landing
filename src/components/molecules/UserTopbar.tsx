@@ -86,7 +86,7 @@ export default function UserTopbar() {
 
 	return (
 		<>
-			<div className='rounded-10 shadow-1 dark:bg-gray-dark items-center justify-between bg-white px-3.5 py-3 md:flex'>
+			<div className='rounded-10 shadow-1 items-center justify-between bg-white px-3.5 py-3 md:flex'>
 				<div className='mb-6 flex flex-wrap items-center gap-3 md:mb-0'>
 					{filterData?.map((item) => (
 						<button
@@ -102,7 +102,7 @@ export default function UserTopbar() {
 							className={`bg-gray-1 font-satoshi inline-flex h-10 items-center justify-center gap-2 rounded-lg border pl-3 pr-4 text-sm font-medium capitalize dark:bg-white/5 ${
 								filterValue === item?.value
 									? "text-primary shadow-input border-transparent"
-									: "border-stroke text-body dark:border-stroke-dark dark:text-gray-5"
+									: "border-stroke text-body dark:border-stroke-dark"
 							}`}
 						>
 							{item?.icon}

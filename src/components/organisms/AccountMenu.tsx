@@ -29,7 +29,7 @@ const AccountMenu = ({ user }: unknown) => {
 					<p className='font-satoshi text-dark text-base font-medium dark:text-white'>
 						{user?.name}
 					</p>
-					<p className='text-body dark:text-gray-5 text-sm'>{user?.email}</p>
+					<p className='text-body text-sm'>{user?.email}</p>
 				</div>
 			</div>
 			{/* px-2.5 */}

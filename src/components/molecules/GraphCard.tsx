@@ -7,10 +7,10 @@ export default function GraphCard({ data }: { data: OverviewData }) {
 	const { isIncrease } = data;
 
 	return (
-		<div className='rounded-10 p-7.5 shadow-1 dark:bg-gray-dark bg-white'>
+		<div className='rounded-10 p-7.5 shadow-1 bg-white'>
 			<div className='flex items-center justify-between'>
 				<div>
-					<p className='font-satoshi text-body dark:text-gray-4 mb-1.5 text-sm font-medium tracking-[-.1px]'>
+					<p className='font-satoshi text-body mb-1.5 text-sm font-medium tracking-[-.1px]'>
 						Monthly Recurring Revenue
 					</p>
 					<h5 className='font-satoshi text-heading-5 text-dark font-bold dark:text-white'>

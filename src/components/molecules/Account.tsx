@@ -33,7 +33,7 @@ const Account = ({ navbarOpen }: { navbarOpen: boolean }) => {
 			</button>
 
 			<div
-				className={`border-[.5px]border-stroke z-9999 dark:bg-gray-dark absolute left-5 top-full w-[280px] rounded-lg bg-white pb-2.5 pt-3.5 shadow-md duration-500 lg:invisible lg:absolute lg:left-auto lg:right-0 lg:opacity-0 lg:group-hover:visible lg:group-hover:translate-y-2 lg:group-hover:opacity-100 ${
+				className={`border-[.5px]border-stroke z-9999 absolute left-5 top-full w-[280px] rounded-lg bg-white pb-2.5 pt-3.5 shadow-md duration-500 lg:invisible lg:absolute lg:left-auto lg:right-0 lg:opacity-0 lg:group-hover:visible lg:group-hover:translate-y-2 lg:group-hover:opacity-100 ${
 					navbarOpen && dropdown
 						? "visible mb-4 opacity-100"
 						: "invisible opacity-0"

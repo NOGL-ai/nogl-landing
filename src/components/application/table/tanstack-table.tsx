@@ -307,16 +307,16 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
               </div>
 
               {/* Hover tooltip */}
-              <div className="absolute left-1/2 top-full mt-2 hidden group-hover:block z-50 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs rounded-lg px-3 py-2 shadow-lg whitespace-nowrap transform -translate-x-1/2 max-w-xs">
+              <div className="absolute left-1/2 top-full mt-2 hidden group-hover:block z-50 bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-lg whitespace-nowrap transform -translate-x-1/2 max-w-xs">
                 <div className="space-y-1">
                   <div className="font-semibold">
                     {similarityResult ? 'Similarity Search Results' : 'Competitor Analysis'}
                   </div>
-                  <div className="text-gray-300 dark:text-gray-600">
+                  <div className="text-gray-300">
                     {competitorCount} similar product{competitorCount !== 1 ? 's' : ''} found
                   </div>
                   {similarityResult && similarityResult.matches && similarityResult.matches.length > 0 && (
-                    <div className="text-gray-300 dark:text-gray-600">
+                    <div className="text-gray-300">
                       <div className="font-medium mb-1">Top Matches:</div>
                       {similarityResult.matches.slice(0, 3).map((match: SimilarityMatch, index: number) => {
                         const formattedPrice = formatMatchPrice(match.price, match.currency || 'EUR');
@@ -339,13 +339,13 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
                     </div>
                   )}
                   {!similarityResult && product.competitors?.competitorNames && (
-                    <div className="text-gray-300 dark:text-gray-600">
+                    <div className="text-gray-300">
                       Top: {product.competitors.competitorNames.slice(0, 3).join(', ')}
                       {product.competitors.competitorNames.length > 3 && ` +${product.competitors.competitorNames.length - 3} more`}
                     </div>
                   )}
                 </div>
-                <div className="absolute -top-1 left-1/2 w-2 h-2 bg-gray-900 dark:bg-gray-100 rotate-45 transform -translate-x-1/2"></div>
+                <div className="absolute -top-1 left-1/2 w-2 h-2 bg-gray-900 rotate-45 transform -translate-x-1/2"></div>
               </div>
             </div>
           );
@@ -393,17 +393,17 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
           if (total === 1) return [{ type: 'Gold', icon: '◉', color: '#D4AF37', bgColor: 'bg-yellow-50 dark:bg-yellow-900/20' }];
           if (total === 2) return [
             { type: 'Gold', icon: '◉', color: '#D4AF37', bgColor: 'bg-yellow-50 dark:bg-yellow-900/20' },
-            { type: 'Silver', icon: '◉', color: '#A8A9AD', bgColor: 'bg-gray-50 dark:bg-gray-800/20' }
+            { type: 'Silver', icon: '◉', color: '#A8A9AD', bgColor: 'bg-gray-50/20' }
           ];
           if (total === 3) return [
             { type: 'Gold', icon: '◉', color: '#D4AF37', bgColor: 'bg-yellow-50 dark:bg-yellow-900/20' },
-            { type: 'Silver', icon: '◉', color: '#A8A9AD', bgColor: 'bg-gray-50 dark:bg-gray-800/20' },
+            { type: 'Silver', icon: '◉', color: '#A8A9AD', bgColor: 'bg-gray-50/20' },
             { type: 'Rose', icon: '◉', color: '#B76E79', bgColor: 'bg-pink-50 dark:bg-pink-900/20' }
           ];
           // For 4+ variants
           return [
             { type: 'Gold', icon: '◉', color: '#D4AF37', bgColor: 'bg-yellow-50 dark:bg-yellow-900/20' },
-            { type: 'Silver', icon: '◉', color: '#A8A9AD', bgColor: 'bg-gray-50 dark:bg-gray-800/20' },
+            { type: 'Silver', icon: '◉', color: '#A8A9AD', bgColor: 'bg-gray-50/20' },
             { type: 'Rose', icon: '◉', color: '#B76E79', bgColor: 'bg-pink-50 dark:bg-pink-900/20' },
             { type: 'Platinum', icon: '◉', color: '#E5E4E2', bgColor: 'bg-slate-50 dark:bg-slate-800/20' }
           ].slice(0, total);
@@ -414,7 +414,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
         if (variants === 0) {
           return (
             <div className="flex items-center gap-2 opacity-60">
-              <div className="w-6 h-6 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+              <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center">
                 <span className="text-xs">—</span>
               </div>
               <span className="text-xs text-muted-foreground">None</span>
@@ -429,7 +429,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
               {materials.slice(0, 3).map((material, index) => (
                 <div
                   key={index}
-                  className={`w-5 h-5 rounded-full border-2 border-white dark:border-gray-800 flex items-center justify-center transition-transform group-hover:scale-110 ${material.bgColor}`}
+                  className={`w-5 h-5 rounded-full border-2 border-white flex items-center justify-center transition-transform group-hover:scale-110 ${material.bgColor}`}
                   style={{ 
                     zIndex: materials.length - index,
                   }}
@@ -442,7 +442,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
               ))}
               {variants > 3 && (
                 <div 
-                  className="w-5 h-5 rounded-full border-2 border-white dark:border-gray-800 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center text-[8px] font-semibold text-gray-600 dark:text-gray-300"
+                  className="w-5 h-5 rounded-full border-2 border-white bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center text-[8px] font-semibold text-gray-600"
                   title={`${variants - 3} more`}
                 >
                   +{variants - 3}
@@ -451,7 +451,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
             </div>
 
             {/* Tooltip on hover */}
-            <div className="absolute left-1/2 top-full mt-2 hidden group-hover:block z-50 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs rounded-lg px-2.5 py-1.5 shadow-lg whitespace-nowrap transform -translate-x-1/2">
+            <div className="absolute left-1/2 top-full mt-2 hidden group-hover:block z-50 bg-gray-900 text-white text-xs rounded-lg px-2.5 py-1.5 shadow-lg whitespace-nowrap transform -translate-x-1/2">
               <div className="flex flex-col gap-0.5">
                 {materials.map((material, index) => (
                   <div key={index} className="flex items-center gap-1.5">
@@ -460,7 +460,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
                   </div>
                 ))}
               </div>
-              <div className="absolute -top-1 left-1/2 w-2 h-2 bg-gray-900 dark:bg-gray-100 rotate-45 transform -translate-x-1/2"></div>
+              <div className="absolute -top-1 left-1/2 w-2 h-2 bg-gray-900 rotate-45 transform -translate-x-1/2"></div>
             </div>
           </div>
         );
@@ -543,7 +543,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
             <div className="group relative flex items-center gap-2.5">
               {/* Brand Logo */}
               <div className="relative">
-                <div className="w-10 h-10 rounded-lg bg-white dark:bg-white flex items-center justify-center border border-gray-200 dark:border-gray-300 overflow-hidden shadow-sm">
+                <div className="w-10 h-10 rounded-lg bg-white dark:bg-white flex items-center justify-center border border-gray-200 overflow-hidden shadow-sm">
                   {brand?.logo ? (
                     <img
                       src={brand.logo}
@@ -560,7 +560,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
                       }}
                     />
                   ) : null}
-                  <div className={`w-8 h-8 rounded flex items-center justify-center text-sm font-semibold text-gray-600 dark:text-gray-300 ${brand?.logo ? 'hidden' : ''}`}>
+                  <div className={`w-8 h-8 rounded flex items-center justify-center text-sm font-semibold text-gray-600 ${brand?.logo ? 'hidden' : ''}`}>
                     {brand?.name?.charAt(0).toUpperCase() || '?'}
                   </div>
                 </div>
@@ -568,7 +568,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
               
               {/* Brand Name and Country */}
               <div className="flex flex-col min-w-0">
-                <span className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                <span className="text-sm font-medium text-gray-900 truncate">
                   {brand?.name || 'Unknown'}
                 </span>
                 <div className="flex items-center gap-1">
@@ -579,20 +579,20 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
               </div>
 
               {/* Hover tooltip */}
-              <div className="absolute left-0 top-full mt-2 hidden group-hover:block z-50 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs rounded-lg px-3 py-2 shadow-lg whitespace-nowrap">
+              <div className="absolute left-0 top-full mt-2 hidden group-hover:block z-50 bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-lg whitespace-nowrap">
                 <div className="space-y-1">
                   <div className="font-semibold">Brand & Country</div>
-                  <div className="text-gray-300 dark:text-gray-600">
+                  <div className="text-gray-300">
                     {brand?.name || 'Unknown Brand'}
                   </div>
-                  <div className="text-gray-300 dark:text-gray-600">
+                  <div className="text-gray-300">
                     {countryInfo.flag} {countryInfo.name}
                   </div>
-                  <div className="text-gray-300 dark:text-gray-600">
+                  <div className="text-gray-300">
                     Domain: {domain}
                   </div>
                 </div>
-                <div className="absolute -top-1 left-4 w-2 h-2 bg-gray-900 dark:bg-gray-100 rotate-45"></div>
+                <div className="absolute -top-1 left-4 w-2 h-2 bg-gray-900 rotate-45"></div>
               </div>
             </div>
           );
@@ -628,7 +628,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
             <div className="group relative flex items-center gap-2.5">
               {/* Channel Logo */}
               <div className="relative">
-                <div className="w-10 h-10 rounded-lg bg-white dark:bg-white flex items-center justify-center border border-gray-200 dark:border-gray-300 overflow-hidden shadow-sm">
+                <div className="w-10 h-10 rounded-lg bg-white dark:bg-white flex items-center justify-center border border-gray-200 overflow-hidden shadow-sm">
                   <img
                     src={logoUrl}
                     alt={channelName}
@@ -643,7 +643,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
                       target.nextElementSibling?.classList.add('hidden');
                     }}
                   />
-                  <div className="hidden w-8 h-8 rounded flex items-center justify-center text-sm font-semibold text-gray-600 dark:text-gray-300">
+                  <div className="hidden w-8 h-8 rounded flex items-center justify-center text-sm font-semibold text-gray-600">
                     {channelName.charAt(0).toUpperCase()}
                   </div>
                 </div>
@@ -651,26 +651,26 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
               
               {/* Channel Name */}
               <div className="flex flex-col min-w-0">
-                <span className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                <span className="text-sm font-medium text-gray-900 truncate">
                   {channelName}
                 </span>
-                <span className="text-xs text-gray-500 dark:text-gray-400">
+                <span className="text-xs text-gray-500">
                   D2C
                 </span>
               </div>
 
               {/* Hover tooltip */}
-              <div className="absolute left-0 top-full mt-2 hidden group-hover:block z-50 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs rounded-lg px-3 py-2 shadow-lg whitespace-nowrap">
+              <div className="absolute left-0 top-full mt-2 hidden group-hover:block z-50 bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-lg whitespace-nowrap">
                 <div className="space-y-1">
                   <div className="font-semibold">Channel Information</div>
-                  <div className="text-gray-300 dark:text-gray-600">
+                  <div className="text-gray-300">
                     {channelName} D2C
                   </div>
-                  <div className="text-gray-300 dark:text-gray-600">
+                  <div className="text-gray-300">
                     Direct-to-Consumer
                   </div>
                 </div>
-                <div className="absolute -top-1 left-4 w-2 h-2 bg-gray-900 dark:bg-gray-100 rotate-45"></div>
+                <div className="absolute -top-1 left-4 w-2 h-2 bg-gray-900 rotate-45"></div>
               </div>
             </div>
           );
@@ -708,7 +708,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
             return (
               <div className="space-y-1 min-w-[220px]">
                 {/* Price Range Bar with Position Number */}
-                <div className="relative h-3.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-visible">
+                <div className="relative h-3.5 bg-gray-200 rounded-full overflow-visible">
                   {/* Gradient background from green to red */}
                   <div className="absolute inset-0 bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 rounded-full" />
                   
@@ -717,7 +717,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
                     className="absolute -top-0.5 w-5 h-5 flex items-center justify-center z-10"
                     style={{ left: `calc(${positionPercent}% - 10px)` }}
                   >
-                    <div className="bg-white dark:bg-gray-900 border-2 border-blue-500 shadow-md rounded-full w-5 h-5 flex items-center justify-center">
+                    <div className="bg-white border-2 border-blue-500 shadow-md rounded-full w-5 h-5 flex items-center justify-center">
                       <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400">
                         {myPosition}
                       </span>
@@ -747,7 +747,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
                   </div>
                   <div className="flex items-center gap-1.5">
                     <span className="text-muted-foreground">Avg:</span>
-                    <span className="font-medium text-gray-700 dark:text-gray-300">
+                    <span className="font-medium text-gray-700">
                       {avg.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}
                     </span>
                   </div>
@@ -790,7 +790,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
                 aria-label={`Category: ${category}`}
               >
                 {category === 'Active' && <span className="h-2 w-2 rounded-full bg-green-500 dark:bg-green-400" aria-hidden="true" />}
-                {category === 'Inactive' && <span className="h-2 w-2 rounded-full bg-gray-500 dark:bg-gray-400" aria-hidden="true" />}
+                {category === 'Inactive' && <span className="h-2 w-2 rounded-full bg-gray-500" aria-hidden="true" />}
                 {category === 'In Stock' && <span className="h-2 w-2 rounded-full bg-green-500 dark:bg-green-400" aria-hidden="true" />}
                 {category === 'Out of Stock' && <span className="h-2 w-2 rounded-full bg-red-500 dark:bg-red-400" aria-hidden="true" />}
                 {category}

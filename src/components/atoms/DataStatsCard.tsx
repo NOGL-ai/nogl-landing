@@ -19,7 +19,7 @@ export default function DataStatsCard({ data }: { data: DataStats }) {
 				</h3>
 
 				<div className='flex items-center justify-between'>
-					<p className='font-satoshi text-body dark:text-gray-4 text-sm font-medium'>
+					<p className='font-satoshi text-body text-sm font-medium'>
 						{content}
 					</p>
 

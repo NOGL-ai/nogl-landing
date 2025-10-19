@@ -205,7 +205,7 @@ export default function PurchaseEmptyState() {
 					<h2 className='font-satoshi text-dark mb-3.5 text-2xl font-bold tracking-[-.5px] dark:text-white'>
 						You don’t have any purchase history
 					</h2>
-					<p className='text-body dark:text-gray-5 text-sm tracking-[-.14px]'>
+					<p className='text-body text-sm tracking-[-.14px]'>
 						Please purchase any plan to see the history! Thank you
 					</p>
 

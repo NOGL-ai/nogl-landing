@@ -42,7 +42,7 @@ export const RichTextEditor = ({
 		content: value,
 		editorProps: {
 			attributes: {
-				class: "prose prose-sm focus:outline-none max-w-none p-4 text-md text-gray-900 dark:text-white",
+				class: "prose prose-sm focus:outline-none max-w-none p-4 text-md text-primary",
 			},
 		},
 		onUpdate: ({ editor }) => {
@@ -68,18 +68,18 @@ export const RichTextEditor = ({
 	return (
 		<div className={cx("flex flex-col gap-2", className)}>
 			{/* Toolbar */}
-			<div className="flex items-center gap-1 rounded-lg border border-gray-200 bg-white p-1 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+			<div className="flex items-center gap-1 rounded-lg border border-border bg-background p-1 shadow-sm">
 				{/* Bold */}
 				<button
 					type="button"
 					onClick={() => editor.chain().focus().toggleBold().run()}
 					className={cx(
-						"flex size-8 items-center justify-center rounded-md transition-colors hover:bg-gray-100 dark:hover:bg-gray-800",
-						editor.isActive("bold") && "bg-gray-100 dark:bg-gray-800"
+						"flex size-8 items-center justify-center rounded-md transition-colors hover:bg-primary_hover",
+						editor.isActive("bold") && "bg-secondary_bg"
 					)}
 					title="Bold"
 				>
-					<svg className="size-5 text-gray-400" fill="none" viewBox="0 0 20 20" stroke="currentColor" strokeWidth="2">
+					<svg className="size-5 text-tertiary" fill="none" viewBox="0 0 20 20" stroke="currentColor" strokeWidth="2">
 						<path d="M5 4h6a3 3 0 013 3v0a3 3 0 01-3 3H5V4zM5 10h7a3 3 0 013 3v0a3 3 0 01-3 3H5v-6z" />
 					</svg>
 				</button>
@@ -89,12 +89,12 @@ export const RichTextEditor = ({
 					type="button"
 					onClick={() => editor.chain().focus().toggleItalic().run()}
 					className={cx(
-						"flex size-8 items-center justify-center rounded-md transition-colors hover:bg-gray-100 dark:hover:bg-gray-800",
-						editor.isActive("italic") && "bg-gray-100 dark:bg-gray-800"
+						"flex size-8 items-center justify-center rounded-md transition-colors hover:bg-primary_hover",
+						editor.isActive("italic") && "bg-secondary_bg"
 					)}
 					title="Italic"
 				>
-					<svg className="size-5 text-gray-400" fill="none" viewBox="0 0 20 20" stroke="currentColor" strokeWidth="2">
+					<svg className="size-5 text-tertiary" fill="none" viewBox="0 0 20 20" stroke="currentColor" strokeWidth="2">
 						<path d="M8 16h4M10 4l-2 12" />
 					</svg>
 				</button>
@@ -104,24 +104,24 @@ export const RichTextEditor = ({
 					type="button"
 					onClick={() => editor.chain().focus().toggleStrike().run()}
 					className={cx(
-						"flex size-8 items-center justify-center rounded-md transition-colors hover:bg-gray-100 dark:hover:bg-gray-800",
-						editor.isActive("strike") && "bg-gray-100 dark:bg-gray-800"
+						"flex size-8 items-center justify-center rounded-md transition-colors hover:bg-primary_hover",
+						editor.isActive("strike") && "bg-secondary_bg"
 					)}
 					title="Strikethrough"
 				>
-					<svg className="size-5 text-gray-400" fill="none" viewBox="0 0 20 20" stroke="currentColor" strokeWidth="2">
+					<svg className="size-5 text-tertiary" fill="none" viewBox="0 0 20 20" stroke="currentColor" strokeWidth="2">
 						<path d="M4 10h12M7 4h6a3 3 0 010 6H7m0 6h6a3 3 0 100-6" />
 					</svg>
 				</button>
 
 				{/* Divider */}
-				<div className="mx-1 h-6 w-px bg-gray-200 dark:bg-gray-700" />
+				<div className="mx-1 h-6 w-px bg-border" />
 
 				{/* Color Picker */}
 				<div className="relative">
-					<label className="flex size-8 cursor-pointer items-center justify-center rounded-md p-1.5 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800" title="Text Color">
+					<label className="flex size-8 cursor-pointer items-center justify-center rounded-md p-1.5 transition-colors hover:bg-primary_hover" title="Text Color">
 						<div
-							className="size-4 rounded-full border border-gray-300 dark:border-gray-700"
+							className="size-4 rounded-full border border-border"
 							style={{ backgroundColor: currentColor }}
 						/>
 						<input
@@ -137,19 +137,19 @@ export const RichTextEditor = ({
 				</div>
 
 				{/* Divider */}
-				<div className="mx-1 h-6 w-px bg-gray-200 dark:bg-gray-700" />
+				<div className="mx-1 h-6 w-px bg-border" />
 
 				{/* Align Left */}
 				<button
 					type="button"
 					onClick={() => editor.chain().focus().setTextAlign("left").run()}
 					className={cx(
-						"flex size-8 items-center justify-center rounded-md transition-colors hover:bg-gray-100 dark:hover:bg-gray-800",
-						editor.isActive({ textAlign: "left" }) && "bg-gray-100 dark:bg-gray-800"
+						"flex size-8 items-center justify-center rounded-md transition-colors hover:bg-primary_hover",
+						editor.isActive({ textAlign: "left" }) && "bg-secondary_bg"
 					)}
 					title="Align Left"
 				>
-					<svg className="size-5 text-gray-400" fill="none" viewBox="0 0 20 20" stroke="currentColor" strokeWidth="2">
+					<svg className="size-5 text-tertiary" fill="none" viewBox="0 0 20 20" stroke="currentColor" strokeWidth="2">
 						<path d="M3 5h14M3 10h10M3 15h14" />
 					</svg>
 				</button>
@@ -159,12 +159,12 @@ export const RichTextEditor = ({
 					type="button"
 					onClick={() => editor.chain().focus().setTextAlign("center").run()}
 					className={cx(
-						"flex size-8 items-center justify-center rounded-md transition-colors hover:bg-gray-100 dark:hover:bg-gray-800",
-						editor.isActive({ textAlign: "center" }) && "bg-gray-100 dark:bg-gray-800"
+						"flex size-8 items-center justify-center rounded-md transition-colors hover:bg-primary_hover",
+						editor.isActive({ textAlign: "center" }) && "bg-secondary_bg"
 					)}
 					title="Align Center"
 				>
-					<svg className="size-5 text-gray-400" fill="none" viewBox="0 0 20 20" stroke="currentColor" strokeWidth="2">
+					<svg className="size-5 text-tertiary" fill="none" viewBox="0 0 20 20" stroke="currentColor" strokeWidth="2">
 						<path d="M3 5h14M5 10h10M3 15h14" />
 					</svg>
 				</button>
@@ -174,12 +174,12 @@ export const RichTextEditor = ({
 					type="button"
 					onClick={() => editor.chain().focus().toggleBulletList().run()}
 					className={cx(
-						"flex size-8 items-center justify-center rounded-md transition-colors hover:bg-gray-100 dark:hover:bg-gray-800",
-						editor.isActive("bulletList") && "bg-gray-100 dark:bg-gray-800"
+						"flex size-8 items-center justify-center rounded-md transition-colors hover:bg-primary_hover",
+						editor.isActive("bulletList") && "bg-secondary_bg"
 					)}
 					title="Bullet List"
 				>
-					<svg className="size-5 text-gray-400" fill="none" viewBox="0 0 20 20" stroke="currentColor" strokeWidth="2">
+					<svg className="size-5 text-tertiary" fill="none" viewBox="0 0 20 20" stroke="currentColor" strokeWidth="2">
 						<circle cx="5" cy="6" r="1" fill="currentColor" />
 						<circle cx="5" cy="10" r="1" fill="currentColor" />
 						<circle cx="5" cy="14" r="1" fill="currentColor" />
@@ -189,12 +189,12 @@ export const RichTextEditor = ({
 			</div>
 
 			{/* Editor Content */}
-			<div className="relative flex-1 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-900">
+			<div className="relative flex-1 overflow-hidden rounded-lg border border-border bg-background shadow-sm">
 				<EditorContent editor={editor} />
 			</div>
 
 			{/* Character Counter */}
-			<p className="text-sm text-gray-600 dark:text-gray-400">
+			<p className="text-sm text-tertiary">
 				{remainingChars} characters left
 			</p>
 		</div>

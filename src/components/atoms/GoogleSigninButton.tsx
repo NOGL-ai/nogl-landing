@@ -9,7 +9,7 @@ export default function GoogleSigninButton({ text }: { text: string }) {
 		<button
 			type="button"
 			onClick={handleGoogleSignIn}
-			className='flex h-11 w-full items-center justify-center gap-3 rounded-lg border border-[#d5d7da] bg-white px-4 py-2.5 text-[16px] font-semibold leading-6 text-[#414651] shadow-[inset_0px_0px_0px_1px_rgba(10,13,18,0.18),inset_0px_-2px_0px_0px_rgba(10,13,18,0.05),0px_1px_2px_0px_rgba(10,13,18,0.05)] duration-300 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700'
+			className='flex h-11 w-full items-center justify-center gap-3 rounded-lg border border-[#d5d7da] bg-white px-4 py-2.5 text-[16px] font-semibold leading-6 text-[#414651] shadow-[inset_0px_0px_0px_1px_rgba(10,13,18,0.18),inset_0px_-2px_0px_0px_rgba(10,13,18,0.05),0px_1px_2px_0px_rgba(10,13,18,0.05)] duration-300 hover:bg-gray-50'
 		>
 			<svg
 				width='24'

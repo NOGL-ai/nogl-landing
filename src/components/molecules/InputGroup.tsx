@@ -57,7 +57,7 @@ export default function InputGroup(props: InputGroupProps) {
 					maxLength={maxlength}
 				/>
 				{type === "password" && (
-					<span className='text-body dark:text-gray-6 absolute right-5 top-1/2 -translate-y-1/2'>
+					<span className='text-body absolute right-5 top-1/2 -translate-y-1/2'>
 						{inputType === "password" ? (
 							<svg
 								width='25'

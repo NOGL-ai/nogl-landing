@@ -26,7 +26,7 @@ export default function SendNotificationCard() {
 						<h3 className='font-satoshi text-custom-2xl text-dark mb-1.5 font-bold tracking-[-.5px] dark:text-white'>
 							Notification Content
 						</h3>
-						<p className='text-body dark:text-gray-4'>
+						<p className='text-body'>
 							Type your message that you want to notify your audience
 						</p>
 					</div>

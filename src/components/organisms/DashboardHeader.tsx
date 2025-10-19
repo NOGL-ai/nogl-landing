@@ -16,7 +16,7 @@ export default function Header({ openSidebar, setOpenSidebar, title, showGreetin
 	const { data: session } = useSession();
 
 	return (
-		<div className='z-999 border-stroke dark:border-stroke-dark dark:bg-gray-dark sticky top-0 flex items-center justify-between border-b bg-white px-5 py-5 md:px-10'>
+		<div className='z-999 border-stroke dark:border-stroke-dark sticky top-0 flex items-center justify-between border-b bg-white px-5 py-5 md:px-10'>
 			<div onClick={() => setOpenSidebar(!openSidebar)} className='lg:hidden '>
 				<span className='h-5.5 w-5.5 relative block cursor-pointer'>
 					<span className='du-block absolute right-0 h-full w-full'>

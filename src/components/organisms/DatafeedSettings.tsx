@@ -247,7 +247,7 @@ const DatafeedSettings: React.FC<DatafeedSettingsProps> = ({
 										sizeClass='h-10 px-3'
 										rounded='rounded-none'
 									/>
-									<div className='bg-bg-weak-100 border-stroke-soft-200 flex min-w-[40px] items-center justify-center border-l dark:border-border dark:bg-gray-700'>
+									<div className='bg-bg-weak-100 border-stroke-soft-200 flex min-w-[40px] items-center justify-center border-l dark:border-border'>
 										<span className='text-colorblack-70 text-sm font-medium dark:text-tertiary'>
 											%
 										</span>

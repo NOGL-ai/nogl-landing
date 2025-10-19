@@ -85,7 +85,7 @@ const SimpleNewsletter: React.FC<SimpleNewsletterProps> = ({
 					title: "text-primary",
 					description: "text-tertiary dark:text-tertiary",
 					input:
-						"bg-white dark:bg-secondary_bg border-border dark:border-border text-primary placeholder-gray-500 dark:placeholder-gray-400",
+						"bg-white dark:bg-secondary_bg border-border dark:border-border text-primary placeholder:text-tertiary",
 				};
 			default:
 				return {
@@ -93,7 +93,7 @@ const SimpleNewsletter: React.FC<SimpleNewsletterProps> = ({
 					title: "text-primary",
 					description: "text-tertiary dark:text-tertiary",
 					input:
-						"bg-white dark:bg-gray-700 border-border dark:border-border text-primary placeholder-gray-500 dark:placeholder-gray-400",
+						"bg-white border-border dark:border-border text-primary placeholder:text-tertiary",
 				};
 		}
 	};

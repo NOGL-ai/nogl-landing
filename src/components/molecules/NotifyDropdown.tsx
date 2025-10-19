@@ -67,14 +67,14 @@ const NotifyDropdown: FC<Props> = ({ className = "" }) => {
 											<a
 												key={index}
 												href={item.href}
-												className='relative -m-3 flex rounded-lg p-2 pr-8 transition duration-150 ease-in-out hover:bg-secondary_bg focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 dark:hover:bg-gray-700'
+												className='relative -m-3 flex rounded-lg p-2 pr-8 transition duration-150 ease-in-out hover:bg-secondary_bg focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50'
 											>
 												<Avatar
 													imgUrl={item.avatar}
 													sizeClass='w-8 h-8 sm:w-12 sm:h-12'
 												/>
 												<div className='ml-3 space-y-1 sm:ml-4'>
-													<p className='text-sm font-medium text-primary dark:text-gray-200'>
+													<p className='text-sm font-medium text-primary'>
 														{item.name}
 													</p>
 													<p className='text-xs text-tertiary sm:text-sm dark:text-tertiary'>

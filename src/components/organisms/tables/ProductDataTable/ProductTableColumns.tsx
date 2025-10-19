@@ -116,7 +116,7 @@ export function ProductTableColumns(products: Product[] = []): ColumnDef<Product
 						href={productUrl}
 						target="_blank"
 						rel="noopener noreferrer"
-						className="block h-12 w-12 overflow-hidden rounded-lg bg-secondary_bg transition-colors duration-200 hover:bg-border focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:h-14 sm:w-14 dark:bg-gray-700 dark:hover:bg-gray-600"
+						className="block h-12 w-12 overflow-hidden rounded-lg bg-secondary_bg transition-colors duration-200 hover:bg-border focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:h-14 sm:w-14"
 						aria-label={`View product details for ${product.name}`}
 					>
 						<img
@@ -159,7 +159,7 @@ export function ProductTableColumns(products: Product[] = []): ColumnDef<Product
 				const sku = row.original.sku as string;
 				return (
 					<div className="min-w-[200px] space-y-1">
-						<div className="text-sm font-medium text-primary dark:text-gray-100">
+						<div className="text-sm font-medium text-primary">
 							{name}
 						</div>
 						<div className="text-xs text-tertiary dark:text-tertiary">

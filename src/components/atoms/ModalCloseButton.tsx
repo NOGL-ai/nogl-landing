@@ -2,7 +2,7 @@ export default function ModalCloseButton({ closeModal }: unknown) {
 	return (
 		<button
 			onClick={() => closeModal(false)}
-			className='bg-gray dark:bg-gray-7 sm:right-7.5 sm:top-7.5 absolute right-2 top-2 flex h-10 w-10 items-center justify-center rounded-full duration-150 ease-in hover:text-black dark:hover:text-white'
+			className='bg-gray sm:right-7.5 sm:top-7.5 absolute right-2 top-2 flex h-10 w-10 items-center justify-center rounded-full duration-150 ease-in hover:text-black dark:hover:text-white'
 			aria-label="Close modal"
 		>
 			<svg

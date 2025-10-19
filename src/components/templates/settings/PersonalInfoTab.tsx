@@ -153,7 +153,7 @@ export function PersonalInfoTab() {
 						</Button>
 					</div>
 						</div>
-						<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
+						<div className="h-px w-full bg-gray-200" />
 					</div>
 
 					{/* Form */}
@@ -162,7 +162,7 @@ export function PersonalInfoTab() {
 						<div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-start lg:gap-y-4 lg:gap-x-8">
 							<div className="flex flex-col lg:min-w-[200px] lg:max-w-[280px] lg:flex-1">
 								<div className="flex items-center gap-0.5">
-									<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Name</p>
+									<p className="text-sm font-semibold text-gray-700">Name</p>
 									<span className="text-sm font-semibold text-brand-600">*</span>
 								</div>
 							</div>
@@ -182,13 +182,13 @@ export function PersonalInfoTab() {
 							</div>
 						</div>
 
-						<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
+						<div className="h-px w-full bg-gray-200" />
 
 						{/* Email Address */}
 						<div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-start lg:gap-y-4 lg:gap-x-8">
 							<div className="flex flex-col lg:min-w-[200px] lg:max-w-[280px] lg:flex-1">
 								<div className="flex items-center gap-0.5">
-									<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Email address</p>
+									<p className="text-sm font-semibold text-gray-700">Email address</p>
 									<span className="text-sm font-semibold text-brand-600">*</span>
 								</div>
 							</div>
@@ -203,16 +203,16 @@ export function PersonalInfoTab() {
 							</div>
 						</div>
 
-						<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
+						<div className="h-px w-full bg-gray-200" />
 
 						{/* Your Photo */}
 						<div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-start lg:gap-y-4 lg:gap-x-8">
 							<div className="flex flex-col lg:min-w-[200px] lg:max-w-[280px] lg:flex-1">
 								<div className="flex items-center gap-0.5">
-									<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Your photo</p>
+									<p className="text-sm font-semibold text-gray-700">Your photo</p>
 									<span className="text-sm font-semibold text-brand-600">*</span>
 									<button type="button" className="ml-0.5 flex size-4 items-center justify-center" aria-label="Help information">
-										<HelpCircle className="size-4 text-gray-400 dark:text-gray-500" />
+										<HelpCircle className="size-4 text-gray-400" />
 									</button>
 								</div>
 								<p className="text-sm text-tertiary">
@@ -230,19 +230,19 @@ export function PersonalInfoTab() {
 									hint="SVG, PNG, JPG or GIF (max. 800x400px)"
 									accept="image/*"
 									onDropFiles={handleFileUpload}
-									className="w-full border-2 border-dashed border-brand-600 bg-white hover:bg-brand-50 dark:bg-gray-900 dark:hover:bg-gray-800"
+									className="w-full border-2 border-dashed border-brand-600 bg-white hover:bg-brand-50"
 									aria-label="Upload profile photo"
 								/>
 							</div>
 							</div>
 						</div>
 
-						<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
+						<div className="h-px w-full bg-gray-200" />
 
 						{/* Role */}
 						<div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-start lg:gap-y-4 lg:gap-x-8">
 							<div className="flex flex-col lg:min-w-[200px] lg:max-w-[280px] lg:flex-1">
-								<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Role</p>
+								<p className="text-sm font-semibold text-gray-700">Role</p>
 							</div>
 							<div className="flex w-full lg:min-w-[480px] lg:max-w-[512px] lg:flex-1">
 								<Input
@@ -254,12 +254,12 @@ export function PersonalInfoTab() {
 							</div>
 						</div>
 
-						<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
+						<div className="h-px w-full bg-gray-200" />
 
 						{/* Country */}
 						<div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-start lg:gap-y-4 lg:gap-x-8">
 							<div className="flex flex-col lg:min-w-[200px] lg:max-w-[280px] lg:flex-1">
-								<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Country</p>
+								<p className="text-sm font-semibold text-gray-700">Country</p>
 							</div>
 							<div className="flex w-full lg:min-w-[480px] lg:max-w-[512px] lg:flex-1">
 								<Select
@@ -274,15 +274,15 @@ export function PersonalInfoTab() {
 							</div>
 						</div>
 
-						<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
+						<div className="h-px w-full bg-gray-200" />
 
 						{/* Timezone */}
 						<div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-start lg:gap-y-4 lg:gap-x-8">
 							<div className="flex flex-col lg:min-w-[200px] lg:max-w-[280px] lg:flex-1">
 								<div className="flex items-center gap-0.5">
-									<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Timezone</p>
+									<p className="text-sm font-semibold text-gray-700">Timezone</p>
 									<button type="button" className="ml-0.5 flex size-4 items-center justify-center" aria-label="Help information">
-										<HelpCircle className="size-4 text-gray-400 dark:text-gray-500" />
+										<HelpCircle className="size-4 text-gray-400" />
 									</button>
 								</div>
 							</div>
@@ -300,13 +300,13 @@ export function PersonalInfoTab() {
 							</div>
 						</div>
 
-						<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
+						<div className="h-px w-full bg-gray-200" />
 
 						{/* Bio */}
 						<div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-start lg:gap-y-4 lg:gap-x-8">
 							<div className="flex flex-col lg:min-w-[200px] lg:max-w-[280px] lg:flex-1">
 								<div className="flex items-center gap-0.5">
-									<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Bio</p>
+									<p className="text-sm font-semibold text-gray-700">Bio</p>
 									<span className="text-sm font-semibold text-brand-600">*</span>
 								</div>
 								<p className="text-sm text-tertiary">
@@ -323,12 +323,12 @@ export function PersonalInfoTab() {
 							</div>
 						</div>
 
-						<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
+						<div className="h-px w-full bg-gray-200" />
 
 						{/* Knowledge Uploads */}
 						<div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-start lg:gap-y-4 lg:gap-x-8">
 							<div className="flex flex-col lg:min-w-[200px] lg:max-w-[280px] lg:flex-1">
-								<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Knowledge uploads</p>
+								<p className="text-sm font-semibold text-gray-700">Knowledge uploads</p>
 								<p className="text-sm text-tertiary">
 									Add files to the knowledge base.
 								</p>
@@ -350,11 +350,11 @@ export function PersonalInfoTab() {
 											return (
 												<div
 													key={file.id}
-													className="flex items-start gap-3 rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900"
+													className="flex items-start gap-3 rounded-xl border border-gray-200 bg-white p-4"
 												>
 													{/* File Icon */}
 													<div className="relative size-10" aria-hidden="true">
-														<div className="flex size-8 items-center justify-center rounded-md border border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-800">
+														<div className="flex size-8 items-center justify-center rounded-md border border-gray-300 bg-white">
 															<div className={`absolute bottom-0 left-0 flex h-4 items-center justify-center rounded-sm px-1 text-[10px] font-bold text-white ${fileIcon.bg}`}>
 																{fileIcon.text}
 															</div>
@@ -364,14 +364,14 @@ export function PersonalInfoTab() {
 													{/* File Content */}
 													<div className="flex flex-1 flex-col gap-1">
 														<div className="flex flex-col gap-0.5">
-															<p className="truncate text-sm font-medium text-gray-700 dark:text-gray-300">
+															<p className="truncate text-sm font-medium text-gray-700">
 																{file.name}
 															</p>
 															<div className="flex items-center gap-2 text-sm text-tertiary">
 																<span>
 																	{formatFileSize(file.size * (file.progress / 100))} of {formatFileSize(file.size)}
 																</span>
-																<span className="text-gray-300 dark:text-gray-700">|</span>
+																<span className="text-gray-300">|</span>
 																<div className="flex items-center gap-1">
 																	{file.status === "complete" ? (
 																		<>
@@ -395,7 +395,7 @@ export function PersonalInfoTab() {
 													{/* Progress Bar */}
 													<div className="flex items-center gap-3">
 														<div 
-															className="h-2 flex-1 rounded-full bg-gray-200 dark:bg-gray-800"
+															className="h-2 flex-1 rounded-full bg-gray-200"
 															role="progressbar"
 															aria-valuenow={file.progress}
 															aria-valuemin={0}
@@ -407,7 +407,7 @@ export function PersonalInfoTab() {
 																style={{ width: `${file.progress}%` }}
 															/>
 														</div>
-														<span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+														<span className="text-sm font-medium text-gray-700">
 															{file.progress}%
 														</span>
 													</div>
@@ -417,7 +417,7 @@ export function PersonalInfoTab() {
 												<button
 													type="button"
 													onClick={() => handleRemoveFile(file.id)}
-													className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800"
+													className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
 													aria-label={`Remove ${file.name}`}
 												>
 													<svg className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -436,7 +436,7 @@ export function PersonalInfoTab() {
 
 		{/* Section Footer */}
 		<div className="flex flex-col items-center gap-5">
-			<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
+			<div className="h-px w-full bg-gray-200" />
 			<div className="flex w-full items-center justify-end gap-5 px-8">
 				<div className="flex w-full items-center justify-end gap-3 lg:w-auto">
 					<Button size="md" color="secondary" className="flex-1 lg:flex-initial" aria-label="Cancel changes">
