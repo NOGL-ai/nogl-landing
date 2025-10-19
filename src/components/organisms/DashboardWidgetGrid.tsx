@@ -49,7 +49,7 @@ export const DashboardSection: React.FC<DashboardSectionProps> = ({
 	return (
 		<div className={`space-y-4 ${className}`}>
 			{title && (
-				<h2 className='text-lg font-semibold text-gray-900 dark:text-white'>
+				<h2 className='text-lg font-semibold text-primary'>
 					{title}
 				</h2>
 			)}

@@ -16,20 +16,21 @@ import TanStackTable from '@/components/application/table/tanstack-table';
 import { getCompetitors } from '@/lib/services/competitorClient';
 import { CompetitorDTO } from '@/types/product';
 import { useScreenContext } from '@/context/ScreenContext';
+import TrackCompetitorModal from '@/components/molecules/TrackCompetitorModal';
 
 // Hardcoded data removed - now using API
 
 const badgeClasses: Record<string, string> = {
-  Active: 'border-[#ABEFC6] bg-[#ECFDF3] text-[#067647]',
-  Inactive: 'border-[#E9EAEB] bg-[#FAFAFA] text-[#414651]',
-  Jewelry: 'border-[#F9DBAF] bg-[#FEF6EE] text-[#B93815]',
-  Watches: 'border-[#B2DDFF] bg-[#EFF8FF] text-[#175CD3]',
-  Fashion: 'border-[#E9D7FE] bg-[#F9F5FF] text-[#6941C6]',
-  Design: 'border-[#C7D7FE] bg-[#EEF4FF] text-[#3538CD]',
-  Luxury: 'border-[#FCCEEE] bg-[#FDF2FA] text-[#C11574]',
-  Accessories: 'border-[#D5D9EB] bg-[#F8F9FC] text-[#363F72]',
-  Silver: 'border-[#D1D5DB] bg-[#F9FAFB] text-[#374151]',
-  Minimalist: 'border-[#E5E7EB] bg-[#F3F4F6] text-[#6B7280]',
+  Active: 'border-[#ABEFC6] dark:border-[#067647] bg-[#ECFDF3] dark:bg-[#0a472a] text-[#067647] dark:text-[#ABEFC6]',
+  Inactive: 'border-[#E9EAEB] dark:border-[#414651] bg-[#FAFAFA] dark:bg-[#1a1d24] text-[#414651] dark:text-[#D5D7DA]',
+  Jewelry: 'border-[#F9DBAF] dark:border-[#B93815] bg-[#FEF6EE] dark:bg-[#4a1d0a] text-[#B93815] dark:text-[#F9DBAF]',
+  Watches: 'border-[#B2DDFF] dark:border-[#175CD3] bg-[#EFF8FF] dark:bg-[#0a2540] text-[#175CD3] dark:text-[#B2DDFF]',
+  Fashion: 'border-[#E9D7FE] dark:border-[#6941C6] bg-[#F9F5FF] dark:bg-[#2a1a4a] text-[#6941C6] dark:text-[#E9D7FE]',
+  Design: 'border-[#C7D7FE] dark:border-[#3538CD] bg-[#EEF4FF] dark:bg-[#1a1c4a] text-[#3538CD] dark:text-[#C7D7FE]',
+  Luxury: 'border-[#FCCEEE] dark:border-[#C11574] bg-[#FDF2FA] dark:bg-[#4a0a2e] text-[#C11574] dark:text-[#FCCEEE]',
+  Accessories: 'border-[#D5D9EB] dark:border-[#363F72] bg-[#F8F9FC] dark:bg-[#1a1d2e] text-[#363F72] dark:text-[#D5D9EB]',
+  Silver: 'border-[#D1D5DB] dark:border-[#374151] bg-[#F9FAFB] dark:bg-[#1a1d24] text-[#374151] dark:text-[#D1D5DB]',
+  Minimalist: 'border-[#E5E7EB] dark:border-[#6B7280] bg-[#F3F4F6] dark:bg-[#2a2d34] text-[#6B7280] dark:text-[#E5E7EB]',
 };
 
 const iconButtonClasses = 'rounded-lg p-2.5 transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40';
@@ -265,8 +266,8 @@ const PricePositionCell = ({
           style={{ left: `${progress}%` }}
           aria-hidden="true"
         >
-          <div className={`h-4 w-4 rounded-full border-2 border-white shadow-sm ${isWinning ? 'bg-green-500 dark:bg-green-400' : isEqual ? 'bg-gray-400 dark:bg-gray-500' : 'bg-red-500 dark:bg-red-400'}`}>
-            <div className="h-full w-full rounded-full bg-white/30" />
+          <div className={`h-4 w-4 rounded-full border-2 border-white dark:border-gray-800 shadow-sm ${isWinning ? 'bg-green-500 dark:bg-green-400' : isEqual ? 'bg-gray-400 dark:bg-gray-500' : 'bg-red-500 dark:bg-red-400'}`}>
+            <div className="h-full w-full rounded-full bg-white/30 dark:bg-gray-800/30" />
           </div>
         </div>
       </div>
@@ -368,6 +369,9 @@ export default function CompetitorPage() {
 
   // Track if we've already sent competitors to screen context to prevent infinite loops
   const screenContextSentRef = React.useRef<string | null>(null);
+
+  // Track Competitor Modal state
+  const [showTrackModal, setShowTrackModal] = React.useState(false);
 
   // Fetch competitors from API
   React.useEffect(() => {
@@ -719,7 +723,10 @@ export default function CompetitorPage() {
                 <Upload className="h-4 md:h-5 w-4 md:w-5 text-quaternary" />
                 <span className="hidden md:inline">Import</span>
               </button>
-              <button className="flex items-center gap-1 rounded-lg border-2 border-white/10 bg-primary px-3 md:px-3.5 py-2 md:py-2.5 text-xs md:text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90">
+              <button
+                onClick={() => setShowTrackModal(true)}
+                className="flex items-center gap-1 rounded-lg border-2 border-purple-700 dark:border-white/10 bg-primary px-3 md:px-3.5 py-2 md:py-2.5 text-xs md:text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
+              >
                 <Plus className="h-4 md:h-5 w-4 md:w-5 text-primary-foreground/80" />
                 <span className="hidden sm:inline">Track Competitor</span>
               </button>
@@ -923,6 +930,12 @@ export default function CompetitorPage() {
         </div>
       </section>
       </main>
+
+      {/* Track Competitor Modal */}
+      <TrackCompetitorModal
+        open={showTrackModal}
+        onOpenChange={setShowTrackModal}
+      />
     </>
   );
 }

@@ -36,7 +36,7 @@ const StackedBarChart: React.FC<StackedBarChartProps> = ({
 
 	return (
 		<div
-			className={`rounded-lg border border-[#E2E4E9] bg-white p-4 dark:border-gray-700 dark:bg-gray-800 ${className}`}
+			className={`rounded-lg border border-[#E2E4E9] bg-white p-4 dark:border-border dark:bg-secondary_bg ${className}`}
 		>
 			{/* Header */}
 			<div className='mb-5 flex items-center justify-between'>
@@ -63,7 +63,7 @@ const StackedBarChart: React.FC<StackedBarChartProps> = ({
 					{yAxisLabels.map((label, index) => (
 						<span
 							key={index}
-							className='text-xs leading-4 text-[#525866] dark:text-gray-400'
+							className='text-xs leading-4 text-[#525866] dark:text-tertiary'
 							style={{
 								fontFamily: "Inter",
 								fontSize: "12px",
@@ -135,7 +135,7 @@ const StackedBarChart: React.FC<StackedBarChartProps> = ({
 
 										{/* Month label */}
 										<span
-											className='text-center text-xs leading-4 text-[#525866] dark:text-gray-400'
+											className='text-center text-xs leading-4 text-[#525866] dark:text-tertiary'
 											style={{
 												fontFamily: "Inter",
 												fontSize: "12px",
@@ -165,7 +165,7 @@ const StackedBarChart: React.FC<StackedBarChartProps> = ({
 								style={{ backgroundColor: legend.color }}
 							/>
 							<span
-								className='text-sm leading-5 text-[#0F1324] opacity-60 dark:text-gray-300'
+								className='text-sm leading-5 text-[#0F1324] opacity-60 dark:text-tertiary'
 								style={{
 									fontFamily: "Inter",
 									fontSize: "14px",

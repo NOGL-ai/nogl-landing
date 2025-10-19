@@ -85,7 +85,7 @@ const DataTable: React.FC<DataTableProps> = ({
 							{value.name}
 						</div>
 						<div
-							className='max-w-full truncate text-xs font-medium leading-5 text-[#54565B] dark:text-gray-400'
+							className='max-w-full truncate text-xs font-medium leading-5 text-[#54565B] dark:text-tertiary'
 							style={{
 								fontFamily: "Inter",
 								fontSize: "12px",
@@ -294,7 +294,7 @@ const DataTable: React.FC<DataTableProps> = ({
 
 	return (
 		<div
-			className={`rounded-lg border border-[#E2E4E9] bg-white p-4 dark:border-gray-700 dark:bg-gray-800 ${className}`}
+			className={`rounded-lg border border-[#E2E4E9] bg-white p-4 dark:border-border dark:bg-secondary_bg ${className}`}
 		>
 			{/* Title */}
 			<div className='mb-5'>
@@ -313,7 +313,7 @@ const DataTable: React.FC<DataTableProps> = ({
 
 			{/* Table */}
 			<div
-				className='overflow-hidden rounded-[10px] border border-[#EAEDF2] bg-white dark:border-gray-600 dark:bg-gray-800'
+				className='overflow-hidden rounded-[10px] border border-[#EAEDF2] bg-white dark:border-border dark:bg-secondary_bg'
 				style={{ height: maxHeight }}
 			>
 				<div className='flex h-full overflow-hidden'>
@@ -330,7 +330,7 @@ const DataTable: React.FC<DataTableProps> = ({
 								}}
 							>
 								{/* Header */}
-								<div className='flex h-10 flex-shrink-0 items-center justify-between gap-3 border-b border-[#E9EAEC] bg-[#F7F7F8] px-3 py-2.5 dark:border-gray-600 dark:bg-gray-700'>
+								<div className='flex h-10 flex-shrink-0 items-center justify-between gap-3 border-b border-[#E9EAEC] bg-[#F7F7F8] px-3 py-2.5 dark:border-border dark:bg-gray-700'>
 									<div className='flex items-center gap-0.5'>
 										<span
 											className='text-sm font-normal leading-5 text-[#0F1324] opacity-60 dark:text-gray-200'
@@ -352,7 +352,7 @@ const DataTable: React.FC<DataTableProps> = ({
 									{data.map((row, rowIndex) => (
 										<div
 											key={rowIndex}
-											className='flex items-center border-b border-[#E9EAEC] bg-white px-3 py-4 last:border-b-0 dark:border-gray-600 dark:bg-gray-800'
+											className='flex items-center border-b border-[#E9EAEC] bg-white px-3 py-4 last:border-b-0 dark:border-border dark:bg-secondary_bg'
 											style={{ minHeight: "60px" }}
 										>
 											<div className='w-full'>

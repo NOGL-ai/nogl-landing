@@ -82,7 +82,7 @@ export default function ForgotPassword() {
 						height='50px'
 						handleChange={handleChange}
 						value={email}
-						icon={<FaEnvelope className='text-gray-400' aria-hidden='true' />}
+						icon={<FaEnvelope className='text-tertiary' aria-hidden='true' />}
 						ref={emailInputRef}
 					/>
 

@@ -25,7 +25,7 @@ export function DataTableToolbar<TData>({
 				<div className="relative">
 					<Icon 
 						name="Search" 
-						className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400" 
+						className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-tertiary" 
 						aria-hidden={true}
 					/>
 					<Input

@@ -80,7 +80,7 @@ export function DataTableGlobalSearch<TData>({
 				className={`absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform transition-colors ${
 					isFiltered
 						? "text-blue-500 dark:text-blue-400"
-						: "text-gray-400 dark:text-gray-500"
+						: "text-tertiary dark:text-tertiary"
 				}`}
 				aria-hidden={true}
 			/>
@@ -88,7 +88,7 @@ export function DataTableGlobalSearch<TData>({
 				placeholder={placeholder}
 				value={globalFilter}
 				onChange={(e) => handleSearchChange(e.target.value)}
-				className={`w-full border-gray-300 bg-white pl-10 pr-10 text-gray-900 placeholder-gray-500 transition-colors dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-400 ${
+				className={`w-full border-border bg-white pl-10 pr-10 text-primary placeholder-gray-500 transition-colors dark:border-border dark:bg-secondary_bg dark:text-gray-100 dark:placeholder-gray-400 ${
 					isFiltered
 						? "border-blue-300 focus:border-blue-500 dark:border-blue-500 dark:focus:border-blue-400"
 						: ""
@@ -97,7 +97,7 @@ export function DataTableGlobalSearch<TData>({
 			/>
 			{isSearching && (
 				<div className="absolute right-3 top-1/2 -translate-y-1/2">
-					<div className="h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-blue-500" />
+					<div className="h-4 w-4 animate-spin rounded-full border-2 border-border border-t-blue-500" />
 				</div>
 			)}
 			{isFiltered && !isSearching && (
@@ -105,7 +105,7 @@ export function DataTableGlobalSearch<TData>({
 					variant="ghost"
 					size="sm"
 					onClick={clearSearch}
-					className="absolute right-1 top-1/2 h-6 w-6 -translate-y-1/2 p-0 hover:bg-gray-100 dark:hover:bg-gray-700"
+					className="absolute right-1 top-1/2 h-6 w-6 -translate-y-1/2 p-0 hover:bg-secondary_bg dark:hover:bg-gray-700"
 					aria-label="Clear search"
 				>
 					<Icon name="X" className="h-3 w-3" aria-hidden={true} />

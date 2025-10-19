@@ -38,43 +38,48 @@ export default function DeleteModal(props: unknown) {
 					<div
 						ref={divRef}
 						className='shadow-7 relative h-auto max-h-[calc(100vh-60px)] w-full max-w-[600px] scale-100 transform overflow-y-auto rounded-[25px] bg-white transition-all dark:bg-black'
+						role="dialog"
+						aria-modal="true"
+						aria-labelledby="delete-modal-title"
 					>
 						<ModalCloseButton closeModal={setShowDeleteModal} />
 
-						<div className='gap-5.5 border-stroke dark:border-stroke-dark sm:p-7.5 flex flex-wrap border-b p-4 xl:p-10'>
-							<div className='h-16.5 w-16.5 bg-red-light-6 flex items-center justify-center rounded-lg'>
-								<svg
-									width='38'
-									height='39'
-									viewBox='0 0 38 39'
-									fill='none'
-									xmlns='http://www.w3.org/2000/svg'
-								>
-									<path
-										fillRule='evenodd'
-										clipRule='evenodd'
-										d='M12.4182 6.52003C15.6303 4.6178 17.2364 3.66669 19 3.66669C20.7636 3.66669 22.3697 4.6178 25.5818 6.52003L26.6682 7.16341C29.8803 9.06564 31.4864 10.0168 32.3682 11.5834C33.25 13.15 33.25 15.0522 33.25 18.8566V20.1434C33.25 23.9479 33.25 25.8501 32.3682 27.4167C31.4864 28.9833 29.8803 29.9344 26.6682 31.8366L25.5818 32.48C22.3697 34.3822 20.7636 35.3334 19 35.3334C17.2364 35.3334 15.6303 34.3822 12.4182 32.48L11.3318 31.8366C8.11965 29.9344 6.51359 28.9833 5.63179 27.4167C4.75 25.8501 4.75 23.9479 4.75 20.1434V18.8566C4.75 15.0522 4.75 13.15 5.63179 11.5834C6.51359 10.0168 8.11965 9.06564 11.3318 7.16341L12.4182 6.52003ZM20.5833 25.8334C20.5833 26.7078 19.8745 27.4167 19 27.4167C18.1255 27.4167 17.4167 26.7078 17.4167 25.8334C17.4167 24.9589 18.1255 24.25 19 24.25C19.8745 24.25 20.5833 24.9589 20.5833 25.8334ZM19 10.3959C19.6558 10.3959 20.1875 10.9275 20.1875 11.5834V21.0834C20.1875 21.7392 19.6558 22.2709 19 22.2709C18.3442 22.2709 17.8125 21.7392 17.8125 21.0834V11.5834C17.8125 10.9275 18.3442 10.3959 19 10.3959Z'
-										fill='#E10E0E'
-									/>
-								</svg>
-							</div>
+					<div className='gap-5.5 border-stroke dark:border-stroke-dark sm:p-7.5 flex flex-wrap border-b p-4 xl:p-10'>
+						<div className='h-16.5 w-16.5 bg-red-light-6 flex items-center justify-center rounded-lg' aria-hidden="true">
+							<svg
+								width='38'
+								height='39'
+								viewBox='0 0 38 39'
+								fill='none'
+								xmlns='http://www.w3.org/2000/svg'
+							>
+								<path
+									fillRule='evenodd'
+									clipRule='evenodd'
+									d='M12.4182 6.52003C15.6303 4.6178 17.2364 3.66669 19 3.66669C20.7636 3.66669 22.3697 4.6178 25.5818 6.52003L26.6682 7.16341C29.8803 9.06564 31.4864 10.0168 32.3682 11.5834C33.25 13.15 33.25 15.0522 33.25 18.8566V20.1434C33.25 23.9479 33.25 25.8501 32.3682 27.4167C31.4864 28.9833 29.8803 29.9344 26.6682 31.8366L25.5818 32.48C22.3697 34.3822 20.7636 35.3334 19 35.3334C17.2364 35.3334 15.6303 34.3822 12.4182 32.48L11.3318 31.8366C8.11965 29.9344 6.51359 28.9833 5.63179 27.4167C4.75 25.8501 4.75 23.9479 4.75 20.1434V18.8566C4.75 15.0522 4.75 13.15 5.63179 11.5834C6.51359 10.0168 8.11965 9.06564 11.3318 7.16341L12.4182 6.52003ZM20.5833 25.8334C20.5833 26.7078 19.8745 27.4167 19 27.4167C18.1255 27.4167 17.4167 26.7078 17.4167 25.8334C17.4167 24.9589 18.1255 24.25 19 24.25C19.8745 24.25 20.5833 24.9589 20.5833 25.8334ZM19 10.3959C19.6558 10.3959 20.1875 10.9275 20.1875 11.5834V21.0834C20.1875 21.7392 19.6558 22.2709 19 22.2709C18.3442 22.2709 17.8125 21.7392 17.8125 21.0834V11.5834C17.8125 10.9275 18.3442 10.3959 19 10.3959Z'
+									fill='#E10E0E'
+								/>
+							</svg>
+						</div>
 
-							<div className='text-left'>
-								<h2 className='sm:text-heading-6 mb-2 text-xl font-bold text-black dark:text-white'>
-									{/* Delete Template */}
-									{deleteText}
-								</h2>
+						<div className='text-left'>
+							<h2 id="delete-modal-title" className='sm:text-heading-6 mb-2 text-xl font-bold text-black dark:text-white'>
+								{/* Delete Template */}
+								{deleteText}
+							</h2>
 								<p className='text-custom-sm font-medium'>
 									Are you sure about that? this can not be undone
 								</p>
 							</div>
 						</div>
 
-						<div className='sm:p-4.5 flex items-center justify-end gap-3 p-4'>
-							<button
-								onClick={handleDelete}
-								className='bg-input border-stroke dark:border-stroke-dark inline-flex items-center rounded-lg border px-7 py-2 font-medium duration-200 ease-out hover:bg-slate-100 dark:bg-white/40 dark:text-white dark:hover:bg-white/35'
-							>
+					<div className='sm:p-4.5 flex items-center justify-end gap-3 p-4'>
+						<button
+							onClick={handleDelete}
+							className='bg-input border-stroke dark:border-stroke-dark inline-flex items-center rounded-lg border px-7 py-2 font-medium duration-200 ease-out hover:bg-slate-100 dark:bg-white/40 dark:text-white dark:hover:bg-white/35'
+							aria-label={`Delete ${deleteText}`}
+							disabled={loading}
+						>
 								<svg
 									width='16'
 									height='17'
@@ -112,10 +117,11 @@ export default function DeleteModal(props: unknown) {
 									</>
 								)}
 							</button>
-							<button
-								onClick={() => setShowDeleteModal(false)}
-								className=' dark:text-dark inline-flex items-center rounded-lg bg-black px-7 py-2 font-medium text-white duration-200 ease-out hover:bg-slate-700 dark:bg-white dark:hover:bg-white/90'
-							>
+						<button
+							onClick={() => setShowDeleteModal(false)}
+							className=' dark:text-dark inline-flex items-center rounded-lg bg-black px-7 py-2 font-medium text-white duration-200 ease-out hover:bg-slate-700 dark:bg-white dark:hover:bg-white/90'
+							aria-label="Cancel deletion"
+						>
 								<svg
 									width='20'
 									height='21'

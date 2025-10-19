@@ -16,7 +16,7 @@ const DatePickerCustomHeaderTwoMonth = ({
 			<button
 				aria-label='Previous Month'
 				className={
-					"absolute left-0 flex items-center justify-center rounded-full p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+					"absolute left-0 flex items-center justify-center rounded-full p-2 hover:bg-secondary_bg dark:hover:bg-gray-700"
 				}
 				// Show left arrow always on mobile, or follow customHeaderCount logic on desktop
 				style={
@@ -37,7 +37,7 @@ const DatePickerCustomHeaderTwoMonth = ({
 			</span>
 			<button
 				aria-label='Next Month'
-				className='absolute right-0 flex items-center justify-center rounded-full p-2 hover:bg-gray-100 dark:hover:bg-gray-700'
+				className='absolute right-0 flex items-center justify-center rounded-full p-2 hover:bg-secondary_bg dark:hover:bg-gray-700'
 				// Show right arrow always on mobile, or follow customHeaderCount logic on desktop
 				style={
 					!isMobileView && customHeaderCount === 0

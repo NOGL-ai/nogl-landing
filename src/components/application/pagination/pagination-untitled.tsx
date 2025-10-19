@@ -73,7 +73,7 @@ export function UntitledPagination({
 	return (
 		<div
 			className={cx(
-				"flex items-center justify-center gap-3 border-t border-gray-200 px-6 py-3 dark:border-gray-700",
+				"flex items-center justify-center gap-3 border-t border-border px-6 py-3",
 				className
 			)}
 		>
@@ -81,16 +81,15 @@ export function UntitledPagination({
 			<div className="flex-1">
 				<Button
 					size="sm"
-					hierarchy="secondary"
+					color="secondary"
 					isDisabled={isPrevDisabled}
 					onClick={() => !isPrevDisabled && onPageChange(currentPage - 1)}
+					iconLeading={ArrowLeft}
 					className={cx(
-						"gap-1",
 						isPrevDisabled && "opacity-50 cursor-not-allowed"
 					)}
 				>
-					<ArrowLeft className="h-5 w-5" />
-					<span>Previous</span>
+					Previous
 				</Button>
 			</div>
 
@@ -101,7 +100,7 @@ export function UntitledPagination({
 						return (
 							<span
 								key={`ellipsis-${index}`}
-								className="flex h-10 w-10 items-center justify-center text-sm text-gray-700 dark:text-gray-300"
+								className="flex h-10 w-10 items-center justify-center text-sm text-secondary"
 								aria-hidden="true"
 							>
 								...
@@ -134,16 +133,15 @@ export function UntitledPagination({
 			<div className="flex flex-1 justify-end">
 				<Button
 					size="sm"
-					hierarchy="secondary"
+					color="secondary"
 					isDisabled={isNextDisabled}
 					onClick={() => !isNextDisabled && onPageChange(currentPage + 1)}
+					iconTrailing={ArrowRight}
 					className={cx(
-						"gap-1",
 						isNextDisabled && "opacity-50 cursor-not-allowed"
 					)}
 				>
-					<span>Next</span>
-					<ArrowRight className="h-5 w-5" />
+					Next
 				</Button>
 			</div>
 		</div>

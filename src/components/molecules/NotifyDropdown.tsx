@@ -45,7 +45,7 @@ const NotifyDropdown: FC<Props> = ({ className = "" }) => {
 						<Popover.Button
 							className={` ${
 								open ? "" : "text-opacity-90"
-							} group relative inline-flex h-10 w-10 items-center justify-center self-center rounded-full text-base font-medium hover:bg-gray-100 hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 sm:h-12 sm:w-12 dark:hover:bg-neutral-800`}
+							} group relative inline-flex h-10 w-10 items-center justify-center self-center rounded-full text-base font-medium hover:bg-secondary_bg hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 sm:h-12 sm:w-12 dark:hover:bg-neutral-800`}
 						>
 							<span className='absolute right-2 top-2 h-2 w-2 rounded-full bg-blue-500'></span>
 							<BellIcon className='h-6 w-6' />
@@ -67,20 +67,20 @@ const NotifyDropdown: FC<Props> = ({ className = "" }) => {
 											<a
 												key={index}
 												href={item.href}
-												className='relative -m-3 flex rounded-lg p-2 pr-8 transition duration-150 ease-in-out hover:bg-gray-100 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 dark:hover:bg-gray-700'
+												className='relative -m-3 flex rounded-lg p-2 pr-8 transition duration-150 ease-in-out hover:bg-secondary_bg focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 dark:hover:bg-gray-700'
 											>
 												<Avatar
 													imgUrl={item.avatar}
 													sizeClass='w-8 h-8 sm:w-12 sm:h-12'
 												/>
 												<div className='ml-3 space-y-1 sm:ml-4'>
-													<p className='text-sm font-medium text-gray-900 dark:text-gray-200'>
+													<p className='text-sm font-medium text-primary dark:text-gray-200'>
 														{item.name}
 													</p>
-													<p className='text-xs text-gray-500 sm:text-sm dark:text-gray-400'>
+													<p className='text-xs text-tertiary sm:text-sm dark:text-tertiary'>
 														{item.description}
 													</p>
-													<p className='text-xs text-gray-400 dark:text-gray-400'>
+													<p className='text-xs text-tertiary dark:text-tertiary'>
 														{item.time}
 													</p>
 												</div>

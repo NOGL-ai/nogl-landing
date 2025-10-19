@@ -123,7 +123,7 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
                 <div className={`border rounded-md px-2 py-1 flex items-center gap-1 ${
                   currentTheme === 'dark' 
                     ? "bg-[#181d27] border-[#414651]" 
-                    : "bg-gray-100 border-gray-200"
+                    : "bg-secondary_bg border-border"
                 }`}>
                   <div className="w-2 h-2 bg-[#17b26a] rounded-full"></div>
                   <span className={`text-xs font-medium ${
@@ -160,7 +160,7 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
                 <div className={`absolute -top-1 -right-1 w-3 h-3 bg-[#17b26a] rounded-full border ${
                   currentTheme === 'dark' 
                     ? "border-[#0a0d12]" 
-                    : "border-gray-50"
+                    : "border-secondary_bg"
                 }`}></div>
               )}
             </button>

@@ -55,7 +55,7 @@ const DashboardPageHeader: React.FC<DashboardPageHeaderProps> = ({
 		<div
 			className={`flex min-h-14 w-full flex-col items-start justify-center gap-6 ${className}`}
 		>
-			<div className='relative flex flex-col gap-3 self-stretch rounded-xl border border-[#F2F2F2] bg-white p-3 sm:flex-row sm:items-center dark:border-gray-700 dark:bg-gray-800'>
+			<div className='relative flex flex-col gap-3 self-stretch rounded-xl border border-[#F2F2F2] bg-white p-3 sm:flex-row sm:items-center dark:border-border dark:bg-secondary_bg'>
 				<div className='relative flex flex-1 items-start gap-1.5'>
 					<div className='relative flex flex-1 flex-col items-start gap-1'>
 						<h1 className='font-inter relative self-stretch text-xl font-semibold leading-7 tracking-[-0.336px] text-[#14151A] sm:text-2xl sm:leading-8 dark:text-white'>
@@ -77,10 +77,10 @@ const DashboardPageHeader: React.FC<DashboardPageHeaderProps> = ({
 								theme === "dark" ? (
 									<SunIcon className="h-4 w-4 text-yellow-500" />
 								) : (
-									<MoonIcon className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+									<MoonIcon className="h-4 w-4 text-tertiary dark:text-tertiary" />
 								)
 							) : (
-								<MoonIcon className="h-4 w-4 text-gray-600" />
+								<MoonIcon className="h-4 w-4 text-tertiary" />
 							)}
 						</button>
 					</div>
@@ -114,7 +114,7 @@ const DashboardPageHeader: React.FC<DashboardPageHeaderProps> = ({
 						{/* Edit Widgets Button */}
 						<button
 							onClick={onEditWidgets}
-							className='flex h-8 w-auto items-center justify-center gap-0.5 rounded-[5px] border border-[#E2E4E9] bg-white p-1.5 px-2.5 shadow-[0_1px_2px_0_rgba(20,21,26,0.05)] transition-colors hover:bg-gray-50 sm:w-[131px] dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600'
+							className='flex h-8 w-auto items-center justify-center gap-0.5 rounded-[5px] border border-[#E2E4E9] bg-white p-1.5 px-2.5 shadow-[0_1px_2px_0_rgba(20,21,26,0.05)] transition-colors hover:bg-secondary_bg sm:w-[131px] dark:border-border dark:bg-gray-700 dark:hover:bg-gray-600'
 						>
 							<div className='flex h-4 w-4 flex-shrink-0 items-center justify-center p-[1.333px]'>
 								<CustomizeIcon />

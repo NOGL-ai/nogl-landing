@@ -55,7 +55,7 @@ export default function CurrencyDropdown() {
 						<Popover.Button
 							className={`
                 ${open ? "" : "text-opacity-80"}
-                group inline-flex items-center rounded-full border-neutral-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:border-neutral-400 hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 dark:border-neutral-700 dark:text-neutral-300`}
+                group inline-flex items-center rounded-full border-neutral-300 px-3 py-1.5 text-sm font-medium text-secondary hover:border-neutral-400 hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 dark:border-neutral-700 dark:text-neutral-300`}
 						>
 							<BanknotesIcon className='h-5 w-5 opacity-80' />
 							<span className='ml-2 select-none'>Currency</span>
@@ -82,9 +82,9 @@ export default function CurrencyDropdown() {
 												key={index}
 												href={item.href}
 												onClick={() => close()}
-												className={`-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-gray-100 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 dark:hover:bg-neutral-700 ${
+												className={`-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-secondary_bg focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 dark:hover:bg-neutral-700 ${
 													item.active
-														? "bg-gray-100 dark:bg-neutral-700"
+														? "bg-secondary_bg dark:bg-neutral-700"
 														: "opacity-80"
 												}`}
 											>

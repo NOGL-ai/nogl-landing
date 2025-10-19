@@ -16,50 +16,27 @@ interface SimpleAccountCardProps {
   setExternalDropdownState?: (open: boolean) => void;
 }
 
-// Theme configuration for better maintainability
-const THEME_CONFIG = {
-  light: {
-    card: 'bg-white border-[#e9eaeb] hover:bg-gray-50',
-    text: {
-      name: 'text-[#181d27]',
-      email: 'text-[#535862]',
-      menuItem: 'text-[#414651]',
-      shortcut: 'text-[#535862]',
-      sectionHeader: 'text-[#535862]',
-    },
-    button: 'bg-transparent',
-    menu: {
-      outer: 'bg-neutral-50 border-[rgba(0,0,0,0.08)]',
-      inner: 'bg-white border-[#e9eaeb]',
-      divider: 'border-[#e9eaeb]',
-      shortcut: 'border-[#e9eaeb]',
-      switchAccount: 'bg-neutral-50',
-      addAccount: 'bg-white border-[#d5d7da]',
-    },
-    onlineIndicatorBorder: 'border-white',
-    iconStroke: '#A4A7AE',
+// Theme configuration using Tailwind's dark: variant for automatic theme detection
+const THEME_CLASSES = {
+  card: 'bg-background border-border hover:bg-secondary_bg',
+  text: {
+    name: 'text-[#181d27] dark:text-neutral-50',
+    email: 'text-[#535862] dark:text-[#a4a7ae]',
+    menuItem: 'text-[#414651] dark:text-[#d5d7da]',
+    shortcut: 'text-[#535862] dark:text-[#a4a7ae]',
+    sectionHeader: 'text-[#535862] dark:text-[#a4a7ae]',
   },
-  dark: {
-    card: 'bg-[#181d27] border-[#252b37] hover:bg-[#252b37]',
-    text: {
-      name: 'text-neutral-50',
-      email: 'text-[#a4a7ae]',
-      menuItem: 'text-[#d5d7da]',
-      shortcut: 'text-[#a4a7ae]',
-      sectionHeader: 'text-[#a4a7ae]',
-    },
-    button: 'bg-[#252b37]',
-    menu: {
-      outer: 'bg-[#252b37] border-[#252b37]',
-      inner: 'bg-[#0a0d12]',
-      divider: 'border-[#252b37]',
-      shortcut: 'border-[#414651]',
-      switchAccount: 'bg-[#252b37]',
-      addAccount: 'bg-[#181d27] border-[#414651]',
-    },
-    onlineIndicatorBorder: 'border-[#0a0d12]',
-    iconStroke: '#717680',
+  button: 'bg-transparent dark:bg-[#252b37]',
+  menu: {
+    outer: 'bg-neutral-50 dark:bg-[#252b37] border-[rgba(0,0,0,0.08)] dark:border-[#252b37]',
+    inner: 'bg-white dark:bg-[#0a0d12] border-[#e9eaeb] dark:border-transparent',
+    divider: 'border-[#e9eaeb] dark:border-[#252b37]',
+    shortcut: 'border-[#e9eaeb] dark:border-[#414651]',
+    switchAccount: 'bg-neutral-50 dark:bg-[#252b37]',
+    addAccount: 'bg-white dark:bg-[#181d27] border-[#d5d7da] dark:border-[#414651]',
   },
+  onlineIndicatorBorder: 'border-white dark:border-[#0a0d12]',
+  icon: 'stroke-[#A4A7AE] dark:stroke-[#717680]',
 } as const;
 
 // Memoized component for better performance
@@ -84,9 +61,6 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
   const setIsMenuOpen = setExternalDropdownState || setInternalIsMenuOpen;
   const menuRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
-
-  // Get theme configuration
-  const themeConfig = THEME_CONFIG[theme];
 
   // Close menu when clicking outside - memoized callback
   const handleClickOutside = useCallback((event: MouseEvent) => {
@@ -169,10 +143,10 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
       {/* Account Card - Theme-aware styling */}
       <div
         ref={cardRef}
-        className={`${themeConfig.card} border border-solid box-border content-stretch flex gap-[12px] items-center p-[16px] relative rounded-[12px] size-full transition-colors ${
+        className={`${THEME_CLASSES.card} border border-solid box-border content-stretch flex gap-[12px] items-center p-[16px] relative rounded-[12px] size-full transition-colors ${
           showContent ? '' : 'justify-center'
         }`}
-        data-name={`Type=Card, Open=True, Theme=${theme === 'dark' ? 'Dark' : 'Default'}, Breakpoint=Desktop`}
+        data-name="Type=Card, Open=True, Breakpoint=Desktop"
         role="button"
         tabIndex={0}
         aria-expanded={isMenuOpen}
@@ -204,17 +178,17 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
                 </div>
               )}
               {/* Online indicator */}
-              <div className={`absolute bg-[#17b26a] border-[1.5px] border-solid ${themeConfig.onlineIndicatorBorder} bottom-0 right-0 rounded-[5px] size-[10px]`} data-name="_Avatar online indicator" />
+              <div className={`absolute bg-[#17b26a] border-[1.5px] border-solid ${THEME_CLASSES.onlineIndicatorBorder} bottom-0 right-0 rounded-[5px] size-[10px]`} data-name="_Avatar online indicator" />
             </div>
           )}
           
           {/* User Info */}
           {(showContent || alwaysShowDropdown) && (
             <div className="content-stretch flex flex-col items-start leading-[20px] not-italic relative shrink-0 text-[14px] min-w-0" data-name="Text and supporting text">
-              <p className={`font-['Inter:Semi_Bold',_sans-serif] font-semibold relative shrink-0 truncate text-[16px] leading-[20px] ${themeConfig.text.name}`}>
+              <p className={`font-['Inter:Semi_Bold',_sans-serif] font-semibold relative shrink-0 truncate text-[16px] leading-[20px] ${THEME_CLASSES.text.name}`}>
                 {user?.name || 'User'}
               </p>
-              <p className={`font-['Inter:Regular',_sans-serif] font-normal relative shrink-0 truncate text-[14px] leading-[18px] ${themeConfig.text.email}`}>
+              <p className={`font-['Inter:Regular',_sans-serif] font-normal relative shrink-0 truncate text-[14px] leading-[18px] ${THEME_CLASSES.text.email}`}>
                 {user?.email || 'No email'}
               </p>
             </div>
@@ -229,7 +203,7 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
           >
             <button
               type="button"
-              className={`${themeConfig.button} flex items-center justify-center p-[6px] rounded-[8px] border-none cursor-pointer transition-colors`}
+              className={`${THEME_CLASSES.button} flex items-center justify-center p-[6px] rounded-[8px] border-none cursor-pointer transition-colors`}
               aria-haspopup="menu"
               aria-expanded={isMenuOpen}
               aria-label={isMenuOpen ? 'Close account menu' : 'Open account menu'}
@@ -240,7 +214,7 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
             >
               <span className="sr-only">{isMenuOpen ? 'Close account menu' : 'Open account menu'}</span>
               <svg
-                className="w-[16px] h-[16px]"
+                className={`w-[16px] h-[16px] ${THEME_CLASSES.icon}`}
                 data-name="chevron-selector-vertical"
                 width="16"
                 height="16"
@@ -250,7 +224,7 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
               >
                 <path
                   d="M4.66666 10.0001L7.99999 13.3334L11.3333 10.0001M4.66666 6.00008L7.99999 2.66675L11.3333 6.00008"
-                  stroke={themeConfig.iconStroke}
+                  stroke="currentColor"
                   strokeWidth="1.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -264,13 +238,13 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
       {/* Dropdown Menu - Theme-aware styling */}
       {isMenuOpen && (showContent || alwaysShowDropdown) && (
         <div
-          className={`absolute ${themeConfig.menu.outer} border border-solid ${menuPositionClasses} rounded-[12px] w-[264px] z-[100]`}
+          className={`absolute ${THEME_CLASSES.menu.outer} border border-solid ${menuPositionClasses} rounded-[12px] w-[264px] z-[100]`}
           data-name="Menu"
           role="menu"
           aria-label="Account menu"
         >
           <div className="content-stretch flex flex-col items-start overflow-clip relative rounded-[inherit] w-[264px]">
-            <div className={`${themeConfig.menu.inner} ${theme === 'light' ? 'border border-solid' : ''} content-stretch flex flex-col items-start relative rounded-bl-[16px] rounded-br-[16px] rounded-tl-[12px] rounded-tr-[12px] shrink-0 w-full`} data-name="Menu items wrapper">
+            <div className={`${THEME_CLASSES.menu.inner} border border-solid content-stretch flex flex-col items-start relative rounded-bl-[16px] rounded-br-[16px] rounded-tl-[12px] rounded-tr-[12px] shrink-0 w-full`} data-name="Menu items wrapper">
               {/* Main Menu Items */}
               <div className="box-border content-stretch flex flex-col gap-[2px] items-start overflow-clip px-0 py-[6px] relative shrink-0 w-full" data-name="Menu items">
                 {/* View Profile */}
@@ -284,12 +258,12 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
                           </svg>
                         </div>
                       </div>
-                      <p className={`flex-[1_0_0] font-['Inter:Semi_Bold',_sans-serif] font-semibold h-[20px] leading-[20px] min-h-px min-w-px not-italic relative shrink-0 ${themeConfig.text.menuItem} text-[14px] whitespace-pre-wrap`}>
+                      <p className={`flex-[1_0_0] font-['Inter:Semi_Bold',_sans-serif] font-semibold h-[20px] leading-[20px] min-h-px min-w-px not-italic relative shrink-0 ${THEME_CLASSES.text.menuItem} text-[14px] whitespace-pre-wrap`}>
                         View profile
                       </p>
                     </div>
-                    <div className={`border ${themeConfig.menu.shortcut} border-solid box-border content-stretch flex items-start px-[4px] py-px relative rounded-[4px] shrink-0`} data-name="Shortcut wrapper">
-                      <p className={`font-['Inter:Medium',_sans-serif] font-medium leading-[18px] not-italic relative shrink-0 ${themeConfig.text.shortcut} text-[12px]`}>{`⌘K->P`}</p>
+                    <div className={`border ${THEME_CLASSES.menu.shortcut} border-solid box-border content-stretch flex items-start px-[4px] py-px relative rounded-[4px] shrink-0`} data-name="Shortcut wrapper">
+                      <p className={`font-['Inter:Medium',_sans-serif] font-medium leading-[18px] not-italic relative shrink-0 ${THEME_CLASSES.text.shortcut} text-[12px]`}>{`⌘K->P`}</p>
                     </div>
                   </div>
                 </div>
@@ -298,7 +272,7 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
                 <div className="box-border content-stretch flex items-center px-[6px] py-0 relative shrink-0 w-full" data-name="_Nav account card menu item">
                   <a
                     href="/account/settings"
-                    className="box-border content-stretch flex flex-[1_0_0] gap-[12px] items-center min-h-px min-w-px overflow-clip p-[8px] relative rounded-[6px] shrink-0 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors w-full"
+                    className="box-border content-stretch flex flex-[1_0_0] gap-[12px] items-center min-h-px min-w-px overflow-clip p-[8px] relative rounded-[6px] shrink-0 hover:bg-primary_hover transition-colors w-full"
                     data-name="Content"
                     onClick={() => setIsMenuOpen(false)}
                   >
@@ -311,12 +285,12 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
                           </svg>
                         </div>
                       </div>
-                      <p className={`flex-[1_0_0] font-['Inter:Semi_Bold',_sans-serif] font-semibold h-[20px] leading-[20px] min-h-px min-w-px not-italic relative shrink-0 ${themeConfig.text.menuItem} text-[14px] whitespace-pre-wrap`}>
+                      <p className={`flex-[1_0_0] font-['Inter:Semi_Bold',_sans-serif] font-semibold h-[20px] leading-[20px] min-h-px min-w-px not-italic relative shrink-0 ${THEME_CLASSES.text.menuItem} text-[14px] whitespace-pre-wrap`}>
                         Account settings
                       </p>
                     </div>
-                    <div className={`border ${themeConfig.menu.shortcut} border-solid box-border content-stretch flex items-start px-[4px] py-px relative rounded-[4px] shrink-0`} data-name="Shortcut wrapper">
-                      <p className={`font-['Inter:Medium',_sans-serif] font-medium leading-[18px] not-italic relative shrink-0 ${themeConfig.text.shortcut} text-[12px]`}>
+                    <div className={`border ${THEME_CLASSES.menu.shortcut} border-solid box-border content-stretch flex items-start px-[4px] py-px relative rounded-[4px] shrink-0`} data-name="Shortcut wrapper">
+                      <p className={`font-['Inter:Medium',_sans-serif] font-medium leading-[18px] not-italic relative shrink-0 ${THEME_CLASSES.text.shortcut} text-[12px]`}>
                         ⌘S
                       </p>
                     </div>
@@ -334,7 +308,7 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
                           </svg>
                         </div>
                       </div>
-                      <p className={`flex-[1_0_0] font-['Inter:Semi_Bold',_sans-serif] font-semibold h-[20px] leading-[20px] min-h-px min-w-px not-italic relative shrink-0 ${themeConfig.text.menuItem} text-[14px] whitespace-pre-wrap`}>
+                      <p className={`flex-[1_0_0] font-['Inter:Semi_Bold',_sans-serif] font-semibold h-[20px] leading-[20px] min-h-px min-w-px not-italic relative shrink-0 ${THEME_CLASSES.text.menuItem} text-[14px] whitespace-pre-wrap`}>
                         Documentation
                       </p>
                     </div>
@@ -343,18 +317,18 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
               </div>
 
               {/* Divider */}
-              <div className={`${themeConfig.menu.divider} border-b-0 border-l-0 border-r-0 border-solid border-t relative shrink-0 w-full`} data-name="Menu items">
+              <div className={`${THEME_CLASSES.menu.divider} border-b-0 border-l-0 border-r-0 border-solid border-t relative shrink-0 w-full`} data-name="Menu items">
                 <div className="box-border content-stretch flex flex-col gap-[2px] items-start overflow-clip px-0 py-[6px] relative rounded-[inherit] w-full">
                   {/* Switch Account Section */}
                   <div className="box-border content-stretch flex items-start pb-[4px] pt-[6px] px-[12px] relative shrink-0 w-full" data-name="Text wrapper">
-                    <p className={`flex-[1_0_0] font-['Inter:Semi_Bold',_sans-serif] font-semibold h-[18px] leading-[18px] min-h-px min-w-px not-italic relative shrink-0 ${themeConfig.text.sectionHeader} text-[12px] whitespace-pre-wrap`}>
+                    <p className={`flex-[1_0_0] font-['Inter:Semi_Bold',_sans-serif] font-semibold h-[18px] leading-[18px] min-h-px min-w-px not-italic relative shrink-0 ${THEME_CLASSES.text.sectionHeader} text-[12px] whitespace-pre-wrap`}>
                       Switch account
                     </p>
                   </div>
                   
                   {/* Current User */}
                   <div className="box-border content-stretch flex items-center px-[6px] py-0 relative shrink-0 w-full" data-name="_Nav account card menu item">
-                    <div className={`${themeConfig.menu.switchAccount} box-border content-stretch flex flex-[1_0_0] gap-[12px] items-center min-h-px min-w-px overflow-clip px-[8px] py-[6px] relative rounded-[6px] shrink-0`} data-name="Content">
+                    <div className={`${THEME_CLASSES.menu.switchAccount} box-border content-stretch flex flex-[1_0_0] gap-[12px] items-center min-h-px min-w-px overflow-clip px-[8px] py-[6px] relative rounded-[6px] shrink-0`} data-name="Content">
                       <div className="content-stretch flex flex-[1_0_0] gap-[8px] items-center min-h-px min-w-px relative shrink-0" data-name="Avatar label group">
                         <div className="border border-[rgba(0,0,0,0.08)] border-solid relative rounded-[200px] shrink-0 size-[40px]" data-name="Avatar">
                           {user?.avatar ? (
@@ -366,13 +340,13 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
                               </span>
                             </div>
                           )}
-                          <div className={`absolute bg-[#17b26a] border-[1.5px] border-solid ${themeConfig.onlineIndicatorBorder} bottom-0 right-0 rounded-[5px] size-[10px]`} data-name="_Avatar online indicator" />
+                          <div className={`absolute bg-[#17b26a] border-[1.5px] border-solid ${THEME_CLASSES.onlineIndicatorBorder} bottom-0 right-0 rounded-[5px] size-[10px]`} data-name="_Avatar online indicator" />
                         </div>
                         <div className="content-stretch flex flex-col items-start leading-[20px] not-italic relative shrink-0 text-[14px]" data-name="Text and supporting text">
-                          <p className={`font-['Inter:Semi_Bold',_sans-serif] font-semibold relative shrink-0 ${themeConfig.text.name}`}>
+                          <p className={`font-['Inter:Semi_Bold',_sans-serif] font-semibold relative shrink-0 ${THEME_CLASSES.text.name}`}>
                             {user?.name || 'User'}
                           </p>
-                          <p className={`font-['Inter:Regular',_sans-serif] font-normal relative shrink-0 ${themeConfig.text.email}`}>
+                          <p className={`font-['Inter:Regular',_sans-serif] font-normal relative shrink-0 ${THEME_CLASSES.text.email}`}>
                             {user?.email || 'No email'}
                           </p>
                         </div>
@@ -391,7 +365,7 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
 
               {/* Add Account Button */}
               <div className="box-border content-stretch flex gap-[8px] items-center justify-center pb-[8px] pt-[2px] px-[8px] relative shrink-0 w-full" data-name="Menu actions">
-                <div className={`${themeConfig.menu.addAccount} border border-solid flex-[1_0_0] min-h-px min-w-px relative rounded-[8px] shrink-0`} data-name="Buttons/Button">
+                <div className={`${THEME_CLASSES.menu.addAccount} border border-solid flex-[1_0_0] min-h-px min-w-px relative rounded-[8px] shrink-0`} data-name="Buttons/Button">
                   <div className="box-border content-stretch flex gap-[4px] items-center justify-center overflow-clip px-[12px] py-[8px] relative rounded-[inherit] w-full">
                     <div className="overflow-clip relative shrink-0 size-[20px]" data-name="plus">
                       <div className="absolute inset-[20.833%]" data-name="Icon">
@@ -401,7 +375,7 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
                       </div>
                     </div>
                     <div className="box-border content-stretch flex items-center justify-center px-[2px] py-0 relative shrink-0" data-name="Text padding">
-                      <p className={`font-['Inter:Semi_Bold',_sans-serif] font-semibold leading-[20px] not-italic relative shrink-0 ${themeConfig.text.menuItem} text-[14px]`}>
+                      <p className={`font-['Inter:Semi_Bold',_sans-serif] font-semibold leading-[20px] not-italic relative shrink-0 ${THEME_CLASSES.text.menuItem} text-[14px]`}>
                         Add account
                       </p>
                     </div>
@@ -434,12 +408,12 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
                       </svg>
                     </div>
                   </div>
-                  <p className={`flex-[1_0_0] font-['Inter:Semi_Bold',_sans-serif] font-semibold h-[20px] leading-[20px] min-h-px min-w-px not-italic relative shrink-0 ${themeConfig.text.menuItem} text-[14px] whitespace-pre-wrap`}>
+                  <p className={`flex-[1_0_0] font-['Inter:Semi_Bold',_sans-serif] font-semibold h-[20px] leading-[20px] min-h-px min-w-px not-italic relative shrink-0 ${THEME_CLASSES.text.menuItem} text-[14px] whitespace-pre-wrap`}>
                     Sign out
                   </p>
                 </div>
-                <div className={`border ${themeConfig.menu.shortcut} border-solid box-border content-stretch flex items-start px-[4px] py-px relative rounded-[4px] shrink-0`} data-name="Shortcut wrapper">
-                  <p className={`font-['Inter:Medium',_sans-serif] font-medium leading-[18px] not-italic relative shrink-0 ${themeConfig.text.shortcut} text-[12px]`}>
+                <div className={`border ${THEME_CLASSES.menu.shortcut} border-solid box-border content-stretch flex items-start px-[4px] py-px relative rounded-[4px] shrink-0`} data-name="Shortcut wrapper">
+                  <p className={`font-['Inter:Medium',_sans-serif] font-medium leading-[18px] not-italic relative shrink-0 ${THEME_CLASSES.text.shortcut} text-[12px]`}>
                     ⌥⇧Q
                   </p>
                 </div>

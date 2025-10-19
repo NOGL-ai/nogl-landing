@@ -69,7 +69,7 @@ const ExpertCard: FC<ExpertCardProps> = ({
 						<Badge
 							key={index}
 							name={tag}
-							className='rounded-full bg-gray-200 px-3 py-1 text-sm text-gray-600'
+							className='rounded-full bg-border px-3 py-1 text-sm text-tertiary'
 						/>
 					))}
 				</div>

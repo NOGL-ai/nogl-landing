@@ -104,7 +104,7 @@ export default function DropdownTravelers() {
 												Documentation
 											</span>
 										</span>
-										<span className='block text-sm text-gray-500 dark:text-neutral-400'>
+										<span className='block text-sm text-tertiary dark:text-neutral-400'>
 											Start integrating products and tools
 										</span>
 									</Link>

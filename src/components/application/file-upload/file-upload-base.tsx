@@ -51,6 +51,10 @@ interface FileUploadDropZoneProps {
      */
     maxSize?: number;
     /**
+     * ARIA label for accessibility.
+     */
+    "aria-label"?: string;
+    /**
      * Callback function that is called with the list of dropped files
      * when files are dropped on the drop zone.
      */
@@ -74,6 +78,7 @@ export const FileUploadDropZone = ({
     accept,
     allowsMultiple = true,
     maxSize,
+    "aria-label": ariaLabel,
     onDropFiles,
     onDropUnacceptedFiles,
     onSizeLimitExceed,
@@ -210,6 +215,7 @@ export const FileUploadDropZone = ({
             role="button"
             tabIndex={isDisabled ? -1 : 0}
             aria-disabled={isDisabled || undefined}
+            aria-label={ariaLabel}
             onClick={handleClick}
             onKeyDown={handleKeyActivate}
             onDragOver={handleDragIn}
@@ -218,10 +224,10 @@ export const FileUploadDropZone = ({
             onDragEnd={handleDragOut}
             onDrop={handleDrop}
             className={cx(
-                "relative flex flex-col items-center gap-3 rounded-xl bg-background dark:bg-gray-800 px-6 py-4 text-tertiary dark:text-gray-300 ring-1 ring-secondary dark:ring-gray-600 transition duration-100 ease-linear ring-inset focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40",
+                "relative flex flex-col items-center gap-3 rounded-xl bg-background px-6 py-4 text-tertiary ring-1 ring-border transition duration-100 ease-linear ring-inset focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40",
                 !isDisabled && "cursor-pointer",
-                isDraggingOver && "ring-2 ring-brand dark:ring-blue-500",
-                isDisabled && "cursor-not-allowed bg-disabled_subtle dark:bg-gray-700 ring-disabled_subtle dark:ring-gray-600",
+                isDraggingOver && "ring-2 ring-brand",
+                isDisabled && "cursor-not-allowed bg-disabled_subtle ring-disabled_subtle",
                 className,
             )}
         >
@@ -244,9 +250,9 @@ export const FileUploadDropZone = ({
                     <Button color="link-color" size="md" isDisabled={isDisabled} onClick={() => inputRef.current?.click()}>
                         Click to upload <span className="md:hidden">and attach files</span>
                     </Button>
-                    <span className="text-sm max-md:hidden dark:text-gray-400">or drag and drop</span>
+                    <span className="text-sm max-md:hidden text-tertiary">or drag and drop</span>
                 </div>
-                <p className={cx("text-xs transition duration-100 ease-linear dark:text-gray-400", isInvalid && "text-error-primary dark:text-red-400")}>
+                <p className={cx("text-xs transition duration-100 ease-linear text-tertiary", isInvalid && "text-error-primary")}>
                     {hint || "SVG, PNG, JPG or GIF (max. 800x400px)"}
                 </p>
             </div>
@@ -282,8 +288,8 @@ export const FileListItemProgressBar = ({ name, size, progress, failed, type, fi
         <motion.li
             layout="position"
             className={cx(
-                "relative flex gap-3 rounded-xl bg-background dark:bg-gray-800 p-4 ring-1 ring-secondary dark:ring-gray-600 transition-shadow duration-100 ease-linear ring-inset",
-                failed && "ring-2 ring-error dark:ring-red-500",
+                "relative flex gap-3 rounded-xl bg-background p-4 ring-1 ring-border transition-shadow duration-100 ease-linear ring-inset",
+                failed && "ring-2 ring-error",
                 className,
             )}
         >
@@ -296,9 +302,9 @@ export const FileListItemProgressBar = ({ name, size, progress, failed, type, fi
                         <p className="truncate text-sm font-medium text-secondary dark:text-gray-200">{name}</p>
 
                         <div className="mt-0.5 flex items-center gap-2">
-                            <p className="truncate text-sm whitespace-nowrap text-tertiary dark:text-gray-400">{getReadableFileSize(size)}</p>
+                            <p className="truncate text-sm whitespace-nowrap text-tertiary">{getReadableFileSize(size)}</p>
 
-                            <hr className="h-3 w-px rounded-t-full rounded-b-full border-none bg-border-primary dark:bg-gray-600" />
+                            <hr className="h-3 w-px rounded-t-full rounded-b-full border-none bg-border" />
 
                             <div className="flex items-center gap-1">
                                 {isComplete && <CheckCircle className="size-4 stroke-[2.5px] text-fg-success-primary dark:text-green-400" />}
@@ -336,11 +342,11 @@ export const FileListItemProgressFill = ({ name, size, progress, failed, type, f
     const isComplete = progress === 100;
 
     return (
-        <motion.li layout="position" className={cx("relative flex gap-3 overflow-hidden rounded-xl bg-background dark:bg-gray-800 p-4", className)}>
+        <motion.li layout="position" className={cx("relative flex gap-3 overflow-hidden rounded-xl bg-background p-4", className)}>
             {/* Progress fill. */}
             <div
                 style={{ transform: `translateX(-${100 - progress}%)` }}
-                className={cx("absolute inset-0 size-full bg-secondary dark:bg-gray-700 transition duration-75 ease-linear", isComplete && "opacity-0")}
+                className={cx("absolute inset-0 size-full bg-secondary_bg transition duration-75 ease-linear", isComplete && "opacity-0")}
                 role="progressbar"
                 aria-valuenow={progress}
                 aria-valuemin={0}
@@ -362,16 +368,16 @@ export const FileListItemProgressFill = ({ name, size, progress, failed, type, f
                         <p className="truncate text-sm font-medium text-secondary dark:text-gray-200">{name}</p>
 
                         <div className="mt-0.5 flex items-center gap-2">
-                            <p className="text-sm text-tertiary dark:text-gray-400">{failed ? "Upload failed, please try again" : getReadableFileSize(size)}</p>
+                            <p className="text-sm text-tertiary">{failed ? "Upload failed, please try again" : getReadableFileSize(size)}</p>
 
                             {!failed && (
                                 <>
-                                    <hr className="h-3 w-px rounded-t-full rounded-b-full border-none bg-border-primary dark:bg-gray-600" />
+                                    <hr className="h-3 w-px rounded-t-full rounded-b-full border-none bg-border" />
                                     <div className="flex items-center gap-1">
                                         {isComplete && <CheckCircle className="size-4 stroke-[2.5px] text-fg-success-primary dark:text-green-400" />}
                                         {!isComplete && <UploadCloud02 className="size-4 stroke-[2.5px] text-fg-quaternary dark:text-fg-white" />}
 
-                                        <p className="text-sm text-tertiary dark:text-gray-400">{progress}%</p>
+                                        <p className="text-sm text-tertiary">{progress}%</p>
                                     </div>
                                 </>
                             )}

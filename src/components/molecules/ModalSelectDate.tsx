@@ -70,6 +70,7 @@ const ModalSelectDate: FC<ModalSelectDateProps> = ({ renderChildren }) => {
 											<button
 												className='focus:outline-none focus:ring-0'
 												onClick={closeModal}
+												aria-label="Close date picker"
 											>
 												<XMarkIcon className='h-5 w-5 text-black dark:text-white' />
 											</button>

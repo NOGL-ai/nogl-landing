@@ -78,7 +78,7 @@ const ColorWidget: React.FC<ColorWidgetProps> = ({
 										src={imgCheckSmall}
 									/>
 								) : (
-									<div className='h-6 w-6 rounded-full border-2 border-gray-300'></div>
+									<div className='h-6 w-6 rounded-full border-2 border-border'></div>
 								)}
 							</div>
 						</button>
@@ -132,7 +132,7 @@ const ColorWidget: React.FC<ColorWidgetProps> = ({
 										src={imgCheckSmall}
 									/>
 								) : (
-									<div className='h-6 w-6 rounded-full border-2 border-gray-300'></div>
+									<div className='h-6 w-6 rounded-full border-2 border-border'></div>
 								)}
 							</div>
 						</button>
@@ -173,13 +173,13 @@ const ColorWidget: React.FC<ColorWidgetProps> = ({
 				{/* Selected Color Display */}
 				{selectedColor && (
 					<div className='w-full text-center'>
-						<p className='mb-1 text-xs text-gray-600'>Selected Color:</p>
+						<p className='mb-1 text-xs text-tertiary'>Selected Color:</p>
 						<div className='flex items-center justify-center gap-2'>
 							<div
-								className='h-4 w-4 rounded border border-gray-300'
+								className='h-4 w-4 rounded border border-border'
 								style={{ backgroundColor: selectedColor }}
 							/>
-							<span className='font-mono text-xs text-gray-800'>
+							<span className='font-mono text-xs text-secondary'>
 								{selectedColor}
 							</span>
 						</div>
@@ -189,7 +189,7 @@ const ColorWidget: React.FC<ColorWidgetProps> = ({
 				{/* Close button */}
 				<button
 					onClick={onClose}
-					className='absolute right-2 top-2 text-gray-400 transition-colors hover:text-gray-600'
+					className='absolute right-2 top-2 text-tertiary transition-colors hover:text-tertiary'
 				>
 					<svg
 						className='h-4 w-4'

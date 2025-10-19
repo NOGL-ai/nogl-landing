@@ -154,14 +154,14 @@ export function ProductTableAdvancedFilters({
 
 			{isOpen && (
 				<div 
-					className="space-y-4 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800"
+					className="space-y-4 rounded-lg border border-border bg-secondary_bg p-4 dark:border-border dark:bg-secondary_bg"
 					role="region"
 					aria-label="Advanced filter options"
 				>
 					<div className="grid grid-cols-1 gap-4 md:grid-cols-3">
 						{/* Price Range Filter */}
 						<div className="space-y-2">
-							<label className="text-sm font-medium text-gray-900 dark:text-gray-100">
+							<label className="text-sm font-medium text-primary dark:text-gray-100">
 								Price Range
 							</label>
 							<div className="px-3">
@@ -174,7 +174,7 @@ export function ProductTableAdvancedFilters({
 									className="w-full"
 									aria-label="Price range filter"
 								/>
-								<div className="mt-1 flex justify-between text-xs text-gray-500 dark:text-gray-400">
+								<div className="mt-1 flex justify-between text-xs text-tertiary dark:text-tertiary">
 									<span>€{filters.priceRange[0]}</span>
 									<span>€{filters.priceRange[1]}</span>
 								</div>
@@ -183,7 +183,7 @@ export function ProductTableAdvancedFilters({
 
 						{/* Brand Filter */}
 						<div className="space-y-2">
-							<label className="text-sm font-medium text-gray-900 dark:text-gray-100">
+							<label className="text-sm font-medium text-primary dark:text-gray-100">
 								Brands
 							</label>
 							<div className="space-y-1">
@@ -199,7 +199,7 @@ export function ProductTableAdvancedFilters({
 										/>
 										<label
 											htmlFor={`brand-${brand}`}
-											className="text-sm text-gray-700 dark:text-gray-300"
+											className="text-sm text-secondary dark:text-tertiary"
 										>
 											{brand}
 										</label>
@@ -210,7 +210,7 @@ export function ProductTableAdvancedFilters({
 
 						{/* Currency Filter */}
 						<div className="space-y-2">
-							<label className="text-sm font-medium text-gray-900 dark:text-gray-100">
+							<label className="text-sm font-medium text-primary dark:text-gray-100">
 								Currency
 							</label>
 							<div className="space-y-1">
@@ -226,7 +226,7 @@ export function ProductTableAdvancedFilters({
 										/>
 										<label
 											htmlFor={`currency-${currency}`}
-											className="text-sm text-gray-700 dark:text-gray-300"
+											className="text-sm text-secondary dark:text-tertiary"
 										>
 											{currency}
 										</label>
@@ -237,7 +237,7 @@ export function ProductTableAdvancedFilters({
 
 						{/* Quick Filters */}
 						<div className="space-y-2">
-							<label className="text-sm font-medium text-gray-900 dark:text-gray-100">
+							<label className="text-sm font-medium text-primary dark:text-gray-100">
 								Quick Filters
 							</label>
 							<div className="grid grid-cols-2 gap-2">
@@ -248,7 +248,7 @@ export function ProductTableAdvancedFilters({
 										handlePriceRangeChange([0, 50]);
 										handleCategoryFilter("Rings", true);
 									}}
-									className="border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+									className="border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700"
 									aria-label="Filter products under €50"
 								>
 									<Icon name="Minus" className="mr-1 h-3 w-3" aria-hidden={true} />
@@ -261,7 +261,7 @@ export function ProductTableAdvancedFilters({
 										handlePriceRangeChange([100, 1000]);
 										handleBrandFilter("Stilnest", true);
 									}}
-									className="border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+									className="border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700"
 									aria-label="Filter premium products"
 								>
 									<Icon name="Star" className="mr-1 h-3 w-3" aria-hidden={true} />
@@ -274,7 +274,7 @@ export function ProductTableAdvancedFilters({
 										// This would need more complex logic in a real app
 										console.log("Filter with data");
 									}}
-									className="border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+									className="border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700"
 									aria-label="Filter products with competitor data"
 								>
 									<Icon name="TrendingUp" className="mr-1 h-3 w-3" aria-hidden={true} />
@@ -287,7 +287,7 @@ export function ProductTableAdvancedFilters({
 										handleBrandFilter("Stilnest", true);
 										handleCategoryFilter("Rings", true);
 									}}
-									className="border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+									className="border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700"
 									aria-label="Filter Stilnest products"
 								>
 									<Icon name="Target" className="mr-1 h-3 w-3" aria-hidden={true} />

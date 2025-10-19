@@ -67,7 +67,7 @@ const PieChart: React.FC<PieChartProps> = ({
 
 	return (
 		<div
-			className={`rounded-lg border border-[#E2E4E9] bg-white p-5 dark:border-gray-700 dark:bg-gray-800 ${className}`}
+			className={`rounded-lg border border-[#E2E4E9] bg-white p-5 dark:border-border dark:bg-secondary_bg ${className}`}
 		>
 			{/* Title */}
 			<div className='mb-5 flex items-center justify-between'>
@@ -104,7 +104,7 @@ const PieChart: React.FC<PieChartProps> = ({
 
 					{/* Center Label */}
 					<div
-						className='absolute inset-0 flex items-center justify-center rounded-full bg-white shadow-[0_5px_40px_0_rgba(0,0,0,0.10)] dark:bg-gray-800 dark:shadow-[0_5px_40px_0_rgba(0,0,0,0.3)]'
+						className='absolute inset-0 flex items-center justify-center rounded-full bg-white shadow-[0_5px_40px_0_rgba(0,0,0,0.10)] dark:bg-secondary_bg dark:shadow-[0_5px_40px_0_rgba(0,0,0,0.3)]'
 						style={{
 							width: "98px",
 							height: "98px",
@@ -124,7 +124,7 @@ const PieChart: React.FC<PieChartProps> = ({
 								{centerValue}
 							</div>
 							<div
-								className='text-xs font-normal leading-5 text-[#A0AEC0] dark:text-gray-400'
+								className='text-xs font-normal leading-5 text-[#A0AEC0] dark:text-tertiary'
 								style={{
 									fontFamily: "Manrope",
 									fontSize: "12px",
@@ -142,7 +142,7 @@ const PieChart: React.FC<PieChartProps> = ({
 					{data.map((item, index) => (
 						<div
 							key={index}
-							className='flex items-center justify-between border-b border-[#E5E5E5] py-2 last:border-b-0 dark:border-gray-600'
+							className='flex items-center justify-between border-b border-[#E5E5E5] py-2 last:border-b-0 dark:border-border'
 						>
 							<div className='flex items-center gap-3'>
 								<div
@@ -150,7 +150,7 @@ const PieChart: React.FC<PieChartProps> = ({
 									style={{ backgroundColor: item.color }}
 								/>
 								<span
-									className='text-xs font-medium leading-5 text-[#687588] dark:text-gray-300'
+									className='text-xs font-medium leading-5 text-[#687588] dark:text-tertiary'
 									style={{
 										fontFamily: "Manrope",
 										fontSize: "12px",

@@ -62,7 +62,7 @@ const DropdownMenuTrigger: React.FC<DropdownMenuTriggerProps> = ({
 	return (
 		<button
 			className={cn(
-				"inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2",
+				"inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2",
 				className
 			)}
 		>
@@ -98,18 +98,18 @@ const DropdownMenuContent: React.FC<DropdownMenuContentProps> = ({
 	return (
 		<div
 			ref={dropdownRef}
-			className={cn(
-				"absolute z-50 min-w-[8rem] overflow-hidden rounded-md border bg-white p-1 text-gray-950 shadow-md",
-				"data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
-				align === "end"
-					? "right-0"
-					: align === "start"
-						? "left-0"
-						: "left-1/2 -translate-x-1/2",
-				"top-full mt-1",
-				isOpen ? "block" : "hidden",
-				className
-			)}
+		className={cn(
+			"absolute z-50 min-w-[8rem] overflow-hidden rounded-md border border-border bg-background p-1 text-primary shadow-md",
+			"data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
+			align === "end"
+				? "right-0"
+				: align === "start"
+					? "left-0"
+					: "left-1/2 -translate-x-1/2",
+			"top-full mt-1",
+			isOpen ? "block" : "hidden",
+			className
+		)}
 		>
 			{children}
 		</div>
@@ -128,7 +128,7 @@ const DropdownMenuItem: React.FC<DropdownMenuItemProps> = ({
 			disabled={disabled}
 			className={cn(
 				"relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors",
-				"focus:bg-gray-100 focus:text-gray-900",
+				"focus:bg-primary_hover focus:text-primary",
 				"data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
 				disabled && "pointer-events-none opacity-50",
 				className
@@ -144,7 +144,7 @@ const DropdownMenuSeparator: React.FC<DropdownMenuSeparatorProps> = ({
 }) => {
 	return (
 		<div
-			className={cn("-mx-1 my-1 h-px bg-gray-200", className)}
+			className={cn("-mx-1 my-1 h-px bg-border", className)}
 			role='separator'
 		/>
 	);
@@ -172,7 +172,7 @@ const DropdownMenuCheckboxItem: React.FC<DropdownMenuCheckboxItemProps> = ({
 			disabled={disabled}
 			className={cn(
 				"relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors",
-				"focus:bg-gray-100 focus:text-gray-900",
+				"focus:bg-primary_hover focus:text-primary",
 				"data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
 				disabled && "pointer-events-none opacity-50",
 				className
@@ -183,7 +183,7 @@ const DropdownMenuCheckboxItem: React.FC<DropdownMenuCheckboxItemProps> = ({
 					type='checkbox'
 					checked={checked}
 					onChange={() => onCheckedChange?.(!checked)}
-					className='h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500'
+					className='h-4 w-4 rounded border-border text-brand focus:ring-brand'
 				/>
 				<span>{children}</span>
 			</div>

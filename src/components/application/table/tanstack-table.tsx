@@ -187,7 +187,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
             />
             <div className="flex items-center gap-3">
               <div className="relative h-10 w-10 flex-shrink-0">
-                <div className="h-10 w-10 rounded-full border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 p-1">
+                <div className="h-10 w-10 rounded-full border border-border bg-secondary_bg p-1">
                   <img
                     src={row.original.avatar}
                     alt={`${row.original.name} logo`}
@@ -201,7 +201,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
                     }}
                   />
                   <div 
-                    className="h-8 w-8 rounded-full bg-gray-200 dark:bg-gray-600 items-center justify-center text-xs font-semibold text-gray-600 dark:text-gray-300 hidden"
+                    className="h-8 w-8 rounded-full bg-border items-center justify-center text-xs font-semibold text-tertiary hidden"
                     style={{ display: 'none' }}
                   >
                     {row.original.name.charAt(0).toUpperCase()}
@@ -255,8 +255,8 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
           if (competitorCount === 0) {
             return (
               <div className="flex items-center justify-center">
-                <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                  <span className="text-sm font-medium text-gray-400">—</span>
+                <div className="w-10 h-10 rounded-full bg-secondary_bg flex items-center justify-center">
+                  <span className="text-sm font-medium text-tertiary">—</span>
                 </div>
               </div>
             );
@@ -279,8 +279,9 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
                     cy="20"
                     r="16"
                     fill="none"
-                    stroke="#E9EAEB"
+                    stroke="currentColor"
                     strokeWidth="3"
+                    className="text-border"
                   />
                   {/* Progress circle */}
                   <circle
@@ -288,18 +289,18 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
                     cy="20"
                     r="16"
                     fill="none"
-                    stroke="#7F56D9"
+                    stroke="currentColor"
                     strokeWidth="3"
                     strokeDasharray={strokeDasharray}
                     strokeDashoffset="0"
                     strokeLinecap="round"
-                    className="transition-all duration-300 ease-out"
+                    className="text-purple-600 dark:text-purple-400 transition-all duration-300 ease-out"
                   />
                 </svg>
                 
                 {/* Center count - Untitled UI typography */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                  <span className="text-sm font-semibold text-primary">
                     {competitorCount}
                   </span>
                 </div>
@@ -571,7 +572,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
                   {brand?.name || 'Unknown'}
                 </span>
                 <div className="flex items-center gap-1">
-                  <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
+                  <span className="text-xs font-medium text-tertiary">
                     {countryInfo.flag} {countryInfo.code}
                   </span>
                 </div>
@@ -797,7 +798,7 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
             ))}
             {row.original.categories.length > 2 && (
               <span 
-                className="inline-flex items-center whitespace-nowrap flex-shrink-0 rounded-full border border-[#E9EAEB] bg-[#FAFAFA] px-2 py-0.5 text-xs font-medium text-muted-foreground"
+                className="inline-flex items-center whitespace-nowrap flex-shrink-0 rounded-full border border-[#E9EAEB] dark:border-[#414651] bg-[#FAFAFA] dark:bg-[#1a1d24] px-2 py-0.5 text-xs font-medium text-muted-foreground"
                 role="listitem"
                 aria-label={`${row.original.categories.length - 2} additional categories`}
               >
@@ -988,7 +989,13 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
                           type="button"
                           onClick={header.column.getToggleSortingHandler()}
                           className="inline-flex items-center gap-1 hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring/40 rounded"
-                          aria-label={`Sort by ${header.column.id} ${header.column.getIsSorted() === 'asc' ? 'descending' : 'ascending'}`}
+                          aria-label={
+                            header.column.getIsSorted() === 'asc' 
+                              ? `${header.column.id} sorted ascending, click to sort descending`
+                              : header.column.getIsSorted() === 'desc'
+                              ? `${header.column.id} sorted descending, click to sort ascending`
+                              : `Sort ${header.column.id} ascending`
+                          }
                         >
                           {flexRender(header.column.columnDef.header, header.getContext())}
                           {header.column.getIsSorted() === 'asc' ? (

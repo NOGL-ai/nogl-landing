@@ -31,7 +31,7 @@ const CHANNEL_ICONS: Record<string, { icon: React.ComponentType<any>; title: str
 	shopify: { icon: () => <div className="w-5 h-5 bg-green-500 rounded" />, title: "Shopify", color: "#96BF48" },
 	magento: { icon: () => <div className="w-5 h-5 bg-orange-500 rounded" />, title: "Magento", color: "#EE672F" },
 	woocommerce: { icon: () => <div className="w-5 h-5 bg-purple-500 rounded" />, title: "WooCommerce", color: "#96588A" },
-	bigcommerce: { icon: () => <div className="w-5 h-5 bg-gray-800 rounded" />, title: "BigCommerce", color: "#121118" },
+	bigcommerce: { icon: () => <div className="w-5 h-5 bg-secondary_bg rounded" />, title: "BigCommerce", color: "#121118" },
 	ebay: { icon: () => <div className="w-5 h-5 bg-red-500 rounded" />, title: "eBay", color: "#E53238" },
 	amazon: { icon: () => <div className="w-5 h-5 bg-yellow-500 rounded" />, title: "Amazon", color: "#FF9900" },
 	etsy: { icon: () => <div className="w-5 h-5 bg-orange-500 rounded" />, title: "Etsy", color: "#F16521" },
@@ -116,7 +116,7 @@ export function ProductTableColumns(products: Product[] = []): ColumnDef<Product
 						href={productUrl}
 						target="_blank"
 						rel="noopener noreferrer"
-						className="block h-12 w-12 overflow-hidden rounded-lg bg-gray-100 transition-colors duration-200 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:h-14 sm:w-14 dark:bg-gray-700 dark:hover:bg-gray-600"
+						className="block h-12 w-12 overflow-hidden rounded-lg bg-secondary_bg transition-colors duration-200 hover:bg-border focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:h-14 sm:w-14 dark:bg-gray-700 dark:hover:bg-gray-600"
 						aria-label={`View product details for ${product.name}`}
 					>
 						<img
@@ -141,7 +141,7 @@ export function ProductTableColumns(products: Product[] = []): ColumnDef<Product
 				const ch = inferChannelFromProduct(p);
 				return (
 					renderChannel(ch) || (
-						<span className="text-xs text-gray-500">—</span>
+						<span className="text-xs text-tertiary">—</span>
 					)
 				);
 			},
@@ -159,10 +159,10 @@ export function ProductTableColumns(products: Product[] = []): ColumnDef<Product
 				const sku = row.original.sku as string;
 				return (
 					<div className="min-w-[200px] space-y-1">
-						<div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+						<div className="text-sm font-medium text-primary dark:text-gray-100">
 							{name}
 						</div>
-						<div className="text-xs text-gray-500 dark:text-gray-400">
+						<div className="text-xs text-tertiary dark:text-tertiary">
 							SKU: {sku}
 						</div>
 					</div>
@@ -278,10 +278,10 @@ export function ProductTableColumns(products: Product[] = []): ColumnDef<Product
 				const v = row.getValue("minMaxPrice") as { min: number | null; max: number | null };
 				return (
 					<div className="space-y-0.5 text-right">
-						<div className="text-xs text-gray-500 dark:text-gray-400">
+						<div className="text-xs text-tertiary dark:text-tertiary">
 							Low: {formatEuro(v?.min ?? null)}
 						</div>
-						<div className="text-xs text-gray-500 dark:text-gray-400">
+						<div className="text-xs text-tertiary dark:text-tertiary">
 							High: {formatEuro(v?.max ?? null)}
 						</div>
 					</div>
@@ -322,7 +322,7 @@ export function ProductTableColumns(products: Product[] = []): ColumnDef<Product
 				return (
 					<div className="flex items-center justify-end gap-2 text-xs">
 						<span className="text-green-600">{v.lower} Lower</span>
-						<span className="text-gray-600">{v.equal} Equal</span>
+						<span className="text-tertiary">{v.equal} Equal</span>
 						<span className="text-red-600">{v.higher} Higher</span>
 					</div>
 				);
@@ -339,13 +339,13 @@ export function ProductTableColumns(products: Product[] = []): ColumnDef<Product
 				const highest = parseEuro(competitors?.highest ?? null);
 				return (
 					<div className="space-y-1 text-right">
-						<div className="text-xs text-gray-500 dark:text-gray-400">
+						<div className="text-xs text-tertiary dark:text-tertiary">
 							Cheapest: {formatEuro(cheapest)}
 						</div>
-						<div className="text-xs text-gray-500 dark:text-gray-400">
+						<div className="text-xs text-tertiary dark:text-tertiary">
 							Avg: {formatEuro(avg)}
 						</div>
-						<div className="text-xs text-gray-500 dark:text-gray-400">
+						<div className="text-xs text-tertiary dark:text-tertiary">
 							Highest: {formatEuro(highest)}
 						</div>
 					</div>

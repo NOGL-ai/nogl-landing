@@ -24,7 +24,7 @@
 		"paths": {
 			"@/*": ["./src/*"] // This alias maps `@/` to `src/`, simplifying imports
 		},
-		"typeRoots": ["./node_modules/@types"]
+		"types": ["@testing-library/jest-dom"]
 	},
 	"include": [
 		"next-env.d.ts",

@@ -66,7 +66,7 @@ export function DataTableBody<TData>({
 				<UntitledTable.Row role="row">
 					<UntitledTable.Cell
 						colSpan={table.getAllColumns().length}
-						className="h-24 text-center text-gray-500 dark:text-gray-400"
+						className="h-24 text-center text-tertiary dark:text-tertiary"
 						role="gridcell"
 						aria-colspan={table.getAllColumns().length}
 					>

@@ -297,7 +297,7 @@ const RepricingRulesCard: React.FC<RepricingRulesCardProps> = ({
 					{/* Action Buttons */}
 					<div className='flex items-center gap-4'>
 						<Button
-							className='border-stroke-soft-200 text-text-sub-600 flex flex-1 items-center justify-center gap-1 border bg-white px-2 py-2 hover:bg-gray-50'
+							className='border-stroke-soft-200 text-text-sub-600 flex flex-1 items-center justify-center gap-1 border bg-white px-2 py-2 hover:bg-secondary_bg'
 							onClick={() => onManage?.(rule.id)}
 							style={{
 								borderRadius: "5px",

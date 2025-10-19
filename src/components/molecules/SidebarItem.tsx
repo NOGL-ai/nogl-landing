@@ -102,7 +102,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
 								item.badge.variant === "soon" && isActive
 									? "bg-white/10 text-white"
 									: "bg-[#375DFB]/10 text-[#375DFB]",
-								item.badge.variant === "default" && "bg-gray-100 text-gray-700"
+								item.badge.variant === "default" && "bg-secondary_bg text-secondary"
 							)}
 						>
 							{item.badge.text}
@@ -152,7 +152,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
 								item.badge.variant === "soon" && isActive
 									? "bg-white/10 text-white"
 									: "bg-[#375DFB]/10 text-[#375DFB]",
-								item.badge.variant === "default" && "bg-gray-100 text-gray-700"
+								item.badge.variant === "default" && "bg-secondary_bg text-secondary"
 							)}
 						>
 							{item.badge.text}
@@ -182,7 +182,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
 			{/* Tooltip for collapsed state */}
 			{isCollapsed && showTooltip && (
 				<div className='absolute left-full top-1/2 z-50 ml-2 -translate-y-1/2 transform'>
-					<div className='whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-sm text-white shadow-lg'>
+					<div className='whitespace-nowrap rounded bg-background px-2 py-1 text-sm text-white shadow-lg'>
 						{item.title}
 						{item.badge && (
 							<span

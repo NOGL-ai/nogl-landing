@@ -27,12 +27,12 @@ export interface CardDescriptionProps
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
 	({ className, variant = "default", padding = "md", ...props }, ref) => {
-		const variants = {
-			default: "bg-white border border-gray-200",
-			outlined: "bg-white border-2 border-gray-300",
-			elevated: "bg-white shadow-lg border border-gray-100",
-			filled: "bg-gray-50 border border-gray-200",
-		};
+	const variants = {
+		default: "bg-background border border-border",
+		outlined: "bg-background border-2 border-border",
+		elevated: "bg-background shadow-lg border border-border",
+		filled: "bg-secondary_bg border border-border",
+	};
 
 		const paddings = {
 			none: "",
@@ -71,7 +71,7 @@ const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
 								{title}
 							</h3>
 						)}
-						{subtitle && <p className='text-sm text-gray-500'>{subtitle}</p>}
+						{subtitle && <p className='text-sm text-tertiary'>{subtitle}</p>}
 					</div>
 					{action && <div>{action}</div>}
 				</div>
@@ -114,7 +114,7 @@ const CardDescription = React.forwardRef<
 	HTMLParagraphElement,
 	CardDescriptionProps
 >(({ className, ...props }, ref) => (
-	<p ref={ref} className={cn("text-sm text-gray-500", className)} {...props} />
+	<p ref={ref} className={cn("text-sm text-tertiary", className)} {...props} />
 ));
 
 Card.displayName = "Card";

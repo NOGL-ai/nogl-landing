@@ -264,7 +264,7 @@ const SignupWithPassword = () => {
 						value={data.password}
 						error={errors.password}
 					/>
-					<p className='text-[14px] font-normal leading-5 text-[#535862] dark:text-gray-300'>
+					<p className='text-[14px] font-normal leading-5 text-[#535862] dark:text-tertiary'>
 						Must be at least 8 characters.
 					</p>
 				</div>

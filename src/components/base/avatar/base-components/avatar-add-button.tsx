@@ -23,7 +23,7 @@ export const AvatarAddButton = ({ size, className, title = "Add user", ...props 
             {...props}
             aria-label={title}
             className={cx(
-                "flex cursor-pointer items-center justify-center rounded-full border border-dashed border-primary bg-background text-fg-quaternary outline-focus-ring transition duration-100 ease-linear hover:bg-primary_hover hover:text-fg-quaternary_hover focus-visible:outline-2 focus-visible:outline-offset-2 disabled:border-gray-200 disabled:bg-secondary disabled:text-gray-200",
+                "flex cursor-pointer items-center justify-center rounded-full border border-dashed border-primary bg-background text-fg-quaternary outline-focus-ring transition duration-100 ease-linear hover:bg-primary_hover hover:text-fg-quaternary_hover focus-visible:outline-2 focus-visible:outline-offset-2 disabled:border-disabled_border disabled:bg-secondary disabled:text-disabled",
                 sizes[size].root,
                 className,
             )}

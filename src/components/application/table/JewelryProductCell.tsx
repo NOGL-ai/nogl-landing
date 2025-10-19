@@ -38,7 +38,7 @@ const JewelryProductCell: React.FC<JewelryProductCellProps> = ({
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'Active': return 'text-green-700 bg-green-100 dark:bg-green-900 dark:text-green-300';
-      case 'Inactive': return 'text-gray-500 bg-gray-100 dark:bg-gray-800';
+      case 'Inactive': return 'text-tertiary bg-secondary_bg';
       case 'Low Stock': return 'text-orange-700 bg-orange-100 dark:bg-orange-900 dark:text-orange-300';
       case 'Out of Stock': return 'text-red-700 bg-red-100 dark:bg-red-900 dark:text-red-300';
       default: return 'text-blue-700 bg-blue-100 dark:bg-blue-900 dark:text-blue-300';
@@ -103,10 +103,10 @@ const JewelryProductCell: React.FC<JewelryProductCellProps> = ({
   const status = product.status || 'Active';
 
   return (
-    <div className={`group relative flex items-start ${sizeClasses.container} rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors ${className}`}>
+    <div className={`group relative flex items-start ${sizeClasses.container} rounded-lg hover:bg-secondary_bg/50 transition-colors ${className}`}>
       {/* Product Image with Status Indicator */}
       <div className="relative flex-shrink-0">
-        <div className={`relative ${sizeClasses.image} rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 p-1 shadow-sm`}>
+        <div className={`relative ${sizeClasses.image} rounded-lg border border-border bg-background p-1 shadow-sm`}>
           <img
             src={product.image}
             alt={`${product.name} product image`}
@@ -147,7 +147,7 @@ const JewelryProductCell: React.FC<JewelryProductCellProps> = ({
             <h3 className={`${sizeClasses.title} font-semibold text-gray-900 dark:text-gray-100 truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors`}>
               {product.name}
             </h3>
-            <p className={`${sizeClasses.subtitle} text-gray-600 dark:text-gray-400 truncate`}>{product.brand.name}</p>
+            <p className={`${sizeClasses.subtitle} text-tertiary truncate`}>{product.brand.name}</p>
           </div>
           {showPrice && (
             <div className="text-right flex-shrink-0">

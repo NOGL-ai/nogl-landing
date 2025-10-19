@@ -7,13 +7,15 @@ import { Input } from "@/components/base/input/input";
 import { Select } from "@/components/base/select/select";
 import { PersonalInfoTab } from "./settings/PersonalInfoTab";
 import { PlaceholderTab } from "./settings/PlaceholderTab";
+import { IntegrationsTab } from "./settings/IntegrationsTab";
+import { TeamTab } from "./settings/TeamTab";
 
 // Tab items configuration for both dropdown and tabs
 const tabItems = [
 	{ id: "my-details", label: "My details" },
 	{ id: "profile", label: "Profile" },
 	{ id: "password", label: "Password" },
-	{ id: "team", label: "Team" },
+	{ id: "team", label: "Team", badge: 48 },
 	{ id: "plan", label: "Plan" },
 	{ id: "billing", label: "Billing" },
 	{ id: "email", label: "Email" },
@@ -38,31 +40,33 @@ export default function AccountSettingsTemplate() {
 						<div className="flex flex-col gap-4">
 							<div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-start lg:gap-x-4 lg:gap-y-5">
 								<div className="flex flex-col gap-0.5 lg:min-w-[320px] lg:flex-1 lg:gap-1">
-									<h1 className="text-[20px] leading-[30px] font-semibold text-gray-900 dark:text-white lg:text-display-xs lg:leading-[32px]">
+									<h1 className="text-[20px] leading-[30px] font-semibold text-primary lg:text-display-xs lg:leading-[32px]">
 										Settings
 									</h1>
 								</div>
-								<div className="w-full lg:min-w-[200px] lg:max-w-[320px] lg:flex-1">
-									<Input
-										size="md"
-										icon={SearchMd}
-										placeholder="Search"
-										className="w-full"
-									/>
-								</div>
+							<div className="w-full lg:min-w-[200px] lg:max-w-[320px] lg:flex-1">
+								<Input
+									size="md"
+									icon={SearchMd}
+									placeholder="Search"
+									className="w-full"
+									aria-label="Search settings"
+								/>
+							</div>
 							</div>
 						</div>
 
-						{/* Mobile: Dropdown Navigation */}
-						<Select
-							size="md"
-							selectedKey={selectedTab}
-							onSelectionChange={(key) => setSelectedTab(key as string)}
-							items={tabItems}
-							className="w-full lg:hidden"
-						>
-							{(item) => <Select.Item {...item}>{item.label}</Select.Item>}
-						</Select>
+					{/* Mobile: Dropdown Navigation */}
+					<Select
+						size="md"
+						selectedKey={selectedTab}
+						onSelectionChange={(key) => setSelectedTab(key as string)}
+						items={tabItems}
+						className="w-full lg:hidden"
+						aria-label="Settings navigation (mobile)"
+					>
+						{(item) => <Select.Item {...item}>{item.label}</Select.Item>}
+					</Select>
 
 						{/* Desktop: Horizontal Tabs */}
 						<Tabs.List
@@ -70,7 +74,7 @@ export default function AccountSettingsTemplate() {
 							type="button-minimal"
 							orientation="horizontal"
 							items={tabItems}
-							className="hidden lg:flex w-full rounded-lg border border-gray-200 bg-gray-50 p-0.5 dark:border-gray-800 dark:bg-gray-900"
+							className="hidden lg:flex w-full rounded-lg border border-border bg-secondary_bg p-0.5"
 						>
 							{(item) => (
 								<Tabs.Item {...item}>{item.label}</Tabs.Item>
@@ -93,7 +97,7 @@ export default function AccountSettingsTemplate() {
 				</Tabs.Panel>
 
 				<Tabs.Panel id="team">
-					<PlaceholderTab title="Team" description="Manage team members and permissions." />
+					<TeamTab />
 				</Tabs.Panel>
 
 				<Tabs.Panel id="plan">
@@ -113,7 +117,7 @@ export default function AccountSettingsTemplate() {
 				</Tabs.Panel>
 
 				<Tabs.Panel id="integrations">
-					<PlaceholderTab title="Integrations" description="Connect and manage third-party integrations." />
+					<IntegrationsTab />
 				</Tabs.Panel>
 
 				<Tabs.Panel id="api">

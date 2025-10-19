@@ -75,7 +75,7 @@ export function DataTableSortableHeaderCell<TData>({
 				<div
 					onMouseDown={header.getResizeHandler()}
 					onTouchStart={header.getResizeHandler()}
-					className="absolute right-0 top-0 h-full w-1 bg-gray-300 cursor-col-resize select-none touch-none hover:bg-blue-500 dark:bg-gray-600 dark:hover:bg-blue-400"
+					className="absolute right-0 top-0 h-full w-1 bg-border cursor-col-resize select-none touch-none hover:bg-blue-500 dark:bg-gray-600 dark:hover:bg-blue-400"
 					aria-label={`Resize column ${header.id}`}
 					onClick={(e) => e.stopPropagation()}
 				/>
@@ -90,7 +90,7 @@ export function DataTableSortableHeaderCell<TData>({
 				>
 					<Icon
 						name="MoreHorizontal"
-						className="h-3 w-3 text-gray-400 dark:text-gray-500"
+						className="h-3 w-3 text-tertiary dark:text-tertiary"
 						aria-hidden={true}
 					/>
 				</div>

@@ -17,7 +17,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<html
 			lang='en'
-			className={`${inter.variable} scroll-smooth dark`}
+			className={`${inter.variable} scroll-smooth`}
 			suppressHydrationWarning={true}
 		>
 			<head>
@@ -28,29 +28,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 					integrity="sha384-GvrOXuhMATgEsSwCs4smul74iXGOixntILdUW9XmUC6+HX0sLNAK3q71HotJqlAn"
 					crossOrigin="anonymous"
 				/>
-				{/* Theme initialization script to prevent flash of light mode */}
-				<Script
-					id='theme-init'
-					strategy='beforeInteractive'
-					dangerouslySetInnerHTML={{
-						__html: `
-              (function() {
-                try {
-                  // Set default dark theme immediately to prevent flash
-                  document.documentElement.classList.add('dark');
-                  
-                  // Then check localStorage and update accordingly
-                  var theme = localStorage.getItem('theme');
-                  if (theme === 'light') {
-                    document.documentElement.classList.remove('dark');
-                  } else if (!theme) {
-                    localStorage.setItem('theme', 'dark');
-                  }
-                } catch (e) {}
-              })();
-            `,
-					}}
-				/>
+				{/* Theme initialization handled by next-themes ThemeProvider */}
 
 				{/* CookieYes Script */}
 				{/* <Script

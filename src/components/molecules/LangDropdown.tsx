@@ -57,15 +57,15 @@ const LangDropdown: FC<LangDropdownProps> = ({
 							switchLanguage(item.id);
 							close();
 						}}
-						className={`-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-gray-100 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 dark:hover:bg-gray-700 ${
+						className={`-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-secondary_bg focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 dark:hover:bg-gray-700 ${
 							pathname?.startsWith(`/${item.id}`)
-								? "bg-gray-100 dark:bg-gray-700"
+								? "bg-secondary_bg dark:bg-gray-700"
 								: "opacity-80"
 						}`}
 					>
 						<div className=''>
 							<p className='text-sm font-medium '>{item.name}</p>
-							<p className='text-xs text-gray-500 dark:text-gray-400'>
+							<p className='text-xs text-tertiary dark:text-tertiary'>
 								{item.description}
 							</p>
 						</div>
@@ -83,8 +83,8 @@ const LangDropdown: FC<LangDropdownProps> = ({
 						key={index}
 						href={item.href}
 						onClick={() => close()}
-						className={`-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-gray-100 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 dark:hover:bg-gray-700 ${
-							item.active ? "bg-gray-100 dark:bg-gray-700" : "opacity-80"
+						className={`-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-secondary_bg focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 dark:hover:bg-gray-700 ${
+							item.active ? "bg-secondary_bg dark:bg-gray-700" : "opacity-80"
 						}`}
 					>
 						<item.icon className='h-[18px] w-[18px] ' />
@@ -103,7 +103,7 @@ const LangDropdown: FC<LangDropdownProps> = ({
 						<Popover.Button
 							className={`
                 ${open ? "" : "text-opacity-80"}
-             group inline-flex h-10 items-center self-center px-3 py-1.5 text-sm font-medium text-gray-800 hover:text-opacity-100 focus:outline-none sm:h-12 dark:text-neutral-200 `}
+             group inline-flex h-10 items-center self-center px-3 py-1.5 text-sm font-medium text-secondary hover:text-opacity-100 focus:outline-none sm:h-12 dark:text-neutral-200 `}
 						>
 							<GlobeAltIcon className='h-5 w-5 opacity-80' />
 							<span className='mx-1'>/</span>
@@ -126,17 +126,17 @@ const LangDropdown: FC<LangDropdownProps> = ({
 							<Popover.Panel className={`absolute z-20  ${panelClassName}`}>
 								<div className='rounded-2xl bg-white p-3 shadow-lg ring-1 ring-black ring-opacity-5 sm:p-6 dark:bg-neutral-800'>
 									<Tab.Group>
-										<Tab.List className='flex space-x-1 rounded-full bg-gray-100 p-1 dark:bg-slate-700'>
+										<Tab.List className='flex space-x-1 rounded-full bg-secondary_bg p-1 dark:bg-slate-700'>
 											{["Language", "Currency"].map((category) => (
 												<Tab
 													key={category}
 													className={({ selected }) =>
 														classNames(
-															"w-full rounded-full py-2 text-sm font-medium leading-5 text-gray-700",
+															"w-full rounded-full py-2 text-sm font-medium leading-5 text-secondary",
 															"focus:outline-none focus:ring-0",
 															selected
 																? "bg-white shadow"
-																: "text-gray-700 hover:bg-white/70 dark:text-slate-300 dark:hover:bg-slate-900/40"
+																: "text-secondary hover:bg-white/70 dark:text-slate-300 dark:hover:bg-slate-900/40"
 														)
 													}
 												>

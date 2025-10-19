@@ -7,7 +7,7 @@ import { Badge } from "@/components/base/badges/badges";
 import { cx, sortCx } from "@/utils/cx";
 
 const getStyles = () => sortCx({
-    root: `group relative flex w-full cursor-pointer items-center rounded-[6px] bg-white hover:bg-gray-50 dark:bg-[#0a0d12] dark:hover:bg-[#252b37]/50 outline-focus-ring transition-all duration-200 ease-in-out select-none focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-2`,
+    root: `group relative flex w-full cursor-pointer items-center rounded-[6px] bg-background hover:bg-secondary_bg dark:bg-[#0a0d12] dark:hover:bg-[#252b37]/50 outline-focus-ring transition-all duration-200 ease-in-out select-none focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-2`,
     rootSelected: "bg-[#fafafa] hover:bg-[#fafafa] dark:bg-[#252b37] dark:hover:bg-[#252b37]",
     content: `bg-transparent box-border content-stretch flex flex-[1_0_0] gap-[12px] items-center min-h-px min-w-px px-[12px] py-[8px] relative rounded-[6px] shrink-0`,
     textAndIcon: `content-stretch flex flex-[1_0_0] gap-[8px] items-center min-h-px min-w-px relative shrink-0`,

@@ -24,7 +24,7 @@ export default function Signup() {
 				</div>
 
 				{/* Copyright - absolutely positioned on desktop only */}
-				<p className="hidden text-sm font-normal leading-5 text-[#535862] dark:text-gray-400 lg:absolute lg:bottom-[52px] lg:left-8 lg:block">
+				<p className="hidden text-sm font-normal leading-5 text-[#535862] dark:text-tertiary lg:absolute lg:bottom-[52px] lg:left-8 lg:block">
 					© Nogl.ai 2025
 				</p>
 
@@ -37,7 +37,7 @@ export default function Signup() {
 									<h1 className="w-full text-2xl font-semibold leading-8 text-[#181d27] dark:text-white">
 										Sign up
 									</h1>
-									<p className="w-full text-base font-normal leading-6 text-[#535862] dark:text-gray-300">
+									<p className="w-full text-base font-normal leading-6 text-[#535862] dark:text-tertiary">
 										Join 100+ fashion brands using AI.
 									</p>
 								</div>
@@ -52,7 +52,7 @@ export default function Signup() {
 
 								{/* Row - Sign in link */}
 								<div className="flex w-full items-center justify-center gap-1">
-									<p className="text-sm font-normal leading-5 text-[#535862] dark:text-gray-300">
+									<p className="text-sm font-normal leading-5 text-[#535862] dark:text-tertiary">
 										Already have an account?
 									</p>
 									<Link

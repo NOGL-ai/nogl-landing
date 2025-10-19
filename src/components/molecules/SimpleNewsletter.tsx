@@ -82,18 +82,18 @@ const SimpleNewsletter: React.FC<SimpleNewsletterProps> = ({
 			case "minimal":
 				return {
 					container: "bg-transparent",
-					title: "text-gray-900 dark:text-white",
-					description: "text-gray-600 dark:text-gray-300",
+					title: "text-primary",
+					description: "text-tertiary dark:text-tertiary",
 					input:
-						"bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400",
+						"bg-white dark:bg-secondary_bg border-border dark:border-border text-primary placeholder-gray-500 dark:placeholder-gray-400",
 				};
 			default:
 				return {
-					container: "bg-gray-50 dark:bg-gray-800 rounded-2xl p-8",
-					title: "text-gray-900 dark:text-white",
-					description: "text-gray-600 dark:text-gray-300",
+					container: "bg-secondary_bg dark:bg-secondary_bg rounded-2xl p-8",
+					title: "text-primary",
+					description: "text-tertiary dark:text-tertiary",
 					input:
-						"bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400",
+						"bg-white dark:bg-gray-700 border-border dark:border-border text-primary placeholder-gray-500 dark:placeholder-gray-400",
 				};
 		}
 	};

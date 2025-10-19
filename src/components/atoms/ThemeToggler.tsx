@@ -62,6 +62,7 @@ export default function ThemeToggler() {
 		<button
 			onClick={() => setTheme(isDarkMode ? "light" : "dark")}
 			className='bg-gray-3 relative z-10 hidden h-12 w-full max-w-24 cursor-pointer items-center justify-between rounded-3xl p-[5px] sm:flex dark:bg-white/5'
+			aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
 		>
 			<span
 				className={`text-dark dark:bg-gray-dark absolute left-[5px] top-1/2 -z-10 flex h-[38px] w-[38px] -translate-y-1/2 items-center justify-center rounded-full bg-white transition-all duration-300 ${

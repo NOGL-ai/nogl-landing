@@ -369,7 +369,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 							href={productUrl}
 							target='_blank'
 							rel='noopener noreferrer'
-							className='block h-10 w-10 overflow-hidden rounded-lg bg-gray-100 transition-colors duration-200 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:h-12 sm:w-12 dark:bg-gray-700 dark:hover:bg-gray-600'
+							className='block h-10 w-10 overflow-hidden rounded-lg bg-secondary_bg transition-colors duration-200 hover:bg-border focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:h-12 sm:w-12 dark:bg-gray-700 dark:hover:bg-gray-600'
 							title={`View product: ${product.name}`}
 						>
 							<img
@@ -395,7 +395,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 					const ch = inferChannelFromProduct(p);
 					return (
 						renderChannel(ch) || (
-							<span className='text-xs text-gray-500'>—</span>
+							<span className='text-xs text-tertiary'>—</span>
 						)
 					);
 				},
@@ -430,10 +430,10 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 					const sku = row.original.sku as string;
 					return (
 						<div className='min-w-[200px] space-y-1'>
-							<div className='text-sm font-medium text-gray-900 dark:text-gray-100'>
+							<div className='text-sm font-medium text-primary dark:text-gray-100'>
 								{name}
 							</div>
-							<div className='text-xs text-gray-500 dark:text-gray-400'>
+							<div className='text-xs text-tertiary dark:text-tertiary'>
 								SKU: {sku}
 							</div>
 						</div>
@@ -606,10 +606,10 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 					};
 					return (
 						<div className='space-y-0.5 text-right'>
-							<div className='text-xs text-gray-500 dark:text-gray-400'>
+							<div className='text-xs text-tertiary dark:text-tertiary'>
 								Low: {formatEuro(v?.min ?? null)}
 							</div>
-							<div className='text-xs text-gray-500 dark:text-gray-400'>
+							<div className='text-xs text-tertiary dark:text-tertiary'>
 								High: {formatEuro(v?.max ?? null)}
 							</div>
 						</div>
@@ -695,7 +695,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 					return (
 						<div className='flex items-center justify-end gap-2 text-xs'>
 							<span className='text-green-600'>{v.lower} Lower</span>
-							<span className='text-gray-600'>{v.equal} Equal</span>
+							<span className='text-tertiary'>{v.equal} Equal</span>
 							<span className='text-red-600'>{v.higher} Higher</span>
 						</div>
 					);
@@ -718,13 +718,13 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 					const highest = parseEuro(competitors?.highest ?? null);
 					return (
 						<div className='space-y-1 text-right'>
-							<div className='text-xs text-gray-500 dark:text-gray-400'>
+							<div className='text-xs text-tertiary dark:text-tertiary'>
 								Cheapest: {formatEuro(cheapest)}
 							</div>
-							<div className='text-xs text-gray-500 dark:text-gray-400'>
+							<div className='text-xs text-tertiary dark:text-tertiary'>
 								Avg: {formatEuro(avg)}
 							</div>
-							<div className='text-xs text-gray-500 dark:text-gray-400'>
+							<div className='text-xs text-tertiary dark:text-tertiary'>
 								Highest: {formatEuro(highest)}
 							</div>
 						</div>
@@ -882,7 +882,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 							className={`absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform transition-colors ${
 								globalFilter
 									? "text-blue-500 dark:text-blue-400"
-									: "text-gray-400 dark:text-gray-500"
+									: "text-tertiary dark:text-tertiary"
 							}`}
 						/>
 						<Input
@@ -892,7 +892,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 								setGlobalFilter(e.target.value);
 								debouncedSetGlobalFilter(e.target.value);
 							}}
-							className={`w-full border-gray-300 bg-white pl-10 text-gray-900 placeholder-gray-500 transition-colors dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-400 ${
+							className={`w-full border-border bg-white pl-10 text-primary placeholder-gray-500 transition-colors dark:border-border dark:bg-secondary_bg dark:text-gray-100 dark:placeholder-gray-400 ${
 								globalFilter
 									? "border-blue-300 focus:border-blue-500 dark:border-blue-500 dark:focus:border-blue-400"
 									: ""
@@ -904,7 +904,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 						<Button
 							variant='secondary'
 							onClick={() => setShowFilters(!showFilters)}
-							className='relative flex-1 border-gray-300 text-gray-700 hover:bg-gray-50 sm:flex-none dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
+							className='relative flex-1 border-border text-secondary hover:bg-secondary_bg sm:flex-none dark:border-border dark:text-tertiary dark:hover:bg-gray-700'
 						>
 							<Filter className='mr-2 h-4 w-4' />
 							Filters
@@ -921,7 +921,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 						<Button
 							variant='secondary'
 							onClick={clearAllFilters}
-							className='flex-1 border-gray-300 text-gray-700 hover:bg-gray-50 sm:flex-none dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
+							className='flex-1 border-border text-secondary hover:bg-secondary_bg sm:flex-none dark:border-border dark:text-tertiary dark:hover:bg-gray-700'
 						>
 							<FilterX className='mr-2 h-4 w-4' />
 							Clear All
@@ -938,7 +938,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 							className={
 								viewMode === "table"
 									? ""
-									: "border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+									: "border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700"
 							}
 						>
 							<List className='h-4 w-4' />
@@ -950,7 +950,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 							className={
 								viewMode === "grid"
 									? ""
-									: "border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+									: "border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700"
 							}
 						>
 							<Grid3X3 className='h-4 w-4' />
@@ -961,7 +961,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 						<DropdownMenuTrigger asChild>
 							<Button
 								variant='secondary'
-								className='border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
+								className='border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700'
 							>
 								<Columns className='mr-2 h-4 w-4' />
 								Columns
@@ -993,11 +993,11 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 
 			{/* Advanced Filters Panel */}
 			{showFilters && (
-				<div className='space-y-4 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800'>
+				<div className='space-y-4 rounded-lg border border-border bg-secondary_bg p-4 dark:border-border dark:bg-secondary_bg'>
 					<div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
 						{/* Price Range Filter */}
 						<div className='space-y-2'>
-							<label className='text-sm font-medium text-gray-900 dark:text-gray-100'>
+							<label className='text-sm font-medium text-primary dark:text-gray-100'>
 								Price Range
 							</label>
 							<div className='px-3'>
@@ -1009,7 +1009,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 									step={10}
 									className='w-full'
 								/>
-								<div className='mt-1 flex justify-between text-xs text-gray-500 dark:text-gray-400'>
+								<div className='mt-1 flex justify-between text-xs text-tertiary dark:text-tertiary'>
 									<span>€{filters.priceRange[0]}</span>
 									<span>€{filters.priceRange[1]}</span>
 								</div>
@@ -1018,7 +1018,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 
 						{/* Brand Filter */}
 						<div className='space-y-2'>
-							<label className='text-sm font-medium text-gray-900 dark:text-gray-100'>
+							<label className='text-sm font-medium text-primary dark:text-gray-100'>
 								Brands
 							</label>
 							<div className='space-y-1'>
@@ -1034,7 +1034,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 											/>
 											<label
 												htmlFor={`brand-${brand}`}
-												className='text-sm text-gray-700 dark:text-gray-300'
+												className='text-sm text-secondary dark:text-tertiary'
 											>
 												{brand}
 											</label>
@@ -1046,7 +1046,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 
 						{/* Currency Filter */}
 						<div className='space-y-2'>
-							<label className='text-sm font-medium text-gray-900 dark:text-gray-100'>
+							<label className='text-sm font-medium text-primary dark:text-gray-100'>
 								Currency
 							</label>
 							<div className='space-y-1'>
@@ -1061,7 +1061,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 										/>
 										<label
 											htmlFor={`currency-${currency}`}
-											className='text-sm text-gray-700 dark:text-gray-300'
+											className='text-sm text-secondary dark:text-tertiary'
 										>
 											{currency}
 										</label>
@@ -1072,7 +1072,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 
 						{/* Quick Filters */}
 						<div className='space-y-2'>
-							<label className='text-sm font-medium text-gray-900 dark:text-gray-100'>
+							<label className='text-sm font-medium text-primary dark:text-gray-100'>
 								Quick Filters
 							</label>
 							<div className='grid grid-cols-2 gap-2'>
@@ -1083,7 +1083,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 										handlePriceRangeChange([0, 50]);
 										setFilters((prev) => ({ ...prev, categories: ["Rings"] }));
 									}}
-									className='border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
+									className='border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700'
 								>
 									<Minus className='mr-1 h-3 w-3' />
 									Under €50
@@ -1095,7 +1095,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 										handlePriceRangeChange([100, 1000]);
 										setFilters((prev) => ({ ...prev, featured: true }));
 									}}
-									className='border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
+									className='border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700'
 								>
 									<Star className='mr-1 h-3 w-3' />
 									Premium
@@ -1109,7 +1109,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 											hasCompetitorData: true,
 										}));
 									}}
-									className='border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
+									className='border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700'
 								>
 									<TrendingUp className='mr-1 h-3 w-3' />
 									With Data
@@ -1121,7 +1121,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 										handleBrandFilter("Stilnest", true);
 										setFilters((prev) => ({ ...prev, categories: ["Rings"] }));
 									}}
-									className='border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
+									className='border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700'
 								>
 									<Target className='mr-1 h-3 w-3' />
 									Stilnest
@@ -1147,7 +1147,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 							<Button
 								variant='secondary'
 								size='sm'
-								className='border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
+								className='border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700'
 							>
 								<Download className='mr-2 h-4 w-4' />
 								Export
@@ -1155,7 +1155,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 							<Button
 								variant='secondary'
 								size='sm'
-								className='border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
+								className='border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700'
 							>
 								<Edit className='mr-2 h-4 w-4' />
 								Bulk Edit
@@ -1163,7 +1163,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 							<Button
 								variant='secondary'
 								size='sm'
-								className='border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
+								className='border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700'
 							>
 								<Trash2 className='mr-2 h-4 w-4' />
 								Delete
@@ -1176,9 +1176,9 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 			{/* Table */}
 			<div className='-mx-4 sm:-mx-6 lg:-mx-8'>
 				<div className='overflow-x-auto px-4 sm:px-6 lg:px-8'>
-					<div className='rounded-md border border-gray-200 dark:border-gray-700'>
+					<div className='rounded-md border border-border dark:border-border'>
 						<Table className='min-w-full'>
-							<TableHeader className='sticky top-0 z-10 bg-white dark:bg-gray-800'>
+							<TableHeader className='sticky top-0 z-10 bg-white dark:bg-secondary_bg'>
 								{table.getHeaderGroups().map((headerGroup) => (
 									<TableRow key={headerGroup.id}>
 										{headerGroup.headers.map((header) => {
@@ -1225,7 +1225,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 									<TableRow>
 										<TableCell
 											colSpan={columns.length}
-											className='h-24 text-center text-gray-500 dark:text-gray-400'
+											className='h-24 text-center text-tertiary dark:text-tertiary'
 										>
 											No results found.
 										</TableCell>
@@ -1239,13 +1239,13 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 
 			{/* Pagination */}
 			<div className='flex flex-col items-center justify-between gap-4 py-4 sm:flex-row'>
-				<div className='text-muted-foreground text-center text-sm sm:text-left dark:text-gray-400'>
+				<div className='text-muted-foreground text-center text-sm sm:text-left dark:text-tertiary'>
 					{table.getFilteredSelectedRowModel().rows.length} of{" "}
 					{table.getFilteredRowModel().rows.length} row(s) selected.
 				</div>
 				<div className='flex flex-col items-center gap-4 sm:flex-row sm:gap-6'>
 					<div className='flex items-center space-x-2'>
-						<p className='text-sm font-medium text-gray-900 dark:text-gray-100'>
+						<p className='text-sm font-medium text-primary dark:text-gray-100'>
 							Rows per page
 						</p>
 						<Select
@@ -1254,19 +1254,19 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 								table.setPageSize(Number(value));
 							}}
 						>
-							<SelectTrigger className='h-8 w-[70px] border-gray-300 bg-white text-gray-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100'>
+							<SelectTrigger className='h-8 w-[70px] border-border bg-white text-primary dark:border-border dark:bg-secondary_bg dark:text-gray-100'>
 							<SelectValue
 								placeholder={`${table.getState().pagination.pageSize}`}
 							/>
 							</SelectTrigger>
 							<SelectContent
-								className='border-gray-300 bg-white dark:border-gray-600 dark:bg-gray-800'
+								className='border-border bg-white dark:border-border dark:bg-secondary_bg'
 							>
 								{[10, 20, 30, 40, 50].map((pageSize) => (
 									<SelectItem
 										key={pageSize}
 										value={`${pageSize}`}
-										className='text-gray-900 hover:bg-gray-50 dark:text-gray-100 dark:hover:bg-gray-700'
+										className='text-primary hover:bg-secondary_bg dark:text-gray-100 dark:hover:bg-gray-700'
 									>
 										{pageSize}
 									</SelectItem>
@@ -1274,14 +1274,14 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 							</SelectContent>
 						</Select>
 					</div>
-					<div className='flex w-[100px] items-center justify-center text-sm font-medium text-gray-900 dark:text-gray-100'>
+					<div className='flex w-[100px] items-center justify-center text-sm font-medium text-primary dark:text-gray-100'>
 						Page {table.getState().pagination.pageIndex + 1} of{" "}
 						{table.getPageCount()}
 					</div>
 					<div className='flex items-center space-x-2'>
 						<Button
 							variant='secondary'
-							className='hidden h-8 w-8 border-gray-300 p-0 text-gray-700 hover:bg-gray-50 lg:flex dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
+							className='hidden h-8 w-8 border-border p-0 text-secondary hover:bg-secondary_bg lg:flex dark:border-border dark:text-tertiary dark:hover:bg-gray-700'
 							onClick={() => table.setPageIndex(0)}
 							disabled={!table.getCanPreviousPage()}
 						>
@@ -1290,7 +1290,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 						</Button>
 						<Button
 							variant='secondary'
-							className='h-8 w-8 border-gray-300 p-0 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
+							className='h-8 w-8 border-border p-0 text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700'
 							onClick={() => table.previousPage()}
 							disabled={!table.getCanPreviousPage()}
 						>
@@ -1299,7 +1299,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 						</Button>
 						<Button
 							variant='secondary'
-							className='h-8 w-8 border-gray-300 p-0 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
+							className='h-8 w-8 border-border p-0 text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700'
 							onClick={() => table.nextPage()}
 							disabled={!table.getCanNextPage()}
 						>
@@ -1308,7 +1308,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 						</Button>
 						<Button
 							variant='secondary'
-							className='hidden h-8 w-8 border-gray-300 p-0 text-gray-700 hover:bg-gray-50 lg:flex dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
+							className='hidden h-8 w-8 border-border p-0 text-secondary hover:bg-secondary_bg lg:flex dark:border-border dark:text-tertiary dark:hover:bg-gray-700'
 							onClick={() => table.setPageIndex(table.getPageCount() - 1)}
 							disabled={!table.getCanNextPage()}
 						>

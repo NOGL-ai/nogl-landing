@@ -38,25 +38,25 @@ const DatafeedSettings: React.FC<DatafeedSettingsProps> = ({
 	return (
 		<div className='mx-auto w-full max-w-7xl space-y-6 p-4 transition-all duration-300 lg:p-6'>
 			{/* Page Header */}
-			<div className='flex items-center gap-3 rounded-xl border border-[#F2F2F2] bg-white p-5 shadow-sm transition-shadow duration-200 hover:shadow-md md:p-8 dark:border-gray-700 dark:bg-gray-900'>
-				<div className='bg-bg-weak-100 flex h-12 w-12 items-center justify-center rounded-full dark:bg-gray-800'>
-					<DocumentTextIcon className='text-text-sub-500 h-6 w-6 dark:text-gray-400' />
+			<div className='flex items-center gap-3 rounded-xl border border-[#F2F2F2] bg-white p-5 shadow-sm transition-shadow duration-200 hover:shadow-md md:p-8 dark:border-border dark:bg-background'>
+				<div className='bg-bg-weak-100 flex h-12 w-12 items-center justify-center rounded-full dark:bg-secondary_bg'>
+					<DocumentTextIcon className='text-text-sub-500 h-6 w-6 dark:text-tertiary' />
 				</div>
 				<div className='flex-1'>
 					<h1 className='text-text-main-900 text-lg font-medium leading-6 tracking-tight dark:text-white'>
 						Datafeed Settings
 					</h1>
-					<p className='text-text-sub-500 text-sm leading-5 tracking-tight dark:text-gray-400'>
+					<p className='text-text-sub-500 text-sm leading-5 tracking-tight dark:text-tertiary'>
 						Manage how your catalog is imported and update every day
 					</p>
 				</div>
 			</div>
 
 			{/* Main Widgets Section */}
-			<div className='rounded-xl border border-[#F2F2F2] bg-white p-5 shadow-sm transition-shadow duration-200 hover:shadow-md md:p-8 dark:border-gray-700 dark:bg-gray-900'>
+			<div className='rounded-xl border border-[#F2F2F2] bg-white p-5 shadow-sm transition-shadow duration-200 hover:shadow-md md:p-8 dark:border-border dark:bg-background'>
 				<div className='mb-8 flex flex-col gap-6 lg:flex-row'>
 					{/* Bigcommerce Connection Widget */}
-					<Card className='border-stroke-soft-200 flex-1 border shadow-sm dark:border-gray-700 dark:bg-gray-800'>
+					<Card className='border-stroke-soft-200 flex-1 border shadow-sm dark:border-border dark:bg-secondary_bg'>
 						<CardContent className='p-4'>
 							<div className='mb-3 flex items-center gap-4'>
 								<div className='flex-1'>
@@ -64,12 +64,12 @@ const DatafeedSettings: React.FC<DatafeedSettingsProps> = ({
 										Bigcommerce
 									</h3>
 									<div className='mt-1 flex items-center gap-5'>
-										<span className='text-text-sub-500 text-xs dark:text-gray-400'>
+										<span className='text-text-sub-500 text-xs dark:text-tertiary'>
 											API Connection
 										</span>
 										<div className='flex items-center gap-1'>
 											<XMarkIcon className='text-red-base h-4 w-4' />
-											<span className='text-text-sub-500 text-xs dark:text-gray-400'>
+											<span className='text-text-sub-500 text-xs dark:text-tertiary'>
 												Disconnect
 											</span>
 										</div>
@@ -80,7 +80,7 @@ const DatafeedSettings: React.FC<DatafeedSettingsProps> = ({
 										<path
 											d='M16.8601 18.2176H20.8961C22.0441 18.2176 22.7707 17.5856 22.7707 16.5709C22.7707 15.6149 22.0441 14.9256 20.8961 14.9256H16.8601C16.7267 14.9256 16.6107 15.0403 16.6107 15.1549V17.9883C16.6307 18.1216 16.7254 18.2176 16.8601 18.2176ZM16.8601 24.7456H21.0307C22.3121 24.7456 23.0774 24.0949 23.0774 22.9456C23.0774 21.9509 22.3507 21.1456 21.0307 21.1456H16.8601C16.7267 21.1456 16.6107 21.2616 16.6107 21.3763V24.4963C16.6307 24.6496 16.7254 24.7456 16.8601 24.7456ZM31.6267 0.0709307L19.6894 11.9776H21.6414C24.6827 11.9776 26.4814 13.8909 26.4814 15.9776C26.4814 17.6243 25.3721 18.8309 24.1854 19.3656C23.9947 19.4429 23.9947 19.7109 24.2041 19.7869C25.5814 20.3229 26.5574 21.7603 26.5574 23.4429C26.5574 25.8163 24.9707 27.7123 21.8907 27.7123H13.4347C13.3014 27.7123 13.1854 27.5976 13.1854 27.4829V18.4669L0.0827296 31.5203C-0.0906037 31.6936 0.0253963 31.9989 0.273396 31.9989H31.7814C31.8371 31.9982 31.8902 31.9758 31.9296 31.9365C31.969 31.8971 31.9914 31.8439 31.9921 31.7883V0.242931C32.0494 0.0322641 31.7814 -0.0824026 31.6281 0.0695974L31.6267 0.0709307Z'
 											fill='currentColor'
-											className='text-gray-900 dark:text-white'
+											className='text-primary'
 										/>
 									</svg>
 								</div>
@@ -100,9 +100,9 @@ const DatafeedSettings: React.FC<DatafeedSettingsProps> = ({
 
 							<div className='bg-state-information mb-4 h-1 w-full rounded'></div>
 
-							<div className='border-stroke-soft-200 border-t pt-3 dark:border-gray-700'>
+							<div className='border-stroke-soft-200 border-t pt-3 dark:border-border'>
 								<div className='flex items-center justify-between'>
-									<span className='text-text-sub-500 text-xs dark:text-gray-400'>
+									<span className='text-text-sub-500 text-xs dark:text-tertiary'>
 										Last import 2 Years ago
 									</span>
 									<div className='text-state-information flex items-center gap-1 text-xs'>
@@ -115,12 +115,12 @@ const DatafeedSettings: React.FC<DatafeedSettingsProps> = ({
 					</Card>
 
 					{/* Imported Products Metrics Widget */}
-					<Card className='border-stroke-soft-200 flex-1 border shadow-sm dark:border-gray-700 dark:bg-gray-800'>
+					<Card className='border-stroke-soft-200 flex-1 border shadow-sm dark:border-border dark:bg-secondary_bg'>
 						<CardContent className='p-4'>
 							<div className='mb-9'>
 								<h3 className='text-text-main-900 text-base dark:text-white'>
 									Imported Products{" "}
-									<span className='text-text-soft-400 text-sm dark:text-gray-400'>
+									<span className='text-text-soft-400 text-sm dark:text-tertiary'>
 										(last 24)
 									</span>
 								</h3>
@@ -138,7 +138,7 @@ const DatafeedSettings: React.FC<DatafeedSettingsProps> = ({
 												+0%
 											</span>
 										</div>
-										<span className='text-Greyscale-400 text-xs dark:text-gray-400'>
+										<span className='text-Greyscale-400 text-xs dark:text-tertiary'>
 											vs 2 Years ago
 										</span>
 									</div>
@@ -183,12 +183,12 @@ const DatafeedSettings: React.FC<DatafeedSettingsProps> = ({
 			</div>
 
 			{/* Feed Settings Section */}
-			<div className='border-stroke-soft-200 border-t bg-white p-5 md:p-8 dark:border-gray-700 dark:bg-gray-900'>
+			<div className='border-stroke-soft-200 border-t bg-white p-5 md:p-8 dark:border-border dark:bg-background'>
 				<div className='mb-6'>
 					<h2 className='text-text-main-900 text-lg font-medium leading-6 tracking-tight dark:text-white'>
 						Feed Settings
 					</h2>
-					<p className='text-text-sub-500 text-sm leading-5 tracking-tight dark:text-gray-400'>
+					<p className='text-text-sub-500 text-sm leading-5 tracking-tight dark:text-tertiary'>
 						Manage how your custom attribute
 					</p>
 				</div>
@@ -200,7 +200,7 @@ const DatafeedSettings: React.FC<DatafeedSettingsProps> = ({
 							<h3 className='text-text-main-900 mb-1 text-sm font-medium leading-5 dark:text-white'>
 								Import price Adjustment
 							</h3>
-							<p className='text-text-sub-500 text-xs leading-4 dark:text-gray-400'>
+							<p className='text-text-sub-500 text-xs leading-4 dark:text-tertiary'>
 								Automatically adjusts imported by a set percentage.
 							</p>
 						</div>
@@ -212,7 +212,7 @@ const DatafeedSettings: React.FC<DatafeedSettingsProps> = ({
 										onChange={(e) =>
 											handleSettingChange("priceAdjustmentType", e.target.value)
 										}
-										className='border-stroke-soft-200 h-10 appearance-none rounded-lg bg-white pr-8 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white'
+										className='border-stroke-soft-200 h-10 appearance-none rounded-lg bg-white pr-8 text-sm dark:border-border dark:bg-secondary_bg dark:text-white'
 										sizeClass='h-10 px-3'
 									>
 										<option value='Plus'>Plus</option>
@@ -220,7 +220,7 @@ const DatafeedSettings: React.FC<DatafeedSettingsProps> = ({
 									</Select>
 									<div className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3'>
 										<svg
-											className='text-text-sub-500 h-5 w-5 dark:text-gray-400'
+											className='text-text-sub-500 h-5 w-5 dark:text-tertiary'
 											viewBox='0 0 20 20'
 											fill='currentColor'
 										>
@@ -234,7 +234,7 @@ const DatafeedSettings: React.FC<DatafeedSettingsProps> = ({
 								</div>
 							</div>
 							<div className='w-28'>
-								<div className='border-stroke-soft-200 flex overflow-hidden rounded-lg border bg-white dark:border-gray-600 dark:bg-gray-800'>
+								<div className='border-stroke-soft-200 flex overflow-hidden rounded-lg border bg-white dark:border-border dark:bg-secondary_bg'>
 									<Input
 										value={settings.priceAdjustmentValue}
 										onChange={(e) =>
@@ -243,12 +243,12 @@ const DatafeedSettings: React.FC<DatafeedSettingsProps> = ({
 												e.target.value
 											)
 										}
-										className='h-10 flex-1 rounded-none border-0 text-sm dark:bg-gray-800 dark:text-white'
+										className='h-10 flex-1 rounded-none border-0 text-sm dark:bg-secondary_bg dark:text-white'
 										sizeClass='h-10 px-3'
 										rounded='rounded-none'
 									/>
-									<div className='bg-bg-weak-100 border-stroke-soft-200 flex min-w-[40px] items-center justify-center border-l dark:border-gray-600 dark:bg-gray-700'>
-										<span className='text-colorblack-70 text-sm font-medium dark:text-gray-300'>
+									<div className='bg-bg-weak-100 border-stroke-soft-200 flex min-w-[40px] items-center justify-center border-l dark:border-border dark:bg-gray-700'>
+										<span className='text-colorblack-70 text-sm font-medium dark:text-tertiary'>
 											%
 										</span>
 									</div>
@@ -257,7 +257,7 @@ const DatafeedSettings: React.FC<DatafeedSettingsProps> = ({
 						</div>
 					</div>
 
-					<div className='border-stroke-soft-200 border-t dark:border-gray-700'></div>
+					<div className='border-stroke-soft-200 border-t dark:border-border'></div>
 
 					{/* Use SKU as Code */}
 					<div className='flex items-center justify-between py-4'>
@@ -265,7 +265,7 @@ const DatafeedSettings: React.FC<DatafeedSettingsProps> = ({
 							<h3 className='text-text-main-900 mb-1 text-sm font-medium leading-5 dark:text-white'>
 								Use SKU as Code
 							</h3>
-							<p className='text-text-sub-500 text-xs leading-4 dark:text-gray-400'>
+							<p className='text-text-sub-500 text-xs leading-4 dark:text-tertiary'>
 								By activating this option your product's sku will be used also
 								as product's code (EAN, GTIN)
 							</p>
@@ -278,7 +278,7 @@ const DatafeedSettings: React.FC<DatafeedSettingsProps> = ({
 						/>
 					</div>
 
-					<div className='border-stroke-soft-200 border-t dark:border-gray-700'></div>
+					<div className='border-stroke-soft-200 border-t dark:border-border'></div>
 
 					{/* Use Price as MAP */}
 					<div className='flex items-center justify-between py-4'>
@@ -286,7 +286,7 @@ const DatafeedSettings: React.FC<DatafeedSettingsProps> = ({
 							<h3 className='text-text-main-900 mb-1 text-sm font-medium leading-5 dark:text-white'>
 								Use Price as MAP
 							</h3>
-							<p className='text-text-sub-500 text-xs leading-4 dark:text-gray-400'>
+							<p className='text-text-sub-500 text-xs leading-4 dark:text-tertiary'>
 								By activating this option your product's PRICE will be also used
 								as MAP
 							</p>
@@ -299,7 +299,7 @@ const DatafeedSettings: React.FC<DatafeedSettingsProps> = ({
 						/>
 					</div>
 
-					<div className='border-stroke-soft-200 border-t dark:border-gray-700'></div>
+					<div className='border-stroke-soft-200 border-t dark:border-border'></div>
 
 					{/* Category Filter */}
 					<div className='flex items-center justify-between py-4'>
@@ -307,7 +307,7 @@ const DatafeedSettings: React.FC<DatafeedSettingsProps> = ({
 							<h3 className='text-text-main-900 mb-1 text-sm font-medium leading-5 dark:text-white'>
 								Category Filter
 							</h3>
-							<p className='text-text-sub-500 text-xs leading-4 dark:text-gray-400'>
+							<p className='text-text-sub-500 text-xs leading-4 dark:text-tertiary'>
 								Using this option, only products with selected category names
 								will be imported in NOGL.
 							</p>
@@ -319,7 +319,7 @@ const DatafeedSettings: React.FC<DatafeedSettingsProps> = ({
 								onChange={(e) =>
 									handleSettingChange("categoryFilter", e.target.value)
 								}
-								className='border-stroke-soft-200 h-10 rounded-lg bg-white text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white'
+								className='border-stroke-soft-200 h-10 rounded-lg bg-white text-sm dark:border-border dark:bg-secondary_bg dark:text-white'
 								sizeClass='h-10 px-3'
 								rounded='rounded-lg'
 							/>

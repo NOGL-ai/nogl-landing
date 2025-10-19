@@ -167,13 +167,13 @@ export default function MonitoredUrlsTable() {
 							>
 								{r.competitorUrl}
 							</div>
-							<div className='space-x-2 text-xs text-gray-500'>
+							<div className='space-x-2 text-xs text-tertiary'>
 								<span>Code: {r.code ?? "-"}</span>
 							</div>
 							{r.productName && (
-								<div className='text-xs text-gray-700'>{r.productName}</div>
+								<div className='text-xs text-secondary'>{r.productName}</div>
 							)}
-							<div className='space-x-3 text-xs text-gray-500'>
+							<div className='space-x-3 text-xs text-tertiary'>
 								{r.sku && <span>SKU: {r.sku}</span>}
 								{r.asinCode && <span>Code: {r.asinCode}</span>}
 							</div>
@@ -269,7 +269,7 @@ export default function MonitoredUrlsTable() {
 							: v === "Higher"
 								? "text-red-600"
 								: v === "Equal"
-									? "text-gray-600"
+									? "text-tertiary"
 									: "text-blue-600";
 					return (
 						<div className={`text-right text-sm font-medium ${color}`}>
@@ -383,7 +383,7 @@ export default function MonitoredUrlsTable() {
 			<div className='flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between'>
 				<div className='flex flex-wrap items-center gap-2'>
 					<div className='relative'>
-						<Search className='absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400' />
+						<Search className='absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-tertiary' />
 						<Input
 							placeholder='Search monitored URLs...'
 							value={globalFilter}
@@ -396,14 +396,14 @@ export default function MonitoredUrlsTable() {
 					</div>
 				</div>
 				<div className='flex items-center gap-2'>
-					<div className='text-sm text-gray-600 dark:text-gray-400'>
+					<div className='text-sm text-tertiary'>
 						{table.getFilteredRowModel().rows.length} items
 					</div>
 				</div>
 			</div>
 
 			{/* Table */}
-			<div className='rounded-md border border-gray-200 dark:border-gray-700'>
+			<div className='rounded-md border border-border dark:border-border'>
 				<Table>
 					<TableHeader>
 						{table.getHeaderGroups().map((headerGroup) => (
@@ -454,17 +454,17 @@ export default function MonitoredUrlsTable() {
 
 			{/* Pagination */}
 			<div className='flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between'>
-				<div className='text-muted-foreground flex-1 text-sm dark:text-gray-400'>
+				<div className='text-muted-foreground flex-1 text-sm dark:text-tertiary'>
 					{table.getFilteredSelectedRowModel().rows.length} of{" "}
 					{table.getFilteredRowModel().rows.length} selected
 				</div>
 				<div className='flex flex-wrap items-center gap-3 sm:gap-6 lg:gap-8'>
 					<div className='flex items-center gap-2'>
-						<p className='text-sm font-medium text-gray-900 dark:text-gray-100'>
+						<p className='text-sm font-medium text-primary dark:text-gray-100'>
 							Rows
 						</p>
 						<select
-							className='h-8 w-[70px] rounded-md border border-gray-300 bg-white text-sm dark:border-gray-600 dark:bg-gray-800'
+							className='h-8 w-[70px] rounded-md border border-border bg-white text-sm dark:border-border dark:bg-secondary_bg'
 							value={table.getState().pagination.pageSize}
 							onChange={(e) => table.setPageSize(Number(e.target.value))}
 						>
@@ -478,19 +478,19 @@ export default function MonitoredUrlsTable() {
 					<div className='flex items-center gap-2'>
 						<Button
 							variant='secondary'
-							className='h-8 border-gray-300 px-2 dark:border-gray-600'
+							className='h-8 border-border px-2 dark:border-border'
 							onClick={() => table.previousPage()}
 							disabled={!table.getCanPreviousPage()}
 						>
 							Prev
 						</Button>
-						<div className='text-sm font-medium text-gray-900 dark:text-gray-100'>
+						<div className='text-sm font-medium text-primary dark:text-gray-100'>
 							Page {table.getState().pagination.pageIndex + 1} of{" "}
 							{table.getPageCount()}
 						</div>
 						<Button
 							variant='secondary'
-							className='h-8 border-gray-300 px-2 dark:border-gray-600'
+							className='h-8 border-border px-2 dark:border-border'
 							onClick={() => table.nextPage()}
 							disabled={!table.getCanNextPage()}
 						>

@@ -432,12 +432,12 @@ const RepricingPreview: React.FC = () => {
 					</div>
 
 					<div className='flex items-center gap-3'>
-						<button className='flex h-9 items-center gap-2 rounded-lg border border-[#E2E4E9] bg-white px-3 py-2 shadow-sm transition-colors hover:bg-gray-50'>
+						<button className='flex h-9 items-center gap-2 rounded-lg border border-[#E2E4E9] bg-white px-3 py-2 shadow-sm transition-colors hover:bg-secondary_bg'>
 							<FilterIcon />
 							<span className='text-sm font-medium text-[#54565B]'>Filter</span>
 						</button>
 
-						<button className='flex h-9 items-center gap-2 rounded-lg border border-[#E2E4E9] bg-white px-3 py-2 shadow-sm transition-colors hover:bg-gray-50'>
+						<button className='flex h-9 items-center gap-2 rounded-lg border border-[#E2E4E9] bg-white px-3 py-2 shadow-sm transition-colors hover:bg-secondary_bg'>
 							<span className='text-sm font-medium text-[#54565B]'>
 								Massive Actions
 							</span>
@@ -470,7 +470,7 @@ const RepricingPreview: React.FC = () => {
 										onChange={() => handleSelectItem(item.product.id)}
 									/>
 									<div className='flex flex-1 items-center gap-2'>
-										<div className='h-8 w-8 overflow-hidden rounded-full bg-gray-200'>
+										<div className='h-8 w-8 overflow-hidden rounded-full bg-border'>
 											<Image
 												src={item.product.image}
 												alt={item.product.name}
@@ -723,7 +723,7 @@ const RepricingPreview: React.FC = () => {
 
 				{/* Pagination */}
 				<div className='flex items-center justify-center gap-2 px-6 py-5'>
-					<button className='flex h-10 w-10 items-center justify-center rounded-xl bg-transparent transition-colors hover:bg-gray-50'>
+					<button className='flex h-10 w-10 items-center justify-center rounded-xl bg-transparent transition-colors hover:bg-secondary_bg'>
 						<ArrowLeftIcon />
 					</button>
 
@@ -739,7 +739,7 @@ const RepricingPreview: React.FC = () => {
 						56
 					</button>
 
-					<button className='flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 bg-white text-sm font-medium text-[#14151A] shadow-sm'>
+					<button className='flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-white text-sm font-medium text-[#14151A] shadow-sm'>
 						57
 					</button>
 
@@ -755,7 +755,7 @@ const RepricingPreview: React.FC = () => {
 						100
 					</button>
 
-					<button className='flex h-10 w-10 items-center justify-center rounded-xl bg-transparent transition-colors hover:bg-gray-50'>
+					<button className='flex h-10 w-10 items-center justify-center rounded-xl bg-transparent transition-colors hover:bg-secondary_bg'>
 						<ArrowRightIcon />
 					</button>
 				</div>

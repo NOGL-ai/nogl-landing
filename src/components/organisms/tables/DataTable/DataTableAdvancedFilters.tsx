@@ -148,7 +148,7 @@ export function DataTableAdvancedFilters<TData>({
 			{isOpen && (
 				<div
 					id="advanced-filters"
-					className="border rounded-lg p-4 space-y-6 bg-white dark:bg-gray-900"
+					className="border rounded-lg p-4 space-y-6 bg-white dark:bg-background"
 					role="region"
 					aria-label="Advanced filtering options"
 				>
@@ -263,7 +263,7 @@ function PriceRangeFilter({ table, onRangeChange, currentRange }: PriceRangeFilt
 
 	return (
 		<div className="space-y-3">
-			<div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
+			<div className="flex items-center justify-between text-sm text-tertiary">
 				<span>€{currentRange[0].toFixed(2)}</span>
 				<span>€{currentRange[1].toFixed(2)}</span>
 			</div>
@@ -351,7 +351,7 @@ function MultiSelectFilter({ options, selectedValues, onSelectionChange, placeho
 						{options.map((option) => (
 							<div
 								key={option.value}
-								className="flex items-center space-x-2 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded cursor-pointer"
+								className="flex items-center space-x-2 p-2 hover:bg-secondary_bg dark:hover:bg-secondary_bg rounded cursor-pointer"
 								onClick={() => handleToggle(option.value)}
 							>
 								<Checkbox
@@ -362,7 +362,7 @@ function MultiSelectFilter({ options, selectedValues, onSelectionChange, placeho
 								<Label className="flex-1 cursor-pointer">
 									{option.label}
 									{option.count !== undefined && (
-										<span className="ml-2 text-xs text-gray-500">
+										<span className="ml-2 text-xs text-tertiary">
 											({option.count})
 										</span>
 									)}

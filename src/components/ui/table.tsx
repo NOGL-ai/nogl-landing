@@ -27,11 +27,11 @@ export interface TableCellProps
 
 const Table = React.forwardRef<HTMLTableElement, TableProps>(
 	({ className, variant = "default", size = "md", ...props }, ref) => {
-		const variants = {
-			default: "border-collapse",
-			striped: "border-collapse [&_tbody_tr:nth-child(odd)]:bg-gray-50",
-			bordered: "border-collapse border border-gray-200",
-		};
+	const variants = {
+		default: "border-collapse",
+		striped: "border-collapse [&_tbody_tr:nth-child(odd)]:bg-secondary_bg",
+		bordered: "border-collapse border border-border",
+	};
 
 		const sizes = {
 			sm: "text-sm",
@@ -80,20 +80,20 @@ const TableFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<tfoot
 		ref={ref}
-		className={cn("bg-gray-50 font-medium [&>tr]:last:border-b-0", className)}
+		className={cn("bg-secondary_bg font-medium [&>tr]:last:border-b-0", className)}
 		{...props}
 	/>
 ));
 
 const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(
 	({ className, variant = "default", ...props }, ref) => {
-		const variants = {
-			default:
-				"border-b transition-colors hover:bg-gray-50/50 data-[state=selected]:bg-gray-50",
-			hover:
-				"border-b transition-colors hover:bg-gray-50 data-[state=selected]:bg-gray-50",
-			selected: "border-b bg-gray-50 data-[state=selected]:bg-gray-100",
-		};
+	const variants = {
+		default:
+			"border-b transition-colors hover:bg-secondary_bg/50 data-[state=selected]:bg-secondary_bg",
+		hover:
+			"border-b transition-colors hover:bg-secondary_bg data-[state=selected]:bg-secondary_bg",
+		selected: "border-b bg-secondary_bg data-[state=selected]:bg-primary_hover",
+	};
 
 		return (
 			<tr ref={ref} className={cn(variants[variant], className)} {...props} />
@@ -107,8 +107,8 @@ const TableHead = React.forwardRef<HTMLTableHeaderCellElement, TableHeadProps>(
 			<th
 				ref={ref}
 				className={cn(
-					"h-12 px-4 text-left align-middle font-medium text-gray-500 [&:has([role=checkbox])]:pr-0",
-					sortable && "cursor-pointer select-none hover:text-gray-900",
+					"h-12 px-4 text-left align-middle font-medium text-tertiary [&:has([role=checkbox])]:pr-0",
+					sortable && "cursor-pointer select-none hover:text-primary",
 					className
 				)}
 				onClick={sortable ? onSort : undefined}
@@ -138,7 +138,7 @@ const TableCaption = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<caption
 		ref={ref}
-		className={cn("mt-4 text-sm text-gray-500", className)}
+		className={cn("mt-4 text-sm text-tertiary", className)}
 		{...props}
 	/>
 ));

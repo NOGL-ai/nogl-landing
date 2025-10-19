@@ -125,33 +125,33 @@ export function PersonalInfoTab() {
 					<div className="flex flex-col gap-5">
 						<div className="flex flex-wrap items-start gap-x-4 gap-y-5">
 							<div className="flex min-w-[320px] flex-1 flex-col gap-1">
-								<h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+								<h2 className="text-lg font-semibold text-primary">
 									Personal info
 								</h2>
-								<p className="text-sm text-gray-600 dark:text-gray-400">
+								<p className="text-sm text-tertiary">
 									Update your photo and personal details here.
 								</p>
 							</div>
 							
-						{/* Mobile: Show buttons at top */}
-						<div className="flex w-full items-center gap-3 lg:hidden">
-							<Button size="md" color="secondary" className="flex-1">
-								Cancel
-							</Button>
-							<Button size="md" color="primary" className="flex-1">
-								Save
-							</Button>
-						</div>
-						
-						{/* Desktop: Show buttons on right */}
-						<div className="hidden items-center gap-3 lg:flex">
-							<Button size="md" color="secondary">
-								Cancel
-							</Button>
-							<Button size="md" color="primary">
-								Save
-							</Button>
-						</div>
+					{/* Mobile: Show buttons at top */}
+					<div className="flex w-full items-center gap-3 lg:hidden">
+						<Button size="md" color="secondary" className="flex-1" aria-label="Cancel changes">
+							Cancel
+						</Button>
+						<Button size="md" color="primary" className="flex-1" aria-label="Save changes">
+							Save
+						</Button>
+					</div>
+					
+					{/* Desktop: Show buttons on right */}
+					<div className="hidden items-center gap-3 lg:flex">
+						<Button size="md" color="secondary" aria-label="Cancel changes">
+							Cancel
+						</Button>
+						<Button size="md" color="primary" aria-label="Save changes">
+							Save
+						</Button>
+					</div>
 						</div>
 						<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
 					</div>
@@ -211,11 +211,11 @@ export function PersonalInfoTab() {
 								<div className="flex items-center gap-0.5">
 									<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Your photo</p>
 									<span className="text-sm font-semibold text-brand-600">*</span>
-									<button type="button" className="ml-0.5 flex size-4 items-center justify-center">
+									<button type="button" className="ml-0.5 flex size-4 items-center justify-center" aria-label="Help information">
 										<HelpCircle className="size-4 text-gray-400 dark:text-gray-500" />
 									</button>
 								</div>
-								<p className="text-sm text-gray-600 dark:text-gray-400">
+								<p className="text-sm text-tertiary">
 									This will be displayed on your profile.
 								</p>
 							</div>
@@ -225,14 +225,15 @@ export function PersonalInfoTab() {
 								{/* Desktop: 96px avatar */}
 								<Avatar size="2xl" src="https://i.pravatar.cc/300" alt="User Avatar" className="hidden lg:block" />
 								
-								<div className="flex w-full lg:flex-1">
-									<FileUploadDropZone
-										hint="SVG, PNG, JPG or GIF (max. 800x400px)"
-										accept="image/*"
-										onDropFiles={handleFileUpload}
-										className="w-full border-2 border-dashed border-brand-600 bg-white hover:bg-brand-50 dark:bg-gray-900 dark:hover:bg-gray-800"
-									/>
-								</div>
+							<div className="flex w-full lg:flex-1">
+								<FileUploadDropZone
+									hint="SVG, PNG, JPG or GIF (max. 800x400px)"
+									accept="image/*"
+									onDropFiles={handleFileUpload}
+									className="w-full border-2 border-dashed border-brand-600 bg-white hover:bg-brand-50 dark:bg-gray-900 dark:hover:bg-gray-800"
+									aria-label="Upload profile photo"
+								/>
+							</div>
 							</div>
 						</div>
 
@@ -280,7 +281,7 @@ export function PersonalInfoTab() {
 							<div className="flex flex-col lg:min-w-[200px] lg:max-w-[280px] lg:flex-1">
 								<div className="flex items-center gap-0.5">
 									<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Timezone</p>
-									<button type="button" className="ml-0.5 flex size-4 items-center justify-center">
+									<button type="button" className="ml-0.5 flex size-4 items-center justify-center" aria-label="Help information">
 										<HelpCircle className="size-4 text-gray-400 dark:text-gray-500" />
 									</button>
 								</div>
@@ -308,7 +309,7 @@ export function PersonalInfoTab() {
 									<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Bio</p>
 									<span className="text-sm font-semibold text-brand-600">*</span>
 								</div>
-								<p className="text-sm text-gray-600 dark:text-gray-400">
+								<p className="text-sm text-tertiary">
 									Write a short introduction.
 								</p>
 							</div>
@@ -328,17 +329,18 @@ export function PersonalInfoTab() {
 						<div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-start lg:gap-y-4 lg:gap-x-8">
 							<div className="flex flex-col lg:min-w-[200px] lg:max-w-[280px] lg:flex-1">
 								<p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Knowledge uploads</p>
-								<p className="text-sm text-gray-600 dark:text-gray-400">
+								<p className="text-sm text-tertiary">
 									Add files to the knowledge base.
 								</p>
 							</div>
-							<div className="flex w-full flex-col gap-4 lg:min-w-[480px] lg:max-w-[512px] lg:flex-1">
-								<FileUploadDropZone
-									hint="SVG, PNG, JPG, or PDF (max. 10MB)"
-									accept=".pdf,.jpg,.png,.svg,.mp4,.fig"
-									maxSize={10 * 1024 * 1024}
-									onDropFiles={handleFileUpload}
-								/>
+						<div className="flex w-full flex-col gap-4 lg:min-w-[480px] lg:max-w-[512px] lg:flex-1">
+							<FileUploadDropZone
+								hint="SVG, PNG, JPG, or PDF (max. 10MB)"
+								accept=".pdf,.jpg,.png,.svg,.mp4,.fig"
+								maxSize={10 * 1024 * 1024}
+								onDropFiles={handleFileUpload}
+								aria-label="Upload knowledge files"
+							/>
 
 								{/* File Queue */}
 								{uploadedFiles.length > 0 && (
@@ -351,7 +353,7 @@ export function PersonalInfoTab() {
 													className="flex items-start gap-3 rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900"
 												>
 													{/* File Icon */}
-													<div className="relative size-10">
+													<div className="relative size-10" aria-hidden="true">
 														<div className="flex size-8 items-center justify-center rounded-md border border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-800">
 															<div className={`absolute bottom-0 left-0 flex h-4 items-center justify-center rounded-sm px-1 text-[10px] font-bold text-white ${fileIcon.bg}`}>
 																{fileIcon.text}
@@ -365,7 +367,7 @@ export function PersonalInfoTab() {
 															<p className="truncate text-sm font-medium text-gray-700 dark:text-gray-300">
 																{file.name}
 															</p>
-															<div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+															<div className="flex items-center gap-2 text-sm text-tertiary">
 																<span>
 																	{formatFileSize(file.size * (file.progress / 100))} of {formatFileSize(file.size)}
 																</span>
@@ -383,37 +385,45 @@ export function PersonalInfoTab() {
 															<svg className="size-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 																<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
 															</svg>
-															<span className="text-sm font-medium text-gray-600 dark:text-gray-400">Uploading...</span>
+															<span className="text-sm font-medium text-tertiary">Uploading...</span>
 														</>
 													)}
 																</div>
 															</div>
 														</div>
 
-														{/* Progress Bar */}
-														<div className="flex items-center gap-3">
-															<div className="h-2 flex-1 rounded-full bg-gray-200 dark:bg-gray-800">
-																<div
-																	className="h-2 rounded-full bg-brand-600 transition-all"
-																	style={{ width: `${file.progress}%` }}
-																/>
-															</div>
-															<span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-																{file.progress}%
-															</span>
+													{/* Progress Bar */}
+													<div className="flex items-center gap-3">
+														<div 
+															className="h-2 flex-1 rounded-full bg-gray-200 dark:bg-gray-800"
+															role="progressbar"
+															aria-valuenow={file.progress}
+															aria-valuemin={0}
+															aria-valuemax={100}
+															aria-label={`Upload progress for ${file.name}`}
+														>
+															<div
+																className="h-2 rounded-full bg-brand-600 transition-all"
+																style={{ width: `${file.progress}%` }}
+															/>
 														</div>
+														<span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+															{file.progress}%
+														</span>
+													</div>
 													</div>
 
-													{/* Delete Button */}
-													<button
-														type="button"
-														onClick={() => handleRemoveFile(file.id)}
-														className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800"
-													>
-														<svg className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-															<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-														</svg>
-													</button>
+												{/* Delete Button */}
+												<button
+													type="button"
+													onClick={() => handleRemoveFile(file.id)}
+													className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800"
+													aria-label={`Remove ${file.name}`}
+												>
+													<svg className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+														<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+													</svg>
+												</button>
 												</div>
 											);
 										})}
@@ -424,20 +434,20 @@ export function PersonalInfoTab() {
 					</div>
 				</div>
 
-			{/* Section Footer */}
-			<div className="flex flex-col items-center gap-5">
-				<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
-				<div className="flex w-full items-center justify-end gap-5 px-8">
-					<div className="flex w-full items-center justify-end gap-3 lg:w-auto">
-						<Button size="md" color="secondary" className="flex-1 lg:flex-initial">
-							Cancel
-						</Button>
-						<Button size="md" color="primary" className="flex-1 lg:flex-initial">
-							Save
-						</Button>
-					</div>
+		{/* Section Footer */}
+		<div className="flex flex-col items-center gap-5">
+			<div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
+			<div className="flex w-full items-center justify-end gap-5 px-8">
+				<div className="flex w-full items-center justify-end gap-3 lg:w-auto">
+					<Button size="md" color="secondary" className="flex-1 lg:flex-initial" aria-label="Cancel changes">
+						Cancel
+					</Button>
+					<Button size="md" color="primary" className="flex-1 lg:flex-initial" aria-label="Save changes">
+						Save
+					</Button>
 				</div>
 			</div>
+		</div>
 			</div>
 		</div>
 	);

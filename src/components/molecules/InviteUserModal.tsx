@@ -60,16 +60,19 @@ export default function InviteUserModal(props: unknown) {
 				<div
 					className={`py-7.6 z-99999 dark:bg-dark/70 fixed left-0 top-0 flex h-screen w-full items-center justify-center bg-black/90 px-4 sm:px-8 `}
 				>
-					<div
-						ref={divRef}
-						className='shadow-7 relative h-auto max-h-[calc(100vh-60px)] w-full max-w-[600px] scale-100 transform overflow-y-auto rounded-[25px] bg-white transition-all dark:bg-black'
-					>
-						<ModalCloseButton closeModal={setShowModal} />
+				<div
+					ref={divRef}
+					className='shadow-7 relative h-auto max-h-[calc(100vh-60px)] w-full max-w-[600px] scale-100 transform overflow-y-auto rounded-[25px] bg-white transition-all dark:bg-black'
+					role="dialog"
+					aria-modal="true"
+					aria-labelledby="invite-user-modal-title"
+				>
+					<ModalCloseButton closeModal={setShowModal} />
 
-						<div className='gap-5.5 border-stroke dark:border-stroke-dark sm:p-7.5 flex flex-wrap border-b p-4 xl:p-10'>
-							<h3 className='font-satoshi text-custom-2xl text-dark mb-1.5 font-bold tracking-[-.5px] dark:text-white'>
-								Add New User
-							</h3>
+					<div className='gap-5.5 border-stroke dark:border-stroke-dark sm:p-7.5 flex flex-wrap border-b p-4 xl:p-10'>
+						<h3 id="invite-user-modal-title" className='font-satoshi text-custom-2xl text-dark mb-1.5 font-bold tracking-[-.5px] dark:text-white'>
+							Add New User
+						</h3>
 
 							<form className='w-full space-y-4' onSubmit={handleSubmit}>
 								<InputGroup

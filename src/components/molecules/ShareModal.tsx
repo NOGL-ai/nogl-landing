@@ -41,7 +41,7 @@ const ShareModal: FC<ShareModalProps> = ({ isOpen, onClose, session }) => {
 				<div className='fixed inset-0 overflow-y-auto'>
 					<div className='flex min-h-full items-center justify-center p-4'>
 						<Dialog.Panel className='w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all dark:bg-neutral-800'>
-							<Dialog.Title className='mb-4 text-lg font-medium leading-6 text-gray-900 dark:text-white'>
+							<Dialog.Title className='mb-4 text-lg font-medium leading-6 text-primary'>
 								Share Session
 							</Dialog.Title>
 
@@ -53,18 +53,19 @@ const ShareModal: FC<ShareModalProps> = ({ isOpen, onClose, session }) => {
 									readOnly
 									className='flex-1 rounded border p-2 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white'
 								/>
-								<button
-									onClick={async () => {
-										try {
-											await navigator.clipboard.writeText(shareUrl);
-											toast.success("Link copied!");
-										} catch (error) {
-											console.error("Failed to copy link:", error);
-											toast.error("Failed to copy link. Please try again.");
-										}
-									}}
-									className='bg-primary-500 hover:bg-primary-600 rounded p-2 text-white'
-								>
+							<button
+								onClick={async () => {
+									try {
+										await navigator.clipboard.writeText(shareUrl);
+										toast.success("Link copied!");
+									} catch (error) {
+										console.error("Failed to copy link:", error);
+										toast.error("Failed to copy link. Please try again.");
+									}
+								}}
+								className='bg-primary-500 hover:bg-primary-600 rounded p-2 text-white'
+								aria-label="Copy share link to clipboard"
+							>
 									Copy
 								</button>
 							</div>

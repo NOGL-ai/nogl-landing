@@ -27,7 +27,7 @@ export function DataTableColumnManagement<TData>({
 				<DropdownMenuTrigger asChild>
 					<Button
 						variant="secondary"
-						className="border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+						className="border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700"
 						aria-label="Manage table columns"
 					>
 						<Icon name="Columns" className="mr-2 h-4 w-4" aria-hidden={true} />
@@ -72,7 +72,7 @@ export function DataTableColumnManagement<TData>({
 					</DropdownMenuCheckboxItem>
 
 					{/* Separator */}
-					<div className="my-1 h-px bg-gray-200 dark:bg-gray-700" />
+					<div className="my-1 h-px bg-border dark:bg-gray-700" />
 
 					{/* Individual columns */}
 					{table
@@ -95,7 +95,7 @@ export function DataTableColumnManagement<TData>({
 			</DropdownMenu>
 
 			{/* Column count indicator */}
-			<div className="text-xs text-gray-500 dark:text-gray-400">
+			<div className="text-xs text-tertiary dark:text-tertiary">
 				{visibleColumns.length} of {table.getAllColumns().length} columns
 			</div>
 		</div>

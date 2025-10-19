@@ -37,7 +37,7 @@ export default function TemplatesDropdown() {
 						<Popover.Button
 							className={`
                 ${open ? "" : "text-opacity-80"}
-                group inline-flex h-10 items-center px-3 py-1.5 text-sm font-medium text-gray-800 hover:text-opacity-100 focus:outline-none sm:h-12 dark:text-slate-300 `}
+                group inline-flex h-10 items-center px-3 py-1.5 text-sm font-medium text-secondary hover:text-opacity-100 focus:outline-none sm:h-12 dark:text-slate-300 `}
 						>
 							<span className=''>Templates</span>
 							<ChevronDownIcon

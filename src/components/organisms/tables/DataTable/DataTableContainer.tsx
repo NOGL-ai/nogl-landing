@@ -18,7 +18,7 @@ export function DataTableContainer({
 		return (
 			<div
 				className={cx(
-					"overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900",
+					"overflow-hidden rounded-xl border border-border bg-white shadow-sm dark:border-border dark:bg-background",
 					className
 				)}
 			>

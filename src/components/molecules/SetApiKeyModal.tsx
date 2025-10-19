@@ -47,22 +47,25 @@ export default function SetApiKeyModal(props: unknown) {
 				<div
 					className={`py-7.6 dark:bg-dark/70 fixed left-0 top-0 z-[9999] flex h-screen w-full items-center justify-center bg-black/90 px-4 sm:px-8`}
 				>
-					<div
-						ref={divRef}
-						className='shadow-7 relative h-auto max-h-[calc(100vh-60px)] w-full max-w-[600px] scale-100 transform overflow-y-auto rounded-[25px] bg-white transition-all dark:bg-black'
-					>
-						<ModalCloseButton closeModal={setShowModal} />
+				<div
+					ref={divRef}
+					className='shadow-7 relative h-auto max-h-[calc(100vh-60px)] w-full max-w-[600px] scale-100 transform overflow-y-auto rounded-[25px] bg-white transition-all dark:bg-black'
+					role="dialog"
+					aria-modal="true"
+					aria-labelledby="api-key-modal-title"
+				>
+					<ModalCloseButton closeModal={setShowModal} />
 
-						<div className='gap-5.5 border-stroke sm:p-7.5 flex flex-wrap p-4 text-center xl:p-10'>
-							<div className='mx-auto w-full max-w-[450px]'>
-								<div className='mb-6 flex justify-center'>
-									<svg
-										width='120'
-										height='119'
-										viewBox='0 0 120 119'
-										fill='none'
-										xmlns='http://www.w3.org/2000/svg'
-									>
+					<div className='gap-5.5 border-stroke sm:p-7.5 flex flex-wrap p-4 text-center xl:p-10'>
+						<div className='mx-auto w-full max-w-[450px]'>
+							<div className='mb-6 flex justify-center' aria-hidden="true">
+								<svg
+									width='120'
+									height='119'
+									viewBox='0 0 120 119'
+									fill='none'
+									xmlns='http://www.w3.org/2000/svg'
+								>
 										<circle
 											opacity='0.08'
 											cx='60'
@@ -110,10 +113,10 @@ export default function SetApiKeyModal(props: unknown) {
 									</svg>
 								</div>
 
-								<div>
-									<h2 className='text-dark sm:text-heading-6 mb-2 text-xl font-bold dark:text-white'>
-										Enter your OpenAI API Key
-									</h2>
+							<div>
+								<h2 id="api-key-modal-title" className='text-dark sm:text-heading-6 mb-2 text-xl font-bold dark:text-white'>
+									Enter your OpenAI API Key
+								</h2>
 									<p className='text-body mb-7'>
 										To access the capabilities of AI Tools Template, a valid
 										OpenAI API Key is required.

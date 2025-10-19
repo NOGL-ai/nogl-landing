@@ -105,7 +105,7 @@ export function ProductDataTable({
 						<Button
 							variant="secondary"
 							onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-							className="relative flex-1 border-gray-300 text-gray-700 hover:bg-gray-50 sm:flex-none dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+							className="relative flex-1 border-border text-secondary hover:bg-secondary_bg sm:flex-none dark:border-border dark:text-tertiary dark:hover:bg-gray-700"
 							aria-label={`Advanced filters. ${showAdvancedFilters ? 'Open' : 'Closed'}`}
 						>
 							<Icon name="Filter" className="mr-2 h-4 w-4" aria-hidden={true} />
@@ -124,7 +124,7 @@ export function ProductDataTable({
 							className={
 								viewMode === "table"
 									? ""
-									: "border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+									: "border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700"
 							}
 							aria-label="Switch to table view"
 						>
@@ -137,7 +137,7 @@ export function ProductDataTable({
 							className={
 								viewMode === "grid"
 									? ""
-									: "border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+									: "border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary dark:hover:bg-gray-700"
 							}
 							aria-label="Switch to grid view"
 						>

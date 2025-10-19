@@ -16,14 +16,14 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
 	({ className, variant = "default", size = "md", ...props }, ref) => {
-		const variants = {
-			default: "bg-gray-900 text-white hover:bg-gray-800",
-			secondary: "bg-gray-100 text-gray-900 hover:bg-gray-200",
-			destructive: "bg-red-500 text-white hover:bg-red-600",
-			outline: "border border-gray-200 text-gray-900 hover:bg-gray-50",
-			success: "bg-green-500 text-white hover:bg-green-600",
-			warning: "bg-yellow-500 text-white hover:bg-yellow-600",
-		};
+	const variants = {
+		default: "bg-brand-solid text-white hover:bg-brand-solid_hover",
+		secondary: "bg-background text-secondary ring-1 ring-border hover:bg-primary_hover",
+		destructive: "bg-red-500 text-white hover:bg-red-600",
+		outline: "border border-border text-secondary hover:bg-primary_hover",
+		success: "bg-green-500 text-white hover:bg-green-600",
+		warning: "bg-yellow-500 text-white hover:bg-yellow-600",
+	};
 
 		const sizes = {
 			sm: "px-2 py-1 text-xs",
@@ -32,16 +32,16 @@ const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
 		};
 
 		return (
-			<div
-				ref={ref}
-				className={cn(
-					"inline-flex items-center rounded-full font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2",
-					variants[variant],
-					sizes[size],
-					className
-				)}
-				{...props}
-			/>
+		<div
+			ref={ref}
+			className={cn(
+				"inline-flex items-center rounded-full font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2",
+				variants[variant],
+				sizes[size],
+				className
+			)}
+			{...props}
+		/>
 		);
 	}
 );
