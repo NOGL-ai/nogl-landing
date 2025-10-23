@@ -4,6 +4,7 @@ import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import ClientLayout from "./ClientLayout";
 import { ThemeProvider } from "@/components/atoms/ThemeProvider";
+import { ClerkProvider } from '@clerk/nextjs';
 import "@/styles/globals.css";
 import "@/styles/sidebar-submenu-animations.css";
 
@@ -76,9 +77,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 				/>
 			</head>
 			<body suppressHydrationWarning={true} className='antialiased'>
-				<ThemeProvider>
-					{children}
-				</ThemeProvider>
+				<ClerkProvider>
+					<ThemeProvider>
+						{children}
+					</ThemeProvider>
+				</ClerkProvider>
 				<SpeedInsights />
 				{/* Videoask widget temporarily disabled
         <Script
