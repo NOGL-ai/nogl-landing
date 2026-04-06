@@ -61,10 +61,10 @@
 		"title": "Hello World!"
 	},
 	"hero": {
-		"introducing": "Introducing Nogl.ai",
-		"title": "AI-Powered Fashion Trend Forecasting & Demand Prediction",
-		"description": "Predict trends, forecast new-product demand, and optimize localized assortments with demand-sensing AI.",
-		"buttonText": "Start Forecasting for free"
+		"introducing": "Introducing NOGL Pricing",
+		"title": "Competitor Pricing Intelligence & Repricing Automation",
+		"description": "Monitor competitor prices, automate repricing rules, and act on AI-assisted pricing insights across your catalog.",
+		"buttonText": "Start with NOGL Pricing"
 	},
 	"problem": {
 		"title": "The Problem",

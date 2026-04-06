@@ -130,10 +130,10 @@
 		"title": "Halo dunia!"
 	},
 	"hero": {
-		"introducing": "Willkommen bei Nogl.ai",
-		"title": "KI-gestützte Mode-Trendprognosen & Nachfragevorhersage",
-		"description": "Prognostizieren Sie Trends, sagen Sie die Nachfrage für neue Produkte voraus und optimieren Sie lokale Sortimente mit Demand-Sensing-KI.",
-		"buttonText": "Jetzt Prognosen starten"
+		"introducing": "NOGL Pricing",
+		"title": "Wettbewerber-Preise & Repricing-Automatisierung",
+		"description": "Wettbewerberpreise überwachen, Repricing-Regeln automatisieren und KI-gestützte Pricing-Einblicke nutzen.",
+		"buttonText": "Mit NOGL Pricing starten"
 	},
 	"problem": {
 		"title": "Die Herausforderung",
