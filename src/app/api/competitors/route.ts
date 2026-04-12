@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prismaDb";
 import { withRequestLogging, withSecurityHeaders } from "@/middlewares/security";
@@ -9,6 +10,13 @@ import { SCRAPER_SOURCES } from "@/lib/constants/scraperSources";
 // Cache configuration
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 const queryCache = new Map<string, { data: any; timestamp: number }>();
+
+interface CreateCompetitorBody {
+  name: string;
+  domain: string;
+  website?: string;
+  categories?: string[];
+}
 
 // syncScraperMetrics — reads aggregated counts from the external scraper DB
 // and non-destructively upserts them into prisma.Competitor.
@@ -191,47 +199,48 @@ export const POST = withRequestLogging(
       }
 
       try {
-        const body = await request.json();
-        
-        // Validation
-        if (!body.name || !body.domain) {
+        const body = (await request.json()) as Partial<CreateCompetitorBody>;
+        const name = body.name?.trim() ?? "";
+        const domain = (body.domain?.trim() ?? "")
+          .replace(/^https?:\/\//i, "")
+          .replace(/\/.*$/, "");
+
+        if (!name || !domain) {
           return NextResponse.json(
-            { error: "Name and domain are required" },
+            { error: "name and domain are required" },
             { status: 400 }
           );
         }
 
-        // Check for duplicates
-        const existing = await prisma.competitor.findUnique({
-          where: { domain: body.domain },
+        const competitor = await prisma.competitor.create({
+          data: {
+            name,
+            domain,
+            website: body.website?.trim() || null,
+            status: "ACTIVE",
+            isMonitoring: true,
+            categories: body.categories || [],
+            productCount: 0,
+          },
         });
 
-        if (existing && !existing.deletedAt) {
+        queryCache.clear();
+
+        return NextResponse.json(competitor, { status: 201 });
+      } catch (error) {
+        if (
+          error instanceof Prisma.PrismaClientKnownRequestError &&
+          error.code === "P2002" &&
+          ((Array.isArray(error.meta?.target) &&
+            error.meta.target.includes("domain")) ||
+            error.meta?.target === "domain")
+        ) {
           return NextResponse.json(
             { error: "Competitor with this domain already exists" },
             { status: 409 }
           );
         }
 
-        // Create competitor
-        const competitor = await prisma.competitor.create({
-          data: {
-            name: body.name,
-            domain: body.domain,
-            website: body.website,
-            description: body.description,
-            productCount: body.productCount || 0,
-            marketPosition: body.marketPosition,
-            status: body.status || 'ACTIVE',
-            categories: body.categories || [],
-          },
-        });
-
-        // Invalidate cache
-        queryCache.clear();
-
-        return NextResponse.json(competitor, { status: 201 });
-      } catch (error) {
         console.error('Error creating competitor:', error);
         return NextResponse.json(
           { error: "Failed to create competitor" },

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { CompetitorActions } from "./competitor-actions";
 import { statusClasses } from "@/lib/competitors/constants";
 import type {
   CompetitorDetail,
@@ -235,9 +236,15 @@ function HeaderCard({ competitor }: { competitor: CompetitorDetail }) {
           </a>
         </div>
 
-        <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-600">
-          <p className="font-medium text-gray-700">Last scraped</p>
-          <p className="mt-1">{formatRelativeTime(competitor.lastScrapedAt)}</p>
+        <div className="flex flex-col gap-3 sm:items-end">
+          <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-600">
+            <p className="font-medium text-gray-700">Last scraped</p>
+            <p className="mt-1">{formatRelativeTime(competitor.lastScrapedAt)}</p>
+          </div>
+          <CompetitorActions
+            id={competitor.id}
+            initialMonitoring={competitor.isMonitoring}
+          />
         </div>
       </div>
     </div>
