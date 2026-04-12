@@ -639,6 +639,15 @@ const fmtPct = (percent: number) => {
   return `${sign}${Math.abs(percent).toFixed(2)}%`;
 };
 
+const normalizeCatalogImage = (value?: string | null) => {
+  if (!value || typeof value !== 'string') return '/api/placeholder/80/80';
+  const trimmed = value.trim();
+  if (!trimmed) return '/api/placeholder/80/80';
+  if (trimmed.startsWith('//')) return `https:${trimmed}`;
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('/')) return trimmed;
+  return '/api/placeholder/80/80';
+};
+
 // computeTrend now imported from utils
 
 // Mini Sparkline Chart Component
@@ -953,14 +962,14 @@ export default function CompetitorPage() {
           id: index,
           name: product.name,
           domain: 'example.com', // Default domain since not in ProductDTO
-          avatar: product.image,
+          avatar: normalizeCatalogImage(product.image),
           sku: product.sku,
-          image: product.image,
+          image: normalizeCatalogImage(product.image),
           price: product.price,
           currency: product.currency,
           brand: product.brand ? {
             name: product.brand.name,
-            logo: product.brand.logo,
+            logo: normalizeCatalogImage(product.brand.logo),
           } : {
             name: 'Unknown',
             logo: null,

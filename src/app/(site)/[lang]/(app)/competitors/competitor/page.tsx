@@ -17,6 +17,7 @@ import { getCompetitors } from '@/lib/services/competitorClient';
 import { CompetitorDTO } from '@/types/product';
 import { useScreenContext } from '@/context/ScreenContext';
 import TrackCompetitorModal from '@/components/molecules/TrackCompetitorModal';
+import CompanyExplorer from '@/components/application/company-explorer/company-explorer';
 
 // Hardcoded data removed - now using API
 
@@ -686,6 +687,11 @@ export default function CompetitorPage() {
       </div>
       
       <main className="mx-auto w-full min-h-screen space-y-6 md:space-y-8 bg-background px-4 md:px-8 pt-6 md:pt-8 pb-8 md:pb-12 text-foreground transition-colors">
+      {/* Company Explorer Section */}
+      <div className="rounded-lg border border-border-secondary bg-card p-6 md:p-8">
+        <CompanyExplorer />
+      </div>
+
       {/* Header */}
       <header className="flex flex-wrap items-start justify-between gap-3 md:gap-4">
         <div className="min-w-[200px] md:min-w-[280px] flex-1">

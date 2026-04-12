@@ -13,7 +13,18 @@ const inter = Inter({
 	variable: "--font-inter",
 });
 
+function isGoogleAnalyticsEnabled(): boolean {
+	const id = process.env.NEXT_PUBLIC_GOOGLE_TAG_ID;
+	if (!id || typeof id !== "string") return false;
+	const t = id.trim();
+	if (!t.startsWith("G-")) return false;
+	// Skip placeholder / invalid IDs (avoids loading blocked scripts and gtag errors)
+	if (/XXXX/i.test(t) || t.length < 12) return false;
+	return true;
+}
+
 const Layout = ({ children }: { children: React.ReactNode }) => {
+	const enableGa = isGoogleAnalyticsEnabled();
 	return (
 		<html
 			lang='en'
@@ -53,17 +64,19 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 			)}
 			*/}
 
-				{/* Google Analytics Scripts */}
-				<Script
-					id='google-analytics-script'
-					strategy='afterInteractive'
-					src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_TAG_ID}`}
-				/>
-				<Script
-					id='google-analytics-config'
-					strategy='afterInteractive'
-					dangerouslySetInnerHTML={{
-						__html: `
+				{/* Google Analytics — only when a real measurement ID is set (placeholder breaks gtag / CSP) */}
+				{enableGa ? (
+					<>
+						<Script
+							id='google-analytics-script'
+							strategy='afterInteractive'
+							src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_TAG_ID}`}
+						/>
+						<Script
+							id='google-analytics-config'
+							strategy='afterInteractive'
+							dangerouslySetInnerHTML={{
+								__html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
@@ -72,14 +85,16 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 'consent': 'default'
               });
             `,
-					}}
-				/>
+							}}
+						/>
+					</>
+				) : null}
 			</head>
-			<body suppressHydrationWarning={true} className='antialiased'>
+			<body suppressHydrationWarning={true} className='min-h-screen antialiased'>
 				<ThemeProvider>
 					{children}
 				</ThemeProvider>
-				<SpeedInsights />
+				{process.env.NODE_ENV === "production" ? <SpeedInsights /> : null}
 				{/* Videoask widget temporarily disabled
         <Script
           id="videoask-config"

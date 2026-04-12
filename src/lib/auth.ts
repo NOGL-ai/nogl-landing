@@ -424,7 +424,8 @@ export const getAuthSession = async () => {
 					email: 'dev@test.com',
 					image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face&auto=format',
 					emailVerified: new Date(),
-				},
+					role: 'USER',
+				} as any,
 				expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
 			};
 		}

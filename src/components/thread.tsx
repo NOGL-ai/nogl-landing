@@ -50,10 +50,9 @@ import { EmailApprovalUI } from "@/components/tools/email-approval";
 import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
-import { useTheme } from "next-themes";
-import Image from "next/image";
 import { useAssistantApi, useAssistantState } from "@assistant-ui/react";
 import { useDynamicSuggestions } from "@/hooks/useDynamicSuggestions";
+import Logo from "@/shared/Logo";
 
 // Keyboard shortcuts hook
 const useThreadKeyboardShortcuts = () => {
@@ -233,18 +232,9 @@ const ThreadScrollToBottom: FC = () => {
 };
 
 const CopilotLogo = () => {
-  const { theme, resolvedTheme } = useTheme();
-  const currentTheme = resolvedTheme || theme;
-  
   return (
-    <div className="relative flex size-14 items-center justify-center rounded-full bg-secondary_bg shadow-lg mb-6">
-      <Image
-        src={currentTheme === "dark" ? "/images/logo/logo.svg" : "/images/logo/logo-light.svg"}
-        alt="Logo"
-        width={40}
-        height={40}
-        className="object-contain"
-      />
+    <div className="relative flex size-14 items-center justify-center rounded-full bg-bg-secondary dark:bg-bg-tertiary shadow-lg mb-6">
+      <Logo size="md" showText={false} variant="auto" />
     </div>
   );
 };

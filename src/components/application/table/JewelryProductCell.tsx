@@ -26,6 +26,19 @@ interface JewelryProductCellProps {
   className?: string;
 }
 
+const PLACEHOLDER_IMAGE = '/api/placeholder/80/80';
+
+const normalizeImageSrc = (src?: string | null): string => {
+  if (!src || typeof src !== 'string') return PLACEHOLDER_IMAGE;
+  const trimmed = src.trim();
+  if (!trimmed) return PLACEHOLDER_IMAGE;
+  if (trimmed.startsWith('//')) return `https:${trimmed}`;
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('/')) {
+    return trimmed;
+  }
+  return PLACEHOLDER_IMAGE;
+};
+
 const JewelryProductCell: React.FC<JewelryProductCellProps> = ({
   product,
   showPrice = true,
@@ -108,14 +121,16 @@ const JewelryProductCell: React.FC<JewelryProductCellProps> = ({
       <div className="relative flex-shrink-0">
         <div className={`relative ${sizeClasses.image} rounded-lg border border-border bg-background p-1 shadow-sm`}>
           <img
-            src={product.image}
+            src={normalizeImageSrc(product.image)}
             alt={`${product.name} product image`}
             className={`${sizeClasses.imageInner} rounded-md object-cover`}
+            loading="lazy"
+            referrerPolicy="no-referrer"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
-              target.style.display = 'none';
-              const fallback = target.nextElementSibling as HTMLElement;
-              if (fallback) fallback.style.display = 'flex';
+              if (target.dataset.fallbackApplied === 'true') return;
+              target.dataset.fallbackApplied = 'true';
+              target.src = PLACEHOLDER_IMAGE;
             }}
           />
           <div 
