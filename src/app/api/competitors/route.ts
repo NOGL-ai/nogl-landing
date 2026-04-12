@@ -3,10 +3,73 @@ import { prisma } from "@/lib/prismaDb";
 import { withRequestLogging, withSecurityHeaders } from "@/middlewares/security";
 import { withRateLimit } from "@/middlewares/rateLimit";
 import { FEATURES } from "@/lib/featureFlags";
+import { scraperPool, isScraperAvailable } from "@/lib/scraperPool";
+import { SCRAPER_SOURCES } from "@/lib/constants/scraperSources";
 
 // Cache configuration
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 const queryCache = new Map<string, { data: any; timestamp: number }>();
+
+// syncScraperMetrics — reads aggregated counts from the external scraper DB
+// and non-destructively upserts them into prisma.Competitor.
+// Safe to call on every request: failures are caught and logged, never rethrown.
+async function syncScraperMetrics(): Promise<void> {
+  if (!isScraperAvailable || !scraperPool) {
+    console.warn('[competitors] SCRAPY_DATABASE_URL not set — skipping scraper sync');
+    return;
+  }
+  try {
+    const result = await scraperPool.query<{
+      source: string;
+      product_count: string; // pg returns bigint as string
+      last_scraped_at: Date;
+    }>(`
+      SELECT
+        source,
+        COUNT(*)::text AS product_count,
+        MAX(updated_at)  AS last_scraped_at
+      FROM scraping.scraped_items
+      WHERE item_type = 'product'
+        AND source != 'test'
+      GROUP BY source
+    `);
+
+    for (const row of result.rows) {
+      const scraperSource =
+        SCRAPER_SOURCES[row.source as keyof typeof SCRAPER_SOURCES];
+      const displayName = scraperSource?.name ?? row.source;
+      const website = scraperSource?.website ?? null;
+      const count      = Number(row.product_count);
+      const scrapedAt  = new Date(row.last_scraped_at);
+
+      await prisma.competitor.upsert({
+        where:  { domain: row.source },
+        // On UPDATE: only touch metrics — never overwrite user-set name/status/categories/website
+        update: {
+          productCount:  count,
+          lastScrapedAt: scrapedAt,
+          // updatedAt is @updatedAt in schema — Prisma sets it automatically, do NOT include it here
+        },
+        // On CREATE: set all required fields from the SCRAPER_SOURCES map
+        create: {
+          name:          displayName,
+          domain:        row.source,
+          website:       website,
+          productCount:  count,
+          lastScrapedAt: scrapedAt,
+          status:        'ACTIVE',
+          categories:    [],
+        },
+      });
+    }
+
+    // Invalidate query cache so the next findMany reflects updated counts
+    queryCache.clear();
+  } catch (error) {
+    // Log but never rethrow — a dead scraper DB must not break the competitor list
+    console.error('[competitors] scraper sync failed:', error);
+  }
+}
 
 // GET /api/competitors - List with pagination, filters, search
 export const GET = withRequestLogging(
@@ -18,6 +81,9 @@ export const GET = withRequestLogging(
           { status: 503 }
         );
       }
+
+      // Sync scraper metrics before serving — failures are swallowed inside syncScraperMetrics
+      await syncScraperMetrics();
 
       // Parse query params
       const { searchParams } = new URL(request.url);
@@ -102,7 +168,7 @@ export const GET = withRequestLogging(
         response.headers.set('Cache-Control', 'public, max-age=300, s-maxage=300');
         return response;
       } catch (error: any) {
-        console.error('Database query error:', error?.stack || error);
+        console.error('[competitors] GET failed:', error instanceof Error ? error.stack : error);
         const message = (error && error.message) ? error.message : 'Database query failed';
         return NextResponse.json(
           { error: "Failed to fetch competitors", message },
