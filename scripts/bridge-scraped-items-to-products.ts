@@ -188,6 +188,84 @@ function getImageValue(record: Record<string, unknown>): string | null {
   return null;
 }
 
+function toTitleCase(value: string): string {
+  if (!value) {
+    return value;
+  }
+
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+function parseCategoryPath(value: string): string | null {
+  const normalized = value
+    .replace(/&gt;/gi, ">")
+    .replace(/&amp;/gi, "&")
+    .trim();
+
+  if (!normalized) {
+    return null;
+  }
+
+  const segments = normalized
+    .split(/\/|>/)
+    .map((segment) => segment.trim())
+    .filter(Boolean);
+
+  if (segments.length === 0) {
+    return null;
+  }
+
+  return segments[segments.length - 1];
+}
+
+function deriveCategoryFromUrl(sourceUrl: string): string | null {
+  try {
+    const url = new URL(sourceUrl);
+    const segments = url.pathname
+      .split("/")
+      .map((segment) => decodeURIComponent(segment).trim())
+      .filter(Boolean);
+
+    if (segments.length < 2) {
+      return null;
+    }
+
+    const categorySegment = segments[1].replace(/[-_]+/g, " ").trim();
+
+    if (!categorySegment) {
+      return null;
+    }
+
+    return toTitleCase(categorySegment);
+  } catch {
+    return null;
+  }
+}
+
+function getCategoryValue(
+  record: Record<string, unknown>,
+  sourceUrl: string
+): string | null {
+  const pathValue = getStringValue(record, ["category_path", "category_breadcrumb"]);
+  const parsedPathValue = pathValue ? parseCategoryPath(pathValue) : null;
+
+  if (parsedPathValue) {
+    return parsedPathValue;
+  }
+
+  const directValue = getStringValue(record, [
+    "category",
+    "product_category",
+    "item_type",
+  ]);
+
+  if (directValue) {
+    return directValue;
+  }
+
+  return deriveCategoryFromUrl(sourceUrl);
+}
+
 function buildCacheKeyHash(sourceUrl: string): string {
   return createHash("md5").update(sourceUrl).digest("hex").slice(0, 50);
 }
@@ -238,7 +316,7 @@ function normalizeScrapedItem(row: ScrapedItemRow): NormalizedProduct | null {
     ]),
     productImageUrl: getImageValue(payload),
     productBrand: getStringValue(payload, ["brand", "product_brand"]),
-    productCategory: getStringValue(payload, ["category", "product_category"]),
+    productCategory: getCategoryValue(payload, sourceUrl),
     productVariantsCount: getIntegerValue(payload, [
       "variants_count",
       "product_variants_count",
