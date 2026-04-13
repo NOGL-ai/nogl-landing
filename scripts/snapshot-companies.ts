@@ -26,6 +26,17 @@ type TopProductRow = {
   top_product_image_url: string | null;
 };
 
+function getDomainFilter(): string | null {
+  const domainIndex = process.argv.indexOf("--domain");
+
+  if (domainIndex === -1) {
+    return null;
+  }
+
+  const value = process.argv[domainIndex + 1];
+  return value ? value.trim().toLowerCase() : null;
+}
+
 function toNullableNumber(value: NumericValue): number | null {
   if (value === null) {
     return null;
@@ -54,43 +65,59 @@ function formatAveragePrice(value: NumericValue): string {
 
 async function main() {
   const prisma = new PrismaClient();
+  const domainFilter = getDomainFilter();
 
   try {
-    const companies = (await prisma.$queryRaw(Prisma.sql`
-      SELECT id, name, domain
-      FROM nogl."Company"
-      ORDER BY name ASC
-    `)) as CompanyRow[];
+    const companies = (domainFilter
+      ? await prisma.$queryRaw(
+          Prisma.sql`
+            SELECT id, name, domain
+            FROM nogl."Company"
+            WHERE LOWER(domain) = ${domainFilter}
+            ORDER BY name ASC
+          `
+        )
+      : await prisma.$queryRaw(
+          Prisma.sql`
+            SELECT id, name, domain
+            FROM nogl."Company"
+            ORDER BY name ASC
+          `
+        )) as CompanyRow[];
 
     for (const company of companies) {
       const domainPattern = `%${company.domain}%`;
 
       const [aggregateRows, topProductRows] = await Promise.all([
-        prisma.$queryRaw(Prisma.sql`
-          SELECT
-            COUNT(*)::int AS total_products,
-            COALESCE(SUM(COALESCE(product_variants_count, 0)), 0)::int AS total_variants,
-            COUNT(*) FILTER (WHERE product_discount_price IS NOT NULL)::int AS total_discounted,
-            AVG(product_discount_percentage) AS avg_discount_pct,
-            AVG(product_original_price) AS avg_price,
-            MIN(product_original_price) AS min_price,
-            MAX(product_original_price) AS max_price,
-            MIN(extraction_timestamp) AS data_since,
-            MAX(extraction_timestamp) AS last_scraped_at
-          FROM public.products
-          WHERE source_url ILIKE ${domainPattern}
-        `),
-        prisma.$queryRaw(Prisma.sql`
-          SELECT
-            product_id AS top_product_id,
-            product_title AS top_product_title,
-            product_page_image_url AS top_product_image_url
-          FROM public.products
-          WHERE source_url ILIKE ${domainPattern}
-            AND product_page_image_url IS NOT NULL
-          ORDER BY extraction_timestamp DESC NULLS LAST
-          LIMIT 1
-        `),
+        prisma.$queryRaw(
+          Prisma.sql`
+            SELECT
+              COUNT(*)::int AS total_products,
+              COALESCE(SUM(COALESCE(product_variants_count, 0)), 0)::int AS total_variants,
+              COUNT(*) FILTER (WHERE product_discount_price IS NOT NULL)::int AS total_discounted,
+              AVG(product_discount_percentage) AS avg_discount_pct,
+              AVG(product_original_price) AS avg_price,
+              MIN(product_original_price) AS min_price,
+              MAX(product_original_price) AS max_price,
+              MIN(extraction_timestamp) AS data_since,
+              MAX(extraction_timestamp) AS last_scraped_at
+            FROM public.products
+            WHERE source_url ILIKE ${domainPattern}
+          `
+        ),
+        prisma.$queryRaw(
+          Prisma.sql`
+            SELECT
+              product_id AS top_product_id,
+              product_title AS top_product_title,
+              product_page_image_url AS top_product_image_url
+            FROM public.products
+            WHERE source_url ILIKE ${domainPattern}
+              AND product_page_image_url IS NOT NULL
+            ORDER BY extraction_timestamp DESC NULLS LAST
+            LIMIT 1
+          `
+        ),
       ]);
 
       const aggregate = (aggregateRows[0] ?? {
@@ -111,80 +138,82 @@ async function main() {
         top_product_image_url: null,
       }) as TopProductRow;
 
-      await prisma.$executeRaw(Prisma.sql`
-        INSERT INTO nogl."CompanySnapshot" (
-          id,
-          company_id,
-          rank,
-          percentile,
-          total_products,
-          total_variants,
-          total_datapoints,
-          total_discounted,
-          avg_discount_pct,
-          avg_price,
-          min_price,
-          max_price,
-          price_distribution,
-          top_product_id,
-          top_product_title,
-          top_product_image_url,
-          data_since,
-          last_scraped_at,
-          ig_followers,
-          ig_avg_likes,
-          ig_most_liked_url,
-          ig_asset_count,
-          computed_at
-        )
-        VALUES (
-          ${company.id},
-          ${company.id},
-          NULL,
-          NULL,
-          ${aggregate.total_products},
-          ${aggregate.total_variants},
-          ${aggregate.total_products},
-          ${aggregate.total_discounted},
-          ${toNullableNumber(aggregate.avg_discount_pct)},
-          ${toNullableNumber(aggregate.avg_price)},
-          ${toNullableNumber(aggregate.min_price)},
-          ${toNullableNumber(aggregate.max_price)},
-          NULL,
-          ${topProduct.top_product_id},
-          ${topProduct.top_product_title},
-          ${topProduct.top_product_image_url},
-          ${aggregate.data_since},
-          ${aggregate.last_scraped_at},
-          NULL,
-          NULL,
-          NULL,
-          NULL,
-          NOW()
-        )
-        ON CONFLICT (company_id) DO UPDATE SET
-          rank = EXCLUDED.rank,
-          percentile = EXCLUDED.percentile,
-          total_products = EXCLUDED.total_products,
-          total_variants = EXCLUDED.total_variants,
-          total_datapoints = EXCLUDED.total_datapoints,
-          total_discounted = EXCLUDED.total_discounted,
-          avg_discount_pct = EXCLUDED.avg_discount_pct,
-          avg_price = EXCLUDED.avg_price,
-          min_price = EXCLUDED.min_price,
-          max_price = EXCLUDED.max_price,
-          price_distribution = EXCLUDED.price_distribution,
-          top_product_id = EXCLUDED.top_product_id,
-          top_product_title = EXCLUDED.top_product_title,
-          top_product_image_url = EXCLUDED.top_product_image_url,
-          data_since = EXCLUDED.data_since,
-          last_scraped_at = EXCLUDED.last_scraped_at,
-          ig_followers = EXCLUDED.ig_followers,
-          ig_avg_likes = EXCLUDED.ig_avg_likes,
-          ig_most_liked_url = EXCLUDED.ig_most_liked_url,
-          ig_asset_count = EXCLUDED.ig_asset_count,
-          computed_at = EXCLUDED.computed_at
-      `);
+      await prisma.$executeRaw(
+        Prisma.sql`
+          INSERT INTO nogl."CompanySnapshot" (
+            id,
+            company_id,
+            rank,
+            percentile,
+            total_products,
+            total_variants,
+            total_datapoints,
+            total_discounted,
+            avg_discount_pct,
+            avg_price,
+            min_price,
+            max_price,
+            price_distribution,
+            top_product_id,
+            top_product_title,
+            top_product_image_url,
+            data_since,
+            last_scraped_at,
+            ig_followers,
+            ig_avg_likes,
+            ig_most_liked_url,
+            ig_asset_count,
+            computed_at
+          )
+          VALUES (
+            ${company.id},
+            ${company.id},
+            NULL,
+            NULL,
+            ${aggregate.total_products},
+            ${aggregate.total_variants},
+            ${aggregate.total_products},
+            ${aggregate.total_discounted},
+            ${toNullableNumber(aggregate.avg_discount_pct)},
+            ${toNullableNumber(aggregate.avg_price)},
+            ${toNullableNumber(aggregate.min_price)},
+            ${toNullableNumber(aggregate.max_price)},
+            NULL,
+            ${topProduct.top_product_id},
+            ${topProduct.top_product_title},
+            ${topProduct.top_product_image_url},
+            ${aggregate.data_since},
+            ${aggregate.last_scraped_at},
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            NOW()
+          )
+          ON CONFLICT (company_id) DO UPDATE SET
+            rank = EXCLUDED.rank,
+            percentile = EXCLUDED.percentile,
+            total_products = EXCLUDED.total_products,
+            total_variants = EXCLUDED.total_variants,
+            total_datapoints = EXCLUDED.total_datapoints,
+            total_discounted = EXCLUDED.total_discounted,
+            avg_discount_pct = EXCLUDED.avg_discount_pct,
+            avg_price = EXCLUDED.avg_price,
+            min_price = EXCLUDED.min_price,
+            max_price = EXCLUDED.max_price,
+            price_distribution = EXCLUDED.price_distribution,
+            top_product_id = EXCLUDED.top_product_id,
+            top_product_title = EXCLUDED.top_product_title,
+            top_product_image_url = EXCLUDED.top_product_image_url,
+            data_since = EXCLUDED.data_since,
+            last_scraped_at = EXCLUDED.last_scraped_at,
+            ig_followers = EXCLUDED.ig_followers,
+            ig_avg_likes = EXCLUDED.ig_avg_likes,
+            ig_most_liked_url = EXCLUDED.ig_most_liked_url,
+            ig_asset_count = EXCLUDED.ig_asset_count,
+            computed_at = EXCLUDED.computed_at
+        `
+      );
 
       console.log(
         `${company.name}: ${aggregate.total_products} products, avg €${formatAveragePrice(
