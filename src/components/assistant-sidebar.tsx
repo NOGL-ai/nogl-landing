@@ -96,9 +96,29 @@ export const AssistantSidebar: FC<PropsWithChildren> = ({ children }) => {
       }
     };
 
+    // Handle window resize to ensure responsive behavior
+    let resizeTimeout: NodeJS.Timeout;
+    const handleWindowResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        // Clear saved layout on small screens to allow responsive resizing
+        if (window.innerWidth < 1280) {
+          try {
+            localStorage.removeItem('assistant-sidebar-layout');
+          } catch (error) {
+            console.warn('Failed to clear panel layout from localStorage:', error);
+          }
+        }
+      }, 250);
+    };
+
     mediaQuery.addEventListener('change', handleChange as (ev: MediaQueryListEvent) => void);
+    window.addEventListener('resize', handleWindowResize);
+
     return () => {
       mediaQuery.removeEventListener('change', handleChange as (ev: MediaQueryListEvent) => void);
+      window.removeEventListener('resize', handleWindowResize);
+      clearTimeout(resizeTimeout);
     };
   }, []);
 
@@ -118,8 +138,8 @@ export const AssistantSidebar: FC<PropsWithChildren> = ({ children }) => {
       {isMounted ? (
         <ResizablePanelGroup 
           direction="horizontal" 
-          className="fixed inset-0 w-full h-screen"
-          autoSaveId="assistant-sidebar-layout"
+          className="fixed inset-0 z-10 h-screen w-full"
+          autoSaveId="nogl-assistant-layout-v2"
           storage={{
             getItem: (name: string) => {
               try {

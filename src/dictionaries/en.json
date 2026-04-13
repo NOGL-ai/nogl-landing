@@ -61,10 +61,10 @@
 		"title": "Hello World!"
 	},
 	"hero": {
-		"introducing": "Introducing Nogl.ai",
-		"title": "AI-Powered Fashion Trend Forecasting & Demand Prediction",
-		"description": "Predict trends, forecast new-product demand, and optimize localized assortments with demand-sensing AI.",
-		"buttonText": "Start Forecasting for free"
+		"introducing": "Introducing NOGL Pricing",
+		"title": "Competitor Pricing Intelligence & Repricing Automation",
+		"description": "Monitor competitor prices, automate repricing rules, and act on AI-assisted pricing insights across your catalog.",
+		"buttonText": "Start with NOGL Pricing"
 	},
 	"problem": {
 		"title": "The Problem",
@@ -329,6 +329,84 @@
 		"description": "Manage and optimize your product feeds for better market reach",
 		"metaTitle": "Product Feed | Nogl",
 		"metaDescription": "Manage and optimize your product feeds for better market reach"
+	},
+	"competitors": {
+		"list": {
+			"title": "Competitor Analysis",
+			"description": "Focus only on the competitors you actively track, compare, and review.",
+			"searchPlaceholder": "Search competitors by name or domain",
+			"customizeButton": "Customize",
+			"exportButton": "Export",
+			"addCompetitorButton": "Add Competitor",
+			"trackedCompetitorsLabel": "Tracked competitors",
+			"allCompetitors": "All Competitors",
+			"tracking": "Tracking",
+			"paused": "Paused",
+			"emptyState": "No competitors found",
+			"rowsPerPage": "Rows per page",
+			"showing": "Showing {start}-{end} of {total}",
+			"previous": "Previous",
+			"next": "Next",
+			"page": "Page {current} of {total}",
+			"loading": "Loading competitors...",
+			"error": "Failed to load competitors",
+			"tryAgain": "Try Again"
+		},
+		"detail": {
+			"title": "{name} - Competitor Analysis",
+			"backLink": "Company Explorer",
+			"lastScraped": "Last scraped",
+			"productsSection": "Products",
+			"showingProducts": "Showing {count} tracked product{plural}",
+			"noProducts": "No products found",
+			"noProductsDescription": "This competitor does not have any recent tracked products yet.",
+			"productTitle": "Title",
+			"productPrice": "Price",
+			"productLastSeen": "Last Seen",
+			"productLink": "Link",
+			"openLink": "Open",
+			"notFound": "Competitor not found",
+			"notFoundDescription": "We could not find a tracked competitor with that ID.",
+			"error": "Could not load competitor",
+			"disabled": "Competitor tracking coming soon",
+			"disabledDescription": "Competitor tracking is not enabled in this environment yet. Check back once the feature flag is turned on."
+		},
+		"header": {
+			"breadcrumb": "Company Explorer",
+			"status": "Status",
+			"domain": "Domain",
+			"category": "Electronics",
+			"dataAvailable": "Data Available",
+			"dataTypes": "Data Types",
+			"dataSince": "Data Since",
+			"quality": "Quality",
+			"competitors": "Competitors",
+			"companySince": "All products between {start} and {end}",
+			"datasets": {
+				"pricing": "Pricing",
+				"promotions": "Promotions",
+				"reviews": "Reviews",
+				"global": "Global"
+			},
+			"qualityWarning": "Delayed Inventory Reporting",
+			"qualityWarningDescription": "This website reports inventory updates in batches rather than in real-time. As a result, sales data may appear inconsistent or bunched together.",
+			"socialsLabel": "Socials",
+			"compareButton": "Compare"
+		},
+		"advancedSearch": {
+			"title": "Advanced Search",
+			"subtitle": "All brands available through Particl, with extra filters and options to sort results in tabular format",
+			"filters": "Filters",
+			"resetFilters": "Reset Filters",
+			"search": "Search",
+			"vertical": "Competitor Vertical",
+			"productType": "Product Type",
+			"dataAvailable": "Data Available",
+			"signatureStatus": "Signature Status",
+			"allCompetitorDatasets": "All Competitor Datasets",
+			"rowsPerPage": "Rows per page",
+			"lookingForDifferentCompany": "Looking for a different company?"
+		}
 	},
 	"repricing": {
 		"manage": {

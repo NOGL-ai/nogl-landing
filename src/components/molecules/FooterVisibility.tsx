@@ -12,7 +12,7 @@ const APP_PREFIXES = new Set([
   "dashboard",
   "settings",
   "catalog",
-  "competitors",
+  "companies",
   "product-feed",
   "profile",
   "reports",

@@ -124,6 +124,77 @@ async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
   }
 }
 
+type ScrapedProductsApiResponse = {
+  ok: boolean;
+  total: number;
+  items: Array<{
+    url: string;
+    source: string;
+    itemType: string;
+    title: string;
+    price: string;
+    currency: string;
+    updatedAt: string;
+  }>;
+};
+
+function extractEan(value?: string | null): string | null {
+  if (!value || typeof value !== "string") return null;
+  const match = value.match(/\b\d{8,14}\b/);
+  return match ? match[0] : null;
+}
+
+function mapScrapedToProductsResponse(
+  scraped: ScrapedProductsApiResponse,
+  params: PageParams,
+): GetProductsResponse {
+  const page = params.page ?? 1;
+  const limit = params.limit ?? 10;
+  const products: ProductDTO[] = scraped.items.map((item, index) => {
+    const parsedPrice = Number.parseFloat(item.price);
+    const price = Number.isFinite(parsedPrice) ? parsedPrice : 0;
+    const safeId = `${item.source}-${index}`;
+    const ean = extractEan(item.title) || extractEan(item.url);
+    return {
+      id: safeId,
+      name: item.title || "Untitled product",
+      sku: ean ?? `SRC-${index + 1}`,
+      image: null,
+      price,
+      currency: item.currency || "EUR",
+      channel: "scrapy",
+      brand: {
+        id: item.source || "unknown",
+        name: item.source || "unknown",
+        logo: null,
+      },
+      category: null,
+      competitors: [],
+      _count: { competitors: 0 },
+    };
+  });
+
+  return {
+    products,
+    pagination: {
+      page,
+      limit,
+      total: scraped.total ?? products.length,
+      totalPages: Math.max(1, Math.ceil((scraped.total ?? products.length) / limit)),
+    },
+    filters: {
+      search: params.search,
+      status: params.status as any,
+      featured: params.featured,
+      channel: params.channel,
+      categoryId: params.categoryId,
+      brandId: params.brandId,
+      minPrice: params.minPrice,
+      maxPrice: params.maxPrice,
+    },
+  };
+}
+
 export async function getProducts(params: PageParams = {}): Promise<GetProductsResponse> {
   if (useMock) {
     const page = params.page ?? 1;
@@ -158,11 +229,12 @@ export async function getProducts(params: PageParams = {}): Promise<GetProductsR
     return cachedData;
   }
 
-  const query = buildQuery({ sortBy: "createdAt", sortOrder: "desc", ...params });
-  const url = `/api/products?${query}`;
+  const query = buildQuery({ limit: params.limit ?? 100, ...params });
+  const url = `/api/scraped-products?${query}`;
 
   try {
-    const data = await fetchJson<GetProductsResponse>(url);
+    const scraped = await fetchJson<ScrapedProductsApiResponse>(url);
+    const data = mapScrapedToProductsResponse(scraped, params);
     // Basic validation of shape
     if (!data || !Array.isArray((data as any).products)) {
       throw new Error('Invalid API response');

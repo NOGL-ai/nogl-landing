@@ -358,3 +358,18 @@ body.app-hide-footer footer {
 	background: var(--color-bg-primary) !important;
 	border-color: var(--color-border-primary) !important;
 }
+
+/* Carousel scroll animation */
+@keyframes scroll {
+	0% {
+		transform: translateX(0);
+	}
+	100% {
+		transform: translateX(-100%);
+	}
+}
+
+.animate-scroll {
+	animation: scroll linear infinite;
+	animation-duration: 30s;
+}

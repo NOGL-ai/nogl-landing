@@ -253,13 +253,37 @@ export default function AddEcommerceCompetitorPage() {
 		}
 	};
 
-	const handleSave = () => {
-		if (productData) {
-			alert("Competitor product saved successfully!");
+	const handleSave = async () => {
+		if (!productData) {
+			return;
+		}
+
+		try {
+			const res = await fetch("/api/competitors", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					name: productData.brand || productData.title,
+					domain: competitorUrl,
+					website: `https://${competitorUrl}`,
+				}),
+			});
+
+			if (res.status === 409) {
+				setUrlError("This competitor domain is already tracked.");
+				return;
+			}
+
+			if (!res.ok) {
+				setUrlError("Failed to save competitor. Please try again.");
+				return;
+			}
 
 			if (typeof window !== "undefined") {
-				window.history.back();
+				window.location.href = "../../competitors";
 			}
+		} catch {
+			setUrlError("Failed to save competitor. Please try again.");
 		}
 	};
 

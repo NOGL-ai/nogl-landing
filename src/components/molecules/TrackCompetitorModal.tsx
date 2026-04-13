@@ -114,7 +114,7 @@ export default function TrackCompetitorModal({ open, onOpenChange }: TrackCompet
 										label="Competitor Name"
 										placeholder="What is the name of your competitor"
 										value={formData.name}
-										onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+										onChange={(value) => setFormData({ ...formData, name: value })}
 									/>
 
 									<Select
@@ -148,7 +148,11 @@ export default function TrackCompetitorModal({ open, onOpenChange }: TrackCompet
 										items={countries}
 										onSelectionChange={(key) => setFormData({ ...formData, location: key as string })}
 									>
-										{(item) => <Select.Item key={item.id}>{item.label}</Select.Item>}
+										{(item) => (
+											<Select.Item id={item.id} key={item.id}>
+												{item.label}
+											</Select.Item>
+										)}
 									</Select>
 								</>
 							)}
@@ -160,7 +164,7 @@ export default function TrackCompetitorModal({ open, onOpenChange }: TrackCompet
 										label="Competitor Title"
 										placeholder="What is the title of the competitor?"
 										value={formData.title}
-										onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+										onChange={(value) => setFormData({ ...formData, title: value })}
 									/>
 
 									<TextArea
@@ -169,7 +173,7 @@ export default function TrackCompetitorModal({ open, onOpenChange }: TrackCompet
 										placeholder="e.g. I joined Competitor's Customer Success team to enhance their product offerings. My focus was on onboarding new clients and addressing their concerns."
 										rows={6}
 										value={formData.description}
-										onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+										onChange={(value) => setFormData({ ...formData, description: value })}
 									/>
 								</>
 							)}
@@ -181,7 +185,7 @@ export default function TrackCompetitorModal({ open, onOpenChange }: TrackCompet
 										label="Competitor Name"
 										placeholder="What is the name of your competitor?"
 										value={formData.name}
-										onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+										onChange={(value) => setFormData({ ...formData, name: value })}
 										size="md"
 									/>
 
@@ -221,7 +225,11 @@ export default function TrackCompetitorModal({ open, onOpenChange }: TrackCompet
 											onSelectionChange={(key) => setFormData({ ...formData, location: key as string })}
 											size="md"
 										>
-											{(item) => <Select.Item key={item.id}>{item.label}</Select.Item>}
+											{(item) => (
+												<Select.Item id={item.id} key={item.id}>
+													{item.label}
+												</Select.Item>
+											)}
 										</Select>
 
 										<Select
@@ -231,7 +239,11 @@ export default function TrackCompetitorModal({ open, onOpenChange }: TrackCompet
 											onSelectionChange={(key) => setFormData({ ...formData, channel: key as string })}
 											size="md"
 										>
-											{(item) => <Select.Item key={item.id}>{item.label}</Select.Item>}
+											{(item) => (
+												<Select.Item id={item.id} key={item.id}>
+													{item.label}
+												</Select.Item>
+											)}
 										</Select>
 									</div>
 
@@ -239,7 +251,7 @@ export default function TrackCompetitorModal({ open, onOpenChange }: TrackCompet
 										label="Competitor Title"
 										placeholder="What is the title of the competitor?"
 										value={formData.title}
-										onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+										onChange={(value) => setFormData({ ...formData, title: value })}
 										size="md"
 									/>
 
@@ -249,7 +261,7 @@ export default function TrackCompetitorModal({ open, onOpenChange }: TrackCompet
 										placeholder="e.g. I joined Competitor's Customer Success team to enhance their product offerings. My focus was on onboarding new clients and addressing their concerns."
 										rows={6}
 										value={formData.description}
-										onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+										onChange={(value) => setFormData({ ...formData, description: value })}
 										className="h-[144px]"
 									/>
 								</>

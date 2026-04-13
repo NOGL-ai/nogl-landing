@@ -21,7 +21,7 @@ class MarketIntelligenceClient {
     this.config = {
       apiUrl: process.env.MARKET_INTELLIGENCE_API_URL || 'https://v1-market-intelligence-api-351041537979.europe-west3.run.app',
       apiKey: process.env.MARKET_INTELLIGENCE_API_KEY || '',
-      qdrantHost: process.env.QDRANT_HOST || 'https://vectorize.callapro.ai',
+      qdrantHost: process.env.QDRANT_HOST || '',
       qdrantApiKey: process.env.QDRANT_API_KEY || '',
       collectionName: process.env.QDRANT_COLLECTION_NAME || 'internal_collection_jng',
       defaultThreshold: 0.75,

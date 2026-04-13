@@ -56,6 +56,12 @@ export interface Competitor {
   myPrice: number;
 }
 
+const extractEan = (value?: string | null): string | null => {
+  if (!value || typeof value !== 'string') return null;
+  const match = value.match(/\b\d{8,14}\b/);
+  return match ? match[0] : null;
+};
+
 interface TanStackTableProps {
   data: Competitor[];
   selectedRows: Set<number>;
@@ -218,7 +224,10 @@ export const TanStackTable: React.FC<TanStackTableProps> = ({
                   <TooltipContent sideOffset={8}>{row.original.name}</TooltipContent>
                 </Tooltip>
                 <div className="text-sm text-muted-foreground truncate">
-                  {row.original.sku ? `SKU: ${row.original.sku}` : `Code: ${row.original.domain}`}
+                  {(() => {
+                    const ean = extractEan(row.original.sku);
+                    return ean ? `EAN: ${ean}` : 'EAN: N/A';
+                  })()}
                 </div>
               </div>
             </div>

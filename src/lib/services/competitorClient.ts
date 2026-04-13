@@ -38,6 +38,19 @@ function buildQuery(params: any = {}): string {
   return q.toString();
 }
 
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
+function isTransientApiError(message: string): boolean {
+  return (
+    message.includes("API returned HTML instead of JSON") ||
+    message.includes("Network error: failed to reach the API")
+  );
+}
+
 async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
   try {
     const res = await fetch(url, {
@@ -49,11 +62,31 @@ async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
       credentials: "include",
     });
 
+    const contentType = res.headers.get("content-type") ?? "";
+    const rawBody = await res.text();
+
+    const parseJson = () => {
+      if (!rawBody) {
+        throw new Error("Empty response body");
+      }
+
+      try {
+        return JSON.parse(rawBody) as T;
+      } catch {
+        const snippet = rawBody.slice(0, 120).replace(/\s+/g, " ").trim();
+        throw new Error(
+          contentType.includes("text/html")
+            ? `API returned HTML instead of JSON for ${url}`
+            : `Invalid JSON response for ${url}: ${snippet || "empty response"}`
+        );
+      }
+    };
+
     if (!res.ok) {
       let errorMessage = `Request failed: ${res.status} ${res.statusText}`;
 
       try {
-        const errorData = await res.json();
+        const errorData = rawBody ? JSON.parse(rawBody) : null;
         if (errorData && (errorData.error || errorData.message)) {
           errorMessage = `${errorData.error ?? errorData.message}`;
           if (errorData.message && errorData.error) {
@@ -64,17 +97,18 @@ async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
           }
         }
       } catch {
-        // If JSON parsing fails, use the text response
-        const text = await res.text().catch(() => "");
-        if (text) {
-          errorMessage += ` - ${text}`;
+        if (rawBody) {
+          const snippet = rawBody.slice(0, 120).replace(/\s+/g, " ").trim();
+          errorMessage += contentType.includes("text/html")
+            ? ` - API returned HTML instead of JSON for ${url}`
+            : ` - ${snippet}`;
         }
       }
 
       throw new Error(errorMessage);
     }
 
-    return (await res.json()) as T;
+    return parseJson();
   } catch (err: any) {
     // Normalize network/fetch errors
     if (err instanceof Error && err.message === 'Failed to fetch') {
@@ -99,22 +133,99 @@ export async function getCompetitors(params: {
     return cachedData;
   }
 
-  const query = buildQuery({ sortBy: "createdAt", sortOrder: "desc", ...params });
+  const query = buildQuery({
+    sortBy: "createdAt",
+    sortOrder: "desc",
+    resource: "competitors",
+    ...params,
+  });
   const url = `/api/competitors?${query}`;
+  const retryDelays = [400, 800, 1500];
+  let attemptedContractRecovery = false;
 
-  try {
-    const data = await fetchJson<GetCompetitorsResponse>(url);
-    // Basic validation of shape
-    if (!data || !Array.isArray((data as any).competitors)) {
-      throw new Error('Invalid API response');
+  for (let attempt = 0; attempt <= retryDelays.length; attempt += 1) {
+    try {
+      const rawData = await fetchJson<unknown>(url);
+      const normalizePayload = (payload: unknown): GetCompetitorsResponse | null => {
+        if (!payload || typeof payload !== "object") return null;
+
+        const root = payload as Record<string, unknown>;
+        const candidate =
+          root.data && typeof root.data === "object"
+            ? (root.data as Record<string, unknown>)
+            : root;
+
+        const competitors = candidate.competitors;
+        const pagination = candidate.pagination;
+
+        if (!Array.isArray(competitors) || !pagination || typeof pagination !== "object") {
+          return null;
+        }
+
+        return {
+          ...(candidate as GetCompetitorsResponse),
+          competitors,
+          pagination: pagination as GetCompetitorsResponse["pagination"],
+          filters: (candidate.filters ?? {}) as GetCompetitorsResponse["filters"],
+        };
+      };
+
+      const data = normalizePayload(rawData);
+      if (!data) {
+        const root =
+          rawData && typeof rawData === "object"
+            ? (rawData as Record<string, unknown>)
+            : null;
+        const payload =
+          root?.data && typeof root.data === "object"
+            ? (root.data as Record<string, unknown>)
+            : root;
+        const keys =
+          payload && typeof payload === "object"
+            ? Object.keys(payload).join(", ")
+            : typeof rawData;
+
+        if (payload && Array.isArray(payload.companies)) {
+          if (!attemptedContractRecovery) {
+            attemptedContractRecovery = true;
+            const retryUrl = `${url}&_contractRetry=${Date.now()}`;
+            const recoveryData = await fetchJson<unknown>(retryUrl, {
+              cache: "no-store",
+              headers: {
+                "X-Expected-Contract": "competitors",
+              },
+            });
+            const normalizedRecoveryData = normalizePayload(recoveryData);
+            if (normalizedRecoveryData) {
+              setCachedData(params, normalizedRecoveryData);
+              return normalizedRecoveryData;
+            }
+          }
+
+          throw new Error(
+            `Wrong API contract for ${url}: received companies payload. Check endpoint routing/proxy and ensure this page calls /api/competitors only.`
+          );
+        }
+
+        throw new Error(`Invalid API response for ${url} (keys: ${keys || "none"})`);
+      }
+      // Cache the successful response
+      setCachedData(params, data);
+      return data;
+    } catch (error: any) {
+      const message = error?.message ?? 'Unknown error while fetching competitors';
+
+      if (attempt < retryDelays.length && isTransientApiError(message)) {
+        await sleep(retryDelays[attempt]);
+        continue;
+      }
+
+      console.error('getCompetitors error:', message);
+      throw error;
     }
-    // Cache the successful response
-    setCachedData(params, data);
-    return data;
-  } catch (error: any) {
-    console.error('getCompetitors error:', error?.message ?? error);
-    throw error;
   }
+
+  throw new Error('Failed to load competitors');
 }
 
 export async function getCompetitor(id: string): Promise<CompetitorDTO> {
@@ -203,7 +314,20 @@ export async function getCompetitorPrices(
   const url = `/api/competitors/${id}/prices?${query}`;
 
   try {
-    const data = await fetchJson(url);
+    const data = await fetchJson<{
+      prices: CompetitorPriceComparisonDTO[];
+      pagination: {
+        page: number;
+        limit: number;
+        total: number;
+        totalPages: number;
+      };
+      competitor: {
+        id: string;
+        name: string;
+        domain: string;
+      };
+    }>(url);
     return data;
   } catch (error: any) {
     console.error('getCompetitorPrices error:', error?.message ?? error);
@@ -262,7 +386,26 @@ export async function getCompetitorStats(): Promise<{
   const url = '/api/competitors/stats';
 
   try {
-    const data = await fetchJson(url);
+    const data = await fetchJson<{
+      overview: {
+        totalCompetitors: number;
+        activeCompetitors: number;
+        inactiveCompetitors: number;
+        monitoringCompetitors: number;
+        pausedCompetitors: number;
+        totalPriceComparisons: number;
+        averagePriceComparisons: number;
+        recentActivity: number;
+      };
+      breakdown: {
+        status: Array<{ status: string; count: number }>;
+        categories: Array<{ category: string; count: number }>;
+      };
+      trends: {
+        recentActivity: number;
+        averagePriceComparisonsPerCompetitor: number;
+      };
+    }>(url);
     return data;
   } catch (error: any) {
     console.error('getCompetitorStats error:', error?.message ?? error);
@@ -273,4 +416,67 @@ export async function getCompetitorStats(): Promise<{
 // Utility function to clear all caches
 export function clearCache(): void {
   cache.clear();
+}
+
+export type AdvancedCompanyDataType = "products" | "pricing" | "reviews" | "web";
+export type AdvancedCompanySortField = "relevance" | "keyword_rank" | "name" | "data_since";
+export type AdvancedCompanySortOrder = "asc" | "desc";
+
+export interface AdvancedCompanyRow {
+  id: string;
+  name: string;
+  domain: string;
+  logoUrl: string;
+  vertical: string;
+  dataTypes: AdvancedCompanyDataType[];
+  status: "Normal" | "Signature";
+  popularityScore: number;
+  dataSince: string | null;
+  productType: string;
+  trackedCompetitorId: string | null;
+}
+
+export interface AdvancedCompaniesResponse {
+  total: number;
+  pageOffset: number;
+  pageSize: number;
+  filters: {
+    search: string;
+    companyVertical: string;
+    productType: string;
+    dataAvailable: string;
+    signatureStatus: "all" | "normal" | "signature";
+  };
+  sort: {
+    field: AdvancedCompanySortField;
+    order: AdvancedCompanySortOrder;
+  };
+  results: AdvancedCompanyRow[];
+}
+
+export async function getAdvancedCompanies(params: {
+  search?: string;
+  companyVertical?: string;
+  productType?: string;
+  dataAvailable?: string;
+  signatureStatus?: "all" | "normal" | "signature";
+  pageSize?: number;
+  pageOffset?: number;
+  sortField?: AdvancedCompanySortField;
+  sortOrder?: AdvancedCompanySortOrder;
+} = {}): Promise<AdvancedCompaniesResponse> {
+  const query = buildQuery({
+    search: params.search ?? "",
+    companyVertical: params.companyVertical ?? "all",
+    productType: params.productType ?? "",
+    dataAvailable: params.dataAvailable ?? "",
+    signatureStatus: params.signatureStatus ?? "all",
+    pageSize: params.pageSize ?? 25,
+    pageOffset: params.pageOffset ?? 0,
+    sortField: params.sortField ?? "relevance",
+    sortOrder: params.sortOrder ?? "desc",
+  });
+
+  const url = `/api/companies/advanced-search?${query}`;
+  return fetchJson<AdvancedCompaniesResponse>(url, { cache: "no-store" });
 }

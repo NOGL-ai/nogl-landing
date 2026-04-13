@@ -20,9 +20,14 @@ const navItemsWithSectionsSubheadings: Array<{ label: string; items: NavItemType
                 icon: BarChartSquare02,
             },
             {
-                label: "Competitor Intelligence",
-                href: "/competitors/competitor",
+                label: "Companies",
+                href: "/companies",
                 icon: SearchMd,
+            },
+            {
+                label: "Tracked Competitors",
+                href: "/companies/competitor",
+                icon: Tag01,
             },
             {
                 label: "Reports",

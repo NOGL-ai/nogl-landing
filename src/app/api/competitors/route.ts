@@ -1,12 +1,103 @@
+import { Prisma } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prismaDb";
 import { withRequestLogging, withSecurityHeaders } from "@/middlewares/security";
 import { withRateLimit } from "@/middlewares/rateLimit";
 import { FEATURES } from "@/lib/featureFlags";
+import { scraperPool, isScraperAvailable } from "@/lib/scraperPool";
+import { SCRAPER_SOURCES } from "@/lib/constants/scraperSources";
 
 // Cache configuration
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 const queryCache = new Map<string, { data: any; timestamp: number }>();
+const SCRAPER_SYNC_TTL = 5 * 60 * 1000;
+let lastScraperSyncAt = 0;
+let scraperSyncPromise: Promise<void> | null = null;
+
+interface CreateCompetitorBody {
+  name: string;
+  domain: string;
+  website?: string;
+  categories?: string[];
+}
+
+// syncScraperMetrics — reads aggregated counts from the external scraper DB
+// and non-destructively upserts them into prisma.Competitor.
+// Safe to call on every request: failures are caught and logged, never rethrown.
+async function syncScraperMetrics(): Promise<void> {
+  if (!isScraperAvailable || !scraperPool) {
+    console.warn('[competitors] SCRAPY_DATABASE_URL not set — skipping scraper sync');
+    return;
+  }
+  try {
+    const result = await scraperPool.query<{
+      source: string;
+      product_count: string; // pg returns bigint as string
+      last_scraped_at: Date;
+    }>(`
+      SELECT
+        source,
+        COUNT(*)::text AS product_count,
+        MAX(updated_at)  AS last_scraped_at
+      FROM scraping.scraped_items
+      WHERE item_type = 'product'
+        AND source != 'test'
+      GROUP BY source
+    `);
+
+    for (const row of result.rows) {
+      const scraperSource =
+        SCRAPER_SOURCES[row.source as keyof typeof SCRAPER_SOURCES];
+      const displayName = scraperSource?.name ?? row.source;
+      const website = scraperSource?.website ?? null;
+      const count      = Number(row.product_count);
+      const scrapedAt  = new Date(row.last_scraped_at);
+
+      await prisma.competitor.upsert({
+        where:  { domain: row.source },
+        // On UPDATE: only touch metrics — never overwrite user-set name/status/categories/website
+        update: {
+          productCount:  count,
+          lastScrapedAt: scrapedAt,
+          // updatedAt is @updatedAt in schema — Prisma sets it automatically, do NOT include it here
+        },
+        // On CREATE: set all required fields from the SCRAPER_SOURCES map
+        create: {
+          name:          displayName,
+          domain:        row.source,
+          website:       website,
+          productCount:  count,
+          lastScrapedAt: scrapedAt,
+          status:        'ACTIVE',
+          categories:    [],
+        },
+      });
+    }
+
+    // Invalidate query cache so the next findMany reflects updated counts
+    queryCache.clear();
+  } catch (error) {
+    // Log but never rethrow — a dead scraper DB must not break the competitor list
+    console.error('[competitors] scraper sync failed:', error);
+  }
+}
+
+function triggerScraperSync(): void {
+  const now = Date.now();
+
+  if (scraperSyncPromise || now - lastScraperSyncAt < SCRAPER_SYNC_TTL) {
+    return;
+  }
+
+  scraperSyncPromise = syncScraperMetrics()
+    .catch((error) => {
+      console.error("[competitors] background scraper sync failed:", error);
+    })
+    .finally(() => {
+      lastScraperSyncAt = Date.now();
+      scraperSyncPromise = null;
+    });
+}
 
 // GET /api/competitors - List with pagination, filters, search
 export const GET = withRequestLogging(
@@ -18,6 +109,9 @@ export const GET = withRequestLogging(
           { status: 503 }
         );
       }
+
+      // Sync scraper metrics before serving — failures are swallowed inside syncScraperMetrics
+      triggerScraperSync();
 
       // Parse query params
       const { searchParams } = new URL(request.url);
@@ -87,6 +181,23 @@ export const GET = withRequestLogging(
           filters: { search, status },
         };
 
+        const isValidResponse =
+          Array.isArray(responseData.competitors) &&
+          typeof responseData.pagination?.page === "number" &&
+          typeof responseData.pagination?.limit === "number" &&
+          typeof responseData.pagination?.total === "number" &&
+          typeof responseData.pagination?.totalPages === "number";
+
+        if (!isValidResponse) {
+          return NextResponse.json(
+            {
+              error: "Failed to fetch competitors",
+              message: "Competitor API response contract violation",
+            },
+            { status: 500 }
+          );
+        }
+
         // Cache result
         queryCache.set(cacheKey, { data: responseData, timestamp: Date.now() });
 
@@ -100,9 +211,10 @@ export const GET = withRequestLogging(
 
         const response = withSecurityHeaders(NextResponse.json(responseData));
         response.headers.set('Cache-Control', 'public, max-age=300, s-maxage=300');
+        response.headers.set('X-Api-Resource', 'competitors');
         return response;
       } catch (error: any) {
-        console.error('Database query error:', error?.stack || error);
+        console.error('[competitors] GET failed:', error instanceof Error ? error.stack : error);
         const message = (error && error.message) ? error.message : 'Database query failed';
         return NextResponse.json(
           { error: "Failed to fetch competitors", message },
@@ -125,47 +237,48 @@ export const POST = withRequestLogging(
       }
 
       try {
-        const body = await request.json();
-        
-        // Validation
-        if (!body.name || !body.domain) {
+        const body = (await request.json()) as Partial<CreateCompetitorBody>;
+        const name = body.name?.trim() ?? "";
+        const domain = (body.domain?.trim() ?? "")
+          .replace(/^https?:\/\//i, "")
+          .replace(/\/.*$/, "");
+
+        if (!name || !domain) {
           return NextResponse.json(
-            { error: "Name and domain are required" },
+            { error: "name and domain are required" },
             { status: 400 }
           );
         }
 
-        // Check for duplicates
-        const existing = await prisma.competitor.findUnique({
-          where: { domain: body.domain },
+        const competitor = await prisma.competitor.create({
+          data: {
+            name,
+            domain,
+            website: body.website?.trim() || null,
+            status: "ACTIVE",
+            isMonitoring: true,
+            categories: body.categories || [],
+            productCount: 0,
+          },
         });
 
-        if (existing && !existing.deletedAt) {
+        queryCache.clear();
+
+        return NextResponse.json(competitor, { status: 201 });
+      } catch (error) {
+        if (
+          error instanceof Prisma.PrismaClientKnownRequestError &&
+          error.code === "P2002" &&
+          ((Array.isArray(error.meta?.target) &&
+            error.meta.target.includes("domain")) ||
+            error.meta?.target === "domain")
+        ) {
           return NextResponse.json(
             { error: "Competitor with this domain already exists" },
             { status: 409 }
           );
         }
 
-        // Create competitor
-        const competitor = await prisma.competitor.create({
-          data: {
-            name: body.name,
-            domain: body.domain,
-            website: body.website,
-            description: body.description,
-            productCount: body.productCount || 0,
-            marketPosition: body.marketPosition,
-            status: body.status || 'ACTIVE',
-            categories: body.categories || [],
-          },
-        });
-
-        // Invalidate cache
-        queryCache.clear();
-
-        return NextResponse.json(competitor, { status: 201 });
-      } catch (error) {
         console.error('Error creating competitor:', error);
         return NextResponse.json(
           { error: "Failed to create competitor" },

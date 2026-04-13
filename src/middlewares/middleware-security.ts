@@ -10,11 +10,11 @@ const SECURITY_CONFIG = {
 	// Content Security Policy
 	csp: `
 		default-src 'self';
-		script-src 'self' 'unsafe-eval' 'unsafe-inline' https://accounts.google.com https://apis.google.com;
-		style-src 'self' 'unsafe-inline';
+		script-src 'self' 'unsafe-eval' 'unsafe-inline' https://accounts.google.com https://apis.google.com https://www.googletagmanager.com https://www.google-analytics.com;
+		style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
 		img-src 'self' blob: data: https: http:;
 		font-src 'self' data:;
-		connect-src 'self' https://accounts.google.com https://*.googleapis.com https://api.mapbox.com https://*.tiles.mapbox.com https://events.mapbox.com https://*.basemaps.cartocdn.com wss://localhost:* ws://localhost:*;
+		connect-src 'self' https://accounts.google.com https://*.googleapis.com https://api.mapbox.com https://*.tiles.mapbox.com https://events.mapbox.com https://*.basemaps.cartocdn.com https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com https://region1.google-analytics.com wss://localhost:* ws://localhost:* http://localhost:*;
 		worker-src blob: 'self';
 		frame-src 'self' https://accounts.google.com;
 		frame-ancestors 'self';
