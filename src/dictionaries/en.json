@@ -395,7 +395,7 @@
 		},
 		"advancedSearch": {
 			"title": "Advanced Search",
-			"subtitle": "All brands available through Particl, with extra filters and options to sort results in tabular format",
+			"subtitle": "All brands available through Nogl, with extra filters and options to sort results in tabular format",
 			"filters": "Filters",
 			"resetFilters": "Reset Filters",
 			"search": "Search",

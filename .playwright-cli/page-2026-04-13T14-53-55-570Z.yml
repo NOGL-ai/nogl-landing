@@ -1,0 +1,52 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e4]:
+    - generic [ref=e6]:
+      - heading "Page not found" [level=2] [ref=e7]
+      - paragraph [ref=e8]: The page you are looking for doesn't exist.
+      - link "Return Home" [ref=e9] [cursor=pointer]:
+        - /url: /
+    - contentinfo [ref=e10]:
+      - generic [ref=e12]:
+        - generic [ref=e13]:
+          - link "NOGL logo" [ref=e14] [cursor=pointer]:
+            - /url: /en
+            - img [ref=e16]
+            - generic [ref=e45]: NOGL
+          - paragraph [ref=e46]: © 2026 Nogl - AI-Powered Fashion Intelligence Platform
+          - list [ref=e47]:
+            - listitem [ref=e48]:
+              - link "Twitter" [ref=e49] [cursor=pointer]:
+                - /url: https://twitter.com/noglai
+                - img [ref=e50]
+            - listitem [ref=e52]:
+              - link "LinkedIn" [ref=e53] [cursor=pointer]:
+                - /url: https://linkedin.com/company/noglai
+                - img [ref=e54]
+        - generic [ref=e56]:
+          - generic [ref=e57]:
+            - heading "Resources" [level=2] [ref=e58]
+            - list [ref=e59]:
+              - listitem [ref=e60]:
+                - link "Help Center" [ref=e61] [cursor=pointer]:
+                  - /url: /blog
+              - listitem [ref=e62]:
+                - link "Dashboard" [ref=e63] [cursor=pointer]:
+                  - /url: /dashboard
+          - generic [ref=e64]:
+            - heading "Legal" [level=2] [ref=e65]
+            - list [ref=e66]:
+              - listitem [ref=e67]:
+                - link "Privacy Policy" [ref=e68] [cursor=pointer]:
+                  - /url: /privacy-policy
+              - listitem [ref=e69]:
+                - link "Terms of Service" [ref=e70] [cursor=pointer]:
+                  - /url: /tos
+              - listitem [ref=e71]:
+                - link "Impressum" [ref=e72] [cursor=pointer]:
+                  - /url: /impressum
+      - generic:
+        - img "grid" [ref=e74]
+        - img "grid" [ref=e76]
+  - button "Open Next.js Dev Tools" [ref=e82] [cursor=pointer]:
+    - img [ref=e83]
+  - alert [ref=e86]

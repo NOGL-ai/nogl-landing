@@ -1,0 +1,165 @@
+- generic [ref=e4]:
+  - generic [ref=e6]:
+    - link "Skip to main content" [ref=e7] [cursor=pointer]:
+      - /url: "#main-content"
+    - generic [ref=e9]:
+      - link "NOGL logo" [ref=e11] [cursor=pointer]:
+        - /url: /en
+        - img [ref=e14]
+      - generic [ref=e41]:
+        - button "Home navigation" [ref=e42]:
+          - img [ref=e43]
+        - button "Pricing navigation" [ref=e45]:
+          - img [ref=e46]
+        - button "Market Research navigation" [ref=e48]:
+          - img [ref=e49]
+        - button "Products navigation" [ref=e51]:
+          - img [ref=e52]
+        - button "Supply Chain navigation" [ref=e54]:
+          - img [ref=e55]
+      - generic [ref=e58]:
+        - generic [ref=e59]:
+          - button "Toggle AI Copilot" [ref=e60]:
+            - img [ref=e61]
+          - generic "Theme (light)" [ref=e63]:
+            - button "Switch to dark mode" [ref=e64]:
+              - img [ref=e65]
+        - button "Dev User account menu" [ref=e68]:
+          - img "Dev User" [ref=e69]
+    - main "Main content" [ref=e70]:
+      - main [ref=e72]:
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - paragraph [ref=e78]: Company Explorer
+            - heading "Browse the company world-model foundation." [level=1] [ref=e79]
+            - paragraph [ref=e80]: Open a company record to inspect overview, pricing, events, and asset collection from the new company APIs.
+          - generic [ref=e81]:
+            - img
+            - searchbox "Filter by company name or domain" [ref=e82]
+          - generic [ref=e83]:
+            - link "Teltec teltec US Tracked Products 67,905" [ref=e84] [cursor=pointer]:
+              - /url: /en/companies/teltec
+              - generic [ref=e85]:
+                - generic [ref=e86]:
+                  - heading "Teltec" [level=2] [ref=e87]
+                  - paragraph [ref=e88]: teltec
+                - generic [ref=e89]:
+                  - generic [ref=e90]: 🇺🇸
+                  - generic [ref=e91]: US
+              - generic [ref=e92]:
+                - generic [ref=e93]: Tracked
+                - generic [ref=e94]:
+                  - paragraph [ref=e95]: Products
+                  - paragraph [ref=e96]: 67,905
+            - link "Fotokoch fotokoch US Tracked Products 40,296" [ref=e97] [cursor=pointer]:
+              - /url: /en/companies/fotokoch
+              - generic [ref=e98]:
+                - generic [ref=e99]:
+                  - heading "Fotokoch" [level=2] [ref=e100]
+                  - paragraph [ref=e101]: fotokoch
+                - generic [ref=e102]:
+                  - generic [ref=e103]: 🇺🇸
+                  - generic [ref=e104]: US
+              - generic [ref=e105]:
+                - generic [ref=e106]: Tracked
+                - generic [ref=e107]:
+                  - paragraph [ref=e108]: Products
+                  - paragraph [ref=e109]: 40,296
+            - link "kamera_express_de kamera_express_de US Tracked Products 10,037" [ref=e110] [cursor=pointer]:
+              - /url: /en/companies/kameraexpressde
+              - generic [ref=e111]:
+                - generic [ref=e112]:
+                  - heading "kamera_express_de" [level=2] [ref=e113]
+                  - paragraph [ref=e114]: kamera_express_de
+                - generic [ref=e115]:
+                  - generic [ref=e116]: 🇺🇸
+                  - generic [ref=e117]: US
+              - generic [ref=e118]:
+                - generic [ref=e119]: Tracked
+                - generic [ref=e120]:
+                  - paragraph [ref=e121]: Products
+                  - paragraph [ref=e122]: 10,037
+            - link "Calumet Photographic calumet US Tracked Products 9,626" [ref=e123] [cursor=pointer]:
+              - /url: /en/companies/calumet
+              - generic [ref=e124]:
+                - generic [ref=e125]:
+                  - heading "Calumet Photographic" [level=2] [ref=e126]
+                  - paragraph [ref=e127]: calumet
+                - generic [ref=e128]:
+                  - generic [ref=e129]: 🇺🇸
+                  - generic [ref=e130]: US
+              - generic [ref=e131]:
+                - generic [ref=e132]: Tracked
+                - generic [ref=e133]:
+                  - paragraph [ref=e134]: Products
+                  - paragraph [ref=e135]: 9,626
+            - link "Foto Leistenschneider foto_leistenschneider US Tracked Products 4,722" [ref=e136] [cursor=pointer]:
+              - /url: /en/companies/fotoleistenschneider
+              - generic [ref=e137]:
+                - generic [ref=e138]:
+                  - heading "Foto Leistenschneider" [level=2] [ref=e139]
+                  - paragraph [ref=e140]: foto_leistenschneider
+                - generic [ref=e141]:
+                  - generic [ref=e142]: 🇺🇸
+                  - generic [ref=e143]: US
+              - generic [ref=e144]:
+                - generic [ref=e145]: Tracked
+                - generic [ref=e146]:
+                  - paragraph [ref=e147]: Products
+                  - paragraph [ref=e148]: 4,722
+            - link "Foto Erhardt foto_erhardt US Tracked Products 4,396" [ref=e149] [cursor=pointer]:
+              - /url: /en/companies/fotoerhardt
+              - generic [ref=e150]:
+                - generic [ref=e151]:
+                  - heading "Foto Erhardt" [level=2] [ref=e152]
+                  - paragraph [ref=e153]: foto_erhardt
+                - generic [ref=e154]:
+                  - generic [ref=e155]: 🇺🇸
+                  - generic [ref=e156]: US
+              - generic [ref=e157]:
+                - generic [ref=e158]: Tracked
+                - generic [ref=e159]:
+                  - paragraph [ref=e160]: Products
+                  - paragraph [ref=e161]: 4,396
+  - contentinfo [ref=e162]:
+    - generic [ref=e164]:
+      - generic [ref=e165]:
+        - link "NOGL logo" [ref=e166] [cursor=pointer]:
+          - /url: /en
+          - img [ref=e168]
+          - generic [ref=e197]: NOGL
+        - paragraph [ref=e198]: © 2026 Nogl - AI-Powered Fashion Intelligence Platform
+        - list [ref=e199]:
+          - listitem [ref=e200]:
+            - link "Twitter" [ref=e201] [cursor=pointer]:
+              - /url: https://twitter.com/noglai
+              - img [ref=e202]
+          - listitem [ref=e204]:
+            - link "LinkedIn" [ref=e205] [cursor=pointer]:
+              - /url: https://linkedin.com/company/noglai
+              - img [ref=e206]
+      - generic [ref=e208]:
+        - generic [ref=e209]:
+          - heading "Resources" [level=2] [ref=e210]
+          - list [ref=e211]:
+            - listitem [ref=e212]:
+              - link "Help Center" [ref=e213] [cursor=pointer]:
+                - /url: /blog
+            - listitem [ref=e214]:
+              - link "Dashboard" [ref=e215] [cursor=pointer]:
+                - /url: /dashboard
+        - generic [ref=e216]:
+          - heading "Legal" [level=2] [ref=e217]
+          - list [ref=e218]:
+            - listitem [ref=e219]:
+              - link "Privacy Policy" [ref=e220] [cursor=pointer]:
+                - /url: /privacy-policy
+            - listitem [ref=e221]:
+              - link "Terms of Service" [ref=e222] [cursor=pointer]:
+                - /url: /tos
+            - listitem [ref=e223]:
+              - link "Impressum" [ref=e224] [cursor=pointer]:
+                - /url: /impressum
+    - generic:
+      - img "grid" [ref=e226]
+      - img "grid" [ref=e228]

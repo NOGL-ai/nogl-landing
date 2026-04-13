@@ -297,7 +297,7 @@ export default function AdvancedSearch() {
         <div className="flex h-9 items-center justify-between bg-[#fef2f2] px-4 text-xs text-[#991b1b]">
           <p className="flex items-center gap-2">
             <TriangleAlert className="h-4 w-4" />
-            Your paid access to Particl is ending after April 26, 2026. To continue using paid features,{" "}
+            Your paid access to Nogl is ending after April 26, 2026. To continue using paid features,{" "}
             <a href="#" className="underline">
               resubscribe here.
             </a>
@@ -322,7 +322,7 @@ export default function AdvancedSearch() {
           <span>Advanced Search</span>
         </nav>
         <p className="mt-2 text-xs text-slate-500">
-          All brands available through Particl, with extra filters and options to sort results in tabular format
+          All brands available through Nogl, with extra filters and options to sort results in tabular format
         </p>
       </div>
 
@@ -578,7 +578,7 @@ export default function AdvancedSearch() {
       </button>
 
       <div className="fixed bottom-6 left-6 text-[11px] text-slate-500">
-        <p>© 2026 Particl · All Rights Reserved</p>
+        <p>© 2026 Nogl · All Rights Reserved</p>
         <p>Version ID: a10cd</p>
       </div>
     </main>

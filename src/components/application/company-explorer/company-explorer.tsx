@@ -54,10 +54,10 @@ const CompanyExplorer = () => {
   const getLogoUrl = (domain: string) => {
     // Handle special cases
     if (domain === 'malbongolf.com') {
-      return 'https://app.particl.com/static-logos/malbongolf.png';
+      return 'https://app.nogl.com/static-logos/malbongolf.png';
     }
     if (domain === 'lululemon.com') {
-      return 'https://app.particl.com/static-logos/lululemon.png';
+      return 'https://app.nogl.com/static-logos/lululemon.png';
     }
     return `https://img.logo.dev/${domain}?token=pk_K27XD8FVSGiocHE1CTPcwA`;
   };
@@ -232,7 +232,7 @@ const CompanyExplorer = () => {
             </button>
             <div className="h-9 w-9 rounded flex items-center justify-center bg-gray-100 dark:bg-gray-800">
               <img
-                src="https://app.particl.com/static-logos/lululemon.png"
+                src="https://app.nogl.com/static-logos/lululemon.png"
                 alt="Lululemon logo"
                 className="h-8 w-8 object-contain"
               />

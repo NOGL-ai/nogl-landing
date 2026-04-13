@@ -1,0 +1,151 @@
+- generic [ref=e4]:
+  - generic [ref=e6]:
+    - link "Skip to main content" [ref=e7] [cursor=pointer]:
+      - /url: "#main-content"
+    - generic [ref=e9]:
+      - link "NOGL logo" [ref=e11] [cursor=pointer]:
+        - /url: /en
+        - img [ref=e14]
+      - generic [ref=e41]:
+        - button "Home navigation" [ref=e42]:
+          - img [ref=e43]
+        - button "Pricing navigation" [ref=e45]:
+          - img [ref=e46]
+        - button "Market Research navigation" [ref=e48]:
+          - img [ref=e49]
+        - button "Products navigation" [ref=e51]:
+          - img [ref=e52]
+        - button "Supply Chain navigation" [ref=e54]:
+          - img [ref=e55]
+      - generic [ref=e58]:
+        - generic [ref=e59]:
+          - button "Toggle AI Copilot" [ref=e60]:
+            - img [ref=e61]
+          - generic "Theme (light)" [ref=e63]:
+            - button "Switch to dark mode" [ref=e64]:
+              - img [ref=e65]
+        - button "Dev User account menu" [ref=e68]:
+          - img "Dev User" [ref=e69]
+    - main "Main content" [ref=e70]:
+      - main [ref=e72]:
+        - generic [ref=e73]:
+          - generic [ref=e76]:
+            - generic [ref=e77]:
+              - generic [ref=e78]:
+                - heading "Calumet Photographic" [level=1] [ref=e79]
+                - generic [ref=e80]:
+                  - generic [ref=e81]: 🇺🇸
+                  - generic [ref=e82]: US
+                - generic [ref=e83]: Tracked
+              - link "calumet" [ref=e85] [cursor=pointer]:
+                - /url: https://calumet
+                - generic [ref=e86]: calumet
+                - img [ref=e87]
+            - generic [ref=e91]:
+              - generic [ref=e92]:
+                - paragraph [ref=e93]: Total Products
+                - paragraph [ref=e94]: "0"
+              - generic [ref=e95]:
+                - paragraph [ref=e96]: Avg Price
+                - paragraph [ref=e97]: N/A
+              - generic [ref=e98]:
+                - paragraph [ref=e99]: Discount Rate
+                - paragraph [ref=e100]: N/A
+          - generic [ref=e101]:
+            - tablist [ref=e103]:
+              - tab "overview" [selected] [ref=e104]
+              - tab "pricing" [ref=e105]
+              - tab "events" [ref=e106]
+              - tab "assets" [ref=e107]
+            - generic [ref=e108]:
+              - tabpanel "overview" [ref=e109]:
+                - generic [ref=e110]:
+                  - generic [ref=e111]:
+                    - generic [ref=e112]:
+                      - paragraph [ref=e113]: Total Products
+                      - paragraph [ref=e114]: "0"
+                    - generic [ref=e115]:
+                      - paragraph [ref=e116]: Total Variants
+                      - paragraph [ref=e117]: "0"
+                    - generic [ref=e118]:
+                      - paragraph [ref=e119]: Discounted Items
+                      - paragraph [ref=e120]: "0"
+                    - generic [ref=e121]:
+                      - paragraph [ref=e122]: Total Datapoints
+                      - paragraph [ref=e123]: "0"
+                  - generic [ref=e124]:
+                    - generic [ref=e125]:
+                      - generic [ref=e126]:
+                        - heading "Volume Mix" [level=2] [ref=e127]
+                        - paragraph [ref=e128]: Products, variants, and discounted items scaled against the same peak.
+                      - generic [ref=e129]: Avg price N/A
+                    - generic [ref=e130]:
+                      - generic [ref=e131]:
+                        - paragraph [ref=e132]: Products
+                        - paragraph [ref=e134]: "0"
+                      - generic [ref=e135]:
+                        - paragraph [ref=e136]: Variants
+                        - paragraph [ref=e138]: "0"
+                      - generic [ref=e139]:
+                        - paragraph [ref=e140]: Discounted
+                        - paragraph [ref=e142]: "0"
+                  - generic [ref=e144]:
+                    - heading "Data Freshness" [level=2] [ref=e145]
+                    - generic [ref=e146]:
+                      - generic [ref=e147]:
+                        - term [ref=e148]: Last scraped
+                        - definition [ref=e149]: N/A
+                      - generic [ref=e150]:
+                        - term [ref=e151]: Data since
+                        - definition [ref=e152]: N/A
+                      - generic [ref=e153]:
+                        - term [ref=e154]: Dataset Quality
+                        - definition [ref=e155]: N/A
+                      - generic [ref=e156]:
+                        - term [ref=e157]: Discount Rate
+                        - definition [ref=e158]: N/A
+              - tabpanel "pricing"
+              - tabpanel "events"
+              - tabpanel "assets"
+  - contentinfo [ref=e159]:
+    - generic [ref=e161]:
+      - generic [ref=e162]:
+        - link "NOGL logo" [ref=e163] [cursor=pointer]:
+          - /url: /en
+          - img [ref=e165]
+          - generic [ref=e194]: NOGL
+        - paragraph [ref=e195]: © 2026 Nogl - AI-Powered Fashion Intelligence Platform
+        - list [ref=e196]:
+          - listitem [ref=e197]:
+            - link "Twitter" [ref=e198] [cursor=pointer]:
+              - /url: https://twitter.com/noglai
+              - img [ref=e199]
+          - listitem [ref=e201]:
+            - link "LinkedIn" [ref=e202] [cursor=pointer]:
+              - /url: https://linkedin.com/company/noglai
+              - img [ref=e203]
+      - generic [ref=e205]:
+        - generic [ref=e206]:
+          - heading "Resources" [level=2] [ref=e207]
+          - list [ref=e208]:
+            - listitem [ref=e209]:
+              - link "Help Center" [ref=e210] [cursor=pointer]:
+                - /url: /blog
+            - listitem [ref=e211]:
+              - link "Dashboard" [ref=e212] [cursor=pointer]:
+                - /url: /dashboard
+        - generic [ref=e213]:
+          - heading "Legal" [level=2] [ref=e214]
+          - list [ref=e215]:
+            - listitem [ref=e216]:
+              - link "Privacy Policy" [ref=e217] [cursor=pointer]:
+                - /url: /privacy-policy
+            - listitem [ref=e218]:
+              - link "Terms of Service" [ref=e219] [cursor=pointer]:
+                - /url: /tos
+            - listitem [ref=e220]:
+              - link "Impressum" [ref=e221] [cursor=pointer]:
+                - /url: /impressum
+    - generic:
+      - img "grid" [ref=e223]
+      - img "grid" [ref=e225]
