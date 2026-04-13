@@ -1,0 +1,87 @@
+- generic [ref=e1]:
+  - generic [ref=e4]:
+    - generic [ref=e6]:
+      - link "Skip to main content" [ref=e7] [cursor=pointer]:
+        - /url: "#main-content"
+      - generic [ref=e9]:
+        - link "NOGL logo" [ref=e11] [cursor=pointer]:
+          - /url: /en
+          - img [ref=e14]
+        - generic [ref=e41]:
+          - button "Home navigation" [ref=e42]:
+            - img [ref=e43]
+          - button "Pricing navigation" [ref=e45]:
+            - img [ref=e46]
+          - button "Market Research navigation" [ref=e48]:
+            - img [ref=e49]
+          - button "Products navigation" [ref=e51]:
+            - img [ref=e52]
+          - button "Supply Chain navigation" [ref=e54]:
+            - img [ref=e55]
+        - generic [ref=e58]:
+          - generic [ref=e59]:
+            - button "Toggle AI Copilot" [ref=e60]:
+              - img [ref=e61]
+            - generic "Theme (system)" [ref=e63]:
+              - button "Switch to dark mode" [ref=e64]:
+                - img [ref=e65]
+          - button "Dev User account menu" [ref=e68]:
+            - img "Dev User" [ref=e69]
+      - main "Main content" [ref=e70]:
+        - main [ref=e72]:
+          - generic [ref=e74]:
+            - search [ref=e76]:
+              - generic [ref=e77]: Product Search
+              - generic [ref=e78]:
+                - img
+                - searchbox "Product Search" [ref=e79]
+            - generic [ref=e80]:
+              - button "Notifications" [ref=e81]:
+                - img [ref=e82]
+              - button "Compare" [ref=e85]:
+                - img [ref=e86]
+                - text: Compare
+              - button "Account menu" [ref=e91]:
+                - img [ref=e92]
+              - combobox "Last 4w" [ref=e95]:
+                - img [ref=e96]
+                - generic: Last 4w
+                - img [ref=e99]
+    - separator [ref=e125]:
+      - img [ref=e127]
+    - generic [ref=e135]:
+      - generic [ref=e138]:
+        - generic [ref=e139]:
+          - link "NOGL logo" [ref=e142] [cursor=pointer]:
+            - /url: /en
+            - img [ref=e145]
+          - generic [ref=e171]:
+            - generic [ref=e172]: Hi Dev,
+            - generic [ref=e173]: How can I assist you with competitor insights today?
+        - generic [ref=e174]:
+          - button "Identify pricing opportunities where I can increase margins or gain market share" [ref=e176]:
+            - generic [ref=e177]: 💡 Find opportunities
+            - generic [ref=e178]: to optimize
+          - button "Provide market insights and competitive pricing recommendations for launching new products" [ref=e180]:
+            - generic [ref=e181]: 🎯 Market insights
+            - generic [ref=e182]: "& trends"
+          - button "What can you help me with? Show me your capabilities." [ref=e184]:
+            - generic [ref=e185]: 🤖 AI capabilities
+            - generic [ref=e186]: overview
+      - generic [ref=e188]:
+        - textbox "Message input" [active] [ref=e189]:
+          - /placeholder: Send a message...
+        - generic [ref=e191]: ⌘/Ctrl + ↵ to send
+        - generic [ref=e192]:
+          - generic [ref=e193]:
+            - button "Add Attachment" [ref=e194]:
+              - img [ref=e195]
+              - generic [ref=e196]: Add Attachment
+            - button "Keyboard shortcuts" [ref=e197]:
+              - img [ref=e198]
+          - button "Send message" [disabled]:
+            - img
+            - generic: Send message
+  - button "Open Next.js Dev Tools" [ref=e206] [cursor=pointer]:
+    - img [ref=e207]
+  - alert [ref=e210]

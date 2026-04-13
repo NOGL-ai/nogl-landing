@@ -20,7 +20,6 @@ type CompanyTabsProps = {
 const TAB_DEFS = [
   { id: "overview", labelKey: "tabs.overview" as const },
   { id: "events", labelKey: "tabs.events" as const },
-  { id: "sales", labelKey: "tabs.sales" as const },
   { id: "pricing", labelKey: "tabs.pricing" as const },
   { id: "ratings", labelKey: "tabs.ratings" as const },
   { id: "pivot", labelKey: "tabs.pivot" as const },
@@ -87,9 +86,6 @@ export function CompanyTabs({ slug, initialData }: CompanyTabsProps) {
         </TabsContent>
         <TabsContent value="events" forceMount>
           <EventsTab slug={slug} active={activeTab === "events"} />
-        </TabsContent>
-        <TabsContent value="sales" forceMount>
-          <PricingTab slug={slug} active={activeTab === "sales"} />
         </TabsContent>
         <TabsContent value="pricing" forceMount>
           <PricingTab slug={slug} active={activeTab === "pricing"} />

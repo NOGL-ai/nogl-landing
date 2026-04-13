@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Card } from "@/components/ui/card";
 import type { CompanyPricingResponse } from "@/types/company";
@@ -36,6 +36,7 @@ function SummaryCard({ label, value }: { label: string; value: string }) {
 }
 
 export function PricingTab({ slug, active }: PricingTabProps) {
+  const fetchedRef = useRef(false);
   const [state, setState] = useState<PricingState>({
     data: null,
     error: null,
@@ -43,9 +44,11 @@ export function PricingTab({ slug, active }: PricingTabProps) {
   });
 
   useEffect(() => {
-    if (!active || state.data || state.loading) {
+    if (!active || fetchedRef.current) {
       return;
     }
+
+    fetchedRef.current = true;
 
     let cancelled = false;
 
@@ -73,7 +76,7 @@ export function PricingTab({ slug, active }: PricingTabProps) {
     return () => {
       cancelled = true;
     };
-  }, [active, slug, state.data, state.loading]);
+  }, [active, slug]);
 
   if (state.loading && !state.data) {
     return <PanelSkeleton rows={4} grid="grid-cols-1 md:grid-cols-2 xl:grid-cols-4" />;

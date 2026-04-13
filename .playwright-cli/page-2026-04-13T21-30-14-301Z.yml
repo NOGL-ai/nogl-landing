@@ -1,0 +1,265 @@
+- generic [ref=e4]:
+  - generic [ref=e6]:
+    - link "Skip to main content" [ref=e7] [cursor=pointer]:
+      - /url: "#main-content"
+    - generic [ref=e9]:
+      - link "NOGL logo" [ref=e11] [cursor=pointer]:
+        - /url: /en
+        - img [ref=e14]
+      - generic [ref=e41]:
+        - button "Home navigation" [ref=e42]:
+          - img [ref=e43]
+        - button "Pricing navigation" [ref=e45]:
+          - img [ref=e46]
+        - button "Market Research navigation" [ref=e48]:
+          - img [ref=e49]
+        - button "Products navigation" [ref=e51]:
+          - img [ref=e52]
+        - button "Supply Chain navigation" [ref=e54]:
+          - img [ref=e55]
+      - generic [ref=e58]:
+        - generic [ref=e59]:
+          - button "Toggle AI Copilot" [ref=e60]:
+            - img [ref=e61]
+          - generic "Theme (light)" [ref=e63]:
+            - button "Switch to dark mode" [ref=e64]:
+              - img [ref=e65]
+        - button "Dev User account menu" [ref=e68]:
+          - img "Dev User" [ref=e69]
+    - main "Main content" [ref=e70]:
+      - main [ref=e72]:
+        - generic [ref=e74]:
+          - search [ref=e76]:
+            - generic [ref=e77]: Product Search
+            - generic [ref=e78]:
+              - img
+              - searchbox "Product Search" [ref=e79]
+          - generic [ref=e80]:
+            - button "Notifications" [ref=e81]:
+              - img [ref=e82]
+            - button "Compare" [ref=e85]:
+              - img [ref=e86]
+              - text: Compare
+            - button "Account menu" [ref=e91]:
+              - img [ref=e92]
+            - combobox "Last 4w" [ref=e95]:
+              - img [ref=e96]
+              - img [ref=e99]
+            - combobox [ref=e101]
+        - generic [ref=e102]:
+          - navigation "breadcrumb" [ref=e103]:
+            - list [ref=e105]:
+              - listitem [ref=e106]:
+                - link "Company Explorer" [ref=e107] [cursor=pointer]:
+                  - /url: /en/companies
+              - listitem [ref=e108]:
+                - img [ref=e109]
+              - listitem [ref=e111]:
+                - generic [ref=e112]: Calumet Photographic
+                - button "Add to favorites" [ref=e113]:
+                  - img [ref=e114]
+          - generic [ref=e118]:
+            - generic [ref=e119]:
+              - generic [ref=e120]:
+                - heading "Calumet Photographic" [level=1] [ref=e121]
+                - generic [ref=e122]:
+                  - generic [ref=e123]: 🇩🇪
+                  - generic [ref=e124]: DE
+                - generic [ref=e125]: Tracked
+              - link "calumet.de" [ref=e127] [cursor=pointer]:
+                - /url: https://calumet.de
+                - generic [ref=e128]: calumet.de
+                - img [ref=e129]
+            - generic [ref=e133]:
+              - generic [ref=e134]:
+                - paragraph [ref=e135]: Total Products
+                - paragraph [ref=e136]: 10,989
+              - generic [ref=e137]:
+                - paragraph [ref=e138]: Avg Price
+                - paragraph [ref=e139]: €276.01
+              - generic [ref=e140]:
+                - paragraph [ref=e141]: Discount Rate
+                - paragraph [ref=e142]: N/A
+          - generic [ref=e145]:
+            - button "C Quality 0.0%" [ref=e146]:
+              - generic [ref=e147]:
+                - img [ref=e148]
+                - generic [ref=e152]: C
+              - generic [ref=e153]:
+                - paragraph [ref=e154]: Quality
+                - paragraph [ref=e155]: 0.0%
+            - generic [ref=e156]:
+              - img [ref=e157]
+              - generic [ref=e159]: Data since Apr 9, 2026
+            - button "Data Types" [ref=e160]:
+              - generic [ref=e161]:
+                - img [ref=e163]
+                - img [ref=e166]
+                - img [ref=e170]
+                - img [ref=e174]
+              - text: Data Types
+            - link "calumet.de" [ref=e177] [cursor=pointer]:
+              - /url: https://calumet.de
+              - img [ref=e178]
+              - generic [ref=e181]: calumet.de
+              - img [ref=e182]
+          - generic [ref=e186]:
+            - tablist [ref=e188]:
+              - tab "Overview" [selected] [ref=e189]
+              - tab "Events" [ref=e190]
+              - tab "Pricing" [ref=e191]
+              - tab "Ratings" [ref=e192]
+              - tab "Pivot Table" [ref=e193]
+              - tab "Assets" [ref=e194]
+            - generic [ref=e195]:
+              - tabpanel "Overview" [ref=e196]:
+                - generic [ref=e197]:
+                  - generic [ref=e198]:
+                    - generic [ref=e199]:
+                      - heading "Company Profile" [level=2] [ref=e201]
+                      - generic [ref=e202]:
+                        - img [ref=e203]
+                        - generic [ref=e205]: Electronics
+                    - generic [ref=e206]:
+                      - generic [ref=e207]:
+                        - generic [ref=e208]:
+                          - paragraph [ref=e209]: Domain
+                          - link "calumet.de" [ref=e210] [cursor=pointer]:
+                            - /url: https://calumet.de
+                            - img [ref=e211]
+                            - generic [ref=e213]: calumet.de
+                            - img [ref=e214]
+                        - generic [ref=e218]:
+                          - paragraph [ref=e219]: Data Available
+                          - generic [ref=e221]:
+                            - generic "Products" [ref=e222]: ✦
+                            - generic "Pricing" [ref=e223]: $
+                            - generic "Events" [ref=e224]: 📈
+                            - generic "Social" [ref=e225]: 🌍
+                        - generic [ref=e226]:
+                          - paragraph [ref=e227]: Socials
+                          - generic [ref=e228]:
+                            - generic "Facebook" [ref=e229]:
+                              - img [ref=e230]
+                            - generic "Instagram" [ref=e232]:
+                              - img [ref=e233]
+                            - generic "TikTok" [ref=e236]:
+                              - img [ref=e237]
+                        - generic [ref=e240]:
+                          - paragraph [ref=e241]: Dataset Quality
+                          - generic [ref=e242]:
+                            - img [ref=e243]
+                            - generic [ref=e246]: No noteworthy issues
+                      - generic [ref=e247]:
+                        - generic [ref=e248]:
+                          - paragraph [ref=e249]: Data since
+                          - paragraph [ref=e250]: Apr 9, 2026
+                        - generic [ref=e251]:
+                          - paragraph [ref=e252]: Competitors
+                          - paragraph [ref=e253]: No competitors tracked yet
+                  - generic [ref=e254]:
+                    - generic [ref=e255]:
+                      - paragraph [ref=e256]: Total Products
+                      - paragraph [ref=e257]: 10,989
+                    - generic [ref=e258]:
+                      - paragraph [ref=e259]: Total Variants
+                      - paragraph [ref=e260]: "0"
+                    - generic [ref=e261]:
+                      - paragraph [ref=e262]: Discounted Items
+                      - paragraph [ref=e263]: "0"
+                    - generic [ref=e264]:
+                      - paragraph [ref=e265]: Total Datapoints
+                      - paragraph [ref=e266]: 10,989
+                  - generic [ref=e267]:
+                    - generic [ref=e268]:
+                      - generic [ref=e269]:
+                        - heading "Volume Mix" [level=2] [ref=e270]
+                        - paragraph [ref=e271]: Products, variants, and discounted items scaled against the same peak.
+                      - generic [ref=e272]: Avg price €276.01
+                    - generic [ref=e273]:
+                      - generic [ref=e274]:
+                        - paragraph [ref=e275]: Products
+                        - paragraph [ref=e278]: 10,989
+                      - generic [ref=e279]:
+                        - paragraph [ref=e280]: Variants
+                        - paragraph [ref=e282]: "0"
+                      - generic [ref=e283]:
+                        - paragraph [ref=e284]: Discounted
+                        - paragraph [ref=e286]: "0"
+                  - generic [ref=e287]:
+                    - generic [ref=e288]:
+                      - heading "Data Freshness" [level=2] [ref=e289]
+                      - generic [ref=e290]:
+                        - generic [ref=e291]:
+                          - term [ref=e292]: Last scraped
+                          - definition [ref=e293]: Apr 13, 2026, 10:58 PM
+                        - generic [ref=e294]:
+                          - term [ref=e295]: Data since
+                          - definition [ref=e296]: Apr 9, 2026, 10:54 AM
+                        - generic [ref=e297]:
+                          - term [ref=e298]: Dataset Quality
+                          - definition [ref=e299]: N/A
+                        - generic [ref=e300]:
+                          - term [ref=e301]: Discount Rate
+                          - definition [ref=e302]: N/A
+                    - generic [ref=e303]:
+                      - generic [ref=e304]:
+                        - heading "Top Product" [level=2] [ref=e305]
+                        - paragraph [ref=e306]: Highlighted from the most recent scrape.
+                      - generic [ref=e307]:
+                        - img "Lee Resin ND-Filter 100 x 100mm 0,45 Dichte" [ref=e309]
+                        - paragraph [ref=e310]: Lee Resin ND-Filter 100 x 100mm 0,45 Dichte
+                        - paragraph [ref=e311]: "Product ID: bridge:22c772d4f52e05faa70ec8870379f036"
+              - tabpanel "Events"
+              - tabpanel "Pricing"
+              - tabpanel "Ratings" [ref=e312]:
+                - generic [ref=e313]:
+                  - heading "Ratings" [level=2] [ref=e314]
+                  - paragraph [ref=e315]: Ratings for this company will appear here when data is available.
+              - tabpanel "Pivot Table" [ref=e316]:
+                - generic [ref=e317]:
+                  - heading "Pivot Table" [level=2] [ref=e318]
+                  - paragraph [ref=e319]: Pivot analysis will be available in a future release.
+              - tabpanel "Assets"
+  - contentinfo [ref=e320]:
+    - generic [ref=e322]:
+      - generic [ref=e323]:
+        - link "NOGL logo" [ref=e324] [cursor=pointer]:
+          - /url: /en
+          - img [ref=e326]
+          - generic [ref=e355]: NOGL
+        - paragraph [ref=e356]: © 2026 Nogl - AI-Powered Fashion Intelligence Platform
+        - list [ref=e357]:
+          - listitem [ref=e358]:
+            - link "Twitter" [ref=e359] [cursor=pointer]:
+              - /url: https://twitter.com/noglai
+              - img [ref=e360]
+          - listitem [ref=e362]:
+            - link "LinkedIn" [ref=e363] [cursor=pointer]:
+              - /url: https://linkedin.com/company/noglai
+              - img [ref=e364]
+      - generic [ref=e366]:
+        - generic [ref=e367]:
+          - heading "Resources" [level=2] [ref=e368]
+          - list [ref=e369]:
+            - listitem [ref=e370]:
+              - link "Help Center" [ref=e371] [cursor=pointer]:
+                - /url: /blog
+            - listitem [ref=e372]:
+              - link "Dashboard" [ref=e373] [cursor=pointer]:
+                - /url: /dashboard
+        - generic [ref=e374]:
+          - heading "Legal" [level=2] [ref=e375]
+          - list [ref=e376]:
+            - listitem [ref=e377]:
+              - link "Privacy Policy" [ref=e378] [cursor=pointer]:
+                - /url: /privacy-policy
+            - listitem [ref=e379]:
+              - link "Terms of Service" [ref=e380] [cursor=pointer]:
+                - /url: /tos
+            - listitem [ref=e381]:
+              - link "Impressum" [ref=e382] [cursor=pointer]:
+                - /url: /impressum
+    - generic:
+      - img "grid" [ref=e384]
+      - img "grid" [ref=e386]
