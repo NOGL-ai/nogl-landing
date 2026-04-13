@@ -7,6 +7,7 @@ type CompetitorRow = {
   slug: string | null;
   country_code: string | null;
   locale: string | null;
+  website: string | null;
 };
 
 function normalizeDomain(domain: string): string {
@@ -16,6 +17,29 @@ function normalizeDomain(domain: string): string {
     .replace(/^www\./i, "")
     .replace(/\/.*$/, "")
     .toLowerCase();
+}
+
+function normalizeWebsite(website: string): string {
+  return website.trim().replace(/\/+$/, "");
+}
+
+function extractHostname(value: string): string | null {
+  const normalizedValue = value.trim();
+
+  if (!normalizedValue) {
+    return null;
+  }
+
+  try {
+    return new URL(normalizedValue).hostname.replace(/^www\./i, "").toLowerCase();
+  } catch {
+    const normalizedDomain = normalizeDomain(normalizedValue);
+    return normalizedDomain || null;
+  }
+}
+
+function isShortKey(value: string): boolean {
+  return !value.includes(".");
 }
 
 // Keep this logic aligned with src/lib/companies/helpers.ts
@@ -54,17 +78,24 @@ async function main() {
         domain,
         slug,
         country_code,
-        locale
+        locale,
+        website
       FROM nogl."Competitor"
       WHERE "deletedAt" IS NULL
       ORDER BY name ASC
     `)) as CompetitorRow[];
 
     for (const competitor of competitors) {
-      const domain = normalizeDomain(competitor.domain);
-      const slug = competitor.slug ?? slugify(domain);
+      const resolvedWebsite =
+        competitor.website && competitor.website.trim().length > 0
+          ? normalizeWebsite(competitor.website)
+          : `https://${normalizeDomain(competitor.domain)}`;
+      const websiteHostname = competitor.website ? extractHostname(competitor.website) : null;
+      const domain = websiteHostname ?? competitor.domain.trim().toLowerCase();
+      const slug = isShortKey(domain)
+        ? competitor.slug ?? slugify(domain)
+        : slugify(domain);
       const countryCode = competitor.country_code ?? deriveCountryFromDomain(domain);
-      const website = `https://${domain}`;
       const sourceKey = competitor.slug ?? competitor.id;
 
       await prisma.$executeRaw(Prisma.sql`
@@ -94,7 +125,7 @@ async function main() {
           ${domain},
           ${countryCode},
           ${competitor.locale},
-          ${website},
+          ${resolvedWebsite},
           ${sourceKey},
           NULL,
           ARRAY[]::text[],
