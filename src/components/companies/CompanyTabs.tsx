@@ -3,12 +3,12 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 
+import { PivotTab } from "@/components/companies/PivotTab";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { CompanyOverviewResponse } from "@/types/company";
 import { AssetsTab } from "./tabs/AssetsTab";
 import { EventsTab } from "./tabs/EventsTab";
 import { OverviewTab } from "./tabs/OverviewTab";
-import { PivotTab } from "./tabs/PivotTab";
 import { PricingTab } from "./tabs/PricingTab";
 import { RatingsTab } from "./tabs/RatingsTab";
 
@@ -94,7 +94,7 @@ export function CompanyTabs({ slug, initialData }: CompanyTabsProps) {
           <RatingsTab active={activeTab === "ratings"} />
         </TabsContent>
         <TabsContent value="pivot" forceMount>
-          <PivotTab active={activeTab === "pivot"} />
+          <PivotTab slug={slug} active={activeTab === "pivot"} />
         </TabsContent>
         <TabsContent value="assets" forceMount>
           <AssetsTab slug={slug} active={activeTab === "assets"} />

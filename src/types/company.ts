@@ -166,3 +166,31 @@ export type GetCompaniesResponse = {
   companies: CompanyListItem[];
   pagination: PageMeta;
 };
+
+export type CompanyPivotParams = {
+  rowDimension?: "category" | "brand" | "price_range" | "discount_tier";
+  colDimension?: "month" | "week" | "price_range" | "discount_tier";
+  metric?: "count" | "avg_price" | "avg_discount" | "total_value";
+  from?: string;
+  to?: string;
+};
+
+export type PivotCell = {
+  row: string;
+  col: string;
+  value: number;
+};
+
+export type CompanyPivotResponse = {
+  rows: string[];
+  cols: string[];
+  cells: PivotCell[];
+  meta: {
+    rowDimension: string;
+    colDimension: string;
+    metric: string;
+    total_cells: number;
+    from: string | null;
+    to: string | null;
+  };
+};
