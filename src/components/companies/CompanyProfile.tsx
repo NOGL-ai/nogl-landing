@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { ExternalLink, Facebook, Instagram, Music2 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 
@@ -53,7 +54,7 @@ function SocialIconLink({
 }: {
   href: string | null;
   label: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   if (!href) {
     return (

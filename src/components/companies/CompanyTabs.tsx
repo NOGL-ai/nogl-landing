@@ -42,7 +42,9 @@ function getInitialTab(): TabKey {
 
 export function CompanyTabs({ slug, initialData }: CompanyTabsProps) {
   const t = useTranslations("companies");
-  const [activeTab, setActiveTab] = useState<TabKey>("overview");
+  const [activeTab, setActiveTab] = useState<TabKey>(() =>
+    typeof window !== "undefined" ? getInitialTab() : "overview",
+  );
 
   useEffect(() => {
     const syncFromHash = () => {
