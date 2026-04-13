@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { getCompaniesResponse } from "@/lib/companies/helpers";
+import { getCompanyEventsResponse } from "@/lib/companies/helpers";
+
+type RouteContext = {
+  params: Promise<{
+    slug: string;
+  }>;
+};
 
 function parsePositiveInt(value: string | null, fallback: number): number {
   if (!value) {
@@ -11,28 +17,28 @@ function parsePositiveInt(value: string | null, fallback: number): number {
   return Number.isNaN(parsed) || parsed < 1 ? fallback : parsed;
 }
 
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest, context: RouteContext) {
   try {
+    const { slug } = await context.params;
     const { searchParams } = new URL(request.url);
-    const search = searchParams.get("search")?.trim() || undefined;
     const page = parsePositiveInt(searchParams.get("page"), 1);
     const limit = Math.min(parsePositiveInt(searchParams.get("limit"), 20), 100);
-    const countryCode = searchParams.get("country_code")?.trim() || undefined;
-    const trackingStatus = searchParams.get("tracking_status")?.trim() || undefined;
 
-    const response = await getCompaniesResponse({
-      search,
+    const response = await getCompanyEventsResponse({
+      slug,
       page,
       limit,
-      countryCode,
-      trackingStatus,
     });
+
+    if (!response) {
+      return NextResponse.json({ error: "Company not found" }, { status: 404 });
+    }
 
     return NextResponse.json(response);
   } catch (error) {
-    console.error("[api/companies] GET failed:", error);
+    console.error("[api/companies/[slug]/events] GET failed:", error);
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Failed to load companies" },
+      { error: error instanceof Error ? error.message : "Failed to load company events" },
       { status: 500 }
     );
   }
