@@ -63,9 +63,9 @@ export const mainNavigationItems: NavigationSection = {
 			),
 		},
 		{
-			id: "competitors",
-			title: "Competitors",
-			path: "/competitors",
+			id: "companies",
+			title: "Companies",
+			path: "/companies",
 			icon: (
 				<svg
 					width='20'
@@ -82,15 +82,15 @@ export const mainNavigationItems: NavigationSection = {
 			),
 			submenu: [
 				{
-					id: "competitor",
-					title: "Competitor",
-					path: "/competitors/competitor",
+					id: "company-explorer",
+					title: "Company Explorer",
+					path: "/companies",
 					icon: null,
 				},
 				{
-					id: "monitored-urls",
-					title: "Monitored URLs",
-					path: "/competitors/monitored-urls",
+					id: "tracked-competitors",
+					title: "Tracked Competitors",
+					path: "/companies/competitor",
 					icon: null,
 				},
 			],

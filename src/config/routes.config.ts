@@ -12,7 +12,7 @@ export const ROUTE_CONFIG = {
 		'/dashboard',
 		'/account',
 		'/catalog',
-		'/competitors',
+		'/companies',
 		'/notifications',
 		'/product-feed',
 		'/profile',

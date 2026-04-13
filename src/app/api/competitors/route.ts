@@ -10,6 +10,9 @@ import { SCRAPER_SOURCES } from "@/lib/constants/scraperSources";
 // Cache configuration
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 const queryCache = new Map<string, { data: any; timestamp: number }>();
+const SCRAPER_SYNC_TTL = 5 * 60 * 1000;
+let lastScraperSyncAt = 0;
+let scraperSyncPromise: Promise<void> | null = null;
 
 interface CreateCompetitorBody {
   name: string;
@@ -79,6 +82,23 @@ async function syncScraperMetrics(): Promise<void> {
   }
 }
 
+function triggerScraperSync(): void {
+  const now = Date.now();
+
+  if (scraperSyncPromise || now - lastScraperSyncAt < SCRAPER_SYNC_TTL) {
+    return;
+  }
+
+  scraperSyncPromise = syncScraperMetrics()
+    .catch((error) => {
+      console.error("[competitors] background scraper sync failed:", error);
+    })
+    .finally(() => {
+      lastScraperSyncAt = Date.now();
+      scraperSyncPromise = null;
+    });
+}
+
 // GET /api/competitors - List with pagination, filters, search
 export const GET = withRequestLogging(
   withRateLimit(100, 15 * 60 * 1000)(
@@ -91,7 +111,7 @@ export const GET = withRequestLogging(
       }
 
       // Sync scraper metrics before serving — failures are swallowed inside syncScraperMetrics
-      await syncScraperMetrics();
+      triggerScraperSync();
 
       // Parse query params
       const { searchParams } = new URL(request.url);
@@ -161,6 +181,23 @@ export const GET = withRequestLogging(
           filters: { search, status },
         };
 
+        const isValidResponse =
+          Array.isArray(responseData.competitors) &&
+          typeof responseData.pagination?.page === "number" &&
+          typeof responseData.pagination?.limit === "number" &&
+          typeof responseData.pagination?.total === "number" &&
+          typeof responseData.pagination?.totalPages === "number";
+
+        if (!isValidResponse) {
+          return NextResponse.json(
+            {
+              error: "Failed to fetch competitors",
+              message: "Competitor API response contract violation",
+            },
+            { status: 500 }
+          );
+        }
+
         // Cache result
         queryCache.set(cacheKey, { data: responseData, timestamp: Date.now() });
 
@@ -174,6 +211,7 @@ export const GET = withRequestLogging(
 
         const response = withSecurityHeaders(NextResponse.json(responseData));
         response.headers.set('Cache-Control', 'public, max-age=300, s-maxage=300');
+        response.headers.set('X-Api-Resource', 'competitors');
         return response;
       } catch (error: any) {
         console.error('[competitors] GET failed:', error instanceof Error ? error.stack : error);
