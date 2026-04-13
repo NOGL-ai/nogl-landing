@@ -1,0 +1,262 @@
+- generic [ref=e1]:
+  - generic [ref=e387]:
+    - generic [ref=e389]:
+      - link "Skip to main content" [ref=e390] [cursor=pointer]:
+        - /url: "#main-content"
+      - generic [ref=e392]:
+        - link "NOGL logo" [ref=e394] [cursor=pointer]:
+          - /url: /en
+          - img [ref=e397]
+        - generic [ref=e424]:
+          - button "Home navigation" [ref=e425]:
+            - img [ref=e426]
+          - button "Pricing navigation" [ref=e428]:
+            - img [ref=e429]
+          - button "Market Research navigation" [ref=e431]:
+            - img [ref=e432]
+          - button "Products navigation" [ref=e434]:
+            - img [ref=e435]
+          - button "Supply Chain navigation" [ref=e437]:
+            - img [ref=e438]
+        - generic [ref=e441]:
+          - generic [ref=e442]:
+            - button "Toggle AI Copilot" [ref=e443]:
+              - img [ref=e444]
+            - generic "Theme (system)" [ref=e446]:
+              - button "Switch to dark mode" [ref=e447]:
+                - img [ref=e448]
+          - button "Dev User account menu" [ref=e451]:
+            - img "Dev User" [ref=e452]
+      - main "Main content" [ref=e453]:
+        - main [ref=e455]:
+          - generic [ref=e457]:
+            - search [ref=e459]:
+              - generic [ref=e460]: Product Search
+              - generic [ref=e461]:
+                - img
+                - searchbox "Product Search" [ref=e462]
+            - generic [ref=e463]:
+              - button "Notifications" [ref=e464]:
+                - img [ref=e465]
+              - button "Compare" [ref=e468]:
+                - img [ref=e469]
+                - text: Compare
+              - button "Account menu" [ref=e474]:
+                - img [ref=e475]
+              - combobox "Last 4w" [ref=e478]:
+                - img [ref=e479]
+                - generic: Last 4w
+                - img [ref=e482]
+          - generic [ref=e484]:
+            - navigation "breadcrumb" [ref=e485]:
+              - list [ref=e487]:
+                - listitem [ref=e488]:
+                  - link "Company Explorer" [ref=e489] [cursor=pointer]:
+                    - /url: /en/companies
+                - listitem [ref=e490]:
+                  - img [ref=e491]
+                - listitem [ref=e493]:
+                  - generic [ref=e494]: Calumet Photographic
+                  - button "Add to favorites" [ref=e495]:
+                    - img [ref=e496]
+            - generic [ref=e500]:
+              - generic [ref=e501]:
+                - generic [ref=e502]:
+                  - heading "Calumet Photographic" [level=1] [ref=e503]
+                  - generic [ref=e504]:
+                    - generic [ref=e505]: 🇩🇪
+                    - generic [ref=e506]: DE
+                  - generic [ref=e507]: Tracked
+                - link "calumet.de" [ref=e509] [cursor=pointer]:
+                  - /url: https://calumet.de
+                  - generic [ref=e510]: calumet.de
+                  - img [ref=e511]
+              - generic [ref=e515]:
+                - generic [ref=e516]:
+                  - paragraph [ref=e517]: Total Products
+                  - paragraph [ref=e518]: 10,989
+                - generic [ref=e519]:
+                  - paragraph [ref=e520]: Avg Price
+                  - paragraph [ref=e521]: €276.01
+                - generic [ref=e522]:
+                  - paragraph [ref=e523]: Discount Rate
+                  - paragraph [ref=e524]: N/A
+            - generic [ref=e527]:
+              - button "C Quality 0.0%" [ref=e528]:
+                - generic [ref=e529]:
+                  - img [ref=e530]
+                  - generic [ref=e534]: C
+                - generic [ref=e535]:
+                  - paragraph [ref=e536]: Quality
+                  - paragraph [ref=e537]: 0.0%
+              - generic [ref=e538]:
+                - img [ref=e539]
+                - generic [ref=e541]: Data since Apr 9, 2026
+              - button "Data Types" [ref=e542]:
+                - generic [ref=e543]:
+                  - img [ref=e545]
+                  - img [ref=e548]
+                  - img [ref=e552]
+                  - img [ref=e556]
+                - text: Data Types
+              - link "calumet.de" [ref=e559] [cursor=pointer]:
+                - /url: https://calumet.de
+                - img [ref=e560]
+                - generic [ref=e563]: calumet.de
+                - img [ref=e564]
+            - generic [ref=e568]:
+              - tablist [ref=e570]:
+                - tab "Overview" [ref=e571]
+                - tab "Events" [ref=e572]
+                - tab "Pricing" [active] [selected] [ref=e573]
+                - tab "Ratings" [ref=e574]
+                - tab "Pivot Table" [ref=e575]
+                - tab "Assets" [ref=e576]
+              - generic [ref=e577]:
+                - tabpanel "Overview" [ref=e578]:
+                  - generic [ref=e579]:
+                    - generic [ref=e580]:
+                      - generic [ref=e581]:
+                        - heading "Company Profile" [level=2] [ref=e583]
+                        - generic [ref=e584]:
+                          - img [ref=e585]
+                          - generic [ref=e587]: Electronics
+                      - generic [ref=e588]:
+                        - generic [ref=e589]:
+                          - generic [ref=e590]:
+                            - paragraph [ref=e591]: Domain
+                            - link "calumet.de" [ref=e592] [cursor=pointer]:
+                              - /url: https://calumet.de
+                              - img [ref=e593]
+                              - generic [ref=e595]: calumet.de
+                              - img [ref=e596]
+                          - generic [ref=e600]:
+                            - paragraph [ref=e601]: Data Available
+                            - generic [ref=e603]:
+                              - generic "Products" [ref=e604]: ✦
+                              - generic "Pricing" [ref=e605]: $
+                              - generic "Events" [ref=e606]: 📈
+                              - generic "Social" [ref=e607]: 🌍
+                          - generic [ref=e608]:
+                            - paragraph [ref=e609]: Socials
+                            - generic [ref=e610]:
+                              - generic "Facebook" [ref=e611]:
+                                - img [ref=e612]
+                              - generic "Instagram" [ref=e614]:
+                                - img [ref=e615]
+                              - generic "TikTok" [ref=e618]:
+                                - img [ref=e619]
+                          - generic [ref=e622]:
+                            - paragraph [ref=e623]: Dataset Quality
+                            - generic [ref=e624]:
+                              - img [ref=e625]
+                              - generic [ref=e628]: No noteworthy issues
+                        - generic [ref=e629]:
+                          - generic [ref=e630]:
+                            - paragraph [ref=e631]: Data since
+                            - paragraph [ref=e632]: Apr 9, 2026
+                          - generic [ref=e633]:
+                            - paragraph [ref=e634]: Competitors
+                            - paragraph [ref=e635]: No competitors tracked yet
+                    - generic [ref=e636]:
+                      - generic [ref=e637]:
+                        - paragraph [ref=e638]: Total Products
+                        - paragraph [ref=e639]: 10,989
+                      - generic [ref=e640]:
+                        - paragraph [ref=e641]: Total Variants
+                        - paragraph [ref=e642]: "0"
+                      - generic [ref=e643]:
+                        - paragraph [ref=e644]: Discounted Items
+                        - paragraph [ref=e645]: "0"
+                      - generic [ref=e646]:
+                        - paragraph [ref=e647]: Total Datapoints
+                        - paragraph [ref=e648]: 10,989
+                    - generic [ref=e649]:
+                      - generic [ref=e650]:
+                        - generic [ref=e651]:
+                          - heading "Volume Mix" [level=2] [ref=e652]
+                          - paragraph [ref=e653]: Products, variants, and discounted items scaled against the same peak.
+                        - generic [ref=e654]: Avg price €276.01
+                      - generic [ref=e655]:
+                        - generic [ref=e656]:
+                          - paragraph [ref=e657]: Products
+                          - paragraph [ref=e660]: 10,989
+                        - generic [ref=e661]:
+                          - paragraph [ref=e662]: Variants
+                          - paragraph [ref=e664]: "0"
+                        - generic [ref=e665]:
+                          - paragraph [ref=e666]: Discounted
+                          - paragraph [ref=e668]: "0"
+                    - generic [ref=e669]:
+                      - generic [ref=e670]:
+                        - heading "Data Freshness" [level=2] [ref=e671]
+                        - generic [ref=e672]:
+                          - generic [ref=e673]:
+                            - term [ref=e674]: Last scraped
+                            - definition [ref=e675]: Apr 13, 2026, 10:58 PM
+                          - generic [ref=e676]:
+                            - term [ref=e677]: Data since
+                            - definition [ref=e678]: Apr 9, 2026, 10:54 AM
+                          - generic [ref=e679]:
+                            - term [ref=e680]: Dataset Quality
+                            - definition [ref=e681]: N/A
+                          - generic [ref=e682]:
+                            - term [ref=e683]: Discount Rate
+                            - definition [ref=e684]: N/A
+                      - generic [ref=e685]:
+                        - generic [ref=e686]:
+                          - heading "Top Product" [level=2] [ref=e687]
+                          - paragraph [ref=e688]: Highlighted from the most recent scrape.
+                        - generic [ref=e689]:
+                          - img "Lee Resin ND-Filter 100 x 100mm 0,45 Dichte" [ref=e691]
+                          - paragraph [ref=e692]: Lee Resin ND-Filter 100 x 100mm 0,45 Dichte
+                          - paragraph [ref=e693]: "Product ID: bridge:22c772d4f52e05faa70ec8870379f036"
+                - tabpanel "Events"
+                - tabpanel "Pricing" [ref=e788]
+                - tabpanel "Ratings" [ref=e694]:
+                  - generic [ref=e695]:
+                    - heading "Ratings" [level=2] [ref=e696]
+                    - paragraph [ref=e697]: Ratings for this company will appear here when data is available.
+                - tabpanel "Pivot Table" [ref=e698]:
+                  - generic [ref=e699]:
+                    - heading "Pivot Table" [level=2] [ref=e700]
+                    - paragraph [ref=e701]: Pivot analysis will be available in a future release.
+                - tabpanel "Assets"
+    - separator [ref=e702]:
+      - img [ref=e704]
+    - generic [ref=e712]:
+      - generic [ref=e715]:
+        - generic [ref=e716]:
+          - link "NOGL logo" [ref=e719] [cursor=pointer]:
+            - /url: /en
+            - img [ref=e722]
+          - generic [ref=e748]:
+            - generic [ref=e749]: Hi Dev,
+            - generic [ref=e750]: How can I assist you with competitor insights today?
+        - generic [ref=e751]:
+          - button "Identify pricing opportunities where I can increase margins or gain market share" [ref=e753]:
+            - generic [ref=e754]: 💡 Find opportunities
+            - generic [ref=e755]: to optimize
+          - button "Provide market insights and competitive pricing recommendations for launching new products" [ref=e757]:
+            - generic [ref=e758]: 🎯 Market insights
+            - generic [ref=e759]: "& trends"
+          - button "What can you help me with? Show me your capabilities." [ref=e761]:
+            - generic [ref=e762]: 🤖 AI capabilities
+            - generic [ref=e763]: overview
+      - generic [ref=e765]:
+        - textbox "Message input" [ref=e766]:
+          - /placeholder: Send a message...
+        - generic [ref=e768]: ⌘/Ctrl + ↵ to send
+        - generic [ref=e769]:
+          - generic [ref=e770]:
+            - button "Add Attachment" [ref=e771]:
+              - img [ref=e772]
+              - generic [ref=e773]: Add Attachment
+            - button "Keyboard shortcuts" [ref=e774]:
+              - img [ref=e775]
+          - button "Send message" [disabled]:
+            - img
+            - generic: Send message
+  - button "Open Next.js Dev Tools" [ref=e783] [cursor=pointer]:
+    - img [ref=e784]
+  - alert [ref=e787]
