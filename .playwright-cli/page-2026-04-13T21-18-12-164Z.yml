@@ -1,0 +1,90 @@
+- generic [ref=e4]:
+  - generic [ref=e6]:
+    - link "Skip to main content" [ref=e7] [cursor=pointer]:
+      - /url: "#main-content"
+    - generic [ref=e9]:
+      - link "NOGL logo" [ref=e11] [cursor=pointer]:
+        - /url: /en
+        - img [ref=e14]
+      - generic [ref=e41]:
+        - button "Home navigation" [ref=e42]:
+          - img [ref=e43]
+        - button "Pricing navigation" [ref=e45]:
+          - img [ref=e46]
+        - button "Market Research navigation" [ref=e48]:
+          - img [ref=e49]
+        - button "Products navigation" [ref=e51]:
+          - img [ref=e52]
+        - button "Supply Chain navigation" [ref=e54]:
+          - img [ref=e55]
+      - generic [ref=e58]:
+        - generic [ref=e59]:
+          - button "Toggle AI Copilot" [ref=e60]:
+            - img [ref=e61]
+          - generic "Theme (light)" [ref=e63]:
+            - button "Switch to dark mode" [ref=e64]:
+              - img [ref=e65]
+        - button "Dev User account menu" [ref=e68]:
+          - img "Dev User" [ref=e69]
+    - main "Main content" [ref=e70]:
+      - main [ref=e72]:
+        - generic [ref=e74]:
+          - search [ref=e76]:
+            - generic [ref=e77]: Product Search
+            - generic [ref=e78]:
+              - img
+              - searchbox "Product Search" [ref=e79]
+          - generic [ref=e80]:
+            - button "Notifications" [ref=e81]:
+              - img [ref=e82]
+            - button "Compare" [ref=e85]:
+              - img [ref=e86]
+              - text: Compare
+            - button "Account menu" [ref=e91]:
+              - img [ref=e92]
+            - combobox "Last 4w" [ref=e95]:
+              - img [ref=e96]
+              - img [ref=e99]
+            - combobox [ref=e101]
+  - contentinfo [ref=e126]:
+    - generic [ref=e128]:
+      - generic [ref=e129]:
+        - link "NOGL logo" [ref=e130] [cursor=pointer]:
+          - /url: /en
+          - img [ref=e132]
+          - generic [ref=e161]: NOGL
+        - paragraph [ref=e162]: © 2026 Nogl - AI-Powered Fashion Intelligence Platform
+        - list [ref=e163]:
+          - listitem [ref=e164]:
+            - link "Twitter" [ref=e165] [cursor=pointer]:
+              - /url: https://twitter.com/noglai
+              - img [ref=e166]
+          - listitem [ref=e168]:
+            - link "LinkedIn" [ref=e169] [cursor=pointer]:
+              - /url: https://linkedin.com/company/noglai
+              - img [ref=e170]
+      - generic [ref=e172]:
+        - generic [ref=e173]:
+          - heading "Resources" [level=2] [ref=e174]
+          - list [ref=e175]:
+            - listitem [ref=e176]:
+              - link "Help Center" [ref=e177] [cursor=pointer]:
+                - /url: /blog
+            - listitem [ref=e178]:
+              - link "Dashboard" [ref=e179] [cursor=pointer]:
+                - /url: /dashboard
+        - generic [ref=e180]:
+          - heading "Legal" [level=2] [ref=e181]
+          - list [ref=e182]:
+            - listitem [ref=e183]:
+              - link "Privacy Policy" [ref=e184] [cursor=pointer]:
+                - /url: /privacy-policy
+            - listitem [ref=e185]:
+              - link "Terms of Service" [ref=e186] [cursor=pointer]:
+                - /url: /tos
+            - listitem [ref=e187]:
+              - link "Impressum" [ref=e188] [cursor=pointer]:
+                - /url: /impressum
+    - generic:
+      - img "grid" [ref=e190]
+      - img "grid" [ref=e192]

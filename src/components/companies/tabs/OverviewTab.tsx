@@ -86,11 +86,11 @@ export function OverviewTab({ data }: OverviewTabProps) {
 
       <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
         <Card className="p-6">
-          <h2 className="text-lg font-semibold text-foreground">{to("dataFreshnessTitle")}</h2>
+          <h2 className="text-lg font-semibold text-foreground">{t("overview.dataFreshnessTitle")}</h2>
           <dl className="mt-5 grid gap-4 sm:grid-cols-2">
             <div className="rounded-2xl bg-muted/50 p-4">
               <dt className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                {to("lastScraped")}
+                {t("overview.lastScraped")}
               </dt>
               <dd className="mt-2 text-sm font-medium text-foreground">
                 {formatDateTime(snapshot.last_scraped_at)}
@@ -106,7 +106,7 @@ export function OverviewTab({ data }: OverviewTabProps) {
             </div>
             <div className="rounded-2xl bg-muted/50 p-4">
               <dt className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                {to("datasetQualityLabel")}
+                {t("overview.datasetQualityLabel")}
               </dt>
               <dd className="mt-2 text-sm font-medium text-foreground">
                 {formatPercent(
@@ -130,8 +130,8 @@ export function OverviewTab({ data }: OverviewTabProps) {
         {snapshot.top_product_title ? (
           <Card className="overflow-hidden p-0">
             <div className="border-b border-border px-6 py-4">
-              <h2 className="text-lg font-semibold text-foreground">{to("topProductTitle")}</h2>
-              <p className="mt-1 text-sm text-muted-foreground">{to("topProductHelp")}</p>
+              <h2 className="text-lg font-semibold text-foreground">{t("overview.topProductTitle")}</h2>
+              <p className="mt-1 text-sm text-muted-foreground">{t("overview.topProductHelp")}</p>
             </div>
             <div className="p-6">
               {snapshot.top_product_image_url ? (
@@ -149,7 +149,7 @@ export function OverviewTab({ data }: OverviewTabProps) {
                 {snapshot.top_product_title}
               </p>
               <p className="mt-2 text-sm text-muted-foreground">
-                {to("productId")}: {snapshot.top_product_id ?? t("notAvailable")}
+                {t("overview.productId")}: {snapshot.top_product_id ?? t("notAvailable")}
               </p>
             </div>
           </Card>

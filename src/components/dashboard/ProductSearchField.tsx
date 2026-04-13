@@ -27,6 +27,7 @@ export function ProductSearchField({ className }: ProductSearchFieldProps) {
         <Search className="pointer-events-none absolute left-3 h-4 w-4 text-muted-foreground" aria-hidden />
         <input
           id="dashboard-product-search"
+          data-testid="dashboard-product-search"
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
