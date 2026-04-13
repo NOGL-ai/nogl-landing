@@ -1,12 +1,12 @@
 import { 
     BarChartSquare02, 
     Package, 
-    SearchMd, 
     RefreshCw01, 
     FileX01, 
     LayersThree01,
     Tag01
 } from "@untitledui/icons";
+import { Building2 } from "lucide-react";
 import type { NavItemType } from "@/components/application/app-navigation/config";
 import { SidebarNavigationSectionsSubheadings } from "@/components/application/app-navigation/sidebar-navigation/sidebar-sections-subheadings";
 
@@ -20,14 +20,14 @@ const navItemsWithSectionsSubheadings: Array<{ label: string; items: NavItemType
                 icon: BarChartSquare02,
             },
             {
-                label: "Companies",
-                href: "/companies",
-                icon: SearchMd,
-            },
-            {
                 label: "Tracked Competitors",
                 href: "/companies/competitor",
                 icon: Tag01,
+            },
+            {
+                label: "Companies",
+                href: "/companies",
+                icon: Building2,
             },
             {
                 label: "Reports",
