@@ -137,9 +137,11 @@ async function main() {
           NOW(),
           NOW()
         )
-        ON CONFLICT (domain) DO UPDATE SET
+        ON CONFLICT (tracked_competitor_id) DO UPDATE SET
+          id = EXCLUDED.id,
           slug = EXCLUDED.slug,
           name = EXCLUDED.name,
+          domain = EXCLUDED.domain,
           country_code = EXCLUDED.country_code,
           locale = EXCLUDED.locale,
           website = EXCLUDED.website,
