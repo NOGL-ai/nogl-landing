@@ -87,9 +87,27 @@ export type CompanyAssetDTO = {
   createdAt: string;
 };
 
+export type CompanySocialLinksDTO = {
+  facebook: string | null;
+  instagram: string | null;
+  tiktok: string | null;
+};
+
+export type CompanyCompetitorPreviewDTO = {
+  id: string;
+  name: string;
+  slug: string | null;
+  logoUrl: string | null;
+};
+
+export type CompanyDatasetQualityUiStatus = "ok" | "warning";
+
 export type CompanyOverviewResponse = {
   company: CompanyDTO;
   snapshot: CompanySnapshotDTO;
+  socials: CompanySocialLinksDTO;
+  competitors: CompanyCompetitorPreviewDTO[];
+  datasetQualityUiStatus: CompanyDatasetQualityUiStatus;
 };
 
 export type CompanyEventsResponse = {

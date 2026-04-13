@@ -6,6 +6,9 @@ export const FEATURES = {
   COMPETITOR_API: process.env.ENABLE_COMPETITOR_API === 'true',
   COMPETITOR_WRITE: process.env.ENABLE_COMPETITOR_WRITE !== 'false', // default true
   COMPETITOR_SEED_ON_START: process.env.COMPETITOR_SEED_ON_START === 'true',
+  /** Extra company overview fields (socials, competitor previews, quality UI state). */
+  COMPANIES_OVERVIEW_EXTENSIONS:
+    process.env.ENABLE_COMPANIES_OVERVIEW_EXTENSIONS !== 'false',
 } as const;
 
 /**

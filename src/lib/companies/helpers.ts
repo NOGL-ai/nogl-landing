@@ -4,6 +4,8 @@ import { prisma } from "@/lib/prisma";
 import {
   CompanyAssetDTO,
   CompanyAssetsResponse,
+  CompanyCompetitorPreviewDTO,
+  CompanyDatasetQualityUiStatus,
   CompanyDTO,
   CompanyEventDTO,
   CompanyEventsResponse,
@@ -12,9 +14,11 @@ import {
   CompanyPricingProductTypeRow,
   CompanyPricingResponse,
   CompanySnapshotDTO,
+  CompanySocialLinksDTO,
   GetCompaniesResponse,
 } from "@/types/company";
 import { PageMeta } from "@/types/product";
+import { isFeatureEnabled } from "@/lib/featureFlags";
 
 type NumericValue = Prisma.Decimal | number | string | null;
 
@@ -847,6 +851,30 @@ export async function getCompaniesResponse(params: {
   };
 }
 
+function buildCompanyOverviewExtensions(company: CompanyDTO): {
+  socials: CompanySocialLinksDTO;
+  competitors: CompanyCompetitorPreviewDTO[];
+  datasetQualityUiStatus: CompanyDatasetQualityUiStatus;
+} {
+  if (!isFeatureEnabled("COMPANIES_OVERVIEW_EXTENSIONS")) {
+    return {
+      socials: { facebook: null, instagram: null, tiktok: null },
+      competitors: [],
+      datasetQualityUiStatus: "ok",
+    };
+  }
+
+  const score = company.dataset_quality_score;
+  const datasetQualityUiStatus: CompanyDatasetQualityUiStatus =
+    typeof score === "number" && score < 60 ? "warning" : "ok";
+
+  return {
+    socials: { facebook: null, instagram: null, tiktok: null },
+    competitors: [],
+    datasetQualityUiStatus,
+  };
+}
+
 export async function getCompanyOverviewResponse(slug: string): Promise<CompanyOverviewResponse | null> {
   const company = await resolveCompanyBySlug(slug);
   if (!company) {
@@ -854,10 +882,12 @@ export async function getCompanyOverviewResponse(slug: string): Promise<CompanyO
   }
 
   const snapshot = await findSnapshotByCompanyId(company.id);
+  const extensions = buildCompanyOverviewExtensions(company);
 
   return {
     company,
     snapshot: snapshot ?? (await buildPlaceholderSnapshot(company.id, company.domain, company.name)),
+    ...extensions,
   };
 }
 
