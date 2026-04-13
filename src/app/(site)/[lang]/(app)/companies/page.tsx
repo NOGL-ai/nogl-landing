@@ -64,7 +64,7 @@ export default async function Page({
                 </div>
               </div>
 
-              <form className="mt-8">
+              <form className="mt-8" action="./companies/advanced-search" method="get">
                 <div className="flex items-center gap-3 rounded-2xl border border-blue-200 bg-white/95 p-3 shadow-[0_16px_40px_rgba(59,130,246,0.12)] backdrop-blur">
                   <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
                     <Search className="h-5 w-5" />

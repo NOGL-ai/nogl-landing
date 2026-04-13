@@ -399,6 +399,22 @@
 		"metaTitle": "Produkt-Feed | Nogl",
 		"metaDescription": "Verwalten und optimieren Sie Ihre Produkt-Feeds für bessere Marktreichweite"
 	},
+	"competitors": {
+		"advancedSearch": {
+			"title": "Erweiterte Suche",
+			"subtitle": "Alle Marken, die uber Particl verfugbar sind, mit zusatzlichen Filtern und Sortieroptionen in Tabellenansicht",
+			"filters": "Filter",
+			"resetFilters": "Filter zurucksetzen",
+			"search": "Suche",
+			"vertical": "Wettbewerber-Vertikal",
+			"productType": "Produkttyp",
+			"dataAvailable": "Verfugbare Daten",
+			"signatureStatus": "Signaturstatus",
+			"allCompetitorDatasets": "Alle Wettbewerber-Datensatze",
+			"rowsPerPage": "Zeilen pro Seite",
+			"lookingForDifferentCompany": "Suchen Sie ein anderes Unternehmen?"
+		}
+	},
 	"repricing": {
 		"manage": {
 			"title": "Repricing-Regel erstellen / bearbeiten",

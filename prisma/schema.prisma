@@ -190,7 +190,10 @@ model products {
 model Competitor {
   id                     String                      @id @default(cuid())
   name                   String                      @unique
+  slug                   String?                     @unique
   domain                 String                      @unique
+  country_code           String?                     @db.VarChar(2)
+  locale                 String?                     @db.VarChar(10)
   website                String?
   description            String?
   productCount           Int                         @default(0)
@@ -212,6 +215,7 @@ model Competitor {
   createdBy              String?
   updatedBy              String?
   CompetitorNote         CompetitorNote[]
+  company                Company?
   priceComparisons       CompetitorPriceComparison[]
   CompetitorPriceHistory CompetitorPriceHistory[]
 
@@ -277,6 +281,108 @@ model CompetitorPriceHistory {
   Competitor   Competitor @relation(fields: [competitorId], references: [id], onDelete: Cascade)
 
   @@index([competitorId, recordDate])
+  @@schema("nogl")
+}
+
+model Company {
+  id                    String                @id @default(cuid())
+  slug                  String                @unique
+  name                  String
+  domain                String                @unique
+  country_code          String                @db.VarChar(2)
+  locale                String?               @db.VarChar(10)
+  website               String?
+  source_key            String?
+  industry              String?
+  product_types         String[]
+  dataset_quality_score Decimal?              @db.Decimal(3, 2)
+  tracking_status       CompanyTrackingStatus @default(UNTRACKED)
+  tracked_competitor_id String?               @unique
+  wm_key                String?               @unique
+  arango_id             String?
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+  competitor            Competitor?           @relation(fields: [tracked_competitor_id], references: [id])
+  snapshot              CompanySnapshot?
+  events                CompanyEvent[]
+  assets                CompanyAsset[]
+
+  @@index([slug])
+  @@index([domain])
+  @@index([country_code])
+  @@index([tracking_status])
+  @@schema("nogl")
+}
+
+model CompanySnapshot {
+  id                    String    @id @default(cuid())
+  company_id            String    @unique
+  rank                  Int?
+  percentile            Decimal?  @db.Decimal(5, 2)
+  total_products        Int       @default(0)
+  total_variants        Int       @default(0)
+  total_datapoints      Int       @default(0)
+  total_discounted      Int       @default(0)
+  avg_discount_pct      Decimal?  @db.Decimal(5, 2)
+  avg_price             Decimal?  @db.Decimal(10, 2)
+  min_price             Decimal?  @db.Decimal(10, 2)
+  max_price             Decimal?  @db.Decimal(10, 2)
+  price_distribution    Json?
+  top_product_id        String?
+  top_product_title     String?
+  top_product_image_url String?
+  data_since            DateTime?
+  last_scraped_at       DateTime?
+  ig_followers          Int?
+  ig_avg_likes          Int?
+  ig_most_liked_url     String?
+  ig_asset_count        Int?
+  computed_at           DateTime  @default(now())
+  company               Company   @relation(fields: [company_id], references: [id], onDelete: Cascade)
+
+  @@schema("nogl")
+}
+
+model CompanyEvent {
+  id                String    @id @default(cuid())
+  company_id        String
+  event_type        String
+  platform          String?
+  title             String?
+  summary           String?
+  asset_url         String?
+  asset_preview_url String?
+  event_date        DateTime
+  duration_days     Int?
+  confidence        Decimal?  @db.Decimal(3, 2)
+  score             Decimal?  @db.Decimal(5, 2)
+  source_url        String?
+  raw_payload       Json?
+  createdAt         DateTime  @default(now())
+  company           Company   @relation(fields: [company_id], references: [id], onDelete: Cascade)
+
+  @@index([company_id, event_date])
+  @@index([event_type])
+  @@schema("nogl")
+}
+
+model CompanyAsset {
+  id            String    @id @default(cuid())
+  company_id    String
+  channel       String
+  asset_type    String
+  url           String?
+  thumbnail_url String?
+  caption       String?
+  likes         Int?
+  comments      Int?
+  published_at  DateTime?
+  raw_payload   Json?
+  createdAt     DateTime  @default(now())
+  company       Company   @relation(fields: [company_id], references: [id], onDelete: Cascade)
+
+  @@index([company_id, channel])
+  @@index([company_id, published_at])
   @@schema("nogl")
 }
 
@@ -512,6 +618,14 @@ enum CompetitorStatus {
   MONITORING
   PAUSED
   ARCHIVED
+
+  @@schema("nogl")
+}
+
+enum CompanyTrackingStatus {
+  UNTRACKED
+  TRACKED
+  PAUSED
 
   @@schema("nogl")
 }

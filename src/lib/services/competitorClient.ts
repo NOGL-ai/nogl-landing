@@ -417,3 +417,66 @@ export async function getCompetitorStats(): Promise<{
 export function clearCache(): void {
   cache.clear();
 }
+
+export type AdvancedCompanyDataType = "products" | "pricing" | "reviews" | "web";
+export type AdvancedCompanySortField = "relevance" | "keyword_rank" | "name" | "data_since";
+export type AdvancedCompanySortOrder = "asc" | "desc";
+
+export interface AdvancedCompanyRow {
+  id: string;
+  name: string;
+  domain: string;
+  logoUrl: string;
+  vertical: string;
+  dataTypes: AdvancedCompanyDataType[];
+  status: "Normal" | "Signature";
+  popularityScore: number;
+  dataSince: string | null;
+  productType: string;
+  trackedCompetitorId: string | null;
+}
+
+export interface AdvancedCompaniesResponse {
+  total: number;
+  pageOffset: number;
+  pageSize: number;
+  filters: {
+    search: string;
+    companyVertical: string;
+    productType: string;
+    dataAvailable: string;
+    signatureStatus: "all" | "normal" | "signature";
+  };
+  sort: {
+    field: AdvancedCompanySortField;
+    order: AdvancedCompanySortOrder;
+  };
+  results: AdvancedCompanyRow[];
+}
+
+export async function getAdvancedCompanies(params: {
+  search?: string;
+  companyVertical?: string;
+  productType?: string;
+  dataAvailable?: string;
+  signatureStatus?: "all" | "normal" | "signature";
+  pageSize?: number;
+  pageOffset?: number;
+  sortField?: AdvancedCompanySortField;
+  sortOrder?: AdvancedCompanySortOrder;
+} = {}): Promise<AdvancedCompaniesResponse> {
+  const query = buildQuery({
+    search: params.search ?? "",
+    companyVertical: params.companyVertical ?? "all",
+    productType: params.productType ?? "",
+    dataAvailable: params.dataAvailable ?? "",
+    signatureStatus: params.signatureStatus ?? "all",
+    pageSize: params.pageSize ?? 25,
+    pageOffset: params.pageOffset ?? 0,
+    sortField: params.sortField ?? "relevance",
+    sortOrder: params.sortOrder ?? "desc",
+  });
+
+  const url = `/api/companies/advanced-search?${query}`;
+  return fetchJson<AdvancedCompaniesResponse>(url, { cache: "no-store" });
+}
