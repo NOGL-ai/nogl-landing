@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 
+import { CompanyBreadcrumb } from "@/components/companies/CompanyBreadcrumb";
 import { CompanyHeader } from "@/components/companies/CompanyHeader";
+import { CompanyInfoBar } from "@/components/companies/CompanyInfoBar";
 import { CompanyTabs } from "@/components/companies/CompanyTabs";
 import { getBaseUrl } from "@/lib/competitors/utils";
 import type { CompanyOverviewResponse } from "@/types/company";
@@ -73,7 +75,9 @@ export default async function Page({
 
   return (
     <div className="min-h-screen bg-background">
+      <CompanyBreadcrumb companyName={result.data.company.name} />
       <CompanyHeader company={result.data.company} snapshot={result.data.snapshot} />
+      <CompanyInfoBar company={result.data.company} snapshot={result.data.snapshot} />
       <CompanyTabs slug={slug} initialData={result.data} />
     </div>
   );

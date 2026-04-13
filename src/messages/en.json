@@ -1,0 +1,75 @@
+{
+  "companies": {
+    "explorer": "Company Explorer",
+    "dataSince": "Data since",
+    "dataTypes": "Data Types",
+    "quality": "Quality",
+    "totalProducts": "Total Products",
+    "totalVariants": "Total Variants",
+    "discountedItems": "Discounted Items",
+    "totalDatapoints": "Total Datapoints",
+    "avgPrice": "Avg Price",
+    "discountRate": "Discount Rate",
+    "profile": "Company Profile",
+    "domain": "Domain",
+    "dataAvailable": "Data Available",
+    "socials": "Socials",
+    "datasetQuality": "Dataset Quality",
+    "competitors": "Competitors",
+    "noCompetitorsTracked": "No competitors tracked yet",
+    "defaultIndustry": "Electronics",
+    "delayedInventoryReporting": "Delayed Inventory Reporting",
+    "delayedInventoryTooltip": "This website reports inventory updates in batches rather than in real-time. As a result, sales data may appear inconsistent or bunched together.",
+    "datasetQualityOk": "No noteworthy issues",
+    "compareQuestion": "Compare?",
+    "notAvailable": "N/A",
+    "dataTypeProducts": "Products",
+    "dataTypePricing": "Pricing",
+    "dataTypeEvents": "Events",
+    "dataTypeSocial": "Social",
+    "chrome": {
+      "productSearchPlaceholder": "Product Search",
+      "notificationsAria": "Notifications",
+      "compare": "Compare",
+      "accountAria": "Account menu",
+      "rangeLast4w": "Last 4w",
+      "rangeLast90d": "Last 90d",
+      "rangeLast12m": "Last 12m"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "events": "Events",
+      "sales": "Sales",
+      "pricing": "Pricing",
+      "ratings": "Ratings",
+      "pivot": "Pivot Table",
+      "assets": "Assets"
+    },
+    "ratings": {
+      "emptyTitle": "Ratings",
+      "emptyDescription": "Ratings for this company will appear here when data is available."
+    },
+    "pivot": {
+      "emptyTitle": "Pivot Table",
+      "emptyDescription": "Pivot analysis will be available in a future release."
+    },
+    "trackingTracked": "Tracked",
+    "trackingPaused": "Paused",
+    "trackingUntracked": "Untracked",
+    "favoriteAria": "Add to favorites",
+    "overview": {
+      "volumeMixTitle": "Volume Mix",
+      "volumeMixDescription": "Products, variants, and discounted items scaled against the same peak.",
+      "avgPricePrefix": "Avg price",
+      "barProduct": "Products",
+      "barVariant": "Variants",
+      "barDiscounted": "Discounted",
+      "dataFreshnessTitle": "Data Freshness",
+      "lastScraped": "Last scraped",
+      "datasetQualityLabel": "Dataset Quality",
+      "topProductTitle": "Top Product",
+      "topProductHelp": "Highlighted from the most recent scrape.",
+      "productId": "Product ID"
+    }
+  }
+}

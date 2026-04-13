@@ -1,0 +1,75 @@
+{
+  "companies": {
+    "explorer": "Unternehmenserforscher",
+    "dataSince": "Daten seit",
+    "dataTypes": "Datentypen",
+    "quality": "Qualität",
+    "totalProducts": "Gesamtzahl Produkte",
+    "totalVariants": "Gesamtzahl Varianten",
+    "discountedItems": "Reduzierte Artikel",
+    "totalDatapoints": "Datenpunkte gesamt",
+    "avgPrice": "Durchschn. Preis",
+    "discountRate": "Rabattsatz",
+    "profile": "Unternehmensprofil",
+    "domain": "Domain",
+    "dataAvailable": "Verfügbare Daten",
+    "socials": "Soziale Netzwerke",
+    "datasetQuality": "Datenqualität",
+    "competitors": "Konkurrenten",
+    "noCompetitorsTracked": "Noch keine Konkurrenten verfolgt",
+    "defaultIndustry": "Elektronik",
+    "delayedInventoryReporting": "Verzögerte Bestandsberichterstattung",
+    "delayedInventoryTooltip": "Diese Website meldet Bestandsaktualisierungen in Chargen statt in Echtzeit. Verkaufsdaten können dadurch uneinheitlich oder gebündelt wirken.",
+    "datasetQualityOk": "Keine nennenswerten Auffälligkeiten",
+    "compareQuestion": "Vergleichen?",
+    "notAvailable": "k. A.",
+    "dataTypeProducts": "Produkte",
+    "dataTypePricing": "Preise",
+    "dataTypeEvents": "Ereignisse",
+    "dataTypeSocial": "Social",
+    "chrome": {
+      "productSearchPlaceholder": "Produktsuche",
+      "notificationsAria": "Benachrichtigungen",
+      "compare": "Vergleichen",
+      "accountAria": "Kontomenü",
+      "rangeLast4w": "Letzte 4 W.",
+      "rangeLast90d": "Letzte 90 T.",
+      "rangeLast12m": "Letzte 12 M."
+    },
+    "tabs": {
+      "overview": "Übersicht",
+      "events": "Ereignisse",
+      "sales": "Verkauf",
+      "pricing": "Preise",
+      "ratings": "Bewertungen",
+      "pivot": "Pivot-Tabelle",
+      "assets": "Assets"
+    },
+    "ratings": {
+      "emptyTitle": "Bewertungen",
+      "emptyDescription": "Bewertungen für dieses Unternehmen erscheinen hier, sobald Daten vorliegen."
+    },
+    "pivot": {
+      "emptyTitle": "Pivot-Tabelle",
+      "emptyDescription": "Pivot-Analysen sind in einer späteren Version geplant."
+    },
+    "trackingTracked": "Verfolgt",
+    "trackingPaused": "Pausiert",
+    "trackingUntracked": "Nicht verfolgt",
+    "favoriteAria": "Zu Favoriten hinzufügen",
+    "overview": {
+      "volumeMixTitle": "Volumenmix",
+      "volumeMixDescription": "Produkte, Varianten und reduzierte Artikel, skaliert auf denselben Peak.",
+      "avgPricePrefix": "Ø-Preis",
+      "barProduct": "Produkte",
+      "barVariant": "Varianten",
+      "barDiscounted": "Reduziert",
+      "dataFreshnessTitle": "Datenaktualität",
+      "lastScraped": "Zuletzt gescraped",
+      "datasetQualityLabel": "Datenqualität",
+      "topProductTitle": "Top-Produkt",
+      "topProductHelp": "Hervorgehoben aus dem letzten Scrape.",
+      "productId": "Produkt-ID"
+    }
+  }
+}

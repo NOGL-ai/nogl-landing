@@ -9,6 +9,7 @@ import { HeaderWrapper } from "@/components/molecules/HeaderWrapper";
 // import AuthCheck from "./AuthCheck";
 import { Metadata } from "next";
 import { getAuthSession } from "@/lib/auth";
+import { loadMessages } from "@/lib/i18n/loadMessages";
 
 export default async function RootLayout({
 	children,
@@ -19,11 +20,12 @@ export default async function RootLayout({
 }) {
 	const session = await getAuthSession();
 	const { lang } = await params;
+	const { locale, messages } = await loadMessages(lang);
 
 	return (
 		<>
 			<Loader />
-			<Providers session={session}>
+			<Providers session={session} locale={locale} messages={messages}>
 				<div className="flex flex-col min-h-screen overflow-x-hidden">
 					{/* <AuthCheck> */}
 					<NextTopLoader

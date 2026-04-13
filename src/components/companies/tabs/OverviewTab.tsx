@@ -1,5 +1,9 @@
-import Image from "next/image";
+"use client";
 
+import Image from "next/image";
+import { useTranslations } from "next-intl";
+
+import { CompanyProfile } from "@/components/companies/CompanyProfile";
 import { Card } from "@/components/ui/card";
 import type { CompanyOverviewResponse } from "@/types/company";
 import {
@@ -25,33 +29,40 @@ function StatCard({ label, value }: { label: string; value: string }) {
 }
 
 export function OverviewTab({ data }: OverviewTabProps) {
-  const { company, snapshot } = data;
+  const t = useTranslations("companies");
+  const { company, snapshot, socials, competitors, datasetQualityUiStatus } = data;
   const barData = [
-    { label: "Products", value: snapshot.total_products, tone: "bg-chart-1" },
-    { label: "Variants", value: snapshot.total_variants, tone: "bg-chart-2" },
-    { label: "Discounted", value: snapshot.total_discounted, tone: "bg-chart-3" },
+    { label: t("overview.barProduct"), value: snapshot.total_products, tone: "bg-chart-1" },
+    { label: t("overview.barVariant"), value: snapshot.total_variants, tone: "bg-chart-2" },
+    { label: t("overview.barDiscounted"), value: snapshot.total_discounted, tone: "bg-chart-3" },
   ];
   const maxValue = Math.max(...barData.map((item) => item.value), 1);
 
   return (
     <div className="space-y-6">
+      <CompanyProfile
+        company={company}
+        snapshot={snapshot}
+        socials={socials}
+        competitors={competitors}
+        datasetQualityUiStatus={datasetQualityUiStatus}
+      />
+
       <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
-        <StatCard label="Total Products" value={formatNumber(snapshot.total_products)} />
-        <StatCard label="Total Variants" value={formatNumber(snapshot.total_variants)} />
-        <StatCard label="Discounted Items" value={formatNumber(snapshot.total_discounted)} />
-        <StatCard label="Total Datapoints" value={formatNumber(snapshot.total_datapoints)} />
+        <StatCard label={t("totalProducts")} value={formatNumber(snapshot.total_products)} />
+        <StatCard label={t("totalVariants")} value={formatNumber(snapshot.total_variants)} />
+        <StatCard label={t("discountedItems")} value={formatNumber(snapshot.total_discounted)} />
+        <StatCard label={t("totalDatapoints")} value={formatNumber(snapshot.total_datapoints)} />
       </div>
 
       <Card className="p-6">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <h2 className="text-lg font-semibold text-foreground">Volume Mix</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Products, variants, and discounted items scaled against the same peak.
-            </p>
+            <h2 className="text-lg font-semibold text-foreground">{t("overview.volumeMixTitle")}</h2>
+            <p className="mt-1 text-sm text-muted-foreground">{t("overview.volumeMixDescription")}</p>
           </div>
           <div className="text-sm text-muted-foreground">
-            Avg price {formatEuro(snapshot.avg_price)}
+            {t("overview.avgPricePrefix")} {formatEuro(snapshot.avg_price)}
           </div>
         </div>
 
@@ -75,11 +86,11 @@ export function OverviewTab({ data }: OverviewTabProps) {
 
       <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
         <Card className="p-6">
-          <h2 className="text-lg font-semibold text-foreground">Data Freshness</h2>
+          <h2 className="text-lg font-semibold text-foreground">{to("dataFreshnessTitle")}</h2>
           <dl className="mt-5 grid gap-4 sm:grid-cols-2">
             <div className="rounded-2xl bg-muted/50 p-4">
               <dt className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                Last scraped
+                {to("lastScraped")}
               </dt>
               <dd className="mt-2 text-sm font-medium text-foreground">
                 {formatDateTime(snapshot.last_scraped_at)}
@@ -87,7 +98,7 @@ export function OverviewTab({ data }: OverviewTabProps) {
             </div>
             <div className="rounded-2xl bg-muted/50 p-4">
               <dt className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                Data since
+                {t("dataSince")}
               </dt>
               <dd className="mt-2 text-sm font-medium text-foreground">
                 {formatDateTime(snapshot.data_since)}
@@ -95,7 +106,7 @@ export function OverviewTab({ data }: OverviewTabProps) {
             </div>
             <div className="rounded-2xl bg-muted/50 p-4">
               <dt className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                Dataset Quality
+                {to("datasetQualityLabel")}
               </dt>
               <dd className="mt-2 text-sm font-medium text-foreground">
                 {formatPercent(
@@ -107,7 +118,7 @@ export function OverviewTab({ data }: OverviewTabProps) {
             </div>
             <div className="rounded-2xl bg-muted/50 p-4">
               <dt className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                Discount Rate
+                {t("discountRate")}
               </dt>
               <dd className="mt-2 text-sm font-medium text-foreground">
                 {formatPercent(snapshot.avg_discount_pct)}
@@ -119,10 +130,8 @@ export function OverviewTab({ data }: OverviewTabProps) {
         {snapshot.top_product_title ? (
           <Card className="overflow-hidden p-0">
             <div className="border-b border-border px-6 py-4">
-              <h2 className="text-lg font-semibold text-foreground">Top Product</h2>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Highlighted from the most recent scrape.
-              </p>
+              <h2 className="text-lg font-semibold text-foreground">{to("topProductTitle")}</h2>
+              <p className="mt-1 text-sm text-muted-foreground">{to("topProductHelp")}</p>
             </div>
             <div className="p-6">
               {snapshot.top_product_image_url ? (
@@ -140,7 +149,7 @@ export function OverviewTab({ data }: OverviewTabProps) {
                 {snapshot.top_product_title}
               </p>
               <p className="mt-2 text-sm text-muted-foreground">
-                Product ID: {snapshot.top_product_id ?? "N/A"}
+                {to("productId")}: {snapshot.top_product_id ?? t("notAvailable")}
               </p>
             </div>
           </Card>
