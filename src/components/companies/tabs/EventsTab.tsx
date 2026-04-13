@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -26,6 +26,7 @@ function eventTone(eventType: string): string {
 }
 
 export function EventsTab({ slug, active }: EventsTabProps) {
+  const fetchedRef = useRef(false);
   const [state, setState] = useState<EventsState>({
     data: null,
     error: null,
@@ -33,9 +34,11 @@ export function EventsTab({ slug, active }: EventsTabProps) {
   });
 
   useEffect(() => {
-    if (!active || state.data || state.loading) {
+    if (!active || fetchedRef.current) {
       return;
     }
+
+    fetchedRef.current = true;
 
     let cancelled = false;
 
@@ -63,7 +66,7 @@ export function EventsTab({ slug, active }: EventsTabProps) {
     return () => {
       cancelled = true;
     };
-  }, [active, slug, state.data, state.loading]);
+  }, [active, slug]);
 
   if (state.loading && !state.data) {
     return <PanelSkeleton rows={3} grid="grid-cols-1" />;
