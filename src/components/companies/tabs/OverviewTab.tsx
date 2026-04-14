@@ -89,6 +89,17 @@ function formatPriceRange(
 export function OverviewTab({ data }: OverviewTabProps) {
   const t = useTranslations("companies");
   const { company, snapshot, socials, competitors, datasetQualityUiStatus } = data;
+  const dist: Array<{ range: string; count: number; percentage: number }> =
+    snapshot.price_distribution
+      ? (typeof snapshot.price_distribution === "string"
+          ? JSON.parse(snapshot.price_distribution)
+          : (snapshot.price_distribution as unknown as Array<{
+              range: string;
+              count: number;
+              percentage: number;
+            }>))
+      : [];
+  const maxCount = dist.length > 0 ? Math.max(...dist.map((bucket) => bucket.count)) : 0;
   const barData = [
     { label: t("overview.barProduct"), value: snapshot.total_products, tone: "bg-chart-1" },
     { label: t("overview.barVariant"), value: snapshot.total_variants, tone: "bg-chart-2" },
@@ -195,6 +206,35 @@ export function OverviewTab({ data }: OverviewTabProps) {
               </dd>
             </div>
           </dl>
+
+          {dist.length > 0 && maxCount > 0 ? (
+            <div className="mt-6">
+              <p className="mb-3 text-sm font-medium text-muted-foreground">
+                Price Distribution
+              </p>
+              <div className="space-y-2">
+                {dist.map((bucket) => (
+                  <div key={bucket.range} className="flex items-center gap-3">
+                    <span className="w-20 shrink-0 text-xs text-muted-foreground">
+                      €{bucket.range}
+                    </span>
+                    <div className="h-2 flex-1 overflow-hidden rounded-full bg-muted">
+                      <div
+                        className="h-2 rounded-full bg-primary/60 transition-all"
+                        style={{
+                          width: `${maxCount > 0 ? (bucket.count / maxCount) * 100 : 0}%`,
+                          minWidth: bucket.count > 0 ? "4px" : "0",
+                        }}
+                      />
+                    </div>
+                    <span className="w-16 shrink-0 text-right text-xs text-muted-foreground">
+                      {bucket.count.toLocaleString()}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
         </Card>
 
         {snapshot.top_product_title ? (

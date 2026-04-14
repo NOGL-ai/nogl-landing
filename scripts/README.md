@@ -40,3 +40,16 @@ npx ts-node --project tsconfig.json scripts/snapshot-companies.ts --domain calum
 1. `cd scrapy-boilerplate && scrapy crawl universal -a site=calumet`
 2. `cd nogl-landing && npx ts-node --project tsconfig.json scripts/bridge-scraped-items-to-products.ts --domain calumet.de`
 3. `cd nogl-landing && npx ts-node --project tsconfig.json scripts/snapshot-companies.ts --domain calumet.de`
+
+## Refreshing price_distribution
+After updating the snapshot script, re-run for all companies:
+
+```bash
+npx ts-node --project tsconfig.json scripts/snapshot-companies.ts
+```
+
+Or for a single domain:
+
+```bash
+npx ts-node --project tsconfig.json scripts/snapshot-companies.ts --domain calumet.de
+```
