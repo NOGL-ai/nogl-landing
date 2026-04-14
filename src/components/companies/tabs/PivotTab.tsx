@@ -20,7 +20,7 @@ import type {
 } from "@/types/company";
 import { fetchJson } from "./shared";
 
-type PivotTabProps = { slug: string };
+type PivotTabProps = { slug: string; active?: boolean };
 type PivotState = { data: CompanyPivotResponse | null; error: string | null; loading: boolean };
 type Period = "30d" | "90d" | "12mo" | "all";
 
@@ -163,8 +163,56 @@ export function PivotTab({ slug }: PivotTabProps) {
     );
   }
 
+  const PIVOT_PRESETS: Array<{ label: string; row: PivotDimension; col: PivotColDimension; metric: PivotMetric }> = [
+    { label: "Category Overview",    row: "category",      col: "month",         metric: "count" },
+    { label: "Price Analysis",       row: "price_range",   col: "discount_tier", metric: "count" },
+    { label: "Discount Breakdown",   row: "discount_tier", col: "price_range",   metric: "count" },
+    { label: "Brand by Price",       row: "brand",         col: "price_range",   metric: "count" },
+    { label: "Monthly Avg Price",    row: "category",      col: "month",         metric: "avg_price" },
+  ];
+
+  function getPivotTitle(row: PivotDimension, col: PivotColDimension): string {
+    const labels: Record<string, string> = {
+      category: "Category", brand: "Brand", price_range: "Price Range", discount_tier: "Discount Tier",
+      month: "Month", week: "Week",
+    };
+    return `${labels[row] ?? row} / ${labels[col] ?? col} Pivot`;
+  }
+
   return (
     <div className="space-y-6">
+      {/* Title */}
+      <div className="flex items-start justify-between">
+        <div>
+          <h2 className="text-lg font-semibold text-foreground">{getPivotTitle(rowDimension, colDimension)}</h2>
+          <p className="text-sm text-muted-foreground">Click a cell to drill into data</p>
+        </div>
+      </div>
+
+      {/* Presets */}
+      <div>
+        <p className="mb-2 text-sm text-muted-foreground">
+          <span className="font-medium">Presets</span>{" "}
+          Apply a preset configuration to quickly set controls for common use cases:
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {PIVOT_PRESETS.map((preset) => (
+            <button
+              key={preset.label}
+              type="button"
+              onClick={() => {
+                setRowDimension(preset.row);
+                setColDimension(preset.col);
+                setMetric(preset.metric);
+              }}
+              className="rounded-lg border border-border px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            >
+              {preset.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       <Card className="p-4">
         <div className="grid gap-3 xl:grid-cols-4">
           <Select value={rowDimension} onValueChange={(value: PivotDimension) => setRowDimension(value)}>

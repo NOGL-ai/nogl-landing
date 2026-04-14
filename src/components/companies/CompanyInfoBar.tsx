@@ -2,7 +2,9 @@
 
 import { ExternalLink, Globe, Sparkles, TrendingUp, DollarSign, Calendar } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+import { useState } from "react";
 
+import { PeriodChip } from "@/components/companies/FilterBar";
 import type { CompanyDTO, CompanySnapshotDTO } from "@/types/company";
 
 type CompanyInfoBarProps = {
@@ -10,29 +12,31 @@ type CompanyInfoBarProps = {
   snapshot: CompanySnapshotDTO;
 };
 
+function getGrade(pct: number): string {
+  if (pct >= 90) return "A+";
+  if (pct >= 80) return "A";
+  if (pct >= 70) return "A-";
+  if (pct >= 60) return "B+";
+  if (pct >= 50) return "B";
+  if (pct >= 40) return "C";
+  return "D";
+}
+
+function getGradeColor(pct: number): string {
+  if (pct >= 70) return "rgb(16, 185, 129)";
+  if (pct >= 50) return "rgb(59, 130, 246)";
+  if (pct >= 30) return "rgb(245, 158, 11)";
+  return "rgb(239, 68, 68)";
+}
+
 function QualityBadge({ score, qualityLabel }: { score: number | undefined | null; qualityLabel: string }) {
-  const percentage = score ?? 0;
+  // score is stored as 0–1 fraction; convert to 0–100 for display
+  const hasScore = score != null && score > 0;
+  const percentage = hasScore ? (score! * 100) : 0;
   const radius = 19;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (percentage / 100) * circumference;
-
-  const getColor = (s: number) => {
-    if (s >= 85) return "rgb(16, 185, 129)";
-    if (s >= 70) return "rgb(59, 130, 246)";
-    if (s >= 50) return "rgb(245, 158, 11)";
-    return "rgb(239, 68, 68)";
-  };
-
-  const color = getColor(percentage);
-  const getGrade = (s: number) => {
-    if (s >= 85) return "A+";
-    if (s >= 80) return "A";
-    if (s >= 75) return "A-";
-    if (s >= 70) return "B+";
-    if (s >= 65) return "B";
-    if (s >= 60) return "B-";
-    return "C";
-  };
+  const color = hasScore ? getGradeColor(percentage) : "currentColor";
 
   return (
     <button
@@ -50,26 +54,36 @@ function QualityBadge({ score, qualityLabel }: { score: number | undefined | nul
             fill="none"
             className="text-text-quaternary"
           />
-          <circle
-            cx="24"
-            cy="24"
-            r={radius}
-            stroke={color}
-            strokeWidth="2"
-            fill="none"
-            strokeDasharray={circumference}
-            strokeDashoffset={offset}
-            strokeLinecap="round"
-            style={{ transition: "stroke-dashoffset 500ms ease-in-out" }}
-          />
+          {hasScore && (
+            <circle
+              cx="24"
+              cy="24"
+              r={radius}
+              stroke={color}
+              strokeWidth="2"
+              fill="none"
+              strokeDasharray={circumference}
+              strokeDashoffset={offset}
+              strokeLinecap="round"
+              style={{ transition: "stroke-dashoffset 500ms ease-in-out" }}
+            />
+          )}
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-xs font-bold text-text-primary">{getGrade(percentage)}</span>
+          {hasScore ? (
+            <span className="text-xs font-bold text-text-primary">{getGrade(percentage)}</span>
+          ) : (
+            <span className="text-xs font-bold text-muted-foreground">—</span>
+          )}
         </div>
       </div>
       <div className="text-left">
         <p className="text-xs font-medium uppercase tracking-wider text-text-tertiary">{qualityLabel}</p>
-        <p className="text-sm font-semibold text-text-primary">{percentage.toFixed(1)}%</p>
+        {hasScore ? (
+          <p className="text-sm font-semibold text-text-primary">{percentage.toFixed(1)}%</p>
+        ) : (
+          <p className="text-sm font-semibold text-muted-foreground">—</p>
+        )}
       </div>
     </button>
   );
@@ -113,6 +127,7 @@ export function CompanyInfoBar({ company, snapshot }: CompanyInfoBarProps) {
   const t = useTranslations("companies");
   const locale = useLocale();
   const websiteUrl = `https://${company.domain}`;
+  const [period, setPeriod] = useState("4w");
 
   const formatDate = (dateStr: string | undefined | null) => {
     if (!dateStr) return t("notAvailable");
@@ -126,7 +141,8 @@ export function CompanyInfoBar({ company, snapshot }: CompanyInfoBarProps) {
   return (
     <div className="border-b border-border bg-bg-primary/95 backdrop-blur supports-[backdrop-filter]:bg-bg-primary/60">
       <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          {/* Always render — shows grade or "—" when score not yet available */}
           <QualityBadge score={company.dataset_quality_score} qualityLabel={t("quality")} />
 
           <div className="flex items-center gap-2 whitespace-nowrap rounded-full border border-border bg-bg-secondary px-3 py-1.5 text-xs text-text-secondary transition-colors hover:bg-bg-tertiary hover:text-text-primary">
@@ -148,6 +164,11 @@ export function CompanyInfoBar({ company, snapshot }: CompanyInfoBarProps) {
             <span className="max-w-[150px] truncate">{company.domain}</span>
             <ExternalLink className="h-3 w-3" />
           </a>
+
+          {/* Global period selector — matches Particl top-right "Last 4w" */}
+          <div className="ml-auto">
+            <PeriodChip value={period} onChange={setPeriod} />
+          </div>
         </div>
       </div>
     </div>

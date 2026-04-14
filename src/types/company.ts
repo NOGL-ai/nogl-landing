@@ -116,6 +116,16 @@ export type CompanyEventsResponse = {
   pagination: PageMeta;
 };
 
+export type CompanyPricingTopProduct = {
+  product_id: string;
+  product_title: string;
+  product_image_url: string | null;
+  product_url: string | null;
+  original_price: number | null;
+  discount_price: number | null;
+  category: string | null;
+};
+
 export type CompanyPricingProductTypeRow = {
   type: string;
   count: number;
@@ -135,6 +145,7 @@ export type CompanyPricingResponse = {
   avg_price?: number | null;
   min_price?: number | null;
   max_price?: number | null;
+  top_products?: CompanyPricingTopProduct[];
   product_types: CompanyPricingProductTypeRow[];
   pagination: PageMeta;
 };
