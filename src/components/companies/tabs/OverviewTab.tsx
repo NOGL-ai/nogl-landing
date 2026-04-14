@@ -6,7 +6,18 @@ import { useTranslations } from "next-intl";
 import { CompanyProfile } from "@/components/companies/CompanyProfile";
 import { Card } from "@/components/ui/card";
 import type { CompanyOverviewResponse } from "@/types/company";
-import { formatEuro, formatNumber, formatPercent } from "./shared";
+import { formatNumber } from "./shared";
+
+// Fix 3 — rounded price with thousand separator, no decimals
+const fmtPrice = (n: number | null | undefined): string => {
+  if (n === null || n === undefined) return "—";
+  if (n === 0) return "€0";
+  return `€${Math.round(n).toLocaleString("de-DE")}`;
+};
+
+// Fix 4 — suppress zero counts with em-dash
+const fmtCount = (n: number | null | undefined): string =>
+  !n || n === 0 ? "—" : n.toLocaleString("de-DE");
 
 type OverviewTabProps = {
   data: CompanyOverviewResponse;
@@ -75,17 +86,6 @@ function formatMonthYear(dateStr: string | null): string {
   });
 }
 
-function formatPriceRange(
-  minPrice: number | null | undefined,
-  maxPrice: number | null | undefined
-): string {
-  if (typeof minPrice !== "number" || typeof maxPrice !== "number") {
-    return "—";
-  }
-
-  return `${formatEuro(minPrice)}–${formatEuro(maxPrice)}`;
-}
-
 export function OverviewTab({ data }: OverviewTabProps) {
   const t = useTranslations("companies");
   const { company, snapshot, socials, competitors, datasetQualityUiStatus } = data;
@@ -100,6 +100,8 @@ export function OverviewTab({ data }: OverviewTabProps) {
             }>))
       : [];
   const maxCount = dist.length > 0 ? Math.max(...dist.map((bucket) => bucket.count)) : 0;
+
+  // Fix 4 — use fmtCount for variants and discounted in Volume Mix
   const barData = [
     { label: t("overview.barProduct"), value: snapshot.total_products, tone: "bg-chart-1" },
     { label: t("overview.barVariant"), value: snapshot.total_variants, tone: "bg-chart-2" },
@@ -117,13 +119,21 @@ export function OverviewTab({ data }: OverviewTabProps) {
         datasetQualityUiStatus={datasetQualityUiStatus}
       />
 
+      {/* Fix 3 — header stat cards use fmtPrice for price values */}
       <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
         <StatCard label={t("totalProducts")} value={formatNumber(snapshot.total_products)} />
-        <StatCard label={t("avgPrice")} value={formatEuro(snapshot.avg_price)} />
-        <StatCard label={t("discountRate")} value={formatPercent(snapshot.avg_discount_pct)} />
+        <StatCard label={t("avgPrice")} value={fmtPrice(snapshot.avg_price)} />
+        <StatCard
+          label={t("discountRate")}
+          value={
+            typeof snapshot.avg_discount_pct === "number"
+              ? `${snapshot.avg_discount_pct.toFixed(1)}%`
+              : "—"
+          }
+        />
         <StatCard
           label="Price Range"
-          value={formatPriceRange(snapshot.min_price, snapshot.max_price)}
+          value={`${fmtPrice(snapshot.min_price)}–${fmtPrice(snapshot.max_price)}`}
         />
       </div>
 
@@ -138,7 +148,7 @@ export function OverviewTab({ data }: OverviewTabProps) {
             </p>
           </div>
           <div className="text-sm text-muted-foreground">
-            {t("overview.avgPricePrefix")} {formatEuro(snapshot.avg_price)}
+            {t("overview.avgPricePrefix")} {fmtPrice(snapshot.avg_price)}
           </div>
         </div>
 
@@ -155,8 +165,11 @@ export function OverviewTab({ data }: OverviewTabProps) {
                   style={{ width: `${(item.value / maxValue) * 100}%` }}
                 />
               </div>
+              {/* Fix 4 — fmtCount for variants and discounted only */}
               <p className="text-sm text-muted-foreground sm:text-right">
-                {item.value.toLocaleString()}
+                {item.label === t("overview.barProduct")
+                  ? item.value.toLocaleString()
+                  : fmtCount(item.value)}
               </p>
             </div>
           ))}
@@ -193,16 +206,16 @@ export function OverviewTab({ data }: OverviewTabProps) {
                 {formatMonthYear(snapshot.data_since ?? null)}
               </dd>
             </div>
+            {/* Fix 2 — quality: 0 or null → '—', never split value from unit */}
             <div className="rounded-2xl bg-muted/50 p-4">
               <dt className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
                 {t("overview.datasetQualityLabel")}
               </dt>
               <dd className="mt-2 text-sm font-medium text-foreground">
-                {formatPercent(
-                  typeof company.dataset_quality_score === "number"
-                    ? company.dataset_quality_score * 100
-                    : null
-                )}
+                {typeof company.dataset_quality_score === "number" &&
+                company.dataset_quality_score > 0
+                  ? `${(company.dataset_quality_score * 100).toFixed(1)}%`
+                  : "—"}
               </dd>
             </div>
           </dl>
@@ -215,12 +228,14 @@ export function OverviewTab({ data }: OverviewTabProps) {
               <div className="space-y-2">
                 {dist.map((bucket) => (
                   <div key={bucket.range} className="flex items-center gap-3">
-                    <span className="w-20 shrink-0 text-xs text-muted-foreground">
-                      €{bucket.range.replace("-", "–")}
+                    {/* Fix 1 — single element, template literal, whitespace-nowrap */}
+                    <span className="w-20 shrink-0 whitespace-nowrap text-xs text-muted-foreground">
+                      {`€${bucket.range.replace(/-/g, "–")}`}
                     </span>
                     <div className="h-2 flex-1 overflow-hidden rounded-full bg-muted">
+                      {/* Fix 8 — dark mode contrast for histogram bar */}
                       <div
-                        className="h-2 rounded-full bg-primary/60 transition-all"
+                        className="h-2 rounded-full bg-primary/60 transition-all dark:bg-primary/80"
                         style={{
                           width: `${maxCount > 0 ? (bucket.count / maxCount) * 100 : 0}%`,
                           minWidth: bucket.count > 0 ? "4px" : "0",
@@ -237,6 +252,7 @@ export function OverviewTab({ data }: OverviewTabProps) {
           ) : null}
         </Card>
 
+        {/* Fix 5 — Top Product: remove Product ID row (bridge hash not user-facing) */}
         {snapshot.top_product_title ? (
           <Card className="overflow-hidden p-0">
             <div className="border-b border-border px-6 py-4">
@@ -259,11 +275,8 @@ export function OverviewTab({ data }: OverviewTabProps) {
                   />
                 </div>
               ) : null}
-              <p className="mt-4 text-base font-semibold text-foreground">
+              <p className="mt-4 line-clamp-2 text-base font-semibold text-foreground">
                 {snapshot.top_product_title}
-              </p>
-              <p className="mt-2 text-sm text-muted-foreground">
-                {t("overview.productId")}: {snapshot.top_product_id ?? t("notAvailable")}
               </p>
             </div>
           </Card>

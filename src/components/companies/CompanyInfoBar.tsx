@@ -127,7 +127,10 @@ export function CompanyInfoBar({ company, snapshot }: CompanyInfoBarProps) {
     <div className="border-b border-border bg-bg-primary/95 backdrop-blur supports-[backdrop-filter]:bg-bg-primary/60">
       <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-center gap-3 sm:gap-4">
-          <QualityBadge score={company.dataset_quality_score} qualityLabel={t("quality")} />
+          {/* Fix 7 — only render quality badge when score is meaningful (> 0) */}
+          {(company.dataset_quality_score ?? 0) > 0 && (
+            <QualityBadge score={company.dataset_quality_score} qualityLabel={t("quality")} />
+          )}
 
           <div className="flex items-center gap-2 whitespace-nowrap rounded-full border border-border bg-bg-secondary px-3 py-1.5 text-xs text-text-secondary transition-colors hover:bg-bg-tertiary hover:text-text-primary">
             <Calendar className="h-3 w-3 flex-shrink-0" />

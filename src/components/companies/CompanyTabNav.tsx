@@ -16,11 +16,12 @@ type TabDef = {
   icon: React.ElementType | null;
 };
 
+// Fix 6 — correct tab order: Overview → Pricing → Pivot → Events → Assets
 const TABS: TabDef[] = [
   { key: "overview", labelKey: "tabs.overview", icon: null },
-  { key: "events", labelKey: "tabs.events", icon: null },
   { key: "pricing", labelKey: "tabs.pricing", icon: null },
   { key: "pivot", labelKey: "tabs.pivot", icon: LayoutGrid },
+  { key: "events", labelKey: "tabs.events", icon: null },
   { key: "assets", labelKey: "tabs.assets", icon: null },
 ];
 
