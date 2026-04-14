@@ -26,6 +26,13 @@ type TopProductRow = {
   top_product_image_url: string | null;
 };
 
+type BucketRow = {
+  bucket: string;
+  cnt: bigint;
+};
+
+const BUCKET_ORDER = ["0-50", "50-100", "100-250", "250-500", "500-1000", "1000+"];
+
 function getDomainFilter(): string | null {
   const domainIndex = process.argv.indexOf("--domain");
 
@@ -64,7 +71,7 @@ function formatAveragePrice(value: NumericValue): string {
 }
 
 async function main() {
-  const prisma = new PrismaClient();
+  const prisma: InstanceType<typeof PrismaClient> = new PrismaClient();
   const domainFilter = getDomainFilter();
 
   try {
@@ -88,7 +95,7 @@ async function main() {
     for (const company of companies) {
       const domainPattern = `%${company.domain}%`;
 
-      const [aggregateRows, topProductRows] = await Promise.all([
+      const [aggregateRows, topProductRows, bucketRows] = await Promise.all([
         prisma.$queryRaw(
           Prisma.sql`
             SELECT
@@ -118,6 +125,24 @@ async function main() {
             LIMIT 1
           `
         ),
+        prisma.$queryRaw(
+          Prisma.sql`
+            SELECT
+              CASE
+                WHEN product_original_price < 50 THEN '0-50'
+                WHEN product_original_price < 100 THEN '50-100'
+                WHEN product_original_price < 250 THEN '100-250'
+                WHEN product_original_price < 500 THEN '250-500'
+                WHEN product_original_price < 1000 THEN '500-1000'
+                ELSE '1000+'
+              END AS bucket,
+              COUNT(*) AS cnt
+            FROM public.products
+            WHERE source_url ILIKE ${domainPattern}
+              AND product_original_price IS NOT NULL
+            GROUP BY 1
+          `
+        ) as Promise<BucketRow[]>,
       ]);
 
       const aggregate = (aggregateRows[0] ?? {
@@ -137,6 +162,21 @@ async function main() {
         top_product_title: null,
         top_product_image_url: null,
       }) as TopProductRow;
+      const totalForDist = bucketRows.reduce(
+        (sum: number, row: BucketRow) => sum + Number(row.cnt),
+        0
+      );
+      const priceDistribution = BUCKET_ORDER.map((range) => {
+        const row = bucketRows.find((bucketRow: BucketRow) => bucketRow.bucket === range);
+        const count = row ? Number(row.cnt) : 0;
+
+        return {
+          range,
+          count,
+          percentage:
+            totalForDist > 0 ? Math.round((count / totalForDist) * 1000) / 10 : 0,
+        };
+      });
 
       await prisma.$executeRaw(
         Prisma.sql`
@@ -178,7 +218,7 @@ async function main() {
             ${toNullableNumber(aggregate.avg_price)},
             ${toNullableNumber(aggregate.min_price)},
             ${toNullableNumber(aggregate.max_price)},
-            NULL,
+            ${JSON.stringify(priceDistribution)}::jsonb,
             ${topProduct.top_product_id},
             ${topProduct.top_product_title},
             ${topProduct.top_product_image_url},
