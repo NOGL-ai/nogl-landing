@@ -3,17 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { prisma } from "@/lib/prisma";
 import { resolveCompanyBySlug } from "@/lib/companies/helpers";
-import { CompanyPivotResponse } from "@/types/company";
+import { CompanyPivotResponse, PivotColDimension, PivotDimension, PivotMetric } from "@/types/company";
 
 type RouteContext = {
   params: Promise<{
     slug: string;
   }>;
 };
-
-type PivotRowDimension = "category" | "brand" | "price_range" | "discount_tier";
-type PivotColDimension = "month" | "week" | "price_range" | "discount_tier";
-type PivotMetric = "count" | "avg_price" | "avg_discount" | "total_value";
 
 type PivotQueryRow = {
   row: string | null;
@@ -24,7 +20,7 @@ type PivotQueryRow = {
 const PRICE_RANGE_ORDER = ["0-50", "50-100", "100-250", "250-500", "500-1000", "1000+"];
 const DISCOUNT_TIER_ORDER = ["No Discount", "1-10%", "10-25%", "25-50%", "50%+"];
 
-function parseRowDimension(value: string | null): PivotRowDimension {
+function parseRowDimension(value: string | null): PivotDimension {
   if (value === "brand" || value === "price_range" || value === "discount_tier") {
     return value;
   }
@@ -82,16 +78,16 @@ function buildPriceRangeSql(): Prisma.Sql {
 function buildDiscountTierSql(): Prisma.Sql {
   return Prisma.sql`
     CASE
-      WHEN COALESCE(product_discount_percentage, 0) <= 0 THEN 'No Discount'
-      WHEN product_discount_percentage <= 10 THEN '1-10%'
-      WHEN product_discount_percentage <= 25 THEN '10-25%'
-      WHEN product_discount_percentage <= 50 THEN '25-50%'
+      WHEN product_discount_percentage IS NULL OR product_discount_percentage = 0 THEN 'No Discount'
+      WHEN product_discount_percentage < 10 THEN '1-10%'
+      WHEN product_discount_percentage < 25 THEN '10-25%'
+      WHEN product_discount_percentage < 50 THEN '25-50%'
       ELSE '50%+'
     END
   `;
 }
 
-function buildDimensionSql(dimension: PivotRowDimension | PivotColDimension): Prisma.Sql {
+function buildDimensionSql(dimension: PivotDimension | PivotColDimension): Prisma.Sql {
   switch (dimension) {
     case "brand":
       return Prisma.sql`COALESCE(NULLIF(product_brand, ''), 'Unknown')`;
@@ -100,9 +96,9 @@ function buildDimensionSql(dimension: PivotRowDimension | PivotColDimension): Pr
     case "discount_tier":
       return buildDiscountTierSql();
     case "week":
-      return Prisma.sql`TO_CHAR(extraction_timestamp AT TIME ZONE 'UTC', 'IYYY-"W"IW')`;
+      return Prisma.sql`TO_CHAR(DATE_TRUNC('week', extraction_timestamp), 'YYYY-"W"IW')`;
     case "month":
-      return Prisma.sql`TO_CHAR(extraction_timestamp AT TIME ZONE 'UTC', 'YYYY-MM')`;
+      return Prisma.sql`TO_CHAR(extraction_timestamp, 'YYYY-MM')`;
     case "category":
     default:
       return Prisma.sql`COALESCE(NULLIF(product_category, ''), 'Uncategorized')`;
@@ -112,14 +108,14 @@ function buildDimensionSql(dimension: PivotRowDimension | PivotColDimension): Pr
 function buildMetricSql(metric: PivotMetric): Prisma.Sql {
   switch (metric) {
     case "avg_price":
-      return Prisma.sql`COALESCE(AVG(product_original_price), 0)::double precision`;
+      return Prisma.sql`COALESCE(ROUND(AVG(product_original_price)::numeric, 2), 0)::double precision`;
     case "avg_discount":
-      return Prisma.sql`COALESCE(AVG(product_discount_percentage), 0)::double precision`;
+      return Prisma.sql`COALESCE(ROUND(AVG(product_discount_percentage)::numeric, 1), 0)::double precision`;
     case "total_value":
-      return Prisma.sql`COALESCE(SUM(product_original_price), 0)::double precision`;
+      return Prisma.sql`COALESCE(ROUND(SUM(product_original_price)::numeric, 2), 0)::double precision`;
     case "count":
     default:
-      return Prisma.sql`COUNT(*)::double precision`;
+      return Prisma.sql`COUNT(*)::int`;
   }
 }
 
@@ -149,7 +145,7 @@ function compareBucketValue(
 }
 
 function compareDimensionValue(
-  dimension: PivotRowDimension | PivotColDimension,
+  dimension: PivotDimension | PivotColDimension,
   valueA: string,
   valueB: string
 ): number {
@@ -162,6 +158,10 @@ function compareDimensionValue(
   }
 
   return valueA.localeCompare(valueB);
+}
+
+function limitValues(values: string[]): string[] {
+  return values.slice(0, 50);
 }
 
 export async function GET(request: NextRequest, context: RouteContext) {
@@ -218,18 +218,26 @@ export async function GET(request: NextRequest, context: RouteContext) {
       GROUP BY 1, 2
     `);
 
-    const cells = pivotRows.map((row) => ({
+    const rawCells = pivotRows.map((row) => ({
       row: row.row ?? "Unknown",
       col: row.col ?? "Unknown",
       value: toNumber(row.value),
     }));
 
-    const rows = Array.from(new Set(cells.map((cell) => cell.row))).sort((valueA, valueB) =>
-      compareDimensionValue(rowDimension, valueA, valueB)
+    const rows = limitValues(
+      Array.from(new Set(rawCells.map((cell) => cell.row))).sort((valueA, valueB) =>
+        compareDimensionValue(rowDimension, valueA, valueB)
+      )
     );
-    const cols = Array.from(new Set(cells.map((cell) => cell.col))).sort((valueA, valueB) =>
-      compareDimensionValue(colDimension, valueA, valueB)
+    const cols = limitValues(
+      Array.from(new Set(rawCells.map((cell) => cell.col))).sort((valueA, valueB) =>
+        compareDimensionValue(colDimension, valueA, valueB)
+      )
     );
+
+    const rowSet = new Set(rows);
+    const colSet = new Set(cols);
+    const cells = rawCells.filter((cell) => rowSet.has(cell.row) && colSet.has(cell.col));
 
     const response: CompanyPivotResponse = {
       rows,
