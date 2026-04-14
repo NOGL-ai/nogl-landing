@@ -2,13 +2,13 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import type { CompanyEventsResponse } from "@/types/company";
-import { fetchJson, formatDateTime, InlineError, EventsTabSkeleton, EventCardSkeleton } from "./shared";
+import { fetchJson, InlineError, EventsTabSkeleton } from "./shared";
 
 type EventsTabProps = {
   slug: string;
+  active?: boolean;
 };
 
 type EventsState = {
@@ -27,43 +27,74 @@ function eventTone(eventType: string): string {
   if (eventType === "INSTAGRAM_POST") return "border-l-purple-500";
   if (eventType === "PRICE_DROP") return "border-l-red-500";
   if (eventType === "NEWSLETTER") return "border-l-blue-500";
+  if (eventType === "PROMOTION") return "border-l-amber-500";
+  if (eventType === "SPECIAL_EVENT") return "border-l-purple-500";
+  if (eventType === "PRODUCT_NEWS") return "border-l-blue-500";
   return "border-l-zinc-400";
 }
 
-function EventCard({ event }: { event: CompanyEventsResponse["events"][0] }) {
-  return (
-    <Card
-      key={event.id}
-      className={`border-l-4 p-5 ${eventTone(event.event_type)}`}
-    >
-      <div className="flex flex-wrap items-center gap-2">
-        <Badge variant="outline" size="sm" className="rounded-full">
-          {event.event_type}
-        </Badge>
-        {event.platform ? (
-          <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
-            {event.platform}
-          </span>
-        ) : null}
-        {event.id.startsWith("placeholder-") ? (
-          <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
-            Sample
-          </span>
-        ) : null}
-      </div>
+function eventBadgeColor(eventType: string): string {
+  if (eventType === "INSTAGRAM_POST") return "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300";
+  if (eventType === "PRICE_DROP") return "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300";
+  if (eventType === "NEWSLETTER") return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300";
+  if (eventType === "PROMOTION") return "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300";
+  if (eventType === "SPECIAL_EVENT") return "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300";
+  if (eventType === "PRODUCT_NEWS") return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300";
+  return "bg-muted text-muted-foreground";
+}
 
-      <div className="mt-4 flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-        <div className="min-w-0">
-          <h3 className="text-base font-semibold text-foreground">{event.title ?? "Untitled event"}</h3>
-          {event.summary ? (
-            <p className="mt-2 line-clamp-2 text-sm leading-6 text-muted-foreground">
-              {event.summary}
-            </p>
-          ) : null}
+function EventCard({ event }: { event: CompanyEventsResponse["events"][0] }) {
+  const formattedDate = event.event_date
+    ? new Date(event.event_date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+    : null;
+
+  return (
+    <Card className={`border-l-4 ${eventTone(event.event_type)} overflow-hidden`}>
+      {/* Date header */}
+      {formattedDate && (
+        <p className="border-b border-border px-5 py-2 text-sm font-medium text-muted-foreground">
+          {formattedDate}
+        </p>
+      )}
+      <div className="p-5">
+        {/* Badges */}
+        <div className="flex flex-wrap items-center gap-2">
+          <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${eventBadgeColor(event.event_type)}`}>
+            {event.event_type.replace(/_/g, " ")}
+          </span>
+          {event.platform && (
+            <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+              {event.platform}
+            </span>
+          )}
+          {event.id.startsWith("placeholder-") && (
+            <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+              Sample
+            </span>
+          )}
         </div>
-        <div className="text-sm text-muted-foreground">
-          {formatDateTime(event.event_date)}
-        </div>
+
+        {/* Title */}
+        {event.title && (
+          <h3 className="mt-3 text-lg font-semibold text-foreground">{event.title}</h3>
+        )}
+
+        {/* Image */}
+        {event.asset_preview_url && (
+          <div className="mt-4 overflow-hidden rounded-lg bg-muted">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={event.asset_preview_url}
+              alt={event.title ?? "Event asset"}
+              className="mx-auto max-h-64 w-full object-cover"
+            />
+          </div>
+        )}
+
+        {/* Summary — full text, no line-clamp */}
+        {event.summary && (
+          <p className="mt-4 text-sm leading-7 text-muted-foreground">{event.summary}</p>
+        )}
       </div>
     </Card>
   );
@@ -99,9 +130,9 @@ export function EventsTab({ slug }: EventsTabProps) {
             error: null,
             loading: false,
             loadingMore: false,
-            hasMore: data.pagination.page < data.pagination.pages,
+            hasMore: data.pagination.page < data.pagination.totalPages,
             currentPage: 1,
-            totalPages: data.pagination.pages,
+            totalPages: data.pagination.totalPages,
           });
         }
       } catch (error) {
@@ -142,9 +173,9 @@ export function EventsTab({ slug }: EventsTabProps) {
           ...current,
           events: [...current.events, ...data.events],
           loadingMore: false,
-          hasMore: data.pagination.page < data.pagination.pages,
+          hasMore: data.pagination.page < data.pagination.totalPages,
           currentPage: nextPage,
-          totalPages: data.pagination.pages,
+          totalPages: data.pagination.totalPages,
         }));
       }
     } catch (error) {
@@ -207,10 +238,7 @@ export function EventsTab({ slug }: EventsTabProps) {
 
       {/* Loading more indicator */}
       {state.loadingMore && (
-        <div className="space-y-4">
-          <EventCardSkeleton />
-          <EventCardSkeleton />
-        </div>
+        <p className="py-4 text-center text-sm text-muted-foreground">Loading more events...</p>
       )}
 
       {/* Infinite scroll sentinel */}
@@ -218,9 +246,7 @@ export function EventsTab({ slug }: EventsTabProps) {
 
       {/* End of list message */}
       {!state.hasMore && state.events.length > 0 && (
-        <Card className="p-4 text-center text-sm text-muted-foreground">
-          No more events to load
-        </Card>
+        <p className="py-4 text-center text-sm text-muted-foreground">No more events to load</p>
       )}
     </div>
   );

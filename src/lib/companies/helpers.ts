@@ -1037,7 +1037,17 @@ export async function getCompanyPricingResponse(params: {
     maxPrice: params.maxPrice,
   });
 
-  const [aggregateRows, groupedRows, countRows] = await Promise.all([
+  type TopProductForPricingRow = {
+    product_id: string | null;
+    product_title: string | null;
+    product_page_image_url: string | null;
+    product_url: string | null;
+    product_original_price: number | null;
+    product_discount_price: number | null;
+    product_category: string | null;
+  };
+
+  const [aggregateRows, groupedRows, countRows, topProductRows] = await Promise.all([
     prisma.$queryRaw<ProductAggregateRow[]>(Prisma.sql`
       SELECT
         COUNT(*)::int AS total_products,
@@ -1073,6 +1083,22 @@ export async function getCompanyPricingResponse(params: {
         ${whereSql}
         GROUP BY COALESCE(product_category, 'Uncategorized')
       ) grouped
+    `),
+    prisma.$queryRaw<TopProductForPricingRow[]>(Prisma.sql`
+      SELECT
+        product_id,
+        product_title,
+        product_page_image_url,
+        product_url,
+        CAST(product_original_price AS float8) AS product_original_price,
+        CAST(product_discount_price AS float8) AS product_discount_price,
+        product_category
+      FROM public.products
+      ${whereSql}
+        AND product_page_image_url IS NOT NULL
+        AND product_title IS NOT NULL
+      ORDER BY product_original_price DESC NULLS LAST
+      LIMIT 8
     `),
   ]);
 
@@ -1113,6 +1139,15 @@ export async function getCompanyPricingResponse(params: {
     min_price: toNullableNumber(aggregate.min_price),
     max_price: toNullableNumber(aggregate.max_price),
     product_types: productTypes,
+    top_products: topProductRows.map((r) => ({
+      product_id: r.product_id ?? `tp-${Math.random()}`,
+      product_title: r.product_title ?? "Unknown Product",
+      product_image_url: r.product_page_image_url,
+      product_url: r.product_url,
+      original_price: typeof r.product_original_price === "number" ? r.product_original_price : null,
+      discount_price: typeof r.product_discount_price === "number" ? r.product_discount_price : null,
+      category: r.product_category,
+    })),
     pagination: createPagination(params.page, params.limit, parseCount(countRows[0]?.count ?? 0)),
   };
 }

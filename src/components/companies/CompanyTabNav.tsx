@@ -45,7 +45,7 @@ export function CompanyTabNav({ slug, lang }: CompanyTabNavProps) {
           return (
             <Link
               key={tab.key}
-              href={href}
+              href={href as `/${string}`}
               className={`inline-flex items-center rounded-xl px-4 py-2 text-sm font-medium transition-colors
                 ${
                   isActive
