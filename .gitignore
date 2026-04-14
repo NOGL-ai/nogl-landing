@@ -66,3 +66,9 @@ builder.config.json
 
 # Temporary test scripts
 test-*.js
+
+# Claude Code: nested local worktrees (not tracked)
+.claude/worktrees/
+
+# Local Next.js output outside default `.next/`
+.next-build/
