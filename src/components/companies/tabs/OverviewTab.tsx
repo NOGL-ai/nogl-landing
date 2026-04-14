@@ -6,12 +6,7 @@ import { useTranslations } from "next-intl";
 import { CompanyProfile } from "@/components/companies/CompanyProfile";
 import { Card } from "@/components/ui/card";
 import type { CompanyOverviewResponse } from "@/types/company";
-import {
-  formatDateTime,
-  formatEuro,
-  formatNumber,
-  formatPercent,
-} from "./shared";
+import { formatEuro, formatNumber, formatPercent } from "./shared";
 
 type OverviewTabProps = {
   data: CompanyOverviewResponse;
@@ -26,6 +21,69 @@ function StatCard({ label, value }: { label: string; value: string }) {
       <p className="mt-3 text-3xl font-semibold tracking-tight text-foreground">{value}</p>
     </Card>
   );
+}
+
+function formatRelative(dateStr: string | null): string {
+  if (!dateStr) {
+    return "—";
+  }
+
+  const date = new Date(dateStr);
+  if (Number.isNaN(date.getTime())) {
+    return "—";
+  }
+
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const dayMs = 24 * 60 * 60 * 1000;
+  const days = Math.floor(diffMs / dayMs);
+
+  if (days <= 0) {
+    return "Today";
+  }
+
+  if (days === 1) {
+    return "Yesterday";
+  }
+
+  if (days < 30) {
+    return `${days} days ago`;
+  }
+
+  const months = Math.floor(days / 30);
+  if (months < 12) {
+    return `${months} month${months === 1 ? "" : "s"} ago`;
+  }
+
+  const years = Math.floor(months / 12);
+  return `${years} year${years === 1 ? "" : "s"} ago`;
+}
+
+function formatMonthYear(dateStr: string | null): string {
+  if (!dateStr) {
+    return "—";
+  }
+
+  const date = new Date(dateStr);
+  if (Number.isNaN(date.getTime())) {
+    return "—";
+  }
+
+  return date.toLocaleDateString("en-GB", {
+    month: "short",
+    year: "numeric",
+  });
+}
+
+function formatPriceRange(
+  minPrice: number | null | undefined,
+  maxPrice: number | null | undefined
+): string {
+  if (typeof minPrice !== "number" || typeof maxPrice !== "number") {
+    return "—";
+  }
+
+  return `${formatEuro(minPrice)}–${formatEuro(maxPrice)}`;
 }
 
 export function OverviewTab({ data }: OverviewTabProps) {
@@ -50,16 +108,23 @@ export function OverviewTab({ data }: OverviewTabProps) {
 
       <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
         <StatCard label={t("totalProducts")} value={formatNumber(snapshot.total_products)} />
-        <StatCard label={t("totalVariants")} value={formatNumber(snapshot.total_variants)} />
-        <StatCard label={t("discountedItems")} value={formatNumber(snapshot.total_discounted)} />
-        <StatCard label={t("totalDatapoints")} value={formatNumber(snapshot.total_datapoints)} />
+        <StatCard label={t("avgPrice")} value={formatEuro(snapshot.avg_price)} />
+        <StatCard label={t("discountRate")} value={formatPercent(snapshot.avg_discount_pct)} />
+        <StatCard
+          label="Price Range"
+          value={formatPriceRange(snapshot.min_price, snapshot.max_price)}
+        />
       </div>
 
       <Card className="p-6">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <h2 className="text-lg font-semibold text-foreground">{t("overview.volumeMixTitle")}</h2>
-            <p className="mt-1 text-sm text-muted-foreground">{t("overview.volumeMixDescription")}</p>
+            <h2 className="text-lg font-semibold text-foreground">
+              {t("overview.volumeMixTitle")}
+            </h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {t("overview.volumeMixDescription")}
+            </p>
           </div>
           <div className="text-sm text-muted-foreground">
             {t("overview.avgPricePrefix")} {formatEuro(snapshot.avg_price)}
@@ -68,7 +133,10 @@ export function OverviewTab({ data }: OverviewTabProps) {
 
         <div className="mt-6 space-y-4">
           {barData.map((item) => (
-            <div key={item.label} className="grid gap-2 sm:grid-cols-[120px_minmax(0,1fr)_80px] sm:items-center">
+            <div
+              key={item.label}
+              className="grid gap-2 sm:grid-cols-[120px_minmax(0,1fr)_80px] sm:items-center"
+            >
               <p className="text-sm font-medium text-foreground">{item.label}</p>
               <div className="h-3 overflow-hidden rounded-full bg-muted">
                 <div
@@ -86,14 +154,24 @@ export function OverviewTab({ data }: OverviewTabProps) {
 
       <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
         <Card className="p-6">
-          <h2 className="text-lg font-semibold text-foreground">{t("overview.dataFreshnessTitle")}</h2>
+          <h2 className="text-lg font-semibold text-foreground">
+            {t("overview.dataFreshnessTitle")}
+          </h2>
           <dl className="mt-5 grid gap-4 sm:grid-cols-2">
+            <div className="rounded-2xl bg-muted/50 p-4">
+              <dt className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                Products Tracked
+              </dt>
+              <dd className="mt-2 text-sm font-medium text-foreground">
+                {formatNumber(snapshot.total_datapoints)}
+              </dd>
+            </div>
             <div className="rounded-2xl bg-muted/50 p-4">
               <dt className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
                 {t("overview.lastScraped")}
               </dt>
               <dd className="mt-2 text-sm font-medium text-foreground">
-                {formatDateTime(snapshot.last_scraped_at)}
+                {formatRelative(snapshot.last_scraped_at ?? null)}
               </dd>
             </div>
             <div className="rounded-2xl bg-muted/50 p-4">
@@ -101,7 +179,7 @@ export function OverviewTab({ data }: OverviewTabProps) {
                 {t("dataSince")}
               </dt>
               <dd className="mt-2 text-sm font-medium text-foreground">
-                {formatDateTime(snapshot.data_since)}
+                {formatMonthYear(snapshot.data_since ?? null)}
               </dd>
             </div>
             <div className="rounded-2xl bg-muted/50 p-4">
@@ -116,22 +194,18 @@ export function OverviewTab({ data }: OverviewTabProps) {
                 )}
               </dd>
             </div>
-            <div className="rounded-2xl bg-muted/50 p-4">
-              <dt className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                {t("discountRate")}
-              </dt>
-              <dd className="mt-2 text-sm font-medium text-foreground">
-                {formatPercent(snapshot.avg_discount_pct)}
-              </dd>
-            </div>
           </dl>
         </Card>
 
         {snapshot.top_product_title ? (
           <Card className="overflow-hidden p-0">
             <div className="border-b border-border px-6 py-4">
-              <h2 className="text-lg font-semibold text-foreground">{t("overview.topProductTitle")}</h2>
-              <p className="mt-1 text-sm text-muted-foreground">{t("overview.topProductHelp")}</p>
+              <h2 className="text-lg font-semibold text-foreground">
+                {t("overview.topProductTitle")}
+              </h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {t("overview.topProductHelp")}
+              </p>
             </div>
             <div className="p-6">
               {snapshot.top_product_image_url ? (
