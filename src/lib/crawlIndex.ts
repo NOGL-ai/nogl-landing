@@ -7,7 +7,24 @@ const INDEX = process.env.NEXT_PUBLIC_ALGOLIA_INDEX ?? "";
 
 // Only initialize Algolia client if credentials are provided
 const client = appID && apiKEY ? algoliasearch(appID, apiKEY) : null;
-const index = client ? client.initIndex(INDEX) : null;
+
+type AlgoliaRecord = {
+	objectID: string;
+	title: string;
+	url: string;
+	content: string;
+	type: string;
+	imageURL: string;
+	updatedAt: string;
+};
+
+type StructuredAlgoliaInput = {
+	pageUrl?: string;
+	htmlString?: string;
+	title?: string;
+	type?: string;
+	imageURL?: string;
+};
 
 export const structuredAlgoliaHtmlData = async ({
 	pageUrl = "",
@@ -15,7 +32,7 @@ export const structuredAlgoliaHtmlData = async ({
 	title = "",
 	type = "",
 	imageURL = "",
-}) => {
+}: StructuredAlgoliaInput): Promise<AlgoliaRecord> => {
 	const $ = loadHTML(htmlString);
 	const textContent = $("body").text() || "";
 
@@ -33,16 +50,19 @@ export const structuredAlgoliaHtmlData = async ({
 };
 
 export const batchIndexToAlgolia = async (
-	records: Record<string, unknown>[]
+	records: AlgoliaRecord[]
 ) => {
 	// Skip if Algolia is not configured
-	if (!index) {
+	if (!client || !INDEX) {
 		console.warn("Algolia is not configured. Skipping batch indexing.");
 		return null;
 	}
 
 	try {
-		const result = await index.saveObjects(records);
+		const result = await client.saveObjects({
+			indexName: INDEX,
+			objects: records,
+		});
 
 		return result;
 	} catch (error) {
@@ -50,3 +70,4 @@ export const batchIndexToAlgolia = async (
 		throw error;
 	}
 };
+

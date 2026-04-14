@@ -17,6 +17,12 @@ type PivotQueryRow = {
   value: number | string | Prisma.Decimal | null;
 };
 
+type RawCell = {
+  row: string;
+  col: string;
+  value: number;
+};
+
 const PRICE_RANGE_ORDER = ["0-50", "50-100", "100-250", "250-500", "500-1000", "1000+"];
 const DISCOUNT_TIER_ORDER = ["No Discount", "1-10%", "10-25%", "25-50%", "50%+"];
 
@@ -218,7 +224,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
       GROUP BY 1, 2
     `);
 
-    const rawCells = pivotRows.map((row) => ({
+    const rawCells: RawCell[] = pivotRows.map((row: PivotQueryRow) => ({
       row: row.row ?? "Unknown",
       col: row.col ?? "Unknown",
       value: toNumber(row.value),

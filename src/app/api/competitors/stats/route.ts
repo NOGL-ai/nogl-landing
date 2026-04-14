@@ -101,8 +101,8 @@ export const GET = withRequestLogging(
 
         // Process category breakdown
         const categoryCounts: Record<string, number> = {};
-        categoryBreakdown.forEach(competitor => {
-          competitor.categories.forEach(category => {
+        categoryBreakdown.forEach((competitor: { categories: string[] }) => {
+          competitor.categories.forEach((category: string) => {
             categoryCounts[category] = (categoryCounts[category] || 0) + 1;
           });
         });
@@ -124,7 +124,7 @@ export const GET = withRequestLogging(
             recentActivity,
           },
           breakdown: {
-            status: statusBreakdown.map(item => ({
+            status: statusBreakdown.map((item: any) => ({
               status: item.status,
               count: item._count.status,
             })),
@@ -154,3 +154,4 @@ export const GET = withRequestLogging(
     }
   )
 );
+

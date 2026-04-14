@@ -1,4 +1,5 @@
 import OpenAI from "openai";
+import type { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 
 /**
  * Mask API key for safe logging (shows first 7 chars + ... + last 4 chars)
@@ -64,7 +65,10 @@ function getOpenAIKey(): string {
 }
 
 export async function POST(req: Request) {
-	const body = await req.json();
+	const body = (await req.json()) as {
+		prompt: ChatCompletionMessageParam[];
+		apiKey?: string;
+	};
 
 	const { prompt, apiKey } = body;
 
@@ -92,6 +96,11 @@ export async function POST(req: Request) {
 
 		return new Response(JSON.stringify(generatedContent));
 	} catch (error: unknown) {
-		return new Response(JSON.stringify(error.error.message), { status: 500 });
+		const message =
+			error instanceof Error
+				? error.message
+				: "Failed to generate content";
+		return new Response(JSON.stringify(message), { status: 500 });
 	}
 }
+

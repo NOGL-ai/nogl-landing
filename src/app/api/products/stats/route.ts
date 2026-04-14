@@ -79,14 +79,15 @@ export const GET = withAuth(async (request: NextRequest) => {
       brandsCount: brandsCount.length,
     },
     breakdown: {
-      status: statusBreakdown.map(item => ({
+      status: statusBreakdown.map((item: any) => ({
         status: item.status,
         count: item._count.status,
       })),
-      channels: channelBreakdown.map(item => ({
+      channels: channelBreakdown.map((item: any) => ({
         channel: item.channel,
         count: item._count.channel,
       })),
     },
   });
 });
+

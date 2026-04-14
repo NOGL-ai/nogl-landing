@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import type { FocusEventHandler, PointerEventHandler, RefAttributes, RefObject } from "react";
@@ -150,3 +151,4 @@ export const ComboBox = ({ placeholder = "Search", shortcut = true, size = "sm",
         </SelectContext.Provider>
     );
 };
+

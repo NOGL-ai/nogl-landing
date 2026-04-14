@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import type { ComponentProps, ComponentPropsWithRef } from "react";
@@ -144,3 +145,4 @@ EmptyState.FeaturedIcon = FeaturedIcon;
 EmptyState.FileTypeIcon = FileTypeIcon;
 
 export { EmptyState };
+

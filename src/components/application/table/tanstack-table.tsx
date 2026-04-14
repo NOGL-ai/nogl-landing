@@ -88,6 +88,7 @@ interface TanStackTableProps {
   enableDragDrop?: boolean;
   onDragEnd?: (event: DragEndEvent) => void;
   searchResults?: Map<string, any>;
+  columnOrder?: string;
 }
 
 const columnHelper = createColumnHelper<Competitor>();

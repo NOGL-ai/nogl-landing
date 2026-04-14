@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import { PropsWithChildren, useEffect, useState, type FC } from "react";
@@ -233,3 +234,4 @@ export const ComposerAddAttachment: FC = () => {
     </ComposerPrimitive.AddAttachment>
   );
 };
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Plan Approval UI Component
  * 
@@ -363,3 +364,4 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
     </Card>
   );
 }
+

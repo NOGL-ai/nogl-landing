@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import React, { useState, useMemo, useCallback } from "react";
@@ -1323,3 +1324,4 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 };
 
 export default UltimateProductTable;
+

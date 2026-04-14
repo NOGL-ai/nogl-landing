@@ -7,7 +7,17 @@ import { bulkUpdateSchema, bulkDeleteSchema } from "@/lib/validations/product";
 // POST /api/products/bulk - Bulk update products
 export const POST = withAuth(
   withValidation(bulkUpdateSchema, async (request, data) => {
-    const { productIds, updates } = data;
+    const { productIds, updates } = data as {
+      productIds?: string[];
+      updates?: Record<string, unknown>;
+    };
+
+    if (!Array.isArray(productIds) || productIds.length === 0) {
+      return NextResponse.json(
+        { error: "productIds is required" },
+        { status: 400 }
+      );
+    }
 
     // Verify all products belong to user
     const products = await prisma.product.findMany({
@@ -46,7 +56,14 @@ export const POST = withAuth(
 // DELETE /api/products/bulk - Bulk delete products
 export const DELETE = withAuth(
   withValidation(bulkDeleteSchema, async (request, data) => {
-    const { productIds } = data;
+    const { productIds } = data as { productIds?: string[] };
+
+    if (!Array.isArray(productIds) || productIds.length === 0) {
+      return NextResponse.json(
+        { error: "productIds is required" },
+        { status: 400 }
+      );
+    }
 
     // Verify all products belong to user
     const products = await prisma.product.findMany({
@@ -77,3 +94,4 @@ export const DELETE = withAuth(
     });
   })
 );
+

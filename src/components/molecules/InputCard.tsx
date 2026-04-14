@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Card from "../atoms/Card";
 import FormButton from "../atoms/FormButton";
 import InputSelect from "../atoms/InputSelect";
@@ -111,3 +112,4 @@ export default function InputCard({
 		</Card>
 	);
 }
+

@@ -15,11 +15,23 @@ console.log('🔧 Running Prisma generate...');
 
 const timeout = 30000; // 30 second timeout
 let timedOut = false;
+const prismaCommand = path.join(
+  process.cwd(),
+  'node_modules',
+  '.bin',
+  process.platform === 'win32' ? 'prisma.cmd' : 'prisma'
+);
 
-const prisma = spawn('npx', ['prisma', 'generate'], {
-  stdio: 'inherit',
-  env: { ...process.env }
-});
+const prisma =
+  process.platform === 'win32'
+    ? spawn('cmd.exe', ['/d', '/s', '/c', `"${prismaCommand}" generate`], {
+        stdio: 'inherit',
+        env: { ...process.env }
+      })
+    : spawn(prismaCommand, ['generate'], {
+        stdio: 'inherit',
+        env: { ...process.env }
+      });
 
 const timeoutHandle = setTimeout(() => {
   timedOut = true;

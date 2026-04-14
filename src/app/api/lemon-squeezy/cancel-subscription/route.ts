@@ -32,11 +32,17 @@ async function POST(req: NextRequest) {
 			{ status: 200 }
 		);
 	} catch (error: unknown) {
+		const detail =
+			axios.isAxiosError(error) &&
+			error.response?.data?.error?.detail
+				? String(error.response.data.error.detail)
+				: "Failed to cancel subscription";
 		return NextResponse.json(
-			{ error: error.response.data.error.detail },
+			{ error: detail },
 			{ status: 500 }
 		);
 	}
 }
 
 export { POST };
+

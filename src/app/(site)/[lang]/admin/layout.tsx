@@ -3,10 +3,6 @@ import { useState } from "react";
 // import Sidebar from "@/components/Common/Dashboard/Sidebar"; // TODO: Fix sidebar import
 import Header from "@/components/organisms/DashboardHeader";
 import Sidebar from "@/components/organisms/Sidebar";
-import {
-	adminSidebarData,
-	adminSidebarOtherData,
-} from "@/staticData/sidebarData";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 	const [openSidebar, setOpenSidebar] = useState(false);
@@ -19,8 +15,8 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 					}`}
 				>
 					<Sidebar
-						sidebarData={adminSidebarData}
-						sidebarOthersData={adminSidebarOtherData}
+						isCollapsed={false}
+						onToggleCollapse={() => setOpenSidebar((prev) => !prev)}
 					/>
 				</aside>
 				<div

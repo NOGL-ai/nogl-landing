@@ -1,27 +1,15 @@
 import { prisma } from "@/lib/prismaDb";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { type NextAuthOptions, DefaultSession } from "next-auth";
+import { type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 // import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import EmailProvider from "next-auth/providers/email";
 import { getServerSession } from "next-auth";
 import bcrypt from "bcrypt";
-import { User } from "@prisma/client";
-import { createTransport } from "nodemailer";
 import { getMagicLinkEmail } from "@/lib/emailTemplates/magicLinkEmail";
 import { getBookingConfirmationEmail } from "@/lib/emailTemplates/bookingConfirmationEmail";
 import { sendEmail, formatEmail } from "@/lib/email";
-
-declare module "next-auth" {
-	interface User {
-		// Remove role and isCommunityMember
-	}
-
-	interface Session extends DefaultSession {
-		user: User & DefaultSession["user"];
-	}
-}
 
 export const authOptions: NextAuthOptions = {
 	pages: {
@@ -442,3 +430,4 @@ export const getAuthSession = async () => {
 		return null;
 	}
 };
+

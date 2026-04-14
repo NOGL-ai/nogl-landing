@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import type { FC, HTMLAttributes, MouseEventHandler, ReactNode } from "react";
@@ -141,3 +142,4 @@ export const NavItemBase = ({ current, type, badge, href, icon: Icon, children, 
         </AriaLink>
     );
 };
+

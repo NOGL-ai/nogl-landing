@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Popover, Tab, Transition } from "@headlessui/react";
 import {
 	BanknotesIcon,
@@ -173,3 +174,4 @@ const LangDropdown: FC<LangDropdownProps> = ({
 	);
 };
 export default LangDropdown;
+

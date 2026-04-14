@@ -5,24 +5,13 @@ import { Download, Plus, Search, Settings } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import TanStackTable from "@/components/application/table/tanstack-table";
+import type { Competitor as TableCompetitor } from "@/components/application/table/tanstack-table";
 import { extractDomainFromUrl, generateLogoUrl } from "@/lib/logoService";
 import { getCompetitors } from "@/lib/services/competitorClient";
 import type { CompetitorDTO } from "@/types/product";
 
-type DashboardCompetitor = {
-  id: number;
+type DashboardCompetitor = TableCompetitor & {
   _dbId: string;
-  name: string;
-  domain: string;
-  avatar: string;
-  products: number;
-  position: number;
-  trend: number;
-  trendUp: boolean;
-  date: string;
-  categories: string[];
-  competitorPrice: number;
-  myPrice: number;
 };
 
 const badgeClasses: Record<string, string> = {
@@ -53,7 +42,7 @@ function ProductsCell({
   competitor,
   maxProducts,
 }: {
-  competitor: DashboardCompetitor;
+  competitor: TableCompetitor;
   maxProducts: number;
 }) {
   const percentage = maxProducts > 0 ? Math.round((competitor.products / maxProducts) * 100) : 0;
@@ -380,3 +369,4 @@ export default function CompetitorPage() {
     </main>
   );
 }
+

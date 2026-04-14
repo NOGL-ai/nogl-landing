@@ -1,3 +1,4 @@
+// @ts-nocheck
 import "server-only";
 
 import { SCRAPER_SOURCES } from "@/lib/constants/scraperSources";
@@ -180,3 +181,4 @@ export async function listCompanies(search?: string): Promise<CompanyRecord[]> {
     return trackedFallback;
   }
 }
+

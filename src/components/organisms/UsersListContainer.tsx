@@ -6,7 +6,15 @@ import { User } from "@prisma/client";
 
 export const revalidate = 0;
 
-export default async function UsersListContainer({ filter, search }: unknown) {
+type UsersListContainerProps = {
+	filter?: "USER" | "ADMIN";
+	search?: string;
+};
+
+export default async function UsersListContainer({
+	filter,
+	search = "",
+}: UsersListContainerProps) {
 	let users: User[] = await getUsers(filter);
 
 	if (search) {

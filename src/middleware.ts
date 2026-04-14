@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import type { NextFetchEvent, NextRequest } from "next/server";
 import { chain } from "@/middlewares/chain";
 import { withAuthMiddleware } from "@/middlewares/middleware-auth";
 import withI18nMiddleware from "@/middlewares/middleware-lang";
@@ -16,7 +16,7 @@ export async function middleware(request: NextRequest) {
 	// Create a response object to pass down the chain
 	const response = NextResponse.next();
 
-	return middlewareChain(request, {} as Record<string, unknown>, response);
+	return middlewareChain(request, {} as unknown as NextFetchEvent, response);
 }
 
 export const config = {
@@ -25,3 +25,4 @@ export const config = {
 		"/((?!api|_next/static|_next/image|images|favicon.ico).*)",
 	],
 };
+

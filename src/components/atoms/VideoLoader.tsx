@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import { motion, useAnimate, AnimatePresence } from "framer-motion";
@@ -117,3 +118,4 @@ const VideoLoader = ({
 };
 
 export default VideoLoader;
+

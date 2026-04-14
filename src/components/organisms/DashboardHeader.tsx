@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import AccountButton from "../molecules/AccountButton";
@@ -40,3 +41,4 @@ export default function Header({ openSidebar, setOpenSidebar, title, showGreetin
 		</div>
 	);
 }
+

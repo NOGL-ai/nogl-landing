@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 
 import { FilterBar } from "@/components/companies/FilterBar";
 import { Card } from "@/components/ui/card";
+import { PricingOverTimeChart } from "@/components/companies/pricing/PricingOverTimeChart";
+import { usePricingTimeseries } from "@/hooks/usePricingTimeseries";
 import type {
   CompanyPricingResponse,
   CompanyPricingTopProduct,
@@ -161,6 +163,11 @@ export function PricingTab({ slug, snapshot }: PricingTabProps) {
   // All product types from the initial unfiltered load — used to populate the dropdown
   const [allProductTypes, setAllProductTypes] = useState<string[]>([]);
   const [filters, setFilters] = useState<PricingFilters>({ productType: null, minPrice: null, maxPrice: null });
+
+  // Fetch pricing timeseries data
+  const { data: timeseriesData, loading: timeseriesLoading, error: timeseriesError } = usePricingTimeseries({
+    slug,
+  });
 
   // Build API URL from current filters
   function buildUrl(f: PricingFilters) {
@@ -436,6 +443,14 @@ export function PricingTab({ slug, snapshot }: PricingTabProps) {
         </Card>
       </div>
 
+      {/* Pricing Over Time Chart */}
+      <PricingOverTimeChart
+        slug={slug}
+        data={timeseriesData ?? undefined}
+        loading={timeseriesLoading}
+        error={timeseriesError}
+      />
     </div>
   );
 }
+

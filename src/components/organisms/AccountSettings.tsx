@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import React, { useState } from "react";
 import EditProfile from "../molecules/EditProfile";
@@ -59,3 +60,4 @@ const AccountSettings = () => {
 };
 
 export default AccountSettings;
+

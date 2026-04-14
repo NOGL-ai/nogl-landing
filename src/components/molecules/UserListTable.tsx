@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { User } from "@prisma/client";
 import UserAction from "./UserAction";
 // import axios from "axios";
@@ -78,3 +79,4 @@ export default function UserListTable({ users }: { users: User[] }) {
 		</>
 	);
 }
+

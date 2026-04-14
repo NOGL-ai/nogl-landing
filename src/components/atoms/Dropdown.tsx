@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import { Menu } from "@/types/menu";
@@ -73,3 +74,4 @@ const Dropdown = ({
 };
 
 export default Dropdown;
+

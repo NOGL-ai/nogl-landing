@@ -4,10 +4,22 @@ import { withRequestLogging, withSecurityHeaders } from "@/middlewares/security"
 import { withRateLimit } from "@/middlewares/rateLimit";
 import { FEATURES } from "@/lib/featureFlags";
 
+type RouteContext = { params: { id: string } };
+
+type CreatePriceBody = {
+  competitorPrice?: number | string;
+  myPrice?: number | string;
+  productId?: string;
+  priceDate?: string;
+  currency?: string;
+  notes?: string;
+  sourceUrl?: string;
+};
+
 // GET /api/competitors/[id]/prices - Get price history for competitor
 export const GET = withRequestLogging(
   withRateLimit(100, 15 * 60 * 1000)(
-    async (request: NextRequest, { params }: { params: { id: string } }) => {
+    async (request: NextRequest, { params }: RouteContext) => {
       if (!FEATURES.COMPETITOR_API) {
         return NextResponse.json(
           { error: "Competitor API is disabled" },
@@ -16,8 +28,11 @@ export const GET = withRequestLogging(
       }
 
       const { searchParams } = new URL(request.url);
-      const page = parseInt(searchParams.get('page') || '1');
-      const limit = Math.min(parseInt(searchParams.get('limit') || '20'), 100);
+      const page = Math.max(Number.parseInt(searchParams.get('page') || '1', 10), 1);
+      const limit = Math.min(
+        Math.max(Number.parseInt(searchParams.get('limit') || '20', 10), 1),
+        100
+      );
       const startDate = searchParams.get('startDate');
       const endDate = searchParams.get('endDate');
 
@@ -35,7 +50,14 @@ export const GET = withRequestLogging(
         }
 
         // Build where clause
-        const where: any = {
+        const where: {
+          competitorId: string;
+          deletedAt: null;
+          priceDate?: {
+            gte?: Date;
+            lte?: Date;
+          };
+        } = {
           competitorId: params.id,
           deletedAt: null,
         };
@@ -89,7 +111,7 @@ export const GET = withRequestLogging(
 // POST /api/competitors/[id]/prices - Add new price comparison
 export const POST = withRequestLogging(
   withRateLimit(20, 15 * 60 * 1000)(
-    async (request: NextRequest, { params }: { params: { id: string } }) => {
+    async (request: NextRequest, { params }: RouteContext) => {
       if (!FEATURES.COMPETITOR_API || !FEATURES.COMPETITOR_WRITE) {
         return NextResponse.json(
           { error: "Price creation is disabled" },
@@ -98,10 +120,12 @@ export const POST = withRequestLogging(
       }
 
       try {
-        const body = await request.json();
+        const body = (await request.json()) as CreatePriceBody;
+        const competitorPrice = Number(body.competitorPrice);
+        const myPrice = Number(body.myPrice);
         
         // Validation
-        if (!body.competitorPrice || !body.myPrice) {
+        if (!Number.isFinite(competitorPrice) || !Number.isFinite(myPrice)) {
           return NextResponse.json(
             { error: "Competitor price and my price are required" },
             { status: 400 }
@@ -131,8 +155,11 @@ export const POST = withRequestLogging(
 
         let trend = null;
         if (lastPrice) {
-          const priceChange = Number(body.competitorPrice) - Number(lastPrice.competitorPrice);
-          trend = (priceChange / Number(lastPrice.competitorPrice)) * 100;
+          const previousPrice = Number(lastPrice.competitorPrice);
+          if (Number.isFinite(previousPrice) && previousPrice !== 0) {
+            const priceChange = competitorPrice - previousPrice;
+            trend = (priceChange / previousPrice) * 100;
+          }
         }
 
         // Create price comparison
@@ -140,8 +167,8 @@ export const POST = withRequestLogging(
           data: {
             competitorId: params.id,
             productId: body.productId,
-            competitorPrice: body.competitorPrice,
-            myPrice: body.myPrice,
+            competitorPrice,
+            myPrice,
             priceDate: body.priceDate ? new Date(body.priceDate) : new Date(),
             currency: body.currency || 'EUR',
             trend: trend ? Number(trend.toFixed(2)) : null,
@@ -161,3 +188,4 @@ export const POST = withRequestLogging(
     }
   )
 );
+

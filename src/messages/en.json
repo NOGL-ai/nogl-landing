@@ -44,6 +44,15 @@
       "pivot": "Pivot",
       "assets": "Assets"
     },
+    "pricing": {
+      "overTime": {
+        "title": "Pricing Over Time",
+        "loading": "Loading pricing trends...",
+        "error": "Failed to load pricing trends",
+        "empty": "No pricing data available",
+        "datapoints": "Datapoints"
+      }
+    },
     "ratings": {
       "emptyTitle": "Ratings",
       "emptyDescription": "Ratings for this company will appear here when data is available."

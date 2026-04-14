@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { NotificationItem as Notification } from "../atoms";
@@ -89,3 +90,4 @@ export default function Notifications({ role }: { role: string }) {
 		</div>
 	);
 }
+

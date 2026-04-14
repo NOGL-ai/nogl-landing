@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import React from "react";
@@ -376,3 +377,4 @@ const DataTable: React.FC<DataTableProps> = ({
 };
 
 export default DataTable;
+

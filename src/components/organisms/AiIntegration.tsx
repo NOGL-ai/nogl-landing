@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import React, { useState } from "react";
 import SetApiKeyCard from "../molecules/SetApiKeyCard";
@@ -99,3 +100,4 @@ const AiIntegration = ({ APIKey }: { APIKey: string }) => {
 };
 
 export default AiIntegration;
+

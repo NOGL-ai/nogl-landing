@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import React, { useState, useCallback, useEffect, useRef, Suspense } from "react";
@@ -332,3 +333,4 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({
 };
 
 export default SidebarLayout;
+

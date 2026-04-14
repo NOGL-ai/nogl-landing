@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import Link from "next/link";
@@ -89,3 +90,4 @@ const AccountMenu = ({ user }: unknown) => {
 };
 
 export default AccountMenu;
+

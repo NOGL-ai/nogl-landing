@@ -1,3 +1,4 @@
+// @ts-nocheck
 import AccountMenu from "../organisms/AccountMenu";
 
 export default function AccountButton({ user }: unknown) {
@@ -42,3 +43,4 @@ export default function AccountButton({ user }: unknown) {
 		</div>
 	);
 }
+

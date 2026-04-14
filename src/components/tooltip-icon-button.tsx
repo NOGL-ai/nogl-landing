@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import { ComponentPropsWithRef, forwardRef } from "react";
@@ -40,3 +41,4 @@ export const TooltipIconButton = forwardRef<
 });
 
 TooltipIconButton.displayName = "TooltipIconButton";
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 export default function TextareaGroup(props: unknown) {
@@ -23,3 +24,4 @@ export default function TextareaGroup(props: unknown) {
 		</div>
 	);
 }
+

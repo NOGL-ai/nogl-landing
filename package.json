@@ -8,10 +8,10 @@
 	"scripts": {
 		"dev": "cross-env NEXT_TELEMETRY_DISABLED=1 next dev -p 3000",
 		"dev:clean": "npx --yes kill-port 3000 && cross-env NEXT_TELEMETRY_DISABLED=1 next dev -p 3000",
-		"build": "cross-env NEXT_TELEMETRY_DISABLED=1 node scripts/prisma-generate-safe.js && next build",
+		"build": "node scripts/clean-next-artifacts.js && cross-env NEXT_TELEMETRY_DISABLED=1 NEXT_DIST_DIR=.next-build node scripts/prisma-generate-safe.js && cross-env NEXT_TELEMETRY_DISABLED=1 NEXT_DIST_DIR=.next-build next build",
 		"start": "cross-env NEXT_TELEMETRY_DISABLED=1 next start",
 		"postinstall": "prisma generate",
-		"typecheck": "tsc --noEmit",
+		"typecheck": "node scripts/clean-next-artifacts.js && tsc --noEmit",
 		"db:generate": "prisma generate",
 		"db:migrate": "prisma migrate dev",
 		"db:migrate:prod": "prisma migrate deploy",

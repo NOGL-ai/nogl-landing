@@ -1,18 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { ChevronRight, Star } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 type CompanyBreadcrumbProps = {
   companyName: string;
+  lang: string;
 };
 
-export function CompanyBreadcrumb({ companyName }: CompanyBreadcrumbProps) {
+export function CompanyBreadcrumb({ companyName, lang }: CompanyBreadcrumbProps) {
   const t = useTranslations("companies");
-  const params = useParams();
-  const lang = params.lang as string;
 
   return (
     <nav aria-label="breadcrumb" className="border-b border-border bg-bg-primary/95 backdrop-blur supports-[backdrop-filter]:bg-bg-primary/60">
@@ -31,13 +29,6 @@ export function CompanyBreadcrumb({ companyName }: CompanyBreadcrumbProps) {
           </li>
           <li className="flex min-w-0 items-center gap-2">
             <span className="truncate text-sm font-medium text-text-primary">{companyName}</span>
-            <button
-              type="button"
-              className="rounded-full p-1 text-text-tertiary transition-colors hover:bg-bg-secondary hover:text-text-primary"
-              aria-label={t("favoriteAria")}
-            >
-              <Star className="h-4 w-4" />
-            </button>
           </li>
         </ol>
       </div>

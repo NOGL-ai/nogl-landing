@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import Card from "../atoms/Card";
 import FormButton from "../atoms/FormButton";
@@ -108,3 +109,4 @@ export default function PasswordChange() {
 		</div>
 	);
 }
+

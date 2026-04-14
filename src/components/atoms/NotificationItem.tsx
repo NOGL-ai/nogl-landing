@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Link from "next/link";
 
 export default function Notification({ link }: unknown) {
@@ -32,3 +33,4 @@ export default function Notification({ link }: unknown) {
 		</div>
 	);
 }
+

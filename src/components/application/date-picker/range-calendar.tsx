@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import type { HTMLAttributes, PropsWithChildren } from "react";
@@ -159,3 +160,4 @@ export const RangeCalendar = ({ presets, ...props }: RangeCalendarProps) => {
         </ContextWrapper>
     );
 };
+

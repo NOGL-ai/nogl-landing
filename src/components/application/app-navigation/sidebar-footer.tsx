@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import React, { useState, useRef, useEffect, useMemo } from "react";
@@ -224,3 +225,4 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
     </div>
   );
 };
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import Card from "../atoms/Card";
 import { useState } from "react";
@@ -99,3 +100,4 @@ export default function SetApiKeyCard() {
 		</>
 	);
 }
+

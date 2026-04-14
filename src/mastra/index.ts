@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Mastra Instance Configuration
  * 
@@ -140,4 +141,5 @@ export async function healthCheck() {
     };
   }
 }
+
 

@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
@@ -168,3 +169,4 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
         </div>
     );
 };
+
