@@ -111,16 +111,24 @@ function TopProductCard({ rank, product }: { rank: number; product: CompanyPrici
             fmtPrice(product.original_price)
           )}
         </p>
-        {product.product_url && (
-          <a
-            href={product.product_url}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-auto inline-flex items-center gap-1 self-start rounded border border-border px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted"
+        <div className="mt-auto flex gap-1.5">
+          <button
+            type="button"
+            className="flex-1 rounded border border-border px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted"
           >
-            View <ExternalLink className="h-3 w-3" />
-          </a>
-        )}
+            Explore
+          </button>
+          {product.product_url && (
+            <a
+              href={product.product_url}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1 rounded border border-border px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted"
+            >
+              View <ExternalLink className="h-3 w-3" />
+            </a>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -208,24 +216,61 @@ export function PricingTab({ slug, snapshot }: PricingTabProps) {
         </Card>
       )}
 
-      {/* Total Discounted + Product Types */}
+      {/* Total Discounted + Product Types (mirroring Particl: left col = donut + dist, right col = table) */}
       <div className="grid gap-6 lg:grid-cols-3">
-        {/* Donut */}
-        <Card className="p-5">
-          <h3 className="mb-1 text-sm font-semibold text-foreground">Total Discounted Products</h3>
-          <div className="flex flex-col items-center gap-3 py-6">
-            <DonutChart value={data.total_discounted} total={data.total_products} />
-            <p className="text-center text-sm text-muted-foreground">
-              <span className="font-semibold text-foreground">
-                {data.total_discounted.toLocaleString()} / {data.total_products.toLocaleString()}
-              </span>
-              <br />
-              products discounted
-            </p>
-          </div>
-        </Card>
+        {/* Left column: Donut + Price Distribution stacked */}
+        <div className="space-y-6">
+          <Card className="p-5">
+            <h3 className="mb-1 text-sm font-semibold text-foreground">Total Discounted Products</h3>
+            <div className="flex flex-col items-center gap-3 py-6">
+              <DonutChart value={data.total_discounted} total={data.total_products} />
+              <p className="text-center text-sm text-muted-foreground">
+                <span className="font-semibold text-foreground">
+                  {data.total_discounted.toLocaleString()} / {data.total_products.toLocaleString()}
+                </span>
+                <br />
+                products discounted
+              </p>
+            </div>
+          </Card>
 
-        {/* Product Types */}
+          {/* Price Distribution — in left column, below donut */}
+          {priceDist.length > 0 && maxDistCount > 0 && (
+            <Card className="p-5">
+              <h3 className="mb-1 text-sm font-semibold text-foreground">Price Distribution</h3>
+              <p className="mb-4 text-xs text-muted-foreground">% of Product Prices</p>
+              <div className="space-y-2">
+                {priceDist.map((bucket) => (
+                  <div key={bucket.range} className="flex items-center gap-2">
+                    <span className="w-16 shrink-0 whitespace-nowrap text-xs text-muted-foreground">
+                      {`€${bucket.range.replace(/-/g, "–")}`}
+                    </span>
+                    <div className="relative h-6 flex-1 overflow-hidden rounded bg-muted/50">
+                      <div
+                        className="flex h-6 items-center justify-end rounded bg-primary/70 pr-1.5 transition-all dark:bg-primary/80"
+                        style={{
+                          width: `${(bucket.count / maxDistCount) * 100}%`,
+                          minWidth: bucket.count > 0 ? "24px" : "0",
+                        }}
+                      >
+                        {bucket.percentage >= 3 && (
+                          <span className="text-[10px] font-medium text-primary-foreground">
+                            {Math.round(bucket.percentage)}%
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <span className="w-10 shrink-0 text-right text-xs tabular-nums text-muted-foreground">
+                      {bucket.count.toLocaleString()}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          )}
+        </div>
+
+        {/* Right column (2/3): Product Types */}
         <Card className="overflow-hidden p-0 lg:col-span-2">
           <div className="flex items-center justify-between border-b border-border px-5 py-3">
             <h3 className="text-sm font-semibold text-foreground">Product Types</h3>
@@ -283,40 +328,6 @@ export function PricingTab({ slug, snapshot }: PricingTabProps) {
         </Card>
       </div>
 
-      {/* Price Distribution */}
-      {priceDist.length > 0 && maxDistCount > 0 && (
-        <Card className="p-5">
-          <h3 className="mb-1 text-sm font-semibold text-foreground">Price Distribution</h3>
-          <p className="mb-4 text-xs text-muted-foreground">% of Product Prices</p>
-          <div className="space-y-2">
-            {priceDist.map((bucket) => (
-              <div key={bucket.range} className="flex items-center gap-3">
-                <span className="w-20 shrink-0 whitespace-nowrap text-xs text-muted-foreground">
-                  {`€${bucket.range.replace(/-/g, "–")}`}
-                </span>
-                <div className="relative h-7 flex-1 overflow-hidden rounded bg-muted/50">
-                  <div
-                    className="flex h-7 items-center justify-end rounded bg-primary/70 pr-2 transition-all dark:bg-primary/80"
-                    style={{
-                      width: `${(bucket.count / maxDistCount) * 100}%`,
-                      minWidth: bucket.count > 0 ? "28px" : "0",
-                    }}
-                  >
-                    {bucket.percentage >= 3 && (
-                      <span className="text-[11px] font-medium text-primary-foreground">
-                        {Math.round(bucket.percentage)}%
-                      </span>
-                    )}
-                  </div>
-                </div>
-                <span className="w-14 shrink-0 text-right text-xs tabular-nums text-muted-foreground">
-                  {bucket.count.toLocaleString()}
-                </span>
-              </div>
-            ))}
-          </div>
-        </Card>
-      )}
     </div>
   );
 }
