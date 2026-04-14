@@ -52,6 +52,62 @@ export function PanelSkeleton({
   );
 }
 
+export function EventCardSkeleton() {
+  return (
+    <Card className="border-l-4 border-l-zinc-400 p-5 animate-pulse">
+      {/* Header badges */}
+      <div className="flex flex-wrap items-center gap-2">
+        <div className="h-6 w-24 rounded-full bg-muted" />
+        <div className="h-6 w-20 rounded-full bg-muted" />
+        <div className="h-6 w-16 rounded-full bg-muted" />
+      </div>
+
+      {/* Content and date row */}
+      <div className="mt-4 flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+        {/* Left content */}
+        <div className="min-w-0 flex-1">
+          {/* Title */}
+          <div className="h-6 w-3/4 rounded bg-muted" />
+          {/* Summary lines */}
+          <div className="mt-2 space-y-2">
+            <div className="h-4 w-full rounded bg-muted" />
+            <div className="h-4 w-5/6 rounded bg-muted" />
+          </div>
+        </div>
+        {/* Date */}
+        <div className="h-4 w-32 rounded bg-muted flex-shrink-0" />
+      </div>
+
+      {/* Image carousel area */}
+      <div className="mt-4 flex justify-center">
+        <div className="h-48 w-full rounded-lg bg-muted" />
+      </div>
+
+      {/* Engagement metrics */}
+      <div className="mt-4 flex gap-6">
+        <div className="flex items-center gap-2">
+          <div className="h-5 w-5 rounded bg-muted" />
+          <div className="h-4 w-12 rounded bg-muted" />
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="h-5 w-5 rounded bg-muted" />
+          <div className="h-4 w-12 rounded bg-muted" />
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+export function EventsTabSkeleton() {
+  return (
+    <div className="space-y-4">
+      {Array.from({ length: 3 }).map((_, index) => (
+        <EventCardSkeleton key={index} />
+      ))}
+    </div>
+  );
+}
+
 export function InlineError({ message }: { message: string }) {
   return (
     <Card className="border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">

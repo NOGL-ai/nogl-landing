@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import type { CompanyEventsResponse } from "@/types/company";
-import { fetchJson, formatDateTime, InlineError, PanelSkeleton } from "./shared";
+import { fetchJson, formatDateTime, InlineError, EventsTabSkeleton, EventCardSkeleton } from "./shared";
 
 type EventsTabProps = {
   slug: string;
@@ -13,10 +13,16 @@ type EventsTabProps = {
 };
 
 type EventsState = {
-  data: CompanyEventsResponse | null;
+  events: CompanyEventsResponse["events"];
   error: string | null;
   loading: boolean;
+  loadingMore: boolean;
+  hasMore: boolean;
+  currentPage: number;
+  totalPages: number;
 };
+
+const INITIAL_LIMIT = 3;
 
 function eventTone(eventType: string): string {
   if (eventType === "INSTAGRAM_POST") return "border-l-purple-500";
@@ -25,14 +31,61 @@ function eventTone(eventType: string): string {
   return "border-l-zinc-400";
 }
 
+function EventCard({ event }: { event: CompanyEventsResponse["events"][0] }) {
+  return (
+    <Card
+      key={event.id}
+      className={`border-l-4 p-5 ${eventTone(event.event_type)}`}
+    >
+      <div className="flex flex-wrap items-center gap-2">
+        <Badge variant="outline" size="sm" className="rounded-full">
+          {event.event_type}
+        </Badge>
+        {event.platform ? (
+          <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+            {event.platform}
+          </span>
+        ) : null}
+        {event.id.startsWith("placeholder-") ? (
+          <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+            Sample
+          </span>
+        ) : null}
+      </div>
+
+      <div className="mt-4 flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+        <div className="min-w-0">
+          <h3 className="text-base font-semibold text-foreground">{event.title ?? "Untitled event"}</h3>
+          {event.summary ? (
+            <p className="mt-2 line-clamp-2 text-sm leading-6 text-muted-foreground">
+              {event.summary}
+            </p>
+          ) : null}
+        </div>
+        <div className="text-sm text-muted-foreground">
+          {formatDateTime(event.event_date)}
+        </div>
+      </div>
+    </Card>
+  );
+}
+
 export function EventsTab({ slug, active }: EventsTabProps) {
   const fetchedRef = useRef(false);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
   const [state, setState] = useState<EventsState>({
-    data: null,
+    events: [],
     error: null,
     loading: false,
+    loadingMore: false,
+    hasMore: true,
+    currentPage: 1,
+    totalPages: 1,
   });
 
+  // Load initial events
   useEffect(() => {
     if (!active || fetchedRef.current) {
       return;
@@ -46,17 +99,26 @@ export function EventsTab({ slug, active }: EventsTabProps) {
       setState((current) => ({ ...current, loading: true, error: null }));
 
       try {
-        const data = await fetchJson<CompanyEventsResponse>(`/api/companies/${slug}/events`);
+        const url = `/api/companies/${slug}/events?page=1&limit=${INITIAL_LIMIT}`;
+        const data = await fetchJson<CompanyEventsResponse>(url);
         if (!cancelled) {
-          setState({ data, error: null, loading: false });
+          setState({
+            events: data.events,
+            error: null,
+            loading: false,
+            loadingMore: false,
+            hasMore: data.pagination.page < data.pagination.pages,
+            currentPage: 1,
+            totalPages: data.pagination.pages,
+          });
         }
       } catch (error) {
         if (!cancelled) {
-          setState({
-            data: null,
+          setState((current) => ({
+            ...current,
             error: error instanceof Error ? error.message : "Could not load event data.",
             loading: false,
-          });
+          }));
         }
       }
     }
@@ -68,59 +130,105 @@ export function EventsTab({ slug, active }: EventsTabProps) {
     };
   }, [active, slug]);
 
-  if (state.loading && !state.data) {
-    return <PanelSkeleton rows={3} grid="grid-cols-1" />;
+  // Load more events
+  const loadMore = useCallback(async () => {
+    if (state.loadingMore || !state.hasMore || state.loading) {
+      return;
+    }
+
+    setState((current) => ({ ...current, loadingMore: true }));
+
+    let cancelled = false;
+
+    try {
+      const nextPage = state.currentPage + 1;
+      const url = `/api/companies/${slug}/events?page=${nextPage}&limit=${INITIAL_LIMIT}`;
+      const data = await fetchJson<CompanyEventsResponse>(url);
+
+      if (!cancelled) {
+        setState((current) => ({
+          ...current,
+          events: [...current.events, ...data.events],
+          loadingMore: false,
+          hasMore: data.pagination.page < data.pagination.pages,
+          currentPage: nextPage,
+          totalPages: data.pagination.pages,
+        }));
+      }
+    } catch (error) {
+      if (!cancelled) {
+        setState((current) => ({
+          ...current,
+          loadingMore: false,
+          error: error instanceof Error ? error.message : "Failed to load more events.",
+        }));
+      }
+    }
+
+    return () => {
+      cancelled = true;
+    };
+  }, [state.currentPage, state.hasMore, state.loading, state.loadingMore, slug]);
+
+  // Setup intersection observer for infinite scroll
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          void loadMore();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    observerRef.current.observe(sentinel);
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [loadMore]);
+
+  if (state.loading && state.events.length === 0) {
+    return <EventsTabSkeleton />;
   }
 
-  if (state.error) {
+  if (state.error && state.events.length === 0) {
     return <InlineError message={state.error} />;
   }
 
-  if (!state.data) {
-    return null;
+  if (state.events.length === 0) {
+    return (
+      <Card className="p-6 text-sm text-muted-foreground">No events detected yet.</Card>
+    );
   }
 
   return (
     <div className="space-y-4">
-      {state.data.events.length === 0 ? (
-        <Card className="p-6 text-sm text-muted-foreground">No events detected yet.</Card>
-      ) : (
-        state.data.events.map((event) => (
-          <Card
-            key={event.id}
-            className={`border-l-4 p-5 ${eventTone(event.event_type)}`}
-          >
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge variant="outline" size="sm" className="rounded-full">
-                {event.event_type}
-              </Badge>
-              {event.platform ? (
-                <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
-                  {event.platform}
-                </span>
-              ) : null}
-              {event.id.startsWith("placeholder-") ? (
-                <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
-                  Sample
-                </span>
-              ) : null}
-            </div>
+      {state.events.map((event) => (
+        <EventCard key={event.id} event={event} />
+      ))}
 
-            <div className="mt-4 flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-              <div className="min-w-0">
-                <h3 className="text-base font-semibold text-foreground">{event.title ?? "Untitled event"}</h3>
-                {event.summary ? (
-                  <p className="mt-2 line-clamp-2 text-sm leading-6 text-muted-foreground">
-                    {event.summary}
-                  </p>
-                ) : null}
-              </div>
-              <div className="text-sm text-muted-foreground">
-                {formatDateTime(event.event_date)}
-              </div>
-            </div>
-          </Card>
-        ))
+      {/* Loading more indicator */}
+      {state.loadingMore && (
+        <div className="space-y-4">
+          <EventCardSkeleton />
+          <EventCardSkeleton />
+        </div>
+      )}
+
+      {/* Infinite scroll sentinel */}
+      {state.hasMore && <div ref={sentinelRef} className="h-4" />}
+
+      {/* End of list message */}
+      {!state.hasMore && state.events.length > 0 && (
+        <Card className="p-4 text-center text-sm text-muted-foreground">
+          No more events to load
+        </Card>
       )}
     </div>
   );

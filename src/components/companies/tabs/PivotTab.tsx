@@ -1,20 +1,269 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { LayoutGrid, RefreshCcw } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import type {
+  CompanyPivotResponse,
+  PivotColDimension,
+  PivotDimension,
+  PivotMetric,
+} from "@/types/company";
+import { fetchJson } from "./shared";
 
-type PivotTabProps = {
-  active: boolean;
-};
+type PivotTabProps = { slug: string; active: boolean };
+type PivotState = { data: CompanyPivotResponse | null; error: string | null; loading: boolean };
+type Period = "30d" | "90d" | "12mo" | "all";
 
-export function PivotTab({ active: _active }: PivotTabProps) {
-  const t = useTranslations("companies");
+const PRICE_RANGE_ORDER = ["0-50", "50-100", "100-250", "250-500", "500-1000", "1000+"];
+const DISCOUNT_TIER_ORDER = ["No Discount", "1-10%", "10-25%", "25-50%", "50%+"];
+
+function getPeriodRange(period: Period) {
+  if (period === "all") return { from: null, to: null };
+  const to = new Date();
+  const from = new Date(to);
+  if (period === "30d") from.setDate(from.getDate() - 30);
+  if (period === "90d") from.setDate(from.getDate() - 90);
+  if (period === "12mo") from.setFullYear(from.getFullYear() - 1);
+  return { from: from.toISOString(), to: to.toISOString() };
+}
+
+function formatValue(metric: PivotMetric, value: number | null) {
+  if (value === null) return "—";
+  if (metric === "count") return Math.round(value).toLocaleString();
+  if (metric === "avg_discount") return `${value.toFixed(1)}%`;
+  if (metric === "total_value") {
+    return `€${value.toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
+  return `€${value.toFixed(2)}`;
+}
+
+function sortValues(values: string[], dimension: PivotDimension | PivotColDimension) {
+  const items = [...values];
+  if (dimension === "price_range") return items.sort((a, b) => PRICE_RANGE_ORDER.indexOf(a) - PRICE_RANGE_ORDER.indexOf(b));
+  if (dimension === "discount_tier") return items.sort((a, b) => DISCOUNT_TIER_ORDER.indexOf(a) - DISCOUNT_TIER_ORDER.indexOf(b));
+  return items.sort((a, b) => a.localeCompare(b));
+}
+
+function aggregate(metric: PivotMetric, values: number[]) {
+  if (values.length === 0) return null;
+  const sum = values.reduce((total, value) => total + value, 0);
+  return metric === "avg_price" || metric === "avg_discount" ? sum / values.length : sum;
+}
+
+function PivotSkeleton() {
+  return (
+    <Card className="overflow-hidden p-6">
+      <div className="animate-pulse space-y-4">
+        <div className="grid gap-3 md:grid-cols-4">
+          {Array.from({ length: 4 }).map((_, index) => <div key={index} className="h-10 rounded-md bg-muted" />)}
+        </div>
+        <div className="space-y-2">
+          {Array.from({ length: 8 }).map((_, row) => (
+            <div key={row} className="grid grid-cols-6 gap-2">
+              {Array.from({ length: 6 }).map((_, col) => <div key={col} className="h-10 rounded-md bg-muted" />)}
+            </div>
+          ))}
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+export function PivotTab({ slug, active }: PivotTabProps) {
+  const fetchedRef = useRef(false);
+  const [rowDimension, setRowDimension] = useState<PivotDimension>("category");
+  const [colDimension, setColDimension] = useState<PivotColDimension>("month");
+  const [metric, setMetric] = useState<PivotMetric>("count");
+  const [period, setPeriod] = useState<Period>("all");
+  const [retryKey, setRetryKey] = useState(0);
+  const [state, setState] = useState<PivotState>({ data: null, error: null, loading: false });
+  const periodRange = useMemo(() => getPeriodRange(period), [period]);
+
+  useEffect(() => {
+    fetchedRef.current = false;
+  }, [slug, rowDimension, colDimension, metric, period, retryKey]);
+
+  useEffect(() => {
+    if (!active || fetchedRef.current) return;
+    fetchedRef.current = true;
+
+    let cancelled = false;
+    async function load() {
+      setState((current) => ({ ...current, loading: true, error: null }));
+      try {
+        const params = new URLSearchParams({ rowDimension, colDimension, metric });
+        if (periodRange.from) params.set("from", periodRange.from);
+        if (periodRange.to) params.set("to", periodRange.to);
+        const data = await fetchJson<CompanyPivotResponse>(`/api/companies/${slug}/pivot?${params.toString()}`);
+        if (!cancelled) setState({ data, error: null, loading: false });
+      } catch (error) {
+        if (!cancelled) {
+          setState({
+            data: null,
+            error: error instanceof Error ? error.message : "Failed to load",
+            loading: false,
+          });
+        }
+      }
+    }
+    void load();
+    return () => { cancelled = true; };
+  }, [active, slug, rowDimension, colDimension, metric, periodRange.from, periodRange.to, retryKey]);
+
+  const matrix = useMemo(() => {
+    if (!state.data) return null;
+    const rows = sortValues(state.data.rows, rowDimension);
+    const cols = sortValues(state.data.cols, colDimension);
+    const values = state.data.cells.map((cell) => cell.value).sort((a, b) => a - b);
+    const threshold = values.length ? values[Math.floor((values.length - 1) * 0.75)] ?? null : null;
+    return {
+      rows,
+      cols,
+      threshold,
+      cellMap: new Map(state.data.cells.map((cell) => [`${cell.row}::${cell.col}`, cell.value])),
+    };
+  }, [state.data, rowDimension, colDimension]);
+
+  const rowTotals = useMemo(() => new Map(
+    matrix?.rows.map((row) => {
+      const values = matrix.cols.map((col) => matrix.cellMap.get(`${row}::${col}`)).filter((value): value is number => typeof value === "number");
+      return [row, aggregate(metric, values)];
+    }) ?? []
+  ), [matrix, metric]);
+
+  const colTotals = useMemo(() => new Map(
+    matrix?.cols.map((col) => {
+      const values = matrix.rows.map((row) => matrix.cellMap.get(`${row}::${col}`)).filter((value): value is number => typeof value === "number");
+      return [col, aggregate(metric, values)];
+    }) ?? []
+  ), [matrix, metric]);
+
+  const grandTotal = useMemo(() => {
+    const values = Array.from(rowTotals.values()).filter((value): value is number => typeof value === "number");
+    return aggregate(metric, values);
+  }, [metric, rowTotals]);
+
+  const handleRetry = () => {
+    fetchedRef.current = false;
+    setRetryKey((current) => current + 1);
+  };
+
+  if (state.loading && !state.data) return <PivotSkeleton />;
+
+  if (state.error) {
+    return (
+      <Card className="space-y-4 p-6">
+        <div className="text-sm text-destructive">Failed to load</div>
+        <Button variant="outline" onClick={handleRetry}>
+          <RefreshCcw className="mr-2 h-4 w-4" />
+          Retry
+        </Button>
+      </Card>
+    );
+  }
 
   return (
-    <Card className="p-8">
-      <h2 className="text-lg font-semibold text-foreground">{t("pivot.emptyTitle")}</h2>
-      <p className="mt-2 text-sm text-muted-foreground">{t("pivot.emptyDescription")}</p>
-    </Card>
+    <div className="space-y-6">
+      <Card className="p-4">
+        <div className="grid gap-3 xl:grid-cols-4">
+          <Select value={rowDimension} onValueChange={(value: PivotDimension) => setRowDimension(value)}>
+            <SelectTrigger><SelectValue placeholder="Row" /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="category">Row: Category</SelectItem>
+              <SelectItem value="brand">Row: Brand</SelectItem>
+              <SelectItem value="price_range">Row: Price Range</SelectItem>
+              <SelectItem value="discount_tier">Row: Discount Tier</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={colDimension} onValueChange={(value: PivotColDimension) => setColDimension(value)}>
+            <SelectTrigger><SelectValue placeholder="Col" /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="month">Col: Month</SelectItem>
+              <SelectItem value="week">Col: Week</SelectItem>
+              <SelectItem value="price_range">Col: Price Range</SelectItem>
+              <SelectItem value="discount_tier">Col: Discount Tier</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={metric} onValueChange={(value: PivotMetric) => setMetric(value)}>
+            <SelectTrigger><SelectValue placeholder="Metric" /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="count">Metric: Count</SelectItem>
+              <SelectItem value="avg_price">Metric: Avg Price</SelectItem>
+              <SelectItem value="avg_discount">Metric: Avg Discount</SelectItem>
+              <SelectItem value="total_value">Metric: Total Value</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={period} onValueChange={(value: Period) => setPeriod(value)}>
+            <SelectTrigger><SelectValue placeholder="Period" /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="30d">Period: Last 30d</SelectItem>
+              <SelectItem value="90d">Period: Last 90d</SelectItem>
+              <SelectItem value="12mo">Period: Last 12mo</SelectItem>
+              <SelectItem value="all">Period: All time</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </Card>
+
+      {state.data && matrix && matrix.rows.length === 0 && (
+        <Card className="flex items-center justify-center gap-3 p-8 text-muted-foreground">
+          <LayoutGrid className="h-5 w-5" />
+          <span>No pivot data for this company</span>
+        </Card>
+      )}
+
+      {state.data && matrix && matrix.rows.length > 0 && (
+        <Card className="overflow-hidden">
+          <div className="max-h-[500px] overflow-x-auto overflow-y-auto">
+            <table className="min-w-full border-separate border-spacing-0 text-sm">
+              <thead className="sticky top-0 z-20 bg-background">
+                <tr>
+                  <th className="sticky left-0 z-30 min-w-[180px] border-b border-border bg-background px-4 py-3 text-left font-semibold">Row</th>
+                  {matrix.cols.map((col) => <th key={col} className="border-b border-border bg-background px-4 py-3 text-right font-semibold">{col}</th>)}
+                  <th className="border-b border-border bg-background px-4 py-3 text-right font-semibold">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {matrix.rows.map((row) => (
+                  <tr key={row}>
+                    <td className="sticky left-0 z-10 min-w-[180px] border-b border-border bg-background px-4 py-3 font-medium text-foreground">{row}</td>
+                    {matrix.cols.map((col) => {
+                      const value = matrix.cellMap.get(`${row}::${col}`) ?? null;
+                      const highlight = value !== null && matrix.threshold !== null && value >= matrix.threshold;
+                      return (
+                        <td
+                          key={`${row}-${col}`}
+                          className={`border-b border-border px-4 py-3 text-right ${highlight ? "bg-primary/10 font-medium text-primary" : ""} ${value === null ? "text-muted-foreground" : "text-foreground"}`}
+                        >
+                          {formatValue(metric, value)}
+                        </td>
+                      );
+                    })}
+                    <td className="border-b border-border px-4 py-3 text-right font-semibold text-foreground">{formatValue(metric, rowTotals.get(row) ?? null)}</td>
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td className="sticky left-0 z-10 min-w-[180px] border-t border-border bg-background px-4 py-3 font-semibold text-foreground">Total</td>
+                  {matrix.cols.map((col) => <td key={`total-${col}`} className="border-t border-border px-4 py-3 text-right font-semibold text-foreground">{formatValue(metric, colTotals.get(col) ?? null)}</td>)}
+                  <td className="border-t border-border px-4 py-3 text-right font-semibold text-foreground">{formatValue(metric, grandTotal)}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </Card>
+      )}
+    </div>
   );
 }

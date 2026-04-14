@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { LayoutGrid } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -18,17 +19,17 @@ type CompanyTabsProps = {
 };
 
 const TAB_DEFS = [
-  { id: "overview", labelKey: "tabs.overview" as const },
-  { id: "events", labelKey: "tabs.events" as const },
-  { id: "pricing", labelKey: "tabs.pricing" as const },
-  { id: "ratings", labelKey: "tabs.ratings" as const },
-  { id: "pivot", labelKey: "tabs.pivot" as const },
-  { id: "assets", labelKey: "tabs.assets" as const },
+  { value: "overview", labelKey: "tabs.overview" as const, icon: null },
+  { value: "events", labelKey: "tabs.events" as const, icon: null },
+  { value: "pricing", labelKey: "tabs.pricing" as const, icon: null },
+  { value: "ratings", labelKey: "tabs.ratings" as const, icon: null },
+  { value: "pivot", labelKey: "tabs.pivot" as const, icon: LayoutGrid },
+  { value: "assets", labelKey: "tabs.assets" as const, icon: null },
 ] as const;
 
-type TabKey = (typeof TAB_DEFS)[number]["id"];
+type TabKey = (typeof TAB_DEFS)[number]["value"];
 
-const TAB_IDS: TabKey[] = [...TAB_DEFS.map((d) => d.id)];
+const TAB_IDS: TabKey[] = [...TAB_DEFS.map((d) => d.value)];
 
 function getInitialTab(): TabKey {
   if (typeof window === "undefined") {
@@ -70,10 +71,11 @@ export function CompanyTabs({ slug, initialData }: CompanyTabsProps) {
         <TabsList className="h-auto flex-wrap justify-start rounded-2xl bg-muted/60 p-1">
           {TAB_DEFS.map((tab) => (
             <TabsTrigger
-              key={tab.id}
-              value={tab.id}
+              key={tab.value}
+              value={tab.value}
               className="rounded-xl px-4 py-2 text-sm font-medium"
             >
+              {tab.icon ? <tab.icon className="mr-2 h-4 w-4" /> : null}
               {t(tab.labelKey)}
             </TabsTrigger>
           ))}
@@ -94,7 +96,7 @@ export function CompanyTabs({ slug, initialData }: CompanyTabsProps) {
           <RatingsTab active={activeTab === "ratings"} />
         </TabsContent>
         <TabsContent value="pivot" forceMount>
-          <PivotTab active={activeTab === "pivot"} />
+          <PivotTab slug={slug} active={activeTab === "pivot"} />
         </TabsContent>
         <TabsContent value="assets" forceMount>
           <AssetsTab slug={slug} active={activeTab === "assets"} />
