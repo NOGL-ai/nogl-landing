@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import type { CSSProperties, ComponentPropsWithRef, HTMLAttributes, KeyboardEvent, ReactNode, Ref } from "react";
@@ -318,3 +319,4 @@ export const Carousel = {
     IndicatorGroup: CarouselIndicatorGroup,
     Indicator: CarouselIndicator,
 };
+

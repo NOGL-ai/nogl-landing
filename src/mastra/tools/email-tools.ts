@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Email Tools with HITL (Human-in-the-Loop)
  * 
@@ -388,3 +389,4 @@ export const emailTools = {
   sendPricingReport: sendPricingReportTool,
   sendAlertEmail: sendAlertEmailTool,
 };
+

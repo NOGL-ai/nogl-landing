@@ -74,7 +74,7 @@ export default async function CompanySlugLayout({
 
   return (
     <div className="min-h-screen bg-background">
-      <CompanyBreadcrumb companyName={result.data.company.name} />
+      <CompanyBreadcrumb companyName={result.data.company.name} lang={lang} />
       <CompanyHeader company={result.data.company} snapshot={result.data.snapshot} />
       <CompanyInfoBar company={result.data.company} snapshot={result.data.snapshot} />
       <CompanyTabNav slug={slug} lang={lang} />

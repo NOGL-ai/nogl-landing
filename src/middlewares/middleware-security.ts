@@ -34,7 +34,7 @@ export function withSecurityHeaders(middleware: CustomMiddleware) {
 		response: NextResponse
 	) => {
 		// Execute next middleware first
-		const res = await middleware(request, event, response);
+		const res = (await middleware(request, event, response)) ?? NextResponse.next();
 
 		// Add security headers
 		res.headers.set('X-DNS-Prefetch-Control', 'on');
@@ -55,4 +55,5 @@ export function withSecurityHeaders(middleware: CustomMiddleware) {
 		return res;
 	};
 }
+
 

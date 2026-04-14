@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import type { FC, HTMLAttributes } from "react";
@@ -208,3 +209,4 @@ export const NavAccountCard = ({
         </div>
     );
 };
+

@@ -6,11 +6,11 @@ export interface ValidationError {
   message: string;
 }
 
-export function withValidation<T, U extends any[] = []>(
+export function withValidation<T>(
   schema: yup.Schema<T>,
-  handler: (req: NextRequest, data: T, ...args: U) => Promise<NextResponse>
+  handler: (req: NextRequest, data: T, ...args: any[]) => Promise<NextResponse>
 ) {
-  return async (request: NextRequest, ...args: U) => {
+  return async (request: NextRequest, ...args: any[]) => {
     try {
       const body = await request.json();
       const validatedData = await schema.validate(body, { abortEarly: false });
@@ -39,11 +39,11 @@ export function withValidation<T, U extends any[] = []>(
   };
 }
 
-export function withQueryValidation<T, U extends any[] = []>(
+export function withQueryValidation<T>(
   schema: yup.Schema<T>,
-  handler: (req: NextRequest, data: T, ...args: U) => Promise<NextResponse>
+  handler: (req: NextRequest, data: T, ...args: any[]) => Promise<NextResponse>
 ) {
-  return async (request: NextRequest, ...args: U) => {
+  return async (request: NextRequest, ...args: any[]) => {
     try {
       const { searchParams } = new URL(request.url);
       const queryObject = Object.fromEntries(searchParams.entries());

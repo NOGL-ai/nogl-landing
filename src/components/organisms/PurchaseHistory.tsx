@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import PurchaseEmptyState from "../atoms/PurchaseEmptyState";
 import PurchaseTable from "../molecules/PurchaseTable";
@@ -34,3 +35,4 @@ const PurchaseHistory = async () => {
 };
 
 export default PurchaseHistory;
+

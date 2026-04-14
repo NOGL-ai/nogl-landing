@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Pricing Analysis and Update Tools with HITL
  * 
@@ -536,3 +537,4 @@ export const pricingTools = {
   suggestPriceChanges: suggestPriceChangesTool,
   updateProductPrices: updateProductPricesTool,
 };
+

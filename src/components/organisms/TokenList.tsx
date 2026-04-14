@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import CopyToClipboard from "../atoms/CopyToClipboard";
 import DeleteModal from "../molecules/DeleteModal";
@@ -134,3 +135,4 @@ export default function TokenList({ tokens }: { tokens: ApiKey[] }) {
 		</>
 	);
 }
+

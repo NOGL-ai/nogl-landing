@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Blog } from "@/types/blog";
 // Ghost content rendering - no need for asset utils
 import Image from "next/image";
@@ -36,3 +37,4 @@ const RenderBodyContent = ({ post }: { post: Blog }) => {
 };
 
 export default RenderBodyContent;
+

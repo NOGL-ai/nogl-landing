@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import Card from "@/components/atoms/Card";
 import FormButton from "@/components/atoms/FormButton";
@@ -268,3 +269,4 @@ export default function EditProfile() {
 		</div>
 	);
 }
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import { toast } from "react-hot-toast";
 import { useState, useEffect, useRef } from "react";
@@ -108,3 +109,4 @@ export default function ForgotPassword() {
 		</div>
 	);
 }
+

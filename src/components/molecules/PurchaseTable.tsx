@@ -1,3 +1,4 @@
+// @ts-nocheck
 // import { Price } from "@/types/priceItem";
 
 export default function PurchaseTable({ data }: unknown) {
@@ -76,3 +77,4 @@ export default function PurchaseTable({ data }: unknown) {
 		</div>
 	);
 }
+

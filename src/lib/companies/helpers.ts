@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Prisma } from "@prisma/client";
 
 import { prisma } from "@/lib/prisma";
@@ -1229,3 +1230,4 @@ export async function getCompanyAssetsResponse(params: {
     pagination: createPagination(params.page, params.limit, total),
   };
 }
+

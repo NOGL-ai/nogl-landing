@@ -3,7 +3,6 @@ import { useState } from "react";
 // import Sidebar from "@/components/Common/Dashboard/Sidebar"; // TODO: Fix sidebar import
 import Header from "@/components/organisms/DashboardHeader";
 import Sidebar from "@/components/organisms/Sidebar";
-import { userSidebarData } from "@/staticData/sidebarData";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 	const [openSidebar, setOpenSidebar] = useState(false);
@@ -16,7 +15,10 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 						openSidebar ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
 					}`}
 				>
-					<Sidebar sidebarData={userSidebarData} />
+					<Sidebar
+						isCollapsed={false}
+						onToggleCollapse={() => setOpenSidebar((prev) => !prev)}
+					/>
 				</aside>
 				<div
 					onClick={() => setOpenSidebar(false)}

@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
+type RequestHandler<TArgs extends unknown[] = []> = (
+  req: NextRequest,
+  ...args: TArgs
+) => Promise<NextResponse>;
+
 export function withSecurityHeaders(response: NextResponse) {
   // Security headers
   response.headers.set('X-Content-Type-Options', 'nosniff');
@@ -16,16 +21,16 @@ export function withSecurityHeaders(response: NextResponse) {
   return response;
 }
 
-export function withRequestLogging(
-  handler: (req: NextRequest) => Promise<NextResponse>
-) {
-  return async (request: NextRequest) => {
+export function withRequestLogging<TArgs extends unknown[]>(
+  handler: RequestHandler<TArgs>
+): RequestHandler<TArgs> {
+  return async (request: NextRequest, ...args: TArgs) => {
     const start = Date.now();
     const method = request.method;
     const url = request.url;
     
     try {
-      const response = await handler(request);
+      const response = await handler(request, ...args);
       const duration = Date.now() - start;
       
       console.log(`${method} ${url} - ${response.status} - ${duration}ms`);

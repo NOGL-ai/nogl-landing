@@ -12,7 +12,30 @@ import { sendEmail } from "@/lib/email";
 
 export const maxDuration = 30;
 
+type ActionPayload = Record<string, unknown>;
+
+type ToolExecutionRequest = {
+  action?: string;
+  data?: ActionPayload;
+  approved?: boolean;
+  modifications?: unknown[];
+};
+
+type ProductPriceUpdate = {
+  productId: string;
+  newPrice: number;
+  updateOriginalPrice?: boolean;
+};
+
+type ApiError = {
+  message?: string;
+  code?: string;
+  stack?: string;
+};
+
 export async function POST(req: NextRequest) {
+  let currentAction: string | undefined;
+
   try {
     // 1. Authentication
     const session = await getAuthSession();
@@ -21,7 +44,13 @@ export async function POST(req: NextRequest) {
     }
 
     // 2. Parse request
-    const { action, data, approved, modifications = [] } = await req.json();
+    const {
+      action,
+      data = {},
+      approved = false,
+      modifications = [],
+    } = (await req.json()) as ToolExecutionRequest;
+    currentAction = action;
     
     if (!action) {
       return NextResponse.json({ error: "Action is required" }, { status: 400 });
@@ -52,14 +81,14 @@ export async function POST(req: NextRequest) {
         result = await prisma.competitor.create({
           data: {
             id: `comp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-            name: data.name,
-            domain: data.domain,
-            website: data.website,
-            description: data.description,
-            categories: data.categories || [],
-            marketPosition: data.marketPosition,
-            marketShare: data.marketShare,
-            dataSource: data.dataSource,
+            name: String(data.name ?? ""),
+            domain: String(data.domain ?? ""),
+            website: (data.website as string | undefined) ?? undefined,
+            description: (data.description as string | undefined) ?? undefined,
+            categories: Array.isArray(data.categories) ? data.categories : [],
+            marketPosition: (data.marketPosition as number | undefined) ?? undefined,
+            marketShare: (data.marketShare as number | undefined) ?? undefined,
+            dataSource: (data.dataSource as string | undefined) ?? undefined,
             status: "ACTIVE",
             isMonitoring: true,
             productCount: 0,
@@ -72,10 +101,13 @@ export async function POST(req: NextRequest) {
 
       case "UPDATE_COMPETITOR":
         // Validate permissions
-        requireCompetitorModification(userRole, data.competitorId);
+        requireCompetitorModification(
+          userRole,
+          typeof data.competitorId === "string" ? data.competitorId : undefined
+        );
         
         // Update competitor
-        const updateData: any = {
+        const updateData: Record<string, unknown> = {
           updatedAt: new Date(),
         };
         
@@ -90,48 +122,54 @@ export async function POST(req: NextRequest) {
         if (data.isMonitoring !== undefined) updateData.isMonitoring = data.isMonitoring;
         
         result = await prisma.competitor.update({
-          where: { id: data.competitorId },
+          where: { id: String(data.competitorId ?? "") },
           data: updateData,
         });
         break;
 
       case "DELETE_COMPETITOR":
         // Validate permissions
-        requireCompetitorModification(userRole, data.competitorId);
+        requireCompetitorModification(
+          userRole,
+          typeof data.competitorId === "string" ? data.competitorId : undefined
+        );
         
         // Delete competitor and related data
-        await prisma.$transaction(async (tx) => {
+        await prisma.$transaction(async (tx: any) => {
           // Delete related records first
           await tx.competitorNote.deleteMany({
-            where: { competitorId: data.competitorId },
+            where: { competitorId: String(data.competitorId ?? "") },
           });
           
           await tx.competitorPriceComparison.deleteMany({
-            where: { competitorId: data.competitorId },
+            where: { competitorId: String(data.competitorId ?? "") },
           });
           
           await tx.competitorPriceHistory.deleteMany({
-            where: { competitorId: data.competitorId },
+            where: { competitorId: String(data.competitorId ?? "") },
           });
           
           // Delete competitor
           result = await tx.competitor.delete({
-            where: { id: data.competitorId },
+            where: { id: String(data.competitorId ?? "") },
           });
         });
         break;
 
       case "ADD_COMPETITOR_NOTE":
         // Validate permissions
-        requireCompetitorModification(userRole, data.competitorId);
+        requireCompetitorModification(
+          userRole,
+          typeof data.competitorId === "string" ? data.competitorId : undefined
+        );
         
         // Add note
         result = await prisma.competitorNote.create({
           data: {
             id: `note_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-            competitorId: data.competitorId,
-            note: data.note,
-            category: data.category,
+            competitorId: String(data.competitorId ?? ""),
+            note: String(data.note ?? ""),
+            category: (data.category as string | undefined) ?? undefined,
             createdBy: userId,
             createdAt: new Date(),
             updatedAt: new Date(),
@@ -144,7 +182,8 @@ export async function POST(req: NextRequest) {
         requireProductModification(userRole);
         
         // Update product prices
-        const updatePromises = data.updates.map((update: any) =>
+        const updates = Array.isArray(data.updates) ? (data.updates as ProductPriceUpdate[]) : [];
+        const updatePromises = updates.map((update) =>
           prisma.products.update({
             where: { product_id: update.productId },
             data: update.updateOriginalPrice 
@@ -164,12 +203,12 @@ export async function POST(req: NextRequest) {
         
         // Send email
         const emailResult = await sendEmail({
-          to: data.to,
-          cc: data.cc,
-          bcc: data.bcc,
-          subject: data.subject,
-          html: data.body,
-          attachments: data.attachments,
+          to: data.to as string | string[],
+          cc: (data.cc as string | string[] | undefined) ?? undefined,
+          bcc: (data.bcc as string | string[] | undefined) ?? undefined,
+          subject: String(data.subject ?? ""),
+          html: String(data.body ?? ""),
+          attachments: (data.attachments as Array<{ filename: string; content: Buffer | string; contentType?: string }> | undefined) ?? undefined,
         });
         
         result = {
@@ -184,7 +223,7 @@ export async function POST(req: NextRequest) {
         result = {
           success: true,
           message: "Plan execution confirmed",
-          planId: data.planId,
+          planId: data.planId as string | undefined,
           modifications,
         };
         break;
@@ -214,24 +253,27 @@ export async function POST(req: NextRequest) {
       timestamp: new Date().toISOString(),
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const normalizedError = (error ?? {}) as ApiError;
+    const message = normalizedError.message ?? "An unexpected error occurred";
+
     console.error("[Tool Execution] Error:", {
-      error: error.message,
-      stack: error.stack,
-      action: req.body?.action,
+      error: message,
+      stack: normalizedError.stack,
+      action: currentAction,
     });
 
     // Handle permission errors
-    if (error.message.includes("permission") || error.message.includes("privileges")) {
+    if (message.includes("permission") || message.includes("privileges")) {
       return NextResponse.json({
         success: false,
         error: "Insufficient permissions",
-        message: error.message,
+        message,
       }, { status: 403 });
     }
 
     // Handle validation errors
-    if (error.code === "P2002") {
+    if (normalizedError.code === "P2002") {
       return NextResponse.json({
         success: false,
         error: "Duplicate entry",
@@ -240,7 +282,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Handle not found errors
-    if (error.code === "P2025") {
+    if (normalizedError.code === "P2025") {
       return NextResponse.json({
         success: false,
         error: "Record not found",
@@ -252,8 +294,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       success: false,
       error: "Execution failed",
-      message: error.message || "An unexpected error occurred",
+      message,
     }, { status: 500 });
   }
 }
+
 

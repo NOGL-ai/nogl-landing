@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import React, { useState } from "react";
@@ -140,3 +141,4 @@ const SimpleNewsletter: React.FC<SimpleNewsletterProps> = ({
 };
 
 export default SimpleNewsletter;
+

@@ -12,6 +12,7 @@ declare module "next-auth" {
 			priceId?: string;
 			currentPeriodEnd?: Date;
 			bio?: string;
+			isCommunityMember?: boolean;
 			username?: string;
 		} & DefaultSession["user"];
 	}

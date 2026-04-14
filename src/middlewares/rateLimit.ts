@@ -3,15 +3,19 @@ import { NextRequest, NextResponse } from "next/server";
 // Simple in-memory rate limiting (for production, use Redis)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 
+type RequestHandler<TArgs extends unknown[] = []> = (
+  req: NextRequest,
+  ...args: TArgs
+) => Promise<NextResponse>;
+
 export function withRateLimit(
   maxRequests: number = 100,
   windowMs: number = 15 * 60 * 1000 // 15 minutes
 ) {
-  return (handler: (req: NextRequest) => Promise<NextResponse>) => {
-    return async (request: NextRequest) => {
-      const ip = (request as any)?.ip || (request as any)?.headers?.get?.('x-forwarded-for') || 'unknown';
+  return <TArgs extends unknown[]>(handler: RequestHandler<TArgs>): RequestHandler<TArgs> => {
+    return async (request: NextRequest, ...args: TArgs) => {
+      const ip = request.headers.get('x-forwarded-for') ?? 'unknown';
       const now = Date.now();
-      const windowStart = now - windowMs;
 
       // Clean up old entries
       for (const [key, value] of rateLimitMap.entries()) {
@@ -53,7 +57,7 @@ export function withRateLimit(
       rateLimitMap.set(ip, current);
 
       // Add rate limit headers to response
-      const response = await handler(request);
+      const response = await handler(request, ...args);
       response.headers.set('X-RateLimit-Limit', maxRequests.toString());
       response.headers.set('X-RateLimit-Remaining', (maxRequests - current.count).toString());
       response.headers.set('X-RateLimit-Reset', current.resetTime.toString());

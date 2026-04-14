@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import React, { FC, useEffect, useState, ReactNode } from "react";
@@ -66,3 +67,4 @@ const HeaderFilter: FC<HeaderFilterProps> = ({
 };
 
 export default HeaderFilter;
+

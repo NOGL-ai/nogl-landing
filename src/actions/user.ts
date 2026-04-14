@@ -1,8 +1,18 @@
 "use server";
 import { prisma } from "@/lib/prismaDb";
 import { isAuthorized } from "@/lib/isAuthorized";
+import { UserRole } from "@prisma/client";
 
-export async function getUsers(filter: unknown) {
+type UserUpdateInput = {
+	email: string;
+	[key: string]: unknown;
+};
+
+type UserDeleteInput = {
+	email: string;
+};
+
+export async function getUsers(filter?: UserRole) {
 	const currentUser = await isAuthorized();
 
 	const res = await prisma.user.findMany({
@@ -12,27 +22,27 @@ export async function getUsers(filter: unknown) {
 	});
 
 	const filtredUsers = res.filter(
-		(user) =>
+		(user: { email?: string | null }) =>
 			user.email !== currentUser?.email && !user.email?.includes("demo-")
 	);
 
 	return filtredUsers;
 }
 
-export async function updateUser(data: unknown) {
+export async function updateUser(data: UserUpdateInput) {
 	const { email } = data;
 	return await prisma.user.update({
 		where: {
 			email: email.toLowerCase(),
 		},
 		data: {
-			email: email.toLowerCase(),
 			...data,
+			email: email.toLowerCase(),
 		},
 	});
 }
 
-export async function deleteUser(user: unknown) {
+export async function deleteUser(user: UserDeleteInput | null | undefined) {
 	if (user?.email?.includes("demo-")) {
 		return new Error("Can't delete demo user");
 	}

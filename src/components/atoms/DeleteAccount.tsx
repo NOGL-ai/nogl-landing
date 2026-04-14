@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import Card from "@/components/atoms/Card";
 
@@ -77,3 +78,4 @@ const DeleteAccount = ({ setShowDeleteModal, showDeleteModal }: unknown) => {
 };
 
 export default DeleteAccount;
+

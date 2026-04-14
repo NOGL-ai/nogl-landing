@@ -25,10 +25,17 @@ if (process.env.NODE_ENV === "production" && typeof window === "undefined" && !p
 }
 
 type EmailPayload = {
-	to: string;
+	to: string | string[];
+	cc?: string | string[];
+	bcc?: string | string[];
 	subject: string;
 	html: string;
 	text?: string;
+	attachments?: Array<{
+		filename: string;
+		content: string | Buffer;
+		contentType?: string;
+	}>;
 };
 
 type VerificationEmailProps = {

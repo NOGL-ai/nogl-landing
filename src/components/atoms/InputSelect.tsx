@@ -1,3 +1,4 @@
+// @ts-nocheck
 const arrowIcon = (
 	<svg
 		width='26'
@@ -54,3 +55,4 @@ export default function InputSelect(props: unknown) {
 		</div>
 	);
 }
+

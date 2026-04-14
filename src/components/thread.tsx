@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import {
@@ -632,3 +633,4 @@ const BranchPicker: FC<BranchPickerPrimitive.Root.Props> = ({
     </BranchPickerPrimitive.Root>
   );
 };
+

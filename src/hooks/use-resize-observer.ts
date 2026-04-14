@@ -19,28 +19,28 @@ export function useResizeObserver({ ref, onResize, box = "content-box" }: UseRes
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    const win = globalThis as unknown as Window;
 
     // Fire once to initialize measurements
     try {
       onResize();
     } catch {}
 
-    if (typeof window !== "undefined" && "ResizeObserver" in window) {
+    if ("ResizeObserver" in win) {
       const ro = new ResizeObserver((entries) => {
         const entry = entries[0];
         onResize(entry);
       });
 
       try {
-        // @ts-expect-error - older TS lib DOM may not include options typing on observe
-        ro.observe(el, { box });
+        ro.observe(el, { box } as ResizeObserverOptions);
       } catch {
-        ro.observe(el as Element);
+        ro.observe(el);
       }
 
       return () => {
         try {
-          ro.unobserve(el as Element);
+          ro.unobserve(el);
           ro.disconnect();
         } catch {}
       };
@@ -51,7 +51,8 @@ export function useResizeObserver({ ref, onResize, box = "content-box" }: UseRes
         onResize();
       } catch {}
     };
-    window.addEventListener("resize", handler);
-    return () => window.removeEventListener("resize", handler);
+    win.addEventListener("resize", handler);
+    return () => win.removeEventListener("resize", handler);
   }, [ref, onResize, box]);
 }
+

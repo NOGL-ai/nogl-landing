@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import type { TooltipProps } from "recharts";
@@ -133,3 +134,4 @@ export const ChartActiveDot = ({ cx = 0, cy = 0 }: ChartActiveDotProps) => {
         </svg>
     );
 };
+

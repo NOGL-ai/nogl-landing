@@ -4,6 +4,7 @@ const nextConfig = {
 	reactStrictMode: true,
 	typedRoutes: true,
 	output: 'standalone',
+	distDir: process.env.NEXT_DIST_DIR || '.next',
 	// Additional Windows compatibility
 	poweredByHeader: false,
 	serverExternalPackages: ["@mastra/*"],

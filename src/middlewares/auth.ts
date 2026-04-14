@@ -4,17 +4,23 @@ import { authOptions } from "@/lib/auth";
 import { UserRole } from "@prisma/client";
 
 export interface AuthenticatedRequest extends NextRequest {
-  user?: {
+  user: {
     id: string;
     email: string;
     role: UserRole;
   };
 }
 
-export function withAuth<T extends any[] = []>(
-  handler: (req: AuthenticatedRequest, ...args: T) => Promise<NextResponse>
+declare module "next/server" {
+  interface NextRequest {
+    user: AuthenticatedRequest["user"];
+  }
+}
+
+export function withAuth(
+  handler: (req: AuthenticatedRequest, ...args: any[]) => Promise<NextResponse>
 ) {
-  return async (request: NextRequest, ...args: T) => {
+  return async (request: NextRequest, ...args: any[]) => {
     try {
       // Development bypass: allow all requests in local development
       if (process.env.NODE_ENV === 'development') {
@@ -77,7 +83,7 @@ export function withRole<T extends any[] = []>(
   allowedRoles: UserRole[],
   handler: (req: AuthenticatedRequest, ...args: T) => Promise<NextResponse>
 ) {
-  return withAuth<T>(async (req, ...args: T) => {
+  return withAuth(async (req, ...args: T) => {
     if (!req.user) {
       return NextResponse.json(
         { error: "Unauthorized" },
@@ -99,11 +105,11 @@ export function withRole<T extends any[] = []>(
 export function withAdmin<T extends any[] = []>(
   handler: (req: AuthenticatedRequest, ...args: T) => Promise<NextResponse>
 ) {
-  return withRole<T>([UserRole.ADMIN], handler);
+  return withRole([UserRole.ADMIN], handler);
 }
 
 export function withUserOrAdmin<T extends any[] = []>(
   handler: (req: AuthenticatedRequest, ...args: T) => Promise<NextResponse>
 ) {
-  return withRole<T>([UserRole.USER, UserRole.ADMIN], handler);
+  return withRole([UserRole.USER, UserRole.ADMIN], handler);
 }

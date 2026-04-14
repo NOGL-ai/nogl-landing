@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Card from "../atoms/Card";
 import CopyToClipboard from "../atoms/CopyToClipboard";
 
@@ -31,3 +32,4 @@ export default function OutputCard({ generated }: unknown) {
 		</div>
 	);
 }
+

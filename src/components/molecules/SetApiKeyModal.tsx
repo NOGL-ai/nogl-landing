@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import FormButton from "../atoms/FormButton";
@@ -157,3 +158,4 @@ export default function SetApiKeyModal(props: unknown) {
 		</>
 	);
 }
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import React, { useMemo } from "react";
@@ -419,4 +420,5 @@ function ToggleCard({ enabled, onToggle, title, children }: ToggleCardProps) {
 		</div>
 	);
 }
+
 

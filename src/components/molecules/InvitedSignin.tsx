@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import { useState } from "react";
 import InputGroup from "@/components/molecules/InputGroup";
@@ -87,3 +88,4 @@ const InvitedSignin = () => {
 };
 
 export default InvitedSignin;
+

@@ -44,6 +44,15 @@
       "pivot": "Pivot",
       "assets": "Assets"
     },
+    "pricing": {
+      "overTime": {
+        "title": "Preise im Zeitverlauf",
+        "loading": "Preistendenzen werden geladen...",
+        "error": "Preistendenzen konnten nicht geladen werden",
+        "empty": "Keine Preisdaten verfügbar",
+        "datapoints": "Datenpunkte"
+      }
+    },
     "ratings": {
       "emptyTitle": "Bewertungen",
       "emptyDescription": "Bewertungen für dieses Unternehmen erscheinen hier, sobald Daten vorliegen."

@@ -179,6 +179,7 @@ type FilterDef = {
   options: FilterChipOption[];
   inputMode?: boolean;
   inputPlaceholder?: string;
+  inputValueLabel?: string;
 };
 
 type FilterBarProps = {
@@ -206,6 +207,7 @@ export function FilterBar({ filters, values, onChange, resultCount, resultLabel 
           onChange={(v) => onChange(f.key, v)}
           inputMode={f.inputMode}
           inputPlaceholder={f.inputPlaceholder}
+          inputValueLabel={f.inputValueLabel}
         />
       ))}
 

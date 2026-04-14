@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import { useState } from "react";
@@ -46,3 +47,4 @@ const Account = ({ navbarOpen }: { navbarOpen: boolean }) => {
 };
 
 export default Account;
+

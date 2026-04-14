@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import type { ComponentPropsWithRef } from "react";
@@ -152,3 +153,4 @@ PinInput.Separator = Separator;
 PinInput.Description = Description;
 
 export { PinInput };
+

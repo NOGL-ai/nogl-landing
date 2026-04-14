@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server'
-import { createMocks } from 'node-mocks-http'
+
+type GenericRecord = Record<string, unknown>
 
 export class TestUtils {
   /**
@@ -8,7 +9,7 @@ export class TestUtils {
   static createMockRequest(options: {
     method?: string
     url?: string
-    body?: any
+    body?: unknown
     headers?: Record<string, string>
     query?: Record<string, string>
   } = {}): NextRequest {
@@ -25,7 +26,7 @@ export class TestUtils {
       urlWithQuery.searchParams.set(key, value)
     })
 
-    const requestInit: RequestInit = {
+    const requestInit: ConstructorParameters<typeof NextRequest>[1] = {
       method,
       headers: {
         'Content-Type': 'application/json',
@@ -43,7 +44,7 @@ export class TestUtils {
   /**
    * Create a mock user object for testing
    */
-  static createMockUser(overrides: any = {}) {
+  static createMockUser(overrides: GenericRecord = {}) {
     return {
       id: 'user-1',
       email: 'test@example.com',
@@ -56,7 +57,7 @@ export class TestUtils {
   /**
    * Create a mock product object for testing
    */
-  static createMockProduct(overrides: any = {}) {
+  static createMockProduct(overrides: GenericRecord = {}) {
     return {
       id: 'prod-1',
       name: 'Test Product',
@@ -88,7 +89,7 @@ export class TestUtils {
   /**
    * Create a mock brand object for testing
    */
-  static createMockBrand(overrides: any = {}) {
+  static createMockBrand(overrides: GenericRecord = {}) {
     return {
       id: 'brand-1',
       name: 'Test Brand',
@@ -104,7 +105,7 @@ export class TestUtils {
   /**
    * Create a mock category object for testing
    */
-  static createMockCategory(overrides: any = {}) {
+  static createMockCategory(overrides: GenericRecord = {}) {
     return {
       id: 'cat-1',
       name: 'Test Category',
@@ -120,7 +121,7 @@ export class TestUtils {
   /**
    * Create a mock competitor object for testing
    */
-  static createMockCompetitor(overrides: any = {}) {
+  static createMockCompetitor(overrides: GenericRecord = {}) {
     return {
       id: 'comp-1',
       productId: 'prod-1',
@@ -173,7 +174,7 @@ export class TestUtils {
   /**
    * Create pagination response for testing
    */
-  static createPaginationResponse(data: any[], page: number = 1, limit: number = 10) {
+  static createPaginationResponse<T>(data: T[], page: number = 1, limit: number = 10) {
     const total = data.length
     const totalPages = Math.ceil(total / limit)
     const startIndex = (page - 1) * limit
@@ -204,7 +205,7 @@ export class TestUtils {
   /**
    * Create success response for testing
    */
-  static createSuccessResponse(data: any, message?: string) {
+  static createSuccessResponse<T>(data: T, message?: string) {
     return {
       data,
       message,
@@ -212,3 +213,4 @@ export class TestUtils {
     }
   }
 }
+

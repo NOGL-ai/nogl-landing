@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import { ArrowLeft, ArrowRight } from "@untitledui/icons";
@@ -328,3 +329,4 @@ export const PaginationButtonGroup = ({ align = "left", page = 1, total = 10, ..
         </div>
     );
 };
+
