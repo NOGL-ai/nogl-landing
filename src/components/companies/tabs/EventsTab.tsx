@@ -9,7 +9,6 @@ import { fetchJson, formatDateTime, InlineError, EventsTabSkeleton, EventCardSke
 
 type EventsTabProps = {
   slug: string;
-  active: boolean;
 };
 
 type EventsState = {
@@ -70,8 +69,7 @@ function EventCard({ event }: { event: CompanyEventsResponse["events"][0] }) {
   );
 }
 
-export function EventsTab({ slug, active }: EventsTabProps) {
-  const fetchedRef = useRef(false);
+export function EventsTab({ slug }: EventsTabProps) {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
@@ -87,12 +85,6 @@ export function EventsTab({ slug, active }: EventsTabProps) {
 
   // Load initial events
   useEffect(() => {
-    if (!active || fetchedRef.current) {
-      return;
-    }
-
-    fetchedRef.current = true;
-
     let cancelled = false;
 
     async function load() {
@@ -128,7 +120,7 @@ export function EventsTab({ slug, active }: EventsTabProps) {
     return () => {
       cancelled = true;
     };
-  }, [active, slug]);
+  }, [slug]);
 
   // Load more events
   const loadMore = useCallback(async () => {

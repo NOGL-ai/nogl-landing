@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Card } from "@/components/ui/card";
 import type { CompanyAssetsResponse } from "@/types/company";
@@ -15,7 +15,6 @@ import {
 
 type AssetsTabProps = {
   slug: string;
-  active: boolean;
 };
 
 type AssetsState = {
@@ -45,8 +44,7 @@ function StatsBar({ data }: { data: CompanyAssetsResponse }) {
   );
 }
 
-export function AssetsTab({ slug, active }: AssetsTabProps) {
-  const fetchedRef = useRef(false);
+export function AssetsTab({ slug }: AssetsTabProps) {
   const [state, setState] = useState<AssetsState>({
     data: null,
     error: null,
@@ -54,12 +52,6 @@ export function AssetsTab({ slug, active }: AssetsTabProps) {
   });
 
   useEffect(() => {
-    if (!active || fetchedRef.current) {
-      return;
-    }
-
-    fetchedRef.current = true;
-
     let cancelled = false;
 
     async function load() {
@@ -86,7 +78,7 @@ export function AssetsTab({ slug, active }: AssetsTabProps) {
     return () => {
       cancelled = true;
     };
-  }, [active, slug]);
+  }, [slug]);
 
   if (state.loading && !state.data) {
     return <PanelSkeleton rows={3} grid="grid-cols-1 md:grid-cols-3" />;

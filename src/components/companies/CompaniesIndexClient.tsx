@@ -87,7 +87,7 @@ export function CompaniesIndexClient({
               {filteredCompanies.map((company) => (
                 <a
                   key={company.id}
-                  href={`/${lang}/companies/${company.slug}`}
+                  href={`/${lang}/companies/${company.slug}/overview`}
                   className="rounded-3xl border border-border bg-background p-5 transition-colors hover:bg-muted/40"
                 >
                   <div className="flex items-start justify-between gap-4">

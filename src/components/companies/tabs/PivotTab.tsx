@@ -1,7 +1,7 @@
 "use client";
 
 import { LayoutGrid, RefreshCcw } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -20,7 +20,7 @@ import type {
 } from "@/types/company";
 import { fetchJson } from "./shared";
 
-type PivotTabProps = { slug: string; active: boolean };
+type PivotTabProps = { slug: string };
 type PivotState = { data: CompanyPivotResponse | null; error: string | null; loading: boolean };
 type Period = "30d" | "90d" | "12mo" | "all";
 
@@ -79,8 +79,7 @@ function PivotSkeleton() {
   );
 }
 
-export function PivotTab({ slug, active }: PivotTabProps) {
-  const fetchedRef = useRef(false);
+export function PivotTab({ slug }: PivotTabProps) {
   const [rowDimension, setRowDimension] = useState<PivotDimension>("category");
   const [colDimension, setColDimension] = useState<PivotColDimension>("month");
   const [metric, setMetric] = useState<PivotMetric>("count");
@@ -90,13 +89,6 @@ export function PivotTab({ slug, active }: PivotTabProps) {
   const periodRange = useMemo(() => getPeriodRange(period), [period]);
 
   useEffect(() => {
-    fetchedRef.current = false;
-  }, [slug, rowDimension, colDimension, metric, period, retryKey]);
-
-  useEffect(() => {
-    if (!active || fetchedRef.current) return;
-    fetchedRef.current = true;
-
     let cancelled = false;
     async function load() {
       setState((current) => ({ ...current, loading: true, error: null }));
@@ -118,7 +110,7 @@ export function PivotTab({ slug, active }: PivotTabProps) {
     }
     void load();
     return () => { cancelled = true; };
-  }, [active, slug, rowDimension, colDimension, metric, periodRange.from, periodRange.to, retryKey]);
+  }, [slug, rowDimension, colDimension, metric, periodRange.from, periodRange.to, retryKey]);
 
   const matrix = useMemo(() => {
     if (!state.data) return null;
@@ -154,7 +146,6 @@ export function PivotTab({ slug, active }: PivotTabProps) {
   }, [metric, rowTotals]);
 
   const handleRetry = () => {
-    fetchedRef.current = false;
     setRetryKey((current) => current + 1);
   };
 
