@@ -45,6 +45,19 @@
       "assets": "Assets"
     },
     "pricing": {
+      "totalDiscounted": "Gesamtzahl reduzierter Produkte",
+      "totalDiscountedTooltip": "Aktive reduzierte Produkte, bei denen der durchschnittliche aktuelle Preis unter dem durchschnittlichen Vollpreis liegt.",
+      "productsDiscounted": "Produkte reduziert",
+      "priceDistribution": "Preisverteilung",
+      "priceDistributionTooltip": "Aktuelle Produktpreise in Gruppen eingeteilt.",
+      "priceBuckets": "Preisbereiche",
+      "percentOfProducts": "% der Produktpreise",
+      "percentileRange": "P 5 - P 95",
+      "percentileTooltip": "Zeigt das 5. bis 95. Perzentil der Produkte für eine klarere, leicht zu visualisierende Verteilung",
+      "downloadAsImage": "Als Bild herunterladen",
+      "openInPivot": "In Pivot-Tabelle öffnen",
+      "clickPriceFilter": "Klicken Sie auf einen Preisbereich, um Preisfilter anzuwenden",
+      "config": "Konfiguration",
       "overTime": {
         "title": "Preise im Zeitverlauf",
         "loading": "Preistendenzen werden geladen...",

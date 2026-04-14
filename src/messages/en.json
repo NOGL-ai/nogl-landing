@@ -45,6 +45,19 @@
       "assets": "Assets"
     },
     "pricing": {
+      "totalDiscounted": "Total Discounted Products",
+      "totalDiscountedTooltip": "Active discounted products where the average current price of its variants is less than the average full price.",
+      "productsDiscounted": "products discounted",
+      "priceDistribution": "Price Distribution",
+      "priceDistributionTooltip": "Current listed product prices bucketed into groups.",
+      "priceBuckets": "Price Buckets",
+      "percentOfProducts": "% of Product Prices",
+      "percentileRange": "P 5 - P 95",
+      "percentileTooltip": "Showing the 5th to 95th percentile of products for a clearer, easy to visualize distribution",
+      "downloadAsImage": "Download as Image",
+      "openInPivot": "Open in Pivot Table",
+      "clickPriceFilter": "Click a price bucket to apply price filters",
+      "config": "Config",
       "overTime": {
         "title": "Pricing Over Time",
         "loading": "Loading pricing trends...",

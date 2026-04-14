@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import type { PricingTimeseriesData, PricingTimeseriesPoint } from "@/components/companies/pricing/PricingOverTimeChart";
-import { resolveCompanyBySlug } from "@/lib/companies/helpers";
+import { buildProductsCompanyConditionSql, resolveCompanyBySlug } from "@/lib/companies/helpers";
 
 // Helper to generate sample data for development/demo
 function generateSampleTimeseriesData(): PricingTimeseriesData {
@@ -68,18 +68,18 @@ export async function GET(request: NextRequest, context: RouteContext) {
 
     // Query the scraper database for pricing trends
     try {
-      const normalizedDomain = company.domain
-        .replace(/^https?:\/\//i, "")
-        .replace(/^www\./i, "")
-        .replace(/\/.*$/, "")
-        .toLowerCase();
-
       type TimeseriesRow = {
         date: Date | string;
         avg_discount: Prisma.Decimal | number | string | null;
         avg_current_price: Prisma.Decimal | number | string | null;
         avg_full_price: Prisma.Decimal | number | string | null;
       };
+
+      const companyCondition = await buildProductsCompanyConditionSql({
+        companyId: company.id,
+        companyName: company.name,
+        companyDomain: company.domain,
+      });
 
       const queryRaw = prisma.$queryRaw as <T>(query: Prisma.Sql) => Promise<T>;
       const result = await queryRaw<TimeseriesRow[]>(Prisma.sql`
@@ -89,10 +89,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
           AVG(product_discount_price) as avg_current_price,
           AVG(product_original_price) as avg_full_price
         FROM public.products
-        WHERE (
-          product_brand ILIKE ${`%${company.name}%`}
-          OR source_url ILIKE ${`%${normalizedDomain}%`}
-        )
+        WHERE ${companyCondition}
         GROUP BY DATE_TRUNC('day', extraction_timestamp)
         ORDER BY date ASC
         LIMIT 1000

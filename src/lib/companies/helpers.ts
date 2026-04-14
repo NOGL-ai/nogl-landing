@@ -577,7 +577,25 @@ async function findSnapshotByCompanyId(companyId: string): Promise<CompanySnapsh
   }
 }
 
-function buildProductsWhereSql(
+export async function buildProductsCompanyConditionSql(params: {
+  companyId: string;
+  companyName: string;
+  companyDomain: string;
+}): Promise<Prisma.Sql> {
+  const hasCompanyIdColumn = await columnExists("public", "products", "company_id");
+
+  if (hasCompanyIdColumn) {
+    return Prisma.sql`company_id = ${params.companyId}`;
+  }
+
+  return Prisma.sql`(
+    product_brand ILIKE ${`%${params.companyName}%`}
+    OR source_url ILIKE ${`%${normalizeDomain(params.companyDomain)}%`}
+  )`;
+}
+
+async function buildProductsWhereSql(
+  companyId: string,
   name: string,
   domain: string,
   filters?: {
@@ -585,12 +603,15 @@ function buildProductsWhereSql(
     minPrice?: number;
     maxPrice?: number;
   }
-): Prisma.Sql {
+): Promise<Prisma.Sql> {
+  const companyCondition = await buildProductsCompanyConditionSql({
+    companyId,
+    companyName: name,
+    companyDomain: domain,
+  });
+
   const conditions: Prisma.Sql[] = [
-    Prisma.sql`(
-      product_brand ILIKE ${`%${name}%`}
-      OR source_url ILIKE ${`%${normalizeDomain(domain)}%`}
-    )`,
+    companyCondition,
   ];
 
   if (filters?.productType) {
@@ -645,7 +666,7 @@ export async function buildPlaceholderSnapshot(
   domain: string,
   name: string
 ): Promise<CompanySnapshotDTO> {
-  const whereSql = buildProductsWhereSql(name, domain);
+  const whereSql = await buildProductsWhereSql(companyId, name, domain);
 
   const [aggregateRows, topProductRows] = await Promise.all([
     prisma.$queryRaw<ProductAggregateRow[]>(Prisma.sql`
@@ -1032,7 +1053,7 @@ export async function getCompanyPricingResponse(params: {
     return null;
   }
 
-  const whereSql = buildProductsWhereSql(company.name, company.domain, {
+  const whereSql = await buildProductsWhereSql(company.id, company.name, company.domain, {
     productType: params.productType,
     minPrice: params.minPrice,
     maxPrice: params.maxPrice,

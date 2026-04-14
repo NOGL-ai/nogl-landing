@@ -2,7 +2,7 @@ import { Prisma } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 import { prisma } from "@/lib/prisma";
-import { resolveCompanyBySlug } from "@/lib/companies/helpers";
+import { buildProductsCompanyConditionSql, resolveCompanyBySlug } from "@/lib/companies/helpers";
 import { CompanyPivotResponse, PivotColDimension, PivotDimension, PivotMetric } from "@/types/company";
 
 type RouteContext = {
@@ -57,15 +57,6 @@ function parseIsoDate(value: string | null): Date | null {
 
   const parsed = new Date(value);
   return Number.isNaN(parsed.getTime()) ? null : parsed;
-}
-
-function normalizeDomain(domain: string): string {
-  return domain
-    .trim()
-    .replace(/^https?:\/\//i, "")
-    .replace(/^www\./i, "")
-    .replace(/\/.*$/, "")
-    .toLowerCase();
 }
 
 function buildPriceRangeSql(): Prisma.Sql {
@@ -194,12 +185,12 @@ export async function GET(request: NextRequest, context: RouteContext) {
       return NextResponse.json({ error: "Invalid to date" }, { status: 400 });
     }
 
-    const conditions: Prisma.Sql[] = [
-      Prisma.sql`(
-        product_brand ILIKE ${`%${company.name}%`}
-        OR source_url ILIKE ${`%${normalizeDomain(company.domain)}%`}
-      )`,
-    ];
+    const companyCondition = await buildProductsCompanyConditionSql({
+      companyId: company.id,
+      companyName: company.name,
+      companyDomain: company.domain,
+    });
+    const conditions: Prisma.Sql[] = [companyCondition];
 
     if (fromDate) {
       conditions.push(Prisma.sql`extraction_timestamp >= ${fromDate}`);
