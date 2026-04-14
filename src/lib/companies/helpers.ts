@@ -1048,6 +1048,11 @@ export async function getCompanyPricingResponse(params: {
     product_category: string | null;
   };
 
+  // Also fetch the snapshot for price_distribution (fire in parallel)
+  const snapshotPromise = prisma.companySnapshot
+    .findFirst({ where: { company_id: company.id }, select: { price_distribution: true } })
+    .catch(() => null);
+
   const [aggregateRows, groupedRows, countRows, topProductRows] = await Promise.all([
     prisma.$queryRaw<ProductAggregateRow[]>(Prisma.sql`
       SELECT
@@ -1124,6 +1129,11 @@ export async function getCompanyPricingResponse(params: {
     avg_discount_pct: toNumberOrZero(row.avg_discount_pct),
   }));
 
+  const snapshotRow = await snapshotPromise;
+  const priceDist = snapshotRow?.price_distribution
+    ? (snapshotRow.price_distribution as unknown as PriceDistributionBucket[])
+    : null;
+
   return {
     company: {
       id: company.id,
@@ -1140,6 +1150,7 @@ export async function getCompanyPricingResponse(params: {
     min_price: toNullableNumber(aggregate.min_price),
     max_price: toNullableNumber(aggregate.max_price),
     product_types: productTypes,
+    price_distribution: priceDist,
     top_products: topProductRows.map((r) => ({
       product_id: r.product_id ?? `tp-${Math.random()}`,
       product_title: r.product_title ?? "Unknown Product",

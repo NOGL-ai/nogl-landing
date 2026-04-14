@@ -147,6 +147,7 @@ export type CompanyPricingResponse = {
   max_price?: number | null;
   top_products?: CompanyPricingTopProduct[];
   product_types: CompanyPricingProductTypeRow[];
+  price_distribution?: PriceDistributionBucket[] | null;
   pagination: PageMeta;
 };
 

@@ -5,19 +5,16 @@ import { useEffect, useState } from "react";
 
 import { FilterBar } from "@/components/companies/FilterBar";
 import { Card } from "@/components/ui/card";
-import { PricingOverTimeChart } from "@/components/companies/pricing/PricingOverTimeChart";
-import { usePricingTimeseries } from "@/hooks/usePricingTimeseries";
+import { DiscountMetricsCard } from "@/components/companies/pricing/DiscountMetricsCard";
 import type {
   CompanyPricingResponse,
   CompanyPricingTopProduct,
-  CompanySnapshotDTO,
   PriceDistributionBucket,
 } from "@/types/company";
 import { fetchJson, formatNumber, formatPercent, InlineError } from "./shared";
 
 type PricingTabProps = {
   slug: string;
-  snapshot?: CompanySnapshotDTO | null;
   active?: boolean;
 };
 
@@ -143,6 +140,70 @@ function TopProductCard({ rank, product }: { rank: number; product: CompanyPrici
   );
 }
 
+// Vertical bar chart for price distribution — pure SVG, no external deps
+function PriceDistributionBars({ buckets }: { buckets: PriceDistributionBucket[] }) {
+  if (!buckets.length) return <p className="text-xs text-muted-foreground">No distribution data.</p>;
+
+  const maxPct = Math.max(...buckets.map((b) => b.percentage), 1);
+  // Round up to nearest 20 for clean Y axis
+  const chartMax = Math.ceil(maxPct / 20) * 20 || 20;
+  const yTicks = Array.from({ length: Math.floor(chartMax / 20) + 1 }, (_, i) => i * 20);
+
+  const W = 420;
+  const H = 160;
+  const ML = 36; // margin left (Y labels)
+  const MB = 32; // margin bottom (X labels)
+  const MT = 8;  // margin top
+  const chartW = W - ML;
+  const bw = (chartW / buckets.length) * 0.6;
+  const gap = (chartW / buckets.length) * 0.4;
+
+  return (
+    <svg viewBox={`0 0 ${W} ${H + MB + MT}`} className="w-full" style={{ overflow: "visible" }}>
+      {/* Horizontal grid lines */}
+      {yTicks.map((tick) => {
+        const y = MT + H - (tick / chartMax) * H;
+        return (
+          <g key={tick}>
+            <line x1={ML} x2={W} y1={y} y2={y} stroke="currentColor" strokeDasharray="3 3" className="text-border" strokeWidth="0.8" />
+            <text x={ML - 4} y={y} textAnchor="end" dominantBaseline="middle" fontSize="9" className="fill-muted-foreground">{tick}%</text>
+          </g>
+        );
+      })}
+
+      {/* Bars + labels */}
+      {buckets.map((bucket, i) => {
+        const barH = Math.max((bucket.percentage / chartMax) * H, 1);
+        const x = ML + i * (chartW / buckets.length) + gap / 2;
+        const y = MT + H - barH;
+        const label = `€${bucket.range.replace(/-/g, "–")}`;
+        return (
+          <g key={bucket.range}>
+            <rect x={x} y={y} width={bw} height={barH} rx="3" className="fill-primary/70" />
+            {bucket.percentage >= 4 && (
+              <text x={x + bw / 2} y={y + 11} textAnchor="middle" fontSize="8" fontWeight="600" fill="white">
+                {Math.round(bucket.percentage)}%
+              </text>
+            )}
+            <text
+              x={x + bw / 2}
+              y={MT + H + 14}
+              textAnchor="middle"
+              fontSize="8.5"
+              className="fill-muted-foreground"
+            >
+              {label}
+            </text>
+          </g>
+        );
+      })}
+
+      {/* Y-axis border */}
+      <line x1={ML} x2={ML} y1={MT} y2={MT + H} stroke="currentColor" strokeWidth="0.8" className="text-border" />
+    </svg>
+  );
+}
+
 // Skeleton
 function PricingSkeleton() {
   return (
@@ -158,16 +219,11 @@ function PricingSkeleton() {
   );
 }
 
-export function PricingTab({ slug, snapshot }: PricingTabProps) {
+export function PricingTab({ slug }: PricingTabProps) {
   const [state, setState] = useState<PricingState>({ data: null, error: null, loading: true });
   // All product types from the initial unfiltered load — used to populate the dropdown
   const [allProductTypes, setAllProductTypes] = useState<string[]>([]);
   const [filters, setFilters] = useState<PricingFilters>({ productType: null, minPrice: null, maxPrice: null });
-
-  // Fetch pricing timeseries data
-  const { data: timeseriesData, loading: timeseriesLoading, error: timeseriesError } = usePricingTimeseries({
-    slug,
-  });
 
   // Build API URL from current filters
   function buildUrl(f: PricingFilters) {
@@ -249,12 +305,7 @@ export function PricingTab({ slug, snapshot }: PricingTabProps) {
 
   const { data } = state;
 
-  const priceDist: PriceDistributionBucket[] =
-    snapshot?.price_distribution
-      ? typeof snapshot.price_distribution === "string"
-        ? (JSON.parse(snapshot.price_distribution) as PriceDistributionBucket[])
-        : (snapshot.price_distribution as unknown as PriceDistributionBucket[])
-      : [];
+  const priceDist: PriceDistributionBucket[] = data.price_distribution ?? [];
 
   const maxDistCount = priceDist.length > 0 ? Math.max(...priceDist.map((b) => b.count)) : 0;
 
@@ -263,12 +314,6 @@ export function PricingTab({ slug, snapshot }: PricingTabProps) {
   const globalMax = validPrices.length > 0 ? Math.max(...validPrices.map((r) => r.max_price)) : 1;
 
   const topProducts = data.top_products ?? [];
-
-  // Price range buckets from price distribution for quick filter presets
-  const priceRangeOptions = priceDist.map((b) => {
-    const [lo, hi] = b.range.split("-");
-    return { label: `€${b.range.replace(/-/g, "–")}`, value: `${lo}:${hi ?? ""}` };
-  });
 
   return (
     <div className="space-y-6">
@@ -331,61 +376,35 @@ export function PricingTab({ slug, snapshot }: PricingTabProps) {
         </Card>
       )}
 
-      {/* Total Discounted + Product Types (mirroring Particl: left col = donut + dist, right col = table) */}
+      {/* Left col: Discount donut + Price Distribution | Right col (2/3): Product Types table */}
       <div className="grid gap-6 lg:grid-cols-3">
-        {/* Left column: Donut + Price Distribution stacked */}
-        <div className="space-y-6">
-          <Card className="p-5">
-            <h3 className="mb-1 text-sm font-semibold text-foreground">Total Discounted Products</h3>
-            <div className="flex flex-col items-center gap-3 py-6">
-              <DonutChart value={data.total_discounted} total={data.total_products} />
-              <p className="text-center text-sm text-muted-foreground">
-                <span className="font-semibold text-foreground">
-                  {data.total_discounted.toLocaleString()} / {data.total_products.toLocaleString()}
-                </span>
-                <br />
-                products discounted
-              </p>
-            </div>
-          </Card>
 
-          {/* Price Distribution — in left column, below donut */}
-          {priceDist.length > 0 && maxDistCount > 0 && (
+        {/* Left column: donut then price distribution below */}
+        <div className="flex flex-col gap-6">
+          <DiscountMetricsCard
+            totalDiscounted={data.total_discounted}
+            totalProducts={data.total_products}
+            loading={state.loading}
+          />
+
+          {priceDist.length > 0 && (
             <Card className="p-5">
-              <h3 className="mb-1 text-sm font-semibold text-foreground">Price Distribution</h3>
-              <p className="mb-4 text-xs text-muted-foreground">% of Product Prices</p>
-              <div className="space-y-2">
-                {priceDist.map((bucket) => (
-                  <div key={bucket.range} className="flex items-center gap-2">
-                    <span className="w-16 shrink-0 whitespace-nowrap text-xs text-muted-foreground">
-                      {`€${bucket.range.replace(/-/g, "–")}`}
-                    </span>
-                    <div className="relative h-6 flex-1 overflow-hidden rounded bg-muted/50">
-                      <div
-                        className="flex h-6 items-center justify-end rounded bg-primary/70 pr-1.5 transition-all dark:bg-primary/80"
-                        style={{
-                          width: `${(bucket.count / maxDistCount) * 100}%`,
-                          minWidth: bucket.count > 0 ? "24px" : "0",
-                        }}
-                      >
-                        {bucket.percentage >= 3 && (
-                          <span className="text-[10px] font-medium text-primary-foreground">
-                            {Math.round(bucket.percentage)}%
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    <span className="w-10 shrink-0 text-right text-xs tabular-nums text-muted-foreground">
-                      {bucket.count.toLocaleString()}
-                    </span>
-                  </div>
-                ))}
+              <div className="mb-3 flex items-center justify-between">
+                <h3 className="text-sm font-semibold text-foreground">Price Distribution</h3>
+                <span className="text-xs text-muted-foreground">% of Product Prices</span>
               </div>
+              <p className="mb-3 flex items-center gap-1.5 text-xs text-muted-foreground">
+                <svg className="h-3 w-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                Click a price bucket to apply price filters
+              </p>
+              <PriceDistributionBars buckets={priceDist} />
             </Card>
           )}
         </div>
 
-        {/* Right column (2/3): Product Types */}
+        {/* Right column (2/3): Product Types table */}
         <Card className="overflow-hidden p-0 lg:col-span-2">
           <div className="flex items-center justify-between border-b border-border px-5 py-3">
             <h3 className="text-sm font-semibold text-foreground">Product Types</h3>
@@ -408,7 +427,7 @@ export function PricingTab({ slug, snapshot }: PricingTabProps) {
                 </thead>
                 <tbody className="divide-y divide-border">
                   {data.product_types.map((row) => (
-                    <tr key={row.type} className="hover:bg-muted/20 transition-colors">
+                    <tr key={row.type} className="transition-colors hover:bg-muted/20">
                       <td className="max-w-[200px] truncate px-5 py-3 font-medium text-foreground">
                         {row.type}
                       </td>
@@ -442,15 +461,6 @@ export function PricingTab({ slug, snapshot }: PricingTabProps) {
           )}
         </Card>
       </div>
-
-      {/* Pricing Over Time Chart */}
-      <PricingOverTimeChart
-        slug={slug}
-        data={timeseriesData ?? undefined}
-        loading={timeseriesLoading}
-        error={timeseriesError}
-      />
     </div>
   );
 }
-

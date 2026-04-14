@@ -1,49 +1,41 @@
 import type { ReactNode } from "react";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 
 import { CompanyBreadcrumb } from "@/components/companies/CompanyBreadcrumb";
 import { CompanyHeader } from "@/components/companies/CompanyHeader";
 import { CompanyInfoBar } from "@/components/companies/CompanyInfoBar";
 import { CompanyTabNav } from "@/components/companies/CompanyTabNav";
-import { getBaseUrl } from "@/lib/competitors/utils";
+import { SkeletonCompanyHeader } from "@/components/companies/SkeletonCompanyHeader";
+import { getCompanyOverviewResponse } from "@/lib/companies/helpers";
 import type { CompanyOverviewResponse } from "@/types/company";
 
-async function getCompanyOverview(slug: string): Promise<{
-  data: CompanyOverviewResponse | null;
-  notFound: boolean;
-  error: string | null;
-}> {
+// Isolated async component — suspends while fetching, streams in when ready
+async function CompanyShell({
+  slug,
+  lang,
+}: {
+  slug: string;
+  lang: string;
+}) {
+  let result: CompanyOverviewResponse | null = null;
   try {
-    const baseUrl = await getBaseUrl();
-    const response = await fetch(`${baseUrl}/api/companies/${slug}`, {
-      cache: "no-store",
-    });
-
-    if (response.status === 404) {
-      return { data: null, notFound: true, error: null };
-    }
-
-    if (!response.ok) {
-      return {
-        data: null,
-        notFound: false,
-        error: `Could not load company (${response.status}).`,
-      };
-    }
-
-    return {
-      data: (await response.json()) as CompanyOverviewResponse,
-      notFound: false,
-      error: null,
-    };
-  } catch (error) {
-    console.error("[company-layout] failed to load company:", error);
-    return {
-      data: null,
-      notFound: false,
-      error: "Could not load company details right now.",
-    };
+    result = await getCompanyOverviewResponse(slug);
+  } catch {
+    // handled below
   }
+
+  if (!result) {
+    notFound();
+  }
+
+  return (
+    <>
+      <CompanyBreadcrumb companyName={result.company.name} lang={lang} />
+      <CompanyHeader company={result.company} snapshot={result.snapshot} />
+      <CompanyInfoBar company={result.company} snapshot={result.snapshot} />
+    </>
+  );
 }
 
 export default async function CompanySlugLayout({
@@ -54,29 +46,13 @@ export default async function CompanySlugLayout({
   params: Promise<{ slug: string; lang: string }>;
 }) {
   const { slug, lang } = await params;
-  const result = await getCompanyOverview(slug);
-
-  if (result.notFound) {
-    notFound();
-  }
-
-  if (!result.data) {
-    return (
-      <div className="min-h-screen bg-background">
-        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-          <div className="rounded-3xl border border-destructive/30 bg-destructive/5 p-6 text-sm text-destructive">
-            {result.error ?? "Could not load company details."}
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-background">
-      <CompanyBreadcrumb companyName={result.data.company.name} lang={lang} />
-      <CompanyHeader company={result.data.company} snapshot={result.data.snapshot} />
-      <CompanyInfoBar company={result.data.company} snapshot={result.data.snapshot} />
+      {/* Suspense streams the header in — page shell + tabs render immediately */}
+      <Suspense fallback={<SkeletonCompanyHeader />}>
+        <CompanyShell slug={slug} lang={lang} />
+      </Suspense>
       <CompanyTabNav slug={slug} lang={lang} />
       <div className="mx-auto max-w-7xl px-4 pb-12 pt-6 sm:px-6 lg:px-8">
         {children}
