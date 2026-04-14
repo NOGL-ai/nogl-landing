@@ -2,7 +2,9 @@
 
 import { ExternalLink, Globe, Sparkles, TrendingUp, DollarSign, Calendar } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+import { useState } from "react";
 
+import { PeriodChip } from "@/components/companies/FilterBar";
 import type { CompanyDTO, CompanySnapshotDTO } from "@/types/company";
 
 type CompanyInfoBarProps = {
@@ -125,6 +127,7 @@ export function CompanyInfoBar({ company, snapshot }: CompanyInfoBarProps) {
   const t = useTranslations("companies");
   const locale = useLocale();
   const websiteUrl = `https://${company.domain}`;
+  const [period, setPeriod] = useState("4w");
 
   const formatDate = (dateStr: string | undefined | null) => {
     if (!dateStr) return t("notAvailable");
@@ -138,7 +141,7 @@ export function CompanyInfoBar({ company, snapshot }: CompanyInfoBarProps) {
   return (
     <div className="border-b border-border bg-bg-primary/95 backdrop-blur supports-[backdrop-filter]:bg-bg-primary/60">
       <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           {/* Always render — shows grade or "—" when score not yet available */}
           <QualityBadge score={company.dataset_quality_score} qualityLabel={t("quality")} />
 
@@ -161,6 +164,11 @@ export function CompanyInfoBar({ company, snapshot }: CompanyInfoBarProps) {
             <span className="max-w-[150px] truncate">{company.domain}</span>
             <ExternalLink className="h-3 w-3" />
           </a>
+
+          {/* Global period selector — matches Particl top-right "Last 4w" */}
+          <div className="ml-auto">
+            <PeriodChip value={period} onChange={setPeriod} />
+          </div>
         </div>
       </div>
     </div>

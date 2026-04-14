@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { CompanyProfile } from "@/components/companies/CompanyProfile";
 import { Card } from "@/components/ui/card";
 import type { CompanyOverviewResponse, CompanyPricingTopProduct } from "@/types/company";
-import { formatNumber } from "./shared";
 
 // Price helper
 const fmtPrice = (n: number | null | undefined): string => {
@@ -41,44 +40,6 @@ function SkeletonRows({ count }: { count: number }) {
   );
 }
 
-// Simple sparkline using SVG
-function Sparkline({ values, color = "#6366f1" }: { values: number[]; color?: string }) {
-  if (values.length < 2) return null;
-  const min = Math.min(...values);
-  const max = Math.max(...values);
-  const range = Math.max(max - min, 1);
-  const w = 100;
-  const h = 40;
-  const pts = values.map((v, i) => {
-    const x = (i / (values.length - 1)) * w;
-    const y = h - ((v - min) / range) * h;
-    return `${x},${y}`;
-  });
-  return (
-    <svg viewBox={`0 0 ${w} ${h}`} className="w-full" preserveAspectRatio="none" style={{ height: 60 }}>
-      <polyline
-        fill="none"
-        stroke={color}
-        strokeWidth="2"
-        points={pts.join(" ")}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <polyline
-        fill="url(#grad)"
-        stroke="none"
-        points={`0,${h} ${pts.join(" ")} ${w},${h}`}
-        opacity="0.12"
-      />
-      <defs>
-        <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={color} stopOpacity="0.5" />
-          <stop offset="100%" stopColor={color} stopOpacity="0" />
-        </linearGradient>
-      </defs>
-    </svg>
-  );
-}
 
 export function OverviewTab({ data }: OverviewTabProps) {
   const { company, snapshot, socials, competitors, datasetQualityUiStatus } = data;
@@ -125,17 +86,6 @@ export function OverviewTab({ data }: OverviewTabProps) {
   const topTypes = productTypes.slice(0, 10);
   const maxTypeCount = topTypes[0]?.count ?? 1;
 
-  // Mock sparkline for Sales Over Time using avg_price as proxy
-  const sparkValues = [
-    snapshot.avg_price ?? 0,
-    (snapshot.avg_price ?? 0) * 0.92,
-    (snapshot.avg_price ?? 0) * 0.97,
-    (snapshot.avg_price ?? 0) * 1.04,
-    (snapshot.avg_price ?? 0) * 1.01,
-    (snapshot.avg_price ?? 0) * 0.99,
-    (snapshot.avg_price ?? 0) * 1.03,
-  ].filter(Boolean);
-
   const discountedPct =
     totalDiscounted != null && snapshot.total_products > 0
       ? Math.round((totalDiscounted / snapshot.total_products) * 100)
@@ -155,31 +105,7 @@ export function OverviewTab({ data }: OverviewTabProps) {
         datasetQualityUiStatus={datasetQualityUiStatus}
       />
 
-      {/* ── Section 2: Sales Over Time ── */}
-      <Card className="p-5">
-        <div className="mb-3 flex items-center justify-between">
-          <div>
-            <h3 className="text-sm font-semibold text-foreground">Sales Over Time</h3>
-            <p className="mt-0.5 text-2xl font-bold text-foreground">
-              {fmtPrice(snapshot.avg_price)}
-              <span className="ml-1.5 text-sm font-normal text-muted-foreground">avg price</span>
-            </p>
-          </div>
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <span className="rounded border border-border px-2 py-1"># {formatNumber(snapshot.total_products)}</span>
-            <span className="rounded border border-border px-2 py-1">Last 4w</span>
-          </div>
-        </div>
-        <Sparkline values={sparkValues} />
-        <div className="mt-2 flex items-center gap-4 text-xs text-muted-foreground">
-          <span>{formatNumber(snapshot.total_products)} products tracked</span>
-          {typeof snapshot.avg_discount_pct === "number" && (
-            <span>{snapshot.avg_discount_pct.toFixed(1)}% avg discount</span>
-          )}
-        </div>
-      </Card>
-
-      {/* ── Section 3: Product Types (2/3) + Recent Marketing Assets (1/3) ── */}
+      {/* ── Section 2: Product Types (2/3) + Recent Marketing Assets (1/3) ── */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
 
         {/* Product Types */}
@@ -253,7 +179,7 @@ export function OverviewTab({ data }: OverviewTabProps) {
         </Card>
       </div>
 
-      {/* ── Section 4: Best Selling Products (2/3) + Total Discounted (1/3) ── */}
+      {/* ── Section 3: Best Selling Products (2/3) + Total Discounted (1/3) ── */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
 
         {/* Best Selling Products */}
@@ -391,7 +317,7 @@ export function OverviewTab({ data }: OverviewTabProps) {
         </Card>
       </div>
 
-      {/* ── Section 5: Price Distribution ── */}
+      {/* ── Section 4: Price Distribution ── */}
       {dist.length > 0 && maxDistCount > 0 && (
         <Card className="p-5">
           <div className="mb-3 flex items-center justify-between">

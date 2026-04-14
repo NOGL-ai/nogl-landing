@@ -44,11 +44,11 @@ function TrackingStatusBadge({
 
 function KpiChip({ label, value }: { label: string; value: string }) {
   return (
-    <div className="min-w-[144px] rounded-2xl border border-border bg-card px-4 py-3">
+    <div className="rounded-2xl border border-border bg-card px-3 py-2.5 sm:px-4 sm:py-3">
       <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
         {label}
       </p>
-      <p className="mt-2 text-lg font-semibold text-foreground">{value}</p>
+      <p className="mt-1.5 text-base font-semibold text-foreground sm:mt-2 sm:text-lg">{value}</p>
     </div>
   );
 }
@@ -59,12 +59,12 @@ export function CompanyHeader({ company, snapshot }: CompanyHeaderProps) {
   const na = t("notAvailable");
 
   return (
-    <div className="sticky top-16 z-20 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
-        <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-          <div className="min-w-0">
-            <div className="flex flex-wrap items-center gap-3">
-              <h1 className="text-3xl font-semibold tracking-tight text-foreground">{company.name}</h1>
+    <div className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="mx-auto max-w-7xl px-4 py-4 sm:py-5 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+              <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">{company.name}</h1>
               <CountryPill country_code={company.country_code} />
               <TrackingStatusBadge
                 status={company.tracking_status}
@@ -80,14 +80,14 @@ export function CompanyHeader({ company, snapshot }: CompanyHeaderProps) {
               href={websiteUrl}
               target="_blank"
               rel="noreferrer"
-              className="mt-3 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              className="mt-2 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
               <span>{company.domain}</span>
               <ExternalLink className="h-4 w-4" />
             </a>
           </div>
 
-          <div className="flex gap-3 overflow-x-auto pb-1 scrollbar-hide md:grid md:grid-cols-3 md:overflow-visible md:pb-0">
+          <div className="grid grid-cols-3 gap-2 sm:gap-3 sm:shrink-0">
             <KpiChip label={t("totalProducts")} value={snapshot.total_products.toLocaleString()} />
             <KpiChip label={t("avgPrice")} value={formatPrice(snapshot.avg_price, na)} />
             <KpiChip label={t("discountRate")} value={formatDiscount(snapshot.avg_discount_pct, na)} />

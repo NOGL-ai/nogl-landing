@@ -3,6 +3,7 @@
 import { ExternalLink } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { FilterBar } from "@/components/companies/FilterBar";
 import { Card } from "@/components/ui/card";
 import type {
   CompanyPricingResponse,
@@ -22,6 +23,12 @@ type PricingState = {
   data: CompanyPricingResponse | null;
   error: string | null;
   loading: boolean;
+};
+
+type PricingFilters = {
+  productType: string | null;
+  minPrice: string | null;
+  maxPrice: string | null;
 };
 
 // Smart price formatter
@@ -151,14 +158,33 @@ function PricingSkeleton() {
 
 export function PricingTab({ slug, snapshot }: PricingTabProps) {
   const [state, setState] = useState<PricingState>({ data: null, error: null, loading: true });
+  // All product types from the initial unfiltered load — used to populate the dropdown
+  const [allProductTypes, setAllProductTypes] = useState<string[]>([]);
+  const [filters, setFilters] = useState<PricingFilters>({ productType: null, minPrice: null, maxPrice: null });
 
+  // Build API URL from current filters
+  function buildUrl(f: PricingFilters) {
+    const params = new URLSearchParams();
+    if (f.productType) params.set("product_type", f.productType);
+    if (f.minPrice && !isNaN(Number(f.minPrice))) params.set("min_price", f.minPrice);
+    if (f.maxPrice && !isNaN(Number(f.maxPrice))) params.set("max_price", f.maxPrice);
+    const qs = params.toString();
+    return `/api/companies/${slug}/pricing${qs ? `?${qs}` : ""}`;
+  }
+
+  // Initial load (unfiltered) — also populates the type list
   useEffect(() => {
     let cancelled = false;
     async function load() {
       setState((s) => ({ ...s, loading: true, error: null }));
       try {
         const data = await fetchJson<CompanyPricingResponse>(`/api/companies/${slug}/pricing`);
-        if (!cancelled) setState({ data, error: null, loading: false });
+        if (!cancelled) {
+          setState({ data, error: null, loading: false });
+          // Populate product type options from initial unfiltered data
+          const types = data.product_types.map((r) => r.type).filter(Boolean);
+          setAllProductTypes(types);
+        }
       } catch (err) {
         if (!cancelled)
           setState({ data: null, error: err instanceof Error ? err.message : "Could not load pricing data.", loading: false });
@@ -167,6 +193,48 @@ export function PricingTab({ slug, snapshot }: PricingTabProps) {
     void load();
     return () => { cancelled = true; };
   }, [slug]);
+
+  // Re-fetch when filters change (skip initial empty state)
+  useEffect(() => {
+    const hasFilter = filters.productType || filters.minPrice || filters.maxPrice;
+    if (!hasFilter) return; // initial load handles the unfiltered case
+    let cancelled = false;
+    async function reload() {
+      setState((s) => ({ ...s, loading: true, error: null }));
+      try {
+        const data = await fetchJson<CompanyPricingResponse>(buildUrl(filters));
+        if (!cancelled) setState({ data, error: null, loading: false });
+      } catch (err) {
+        if (!cancelled)
+          setState((s) => ({ ...s, error: err instanceof Error ? err.message : "Filter failed.", loading: false }));
+      }
+    }
+    void reload();
+    return () => { cancelled = true; };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filters]);
+
+  // When all filters cleared, reload unfiltered
+  useEffect(() => {
+    const hasFilter = filters.productType || filters.minPrice || filters.maxPrice;
+    if (hasFilter) return;
+    let cancelled = false;
+    async function reloadUnfiltered() {
+      setState((s) => ({ ...s, loading: true, error: null }));
+      try {
+        const data = await fetchJson<CompanyPricingResponse>(`/api/companies/${slug}/pricing`);
+        if (!cancelled) setState({ data, error: null, loading: false });
+      } catch { /* ignore */ }
+    }
+    // Don't run on mount (initial load handles it)
+    if (allProductTypes.length > 0) void reloadUnfiltered();
+    return () => { cancelled = true; };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filters.productType, filters.minPrice, filters.maxPrice]);
+
+  function setFilter(key: string, value: string | null) {
+    setFilters((prev) => ({ ...prev, [key]: value }));
+  }
 
   if (state.loading) return <PricingSkeleton />;
   if (state.error) return <InlineError message={state.error} />;
@@ -189,16 +257,56 @@ export function PricingTab({ slug, snapshot }: PricingTabProps) {
 
   const topProducts = data.top_products ?? [];
 
+  // Price range buckets from price distribution for quick filter presets
+  const priceRangeOptions = priceDist.map((b) => {
+    const [lo, hi] = b.range.split("-");
+    return { label: `€${b.range.replace(/-/g, "–")}`, value: `${lo}:${hi ?? ""}` };
+  });
+
   return (
     <div className="space-y-6">
-      {/* Stats bar */}
-      <div className="flex flex-wrap items-center gap-1 rounded-lg border border-border bg-muted/40 px-4 py-2.5 text-sm text-muted-foreground">
-        <span>Found:</span>
-        <span className="font-semibold text-foreground">{formatNumber(data.total_products)} products</span>
-        <span>·</span>
-        <span className="font-semibold text-foreground">{formatNumber(data.total_variants)} variants</span>
-        <span>·</span>
-        <span className="font-semibold text-foreground">{formatNumber(data.total_datapoints)} total datapoints</span>
+      {/* ── Filter bar ── */}
+      <div className="flex flex-wrap items-center gap-3 rounded-xl border border-border bg-muted/30 px-4 py-3">
+        <FilterBar
+          filters={[
+            {
+              key: "productType",
+              label: "Product Types",
+              options: allProductTypes.map((t) => ({
+                label: t.replace(/\b\w/g, (c) => c.toUpperCase()),
+                value: t,
+              })),
+            },
+            {
+              key: "minPrice",
+              label: "Min Price",
+              options: [],
+              inputMode: true,
+              inputPlaceholder: "e.g. 50",
+              inputValueLabel: filters.minPrice ? `≥ €${filters.minPrice}` : undefined,
+            },
+            {
+              key: "maxPrice",
+              label: "Max Price",
+              options: [],
+              inputMode: true,
+              inputPlaceholder: "e.g. 500",
+              inputValueLabel: filters.maxPrice ? `≤ €${filters.maxPrice}` : undefined,
+            },
+          ]}
+          values={{ productType: filters.productType, minPrice: filters.minPrice, maxPrice: filters.maxPrice }}
+          onChange={setFilter}
+          resultCount={data.total_products}
+          resultLabel="products"
+          right={
+            <span className="text-xs text-muted-foreground">
+              {formatNumber(data.total_variants)} variants · {formatNumber(data.total_datapoints)} datapoints
+            </span>
+          }
+        />
+        {state.loading && (
+          <span className="ml-2 text-xs text-muted-foreground animate-pulse">Filtering…</span>
+        )}
       </div>
 
       {/* Best Selling Products */}

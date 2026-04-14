@@ -24,7 +24,7 @@ type CompanyProfileProps = {
 
 function ProfileCol({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <div className="min-w-0 flex-1">
+    <div className="min-w-[calc(50%-8px)] flex-1 sm:min-w-[calc(33.33%-12px)] lg:min-w-0 lg:pl-6 lg:first:pl-0">
       <p className="mb-1.5 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
         {label}
       </p>
@@ -134,8 +134,8 @@ export function CompanyProfile({
         )}
       </div>
 
-      {/* Horizontal columns */}
-      <div className="flex flex-wrap gap-x-6 gap-y-4 divide-x divide-border [&>*:not(:first-child)]:pl-6">
+      {/* Horizontal columns — 2-col on mobile, 3-col on sm, single row at lg+ with dividers */}
+      <div className="flex flex-wrap gap-x-4 gap-y-4 lg:flex-nowrap lg:gap-x-0 lg:divide-x lg:divide-border">
         {/* Domain */}
         <ProfileCol label={t("domain")}>
           <a
