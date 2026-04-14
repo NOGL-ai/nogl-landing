@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Card } from "@/components/ui/card";
 import type { CompanyPricingResponse } from "@/types/company";
@@ -15,7 +15,6 @@ import {
 
 type PricingTabProps = {
   slug: string;
-  active: boolean;
 };
 
 type PricingState = {
@@ -35,8 +34,7 @@ function SummaryCard({ label, value }: { label: string; value: string }) {
   );
 }
 
-export function PricingTab({ slug, active }: PricingTabProps) {
-  const fetchedRef = useRef(false);
+export function PricingTab({ slug }: PricingTabProps) {
   const [state, setState] = useState<PricingState>({
     data: null,
     error: null,
@@ -44,12 +42,6 @@ export function PricingTab({ slug, active }: PricingTabProps) {
   });
 
   useEffect(() => {
-    if (!active || fetchedRef.current) {
-      return;
-    }
-
-    fetchedRef.current = true;
-
     let cancelled = false;
 
     async function load() {
@@ -76,7 +68,7 @@ export function PricingTab({ slug, active }: PricingTabProps) {
     return () => {
       cancelled = true;
     };
-  }, [active, slug]);
+  }, [slug]);
 
   if (state.loading && !state.data) {
     return <PanelSkeleton rows={4} grid="grid-cols-1 md:grid-cols-2 xl:grid-cols-4" />;
