@@ -297,23 +297,39 @@ function normalizeScrapedItem(row: ScrapedItemRow): NormalizedProduct | null {
     return null;
   }
 
+  const productOriginalPrice = getNumberValue(payload, [
+    "price",
+    "original_price",
+    "product_original_price",
+  ]);
+  const productDiscountPrice = getNumberValue(payload, [
+    "sale_price",
+    "discount_price",
+    "product_discount_price",
+  ]);
+  const payloadDiscountPct = getNumberValue(payload, [
+    "discount_percentage",
+    "product_discount_percentage",
+  ]);
+  const productDiscountPercentage =
+    payloadDiscountPct !== null
+      ? payloadDiscountPct
+      : productOriginalPrice !== null &&
+          productDiscountPrice !== null &&
+          productOriginalPrice > 0
+        ? Math.round(
+            ((productOriginalPrice - productDiscountPrice) / productOriginalPrice) *
+              100 *
+              10
+          ) / 10
+        : null;
+
   return {
     sourceUrl,
     productName,
-    productOriginalPrice: getNumberValue(payload, [
-      "price",
-      "original_price",
-      "product_original_price",
-    ]),
-    productDiscountPrice: getNumberValue(payload, [
-      "sale_price",
-      "discount_price",
-      "product_discount_price",
-    ]),
-    productDiscountPercentage: getNumberValue(payload, [
-      "discount_percentage",
-      "product_discount_percentage",
-    ]),
+    productOriginalPrice,
+    productDiscountPrice,
+    productDiscountPercentage,
     productImageUrl: getImageValue(payload),
     productBrand: getStringValue(payload, ["brand", "product_brand"]),
     productCategory: getCategoryValue(payload, sourceUrl),

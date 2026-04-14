@@ -216,7 +216,7 @@ export function OverviewTab({ data }: OverviewTabProps) {
                 {dist.map((bucket) => (
                   <div key={bucket.range} className="flex items-center gap-3">
                     <span className="w-20 shrink-0 text-xs text-muted-foreground">
-                      €{bucket.range}
+                      €{bucket.range.replace("-", "–")}
                     </span>
                     <div className="h-2 flex-1 overflow-hidden rounded-full bg-muted">
                       <div
