@@ -41,6 +41,9 @@ export type ProductDetail = {
   original_price: number | null;
   discount_price: number | null;
   discount_pct: number | null;
+  min_price: number | null;
+  max_price: number | null;
+  dataset_quality_score: number | null;
   image_url: string | null;
   source_url: string | null;
   first_seen: string; // ISO

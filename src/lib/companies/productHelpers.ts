@@ -225,6 +225,11 @@ type PriceHistoryRow = {
   price: unknown;
 };
 
+type PriceRangeRow = {
+  min_price: unknown;
+  max_price: unknown;
+};
+
 export async function getProductDetail(params: {
   slug: string;
   productId: string;
@@ -267,8 +272,8 @@ export async function getProductDetail(params: {
 
   const resolvedProductId = detailRow.product_id ?? productIdParam;
 
-  // First seen + price history in parallel
-  const [firstSeenRows, historyRows] = await Promise.all([
+  // First seen + price history + min/max price in parallel
+  const [firstSeenRows, historyRows, priceRangeRows] = await Promise.all([
     prisma.$queryRaw<{ first_seen: Date | string | null }[]>(Prisma.sql`
       SELECT MIN(extraction_timestamp) AS first_seen
       FROM public.products
@@ -284,6 +289,15 @@ export async function getProductDetail(params: {
         AND product_original_price > 0
       ORDER BY extraction_timestamp ASC
     `),
+    prisma.$queryRaw<PriceRangeRow[]>(Prisma.sql`
+      SELECT
+        CAST(MIN(product_original_price) AS float8) AS min_price,
+        CAST(MAX(product_original_price) AS float8) AS max_price
+      FROM public.products
+      WHERE product_id = ${resolvedProductId}
+        AND product_original_price IS NOT NULL
+        AND product_original_price > 0
+    `),
   ]);
 
   const firstSeen = toIso(firstSeenRows[0]?.first_seen);
@@ -295,6 +309,15 @@ export async function getProductDetail(params: {
       price: toFloat(r.price) as number,
     }));
 
+  const minPrice = toFloat(priceRangeRows[0]?.min_price);
+  const maxPrice = toFloat(priceRangeRows[0]?.max_price);
+
+  // Extract dataset_quality_score from company (available as CompanyDTO field)
+  const datasetQualityScore =
+    typeof (company as { dataset_quality_score?: unknown }).dataset_quality_score === "number"
+      ? (company as { dataset_quality_score: number }).dataset_quality_score
+      : null;
+
   const product: ProductDetail = {
     id: resolvedProductId,
     title: detailRow.product_title ?? "Unknown Product",
@@ -304,6 +327,9 @@ export async function getProductDetail(params: {
     original_price: toFloat(detailRow.current_price),
     discount_price: toFloat(detailRow.discount_price),
     discount_pct: toFloat(detailRow.discount_pct),
+    min_price: minPrice,
+    max_price: maxPrice,
+    dataset_quality_score: datasetQualityScore,
     image_url: detailRow.image_url ?? null,
     source_url: detailRow.product_url ?? detailRow.source_url ?? null,
     first_seen: firstSeen,
