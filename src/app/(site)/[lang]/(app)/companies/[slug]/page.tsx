@@ -1,17 +1,10 @@
-"use client";
+import { redirect } from "next/navigation";
 
-import { useEffect } from "react";
-import { useRouter, useParams } from "next/navigation";
-
-export default function CompanyPage() {
-  const router = useRouter();
-  const params = useParams<{ slug: string; lang: string }>();
-
-  useEffect(() => {
-    if (params.lang && params.slug) {
-      router.replace(`/${params.lang}/companies/${params.slug}/overview`);
-    }
-  }, [params.lang, params.slug, router]);
-
-  return null;
+export default async function CompanyPage({
+  params,
+}: {
+  params: Promise<{ lang: string; slug: string }>;
+}) {
+  const { lang, slug } = await params;
+  redirect(`/${lang}/companies/${slug}/overview`);
 }
