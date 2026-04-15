@@ -2,6 +2,8 @@
 
 import { ExternalLink } from "lucide-react";
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 
 import { FilterBar } from "@/components/companies/FilterBar";
 import { Card } from "@/components/ui/card";
@@ -83,7 +85,18 @@ function PriceRangeBar({
 }
 
 // Top product card
-function TopProductCard({ rank, product }: { rank: number; product: CompanyPricingTopProduct }) {
+interface TopProductCardProps {
+  rank: number;
+  product: CompanyPricingTopProduct;
+  lang: string;
+  slug: string;
+}
+
+function TopProductCard({ rank, product, lang, slug }: TopProductCardProps) {
+  const href = product.product_id
+    ? `/${lang}/companies/${slug}/products/${encodeURIComponent(product.product_id)}`
+    : null;
+
   return (
     <div className="relative flex w-[200px] flex-shrink-0 flex-col overflow-hidden rounded-xl border border-border bg-card">
       <div className="absolute left-2 top-2 z-10 flex h-6 min-w-[24px] items-center justify-center rounded bg-foreground px-1 text-xs font-bold text-background">
@@ -118,12 +131,23 @@ function TopProductCard({ rank, product }: { rank: number; product: CompanyPrici
           )}
         </p>
         <div className="mt-auto flex gap-1.5">
-          <button
-            type="button"
-            className="flex-1 rounded border border-border px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted"
-          >
-            Explore
-          </button>
+          {/* FIX 4 — Explore button wired to product detail page */}
+          {href ? (
+            <Link
+              href={href}
+              className="flex-1 rounded border border-border px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted text-center"
+            >
+              Explore
+            </Link>
+          ) : (
+            <button
+              type="button"
+              disabled
+              className="flex-1 rounded border border-border px-2 py-1 text-xs text-muted-foreground opacity-40 cursor-not-allowed"
+            >
+              Explore
+            </button>
+          )}
           {product.product_url && (
             <a
               href={product.product_url}
@@ -220,6 +244,11 @@ function PricingSkeleton() {
 }
 
 export function PricingTab({ slug }: PricingTabProps) {
+  // FIX 4 — get lang + slug from URL params for navigation
+  const routeParams = useParams<{ lang: string; slug: string }>();
+  const lang = routeParams.lang ?? "en";
+  const currentSlug = routeParams.slug ?? slug;
+
   const [state, setState] = useState<PricingState>({ data: null, error: null, loading: true });
   // All product types from the initial unfiltered load — used to populate the dropdown
   const [allProductTypes, setAllProductTypes] = useState<string[]>([]);
@@ -370,7 +399,13 @@ export function PricingTab({ slug }: PricingTabProps) {
           </div>
           <div className="flex gap-4 overflow-x-auto pb-2">
             {topProducts.map((product, i) => (
-              <TopProductCard key={product.product_id} rank={i + 1} product={product} />
+              <TopProductCard
+                key={product.product_id}
+                rank={i + 1}
+                product={product}
+                lang={lang}
+                slug={currentSlug}
+              />
             ))}
           </div>
         </Card>
@@ -427,7 +462,13 @@ export function PricingTab({ slug }: PricingTabProps) {
                 </thead>
                 <tbody className="divide-y divide-border">
                   {data.product_types.map((row) => (
-                    <tr key={row.type} className="transition-colors hover:bg-muted/20">
+                    <tr
+                      key={row.type}
+                      className="transition-colors hover:bg-muted/20 cursor-pointer"
+                      onClick={() => {
+                        window.location.href = `/${lang}/companies/${currentSlug}/products?category=${encodeURIComponent(row.type)}`;
+                      }}
+                    >
                       <td className="max-w-[200px] truncate px-5 py-3 font-medium text-foreground">
                         {row.type}
                       </td>

@@ -38,7 +38,7 @@ function timeAgo(iso: string): string {
 function ProductCardSkeleton() {
   return (
     <div className="animate-pulse overflow-hidden rounded-xl border border-border bg-card">
-      <div className="aspect-square bg-muted" />
+      <div className="aspect-[4/3] bg-muted" />
       <div className="p-3 space-y-2">
         <div className="h-3 w-3/4 rounded bg-muted" />
         <div className="h-3 w-1/2 rounded bg-muted" />
@@ -67,21 +67,21 @@ function ProductCard({
         data-testid="product-card"
         className="group overflow-hidden rounded-xl border border-border bg-card transition-shadow hover:shadow-md"
       >
-        {/* Image */}
-        <div className="relative aspect-square overflow-hidden bg-muted">
+        {/* Image — aspect-[4/3] for better product fit */}
+        <div className="relative aspect-[4/3] overflow-hidden bg-white border-b border-border">
           {product.image_url ? (
             <Image
               src={product.image_url}
               alt={product.title}
               fill
-              className="object-contain p-2 transition-transform group-hover:scale-105"
+              className="object-contain p-3 transition-transform group-hover:scale-105"
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
               unoptimized
             />
           ) : (
-            <div className="flex h-full items-center justify-center text-muted-foreground">
+            <div className="flex h-full items-center justify-center text-muted-foreground/30">
               <svg
-                className="h-12 w-12 opacity-30"
+                className="h-12 w-12"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -95,11 +95,20 @@ function ProductCard({
               </svg>
             </div>
           )}
+
+          {/* Discount badge */}
           {product.discount_pct != null && product.discount_pct > 0 && (
             <span className="absolute right-2 top-2 rounded-full bg-destructive px-2 py-0.5 text-xs font-semibold text-destructive-foreground">
               -{Math.round(product.discount_pct)}%
             </span>
           )}
+
+          {/* Hover overlay */}
+          <div className="absolute inset-0 flex items-center justify-center bg-foreground/0 transition-all group-hover:bg-foreground/[0.08]">
+            <span className="scale-90 rounded-full bg-background/90 px-3 py-1.5 text-xs font-medium text-foreground opacity-0 shadow-sm transition-all group-hover:scale-100 group-hover:opacity-100">
+              View details →
+            </span>
+          </div>
         </div>
 
         {/* Info */}
@@ -149,11 +158,51 @@ export function ProductsTab({ slug, lang }: ProductsTabProps) {
     error: null,
   });
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState<string | null>(null);
+
+  // FIX 5 — Pre-populate filters from URL search params
+  const [category, setCategory] = useState<string | null>(() => {
+    if (typeof window === "undefined") return null;
+    return new URLSearchParams(window.location.search).get("category");
+  });
+  const [search, setSearch] = useState(() => {
+    if (typeof window === "undefined") return "";
+    return new URLSearchParams(window.location.search).get("search") ?? "";
+  });
+
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // FIX 2 — Stable categories fetched once on mount
+  const [allCategories, setAllCategories] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetchJson<CompanyProductsListResponse>(
+      `/api/companies/${slug}/products?limit=100&page=1`
+    )
+      .then((data) => {
+        const cats = Array.from(
+          new Set(
+            data.products
+              .map((p) => p.category)
+              .filter((c): c is string => Boolean(c))
+          )
+        ).sort();
+        setAllCategories(cats);
+      })
+      .catch(() => {});
+  }, [slug]);
+
+  // FIX 5 — Sync URL when filters change (shallow replace)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const url = new URL(window.location.href);
+    if (category) url.searchParams.set("category", category);
+    else url.searchParams.delete("category");
+    if (search) url.searchParams.set("search", search);
+    else url.searchParams.delete("search");
+    window.history.replaceState({}, "", url.toString());
+  }, [category, search]);
 
   const buildUrl = useCallback(
     (q: string, cat: string | null, min: string, max: string, p: number) => {
@@ -185,7 +234,7 @@ export function ProductsTab({ slug, lang }: ProductsTabProps) {
     [buildUrl]
   );
 
-  // Initial load + reload when page changes (not search — that's debounced)
+  // Initial load + reload when page/category changes
   useEffect(() => {
     load(search, category, minPrice, maxPrice, page);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -289,8 +338,8 @@ export function ProductsTab({ slug, lang }: ProductsTabProps) {
         )}
       </div>
 
-      {/* Category chips */}
-      {state.data && state.data.products.length > 0 && (
+      {/* FIX 2 — Stable category chips from one-time fetch */}
+      {allCategories.length > 0 && (
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => handleCategory(null)}
@@ -302,28 +351,29 @@ export function ProductsTab({ slug, lang }: ProductsTabProps) {
           >
             All
           </button>
-          {Array.from(
-            new Set(
-              state.data.products
-                .map((p) => p.category)
-                .filter((c): c is string => Boolean(c))
-            )
-          )
-            .slice(0, 10)
-            .map((cat) => (
-              <button
-                key={cat}
-                onClick={() => handleCategory(cat === category ? null : cat)}
-                className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
-                  category === cat
-                    ? "bg-foreground text-background"
-                    : "border border-border text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
+          {allCategories.slice(0, 12).map((cat) => (
+            <button
+              key={cat}
+              onClick={() => handleCategory(cat === category ? null : cat)}
+              className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                category === cat
+                  ? "bg-foreground text-background"
+                  : "border border-border text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
         </div>
+      )}
+
+      {/* FIX 3 — Result count */}
+      {!state.loading && pagination && (
+        <p className="text-xs text-muted-foreground">
+          {pagination.total.toLocaleString("en-US")} products
+          {category ? ` in "${category}"` : ""}
+          {search ? ` matching "${search}"` : ""}
+        </p>
       )}
 
       {/* Error */}
