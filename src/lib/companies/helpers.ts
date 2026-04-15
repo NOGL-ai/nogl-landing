@@ -673,11 +673,15 @@ export async function buildPlaceholderSnapshot(
       SELECT
         COUNT(*)::int AS total_products,
         COALESCE(SUM(COALESCE(product_variants_count, 0)), 0)::int AS total_variants,
-        COUNT(*) FILTER (WHERE product_discount_price IS NOT NULL)::int AS total_discounted,
+        COUNT(*) FILTER (
+          WHERE product_discount_price IS NOT NULL
+             OR (product_discount_percentage IS NOT NULL
+                 AND product_discount_percentage > 0)
+        )::int AS total_discounted,
         AVG(product_discount_percentage) AS avg_discount_pct,
-        AVG(product_original_price) AS avg_price,
-        MIN(product_original_price) AS min_price,
-        MAX(product_original_price) AS max_price,
+        AVG(product_original_price) FILTER (WHERE product_original_price > 0) AS avg_price,
+        MIN(product_original_price) FILTER (WHERE product_original_price > 0) AS min_price,
+        MAX(product_original_price) FILTER (WHERE product_original_price > 0) AS max_price,
         MIN(extraction_timestamp) AS data_since,
         MAX(extraction_timestamp) AS last_scraped_at
       FROM public.products
@@ -1047,17 +1051,33 @@ export async function getCompanyPricingResponse(params: {
   productType?: string;
   minPrice?: number;
   maxPrice?: number;
+  sort?: "price_asc" | "price_desc" | "discount_desc" | "last_seen_desc";
+  productPage?: number;
+  productLimit?: number;
 }): Promise<CompanyPricingResponse | null> {
   const company = await resolveCompanyBySlug(params.slug);
   if (!company) {
     return null;
   }
 
+  const productPage = params.productPage ?? 1;
+  const productLimit = params.productLimit ?? 20;
+
   const whereSql = await buildProductsWhereSql(company.id, company.name, company.domain, {
     productType: params.productType,
     minPrice: params.minPrice,
     maxPrice: params.maxPrice,
   });
+
+  // Sort clause for the product table
+  const sortClause =
+    params.sort === "price_asc"
+      ? Prisma.sql`product_original_price ASC NULLS LAST`
+      : params.sort === "price_desc"
+      ? Prisma.sql`product_original_price DESC NULLS LAST`
+      : params.sort === "discount_desc"
+      ? Prisma.sql`product_discount_percentage DESC NULLS LAST`
+      : Prisma.sql`extraction_timestamp DESC NULLS LAST`;
 
   type TopProductForPricingRow = {
     product_id: string | null;
@@ -1069,65 +1089,109 @@ export async function getCompanyPricingResponse(params: {
     product_category: string | null;
   };
 
+  type ProductForTableRow = {
+    product_id: string;
+    product_title: string | null;
+    product_image_url: string | null;
+    product_url: string | null;
+    category: string | null;
+    original_price: number | null;
+    discount_price: number | null;
+    discount_pct: number | null;
+    last_seen: Date | null;
+  };
+
   // Also fetch the snapshot for price_distribution (fire in parallel)
   const snapshotPromise = prisma.companySnapshot
     .findFirst({ where: { company_id: company.id }, select: { price_distribution: true } })
     .catch(() => null);
 
-  const [aggregateRows, groupedRows, countRows, topProductRows] = await Promise.all([
-    prisma.$queryRaw<ProductAggregateRow[]>(Prisma.sql`
-      SELECT
-        COUNT(*)::int AS total_products,
-        COALESCE(SUM(COALESCE(product_variants_count, 0)), 0)::int AS total_variants,
-        COUNT(*) FILTER (WHERE product_discount_price IS NOT NULL)::int AS total_discounted,
-        AVG(product_discount_percentage) AS avg_discount_pct,
-        AVG(product_original_price) AS avg_price,
-        MIN(product_original_price) AS min_price,
-        MAX(product_original_price) AS max_price
-      FROM public.products
-      ${whereSql}
-    `),
-    prisma.$queryRaw<ProductTypeAggregateRow[]>(Prisma.sql`
-      SELECT
-        COALESCE(product_category, 'Uncategorized') AS type,
-        COUNT(*)::int AS count,
-        AVG(product_original_price) AS avg_price,
-        MIN(product_original_price) AS min_price,
-        MAX(product_original_price) AS max_price,
-        AVG(product_discount_percentage) AS avg_discount_pct
-      FROM public.products
-      ${whereSql}
-      GROUP BY COALESCE(product_category, 'Uncategorized')
-      ORDER BY COUNT(*) DESC, COALESCE(product_category, 'Uncategorized') ASC
-      LIMIT ${params.limit}
-      OFFSET ${(params.page - 1) * params.limit}
-    `),
-    prisma.$queryRaw<CountRow[]>(Prisma.sql`
-      SELECT COUNT(*) AS count
-      FROM (
-        SELECT COALESCE(product_category, 'Uncategorized')
+  const [aggregateRows, groupedRows, groupCountRows, productCountRows, topProductRows, productsRows] =
+    await Promise.all([
+      // BUG 1+2: fixed discount count (either column) + price aggregates exclude 0-price rows
+      prisma.$queryRaw<ProductAggregateRow[]>(Prisma.sql`
+        SELECT
+          COUNT(*)::int AS total_products,
+          COALESCE(SUM(COALESCE(product_variants_count, 0)), 0)::int AS total_variants,
+          COUNT(*) FILTER (
+            WHERE product_discount_price IS NOT NULL
+               OR (product_discount_percentage IS NOT NULL
+                   AND product_discount_percentage > 0)
+          )::int AS total_discounted,
+          AVG(product_discount_percentage) AS avg_discount_pct,
+          AVG(product_original_price) FILTER (WHERE product_original_price > 0) AS avg_price,
+          MIN(product_original_price) FILTER (WHERE product_original_price > 0) AS min_price,
+          MAX(product_original_price) FILTER (WHERE product_original_price > 0) AS max_price
+        FROM public.products
+        ${whereSql}
+      `),
+      // Product types grouped (for product_types_pagination)
+      prisma.$queryRaw<ProductTypeAggregateRow[]>(Prisma.sql`
+        SELECT
+          COALESCE(product_category, 'Uncategorized') AS type,
+          COUNT(*)::int AS count,
+          AVG(product_original_price) AS avg_price,
+          MIN(product_original_price) FILTER (WHERE product_original_price > 0) AS min_price,
+          MAX(product_original_price) FILTER (WHERE product_original_price > 0) AS max_price,
+          AVG(product_discount_percentage) AS avg_discount_pct
         FROM public.products
         ${whereSql}
         GROUP BY COALESCE(product_category, 'Uncategorized')
-      ) grouped
-    `),
-    prisma.$queryRaw<TopProductForPricingRow[]>(Prisma.sql`
-      SELECT
-        product_id,
-        product_title,
-        product_page_image_url,
-        product_url,
-        CAST(product_original_price AS float8) AS product_original_price,
-        CAST(product_discount_price AS float8) AS product_discount_price,
-        product_category
-      FROM public.products
-      ${whereSql}
-        AND product_page_image_url IS NOT NULL
-        AND product_title IS NOT NULL
-      ORDER BY product_original_price DESC NULLS LAST
-      LIMIT 8
-    `),
-  ]);
+        ORDER BY COUNT(*) DESC, COALESCE(product_category, 'Uncategorized') ASC
+        LIMIT ${params.limit}
+        OFFSET ${(params.page - 1) * params.limit}
+      `),
+      // BUG 3: count product TYPE groups (for product_types_pagination)
+      prisma.$queryRaw<CountRow[]>(Prisma.sql`
+        SELECT COUNT(*) AS count
+        FROM (
+          SELECT COALESCE(product_category, 'Uncategorized')
+          FROM public.products
+          ${whereSql}
+          GROUP BY COALESCE(product_category, 'Uncategorized')
+        ) grouped
+      `),
+      // BUG 3: separate individual product count (for product-level pagination)
+      prisma.$queryRaw<CountRow[]>(Prisma.sql`
+        SELECT COUNT(*) AS count
+        FROM public.products
+        ${whereSql}
+      `),
+      // BUG 4: COALESCE both image columns for top products
+      prisma.$queryRaw<TopProductForPricingRow[]>(Prisma.sql`
+        SELECT
+          product_id,
+          product_title,
+          COALESCE(product_page_image_url, product_image_url) AS product_page_image_url,
+          product_url,
+          CAST(product_original_price AS float8) AS product_original_price,
+          CAST(product_discount_price AS float8) AS product_discount_price,
+          product_category
+        FROM public.products
+        ${whereSql}
+          AND product_title IS NOT NULL
+        ORDER BY product_original_price DESC NULLS LAST
+        LIMIT 8
+      `),
+      // NEW: paginated product table with sort
+      prisma.$queryRaw<ProductForTableRow[]>(Prisma.sql`
+        SELECT
+          product_id,
+          product_title,
+          COALESCE(product_page_image_url, product_image_url) AS product_image_url,
+          product_url,
+          product_category AS category,
+          CAST(product_original_price AS float8) AS original_price,
+          CAST(product_discount_price AS float8) AS discount_price,
+          CAST(product_discount_percentage AS float8) AS discount_pct,
+          extraction_timestamp AS last_seen
+        FROM public.products
+        ${whereSql}
+        ORDER BY ${sortClause}
+        LIMIT ${productLimit}
+        OFFSET ${(productPage - 1) * productLimit}
+      `),
+    ]);
 
   const aggregate = aggregateRows[0] ?? {
     total_products: 0,
@@ -1140,6 +1204,8 @@ export async function getCompanyPricingResponse(params: {
     data_since: null,
     last_scraped_at: null,
   };
+
+  const totalProductCount = parseCount(productCountRows[0]?.count ?? 0);
 
   const productTypes: CompanyPricingProductTypeRow[] = groupedRows.map((row) => ({
     type: row.type ?? "Uncategorized",
@@ -1181,7 +1247,24 @@ export async function getCompanyPricingResponse(params: {
       discount_price: typeof r.product_discount_price === "number" ? r.product_discount_price : null,
       category: r.product_category,
     })),
-    pagination: createPagination(params.page, params.limit, parseCount(countRows[0]?.count ?? 0)),
+    products: productsRows.map((r) => ({
+      product_id: r.product_id,
+      product_title: r.product_title ?? "Unknown",
+      product_image_url: r.product_image_url ?? null,
+      product_url: r.product_url ?? null,
+      category: r.category ?? null,
+      original_price: r.original_price ?? null,
+      discount_price: r.discount_price ?? null,
+      discount_pct: r.discount_pct ?? null,
+      last_seen: r.last_seen ? r.last_seen.toISOString() : null,
+    })),
+    // BUG 3: pagination = product-level; product_types_pagination = type-group level
+    pagination: createPagination(productPage, productLimit, totalProductCount),
+    product_types_pagination: createPagination(
+      params.page,
+      params.limit,
+      parseCount(groupCountRows[0]?.count ?? 0)
+    ),
   };
 }
 
