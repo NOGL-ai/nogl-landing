@@ -2,6 +2,7 @@
 
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
+	distDir: process.env.NEXT_DIST_DIR || ".next",
 	/**
 	 * The base URL of your website. Ensure this is correctly set to your production URL.
 	 * It's recommended to use an environment variable for flexibility across environments.
