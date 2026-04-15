@@ -35,11 +35,17 @@ export async function GET(request: NextRequest, context: RouteContext) {
     const productType = searchParams.get("product_type")?.trim() || undefined;
     const minPrice = parseOptionalNumber(searchParams.get("min_price"));
     const maxPrice = parseOptionalNumber(searchParams.get("max_price"));
+    const sort = (searchParams.get("sort") ?? "last_seen_desc") as
+      | "price_asc"
+      | "price_desc"
+      | "discount_desc"
+      | "last_seen_desc";
 
     const response = await getCompanyPricingResponse({
       slug,
       page,
       limit,
+      sort,
       productType,
       minPrice,
       maxPrice,
