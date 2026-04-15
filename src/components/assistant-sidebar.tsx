@@ -74,17 +74,20 @@ export const AssistantSidebar: FC<PropsWithChildren> = ({ children }) => {
     }
   }, []);
 
+  // Collapse once the panel is in the DOM (isMounted gates its render).
+  // Defer by one frame so react-resizable-panels finishes its own layout
+  // restoration before we override it.
+  useEffect(() => {
+    if (!isMounted) return;
+    const id = requestAnimationFrame(() => {
+      panelRef.current?.collapse();
+    });
+    return () => cancelAnimationFrame(id);
+  }, [isMounted]);
+
   // Handle client-side hydration and responsive behavior
   useEffect(() => {
     setIsMounted(true);
-
-    // Restore collapse state from localStorage on mount
-    if (panelRef.current) {
-      const storedCollapsed = getStoredCollapsedState();
-      if (storedCollapsed) {
-        panelRef.current.collapse();
-      }
-    }
 
     // Auto-collapse on small screens when resizing
     const mediaQuery = window.matchMedia('(min-width: 1280px)');

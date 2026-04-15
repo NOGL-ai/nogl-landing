@@ -126,6 +126,18 @@ export type CompanyPricingTopProduct = {
   category: string | null;
 };
 
+export type CompanyPricingProduct = {
+  product_id: string;
+  product_title: string;
+  product_image_url: string | null;
+  product_url: string | null;
+  category: string | null;
+  original_price: number | null;
+  discount_price: number | null;
+  discount_pct: number | null;
+  last_seen: string | null;
+};
+
 export type CompanyPricingProductTypeRow = {
   type: string;
   count: number;
@@ -148,6 +160,7 @@ export type CompanyPricingResponse = {
   top_products?: CompanyPricingTopProduct[];
   product_types: CompanyPricingProductTypeRow[];
   price_distribution?: PriceDistributionBucket[] | null;
+  products: CompanyPricingProduct[];
   pagination: PageMeta;
 };
 

@@ -2,7 +2,6 @@
 
 import { ExternalLink } from "lucide-react";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { useParams } from "next/navigation";
 
 import { FilterBar } from "@/components/companies/FilterBar";
@@ -10,7 +9,7 @@ import { Card } from "@/components/ui/card";
 import { DiscountMetricsCard } from "@/components/companies/pricing/DiscountMetricsCard";
 import type {
   CompanyPricingResponse,
-  CompanyPricingTopProduct,
+  CompanyPricingProduct,
   PriceDistributionBucket,
 } from "@/types/company";
 import { fetchJson, formatNumber, formatPercent, InlineError } from "./shared";
@@ -19,6 +18,8 @@ type PricingTabProps = {
   slug: string;
   active?: boolean;
 };
+
+type SortOption = "price_asc" | "price_desc" | "discount_desc" | "last_seen_desc";
 
 type PricingState = {
   data: CompanyPricingResponse | null;
@@ -40,33 +41,6 @@ function fmtPrice(n: number | null | undefined): string {
   return `€${n.toFixed(2)}`;
 }
 
-// Donut chart
-function DonutChart({ value, total }: { value: number; total: number }) {
-  const pct = total > 0 ? value / total : 0;
-  const radius = 52;
-  const sw = 14;
-  const circ = 2 * Math.PI * radius;
-  const offset = circ - pct * circ;
-  const label = `${Math.round(pct * 100)}%`;
-  return (
-    <svg viewBox="0 0 128 128" className="h-28 w-28">
-      <circle cx="64" cy="64" r={radius} stroke="currentColor" strokeWidth={sw} fill="none" className="text-muted" />
-      {pct > 0 && (
-        <circle
-          cx="64" cy="64" r={radius}
-          stroke="currentColor" strokeWidth={sw} fill="none"
-          strokeDasharray={circ} strokeDashoffset={offset}
-          strokeLinecap="round"
-          className="text-primary"
-          style={{ transform: "rotate(-90deg)", transformOrigin: "64px 64px" }}
-        />
-      )}
-      <text x="64" y="57" textAnchor="middle" dominantBaseline="middle" fontSize="18" fontWeight="700" className="fill-foreground">{label}</text>
-      <text x="64" y="78" textAnchor="middle" dominantBaseline="middle" fontSize="10" className="fill-muted-foreground">discounted</text>
-    </svg>
-  );
-}
-
 // Price range bar
 function PriceRangeBar({
   min, max, globalMin, globalMax,
@@ -84,107 +58,31 @@ function PriceRangeBar({
   );
 }
 
-// Top product card
-interface TopProductCardProps {
-  rank: number;
-  product: CompanyPricingTopProduct;
-  lang: string;
-  slug: string;
-}
-
-function TopProductCard({ rank, product, lang, slug }: TopProductCardProps) {
-  const href = product.product_id
-    ? `/${lang}/companies/${slug}/products/${encodeURIComponent(product.product_id)}`
-    : null;
-
-  return (
-    <div className="relative flex w-[200px] flex-shrink-0 flex-col overflow-hidden rounded-xl border border-border bg-card">
-      <div className="absolute left-2 top-2 z-10 flex h-6 min-w-[24px] items-center justify-center rounded bg-foreground px-1 text-xs font-bold text-background">
-        #{rank}
-      </div>
-      <div className="flex h-36 items-center justify-center overflow-hidden bg-muted/40">
-        {product.product_image_url ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={product.product_image_url}
-            alt={product.product_title}
-            className="h-full w-full object-contain p-2"
-          />
-        ) : (
-          <div className="text-xs text-muted-foreground">No image</div>
-        )}
-      </div>
-      <div className="flex flex-1 flex-col gap-2 p-3">
-        <p className="line-clamp-2 text-xs font-medium leading-snug text-foreground">
-          {product.product_title}
-        </p>
-        <p className="text-sm font-semibold text-foreground">
-          {product.discount_price != null ? (
-            <>
-              <span className="mr-1 text-xs font-normal line-through text-muted-foreground">
-                {fmtPrice(product.original_price)}
-              </span>
-              {fmtPrice(product.discount_price)}
-            </>
-          ) : (
-            fmtPrice(product.original_price)
-          )}
-        </p>
-        <div className="mt-auto flex gap-1.5">
-          {/* FIX 4 — Explore button wired to product detail page */}
-          {href ? (
-            <Link
-              href={href}
-              className="flex-1 rounded border border-border px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted text-center"
-            >
-              Explore
-            </Link>
-          ) : (
-            <button
-              type="button"
-              disabled
-              className="flex-1 rounded border border-border px-2 py-1 text-xs text-muted-foreground opacity-40 cursor-not-allowed"
-            >
-              Explore
-            </button>
-          )}
-          {product.product_url && (
-            <a
-              href={product.product_url}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1 rounded border border-border px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted"
-            >
-              View <ExternalLink className="h-3 w-3" />
-            </a>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 // Vertical bar chart for price distribution — pure SVG, no external deps
-function PriceDistributionBars({ buckets }: { buckets: PriceDistributionBucket[] }) {
+function PriceDistributionBars({
+  buckets,
+  onBucketClick,
+}: {
+  buckets: PriceDistributionBucket[];
+  onBucketClick?: (min: number, max: number) => void;
+}) {
   if (!buckets.length) return <p className="text-xs text-muted-foreground">No distribution data.</p>;
 
   const maxPct = Math.max(...buckets.map((b) => b.percentage), 1);
-  // Round up to nearest 20 for clean Y axis
   const chartMax = Math.ceil(maxPct / 20) * 20 || 20;
   const yTicks = Array.from({ length: Math.floor(chartMax / 20) + 1 }, (_, i) => i * 20);
 
   const W = 420;
   const H = 160;
-  const ML = 36; // margin left (Y labels)
-  const MB = 32; // margin bottom (X labels)
-  const MT = 8;  // margin top
+  const ML = 36;
+  const MB = 32;
+  const MT = 8;
   const chartW = W - ML;
   const bw = (chartW / buckets.length) * 0.6;
   const gap = (chartW / buckets.length) * 0.4;
 
   return (
     <svg viewBox={`0 0 ${W} ${H + MB + MT}`} className="w-full" style={{ overflow: "visible" }}>
-      {/* Horizontal grid lines */}
       {yTicks.map((tick) => {
         const y = MT + H - (tick / chartMax) * H;
         return (
@@ -195,15 +93,21 @@ function PriceDistributionBars({ buckets }: { buckets: PriceDistributionBucket[]
         );
       })}
 
-      {/* Bars + labels */}
       {buckets.map((bucket, i) => {
         const barH = Math.max((bucket.percentage / chartMax) * H, 1);
         const x = ML + i * (chartW / buckets.length) + gap / 2;
         const y = MT + H - barH;
         const label = `€${bucket.range.replace(/-/g, "–")}`;
+        const [minStr, maxStr] = bucket.range.split("-");
+        const min = Number(minStr);
+        const max = maxStr ? Number(maxStr) : 999999;
         return (
           <g key={bucket.range}>
-            <rect x={x} y={y} width={bw} height={barH} rx="3" className="fill-primary/70" />
+            <rect
+              x={x} y={y} width={bw} height={barH} rx="3"
+              className="fill-primary/70 hover:fill-primary cursor-pointer transition-colors"
+              onClick={() => onBucketClick?.(min, max)}
+            />
             {bucket.percentage >= 4 && (
               <text x={x + bw / 2} y={y + 11} textAnchor="middle" fontSize="8" fontWeight="600" fill="white">
                 {Math.round(bucket.percentage)}%
@@ -222,7 +126,6 @@ function PriceDistributionBars({ buckets }: { buckets: PriceDistributionBucket[]
         );
       })}
 
-      {/* Y-axis border */}
       <line x1={ML} x2={ML} y1={MT} y2={MT + H} stroke="currentColor" strokeWidth="0.8" className="text-border" />
     </svg>
   );
@@ -233,7 +136,6 @@ function PricingSkeleton() {
   return (
     <div className="space-y-6">
       <div className="h-10 w-80 animate-pulse rounded-lg bg-muted" />
-      <div className="h-56 animate-pulse rounded-xl bg-muted" />
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="h-48 animate-pulse rounded-xl bg-muted" />
         <div className="h-48 animate-pulse rounded-xl bg-muted lg:col-span-2" />
@@ -243,89 +145,136 @@ function PricingSkeleton() {
   );
 }
 
+function timeAgo(iso: string): string {
+  const diff = Date.now() - new Date(iso).getTime();
+  const days = Math.floor(diff / 86_400_000);
+  if (days === 0) return "today";
+  if (days === 1) return "1 day ago";
+  if (days < 30) return `${days}d ago`;
+  const months = Math.floor(days / 30);
+  if (months < 12) return `${months}mo ago`;
+  return `${Math.floor(months / 12)}y ago`;
+}
+
+function ProductRow({
+  product, lang, slug,
+}: { product: CompanyPricingProduct; lang: string; slug: string }) {
+  const href = `/${lang}/companies/${slug}/products/${encodeURIComponent(product.product_id)}`;
+  return (
+    <tr
+      className="cursor-pointer transition-colors hover:bg-muted/40"
+      onClick={() => { window.location.href = href; }}
+    >
+      <td className="w-12 px-4 py-2">
+        <div className="h-10 w-10 overflow-hidden rounded bg-muted flex-shrink-0">
+          {product.product_image_url ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={product.product_image_url} alt=""
+              className="h-full w-full object-contain p-0.5" />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center">
+              <svg className="h-4 w-4 text-muted-foreground/30" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1}
+                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14" />
+              </svg>
+            </div>
+          )}
+        </div>
+      </td>
+      <td className="px-4 py-2 max-w-[220px]">
+        <p className="line-clamp-2 text-xs font-medium leading-snug text-foreground">
+          {product.product_title}
+        </p>
+      </td>
+      <td className="hidden px-4 py-2 sm:table-cell">
+        {product.category
+          ? <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">{product.category}</span>
+          : <span className="text-xs text-muted-foreground/40">—</span>}
+      </td>
+      <td className="whitespace-nowrap px-4 py-2 text-right tabular-nums">
+        {product.discount_price != null ? (
+          <span className="flex flex-col items-end gap-0.5">
+            <span className="text-xs line-through text-muted-foreground">{fmtPrice(product.original_price)}</span>
+            <span className="text-sm font-semibold text-destructive">{fmtPrice(product.discount_price)}</span>
+          </span>
+        ) : (
+          <span className="text-sm font-medium text-foreground">{fmtPrice(product.original_price)}</span>
+        )}
+      </td>
+      <td className="hidden px-4 py-2 text-right sm:table-cell">
+        {product.discount_pct != null && product.discount_pct > 0 ? (
+          <span className="rounded-full bg-destructive/10 px-2 py-0.5 text-xs font-semibold text-destructive">
+            -{Math.round(product.discount_pct)}%
+          </span>
+        ) : (
+          <span className="text-xs text-muted-foreground/40">—</span>
+        )}
+      </td>
+      <td className="hidden whitespace-nowrap px-4 py-2 text-right text-xs text-muted-foreground tabular-nums md:table-cell">
+        {product.last_seen ? timeAgo(product.last_seen) : "—"}
+      </td>
+      <td className="px-4 py-2" onClick={e => e.stopPropagation()}>
+        {product.product_url && (
+          <a href={product.product_url} target="_blank" rel="noreferrer"
+            className="inline-flex text-muted-foreground/50 hover:text-foreground transition-colors">
+            <ExternalLink className="h-3.5 w-3.5" />
+          </a>
+        )}
+      </td>
+    </tr>
+  );
+}
+
 export function PricingTab({ slug }: PricingTabProps) {
-  // FIX 4 — get lang + slug from URL params for navigation
   const routeParams = useParams<{ lang: string; slug: string }>();
   const lang = routeParams.lang ?? "en";
-  const currentSlug = routeParams.slug ?? slug;
 
   const [state, setState] = useState<PricingState>({ data: null, error: null, loading: true });
-  // All product types from the initial unfiltered load — used to populate the dropdown
   const [allProductTypes, setAllProductTypes] = useState<string[]>([]);
   const [filters, setFilters] = useState<PricingFilters>({ productType: null, minPrice: null, maxPrice: null });
+  const [sort, setSort] = useState<SortOption>("last_seen_desc");
+  const [pricingPage, setPricingPage] = useState(1);
 
-  // Build API URL from current filters
-  function buildUrl(f: PricingFilters) {
-    const params = new URLSearchParams();
-    if (f.productType) params.set("product_type", f.productType);
-    if (f.minPrice && !isNaN(Number(f.minPrice))) params.set("min_price", f.minPrice);
-    if (f.maxPrice && !isNaN(Number(f.maxPrice))) params.set("max_price", f.maxPrice);
-    const qs = params.toString();
-    return `/api/companies/${slug}/pricing${qs ? `?${qs}` : ""}`;
-  }
-
-  // Initial load (unfiltered) — also populates the type list
   useEffect(() => {
     let cancelled = false;
     async function load() {
-      setState((s) => ({ ...s, loading: true, error: null }));
+      setState(s => ({ ...s, loading: true, error: null }));
       try {
-        const data = await fetchJson<CompanyPricingResponse>(`/api/companies/${slug}/pricing`);
+        const params = new URLSearchParams();
+        if (filters.productType) params.set("product_type", filters.productType);
+        if (filters.minPrice && !isNaN(Number(filters.minPrice)))
+          params.set("min_price", filters.minPrice);
+        if (filters.maxPrice && !isNaN(Number(filters.maxPrice)))
+          params.set("max_price", filters.maxPrice);
+        params.set("sort", sort);
+        params.set("page", String(pricingPage));
+        params.set("limit", "20");
+        const qs = params.toString();
+        const url = `/api/companies/${slug}/pricing${qs ? `?${qs}` : ""}`;
+        const data = await fetchJson<CompanyPricingResponse>(url);
         if (!cancelled) {
           setState({ data, error: null, loading: false });
-          // Populate product type options from initial unfiltered data
-          const types = data.product_types.map((r) => r.type).filter(Boolean);
-          setAllProductTypes(types);
+          if (!filters.productType && !filters.minPrice && !filters.maxPrice && pricingPage === 1) {
+            setAllProductTypes(data.product_types.map(r => r.type).filter(Boolean));
+          }
         }
       } catch (err) {
         if (!cancelled)
-          setState({ data: null, error: err instanceof Error ? err.message : "Could not load pricing data.", loading: false });
+          setState(s => ({
+            ...s,
+            error: err instanceof Error ? err.message : "Could not load pricing data.",
+            loading: false,
+          }));
       }
     }
     void load();
     return () => { cancelled = true; };
-  }, [slug]);
-
-  // Re-fetch when filters change (skip initial empty state)
-  useEffect(() => {
-    const hasFilter = filters.productType || filters.minPrice || filters.maxPrice;
-    if (!hasFilter) return; // initial load handles the unfiltered case
-    let cancelled = false;
-    async function reload() {
-      setState((s) => ({ ...s, loading: true, error: null }));
-      try {
-        const data = await fetchJson<CompanyPricingResponse>(buildUrl(filters));
-        if (!cancelled) setState({ data, error: null, loading: false });
-      } catch (err) {
-        if (!cancelled)
-          setState((s) => ({ ...s, error: err instanceof Error ? err.message : "Filter failed.", loading: false }));
-      }
-    }
-    void reload();
-    return () => { cancelled = true; };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters]);
-
-  // When all filters cleared, reload unfiltered
-  useEffect(() => {
-    const hasFilter = filters.productType || filters.minPrice || filters.maxPrice;
-    if (hasFilter) return;
-    let cancelled = false;
-    async function reloadUnfiltered() {
-      setState((s) => ({ ...s, loading: true, error: null }));
-      try {
-        const data = await fetchJson<CompanyPricingResponse>(`/api/companies/${slug}/pricing`);
-        if (!cancelled) setState({ data, error: null, loading: false });
-      } catch { /* ignore */ }
-    }
-    // Don't run on mount (initial load handles it)
-    if (allProductTypes.length > 0) void reloadUnfiltered();
-    return () => { cancelled = true; };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters.productType, filters.minPrice, filters.maxPrice]);
+  }, [slug, filters.productType, filters.minPrice, filters.maxPrice, sort, pricingPage]);
 
   function setFilter(key: string, value: string | null) {
-    setFilters((prev) => ({ ...prev, [key]: value }));
+    setFilters(prev => ({ ...prev, [key]: value }));
+    setPricingPage(1);
   }
 
   if (state.loading) return <PricingSkeleton />;
@@ -336,13 +285,9 @@ export function PricingTab({ slug }: PricingTabProps) {
 
   const priceDist: PriceDistributionBucket[] = data.price_distribution ?? [];
 
-  const maxDistCount = priceDist.length > 0 ? Math.max(...priceDist.map((b) => b.count)) : 0;
-
   const validPrices = data.product_types.filter((r) => r.min_price > 0 || r.max_price > 0);
   const globalMin = validPrices.length > 0 ? Math.min(...validPrices.map((r) => r.min_price)) : 0;
   const globalMax = validPrices.length > 0 ? Math.max(...validPrices.map((r) => r.max_price)) : 1;
-
-  const topProducts = data.top_products ?? [];
 
   return (
     <div className="space-y-6">
@@ -390,27 +335,6 @@ export function PricingTab({ slug }: PricingTabProps) {
         )}
       </div>
 
-      {/* Best Selling Products */}
-      {topProducts.length > 0 && (
-        <Card className="p-5">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-base font-semibold text-foreground">Best Selling Products</h2>
-            <span className="text-xs text-muted-foreground">Sort by: Price</span>
-          </div>
-          <div className="flex gap-4 overflow-x-auto pb-2">
-            {topProducts.map((product, i) => (
-              <TopProductCard
-                key={product.product_id}
-                rank={i + 1}
-                product={product}
-                lang={lang}
-                slug={currentSlug}
-              />
-            ))}
-          </div>
-        </Card>
-      )}
-
       {/* Left col: Discount donut + Price Distribution | Right col (2/3): Product Types table */}
       <div className="grid gap-6 lg:grid-cols-3">
 
@@ -428,13 +352,13 @@ export function PricingTab({ slug }: PricingTabProps) {
                 <h3 className="text-sm font-semibold text-foreground">Price Distribution</h3>
                 <span className="text-xs text-muted-foreground">% of Product Prices</span>
               </div>
-              <p className="mb-3 flex items-center gap-1.5 text-xs text-muted-foreground">
-                <svg className="h-3 w-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-                Click a price bucket to apply price filters
-              </p>
-              <PriceDistributionBars buckets={priceDist} />
+              <PriceDistributionBars
+                buckets={priceDist}
+                onBucketClick={(min, max) => {
+                  setFilter("minPrice", String(min));
+                  setFilter("maxPrice", String(max));
+                }}
+              />
             </Card>
           )}
         </div>
@@ -464,13 +388,11 @@ export function PricingTab({ slug }: PricingTabProps) {
                   {data.product_types.map((row) => (
                     <tr
                       key={row.type}
-                      className="transition-colors hover:bg-muted/20 cursor-pointer"
-                      onClick={() => {
-                        window.location.href = `/${lang}/companies/${currentSlug}/products?category=${encodeURIComponent(row.type)}`;
-                      }}
+                      className="cursor-pointer transition-colors hover:bg-muted/20"
+                      onClick={() => { setFilter("productType", row.type); }}
                     >
-                      <td className="max-w-[200px] truncate px-5 py-3 font-medium text-foreground">
-                        {row.type}
+                      <td className="px-5 py-3 font-medium text-foreground">
+                        <span className="line-clamp-1" title={row.type}>{row.type}</span>
                       </td>
                       <td className="px-4 py-3 text-right tabular-nums text-muted-foreground">
                         {row.count.toLocaleString()}
@@ -502,6 +424,95 @@ export function PricingTab({ slug }: PricingTabProps) {
           )}
         </Card>
       </div>
+
+      {/* Products table */}
+      <Card className="overflow-hidden p-0">
+        <div className="flex items-center justify-between border-b border-border px-5 py-3">
+          <div>
+            <h3 className="text-sm font-semibold text-foreground">Products</h3>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              {formatNumber(data.pagination?.total ?? data.total_products)} total
+              {filters.productType ? ` · "${filters.productType}"` : ""}
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            {(filters.productType || filters.minPrice || filters.maxPrice) && (
+              <button
+                onClick={() => {
+                  setFilters({ productType: null, minPrice: null, maxPrice: null });
+                  setPricingPage(1);
+                }}
+                className="text-xs text-muted-foreground hover:text-foreground underline"
+              >
+                Clear filters
+              </button>
+            )}
+            <select
+              value={sort}
+              onChange={e => {
+                setSort(e.target.value as SortOption);
+                setPricingPage(1);
+              }}
+              className="rounded border border-border bg-background px-2 py-1.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+            >
+              <option value="last_seen_desc">Latest first</option>
+              <option value="price_asc">Price: low → high</option>
+              <option value="price_desc">Price: high → low</option>
+              <option value="discount_desc">Biggest discount</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="min-w-full text-sm">
+            <thead className="border-b border-border bg-muted/30">
+              <tr>
+                <th className="w-12 px-4 py-2.5" />
+                <th className="px-4 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">Product</th>
+                <th className="hidden px-4 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground sm:table-cell">Category</th>
+                <th className="px-4 py-2.5 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">Price</th>
+                <th className="hidden px-4 py-2.5 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground sm:table-cell">Discount</th>
+                <th className="hidden px-4 py-2.5 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground md:table-cell">Last Seen</th>
+                <th className="w-8 px-4 py-2.5" />
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {(data.products ?? []).map(product => (
+                <ProductRow
+                  key={product.product_id}
+                  product={product}
+                  lang={lang}
+                  slug={slug}
+                />
+              ))}
+            </tbody>
+          </table>
+          {(data.products ?? []).length === 0 && !state.loading && (
+            <div className="py-12 text-center text-sm text-muted-foreground">
+              No products match the current filters.
+            </div>
+          )}
+        </div>
+
+        {data.pagination && data.pagination.totalPages > 1 && (
+          <div className="flex items-center justify-between border-t border-border px-5 py-3">
+            <button
+              disabled={pricingPage <= 1}
+              onClick={() => setPricingPage(p => p - 1)}
+              className="rounded border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed"
+            >← Prev</button>
+            <span className="text-xs text-muted-foreground">
+              Page {pricingPage} of {data.pagination.totalPages}
+              {" · "}{formatNumber(data.pagination.total)} products
+            </span>
+            <button
+              disabled={pricingPage >= data.pagination.totalPages}
+              onClick={() => setPricingPage(p => p + 1)}
+              className="rounded border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed"
+            >Next →</button>
+          </div>
+        )}
+      </Card>
     </div>
   );
 }

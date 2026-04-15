@@ -12,6 +12,7 @@ import {
   CompanyEventsResponse,
   CompanyListItem,
   CompanyOverviewResponse,
+  CompanyPricingProduct,
   CompanyPricingProductTypeRow,
   CompanyPricingResponse,
   CompanySnapshotDTO,
@@ -1044,6 +1045,7 @@ export async function getCompanyPricingResponse(params: {
   slug: string;
   page: number;
   limit: number;
+  sort?: 'price_asc' | 'price_desc' | 'discount_desc' | 'last_seen_desc';
   productType?: string;
   minPrice?: number;
   maxPrice?: number;
@@ -1069,12 +1071,32 @@ export async function getCompanyPricingResponse(params: {
     product_category: string | null;
   };
 
+  type ProductForTableRow = {
+    product_id: string;
+    product_title: string | null;
+    product_image_url: string | null;
+    product_url: string | null;
+    category: string | null;
+    original_price: number | null;
+    discount_price: number | null;
+    discount_pct: number | null;
+    last_seen: Date | null;
+  };
+
+  const sortClauses = {
+    'price_asc': Prisma.sql`product_original_price ASC NULLS LAST`,
+    'price_desc': Prisma.sql`product_original_price DESC NULLS LAST`,
+    'discount_desc': Prisma.sql`product_discount_percentage DESC NULLS LAST`,
+    'last_seen_desc': Prisma.sql`extraction_timestamp DESC NULLS LAST`,
+  };
+  const sortClause = sortClauses[params.sort ?? 'last_seen_desc'] ?? sortClauses['last_seen_desc'];
+
   // Also fetch the snapshot for price_distribution (fire in parallel)
   const snapshotPromise = prisma.companySnapshot
     .findFirst({ where: { company_id: company.id }, select: { price_distribution: true } })
     .catch(() => null);
 
-  const [aggregateRows, groupedRows, countRows, topProductRows] = await Promise.all([
+  const [aggregateRows, groupedRows, topProductRows, productsRows, productCountRows] = await Promise.all([
     prisma.$queryRaw<ProductAggregateRow[]>(Prisma.sql`
       SELECT
         COUNT(*)::int AS total_products,
@@ -1099,17 +1121,6 @@ export async function getCompanyPricingResponse(params: {
       ${whereSql}
       GROUP BY COALESCE(product_category, 'Uncategorized')
       ORDER BY COUNT(*) DESC, COALESCE(product_category, 'Uncategorized') ASC
-      LIMIT ${params.limit}
-      OFFSET ${(params.page - 1) * params.limit}
-    `),
-    prisma.$queryRaw<CountRow[]>(Prisma.sql`
-      SELECT COUNT(*) AS count
-      FROM (
-        SELECT COALESCE(product_category, 'Uncategorized')
-        FROM public.products
-        ${whereSql}
-        GROUP BY COALESCE(product_category, 'Uncategorized')
-      ) grouped
     `),
     prisma.$queryRaw<TopProductForPricingRow[]>(Prisma.sql`
       SELECT
@@ -1126,6 +1137,25 @@ export async function getCompanyPricingResponse(params: {
         AND product_title IS NOT NULL
       ORDER BY product_original_price DESC NULLS LAST
       LIMIT 8
+    `),
+    prisma.$queryRaw<ProductForTableRow[]>(Prisma.sql`
+      SELECT
+        id AS product_id,
+        product_title,
+        COALESCE(product_page_image_url, product_image_url) AS product_image_url,
+        product_url,
+        product_category AS category,
+        CAST(product_original_price AS float8) AS original_price,
+        CAST(product_discount_price AS float8) AS discount_price,
+        CAST(product_discount_percentage AS float8) AS discount_pct,
+        extraction_timestamp AS last_seen
+      FROM public.products
+      ${whereSql}
+      ORDER BY ${sortClause}
+      LIMIT ${params.limit} OFFSET ${(params.page - 1) * params.limit}
+    `),
+    prisma.$queryRaw<CountRow[]>(Prisma.sql`
+      SELECT COUNT(*)::int AS count FROM public.products ${whereSql}
     `),
   ]);
 
@@ -1155,6 +1185,18 @@ export async function getCompanyPricingResponse(params: {
     ? (snapshotRow.price_distribution as unknown as PriceDistributionBucket[])
     : null;
 
+  const products: CompanyPricingProduct[] = productsRows.map((r) => ({
+    product_id: r.product_id,
+    product_title: r.product_title ?? 'Unknown',
+    product_image_url: r.product_image_url ?? null,
+    product_url: r.product_url ?? null,
+    category: r.category ?? null,
+    original_price: r.original_price != null ? Number(r.original_price) : null,
+    discount_price: r.discount_price != null ? Number(r.discount_price) : null,
+    discount_pct: r.discount_pct != null ? Number(r.discount_pct) : null,
+    last_seen: r.last_seen ? r.last_seen.toISOString() : null,
+  }));
+
   return {
     company: {
       id: company.id,
@@ -1181,7 +1223,8 @@ export async function getCompanyPricingResponse(params: {
       discount_price: typeof r.product_discount_price === "number" ? r.product_discount_price : null,
       category: r.product_category,
     })),
-    pagination: createPagination(params.page, params.limit, parseCount(countRows[0]?.count ?? 0)),
+    products,
+    pagination: createPagination(params.page, params.limit, parseCount(productCountRows[0]?.count ?? 0)),
   };
 }
 
