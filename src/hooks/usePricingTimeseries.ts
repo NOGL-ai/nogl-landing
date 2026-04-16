@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import type { PricingTimeseriesData } from "@/components/companies/pricing/PricingOverTimeChart";
+// Import from types layer — not from a component file
+import type { PricingTimeseriesData } from "@/types/pricing";
 
 interface UsePricingTimeseriesOptions {
   slug: string;
@@ -40,8 +41,11 @@ export function usePricingTimeseries({
         }
       } catch (err) {
         if (!cancelled) {
-          const errorMessage = err instanceof Error ? err.message : "Unknown error";
-          setState({ data: null, loading: false, error: errorMessage });
+          setState({
+            data: null,
+            loading: false,
+            error: err instanceof Error ? err.message : "Unknown error",
+          });
         }
       }
     }

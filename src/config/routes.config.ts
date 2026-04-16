@@ -19,6 +19,11 @@ export const ROUTE_CONFIG = {
 		'/reports',
 		'/repricing',
 		'/settings',
+		'/trends',
+		'/marketing-assets',
+		'/pricing-suite',
+		'/product-explorer',
+		'/analytics',
 	] as const,
 
 	admin: ['/admin'] as const,
