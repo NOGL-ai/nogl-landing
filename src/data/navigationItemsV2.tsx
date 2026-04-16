@@ -1,28 +1,21 @@
-import { 
-    BarChartSquare02, 
+import {
+    BarChartSquare02,
     HomeLine,
-    Grid03,
-    NotificationBox,
-    LineChartUp03,
     Star01,
-    ClockFastForward,
     UserSquare,
     Settings03,
     LifeBuoy01,
     PieChart03,
     Sun,
     Sale02,
-    Sale04,
-    CreditCard01,
-    Wallet01,
-    SearchMd,
     FileX01,
-    Package,
-    LayersThree01,
+    SearchMd,
     RefreshCw01,
     TrendUp02,
-    ShoppingCart01,
-    Truck01
+    Grid03,
+    Package,
+    BarChart02,
+    Share01,
 } from "@untitledui/icons";
 import type { ReactNode } from "react";
 
@@ -59,19 +52,14 @@ export const navigationStructure: NavigationSection[] = [
                 href: '/',
             },
             {
-                id: 'pricing',
-                label: 'Pricing',
+                id: 'price-report',
+                label: 'Price Report',
                 icon: Sale02,
                 subItems: [
                     {
                         label: 'Dashboard',
                         href: '/dashboard',
                         icon: BarChartSquare02,
-                    },
-                    {
-                        label: 'Competitor Intelligence',
-                        href: '/competitors/competitor',
-                        icon: SearchMd,
                     },
                     {
                         label: 'Price Rules',
@@ -86,68 +74,109 @@ export const navigationStructure: NavigationSection[] = [
                 ],
             },
             {
-                id: 'market-research',
-                label: 'Market Research',
-                icon: TrendUp02,
+                id: 'competitor-explorer',
+                label: 'Competitor Explorer',
+                icon: SearchMd,
                 subItems: [
                     {
-                        label: 'Market Intelligence',
-                        href: '/market-research/intelligence',
-                        icon: LineChartUp03,
+                        label: 'Competitor Explorer',
+                        href: '/en/companies',
+                        icon: SearchMd,
                     },
                     {
-                        label: 'Trends Dashboard',
-                        href: '/market-research/trends',
-                        icon: BarChartSquare02,
-                    },
-                    {
-                        label: 'Customer Insights',
-                        href: '/market-research/insights',
-                        icon: UserSquare,
+                        label: 'Tracked Competitors',
+                        href: '/en/companies/competitor',
+                        icon: Star01,
                     },
                 ],
             },
             {
-                id: 'products',
-                label: 'Products',
+                id: 'trends',
+                label: 'Trends',
+                icon: TrendUp02,
+                subItems: [
+                    {
+                        label: 'Market Trends',
+                        href: '/trends',
+                        icon: TrendUp02,
+                    },
+                ],
+            },
+            {
+                id: 'marketing-assets',
+                label: 'Marketing Asset Library',
+                icon: Package,
+                subItems: [
+                    {
+                        label: 'Asset Library',
+                        href: '/marketing-assets',
+                        icon: Package,
+                    },
+                ],
+            },
+            {
+                id: 'pricing-suite',
+                label: 'Pricing Suite',
+                icon: BarChart02,
+                subItems: [
+                    {
+                        label: 'Pricing Tools',
+                        href: '/pricing-suite',
+                        icon: BarChart02,
+                    },
+                ],
+            },
+            {
+                id: 'product-explorer',
+                label: 'Product Explorer',
                 icon: Package,
                 subItems: [
                     {
                         label: 'Product Catalog',
-                        href: '/catalog',
+                        href: '/product-explorer',
                         icon: Package,
-                    },
-                    {
-                        label: 'Data Feeds',
-                        href: '/product-feed',
-                        icon: LayersThree01,
-                    },
-                    {
-                        label: 'Product Management',
-                        href: '/products/management',
-                        icon: Grid03,
                     },
                 ],
             },
             {
-                id: 'supply-chain',
-                label: 'Supply Chain',
-                icon: Truck01,
+                id: 'advanced-analytics',
+                label: 'Advanced Analytics',
+                icon: BarChart02,
                 subItems: [
                     {
-                        label: 'Demand Forecasting',
-                        href: '/supply-chain/forecasting',
-                        icon: LineChartUp03,
+                        label: 'Dashboards',
+                        href: '/analytics/dashboards',
+                        icon: BarChartSquare02,
                     },
                     {
-                        label: 'Inventory Planning',
-                        href: '/supply-chain/inventory',
-                        icon: LayersThree01,
+                        label: 'Compare',
+                        href: '/analytics/compare',
+                        icon: Grid03,
                     },
                     {
-                        label: 'Procurement',
-                        href: '/supply-chain/procurement',
-                        icon: ShoppingCart01,
+                        label: 'Tools',
+                        href: '/analytics/tools',
+                        icon: BarChart02,
+                    },
+                    {
+                        label: 'Product Taxonomy',
+                        href: '/analytics/taxonomy',
+                        icon: Package,
+                    },
+                    {
+                        label: 'Product Export',
+                        href: '/analytics/export',
+                        icon: Share01,
+                    },
+                    {
+                        label: 'Editor',
+                        href: '/analytics/editor',
+                        icon: FileX01,
+                    },
+                    {
+                        label: 'Exports',
+                        href: '/analytics/exports',
+                        icon: Share01,
                     },
                 ],
             },
@@ -159,7 +188,7 @@ export const navigationStructure: NavigationSection[] = [
             {
                 id: 'theme-toggle',
                 label: 'Theme',
-                icon: Sun, // Will be dynamically changed based on theme
+                icon: Sun, // Dynamically changed based on theme
             },
         ],
     },
@@ -171,23 +200,23 @@ export const accountMenuItem: IconMenuItem = {
     icon: UserSquare,
     subItems: [
         {
-            label: 'Example 1',
-            href: '/account/example-1',
+            label: 'Profile',
+            href: '/account/profile',
             icon: UserSquare,
         },
         {
-            label: 'Example 2',
-            href: '/account/example-2',
+            label: 'Settings',
+            href: '/settings',
             icon: Settings03,
         },
         {
-            label: 'Example 3',
-            href: '/account/example-3',
+            label: 'Support',
+            href: '/support',
             icon: LifeBuoy01,
         },
         {
-            label: 'Example 4',
-            href: '/account/example-4',
+            label: 'Analytics',
+            href: '/account/analytics',
             icon: PieChart03,
         },
     ],
@@ -196,7 +225,7 @@ export const accountMenuItem: IconMenuItem = {
 // Helper function to get all hrefs for active state detection
 export const getAllNavigationHrefs = (): string[] => {
     const hrefs: string[] = [];
-    
+
     navigationStructure.forEach(section => {
         section.items.forEach(item => {
             if (item.href) {
@@ -209,19 +238,22 @@ export const getAllNavigationHrefs = (): string[] => {
             }
         });
     });
-    
+
     return hrefs;
 };
 
 // Helper function to find which icon menu contains the active URL
+// Supports prefix matching so /en/companies/calumet-de/pricing matches competitor-explorer
 export const getActiveIconMenuItem = (activeUrl: string): IconMenuItem | undefined => {
     for (const section of navigationStructure) {
         for (const item of section.items) {
-            if (item.href === activeUrl) {
+            if (item.href && (item.href === activeUrl || activeUrl.startsWith(item.href + '/'))) {
                 return item;
             }
             if (item.subItems) {
-                const hasActiveSubItem = item.subItems.some(subItem => subItem.href === activeUrl);
+                const hasActiveSubItem = item.subItems.some(subItem =>
+                    subItem.href === activeUrl || activeUrl.startsWith(subItem.href + '/')
+                );
                 if (hasActiveSubItem) {
                     return item;
                 }
@@ -232,6 +264,8 @@ export const getActiveIconMenuItem = (activeUrl: string): IconMenuItem | undefin
 };
 
 // Helper function to check if a sub-item is active
+// Uses exact match so that /en/companies/competitor doesn't also highlight
+// the parent /en/companies sub-item entry
 export const isSubItemActive = (subItem: SubMenuItem, activeUrl: string): boolean => {
     return subItem.href === activeUrl;
 };

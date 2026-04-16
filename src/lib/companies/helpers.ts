@@ -616,7 +616,11 @@ async function buildProductsWhereSql(
   ];
 
   if (filters?.productType) {
-    conditions.push(Prisma.sql`product_category = ${filters.productType}`);
+    if (filters.productType === "Uncategorized") {
+      conditions.push(Prisma.sql`product_category IS NULL`);
+    } else {
+      conditions.push(Prisma.sql`product_category = ${filters.productType}`);
+    }
   }
 
   if (typeof filters?.minPrice === "number" && Number.isFinite(filters.minPrice)) {
