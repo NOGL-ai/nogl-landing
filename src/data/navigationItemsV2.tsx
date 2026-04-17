@@ -139,6 +139,18 @@ export const navigationStructure: NavigationSection[] = [
                 ],
             },
             {
+                id: 'fractional-cfo',
+                label: 'Fractional CFO',
+                icon: TrendUp02,
+                subItems: [
+                    {
+                        label: 'Demand Forecast',
+                        href: '/demand',
+                        icon: TrendUp02,
+                    },
+                ],
+            },
+            {
                 id: 'advanced-analytics',
                 label: 'Advanced Analytics',
                 icon: BarChart02,
