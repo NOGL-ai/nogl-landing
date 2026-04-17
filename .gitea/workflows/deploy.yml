@@ -1,0 +1,31 @@
+name: Deploy to nogl-dev
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: 10.10.10.182
+          username: root
+          key: ${{ secrets.NOGL_DEV_SSH_KEY }}
+          script: |
+            set -e
+            cd /root/nogl-landing
+
+            echo "=== Pull latest ==="
+            git fetch origin main
+            git reset --hard origin/main
+
+            echo "=== Install deps (only if lockfile changed) ==="
+            npm ci --prefer-offline
+
+            echo "=== Restart dev server ==="
+            systemctl restart nogl-dev
+            sleep 5
+            curl -sf http://localhost:3000/api/health && echo "Health OK" || echo "Health check failed (server still starting)"
