@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
 datasource db {
@@ -7,7 +8,7 @@ datasource db {
   url               = env("DATABASE_URL")
   directUrl         = env("DIRECT_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
-  schemas           = ["nogl", "public"]
+  schemas           = ["nogl", "public", "forecast"]
 }
 
 model User {
@@ -151,6 +152,10 @@ model products {
   product_price_range         String?                     @db.VarChar(50)
   product_has_promotion       Boolean?
   product_page_image_url      String?
+  company_id                  String?               @db.VarChar(255)
+  ean                         String?               @db.VarChar(50)
+  mpn                         String?               @db.VarChar(100)
+  stock_status                String?               @db.VarChar(50)
   product_image_count         Int?
   product_has_hover_images    Boolean?
   product_variants_count      Int?
@@ -645,4 +650,126 @@ enum public_UserRole {
 
   @@map("UserRole")
   @@schema("public")
+}
+
+// ─── Forecast schema ─────────────────────────────────────────────────────────
+
+model ForecastTenant {
+  id           String   @id @default(cuid())
+  companyId    String   @unique
+  magicNumber  Float    @default(1.0)
+  hasBundle    Boolean  @default(false)
+  isDemoTenant Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  saleChannels ForecastSaleChannel[]
+  products     ForecastProduct[]
+
+  @@schema("forecast")
+}
+
+model ForecastSaleChannel {
+  id       String   @id @default(cuid())
+  tenantId String
+  name     String
+  label    String
+  colorFg  String
+  colorBg  String
+  weight   Float    @default(1.0)
+  createdAt DateTime @default(now())
+
+  tenant          ForecastTenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  historicalSales ForecastHistoricalSale[]
+  quantiles       ForecastQuantile[]
+
+  @@unique([tenantId, name])
+  @@schema("forecast")
+}
+
+model ForecastProduct {
+  id           String   @id @default(cuid())
+  tenantId     String
+  externalId   String?
+  productTitle String
+  handle       String?
+  brand        String?
+  category     String
+  isSet        Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  tenant   ForecastTenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  variants ForecastVariant[]
+
+  @@index([tenantId, category])
+  @@schema("forecast")
+}
+
+model ForecastVariant {
+  id           String   @id @default(cuid())
+  productId    String
+  variantTitle String
+  sku          String?
+  gtin         String?
+  rrp          Float    @default(0.0)
+  currency     String   @default("EUR")
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+
+  product         ForecastProduct         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  historicalSales ForecastHistoricalSale[]
+  quantiles       ForecastQuantile[]
+
+  @@index([productId])
+  @@schema("forecast")
+}
+
+model ForecastHistoricalSale {
+  id        String   @id @default(cuid())
+  variantId String
+  channelId String
+  saleDate  DateTime @db.Date
+  quantity  Float    @default(0)
+  revenue   Float    @default(0)
+
+  variant ForecastVariant     @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  channel ForecastSaleChannel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  @@unique([variantId, channelId, saleDate])
+  @@index([variantId, saleDate])
+  @@index([channelId, saleDate])
+  @@schema("forecast")
+}
+
+model ForecastQuantile {
+  id            String   @id @default(cuid())
+  variantId     String
+  channelId     String
+  forecastDate  DateTime @db.Date
+  quantile      Int
+  forecastValue Float
+  revenueValue  Float
+  isBundleTotal Boolean  @default(false)
+
+  variant ForecastVariant     @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  channel ForecastSaleChannel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  @@unique([variantId, channelId, forecastDate, quantile])
+  @@index([variantId, forecastDate])
+  @@index([channelId, forecastDate])
+  @@schema("forecast")
+}
+
+model ForecastSet {
+  id          String   @id @default(cuid())
+  tenantId    String
+  name        String
+  description String?
+  sourceUrl   String?
+  variantIds  String[]
+  createdAt   DateTime @default(now())
+
+  @@index([tenantId])
+  @@schema("forecast")
 }
