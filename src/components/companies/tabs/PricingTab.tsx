@@ -251,7 +251,7 @@ export function PricingTab({ slug }: PricingTabProps) {
         </div>
       </div>
 
-      {/* ── Pricing Over Time (ApexCharts area) ── */}
+      {/* ── Pricing Over Time ── */}
       <PricingOverTimeChart
         slug={slug}
         data={timeseries.data ?? undefined}
