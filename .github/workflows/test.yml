@@ -42,6 +42,7 @@ jobs:
         npx prisma generate
       env:
         DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
+        DIRECT_URL: postgresql://postgres:postgres@localhost:5432/test_db
         TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
 
     - name: Run linting
@@ -49,22 +50,29 @@ jobs:
 
     - name: Run type checking
       run: npx tsc --noEmit
+      env:
+        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
+        DIRECT_URL: postgresql://postgres:postgres@localhost:5432/test_db
 
     - name: Run unit tests
       run: npm run test:ci
       env:
         DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
+        DIRECT_URL: postgresql://postgres:postgres@localhost:5432/test_db
         TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
         NEXTAUTH_SECRET: test-secret
         NEXTAUTH_URL: http://localhost:3000
+        REDIS_URL: redis://localhost:6379
 
     - name: Run E2E tests
       run: npm run test:e2e
       env:
         DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
+        DIRECT_URL: postgresql://postgres:postgres@localhost:5432/test_db
         TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
         NEXTAUTH_SECRET: test-secret
         NEXTAUTH_URL: http://localhost:3000
+        REDIS_URL: redis://localhost:6379
 
     - name: Upload coverage reports
       uses: codecov/codecov-action@v4
