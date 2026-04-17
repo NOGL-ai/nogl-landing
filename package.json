@@ -144,6 +144,7 @@
 		"react-share": "^5.2.2",
 		"react-spinners": "^0.17.0",
 		"react-swipeable": "^7.0.2",
+		"recharts": "^3.8.1",
 		"rehype-katex": "^7.0.1",
 		"remark-gfm": "^4.0.1",
 		"remark-math": "^6.0.0",
