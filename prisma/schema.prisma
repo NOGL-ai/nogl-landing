@@ -152,6 +152,7 @@ model products {
   product_price_range         String?                     @db.VarChar(50)
   product_has_promotion       Boolean?
   product_page_image_url      String?
+  product_image_url           String?
   company_id                  String?               @db.VarChar(255)
   ean                         String?               @db.VarChar(50)
   mpn                         String?               @db.VarChar(100)
