@@ -66,6 +66,29 @@ global.Response = global.Response || class Response {
   }
 }
 
+// ── Global mocks to prevent module-level side-effects that keep handles open ──
+
+// Prevent nodemailer from creating SMTP transport handles at import time.
+jest.mock('nodemailer', () => ({
+  createTransport: jest.fn(() => ({
+    sendMail: jest.fn().mockResolvedValue({ messageId: 'test-id' }),
+    verify: jest.fn().mockResolvedValue(true),
+  })),
+}))
+
+// Stub @/lib/auth so auth.ts does not load nodemailer / Prisma / bcrypt
+// transitively during test module evaluation.
+jest.mock('@/lib/auth', () => ({
+  authOptions: {
+    providers: [],
+    session: { strategy: 'jwt' },
+    callbacks: {},
+  },
+  getAuthSession: jest.fn().mockResolvedValue(null),
+}))
+
+// ─────────────────────────────────────────────────────────────────────────────
+
 // Mock Next.js router
 jest.mock('next/navigation', () => ({
   useRouter() {
