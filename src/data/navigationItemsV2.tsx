@@ -18,6 +18,7 @@ import {
     Share01,
     CoinsHand,
     Tag01,
+    BarLineChart,
 } from "@untitledui/icons";
 import type { ReactNode } from "react";
 
@@ -155,7 +156,7 @@ export const navigationStructure: NavigationSection[] = [
             {
                 id: 'advanced-analytics',
                 label: 'Advanced Analytics',
-                icon: BarChart02,
+                icon: BarLineChart,
                 subItems: [
                     {
                         label: 'Dashboards',
