@@ -1,8 +1,24 @@
 /**
  * Mastra Integration Tests
- * 
+ *
  * Basic tests to verify Mastra agents and tools are working correctly.
  */
+
+// Mock the OpenAI provider so creating agents (which call `openai("gpt-4o")`
+// at module load time) doesn't require a real API key in CI.
+jest.mock("@/lib/ai-config", () => {
+  const stubModel = { specificationVersion: "v1", provider: "openai", modelId: "gpt-4o" };
+  const openai = jest.fn(() => stubModel);
+  return {
+    openai,
+    openaiProvider: openai,
+  };
+});
+
+// Auth is pulled in transitively by the prisma context utils.
+jest.mock("@/lib/auth", () => ({
+  getAuthSession: jest.fn(async () => null),
+}));
 
 import { mastra, selectAgent, healthCheck } from "../index";
 

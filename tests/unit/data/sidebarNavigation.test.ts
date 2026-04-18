@@ -280,14 +280,29 @@ describe('Sidebar Navigation Data', () => {
     });
 
     it('has no duplicate paths across all items', () => {
+      // A submenu item may intentionally share its path with its parent (the
+      // "overview"/default sub-entry for a section, e.g. Companies ->
+      // Company Explorer both link to /companies). Those intentional overlaps
+      // are excluded before checking uniqueness so the test only flags
+      // genuinely duplicate routes.
+      const parentPathsWithSubmenus = mainNavigationItems.items
+        .filter(item => item.submenu)
+        .map(item => item.path);
+
+      const submenuPaths = mainNavigationItems.items
+        .filter(item => item.submenu)
+        .flatMap(item =>
+          item
+            .submenu!.map(sub => sub.path)
+            .filter(path => !parentPathsWithSubmenus.includes(path)),
+        );
+
       const allPaths = [
         ...mainNavigationItems.items.map(item => item.path),
         ...otherNavigationItems.items.map(item => item.path),
-        ...mainNavigationItems.items
-          .filter(item => item.submenu)
-          .flatMap(item => item.submenu!.map(sub => sub.path)),
+        ...submenuPaths,
       ];
-      
+
       const uniquePaths = new Set(allPaths);
       expect(uniquePaths.size).toBe(allPaths.length);
     });

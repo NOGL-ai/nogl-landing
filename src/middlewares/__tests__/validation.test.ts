@@ -111,9 +111,11 @@ describe('Validation Middleware', () => {
       const response = await wrappedHandler(mockRequest)
 
       expect(response).toBeDefined()
+      // The querySchema defined in this test declares `.default(20)` for
+      // `limit` (matching the production schema), so missing params yield 20.
       expect(mockHandler).toHaveBeenCalledWith(mockRequest, {
         page: 1,
-        limit: 10,
+        limit: 20,
         search: undefined,
         featured: undefined,
       })

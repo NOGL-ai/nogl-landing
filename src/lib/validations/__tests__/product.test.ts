@@ -124,7 +124,7 @@ describe('Product Validation Schemas', () => {
       const result = await productQuerySchema.validate(minimalQuery)
       expect(result).toEqual({
         page: 1,
-        limit: 10,
+        limit: 20,
         search: undefined,
         status: undefined,
         featured: undefined,
