@@ -666,6 +666,9 @@ model ForecastTenant {
 
   saleChannels ForecastSaleChannel[]
   products     ForecastProduct[]
+  annotations  ForecastAnnotation[]
+  purchaseOrders ReplenishmentPurchaseOrder[]
+  suppliers    ReplenishmentSupplier[]
 
   @@schema("forecast")
 }
@@ -721,6 +724,7 @@ model ForecastVariant {
   product         ForecastProduct         @relation(fields: [productId], references: [id], onDelete: Cascade)
   historicalSales ForecastHistoricalSale[]
   quantiles       ForecastQuantile[]
+  poLines         ReplenishmentPOLine[]
 
   @@index([productId])
   @@schema("forecast")
@@ -772,5 +776,97 @@ model ForecastSet {
   createdAt   DateTime @default(now())
 
   @@index([tenantId])
+  @@schema("forecast")
+}
+
+// ─── Forecast annotations (event spikes, stock-outs, promotions) ─────────────
+
+model ForecastAnnotation {
+  id             String   @id @default(cuid())
+  tenantId       String
+  annotationDate DateTime @db.Date
+  endDate        DateTime? @db.Date
+  kind           String   // "event_spike" | "out_of_stock" | "promotion" | "launch"
+  severity       String   @default("info") // "info" | "warning" | "critical"
+  title          String
+  description    String?
+  delta          Float?
+  channelName    String?  // optional scope: "web" | "marketplace" | "b2b"
+  variantId      String?  // optional scope to a specific variant
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  tenant         ForecastTenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, annotationDate])
+  @@index([tenantId, kind])
+  @@schema("forecast")
+}
+
+// ─── Replenishment (Kanban purchase-order pipeline) ──────────────────────────
+
+model ReplenishmentSupplier {
+  id           String   @id @default(cuid())
+  tenantId     String
+  name         String
+  contact      String?
+  email        String?
+  phone        String?
+  city         String?
+  country      String   @default("DE")
+  leadTimeDays Int      @default(30)
+  paymentTerms String?  // e.g. "Net 30", "2% 10 Net 30"
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  tenant         ForecastTenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  purchaseOrders ReplenishmentPurchaseOrder[]
+
+  @@unique([tenantId, name])
+  @@index([tenantId, isActive])
+  @@schema("forecast")
+}
+
+model ReplenishmentPurchaseOrder {
+  id          String    @id @default(cuid())
+  tenantId    String
+  poNumber    String
+  supplierId  String?
+  status      String    @default("draft") // "draft" | "approved" | "partially_arrived" | "arrived" | "cancelled"
+  totalAmount Float     @default(0)
+  currency    String    @default("EUR")
+  eta         DateTime? @db.Date
+  approvedAt  DateTime?
+  arrivedAt   DateTime?
+  notes       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  tenant    ForecastTenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  supplier  ReplenishmentSupplier? @relation(fields: [supplierId], references: [id])
+  lineItems ReplenishmentPOLine[]
+
+  @@unique([tenantId, poNumber])
+  @@index([tenantId, status])
+  @@index([tenantId, eta])
+  @@index([supplierId])
+  @@schema("forecast")
+}
+
+model ReplenishmentPOLine {
+  id              String @id @default(cuid())
+  purchaseOrderId String
+  variantId       String
+  quantity        Int
+  unitCost        Float
+  arrivedQty      Int    @default(0)
+  createdAt       DateTime @default(now())
+
+  purchaseOrder ReplenishmentPurchaseOrder @relation(fields: [purchaseOrderId], references: [id], onDelete: Cascade)
+  variant       ForecastVariant            @relation(fields: [variantId], references: [id])
+
+  @@index([purchaseOrderId])
+  @@index([variantId])
   @@schema("forecast")
 }

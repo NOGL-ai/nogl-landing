@@ -25,6 +25,7 @@ export const ROUTE_CONFIG = {
 		'/product-explorer',
 		'/analytics',
 		'/demand',
+		'/replenishment',
 		'/fractional-cfo',
 	] as const,
 

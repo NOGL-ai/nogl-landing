@@ -11,6 +11,9 @@ import {
   Tooltip,
   ResponsiveContainer,
   ReferenceLine,
+  ReferenceDot,
+  ReferenceArea,
+  Brush,
 } from "recharts";
 import { format, parseISO } from "date-fns";
 import {
@@ -24,7 +27,17 @@ import type {
   ForecastMetric,
   ForecastScale,
   ForecastQuantileValue,
+  ForecastAnnotation,
+  ForecastAnnotationKind,
+  ForecastAnnotationSeverity,
 } from "@/types/forecast";
+
+interface AnnotationLayerToggle {
+  kind: ForecastAnnotationKind;
+  label: string;
+  enabled: boolean;
+  onToggle: () => void;
+}
 
 interface ForecastChartProps {
   data: ForecastChannelData;
@@ -34,7 +47,24 @@ interface ForecastChartProps {
   channels: ForecastChannelConfig[];
   height?: number;
   startForecastDate?: string;
+  annotations?: ForecastAnnotation[];
+  annotationLayers?: AnnotationLayerToggle[];
 }
+
+// Per-kind dot colors used in the legend + flag stems.
+const ANNOTATION_KIND_COLOR: Record<ForecastAnnotationKind, string> = {
+  event_spike: "#2970FF",
+  out_of_stock: "#D92D20",
+  promotion: "#DC6803",
+  launch: "#6938EF",
+};
+
+// Severity → flag fill (info/warning/critical).
+const ANNOTATION_SEVERITY_COLOR: Record<ForecastAnnotationSeverity, string> = {
+  info: "#2970FF",
+  warning: "#DC6803",
+  critical: "#D92D20",
+};
 
 function formatAxisDate(date: string, scale: ForecastScale): string {
   try {
@@ -54,15 +84,21 @@ function formatValue(v: number, metric: ForecastMetric): string {
   return v >= 1000 ? `${(v / 1000).toFixed(1)}K` : String(Math.round(v));
 }
 
-/* ─── Dual legend (HISTORY | FORECAST) ────────────────────────────────────── */
+/* ─── Dual legend (HISTORY | FORECAST | ANNOTATIONS) ──────────────────────── */
 
 interface LegendProps {
   channels: ForecastChannelConfig[];
   textColor: string;
   subtleColor: string;
+  annotationLayers?: AnnotationLayerToggle[];
 }
 
-function DualLegend({ channels, textColor, subtleColor }: LegendProps) {
+function DualLegend({
+  channels,
+  textColor,
+  subtleColor,
+  annotationLayers,
+}: LegendProps) {
   return (
     <div className="mb-3 flex flex-wrap items-center gap-6 rounded-lg border border-border-secondary bg-bg-secondary px-3 py-2 text-[11px]">
       <div className="flex items-center gap-3">
@@ -104,7 +140,100 @@ function DualLegend({ channels, textColor, subtleColor }: LegendProps) {
           </div>
         ))}
       </div>
+
+      {annotationLayers && annotationLayers.length > 0 ? (
+        <>
+          <div className="h-4 w-px bg-border-secondary" />
+
+          <div className="flex items-center gap-3">
+            <span
+              className="font-semibold uppercase tracking-wider"
+              style={{ color: subtleColor, letterSpacing: "0.08em" }}
+            >
+              Annotations
+            </span>
+            {annotationLayers.map((layer) => (
+              <label
+                key={`a-${layer.kind}`}
+                className="flex cursor-pointer items-center gap-1.5 select-none"
+                style={{ color: textColor }}
+              >
+                <input
+                  type="checkbox"
+                  checked={layer.enabled}
+                  onChange={layer.onToggle}
+                  aria-label={`Toggle ${layer.label} annotations`}
+                  className="h-3 w-3 cursor-pointer accent-[#2970FF]"
+                />
+                <span
+                  aria-hidden="true"
+                  className="inline-block h-2.5 w-2.5 rounded-full"
+                  style={{ background: ANNOTATION_KIND_COLOR[layer.kind] }}
+                />
+                <span>{layer.label}</span>
+              </label>
+            ))}
+          </div>
+        </>
+      ) : null}
     </div>
+  );
+}
+
+/* ─── Annotation flag label (rendered inside ReferenceDot) ────────────────── */
+
+interface FlagLabelProps {
+  viewBox?: { x: number; y: number };
+  color: string;
+  title: string;
+  chartWidth: number;
+}
+
+function AnnotationFlag({ viewBox, color, title, chartWidth }: FlagLabelProps) {
+  if (!viewBox) return null;
+  const { x, y } = viewBox;
+  const stemHeight = 18;
+  const labelWidth = Math.min(120, Math.max(56, title.length * 6 + 12));
+  const labelHeight = 16;
+  // Flip the flag to the left if we're too close to the right edge.
+  const flipLeft = x + labelWidth + 8 > chartWidth;
+  const labelX = flipLeft ? x - labelWidth : x;
+  const labelY = y - stemHeight - labelHeight;
+
+  return (
+    <g role="presentation" pointerEvents="none">
+      <title>{title}</title>
+      {/* Stem */}
+      <line
+        x1={x}
+        y1={y}
+        x2={x}
+        y2={y - stemHeight}
+        stroke={color}
+        strokeWidth={1}
+      />
+      {/* Flag background */}
+      <rect
+        x={labelX}
+        y={labelY}
+        width={labelWidth}
+        height={labelHeight}
+        rx={3}
+        ry={3}
+        fill={color}
+        opacity={0.92}
+      />
+      {/* Flag text (truncate visually with CSS-ish ellipsis approximation) */}
+      <text
+        x={labelX + 6}
+        y={labelY + labelHeight - 4}
+        fontSize={10}
+        fontWeight={500}
+        fill="#ffffff"
+      >
+        {title.length > 18 ? `${title.slice(0, 17)}…` : title}
+      </text>
+    </g>
   );
 }
 
@@ -118,17 +247,20 @@ export function ForecastChart({
   channels,
   height = 400,
   startForecastDate,
+  annotations,
+  annotationLayers,
 }: ForecastChartProps) {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
   const textColor = isDark ? "#d5d7da" : "#414651";
   const subtleColor = isDark ? "#94979c" : "#717680";
   const gridColor = isDark ? "#1f242f" : "#eaecf0";
+  const brushFill = isDark ? "#0a0d12" : "#fafafa";
   const today = format(new Date(), "yyyy-MM-dd");
   const boundary = startForecastDate ?? today;
 
   // Flatten: one row per date, with history_<ch> OR forecast_<ch> set (never both).
-  const { chartData, allDates } = useMemo(() => {
+  const { chartData, allDates, rowTotals } = useMemo(() => {
     const dateSet = new Set<string>();
     for (const ch of channels) {
       (data[ch.name] ?? []).forEach((p) => dateSet.add(p.date));
@@ -148,10 +280,45 @@ export function ForecastChart({
       }
       return row;
     });
-    return { chartData: rows, allDates: dates };
+
+    // Build a per-date total used to place ReferenceDots at the top of each bar.
+    const totals = new Map<string, number>();
+    for (const row of rows) {
+      let sum = 0;
+      for (const ch of channels) {
+        const hv = row[`history_${ch.name}`];
+        const fv = row[`forecast_${ch.name}`];
+        if (typeof hv === "number") sum += hv;
+        if (typeof fv === "number") sum += fv;
+      }
+      totals.set(String(row.date), sum);
+    }
+
+    return { chartData: rows, allDates: dates, rowTotals: totals };
   }, [data, channels, boundary]);
 
-  const ariaSummary =
+  // Filter annotations to those intersecting the full data window (the brush
+  // already narrows visually, but layer-toggle filtering is still the caller's
+  // responsibility via the `enabled` flag on each layer).
+  const visibleAnnotations = useMemo<ForecastAnnotation[]>(() => {
+    if (!annotations?.length || allDates.length === 0) return [];
+    const first = allDates[0];
+    const last = allDates[allDates.length - 1];
+    return annotations.filter((a) => {
+      const end = a.endDate ?? a.annotationDate;
+      return a.annotationDate <= last && end >= first;
+    });
+  }, [annotations, allDates]);
+
+  // Split by rendering mode.
+  const flagAnnotations = visibleAnnotations.filter(
+    (a) => a.kind === "event_spike" || a.kind === "launch" || a.kind === "promotion"
+  );
+  const stockoutAnnotations = visibleAnnotations.filter(
+    (a) => a.kind === "out_of_stock"
+  );
+
+  const baseAria =
     allDates.length > 0
       ? `${metric === "revenue" ? "Revenue" : "Sales"} forecast, ${
           channels.length
@@ -159,6 +326,15 @@ export function ForecastChart({
           allDates[allDates.length - 1]
         }.`
       : "Empty forecast chart — no data points available.";
+  const ariaSummary =
+    visibleAnnotations.length > 0
+      ? `${baseAria} ${visibleAnnotations.length} annotations in view.`
+      : baseAria;
+
+  // Brush default: last 90 days, if there are more than 90 points.
+  const brushStartIndex =
+    allDates.length > 90 ? Math.max(0, allDates.length - 90) : 0;
+  const brushEndIndex = Math.max(0, allDates.length - 1);
 
   return (
     <div
@@ -170,12 +346,14 @@ export function ForecastChart({
         channels={channels}
         textColor={textColor}
         subtleColor={subtleColor}
+        annotationLayers={annotationLayers}
       />
 
+      <div role="region" aria-label="Chart range selector">
       <ResponsiveContainer width="100%" height={height}>
         <BarChart
           data={chartData}
-          margin={{ top: 8, right: 16, left: 0, bottom: 0 }}
+          margin={{ top: 24, right: 16, left: 0, bottom: 0 }}
           barCategoryGap="20%"
         >
           <CartesianGrid
@@ -273,8 +451,74 @@ export function ForecastChart({
               isAnimationActive={false}
             />
           ))}
+
+          {/* Stock-out ranges — soft red ReferenceArea */}
+          {stockoutAnnotations.map((a) => {
+            const end = a.endDate ?? a.annotationDate;
+            return (
+              <ReferenceArea
+                key={`oos-${a.id}`}
+                x1={a.annotationDate}
+                x2={end}
+                fill="#FEE4E2"
+                fillOpacity={0.4}
+                stroke="#F04438"
+                strokeOpacity={0.25}
+                ifOverflow="extendDomain"
+                label={{
+                  value: "●",
+                  position: "insideTopRight",
+                  fill: "#D92D20",
+                  fontSize: 10,
+                  // aria-label is accepted by Recharts labels via a pass-through
+                  // `aria-label` prop; screen readers will announce the title.
+                  ...({ "aria-label": a.title } as Record<string, unknown>),
+                }}
+              />
+            );
+          })}
+
+          {/* Flag dots — event_spike / launch / promotion */}
+          {flagAnnotations.map((a) => {
+            const y = rowTotals.get(a.annotationDate) ?? 0;
+            const color = ANNOTATION_SEVERITY_COLOR[a.severity];
+            return (
+              <ReferenceDot
+                key={`dot-${a.id}`}
+                x={a.annotationDate}
+                y={y}
+                r={4}
+                fill={color}
+                stroke="#ffffff"
+                strokeWidth={1.5}
+                ifOverflow="extendDomain"
+                label={(labelProps: {
+                  viewBox?: { x: number; y: number; width?: number };
+                }) => (
+                  <AnnotationFlag
+                    viewBox={labelProps.viewBox}
+                    color={color}
+                    title={a.title}
+                    chartWidth={1024}
+                  />
+                )}
+              />
+            );
+          })}
+
+          <Brush
+            dataKey="date"
+            height={24}
+            stroke="#2970FF"
+            fill={brushFill}
+            travellerWidth={14}
+            startIndex={brushStartIndex}
+            endIndex={brushEndIndex}
+            tickFormatter={(d: string) => formatAxisDate(d, scale)}
+          />
         </BarChart>
       </ResponsiveContainer>
+      </div>
     </div>
   );
 }

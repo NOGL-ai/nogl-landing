@@ -7,7 +7,16 @@ import type {
   ForecastMetric,
   ForecastScale,
   ForecastQuantileValue,
+  ForecastAnnotation,
+  ForecastAnnotationKind,
 } from "@/types/forecast";
+
+interface AnnotationLayerToggle {
+  kind: ForecastAnnotationKind;
+  label: string;
+  enabled: boolean;
+  onToggle: () => void;
+}
 
 interface ComparisonForecastChartProps {
   primaryData: ForecastChannelData;
@@ -18,6 +27,8 @@ interface ComparisonForecastChartProps {
   scale: ForecastScale;
   quantile: ForecastQuantileValue;
   channels: ForecastChannelConfig[];
+  annotations?: ForecastAnnotation[];
+  annotationLayers?: AnnotationLayerToggle[];
 }
 
 export function ComparisonForecastChart({
@@ -29,6 +40,8 @@ export function ComparisonForecastChart({
   scale,
   quantile,
   channels,
+  annotations,
+  annotationLayers,
 }: ComparisonForecastChartProps) {
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
@@ -41,6 +54,8 @@ export function ComparisonForecastChart({
           quantile={quantile}
           channels={channels}
           height={300}
+          annotations={annotations}
+          annotationLayers={annotationLayers}
         />
       </div>
       <div>
@@ -52,6 +67,8 @@ export function ComparisonForecastChart({
           quantile={quantile}
           channels={channels}
           height={300}
+          annotations={annotations}
+          annotationLayers={annotationLayers}
         />
       </div>
     </div>

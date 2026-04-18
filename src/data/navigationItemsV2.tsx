@@ -217,7 +217,7 @@ export const navigationStructure: NavigationSection[] = [
                     },
                     {
                         label: 'Replenishment',
-                        href: '/en/fractional-cfo/replenishment',
+                        href: '/en/replenishment',
                         icon: PackageCheck,
                     },
                     {

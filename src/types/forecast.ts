@@ -54,3 +54,26 @@ export interface ForecastChannelConfig {
   colorBg: string;
   weight?: number;
 }
+
+// ─── Forecast annotations (event spikes, stock-outs, promotions, launches) ───
+
+export type ForecastAnnotationKind =
+  | "event_spike"
+  | "out_of_stock"
+  | "promotion"
+  | "launch";
+
+export type ForecastAnnotationSeverity = "info" | "warning" | "critical";
+
+export interface ForecastAnnotation {
+  id: string;
+  annotationDate: string; // YYYY-MM-DD
+  endDate: string | null; // YYYY-MM-DD
+  kind: ForecastAnnotationKind;
+  severity: ForecastAnnotationSeverity;
+  title: string;
+  description: string | null;
+  delta: number | null;
+  channelName: string | null;
+  variantId: string | null;
+}

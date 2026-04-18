@@ -12,6 +12,9 @@ import type {
   CategoryWithVariants,
   ExportParams,
   ForecastMetric,
+  ForecastAnnotation,
+  ForecastAnnotationKind,
+  ForecastAnnotationSeverity,
 } from "@/types/forecast";
 
 async function assertAuth() {
@@ -83,6 +86,73 @@ export async function getForecastRevenue(
 ): Promise<ForecastResponse> {
   await assertAuth();
   return fetchForecastData(params, "revenue");
+}
+
+// ── Annotations ───────────────────────────────────────────────────────────────
+
+export async function getForecastAnnotations(params: {
+  companyId: string;
+  start: string;
+  end: string;
+  kinds?: ForecastAnnotationKind[];
+}): Promise<ForecastAnnotation[]> {
+  await assertAuth();
+
+  const kindsKey = (params.kinds ?? []).slice().sort().join(",");
+  const cacheKey = `annotations:${params.companyId}:${params.start}:${params.end}:${kindsKey}`;
+  const cached = await forecastCacheGet<ForecastAnnotation[]>(cacheKey);
+  if (cached) return cached;
+
+  const tenant = await prisma.forecastTenant.findUnique({
+    where: { companyId: params.companyId },
+  });
+  if (!tenant) return [];
+
+  const startDate = new Date(params.start);
+  const endDate = new Date(params.end);
+
+  const rows = await prisma.forecastAnnotation.findMany({
+    where: {
+      tenantId: tenant.id,
+      // annotationDate <= end AND (endDate ?? annotationDate) >= start
+      annotationDate: { lte: endDate },
+      OR: [
+        { endDate: null, annotationDate: { gte: startDate } },
+        { endDate: { gte: startDate } },
+      ],
+      ...(params.kinds?.length ? { kind: { in: params.kinds } } : {}),
+    },
+    orderBy: { annotationDate: "asc" },
+  });
+
+  const result: ForecastAnnotation[] = rows.map(
+    (r: {
+      id: string;
+      annotationDate: Date;
+      endDate: Date | null;
+      kind: string;
+      severity: string;
+      title: string;
+      description: string | null;
+      delta: number | null;
+      channelName: string | null;
+      variantId: string | null;
+    }) => ({
+      id: r.id,
+      annotationDate: format(r.annotationDate, "yyyy-MM-dd"),
+      endDate: r.endDate ? format(r.endDate, "yyyy-MM-dd") : null,
+      kind: r.kind as ForecastAnnotationKind,
+      severity: r.severity as ForecastAnnotationSeverity,
+      title: r.title,
+      description: r.description,
+      delta: r.delta,
+      channelName: r.channelName,
+      variantId: r.variantId,
+    })
+  );
+
+  await forecastCacheSet(cacheKey, result);
+  return result;
 }
 
 // ── Export ────────────────────────────────────────────────────────────────────

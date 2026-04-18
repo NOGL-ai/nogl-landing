@@ -7,6 +7,7 @@ import {
   getForecastCategories,
   getForecastSales,
   getForecastRevenue,
+  getForecastAnnotations,
 } from "@/actions/forecast";
 import { ForecastChart } from "@/components/forecast/charts/ForecastChart";
 import { ComparisonForecastChart } from "@/components/forecast/charts/ComparisonForecastChart";
@@ -24,7 +25,23 @@ import type {
   ForecastQuantileValue,
   ForecastResponse,
   CategoryWithVariants,
+  ForecastAnnotation,
+  ForecastAnnotationKind,
 } from "@/types/forecast";
+
+const ANNOTATION_LAYER_LABELS: Record<ForecastAnnotationKind, string> = {
+  event_spike: "Events",
+  out_of_stock: "Stock-outs",
+  promotion: "Promotions",
+  launch: "Launches",
+};
+
+const ALL_ANNOTATION_KINDS: ForecastAnnotationKind[] = [
+  "event_spike",
+  "out_of_stock",
+  "promotion",
+  "launch",
+];
 
 interface DemandClientProps {
   companyId: string;
@@ -60,6 +77,10 @@ export default function DemandClient({
   const [comparedSales, setComparedSales] = useState<ForecastResponse | null>(null);
   const [comparedRevenue, setComparedRevenue] = useState<ForecastResponse | null>(null);
   const [allCategories, setAllCategories] = useState<CategoryWithVariants[]>([]);
+  const [annotations, setAnnotations] = useState<ForecastAnnotation[]>([]);
+  const [enabledKinds, setEnabledKinds] = useState<Set<ForecastAnnotationKind>>(
+    () => new Set<ForecastAnnotationKind>(ALL_ANNOTATION_KINDS)
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [exportOpen, setExportOpen] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -116,12 +137,18 @@ export default function DemandClient({
         quantile,
       };
       try {
-        const [sales, revenue] = await Promise.all([
+        const [sales, revenue, anns] = await Promise.all([
           getForecastSales(params),
           getForecastRevenue(params),
+          getForecastAnnotations({
+            companyId,
+            start: dateRange.start,
+            end: dateRange.end,
+          }),
         ]);
         setSalesData(sales);
         setRevenueData(revenue);
+        setAnnotations(anns);
 
         if (comparisonMode && comparedDateRange.start) {
           const cParams = {
@@ -163,6 +190,22 @@ export default function DemandClient({
   const activeCompared = metric === "sale" ? comparedSales : comparedRevenue;
 
   const visibleChannels = CHANNEL_CONFIGS.filter((c) => channels.includes(c.name));
+
+  const visibleAnnotations = annotations.filter((a) => enabledKinds.has(a.kind));
+
+  const annotationLayers = ALL_ANNOTATION_KINDS.map((kind) => ({
+    kind,
+    label: ANNOTATION_LAYER_LABELS[kind],
+    enabled: enabledKinds.has(kind),
+    onToggle: () => {
+      setEnabledKinds((prev) => {
+        const next = new Set(prev);
+        if (next.has(kind)) next.delete(kind);
+        else next.add(kind);
+        return next;
+      });
+    },
+  }));
 
   const prettyRange = `${dateRange.start.split("-").reverse().join(".")} – ${dateRange.end.split("-").reverse().join(".")}`;
   const prettyCompared = comparedDateRange.start
@@ -310,6 +353,8 @@ export default function DemandClient({
           scale={scale}
           quantile={quantile}
           channels={visibleChannels}
+          annotations={visibleAnnotations}
+          annotationLayers={annotationLayers}
         />
       ) : activeData ? (
         <ForecastChart
@@ -319,6 +364,8 @@ export default function DemandClient({
           quantile={quantile}
           channels={visibleChannels}
           startForecastDate={activeData.startForecastDate}
+          annotations={visibleAnnotations}
+          annotationLayers={annotationLayers}
         />
       ) : (
         <div className="flex h-[360px] items-center justify-center rounded-xl border border-border-secondary bg-bg-primary">
