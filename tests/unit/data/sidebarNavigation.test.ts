@@ -21,7 +21,7 @@ describe('Sidebar Navigation Data', () => {
       const itemIds = mainNavigationItems.items.map(item => item.id);
       expect(itemIds).toContain('dashboard');
       expect(itemIds).toContain('my-catalog');
-      expect(itemIds).toContain('competitors');
+      expect(itemIds).toContain('companies');
       expect(itemIds).toContain('repricing');
       expect(itemIds).toContain('reports');
       expect(itemIds).toContain('product-feed');
@@ -59,11 +59,15 @@ describe('Sidebar Navigation Data', () => {
     it('has items with submenus', () => {
       const itemsWithSubmenus = mainNavigationItems.items.filter(item => item.submenu);
       expect(itemsWithSubmenus.length).toBeGreaterThan(0);
-      
-      const competitorsItem = mainNavigationItems.items.find(item => item.id === 'competitors');
-      expect(competitorsItem?.submenu).toBeDefined();
-      expect(Array.isArray(competitorsItem?.submenu)).toBe(true);
-      expect(competitorsItem?.submenu?.length).toBeGreaterThan(0);
+
+      const companiesItem = mainNavigationItems.items.find(item => item.id === 'companies');
+      expect(companiesItem?.submenu).toBeDefined();
+      expect(Array.isArray(companiesItem?.submenu)).toBe(true);
+      expect(companiesItem?.submenu?.length).toBeGreaterThan(0);
+
+      const submenuIds = companiesItem?.submenu?.map(sub => sub.id) || [];
+      expect(submenuIds).toContain('company-explorer');
+      expect(submenuIds).toContain('tracked-competitors');
     });
 
     it('has valid submenu structure', () => {
