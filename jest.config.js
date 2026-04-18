@@ -14,6 +14,9 @@ const customJestConfig = {
     '<rootDir>/node_modules/',
     '<rootDir>/tests/e2e/',
     '<rootDir>/tests/performance/',
+    // Mastra agent tests require real OpenAI keys + AI infrastructure;
+    // they are integration-level and excluded from the CI unit-test run.
+    '<rootDir>/src/mastra/__tests__/',
   ],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
