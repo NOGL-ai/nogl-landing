@@ -9,7 +9,12 @@ const createJestConfig = nextJest({
 const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testEnvironment: 'jest-environment-jsdom',
-  testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
+  testPathIgnorePatterns: [
+    '<rootDir>/.next/',
+    '<rootDir>/node_modules/',
+    '<rootDir>/tests/e2e/',
+    '<rootDir>/tests/performance/',
+  ],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
@@ -41,11 +46,13 @@ const customJestConfig = {
   testEnvironmentOptions: {
     customExportConditions: [''],
   },
-  // Add coverage provider configuration
-  coverageProvider: 'v8',
-  // Disable coverage collection for problematic files
-  collectCoverage: true,
-  coverageReporters: ['text', 'lcov', 'html'],
+  // Use babel coverage provider — v8 provider leaves handles open and
+  // prevents jest from exiting promptly even with --forceExit.
+  coverageProvider: 'babel',
+  // Coverage is opt-in via the CLI (--coverage) so it only runs when asked.
+  // Always collecting it here slowed CI by ~14 min at report-generation time.
+  collectCoverage: false,
+  coverageReporters: ['text', 'lcov'],
 }
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

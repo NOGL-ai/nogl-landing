@@ -1,5 +1,22 @@
 import '@testing-library/jest-dom'
 
+// WHATWG Streams polyfills — ai-v5 (pulled in by @mastra/core) expects
+// TransformStream/ReadableStream/WritableStream to be global. jsdom does not
+// provide them, so importing any module that touches ai-v5 explodes at load.
+// We pull them from node:stream/web where available, else noop so imports
+// succeed even if tests never actually use streams.
+try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const streamsWeb = require('node:stream/web')
+  if (!global.TransformStream) global.TransformStream = streamsWeb.TransformStream
+  if (!global.ReadableStream) global.ReadableStream = streamsWeb.ReadableStream
+  if (!global.WritableStream) global.WritableStream = streamsWeb.WritableStream
+} catch {
+  if (!global.TransformStream) global.TransformStream = class TransformStream {}
+  if (!global.ReadableStream) global.ReadableStream = class ReadableStream {}
+  if (!global.WritableStream) global.WritableStream = class WritableStream {}
+}
+
 // Mock global Request and Response for Next.js
 global.Request = global.Request || class Request {
   constructor(input, init) {
