@@ -55,6 +55,7 @@ jobs:
         DIRECT_URL: postgresql://postgres:postgres@localhost:5432/test_db
 
     - name: Run unit tests
+      timeout-minutes: 15
       run: npm run test:ci
       env:
         DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
@@ -64,7 +65,11 @@ jobs:
         NEXTAUTH_URL: http://localhost:3000
         REDIS_URL: redis://localhost:6379
 
+    - name: Install Playwright browsers
+      run: npx playwright install --with-deps chromium
+
     - name: Run E2E tests
+      timeout-minutes: 15
       run: npm run test:e2e
       env:
         DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
