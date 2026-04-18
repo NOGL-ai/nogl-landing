@@ -1,8 +1,7 @@
 "use server";
 
-import { getServerSession } from "next-auth";
 import { format, startOfWeek, startOfMonth } from "date-fns";
-import { authOptions } from "@/lib/auth";
+import { getAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { forecastCacheGet, forecastCacheSet } from "@/lib/forecast-cache";
 import type {
@@ -16,7 +15,8 @@ import type {
 } from "@/types/forecast";
 
 async function assertAuth() {
-  const session = await getServerSession(authOptions);
+  // getAuthSession respects the dev bypass in src/lib/auth.ts
+  const session = await getAuthSession();
   if (!session) throw new Error("Unauthorized");
   return session;
 }

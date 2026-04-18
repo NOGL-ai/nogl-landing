@@ -7,5 +7,11 @@
     "env": {
       "NEXT_TELEMETRY_DISABLED": "1"
     }
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/cron/bridge-scraped-items",
+      "schedule": "*/30 * * * *"
+    }
+  ]
 }

@@ -1,24 +1,18 @@
 "use client";
 
-import { useState } from "react";
-import { SlidersHorizontal, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Calendar, SlidersHorizontal, X } from "lucide-react";
 import { DateRangePicker } from "./DateRangePicker";
 import { ToggleGroup } from "./ToggleGroup";
 import { QuantileSelect } from "./QuantileSelect";
 import { ChannelFilter } from "./ChannelFilter";
 import { CategoryMenu } from "./CategoryMenu";
+import { CHANNEL_CONFIGS } from "@/config/forecast";
 import type {
   ForecastScale,
   ForecastQuantileValue,
-  ForecastChannelConfig,
   CategoryWithVariants,
 } from "@/types/forecast";
-
-const DEFAULT_CHANNELS: ForecastChannelConfig[] = [
-  { name: "web",         label: "Web",         colorFg: "#2970FF", colorBg: "#EFF4FF" },
-  { name: "marketplace", label: "Marketplace",  colorFg: "#F79009", colorBg: "#FFFAEB" },
-  { name: "b2b",         label: "B2B",          colorFg: "#12B76A", colorBg: "#ECFDF3" },
-];
 
 interface FilterState {
   dateRange: { start: string; end: string };
@@ -44,6 +38,22 @@ interface FilterPanelProps {
   comparisonMode: boolean;
   comparedDateRange: { start: string; end: string };
   onApply: (filters: FilterState) => void;
+  /**
+   * Label shown in the trigger button (e.g. "13.01.2024 – 24.11.2024").
+   * When omitted, the trigger shows the generic "Filters" label.
+   */
+  triggerLabel?: string;
+  /**
+   * "button" — default compact pill with icon + "Filters".
+   * "field"  — full-width input-style trigger used inside form grids.
+   */
+  triggerVariant?: "button" | "field";
+  /**
+   * When the panel opens, scroll this section into view. Used to wire the
+   * "Compare to" field directly to the comparison section of the slide-over,
+   * so there is only one surface for configuring comparison.
+   */
+  initialSection?: "dateRange" | "comparison" | "channels" | "scale" | "quantile" | "sets" | "categories";
 }
 
 export function FilterPanel({
@@ -58,6 +68,9 @@ export function FilterPanel({
   comparisonMode,
   comparedDateRange,
   onApply,
+  triggerLabel,
+  triggerVariant = "button",
+  initialSection,
 }: FilterPanelProps) {
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState<FilterState>({
@@ -72,7 +85,13 @@ export function FilterPanel({
     comparedDateRange,
   });
 
+  const comparisonRef = useRef<HTMLElement | null>(null);
+
   const handleOpen = () => {
+    // If the trigger is the "Compare to" field, pre-enable comparison mode
+    // so the DateRangePicker is visible immediately.
+    const draftComparisonMode =
+      initialSection === "comparison" ? true : comparisonMode;
     setDraft({
       dateRange,
       categories: selectedCategories,
@@ -81,11 +100,21 @@ export function FilterPanel({
       scale,
       quantile,
       isSet,
-      comparisonMode,
+      comparisonMode: draftComparisonMode,
       comparedDateRange,
     });
     setOpen(true);
   };
+
+  // When opened with a target section, scroll it into view on the next frame
+  useEffect(() => {
+    if (open && initialSection === "comparison" && comparisonRef.current) {
+      // Defer so the slide-over transition has started
+      requestAnimationFrame(() => {
+        comparisonRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+  }, [open, initialSection]);
 
   const handleApply = () => {
     onApply(draft);
@@ -108,14 +137,27 @@ export function FilterPanel({
 
   return (
     <>
-      <button
-        type="button"
-        onClick={handleOpen}
-        className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
-      >
-        <SlidersHorizontal className="h-4 w-4" />
-        Filters
-      </button>
+      {triggerVariant === "field" ? (
+        <button
+          type="button"
+          onClick={handleOpen}
+          className="flex h-10 w-full items-center justify-between rounded-lg border border-border-secondary bg-bg-primary px-3 text-sm text-primary transition-colors hover:bg-bg-secondary focus:outline-none focus:ring-2 focus:ring-border-brand"
+        >
+          <span className="flex items-center gap-2 truncate">
+            <Calendar className="h-4 w-4 text-tertiary" aria-hidden="true" />
+            <span className="truncate">{triggerLabel ?? "Select time frame"}</span>
+          </span>
+        </button>
+      ) : (
+        <button
+          type="button"
+          onClick={handleOpen}
+          className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+        >
+          <SlidersHorizontal className="h-4 w-4" />
+          Filters
+        </button>
+      )}
 
       {/* Slide-over */}
       {open && (
@@ -153,7 +195,7 @@ export function FilterPanel({
               </section>
 
               {/* Comparison mode */}
-              <section>
+              <section ref={comparisonRef as React.RefObject<HTMLElement>}>
                 <label className="flex cursor-pointer items-center gap-3 text-sm text-foreground">
                   <input
                     type="checkbox"
@@ -180,7 +222,7 @@ export function FilterPanel({
                   Sale Channels
                 </h3>
                 <ChannelFilter
-                  channels={DEFAULT_CHANNELS}
+                  channels={CHANNEL_CONFIGS}
                   selected={draft.channels}
                   onChange={(c) => setDraft((d) => ({ ...d, channels: c }))}
                 />

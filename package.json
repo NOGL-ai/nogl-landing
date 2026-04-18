@@ -20,6 +20,8 @@
 		"db:seed": "tsx prisma/seed.ts",
 		"db:seed:force": "npx ts-node prisma/seed.ts --force",
 		"seed:calumet-forecast": "node --env-file=.env --import tsx scripts/seed-calumet-forecast.ts",
+		"bridge:scraped-items": "node --env-file=.env --import tsx scripts/bridge-scraped-items-to-products.ts",
+		"bridge:scraped-items:calumet": "node --env-file=.env --import tsx scripts/bridge-scraped-items-to-products.ts --domain calumet.de",
 		"stripe:listen": "stripe listen --forward-to http://nogl.ai:3000/api/stripe/webhook",
 		"check-format": "prettier --check .",
 		"check-lint": "eslint .",

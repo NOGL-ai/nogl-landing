@@ -17,10 +17,26 @@ import { Pool } from "pg";
 // ─── Configuration ───────────────────────────────────────────────────────────
 
 const CALUMET_COMPANY_ID = "cmnw4qqo10000ltccgauemneu";
-const PRODUCT_LIMIT = 500;
+// Primary source: scraping.scraped_items (26k+ Calumet rows).
+// public.products (14k+) is used only as a fallback for pricing/SKU when the
+// scraping payload is missing those fields.
+const PRODUCT_LIMIT = 3000; // cap for sane runtime on dev hardware
 const HISTORICAL_DAYS = 730; // 24 months
 const FORECAST_DAYS = 60;
 const BATCH_SIZE = 1000;
+
+// Canonical category IDs from scraping.scraped_items → ForecastProduct.category buckets.
+const CANONICAL_CATEGORY_MAP: Record<string, string> = {
+  tripods: "tripods",
+  batteries_and_chargers: "accessories",
+  polarizing_filters: "accessories",
+  nd_filters: "accessories",
+  camera_bags: "accessories",
+  speedlights: "lighting",
+  camera_backpacks: "accessories",
+  mirrorless_full_frame: "cameras",
+  cleaning_equipment: "accessories",
+};
 
 const SCRAPING_DB_URL =
   "postgresql://rag_user:KRpTNHqSR18hsBbE9jsLsXBAzdKN@10.10.10.213:5432/fashion_rag";
@@ -85,6 +101,43 @@ interface RawProductRow {
   product_sku: string | null;
 }
 
+interface ScrapedPayload {
+  title?: string;
+  brand?: string;
+  manufacturer?: string;
+  price?: string | number;
+  list_price?: string | number;
+  currency?: string;
+  sku?: string;
+  gtin?: string;
+  mpn?: string;
+  image_urls?: string[];
+  // Calumet feeds sometimes send an array (["Foto", "Stative"]) and sometimes
+  // a single string ("Stativspinnen & Rollen"). Accept both.
+  category_breadcrumb?: string | string[];
+  availability?: string;
+}
+
+function breadcrumbToString(
+  v: string | string[] | null | undefined,
+): string | null {
+  if (!v) return null;
+  if (Array.isArray(v)) return v.filter(Boolean).join(" > ");
+  return String(v);
+}
+
+interface EnrichedProduct {
+  raw: RawProductRow;
+  canonicalCategory: string | null; // e.g. "tripods", "speedlights"
+  categoryBreadcrumb: string | null; // e.g. "Stativspinnen & Rollen"
+  enrichedBrand: string | null;
+  enrichedPrice: number | null;
+  enrichedGtin: string | null;
+  enrichedSku: string | null;
+  imageUrl: string | null;
+  handle: string | null; // URL slug
+}
+
 interface ChannelRecord {
   id: string;
   name: ChannelName;
@@ -102,19 +155,48 @@ interface VariantContext {
 function classifyCategory(
   title: string,
   rawCategory: string | null,
+  canonicalCategory: string | null,
+  breadcrumb: string | null,
 ): string {
+  // Prefer scraping's canonical_category_id when available & mapped.
+  if (canonicalCategory && CANONICAL_CATEGORY_MAP[canonicalCategory]) {
+    return CANONICAL_CATEGORY_MAP[canonicalCategory];
+  }
+
+  const crumb = (breadcrumb ?? "").toLowerCase();
   const cat = (rawCategory ?? "").toLowerCase();
   const t = title.toLowerCase();
 
+  // Breadcrumb heuristics (from scraping.scraped_items)
+  if (/kamera|camera|body|gehäuse|gehaeuse/.test(crumb)) return "cameras";
+  if (/objektiv|lens/.test(crumb)) return "lenses";
+  if (/blitz|licht|softbox|beleuchtung|lighting/.test(crumb)) return "lighting";
+  if (/stativ|tripod/.test(crumb)) return "tripods";
+  if (/studio|hintergrund|backdrop/.test(crumb)) return "studio";
+  if (/set|kit|bundle/.test(crumb)) return "sets";
+
+  // nogl_landing product_category
   if (cat.includes("camera") || cat.includes("kamera")) return "cameras";
   if (cat.includes("lens") || cat.includes("objektiv")) return "lenses";
-  if (/softbox|strobe|flash|blitz|licht|godox|profoto|bowens/i.test(t))
+  if (cat.includes("led") || cat.includes("blitz") || cat.includes("light"))
     return "lighting";
-  if (/tripod|stativ/i.test(t)) return "tripods";
-  if (/bag|rucksack|case|tasche/i.test(t)) return "accessories";
+
+  // Title heuristics
+  if (/softbox|strobe|flash|blitz|licht|godox|profoto|bowens|aputure/i.test(t))
+    return "lighting";
+  if (/tripod|stativ|monopod/i.test(t)) return "tripods";
+  if (/bag|rucksack|case|tasche|koffer/i.test(t)) return "accessories";
   if (/studio|backdrop|hintergrund/i.test(t)) return "studio";
   if (/set|kit|bundle/i.test(t)) return "sets";
+  if (/kamera|camera|mirrorless|dslr/i.test(t)) return "cameras";
+  if (/lens|objektiv/i.test(t)) return "lenses";
   return "accessories";
+}
+
+function urlSlug(url: string | null): string | null {
+  if (!url) return null;
+  const m = url.match(/\/product\/([^/?#]+)/);
+  return m ? m[1] : null;
 }
 
 function isSetProduct(title: string): boolean {
@@ -231,35 +313,142 @@ async function main(): Promise<void> {
     }
     console.log(`[seed]   channels: ${channels.map((c) => c.name).join(", ")}`);
 
-    // ── 3. Pull Calumet products from main DB ──────────────────────────────
-    console.log("[seed] Fetching Calumet products from public.products…");
-    const productQuery = `
-      SELECT DISTINCT ON (product_title)
-        product_id,
-        product_title,
-        product_url,
-        product_brand,
-        product_category,
-        product_original_price,
-        product_sku
-      FROM public.products
-      WHERE company_id = $1
-      ORDER BY product_title, product_original_price ASC NULLS LAST
-      LIMIT $2
-    `;
-    const productsResult = await mainPool.query<RawProductRow>(productQuery, [
-      CALUMET_COMPANY_ID,
-      PRODUCT_LIMIT,
-    ]);
-    const rawProducts = productsResult.rows;
-    console.log(`[seed]   fetched ${rawProducts.length} products`);
+    // ── 3. Pull Calumet products — scraping.scraped_items is PRIMARY ────────
+    // scraping has ~26k rows; public.products has ~14k. We use scraping as the
+    // source of truth and join public.products by URL as a fallback for price
+    // and SKU when the scraping payload is missing those fields.
+    console.log(
+      "[seed] Fetching Calumet products from scraping.scraped_items (primary source)…",
+    );
+    const scrapedResult = await scrapingPool.query<{
+      url: string;
+      payload: ScrapedPayload;
+      canonical_category_id: string | null;
+    }>(
+      `SELECT url, payload, canonical_category_id
+       FROM scraping.scraped_items
+       WHERE source = 'calumet'
+         AND item_type = 'product'
+         -- exclude 4xx error rows (payload.name = "403"/"404" etc.)
+         AND (payload->>'title') IS NOT NULL
+         AND (payload->>'title') <> ''
+         AND (payload->>'title') !~ '^[0-9]{3}$'
+       ORDER BY updated_at DESC NULLS LAST
+       LIMIT $1`,
+      [PRODUCT_LIMIT],
+    );
+    const scrapedRows = scrapedResult.rows;
+    console.log(
+      `[seed]   fetched ${scrapedRows.length} products from scraping.scraped_items`,
+    );
 
-    if (rawProducts.length === 0) {
+    if (scrapedRows.length === 0) {
       console.warn(
-        "[seed] No Calumet products found in public.products — aborting.",
+        "[seed] No Calumet products found in scraping.scraped_items — aborting.",
       );
       return;
     }
+
+    // ── 3b. Fallback fetch from public.products for pricing/SKU ────────────
+    console.log(
+      "[seed] Fetching public.products for the same URLs (fallback pricing/SKU)…",
+    );
+    const scrapedUrls = scrapedRows.map((r) => r.url).filter(Boolean);
+    const fallbackByUrl = new Map<string, RawProductRow>();
+    if (scrapedUrls.length > 0) {
+      const fallbackResult = await mainPool.query<RawProductRow>(
+        `SELECT DISTINCT ON (product_url)
+           product_id, product_title, product_url, product_brand,
+           product_category, product_original_price, product_sku
+         FROM public.products
+         WHERE company_id = $1
+           AND product_url = ANY($2::text[])
+         ORDER BY product_url, product_original_price ASC NULLS LAST`,
+        [CALUMET_COMPANY_ID, scrapedUrls],
+      );
+      for (const r of fallbackResult.rows) {
+        if (r.product_url) fallbackByUrl.set(r.product_url, r);
+      }
+    }
+    console.log(
+      `[seed]   matched ${fallbackByUrl.size} / ${scrapedUrls.length} URLs to public.products for pricing fallback`,
+    );
+
+    // ── 3c. Build the enriched list (scraping ∪ public.products) ───────────
+    const enriched: EnrichedProduct[] = scrapedRows
+      .map((row) => {
+        const p = row.payload ?? {};
+        const fallback = fallbackByUrl.get(row.url);
+
+        // Prefer payload title; fall back to public.products title.
+        const title = (p.title ?? fallback?.product_title ?? "").trim();
+        if (!title) return null;
+
+        // Build a synthetic product_id from URL slug (stable across runs) or
+        // reuse public.products product_id if present.
+        const slug = urlSlug(row.url);
+        const productId =
+          fallback?.product_id ?? (slug ? `scraping:${slug}` : `scraping:${row.url}`);
+
+        const price =
+          toNumber(p.price) ??
+          toNumber(p.list_price) ??
+          toNumber(fallback?.product_original_price);
+
+        const raw: RawProductRow = {
+          product_id: productId,
+          product_title: title,
+          product_url: row.url,
+          product_brand: fallback?.product_brand ?? p.brand ?? p.manufacturer ?? null,
+          product_category: fallback?.product_category ?? null,
+          product_original_price: price,
+          product_sku: fallback?.product_sku ?? p.sku ?? null,
+        };
+
+        return {
+          raw,
+          canonicalCategory: row.canonical_category_id,
+          categoryBreadcrumb: breadcrumbToString(p.category_breadcrumb),
+          enrichedBrand: raw.product_brand,
+          enrichedPrice: price,
+          enrichedGtin: p.gtin ? String(p.gtin).trim() || null : null,
+          enrichedSku: raw.product_sku,
+          imageUrl:
+            Array.isArray(p.image_urls) && p.image_urls.length > 0
+              ? p.image_urls[0]
+              : null,
+          handle: slug,
+        } satisfies EnrichedProduct;
+      })
+      .filter((x): x is EnrichedProduct => x !== null);
+
+    console.log(
+      `[seed]   enriched product count: ${enriched.length} (from ${scrapedRows.length} scraping rows)`,
+    );
+
+    // Category distribution diagnostic.
+    const catDist = new Map<string, number>();
+    for (const e of enriched) {
+      const cat = classifyCategory(
+        e.raw.product_title,
+        e.raw.product_category,
+        e.canonicalCategory,
+        e.categoryBreadcrumb,
+      );
+      catDist.set(cat, (catDist.get(cat) ?? 0) + 1);
+    }
+    console.log(
+      `[seed]   category distribution: ${[...catDist.entries()]
+        .sort((a, b) => b[1] - a[1])
+        .map(([c, n]) => `${c}=${n}`)
+        .join(", ")}`,
+    );
+
+    // Legacy array for the existing loops below — they iterate on `rawProducts`.
+    const rawProducts: RawProductRow[] = enriched.map((e) => e.raw);
+    const enrichedByPid = new Map<string, EnrichedProduct>(
+      enriched.map((e) => [e.raw.product_id, e]),
+    );
 
     // ── 4. Upsert products + variants ──────────────────────────────────────
     console.log("[seed] Upserting products and variants…");
@@ -273,8 +462,15 @@ async function main(): Promise<void> {
       const title = raw.product_title?.trim();
       if (!title) continue;
 
-      const category = classifyCategory(title, raw.product_category);
-      const isSet = isSetProduct(title);
+      const e = enrichedByPid.get(raw.product_id);
+      const category = classifyCategory(
+        title,
+        raw.product_category,
+        e?.canonicalCategory ?? null,
+        e?.categoryBreadcrumb ?? null,
+      );
+      const isSet =
+        isSetProduct(title) || isSetProduct(e?.categoryBreadcrumb ?? "");
 
       // ForecastProduct has no unique on (tenantId, externalId), so use
       // findFirst + create/update manually.
@@ -287,7 +483,8 @@ async function main(): Promise<void> {
           where: { id: product.id },
           data: {
             productTitle: title,
-            brand: raw.product_brand ?? null,
+            handle: e?.handle ?? null,
+            brand: e?.enrichedBrand ?? raw.product_brand ?? null,
             category,
             isSet,
           },
@@ -298,7 +495,8 @@ async function main(): Promise<void> {
             tenantId: tenant.id,
             externalId: raw.product_id,
             productTitle: title,
-            brand: raw.product_brand ?? null,
+            handle: e?.handle ?? null,
+            brand: e?.enrichedBrand ?? raw.product_brand ?? null,
             category,
             isSet,
           },
@@ -306,7 +504,7 @@ async function main(): Promise<void> {
         productsCreated += 1;
       }
 
-      const rrp = toNumber(raw.product_original_price) ?? 100;
+      const rrp = e?.enrichedPrice ?? toNumber(raw.product_original_price) ?? 100;
 
       let variant = await prisma.forecastVariant.findFirst({
         where: {
@@ -319,7 +517,8 @@ async function main(): Promise<void> {
         variant = await prisma.forecastVariant.update({
           where: { id: variant.id },
           data: {
-            sku: raw.product_sku ?? null,
+            sku: e?.enrichedSku ?? raw.product_sku ?? null,
+            gtin: e?.enrichedGtin ?? null,
             rrp,
             currency: "EUR",
             isActive: true,
@@ -330,7 +529,8 @@ async function main(): Promise<void> {
           data: {
             productId: product.id,
             variantTitle: title,
-            sku: raw.product_sku ?? null,
+            sku: e?.enrichedSku ?? raw.product_sku ?? null,
+            gtin: e?.enrichedGtin ?? null,
             rrp,
             currency: "EUR",
           },
