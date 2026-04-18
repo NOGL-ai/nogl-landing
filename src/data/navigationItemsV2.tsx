@@ -132,7 +132,7 @@ export const navigationStructure: NavigationSection[] = [
             {
                 id: 'product-explorer',
                 label: 'Product Explorer',
-                icon: Tag01,
+                icon: Package,
                 subItems: [
                     {
                         label: 'Product Catalog',
@@ -156,7 +156,7 @@ export const navigationStructure: NavigationSection[] = [
             {
                 id: 'advanced-analytics',
                 label: 'Advanced Analytics',
-                icon: BarLineChart,
+                icon: BarChart02,
                 subItems: [
                     {
                         label: 'Dashboards',
