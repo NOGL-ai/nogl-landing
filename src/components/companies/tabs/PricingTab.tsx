@@ -122,14 +122,8 @@ export function PricingTab({ slug }: PricingTabProps) {
     }));
   }
 
-  if (state.loading && !state.data) return <PricingSkeleton />;
-  if (state.error && !state.data) return <InlineError message={state.error} />;
-  if (!state.data) return null;
-
-  const { data } = state;
-  const priceDist: PriceDistributionBucket[] = data.price_distribution ?? [];
-  const topProducts = data.top_products ?? [];
-
+  // useMemo must be unconditional — derive from state.data which may be null before load
+  const topProducts = state.data?.top_products ?? [];
   const sortedTopProducts = useMemo(() => {
     const arr = [...topProducts];
     if (sort === "price_asc")  arr.sort((a, b) => (a.original_price ?? 0) - (b.original_price ?? 0));
@@ -143,6 +137,13 @@ export function PricingTab({ slug }: PricingTabProps) {
     }
     return arr;
   }, [topProducts, sort]);
+
+  if (state.loading && !state.data) return <PricingSkeleton />;
+  if (state.error && !state.data) return <InlineError message={state.error} />;
+  if (!state.data) return null;
+
+  const { data } = state;
+  const priceDist: PriceDistributionBucket[] = data.price_distribution ?? [];
 
   // Use unfiltered rows for the table and price range bars so they stay stable
   const tableRows = allProductTypesRows.length > 0 ? allProductTypesRows : data.product_types;
