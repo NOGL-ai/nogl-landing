@@ -2,7 +2,8 @@
 const path = require("path");
 
 const nextConfig = {
-	outputFileTracingRoot: path.join(__dirname, "../../.."),
+	// Only needed in local worktree (nested 3 levels deep); on Vercel the repo root is __dirname
+	...(process.env.VERCEL ? {} : { outputFileTracingRoot: path.join(__dirname, "../../..") }),
 	reactStrictMode: true,
 	typedRoutes: true,
 	output: 'standalone',
