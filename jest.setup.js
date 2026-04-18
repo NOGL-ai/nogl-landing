@@ -76,6 +76,25 @@ jest.mock('nodemailer', () => ({
   })),
 }))
 
+// Stub Prisma client globally — prevents connection pool from opening during
+// module evaluation in every test file that transitively imports prismaDb.
+jest.mock('@/lib/prismaDb', () => ({
+  prisma: {
+    user: { findUnique: jest.fn(), findMany: jest.fn(), create: jest.fn(), update: jest.fn(), delete: jest.fn(), count: jest.fn() },
+    company: { findUnique: jest.fn(), findMany: jest.fn(), create: jest.fn(), update: jest.fn(), delete: jest.fn(), count: jest.fn() },
+    product: { findUnique: jest.fn(), findMany: jest.fn(), create: jest.fn(), update: jest.fn(), delete: jest.fn(), count: jest.fn() },
+    forecastTenant: { findUnique: jest.fn(), findMany: jest.fn(), create: jest.fn(), update: jest.fn(), upsert: jest.fn(), count: jest.fn() },
+    forecastProduct: { findUnique: jest.fn(), findMany: jest.fn(), create: jest.fn(), update: jest.fn(), count: jest.fn() },
+    forecastAnnotation: { findMany: jest.fn(), create: jest.fn(), delete: jest.fn(), deleteMany: jest.fn() },
+    replenishmentPurchaseOrder: { findMany: jest.fn(), findUnique: jest.fn(), update: jest.fn(), create: jest.fn() },
+    replenishmentSupplier: { findMany: jest.fn(), create: jest.fn(), upsert: jest.fn() },
+    session: { deleteMany: jest.fn() },
+    $disconnect: jest.fn().mockResolvedValue(undefined),
+    $connect: jest.fn().mockResolvedValue(undefined),
+    $transaction: jest.fn((fn) => fn({ user: { findUnique: jest.fn(), update: jest.fn() } })),
+  },
+}))
+
 // Stub @/lib/auth so auth.ts does not load nodemailer / Prisma / bcrypt
 // transitively during test module evaluation.
 jest.mock('@/lib/auth', () => ({
