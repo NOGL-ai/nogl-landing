@@ -46,11 +46,10 @@ const customJestConfig = {
   testEnvironmentOptions: {
     customExportConditions: [''],
   },
-  // Use babel coverage provider — v8 provider leaves handles open and
-  // prevents jest from exiting promptly even with --forceExit.
-  coverageProvider: 'babel',
-  // Coverage is opt-in via the CLI (--coverage) so it only runs when asked.
-  // Always collecting it here slowed CI by ~14 min at report-generation time.
+  // Coverage provider — v8 is fast when scoping is narrow.
+  coverageProvider: 'v8',
+  // Coverage is opt-in: run `npm run test:coverage` explicitly.
+  // test:ci does NOT pass --coverage so this has no effect there.
   collectCoverage: false,
   coverageReporters: ['text', 'lcov'],
 }
