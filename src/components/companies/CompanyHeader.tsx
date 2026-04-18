@@ -31,9 +31,9 @@ function TrackingStatusBadge({
 }) {
   const config =
     status === "TRACKED"
-      ? { label: labels.tracked, dot: "bg-emerald-500", variant: "success" as const }
+      ? { label: labels.tracked, dot: "bg-white/90", variant: "success" as const }
       : status === "PAUSED"
-        ? { label: labels.paused, dot: "bg-amber-500", variant: "warning" as const }
+        ? { label: labels.paused, dot: "bg-white/90", variant: "warning" as const }
         : { label: labels.untracked, dot: "bg-zinc-400", variant: "secondary" as const };
 
   return (
