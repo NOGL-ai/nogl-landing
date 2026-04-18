@@ -16,6 +16,8 @@ import {
     Package,
     BarChart02,
     Share01,
+    CoinsHand,
+    Tag01,
 } from "@untitledui/icons";
 import type { ReactNode } from "react";
 
@@ -129,7 +131,7 @@ export const navigationStructure: NavigationSection[] = [
             {
                 id: 'product-explorer',
                 label: 'Product Explorer',
-                icon: Package,
+                icon: Tag01,
                 subItems: [
                     {
                         label: 'Product Catalog',
@@ -141,7 +143,7 @@ export const navigationStructure: NavigationSection[] = [
             {
                 id: 'fractional-cfo',
                 label: 'Fractional CFO',
-                icon: TrendUp02,
+                icon: CoinsHand,
                 subItems: [
                     {
                         label: 'Demand Forecast',
