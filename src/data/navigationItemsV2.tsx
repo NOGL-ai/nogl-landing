@@ -16,6 +16,7 @@ import {
     Package,
     BarChart02,
     Share01,
+    CheckSquare,
 } from "@untitledui/icons";
 import type { ReactNode } from "react";
 
@@ -135,6 +136,28 @@ export const navigationStructure: NavigationSection[] = [
                         label: 'Product Catalog',
                         href: '/product-explorer',
                         icon: Package,
+                    },
+                ],
+            },
+            {
+                id: 'ad-scoring',
+                label: 'Ad Scoring',
+                icon: Star01,
+                subItems: [
+                    {
+                        label: 'Upload & Score',
+                        href: '/ad-scoring/assets',
+                        icon: Package,
+                    },
+                    {
+                        label: 'Reviews',
+                        href: '/ad-scoring/reviews',
+                        icon: CheckSquare,
+                    },
+                    {
+                        label: 'Brands',
+                        href: '/ad-scoring/brands',
+                        icon: BarChartSquare02,
                     },
                 ],
             },
