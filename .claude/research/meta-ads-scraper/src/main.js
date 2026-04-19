@@ -1,0 +1,926 @@
+const { Actor } = require('apify');
+const { PlaywrightCrawler, Dataset } = require('crawlee');
+const { chromium } = require('playwright');
+const UserAgent = require('user-agents');
+const { StateStore } = require('./state');
+const { RawCache } = require('./rawCache');
+const { extractPageInfo } = require('./cursor');
+const { HealthMonitor, SessionDeadError } = require('./health');
+const { OfficialApiClient } = require('./officialApi');
+const { DataProcessor } = require('../utils/helpers');
+const { applyShard } = require('./shard');
+
+// Modern Anti-Detection utilities for 2025
+class ModernAntiDetection {
+    static getRandomUserAgent() {
+        const userAgent = new UserAgent({ 
+            deviceCategory: 'desktop',
+            platform: 'Win32'
+        });
+        return userAgent.toString();
+    }
+
+    static getRandomViewport() {
+        const viewports = [
+            { width: 1920, height: 1080 },
+            { width: 1366, height: 768 },
+            { width: 1440, height: 900 },
+            { width: 1536, height: 864 },
+            { width: 1280, height: 720 },
+            { width: 1600, height: 900 },
+            { width: 1680, height: 1050 }
+        ];
+        return viewports[Math.floor(Math.random() * viewports.length)];
+    }
+
+    static async setupAdvancedStealth(page) {
+        // Advanced stealth techniques for 2025
+        await page.addInitScript(() => {
+            // Remove webdriver traces
+            Object.defineProperty(navigator, 'webdriver', {
+                get: () => undefined,
+            });
+            
+            // Override automation indicators
+            delete window.cdc_adoQpoasnfa76pfcZLmcfl_Array;
+            delete window.cdc_adoQpoasnfa76pfcZLmcfl_Promise;
+            delete window.cdc_adoQpoasnfa76pfcZLmcfl_Symbol;
+            
+            // Mock chrome runtime
+            window.chrome = {
+                runtime: {
+                    onConnect: undefined,
+                    onMessage: undefined
+                }
+            };
+            
+            // Override permissions
+            const originalQuery = window.navigator.permissions.query;
+            window.navigator.permissions.query = (parameters) => (
+                parameters.name === 'notifications' ?
+                    Promise.resolve({ state: Notification.permission }) :
+                    originalQuery(parameters)
+            );
+            
+            // Mock plugins
+            Object.defineProperty(navigator, 'plugins', {
+                get: () => [
+                    { name: 'Chrome PDF Plugin', filename: 'internal-pdf-viewer' },
+                    { name: 'Chrome PDF Viewer', filename: 'mhjfbmdgcfjbbpaeojofohoefgiehjai' },
+                    { name: 'Native Client', filename: 'internal-nacl-plugin' }
+                ],
+            });
+            
+            // Override languages
+            Object.defineProperty(navigator, 'languages', {
+                get: () => ['en-US', 'en', 'it-IT', 'it'],
+            });
+            
+            // Mock hardware concurrency
+            Object.defineProperty(navigator, 'hardwareConcurrency', {
+                get: () => 4,
+            });
+            
+            // Mock device memory
+            Object.defineProperty(navigator, 'deviceMemory', {
+                get: () => 8,
+            });
+        });
+    }
+
+    static async humanLikeDelay(min = 1000, max = 3000) {
+        const delay = Math.floor(Math.random() * (max - min + 1)) + min;
+        await new Promise(resolve => setTimeout(resolve, delay));
+    }
+
+    static async humanLikeScroll(page, direction = 'down') {
+        const scrollSteps = Math.floor(Math.random() * 3) + 2;
+        for (let i = 0; i < scrollSteps; i++) {
+            const scrollAmount = Math.floor(Math.random() * 400) + 200;
+            if (direction === 'down') {
+                await page.mouse.wheel(0, scrollAmount);
+            } else {
+                await page.mouse.wheel(0, -scrollAmount);
+            }
+            await this.humanLikeDelay(800, 1500);
+        }
+    }
+
+    static async randomMouseMovement(page) {
+        const viewport = page.viewportSize();
+        const x = Math.floor(Math.random() * viewport.width);
+        const y = Math.floor(Math.random() * viewport.height);
+        await page.mouse.move(x, y, { steps: Math.floor(Math.random() * 10) + 5 });
+    }
+}
+
+// Modern Meta Ads Library scraper for 2025
+class MetaAdsLibraryScraperV2 {
+    constructor(input, deps = {}) {
+        this.input = input;
+        this.baseUrl = 'https://www.facebook.com/ads/library';
+        this.state = deps.state || new StateStore();
+        this.rawCache = deps.rawCache || new RawCache({
+            maxBytes: input.rawCacheMaxBytes,
+        });
+        this.totalScraped = 0;
+        this.graphqlResponses = [];
+        this.adData = [];
+        this.pageInfo = { hasNextPage: null, endCursor: null, edgeCount: 0 };
+        this.health = deps.health || new HealthMonitor({
+            onDead: (reason) => this.state.logError('session_dead', reason),
+        });
+    }
+
+    buildSearchUrl() {
+        const params = new URLSearchParams();
+        
+        if (this.input.searchQuery) {
+            params.append('q', this.input.searchQuery);
+        }
+        
+        if (this.input.country && this.input.country !== 'ALL') {
+            params.append('country', this.input.country);
+        } else {
+            params.append('country', 'IT'); // Default to Italy
+        }
+        
+        if (this.input.adType && this.input.adType !== 'ALL') {
+            params.append('ad_type', this.input.adType);
+        } else {
+            params.append('ad_type', 'all'); // Include all ad types
+        }
+        
+        params.append('active_status', 'all'); // Include both active and inactive
+        params.append('view_all_page_id', this.input.pageId || '');
+        
+        return `${this.baseUrl}?${params.toString()}`;
+    }
+
+    async setupNetworkInterception(page) {
+        // Intercept GraphQL requests to capture ad data
+        await page.route('**/graphql', async (route) => {
+            const request = route.request();
+            const response = await route.fetch();
+            
+            try {
+                const responseBody = await response.text();
+                const postData = request.postData();
+                
+                // Check if this is an ads library GraphQL request
+                if (postData && (postData.includes('AdLibrarySearchResultsQuery')
+                                || postData.includes('AdLibraryMobileSearchResultsQuery')
+                                || postData.includes('AdLibrarySearchQuery'))) {
+
+                    console.log('Intercepted Ads Library GraphQL request');
+
+                    try {
+                        const jsonResponse = JSON.parse(responseBody);
+                        const cacheKey = this.rawCache.put(
+                            `${request.url()}|${postData.slice(0, 256)}|${Date.now()}`,
+                            responseBody
+                        );
+                        this.processGraphQLResponse(jsonResponse, cacheKey);
+                    } catch (parseError) {
+                        this.state.logError('graphql_parse', parseError.message);
+                        console.log('Error parsing GraphQL response:', parseError.message);
+                    }
+                }
+            } catch (error) {
+                this.state.logError('graphql_intercept', error.message);
+                console.log('Error processing intercepted request:', error.message);
+            }
+            
+            await route.fulfill({ response });
+        });
+    }
+
+    processGraphQLResponse(response, cacheKey = null) {
+        try {
+            const data = response?.data;
+            if (!data) return;
+
+            const info = extractPageInfo(response);
+            // Keep the latest non-null cursor signal; Meta ships a few
+            // GraphQL ops per search and only the results one carries it.
+            if (info.endCursor || info.hasNextPage !== null || info.edgeCount > 0) {
+                this.pageInfo = info;
+                this.state.saveCheckpoint(info.endCursor);
+            }
+
+            const searchPaths = [
+                'ad_library_search',
+                'adLibrarySearch',
+                'search_results',
+                'results',
+                'edges',
+            ];
+
+            let adsData = null;
+            for (const p of searchPaths) {
+                if (data[p]) {
+                    adsData = data[p];
+                    break;
+                }
+            }
+
+            if (adsData && adsData.edges) {
+                adsData.edges.forEach(edge => {
+                    if (edge.node) {
+                        const processedAd = this.processAdNode(edge.node);
+                        if (processedAd) {
+                            if (cacheKey) processedAd.raw = { cacheKey };
+                            this.adData.push(processedAd);
+                        }
+                    }
+                });
+                console.log(
+                    `Processed ${adsData.edges.length} ads (hasNext=${info.hasNextPage}, `
+                    + `cursor=${info.endCursor ? info.endCursor.slice(0, 16) + '...' : 'null'})`
+                );
+            }
+        } catch (error) {
+            this.state.logError('graphql_process', error.message);
+            console.log('Error processing GraphQL response:', error.message);
+        }
+    }
+
+    processAdNode(adNode) {
+        try {
+            const ad = {
+                adId: adNode.ad_archive_id || adNode.id,
+                pageId: adNode.page?.id,
+                pageName: adNode.page?.name,
+                adContent: adNode.ad_creative_body || adNode.creative_body,
+                startDate: adNode.ad_delivery_start_time,
+                endDate: adNode.ad_delivery_stop_time,
+                spend: adNode.spend?.lower_bound || adNode.spend?.upper_bound,
+                impressions: adNode.impressions?.lower_bound || adNode.impressions?.upper_bound,
+                reach: adNode.reach?.lower_bound || adNode.reach?.upper_bound,
+                demographics: adNode.demographic_distribution,
+                platforms: adNode.publisher_platforms,
+                adCreative: {
+                    images: adNode.ad_creative_link_captions || [],
+                    videos: adNode.videos || [],
+                    link_url: adNode.ad_creative_link_url
+                },
+                targetingInfo: adNode.target_ages || adNode.target_gender,
+                currency: adNode.currency,
+                isActive: adNode.is_active,
+                scrapedAt: new Date().toISOString(),
+                source: 'graphql_interception'
+            };
+
+            // Dedup across the whole run (backed by SQLite when available).
+            const adKey = ad.adId || `${ad.pageName}_${ad.adContent?.substring(0, 50)}`;
+            if (this.state.markSeen(adKey, 'graphql')) {
+                return ad;
+            }
+            return null;
+        } catch (error) {
+            this.state.logError('ad_node_process', error.message);
+            console.log('Error processing ad node:', error.message);
+            return null;
+        }
+    }
+
+    async extractAdDataFromDOM(page) {
+        return await page.evaluate(() => {
+            const ads = [];
+            
+            // Updated selectors for 2025 Facebook Ads Library
+            const adSelectors = [
+                '[data-testid="ad_library_card"]',
+                '[data-testid="ad-library-card"]', 
+                '[role="article"]',
+                '.x1yztbdb.x1d52u69',
+                '.x78zum5.xdt5ytf.x1iyjqo2.xs83m0k',
+                '[data-pagelet="AdLibrarySearchResults"] > div > div'
+            ];
+            
+            let adElements = [];
+            for (const selector of adSelectors) {
+                const elements = document.querySelectorAll(selector);
+                if (elements.length > 0) {
+                    adElements = Array.from(elements);
+                    console.log(`Found ${elements.length} ads using selector: ${selector}`);
+                    break;
+                }
+            }
+            
+            adElements.forEach((adElement, index) => {
+                try {
+                    const ad = {
+                        adId: null,
+                        pageId: null,
+                        pageName: null,
+                        adContent: null,
+                        startDate: null,
+                        endDate: null,
+                        spend: null,
+                        impressions: null,
+                        reach: null,
+                        demographics: null,
+                        platforms: null,
+                        adCreative: null,
+                        targetingInfo: null,
+                        scrapedAt: new Date().toISOString(),
+                        url: window.location.href,
+                        source: 'dom_extraction'
+                    };
+                    
+                    // Extract ad ID from various possible locations
+                    const adIdSelectors = [
+                        '[data-ad-id]',
+                        '[href*="ad_archive_id"]',
+                        '[href*="ad_id"]'
+                    ];
+                    
+                    for (const selector of adIdSelectors) {
+                        const element = adElement.querySelector(selector);
+                        if (element) {
+                            ad.adId = element.getAttribute('data-ad-id') || 
+                                     element.href?.match(/ad_archive_id=([^&]+)/)?.[1] ||
+                                     element.href?.match(/ad_id=([^&]+)/)?.[1];
+                            if (ad.adId) break;
+                        }
+                    }
+                    
+                    // Extract page name with updated selectors
+                    const pageNameSelectors = [
+                        '[data-testid="page_name"] span',
+                        '.x1heor9g.x1qlqyl8.x1pd3egz.x16tdsg8',
+                        'a[href*="/"] span.x1lliihq',
+                        '[role="link"] span.x193iq5w'
+                    ];
+                    
+                    for (const selector of pageNameSelectors) {
+                        const element = adElement.querySelector(selector);
+                        if (element && element.textContent?.trim()) {
+                            ad.pageName = element.textContent.trim();
+                            break;
+                        }
+                    }
+                    
+                    // Extract ad content with updated selectors
+                    const contentSelectors = [
+                        '[data-testid="ad_creative_body"]',
+                        '.x193iq5w.xeuugli.x13faqbe.x1vvkbs.x1xmvt09.x1lliihq.x1s928wv.xhkezso.x1gmr53x.x1cpjm7i.x1fgarty.x1943h6x.x4zkp8e.x676frb.x1nxh6w3.x1sibtaa.xo1l8bm.xi81zsa',
+                        '.x1iorvi4.x1pi30zi.x1l90r2v.x1swvt13',
+                        '.userContent',
+                        '[data-testid="post_message"] span'
+                    ];
+                    
+                    for (const selector of contentSelectors) {
+                        const element = adElement.querySelector(selector);
+                        if (element && element.textContent?.trim()) {
+                            ad.adContent = element.textContent.trim();
+                            break;
+                        }
+                    }
+                    
+                    // Extract date information with updated selectors
+                    const dateSelectors = [
+                        '[data-testid="ad_start_date"]',
+                        '[title*="Started running"]',
+                        '.x1i10hfl.xjbqb8w.x6umtig.x1b1mbwd.xaqea5y.xav7gou.x9f619.x1ypdohk.xt0psk2.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x16tdsg8.x1hl2dhg.xggy1nq.x1a2a7pz.x1heor9g.xt0b8zv.xo1l8bm'
+                    ];
+                    
+                    for (const selector of dateSelectors) {
+                        const element = adElement.querySelector(selector);
+                        if (element) {
+                            const dateText = element.textContent || element.getAttribute('title');
+                            if (dateText) {
+                                const dateMatch = dateText.match(/Started running on (.+?)(?:\s|$)/) ||
+                                                dateText.match(/(\d{1,2}\/\d{1,2}\/\d{4})/) ||
+                                                dateText.match(/(\d{4}-\d{2}-\d{2})/);
+                                if (dateMatch) {
+                                    ad.startDate = dateMatch[1];
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    
+                    // Extract spend information with updated selectors
+                    const spendSelectors = [
+                        '[data-testid="spend_amount"]',
+                        '[aria-label*="spend"]',
+                        '[title*="spend"]',
+                        'span:contains("€")',
+                        'span:contains("$")'
+                    ];
+                    
+                    for (const selector of spendSelectors) {
+                        const element = adElement.querySelector(selector);
+                        if (element) {
+                            const spendText = element.textContent || element.getAttribute('aria-label') || element.getAttribute('title');
+                            if (spendText) {
+                                const spendMatch = spendText.match(/[€$]([\d,]+(?:\.\d{2})?)/) ||
+                                                 spendText.match(/([\d,]+(?:\.\d{2})?)[€$]/);
+                                if (spendMatch) {
+                                    ad.spend = spendMatch[1];
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    
+                    // Extract impressions with updated selectors
+                    const impressionSelectors = [
+                        '[data-testid="impression_count"]',
+                        '[aria-label*="impression"]',
+                        '[title*="impression"]'
+                    ];
+                    
+                    for (const selector of impressionSelectors) {
+                        const element = adElement.querySelector(selector);
+                        if (element) {
+                            const impressionsText = element.textContent || element.getAttribute('aria-label');
+                            if (impressionsText) {
+                                const impressionsMatch = impressionsText.match(/([\d,]+(?:\.\d+)?[KMB]?)\s*impression/i);
+                                if (impressionsMatch) {
+                                    ad.impressions = impressionsMatch[1];
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    
+                    // Extract platforms with updated selectors
+                    const platformElements = adElement.querySelectorAll('[alt*="Facebook"], [alt*="Instagram"], [alt*="Messenger"], [alt*="Audience Network"], [data-testid*="platform"]');
+                    if (platformElements.length > 0) {
+                        ad.platforms = Array.from(platformElements).map(el => 
+                            el.getAttribute('alt') || el.getAttribute('data-testid')
+                        ).filter(Boolean).join(', ');
+                    }
+                    
+                    // Extract ad creative (images/videos) with updated selectors
+                    const creativeElements = adElement.querySelectorAll('img[src]:not([src*="data:"]), video[src]');
+                    if (creativeElements.length > 0) {
+                        ad.adCreative = Array.from(creativeElements)
+                            .map(el => el.src)
+                            .filter(src => src && !src.includes('data:') && !src.includes('static.xx.fbcdn.net/rsrc.php'));
+                    }
+                    
+                    // Only add if we have meaningful data
+                    if (ad.pageName || ad.adContent || ad.adId) {
+                        ads.push(ad);
+                    }
+                } catch (error) {
+                    console.log(`Error extracting ad ${index}:`, error.message);
+                }
+            });
+            
+            return ads;
+        });
+    }
+
+    async waitForAdsToLoad(page) {
+        try {
+            // Wait for any of the possible ad selectors with longer timeout
+            await page.waitForSelector('[data-testid="ad_library_card"], [data-testid="ad-library-card"], [role="article"], .x1yztbdb', {
+                timeout: 20000
+            });
+            
+            // Additional wait for dynamic content
+            await ModernAntiDetection.humanLikeDelay(3000, 5000);
+            
+            // Gentle scroll to trigger lazy loading
+            await ModernAntiDetection.humanLikeScroll(page);
+            
+            return true;
+        } catch (error) {
+            console.log('Timeout waiting for ads to load:', error.message);
+            return false;
+        }
+    }
+
+    async handleCookieConsent(page) {
+        try {
+            // Updated cookie consent selectors for 2025
+            const cookieSelectors = [
+                '[data-testid="cookie-policy-manage-dialog-accept-button"]',
+                '[data-testid="cookie-policy-banner-accept"]',
+                '[aria-label="Accept all"]',
+                '[aria-label="Allow all cookies"]',
+                'button[title="Accept All"]',
+                'div[role="button"]:has-text("Accept All")',
+                'div[role="button"]:has-text("Allow All Cookies")',
+                '[data-cookiebanner="accept_button"]'
+            ];
+            
+            for (const selector of cookieSelectors) {
+                try {
+                    const button = await page.$(selector);
+                    if (button) {
+                        await button.click();
+                        await ModernAntiDetection.humanLikeDelay(1000, 2000);
+                        console.log('Cookie consent handled');
+                        return;
+                    }
+                } catch (e) {
+                    // Continue to next selector
+                }
+            }
+        } catch (error) {
+            console.log('No cookie consent dialog found or error handling it:', error.message);
+        }
+    }
+
+    async loadMoreAds(page) {
+        try {
+            // Updated "Load More" selectors for 2025
+            const loadMoreSelectors = [
+                '[data-testid="see-more-button"]',
+                '[aria-label="See more"]',
+                '[aria-label="Load more"]',
+                'div[role="button"]:has-text("See more")',
+                'div[role="button"]:has-text("Load more")',
+                '[data-testid="load-more-ads"]'
+            ];
+            
+            for (const selector of loadMoreSelectors) {
+                try {
+                    const button = await page.$(selector);
+                    if (button) {
+                        await button.scrollIntoViewIfNeeded();
+                        await ModernAntiDetection.humanLikeDelay(1000, 2000);
+                        await button.click();
+                        await ModernAntiDetection.humanLikeDelay(3000, 5000);
+                        return true;
+                    }
+                } catch (e) {
+                    // Continue to next selector
+                }
+            }
+            
+            // If no button found, try infinite scroll
+            await page.evaluate(() => {
+                window.scrollTo(0, document.body.scrollHeight);
+            });
+            await ModernAntiDetection.humanLikeDelay(3000, 5000);
+            
+            return false;
+        } catch (error) {
+            console.log('Error loading more ads:', error.message);
+            return false;
+        }
+    }
+
+    async performSearch(page, searchQuery) {
+        try {
+            // Look for search input with updated selectors
+            const searchSelectors = [
+                '[data-testid="search-input"]',
+                '[placeholder*="Search"]',
+                'input[type="search"]',
+                'input[aria-label*="Search"]'
+            ];
+            
+            for (const selector of searchSelectors) {
+                const searchInput = await page.$(selector);
+                if (searchInput) {
+                    await searchInput.clear();
+                    await searchInput.type(searchQuery, { delay: 100 });
+                    await page.keyboard.press('Enter');
+                    await ModernAntiDetection.humanLikeDelay(3000, 5000);
+                    return true;
+                }
+            }
+            
+            return false;
+        } catch (error) {
+            console.log('Error performing search:', error.message);
+            return false;
+        }
+    }
+}
+
+async function runOfficialApi(config, state) {
+    const client = new OfficialApiClient({
+        accessToken: config.accessToken,
+        apiVersion: config.apiVersion,
+    });
+    const saved = await state.loadCheckpoint();
+    let cursor = saved || null;
+    let scraped = 0;
+    try {
+        for await (const row of client.iterate({
+            query: config.searchQuery,
+            country: config.country,
+            adType: config.adType,
+            cursor,
+            extraParams: config.extraApiParams,
+        })) {
+            if (scraped >= config.maxAds) break;
+            const ad = DataProcessor.fromOfficialApi(row);
+            if (!ad?.adId) continue;
+            if (!state.markSeen(ad.adId, 'official_api')) continue;
+            if (!applyShard(config.shard, ad.adId)) continue;
+            await Dataset.pushData(ad);
+            scraped += 1;
+            if (row?.__cursor__) {
+                cursor = row.__cursor__;
+                state.saveCheckpoint(cursor);
+            }
+        }
+    } catch (err) {
+        state.logError('official_api', err.message);
+        throw err;
+    }
+    console.log(`Official API path: scraped ${scraped}.`);
+}
+
+Actor.main(async () => {
+    console.log('Starting Meta Ads Library Scraper...');
+    
+    const input = await Actor.getInput();
+    console.log('Input:', input);
+    
+    // Set default values if not provided
+    const config = {
+        searchQuery: input.searchQuery || '',
+        country: input.country || 'ALL',
+        adType: input.adType || 'ALL',
+        maxAds: input.maxAds || 100,
+        delayBetweenRequests: input.delayBetweenRequests || 3000,
+        includeInactive: input.includeInactive !== false,
+        pageId: input.pageId || '',
+        proxyConfiguration: input.proxyConfiguration || {},
+        enableGraphQLInterception: input.enableGraphQLInterception !== false,
+        useAdvancedStealth: input.useAdvancedStealth !== false,
+        headlessMode: input.headlessMode || false,
+        outputFormat: input.outputFormat || 'detailed',
+        accessToken: input.accessToken || '',
+        apiVersion: input.apiVersion || 'v19.0',
+        extraApiParams: input.extraApiParams || {},
+        shard: input.shard || null,
+        rawCacheMaxBytes: input.rawCacheMaxBytes,
+    };
+    
+    const state = new StateStore({ runId: process.env.APIFY_ACTOR_RUN_ID });
+    const rawCache = new RawCache({ maxBytes: input.rawCacheMaxBytes });
+
+    // Router: official Ad Library API for regulated ad types when a
+    // token is provided; otherwise fall back to the browser scraper.
+    if (OfficialApiClient.canHandle({ accessToken: config.accessToken, adType: config.adType })) {
+        console.log(`Routing to official Ad Library API (adType=${config.adType}).`);
+        try {
+            await runOfficialApi(config, state);
+        } finally {
+            console.log(`State store stats: ${JSON.stringify(state.stats())}`);
+            state.close();
+        }
+        return;
+    }
+
+    if (config.accessToken) {
+        console.log('accessToken provided but adType is not regulated — using browser path.');
+    }
+
+    const scraper = new MetaAdsLibraryScraperV2(config, { state, rawCache });
+    const searchUrl = scraper.buildSearchUrl();
+    
+    console.log('Search URL:', searchUrl);
+    
+    // Configure crawler with advanced anti-detection for 2025
+    const crawler = new PlaywrightCrawler({
+        launchContext: {
+            launcher: chromium,
+            launchOptions: {
+                headless: config.headlessMode, // Configurable headless mode
+                args: [
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox',
+                    '--disable-dev-shm-usage',
+                    '--disable-accelerated-2d-canvas',
+                    '--no-first-run',
+                    '--no-zygote',
+                    '--disable-gpu',
+                    '--disable-background-timer-throttling',
+                    '--disable-backgrounding-occluded-windows',
+                    '--disable-renderer-backgrounding',
+                    '--disable-features=TranslateUI,VizDisplayCompositor',
+                    '--disable-ipc-flooding-protection',
+                    '--memory-pressure-off',
+                    '--max_old_space_size=1024',
+                    '--disable-blink-features=AutomationControlled',
+                    '--disable-extensions',
+                    '--disable-plugins',
+                    '--disable-images', // Reduce memory usage
+                    '--disable-javascript-harmony-shipping',
+                    '--disable-background-networking',
+                    '--disable-sync',
+                    '--disable-translate',
+                    '--hide-scrollbars',
+                    '--mute-audio',
+                    '--no-default-browser-check',
+                    '--no-pings',
+                    '--single-process'
+                ]
+            }
+        },
+        
+        // Optimized settings for 2025
+        maxConcurrency: 1,
+        maxRequestsPerCrawl: 1,
+        
+        preNavigationHooks: [async ({ page }) => {
+            // Set random user agent and viewport
+            const userAgent = ModernAntiDetection.getRandomUserAgent();
+            const viewport = ModernAntiDetection.getRandomViewport();
+            
+            await page.setExtraHTTPHeaders({
+                'User-Agent': userAgent,
+                'Accept-Language': 'en-US,en;q=0.9,it-IT;q=0.8,it;q=0.7',
+                'Accept-Encoding': 'gzip, deflate, br',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache',
+                'Sec-Fetch-Dest': 'document',
+                'Sec-Fetch-Mode': 'navigate',
+                'Sec-Fetch-Site': 'none',
+                'Upgrade-Insecure-Requests': '1'
+            });
+            
+            await page.setViewportSize(viewport);
+            
+            if (config.useAdvancedStealth) {
+                await ModernAntiDetection.setupAdvancedStealth(page);
+            }
+
+            if (config.enableGraphQLInterception) {
+                await scraper.setupNetworkInterception(page);
+            }
+
+            console.log(`Using User Agent: ${userAgent}`);
+            console.log(`Using Viewport: ${viewport.width}x${viewport.height}`);
+        }],
+        
+        requestHandler: async ({ page, request }) => {
+            console.log(`Processing: ${request.url}`);
+            
+            try {
+                // Handle cookie consent
+                await scraper.handleCookieConsent(page);
+                
+                // Perform additional search if needed
+                if (config.searchQuery) {
+                    await scraper.performSearch(page, config.searchQuery);
+                }
+                
+                // Wait for ads to load
+                const adsLoaded = await scraper.waitForAdsToLoad(page);
+                if (!adsLoaded) {
+                    console.log('No ads found on this page, trying alternative approach...');
+                    
+                    // Try scrolling and waiting again
+                    await ModernAntiDetection.humanLikeScroll(page);
+                    await ModernAntiDetection.humanLikeDelay(5000, 8000);
+                    
+                    const adsLoadedRetry = await scraper.waitForAdsToLoad(page);
+                    if (!adsLoadedRetry) {
+                        console.log('Still no ads found after retry');
+                        return;
+                    }
+                }
+                
+                let totalAdsScraped = 0;
+                let consecutiveEmptyPages = 0;
+                let iterations = 0;
+                // No hard cap on iterations: stop when Meta signals
+                // hasNextPage=false, when consecutiveEmptyPages hits the
+                // threshold, or when we reach maxAds. Keep a safety ceiling
+                // so a bug can't loop forever.
+                const hardCeiling = 500;
+
+                while (totalAdsScraped < config.maxAds && consecutiveEmptyPages < 3 && iterations < hardCeiling) {
+                    iterations++;
+                    console.log(`Scraping iteration ${iterations}... Total ads so far: ${totalAdsScraped}`);
+
+                    // Bail to a fresh session if Meta challenged us.
+                    // Throws SessionDeadError; the outer catch re-throws
+                    // so Crawlee retries the whole request with a new
+                    // browser context and user agent.
+                    await scraper.health.check(page);
+                    
+                    // Extract ads from current page DOM
+                    const domAds = await scraper.extractAdDataFromDOM(page);
+                    
+                    // Combine DOM ads with GraphQL intercepted ads
+                    const allAds = [...domAds, ...scraper.adData];
+                    scraper.adData = []; // Clear processed GraphQL data
+                    
+                    if (allAds.length === 0) {
+                        consecutiveEmptyPages++;
+                        console.log(`No ads found on this iteration. Empty pages: ${consecutiveEmptyPages}`);
+                    } else {
+                        consecutiveEmptyPages = 0;
+                        
+                        // Filter out duplicates via the shared state store,
+                        // then drop anything that doesn't fall in our shard
+                        // when the run is part of a sharded fleet.
+                        const newAds = allAds.filter(ad => {
+                            const adKey = ad.adId || `${ad.pageName}_${ad.adContent?.substring(0, 50)}`;
+                            if (!scraper.state.markSeen(adKey, ad.source || 'dom')) return false;
+                            return applyShard(config.shard, adKey);
+                        });
+                        
+                        if (newAds.length > 0) {
+                            // Save to dataset in smaller batches
+                            const batchSize = 5;
+                            for (let i = 0; i < newAds.length; i += batchSize) {
+                                const batch = newAds.slice(i, i + batchSize);
+                                await Dataset.pushData(batch);
+                            }
+                            totalAdsScraped += newAds.length;
+                            console.log(`Scraped ${newAds.length} new ads. Total: ${totalAdsScraped}`);
+                            
+                            // Memory cleanup every 25 ads
+                            if (totalAdsScraped % 25 === 0) {
+                                if (global.gc) {
+                                    global.gc();
+                                    console.log('Memory cleanup performed');
+                                }
+                            }
+                        }
+                    }
+                    
+                    // Break if we've reached the limit
+                    if (totalAdsScraped >= config.maxAds) {
+                        console.log(`Reached maximum ads limit: ${config.maxAds}`);
+                        break;
+                    }
+                    
+                    // If the last GraphQL response explicitly told us there
+                    // is no next page, stop. This replaces the old
+                    // maxIterations=10 hard cap with a source-of-truth
+                    // signal from Meta.
+                    if (scraper.pageInfo.hasNextPage === false) {
+                        console.log('GraphQL signalled no next page — stopping.');
+                        break;
+                    }
+
+                    // Try to load more ads
+                    const moreLoaded = await scraper.loadMoreAds(page);
+                    if (!moreLoaded && consecutiveEmptyPages > 0) {
+                        console.log('No more ads to load');
+                        break;
+                    }
+                    
+                    // Random mouse movement to appear more human
+                    await ModernAntiDetection.randomMouseMovement(page);
+                    
+                    // Human-like delay between iterations
+                    await ModernAntiDetection.humanLikeDelay(
+                        config.delayBetweenRequests,
+                        config.delayBetweenRequests + 2000
+                    );
+                }
+                
+                console.log(`Scraping completed. Total ads scraped: ${totalAdsScraped}`);
+                
+            } catch (error) {
+                const stage = error instanceof SessionDeadError ? 'session_dead' : 'request_handler';
+                scraper.state.logError(stage, error.message);
+                console.error('Error during scraping:', error);
+                throw error;
+            }
+        },
+
+        failedRequestHandler: async ({ request, error }) => {
+            scraper.state.logError('failed_request', `${request.url}: ${error.message}`);
+            console.error(`Request failed: ${request.url}`, error);
+        },
+
+        // Bumped from 2: a SessionDeadError kills the run cleanly, so
+        // a few extra retries buy us resilience against transient
+        // challenges without retry-storming.
+        maxRequestRetries: 4,
+        useSessionPool: true,
+        persistCookiesPerSession: true,
+        requestHandlerTimeoutSecs: 600,
+        
+        // Use proxy if configured
+        ...(config.proxyConfiguration?.useApifyProxy && {
+            proxyConfiguration: await Actor.createProxyConfiguration({
+                groups: config.proxyConfiguration.apifyProxyGroups || ['RESIDENTIAL'],
+                countryCode: config.country !== 'ALL' ? config.country : undefined
+            })
+        })
+    });
+    
+    // Start crawling
+    try {
+        await crawler.run([searchUrl]);
+    } finally {
+        console.log(`State store stats: ${JSON.stringify(state.stats())}`);
+        console.log(`Raw cache stats: ${JSON.stringify(rawCache.stats())}`);
+        state.close();
+    }
+
+    console.log('Meta Ads Library Scraper finished.');
+});
+
+module.exports = { MetaAdsLibraryScraperV2, ModernAntiDetection };
