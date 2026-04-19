@@ -18,6 +18,7 @@
 		"db:studio": "prisma studio",
 		"db:push": "prisma db push",
 		"db:seed": "tsx prisma/seed.ts",
+		"seed:alerts-demo": "node --env-file=.env --import tsx/esm scripts/seed-alerts-demo.ts",
 		"db:seed:force": "npx ts-node prisma/seed.ts --force",
 		"stripe:listen": "stripe listen --forward-to http://nogl.ai:3000/api/stripe/webhook",
 		"check-format": "prettier --check .",
