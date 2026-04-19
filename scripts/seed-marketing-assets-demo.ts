@@ -59,13 +59,20 @@ function unsplash(seed: string): string {
 }
 
 async function ensureBrand(b: (typeof BRANDS)[number]): Promise<string> {
-	const row = await prisma.company.upsert({
-		where: { slug: b.slug },
-		update: {},
-		create: {
+	// Find existing by slug or domain (either may already exist in the DB)
+	const existing = await prisma.company.findFirst({
+		where: { OR: [{ slug: b.slug }, { domain: b.domain }] },
+		select: { id: true },
+	});
+	if (existing) return existing.id;
+
+	// Create only if no match found
+	const row = await prisma.company.create({
+		data: {
 			slug: b.slug,
 			name: b.name,
 			domain: b.domain,
+			country_code: "DE",
 		},
 		select: { id: true },
 	});
