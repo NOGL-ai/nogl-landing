@@ -46,15 +46,24 @@ export async function resolveWidget(
 // ---------------------------------------------------------------------------
 
 function mergeDateFilter(globalFilters: GlobalFilters) {
-  if (!globalFilters.dateRange?.from) return {};
+  if (!globalFilters.dateRange?.from) return null;
   return {
-    priceDate: {
-      gte: new Date(globalFilters.dateRange.from),
-      ...(globalFilters.dateRange.to
-        ? { lte: new Date(globalFilters.dateRange.to) }
-        : {}),
-    },
+    gte: new Date(globalFilters.dateRange.from),
+    ...(globalFilters.dateRange.to
+      ? { lte: new Date(globalFilters.dateRange.to) }
+      : {}),
   };
+}
+
+/** Build a `priceDate` where clause for CompetitorPriceComparison / CompetitorPriceHistory */
+function priceDateWhere(globalFilters: GlobalFilters) {
+  const range = mergeDateFilter(globalFilters);
+  return range ? { priceDate: range } : {};
+}
+
+function recordDateWhere(globalFilters: GlobalFilters) {
+  const range = mergeDateFilter(globalFilters);
+  return range ? { recordDate: range } : {};
 }
 
 function toNum(d: unknown): number {
@@ -72,7 +81,6 @@ async function resolveTopTable(
   config: Extract<WidgetConfig, { type: "top_table" }>,
   globalFilters: GlobalFilters
 ): Promise<WidgetQueryResult> {
-  const dateWhere = mergeDateFilter(globalFilters);
   const companyWhere =
     globalFilters.companyIds?.length
       ? { id: { in: globalFilters.companyIds } }
@@ -90,7 +98,7 @@ async function resolveTopTable(
     const rows = await prisma.competitorPriceComparison.findMany({
       where: {
         deletedAt: null,
-        ...dateWhere,
+        ...priceDateWhere(globalFilters),
         ...(Object.keys(companyWhere).length
           ? { competitor: companyWhere as never }
           : {}),
@@ -181,7 +189,7 @@ async function resolveStat(
   config: Extract<WidgetConfig, { type: "stat" }>,
   globalFilters: GlobalFilters
 ): Promise<WidgetQueryResult> {
-  const dateWhere = mergeDateFilter(globalFilters);
+  const dw = priceDateWhere(globalFilters);
 
   switch (config.metric) {
     case "totalRevenue":
@@ -189,7 +197,7 @@ async function resolveStat(
       const agg = await prisma.competitorPriceComparison.aggregate({
         _avg: { competitorPrice: true },
         _sum: { competitorPrice: true },
-        where: { deletedAt: null, ...dateWhere },
+        where: { deletedAt: null, ...dw },
       });
       const value =
         config.metric === "avgPrice"
@@ -199,7 +207,7 @@ async function resolveStat(
     }
     case "skuCount": {
       const count = await prisma.competitorPriceComparison.count({
-        where: { deletedAt: null, ...dateWhere },
+        where: { deletedAt: null, ...dw },
       });
       return { type: "stat", value: count };
     }
@@ -210,16 +218,16 @@ async function resolveStat(
     case "priceGap": {
       const agg = await prisma.competitorPriceComparison.aggregate({
         _avg: { priceDiff: true },
-        where: { deletedAt: null, ...dateWhere },
+        where: { deletedAt: null, ...dw },
       });
       return { type: "stat", value: toNum(agg._avg.priceDiff ?? 0) };
     }
     case "winRate": {
       const total = await prisma.competitorPriceComparison.count({
-        where: { deletedAt: null, ...dateWhere },
+        where: { deletedAt: null, ...dw },
       });
       const winning = await prisma.competitorPriceComparison.count({
-        where: { deletedAt: null, isWinning: true, ...dateWhere },
+        where: { deletedAt: null, isWinning: true, ...dw },
       });
       const value = total > 0 ? (winning / total) * 100 : 0;
       return { type: "stat", value };
@@ -249,12 +257,8 @@ async function resolveLineChart(
   config: Extract<WidgetConfig, { type: "line_chart" }>,
   globalFilters: GlobalFilters
 ): Promise<WidgetQueryResult> {
-  const dateWhere = mergeDateFilter(globalFilters);
-
   const rows = await prisma.competitorPriceHistory.findMany({
-    where: dateWhere
-      ? { recordDate: (dateWhere as any).priceDate }
-      : undefined,
+    where: recordDateWhere(globalFilters),
     orderBy: { recordDate: "asc" },
     include: { Competitor: { select: { name: true } } },
     take: 300,
@@ -286,12 +290,10 @@ async function resolveBarChart(
   config: Extract<WidgetConfig, { type: "bar_chart" }>,
   globalFilters: GlobalFilters
 ): Promise<WidgetQueryResult> {
-  const dateWhere = mergeDateFilter(globalFilters);
-
   const competitors = await prisma.competitor.findMany({
     include: {
       priceComparisons: {
-        where: { deletedAt: null, ...dateWhere },
+        where: { deletedAt: null, ...priceDateWhere(globalFilters) },
         take: 5,
         orderBy: { priceDate: "desc" },
       },
@@ -374,12 +376,8 @@ async function resolveSparkline(
   config: Extract<WidgetConfig, { type: "sparkline" }>,
   globalFilters: GlobalFilters
 ): Promise<WidgetQueryResult> {
-  const dateWhere = mergeDateFilter(globalFilters);
-
   const rows = await prisma.competitorPriceHistory.findMany({
-    where: dateWhere
-      ? { recordDate: (dateWhere as any).priceDate }
-      : undefined,
+    where: recordDateWhere(globalFilters),
     orderBy: { recordDate: "asc" },
     select: { recordDate: true, averagePrice: true },
     take: 28,

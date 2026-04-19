@@ -3,7 +3,6 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import {
-  Maximize2Icon,
   Pencil,
   Trash2Icon,
   Copy,

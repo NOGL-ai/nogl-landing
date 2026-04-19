@@ -1,9 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
+// Lazy-load react-grid-layout (uses window, must be client-only)
+import type { Layout as RGLLayoutItem, ResponsiveProps } from "react-grid-layout";
 import {
   updateDashboardLayout,
   deleteWidget,
@@ -51,13 +53,17 @@ import {
 } from "lucide-react";
 import type { Locale } from "@/i18n";
 
-// react-grid-layout must be loaded client-side only (uses document)
+// react-grid-layout must be loaded client-side only (uses document).
+// We wrap it in a thin module shim so next/dynamic gets a default export.
 const ResponsiveGridLayout = dynamic(
-  () =>
-    import("react-grid-layout").then((m) => {
-      const { WidthProvider, Responsive } = m;
-      return WidthProvider(Responsive);
-    }),
+  async () => {
+    const { WidthProvider, Responsive } = await import("react-grid-layout");
+    const Wrapped = WidthProvider(Responsive);
+    // next/dynamic expects { default: Component }
+    const Shim = (props: ResponsiveProps) => <Wrapped {...props} />;
+    Shim.displayName = "ResponsiveGridLayout";
+    return { default: Shim };
+  },
   { ssr: false }
 );
 

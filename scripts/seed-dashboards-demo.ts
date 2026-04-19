@@ -379,7 +379,7 @@ async function main() {
         columns: [
           { field: "price", label: "Price", format: "currency" },
           { field: "priceChangePct", label: "Gap %", format: "percent" },
-          { field: "isWinning", label: "Winning", format: "text" as never },
+          { field: "isWinning", label: "Winning" },
         ],
         rowDensity: "compact",
         limit: 10,
