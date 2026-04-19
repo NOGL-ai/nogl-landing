@@ -16,6 +16,9 @@ import {
     Package,
     BarChart02,
     Share01,
+    Bell01,
+    NotificationBox,
+    AlertTriangle,
 } from "@untitledui/icons";
 import type { ReactNode } from "react";
 
@@ -120,9 +123,31 @@ export const navigationStructure: NavigationSection[] = [
                 icon: BarChart02,
                 subItems: [
                     {
+                        label: 'Price Alerts',
+                        href: '/en/alerts',
+                        icon: Bell01,
+                    },
+                    {
                         label: 'Pricing Tools',
                         href: '/pricing-suite',
                         icon: BarChart02,
+                    },
+                ],
+            },
+            {
+                id: 'fractional-cfo',
+                label: 'Fractional CFO',
+                icon: AlertTriangle,
+                subItems: [
+                    {
+                        label: 'Alerts',
+                        href: '/en/fractional-cfo/alerts',
+                        icon: NotificationBox,
+                    },
+                    {
+                        label: 'Notifications',
+                        href: '/en/fractional-cfo/alerts/notifications',
+                        icon: Bell01,
                     },
                 ],
             },
