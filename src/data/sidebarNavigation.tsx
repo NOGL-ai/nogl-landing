@@ -135,6 +135,35 @@ export const mainNavigationItems: NavigationSection = {
 			],
 		},
 		{
+			id: "demand",
+			title: "Demand Forecast",
+			path: "/demand",
+			icon: (
+				<svg
+					width='20'
+					height='20'
+					viewBox='0 0 20 20'
+					fill='none'
+					xmlns='http://www.w3.org/2000/svg'
+				>
+					<path
+						d='M2.5 15.833L7.5 10.833L10.833 14.167L17.5 7.5'
+						stroke='currentColor'
+						strokeWidth='1.5'
+						strokeLinecap='round'
+						strokeLinejoin='round'
+					/>
+					<path
+						d='M13.333 7.5H17.5V11.667'
+						stroke='currentColor'
+						strokeWidth='1.5'
+						strokeLinecap='round'
+						strokeLinejoin='round'
+					/>
+				</svg>
+			),
+		},
+		{
 			id: "reports",
 			title: "Reports",
 			path: "/reports",

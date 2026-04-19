@@ -72,3 +72,9 @@ test-*.js
 
 # Local Next.js output outside default `.next/`
 .next-build/
+
+# Forecast demo datasets (public Kaggle downloads — not committed)
+scripts/data/*.csv
+scripts/data/*.zip
+scripts/data/*.json
+!scripts/data/README.md

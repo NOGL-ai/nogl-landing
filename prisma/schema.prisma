@@ -306,6 +306,7 @@ model Company {
   snapshot              CompanySnapshot?
   events                CompanyEvent[]
   assets                CompanyAsset[]
+  forecastTenant        ForecastTenant?
 
   @@index([slug])
   @@index([domain])
@@ -344,7 +345,7 @@ model CompanySnapshot {
 }
 
 model CompanyEvent {
-  id                String    @id @default(cuid())
+  id                String   @id @default(cuid())
   company_id        String
   event_type        String
   platform          String?
@@ -354,12 +355,12 @@ model CompanyEvent {
   asset_preview_url String?
   event_date        DateTime
   duration_days     Int?
-  confidence        Decimal?  @db.Decimal(3, 2)
-  score             Decimal?  @db.Decimal(5, 2)
+  confidence        Decimal? @db.Decimal(3, 2)
+  score             Decimal? @db.Decimal(5, 2)
   source_url        String?
   raw_payload       Json?
-  createdAt         DateTime  @default(now())
-  company           Company   @relation(fields: [company_id], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+  company           Company  @relation(fields: [company_id], references: [id], onDelete: Cascade)
 
   @@index([company_id, event_date])
   @@index([event_type])
@@ -657,15 +658,15 @@ model RepricingRule {
   priority    Int        @default(0) // lower number = higher priority on conflicts
 
   // SCOPE — which SKUs this rule applies to
-  scopeType   ScopeType  @default(ALL)
-  categoryIds String[]   @default([])
-  productIds  String[]   @default([])
+  scopeType   ScopeType @default(ALL)
+  categoryIds String[]  @default([])
+  productIds  String[]  @default([])
 
   // STRATEGY — what to compute (mirrors src/types/repricing-rule.ts PricingConfig)
-  setPrice         Float      @default(0)
-  priceDirection   PriceDir   @default(PERCENTAGE) // PLUS | MINUS | PERCENTAGE | FIXED
-  comparisonSource CmpSource  @default(CHEAPEST)   // MY_PRICE | CHEAPEST | AVERAGE | SPECIFIC
-  comparisonLogic  CmpLogic   @default(BELOW)      // EQUAL | ABOVE | BELOW
+  setPrice             Float     @default(0)
+  priceDirection       PriceDir  @default(PERCENTAGE) // PLUS | MINUS | PERCENTAGE | FIXED
+  comparisonSource     CmpSource @default(CHEAPEST) // MY_PRICE | CHEAPEST | AVERAGE | SPECIFIC
+  comparisonLogic      CmpLogic  @default(BELOW) // EQUAL | ABOVE | BELOW
   specificCompetitorId String? // only when comparisonSource = SPECIFIC
 
   // COMPETITORS — which competitors to reference (empty = all tracked)
@@ -683,16 +684,16 @@ model RepricingRule {
 
   // SCHEDULE
   scheduleType ScheduleType @default(MANUAL)
-  scheduleHour Int?         // 0-23 for DAILY/WEEKLY
-  scheduleDow  Int?         // 0-6  for WEEKLY (0=Sunday)
+  scheduleHour Int? // 0-23 for DAILY/WEEKLY
+  scheduleDow  Int? // 0-6  for WEEKLY (0=Sunday)
   autoApply    Boolean      @default(false) // true = Autopilot mode
 
   lastRunAt DateTime?
   nextRunAt DateTime?
 
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-  createdById String?        // TODO(multi-tenant): scope by userId until tenant model exists
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdById String? // TODO(multi-tenant): scope by userId until tenant model exists
 
   jobs RepricingJob[]
 
@@ -702,22 +703,22 @@ model RepricingRule {
 }
 
 model RepricingJob {
-  id              String       @id @default(cuid())
-  ruleId          String
-  rule            RepricingRule @relation(fields: [ruleId], references: [id], onDelete: Cascade)
-  status          JobStatus    @default(SIMULATED)
-  trigger         JobTrigger   @default(MANUAL)
-  productsAnalyzed Int         @default(0)
-  productsChanged  Int         @default(0)
-  productsBlocked  Int         @default(0)
-  totalImpact     Decimal?     @db.Decimal(12, 2) // sum |delta| in € across applied SKUs
-  startedAt       DateTime     @default(now())
-  finishedAt      DateTime?
-  triggeredById   String?
-  rolledBackAt    DateTime?
-  rolledBackById  String?
-  rollbackOfId    String?      // points to the original job when this is a rollback
-  error           String?
+  id               String        @id @default(cuid())
+  ruleId           String
+  rule             RepricingRule @relation(fields: [ruleId], references: [id], onDelete: Cascade)
+  status           JobStatus     @default(SIMULATED)
+  trigger          JobTrigger    @default(MANUAL)
+  productsAnalyzed Int           @default(0)
+  productsChanged  Int           @default(0)
+  productsBlocked  Int           @default(0)
+  totalImpact      Decimal?      @db.Decimal(12, 2) // sum |delta| in € across applied SKUs
+  startedAt        DateTime      @default(now())
+  finishedAt       DateTime?
+  triggeredById    String?
+  rolledBackAt     DateTime?
+  rolledBackById   String?
+  rollbackOfId     String? // points to the original job when this is a rollback
+  error            String?
 
   proposals RepricingProposal[]
 
@@ -749,7 +750,7 @@ model RepricingProposal {
   maxGuardrail Decimal? @db.Decimal(10, 2)
 
   status        ProposalStatus @default(WILL_APPLY)
-  blockedReason String?        // e.g. "below ABS_MIN €10.00" or "margin < 15% of cost"
+  blockedReason String? // e.g. "below ABS_MIN €10.00" or "margin < 15% of cost"
 
   decidedById String?
   decidedAt   DateTime?
@@ -776,6 +777,112 @@ model Alert {
 
   @@index([readAt, createdAt])
   @@index([kind, createdAt])
+  @@schema("public")
+}
+
+// ─── Forecast / Demand Planning ──────────────────────────────────────────
+// Tenant-scoped demand forecasting. Each ForecastTenant is 1:1 with a
+// Company (from the nogl schema); all downstream entities cascade through it.
+// Models live in the `public` schema to match the repricing pattern.
+
+model ForecastTenant {
+  id           String   @id @default(cuid())
+  companyId    String   @unique
+  company      Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  magicNumber  Float    @default(1.0) // qty→revenue multiplier fallback when variant rrp is missing
+  hasBundle    Boolean  @default(false)
+  isDemoTenant Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  products ForecastProduct[]
+  channels ForecastSaleChannel[]
+
+  @@schema("public")
+}
+
+model ForecastSaleChannel {
+  id       String         @id @default(cuid())
+  tenantId String
+  tenant   ForecastTenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  name     String // "web" | "marketplace" | "b2b"
+  label    String
+  colorFg  String
+  colorBg  String
+  weight   Float          @default(1.0)
+
+  historicalSales ForecastHistoricalSale[]
+  quantiles       ForecastQuantile[]
+
+  @@unique([tenantId, name])
+  @@schema("public")
+}
+
+model ForecastProduct {
+  id           String         @id @default(cuid())
+  tenantId     String
+  tenant       ForecastTenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  productTitle String
+  category     String // "cameras" | "lenses" | "accessories" | "lighting" | "tripods"
+  brand        String?
+  isSet        Boolean        @default(false)
+  createdAt    DateTime       @default(now())
+
+  variants ForecastVariant[]
+
+  @@unique([tenantId, productTitle])
+  @@index([tenantId, category])
+  @@schema("public")
+}
+
+model ForecastVariant {
+  id           String          @id @default(cuid())
+  productId    String
+  product      ForecastProduct @relation(fields: [productId], references: [id], onDelete: Cascade)
+  variantTitle String
+  sku          String
+  rrp          Decimal         @db.Decimal(10, 2)
+  currency     String          @default("EUR")
+  isActive     Boolean         @default(true)
+
+  historicalSales ForecastHistoricalSale[]
+  quantiles       ForecastQuantile[]
+
+  @@unique([productId, sku])
+  @@schema("public")
+}
+
+model ForecastHistoricalSale {
+  id         String              @id @default(cuid())
+  variantId  String
+  variant    ForecastVariant     @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  channelId  String
+  channel    ForecastSaleChannel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  saleDate   DateTime            @db.Date
+  quantity   Int
+  revenue    Decimal             @db.Decimal(12, 2)
+  isStockout Boolean             @default(false) // censored-demand marker
+
+  @@unique([variantId, channelId, saleDate])
+  @@index([variantId, saleDate])
+  @@index([channelId, saleDate])
+  @@schema("public")
+}
+
+model ForecastQuantile {
+  id            String              @id @default(cuid())
+  variantId     String
+  variant       ForecastVariant     @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  channelId     String
+  channel       ForecastSaleChannel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  forecastDate  DateTime            @db.Date
+  quantile      Int // 3 (p30 / pessimistic) | 4 (median) | 5 (p70 / optimistic)
+  forecastValue Float
+  revenueValue  Decimal             @db.Decimal(12, 2)
+  isBundleTotal Boolean             @default(false)
+
+  @@unique([variantId, channelId, forecastDate, quantile])
+  @@index([forecastDate])
   @@schema("public")
 }
 
