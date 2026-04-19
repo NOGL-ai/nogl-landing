@@ -5,6 +5,7 @@ import { getAuthSession } from "@/lib/auth";
 import { AssistantSidebar } from "@/components/assistant-sidebar";
 import { CopilotRuntimeProvider } from "@/components/application/slideout-menus/copilot-runtime-provider";
 import { ScreenContextProvider } from "@/context/ScreenContext";
+import { DesktopBellDock } from "@/components/notifications/DesktopBellDock";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
 	let session = null;
@@ -33,6 +34,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 				<AssistantSidebar>
 					<SidebarLayout user={user}>
 						<HideFooterOnApp />
+						<DesktopBellDock />
 						{children}
 					</SidebarLayout>
 				</AssistantSidebar>

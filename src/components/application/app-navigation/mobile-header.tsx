@@ -3,6 +3,7 @@
 import React from "react";
 import { Menu02 } from "@untitledui/icons";
 import Logo from "@/shared/Logo";
+import { NotificationsBell } from "@/components/notifications/NotificationsBell";
 
 interface MobileHeaderProps {
     onMenuClick: () => void;
@@ -18,15 +19,19 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
             {/* Logo Section */}
             <Logo size="sm" showText={true} variant="auto" />
 
-            {/* Menu Button */}
-            <button
-                onClick={onMenuClick}
-                aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-                aria-expanded={isMenuOpen}
-                className="flex items-center justify-center p-2 rounded-lg bg-white dark:bg-[#0a0d12] hover:bg-[#fafafa] dark:hover:bg-[#252b37] transition-colors"
-            >
-                <Menu02 className="w-6 h-6 text-[#414651] dark:text-[#d5d7da]" strokeWidth={2} />
-            </button>
+            <div className="flex items-center gap-2">
+                <NotificationsBell className="h-9 w-9" />
+
+                {/* Menu Button */}
+                <button
+                    onClick={onMenuClick}
+                    aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+                    aria-expanded={isMenuOpen}
+                    className="flex items-center justify-center p-2 rounded-lg bg-white dark:bg-[#0a0d12] hover:bg-[#fafafa] dark:hover:bg-[#252b37] transition-colors"
+                >
+                    <Menu02 className="w-6 h-6 text-[#414651] dark:text-[#d5d7da]" strokeWidth={2} />
+                </button>
+            </div>
         </header>
     );
 };
