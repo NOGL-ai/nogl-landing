@@ -291,6 +291,9 @@ export function AlertInbox({
                 Issue
               </th>
               <th className="px-4 py-3 text-left text-xs font-medium text-tertiary uppercase tracking-wider">
+                {audience === "CMO" ? "Price Signal" : "Stock Signal"}
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-tertiary uppercase tracking-wider">
                 {audience === "CMO" ? "My Price" : "Stock"}
               </th>
               <th className="px-4 py-3 text-left text-xs font-medium text-tertiary uppercase tracking-wider">
@@ -306,7 +309,7 @@ export function AlertInbox({
             {!isPending && alerts.length === 0 && (
               <tr>
                 <td
-                  colSpan={7}
+                  colSpan={8}
                   className="py-20 text-center text-secondary text-sm"
                 >
                   <div className="flex flex-col items-center gap-3">
@@ -354,6 +357,68 @@ export function AlertInbox({
         onClose={() => setChartAlert(null)}
         audience={audience}
       />
+    </div>
+  );
+}
+
+// ── Signal bars ───────────────────────────────────────────────────────────────
+
+function SignalBars({ alert, audience }: { alert: AlertRow; audience: AlertAudience }) {
+  const meta = alert.metadata as Record<string, unknown>;
+
+  if (audience === "CMO") {
+    const my = parseFloat(String(meta.myPrice ?? 0));
+    const comp = parseFloat(String(meta.competitorPrice ?? 0));
+    if (!my && !comp) return <span className="text-tertiary text-xs">—</span>;
+    const max = Math.max(my, comp) * 1.05;
+    return (
+      <div className="flex flex-col gap-1 w-28">
+        <div className="flex items-center gap-1.5">
+          <div className="w-full h-1.5 rounded-full bg-utility-gray-100 dark:bg-utility-gray-800 overflow-hidden">
+            <div className="h-full rounded-full bg-brand-500" style={{ width: `${(my / max) * 100}%` }} />
+          </div>
+          <span className="text-[10px] text-tertiary whitespace-nowrap">Me</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="w-full h-1.5 rounded-full bg-utility-gray-100 dark:bg-utility-gray-800 overflow-hidden">
+            <div className="h-full rounded-full bg-utility-error-500" style={{ width: `${(comp / max) * 100}%` }} />
+          </div>
+          <span className="text-[10px] text-tertiary whitespace-nowrap">Them</span>
+        </div>
+      </div>
+    );
+  }
+
+  // CFO: stock vs reorder point vs safety buffer
+  const stock = Number(meta.stockUnits ?? 0);
+  const reorder = Number(meta.reorderPoint ?? 50);
+  const safety = Number(meta.safetyBuffer ?? reorder * 0.6);
+  const max = Math.max(stock, reorder * 2, 1);
+  const stockPct = Math.min((stock / max) * 100, 100);
+  const reorderPct = Math.min((reorder / max) * 100, 100);
+  const safetyPct = Math.min((safety / max) * 100, 100);
+  const stockColor = stock <= safety ? "bg-utility-error-500" : stock <= reorder ? "bg-warning-500" : "bg-utility-success-500";
+
+  return (
+    <div className="flex flex-col gap-1 w-28">
+      <div className="flex items-center gap-1.5">
+        <div className="w-full h-1.5 rounded-full bg-utility-gray-100 dark:bg-utility-gray-800 overflow-hidden">
+          <div className={cn("h-full rounded-full", stockColor)} style={{ width: `${stockPct}%` }} />
+        </div>
+        <span className="text-[10px] text-tertiary">Stock</span>
+      </div>
+      <div className="flex items-center gap-1.5">
+        <div className="w-full h-1.5 rounded-full bg-utility-gray-100 dark:bg-utility-gray-800 overflow-hidden">
+          <div className="h-full rounded-full bg-warning-400" style={{ width: `${reorderPct}%` }} />
+        </div>
+        <span className="text-[10px] text-tertiary">ROP</span>
+      </div>
+      <div className="flex items-center gap-1.5">
+        <div className="w-full h-1.5 rounded-full bg-utility-gray-100 dark:bg-utility-gray-800 overflow-hidden">
+          <div className="h-full rounded-full bg-utility-gray-400" style={{ width: `${safetyPct}%` }} />
+        </div>
+        <span className="text-[10px] text-tertiary">Safety</span>
+      </div>
     </div>
   );
 }
@@ -456,6 +521,11 @@ function AlertTableRow({
         <p className="text-xs text-tertiary mt-1 pl-3">
           {TYPE_LABELS[alert.type]}
         </p>
+      </td>
+
+      {/* Signal bars */}
+      <td className="px-4 py-3 min-w-[120px]">
+        <SignalBars alert={alert} audience={audience} />
       </td>
 
       {/* Stock / Price */}

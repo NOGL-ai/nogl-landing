@@ -36,8 +36,10 @@ export interface AlertRow {
   assignedToUserId: string | null;
   snoozeUntil: Date | null;
   resolvedAt: Date | null;
+  resolvedByUserId: string | null;
   triggeredAt: Date;
   createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface AlertCountsResult {
