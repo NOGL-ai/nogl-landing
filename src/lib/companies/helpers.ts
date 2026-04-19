@@ -922,17 +922,36 @@ export async function getCompanyEventsResponse(params: {
   slug: string;
   page: number;
   limit: number;
+  eventTypes?: string[];
+  fromDate?: string;
+  toDate?: string;
 }): Promise<CompanyEventsResponse | null> {
   const company = await resolveCompanyBySlug(params.slug);
   if (!company) {
     return null;
   }
 
+  const hasFilters =
+    (params.eventTypes && params.eventTypes.length > 0) ||
+    Boolean(params.fromDate) ||
+    Boolean(params.toDate);
+
   let events: CompanyEventDTO[] = [];
   let total = 0;
 
   if (await relationExists("nogl", "CompanyEvent")) {
     try {
+      const typeFilterSql =
+        params.eventTypes && params.eventTypes.length > 0
+          ? Prisma.sql` AND event_type = ANY(${params.eventTypes})`
+          : Prisma.empty;
+      const fromFilterSql = params.fromDate
+        ? Prisma.sql` AND event_date >= ${new Date(params.fromDate)}`
+        : Prisma.empty;
+      const toFilterSql = params.toDate
+        ? Prisma.sql` AND event_date <= ${new Date(params.toDate)}`
+        : Prisma.empty;
+
       const [rows, countRows] = await Promise.all([
         prisma.$queryRaw<CompanyEventRow[]>(Prisma.sql`
           SELECT
@@ -952,7 +971,7 @@ export async function getCompanyEventsResponse(params: {
             raw_payload,
             "createdAt" AS created_at
           FROM nogl."CompanyEvent"
-          WHERE company_id = ${company.id}
+          WHERE company_id = ${company.id}${typeFilterSql}${fromFilterSql}${toFilterSql}
           ORDER BY event_date DESC
           LIMIT ${params.limit}
           OFFSET ${(params.page - 1) * params.limit}
@@ -960,7 +979,7 @@ export async function getCompanyEventsResponse(params: {
         prisma.$queryRaw<CountRow[]>(Prisma.sql`
           SELECT COUNT(*) AS count
           FROM nogl."CompanyEvent"
-          WHERE company_id = ${company.id}
+          WHERE company_id = ${company.id}${typeFilterSql}${fromFilterSql}${toFilterSql}
         `),
       ]);
 
@@ -973,7 +992,7 @@ export async function getCompanyEventsResponse(params: {
     }
   }
 
-  if (events.length === 0) {
+  if (events.length === 0 && !hasFilters) {
     const now = Date.now();
 
     events = [
