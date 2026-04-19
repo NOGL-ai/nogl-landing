@@ -646,3 +646,243 @@ enum public_UserRole {
   @@map("UserRole")
   @@schema("public")
 }
+
+// ─── Repricing Engine ────────────────────────────────────────────────────────
+
+model RepricingRule {
+  id          String     @id @default(cuid())
+  name        String
+  description String?
+  status      RuleStatus @default(DRAFT)
+  priority    Int        @default(0) // lower number = higher priority on conflicts
+
+  // SCOPE — which SKUs this rule applies to
+  scopeType   ScopeType  @default(ALL)
+  categoryIds String[]   @default([])
+  productIds  String[]   @default([])
+
+  // STRATEGY — what to compute (mirrors src/types/repricing-rule.ts PricingConfig)
+  setPrice         Float      @default(0)
+  priceDirection   PriceDir   @default(PERCENTAGE) // PLUS | MINUS | PERCENTAGE | FIXED
+  comparisonSource CmpSource  @default(CHEAPEST)   // MY_PRICE | CHEAPEST | AVERAGE | SPECIFIC
+  comparisonLogic  CmpLogic   @default(BELOW)      // EQUAL | ABOVE | BELOW
+  specificCompetitorId String? // only when comparisonSource = SPECIFIC
+
+  // COMPETITORS — which competitors to reference (empty = all tracked)
+  competitorIds String[] @default([])
+
+  // GUARDRAILS — JSON array of Guardrail objects (see src/lib/repricing/types.ts)
+  guardrails Json @default("[]")
+
+  // MIN/MAX GUARDRAIL METHOD
+  minMaxType MinMaxType @default(MANUAL)
+  minMax     Json       @default("{}")
+
+  // OPTIONS — rounding, adjust calculated price
+  ruleOptions Json @default("{}")
+
+  // SCHEDULE
+  scheduleType ScheduleType @default(MANUAL)
+  scheduleHour Int?         // 0-23 for DAILY/WEEKLY
+  scheduleDow  Int?         // 0-6  for WEEKLY (0=Sunday)
+  autoApply    Boolean      @default(false) // true = Autopilot mode
+
+  lastRunAt DateTime?
+  nextRunAt DateTime?
+
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  createdById String?        // TODO(multi-tenant): scope by userId until tenant model exists
+
+  jobs RepricingJob[]
+
+  @@index([status, nextRunAt])
+  @@index([createdById, status])
+  @@schema("public")
+}
+
+model RepricingJob {
+  id              String       @id @default(cuid())
+  ruleId          String
+  rule            RepricingRule @relation(fields: [ruleId], references: [id], onDelete: Cascade)
+  status          JobStatus    @default(SIMULATED)
+  trigger         JobTrigger   @default(MANUAL)
+  productsAnalyzed Int         @default(0)
+  productsChanged  Int         @default(0)
+  productsBlocked  Int         @default(0)
+  totalImpact     Decimal?     @db.Decimal(12, 2) // sum |delta| in € across applied SKUs
+  startedAt       DateTime     @default(now())
+  finishedAt      DateTime?
+  triggeredById   String?
+  rolledBackAt    DateTime?
+  rolledBackById  String?
+  rollbackOfId    String?      // points to the original job when this is a rollback
+  error           String?
+
+  proposals RepricingProposal[]
+
+  @@index([ruleId, startedAt])
+  @@index([status])
+  @@index([triggeredById])
+  @@schema("public")
+}
+
+model RepricingProposal {
+  id         String       @id @default(cuid())
+  jobId      String
+  job        RepricingJob @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  productId  String
+  productSku String
+
+  currentPrice  Decimal  @db.Decimal(10, 2)
+  proposedPrice Decimal? @db.Decimal(10, 2)
+  appliedPrice  Decimal? @db.Decimal(10, 2) // filled on apply
+  costAtRun     Decimal? @db.Decimal(10, 2)
+
+  // Competitor reference prices at time of run
+  cheapestCompetitorPrice Decimal? @db.Decimal(10, 2)
+  highestCompetitorPrice  Decimal? @db.Decimal(10, 2)
+  avgCompetitorPrice      Decimal? @db.Decimal(10, 2)
+
+  // Resolved guardrail bounds
+  minGuardrail Decimal? @db.Decimal(10, 2)
+  maxGuardrail Decimal? @db.Decimal(10, 2)
+
+  status        ProposalStatus @default(WILL_APPLY)
+  blockedReason String?        // e.g. "below ABS_MIN €10.00" or "margin < 15% of cost"
+
+  decidedById String?
+  decidedAt   DateTime?
+
+  @@index([jobId, status])
+  @@index([productId])
+  @@schema("public")
+}
+
+model Alert {
+  id        String    @id @default(cuid())
+  kind      AlertKind
+  severity  AlertSev  @default(INFO)
+  title     String
+  message   String
+  metadata  Json      @default("{}")
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  // Optional foreign keys for cross-linking
+  productId String?
+  ruleId    String?
+  jobId     String?
+
+  @@index([readAt, createdAt])
+  @@index([kind, createdAt])
+  @@schema("public")
+}
+
+// ─── Repricing Enums ─────────────────────────────────────────────────────────
+
+enum RuleStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  ARCHIVED
+
+  @@schema("public")
+}
+
+enum ScopeType {
+  ALL
+  CATEGORIES
+  SPECIFIC
+
+  @@schema("public")
+}
+
+enum PriceDir {
+  PLUS
+  MINUS
+  PERCENTAGE
+  FIXED
+
+  @@schema("public")
+}
+
+enum CmpSource {
+  MY_PRICE
+  CHEAPEST
+  AVERAGE
+  SPECIFIC
+
+  @@schema("public")
+}
+
+enum CmpLogic {
+  EQUAL
+  ABOVE
+  BELOW
+
+  @@schema("public")
+}
+
+enum MinMaxType {
+  MANUAL
+  GROSS_MARGIN
+  COST
+  PRICE
+  MAP
+
+  @@schema("public")
+}
+
+enum ScheduleType {
+  MANUAL
+  HOURLY
+  DAILY
+  WEEKLY
+
+  @@schema("public")
+}
+
+enum JobStatus {
+  SIMULATED
+  APPLIED
+  ROLLED_BACK
+  FAILED
+
+  @@schema("public")
+}
+
+enum JobTrigger {
+  MANUAL
+  SCHEDULED
+  APPLY_ACTION
+
+  @@schema("public")
+}
+
+enum ProposalStatus {
+  WILL_APPLY
+  BLOCKED
+  NO_CHANGE
+  APPLIED
+  REJECTED
+  ROLLED_BACK
+
+  @@schema("public")
+}
+
+enum AlertKind {
+  PRICE_CHANGE_APPLIED
+  RULE_RUN_FAILED
+  GUARDRAIL_BLOCK_SPIKE
+
+  @@schema("public")
+}
+
+enum AlertSev {
+  INFO
+  WARN
+  CRITICAL
+
+  @@schema("public")
+}

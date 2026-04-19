@@ -7,5 +7,8 @@
     "env": {
       "NEXT_TELEMETRY_DISABLED": "1"
     }
-  }
+  },
+  "crons": [
+    { "path": "/api/cron/repricing", "schedule": "0 * * * *" }
+  ]
 }
