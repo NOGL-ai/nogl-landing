@@ -7,7 +7,7 @@ datasource db {
   url               = env("DATABASE_URL")
   directUrl         = env("DIRECT_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
-  schemas           = ["nogl", "public"]
+  schemas           = ["nogl", "public", "dashboards"]
 }
 
 model User {
@@ -645,4 +645,51 @@ enum public_UserRole {
 
   @@map("UserRole")
   @@schema("public")
+}
+
+// ---------------------------------------------------------------------------
+// Dashboards (Particl-style builder)
+// ---------------------------------------------------------------------------
+
+enum DashboardPersona {
+  CFO
+  CMO
+  OPS
+  GENERIC
+
+  @@schema("dashboards")
+}
+
+model Dashboard {
+  id            String            @id @default(cuid())
+  tenantId      String
+  ownerId       String
+  name          String
+  description   String?
+  isShared      Boolean           @default(false)
+  persona       DashboardPersona  @default(GENERIC)
+  globalFilters Json              @default("{}")
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  widgets       DashboardWidget[]
+
+  @@index([tenantId, ownerId])
+  @@index([tenantId, isShared])
+  @@schema("dashboards")
+}
+
+model DashboardWidget {
+  id          String    @id @default(cuid())
+  dashboardId String
+  title       String
+  type        String
+  layout      Json
+  config      Json
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  dashboard Dashboard @relation(fields: [dashboardId], references: [id], onDelete: Cascade)
+
+  @@index([dashboardId])
+  @@schema("dashboards")
 }
