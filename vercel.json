@@ -9,6 +9,7 @@
     }
   },
   "crons": [
-    { "path": "/api/cron/repricing", "schedule": "0 * * * *" }
+    { "path": "/api/cron/repricing", "schedule": "0 * * * *" },
+    { "path": "/api/cron/refresh-trends", "schedule": "0 3 * * *" }
   ]
 }
