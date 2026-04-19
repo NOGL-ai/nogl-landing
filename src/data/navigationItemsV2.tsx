@@ -267,9 +267,10 @@ export const accountMenuItem: IconMenuItem = {
     label: 'Account',
     icon: UserSquare,
     subItems: [
-        { label: 'Profile',  href: '/account/profile',  icon: UserSquare },
-        { label: 'Settings', href: '/settings',         icon: Settings03 },
-        { label: 'Support',  href: '/support',          icon: LifeBuoy01 },
+        { label: 'Profile',   href: '/profile',              icon: UserSquare },
+        { label: 'Settings',  href: '/settings',             icon: Settings03 },
+        { label: 'Support',   href: '/blog',                 icon: LifeBuoy01 },
+        { label: 'Analytics', href: '/analytics/dashboards', icon: PieChart03 },
     ],
 };
 
