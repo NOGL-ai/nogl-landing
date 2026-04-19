@@ -312,6 +312,8 @@ model Company {
   snapshot              CompanySnapshot?
   events                CompanyEvent[]
   assets                CompanyAsset[]
+  trackedCompetitors    TrackedCompetitor[] @relation("TenantCompetitors")
+  trackedByTenants      TrackedCompetitor[] @relation("CompetitorOf")
 
   @@index([slug])
   @@index([domain])
@@ -1109,4 +1111,35 @@ enum AlertSev {
   CRITICAL
 
   @@schema("public")
+}
+
+// ─── Tracked Competitors (tenant-scoped) ─────────────────────────────────────
+
+model TrackedCompetitor {
+  id              String                  @id @default(cuid())
+  tenantCompanyId String
+  competitorId    String
+  status          TrackedCompetitorStatus @default(ACTIVE)
+  priority        Int                     @default(0)
+  nickname        String?
+  addedAt         DateTime                @default(now())
+  addedByUserId   String?
+  pausedAt        DateTime?
+  pauseReason     String?
+  notes           String?                 @db.Text
+
+  tenant          Company                 @relation("TenantCompetitors", fields: [tenantCompanyId], references: [id], onDelete: Cascade)
+  competitor      Company                 @relation("CompetitorOf", fields: [competitorId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantCompanyId, competitorId])
+  @@index([tenantCompanyId, status])
+  @@schema("nogl")
+}
+
+enum TrackedCompetitorStatus {
+  ACTIVE
+  PAUSED
+  ARCHIVED
+
+  @@schema("nogl")
 }

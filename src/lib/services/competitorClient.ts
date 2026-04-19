@@ -126,6 +126,7 @@ export async function getCompetitors(params: {
   status?: string;
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
+  tenantCompanyId?: string;
 } = {}): Promise<GetCompetitorsResponse> {
   // Check cache first
   const cachedData = getCachedData(params);

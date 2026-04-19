@@ -22,6 +22,7 @@
 		"seed:calumet-forecast": "node --env-file=.env --import tsx scripts/seed-calumet-forecast.ts",
 		"seed:calumet-annotations": "node --env-file=.env --import tsx scripts/seed-calumet-annotations.ts",
 		"seed:calumet-replenishment": "node --env-file=.env --import tsx scripts/seed-calumet-replenishment.ts",
+		"seed:tracked-competitors": "node --env-file=.env --import tsx scripts/seed-tracked-competitors.ts",
 		"bridge:scraped-items": "node --env-file=.env --import tsx scripts/bridge-scraped-items-to-products.ts",
 		"bridge:scraped-items:calumet": "node --env-file=.env --import tsx scripts/bridge-scraped-items-to-products.ts --domain calumet.de",
 		"stripe:listen": "stripe listen --forward-to http://nogl.ai:3000/api/stripe/webhook",
