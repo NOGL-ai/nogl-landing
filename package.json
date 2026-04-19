@@ -39,7 +39,7 @@
 		"test:ci": "jest --ci --watchAll=false --forceExit --testTimeout=20000 --maxWorkers=2",
 		"test:e2e": "playwright test",
 		"test:e2e:ui": "playwright test --ui",
-		"test:performance": "playwright test tests/performance/",
+		"test:performance": "playwright test --config=playwright.performance.config.ts",
 		"test:all": "npm run test:ci && npm run test:e2e",
 		"test:db:setup": "npx prisma migrate dev --name test-setup",
 		"test:db:reset": "npx prisma migrate reset --force",
