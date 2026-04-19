@@ -37,6 +37,10 @@ logs
 # Vercel
 .vercel
 
+# Marketing assets scraper local artifacts
+/storage/
+.claude/research/meta-ads-scraper/
+
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts

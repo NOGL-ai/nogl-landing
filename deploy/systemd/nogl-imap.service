@@ -1,0 +1,18 @@
+[Unit]
+Description=NOGL IMAP asset ingestion service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=nogl
+WorkingDirectory=/opt/nogl-landing
+EnvironmentFile=/opt/nogl-landing/.env
+ExecStart=/usr/bin/npx tsx scripts/imap-ingest.ts
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
