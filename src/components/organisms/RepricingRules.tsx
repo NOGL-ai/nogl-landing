@@ -1,219 +1,240 @@
-// @ts-nocheck
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useTransition, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import RepricingRulesCard, {
-	RepricingRule,
-} from "../molecules/RepricingRulesCard";
-import Button from "@/shared/Button";
-import { Plus } from "lucide-react";
+import toast from "react-hot-toast";
+import { Plus, GripVertical } from "lucide-react";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+  arrayMove,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
-// Sample data matching the design
-const sampleRules: RepricingRule[] = [
-	{
-		id: "1",
-		title: "Test new price adjust",
-		enabled: false,
-		lastRun: null,
-		repricingType: "preview",
-		status: "enabled",
-		productCount: "All",
-		competitorCount: "All",
-	},
-	{
-		id: "2",
-		title: "1% Below my cheapest competitor",
-		enabled: false,
-		lastRun: null,
-		repricingType: "preview",
-		status: "enabled",
-		productCount: "All",
-		competitorCount: "All",
-	},
-	{
-		id: "3",
-		title: "Reprice 1 cent below my cheapest competitor",
-		enabled: false,
-		lastRun: null,
-		repricingType: "preview",
-		status: "enabled",
-		productCount: "All",
-		competitorCount: "All",
-	},
-	{
-		id: "4",
-		title: "Reprice 1 cent below my cheapest competitor",
-		enabled: false,
-		lastRun: null,
-		repricingType: "preview",
-		status: "enabled",
-		productCount: "All",
-		competitorCount: "All",
-	},
-	{
-		id: "5",
-		title: "Test new price adjust",
-		enabled: false,
-		lastRun: null,
-		repricingType: "preview",
-		status: "enabled",
-		productCount: "All",
-		competitorCount: "All",
-	},
-	{
-		id: "6",
-		title: "1% Below my cheapest competitor",
-		enabled: false,
-		lastRun: null,
-		repricingType: "preview",
-		status: "enabled",
-		productCount: "All",
-		competitorCount: "All",
-	},
-];
+import { Button } from "@/components/base/buttons/button";
+import RepricingRulesCard from "../molecules/RepricingRulesCard";
+import { activateRule, pauseRule, reorderRules } from "@/actions/repricing/rules";
+import { simulateRule } from "@/actions/repricing/execution";
+import type { RepricingRuleDTO } from "@/lib/repricing/types";
 
-const RepricingRules: React.FC = () => {
-	const router = useRouter();
-	const [rules, setRules] = useState<RepricingRule[]>(sampleRules);
-	const [selectedRules, setSelectedRules] = useState<Set<string>>(new Set());
+interface Props {
+  initialRules: RepricingRuleDTO[];
+}
 
-	const handleToggleRule = (id: string, enabled: boolean) => {
-		setRules((prev) =>
-			prev.map((rule) => (rule.id === id ? { ...rule, enabled } : rule))
-		);
-	};
+// ─── Sortable wrapper ─────────────────────────────────────────────────────────
 
-	const handleSelectRule = (id: string, selected: boolean) => {
-		const newSelected = new Set(selectedRules);
-		if (selected) {
-			newSelected.add(id);
-		} else {
-			newSelected.delete(id);
-		}
-		setSelectedRules(newSelected);
-	};
+function SortableCard({
+  rule,
+  onToggle,
+  onManage,
+  onRunPreview,
+}: {
+  rule: RepricingRuleDTO;
+  onToggle: (id: string, active: boolean) => void;
+  onManage: (id: string) => void;
+  onRunPreview: (id: string) => void;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
+    useSortable({ id: rule.id });
 
-	const handleManageRule = (id: string) => {
-		// Navigate to manage page with rule ID for editing
-		router.push(`/repricing/manage?id=${id}`);
-	};
+  const style: React.CSSProperties = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
 
-	const handleDownloadRule = (id: string) => {
-		// Handle download action
-		console.log("Download rule:", id);
-	};
+  return (
+    <div ref={setNodeRef} style={style} className="relative">
+      {/* Drag handle — separate from card click targets */}
+      <button
+        {...attributes}
+        {...listeners}
+        className="absolute left-2 top-1/2 z-10 -translate-y-1/2 cursor-grab touch-none text-text-tertiary hover:text-text-secondary focus:outline-none"
+        aria-label="Drag to reorder"
+        tabIndex={0}
+      >
+        <GripVertical className="h-4 w-4" />
+      </button>
+      <div className="pl-7">
+        <RepricingRulesCard
+          rule={rule}
+          onToggle={onToggle}
+          onManage={onManage}
+          onRunPreview={onRunPreview}
+        />
+      </div>
+    </div>
+  );
+}
 
-	const handleRunPreview = (id: string) => {
-		// Handle run preview action
-		console.log("Run preview for rule:", id);
-	};
+// ─── Main organism ────────────────────────────────────────────────────────────
 
-	const handleAddRule = () => {
-		// Navigate to manage page for creating new rule
-		router.push("/repricing/manage");
-	};
+export default function RepricingRules({ initialRules }: Props) {
+  const router = useRouter();
+  const [rules, setRules] = useState<RepricingRuleDTO[]>(initialRules);
+  const [isPending, startTransition] = useTransition();
 
-	return (
-		<div
-			className='min-h-screen w-full p-6'
-			style={{
-				background: "#F3F4F6",
-				padding: "20px 24px 35px 24px",
-			}}
-		>
-			<div className='mx-auto max-w-7xl'>
-				{/* Header */}
-				<div
-					className='mb-4 flex items-start justify-between rounded-xl border p-3'
-					style={{
-						height: "56px",
-						borderRadius: "12px",
-						border: "1px solid #F2F2F2",
-						padding: "12px",
-						background: "white",
-						alignItems: "center",
-					}}
-				>
-					<div className='flex flex-1 items-start gap-1.5'>
-						<div className='flex flex-1 flex-col gap-1'>
-							<h1
-								className='text-2xl font-bold leading-8'
-								style={{
-									color: "#14151A",
-									fontFamily:
-										"Inter, -apple-system, Roboto, Helvetica, sans-serif",
-									fontSize: "24px",
-									fontWeight: "700",
-									lineHeight: "32px",
-									letterSpacing: "-0.336px",
-								}}
-							>
-								Repricing Rules
-							</h1>
-							<p
-								className='text-sm leading-5'
-								style={{
-									color: "rgba(15, 19, 36, 0.60)",
-									fontFamily:
-										"Inter, -apple-system, Roboto, Helvetica, sans-serif",
-									fontSize: "14px",
-									fontWeight: "400",
-									lineHeight: "20px",
-									letterSpacing: "-0.07px",
-								}}
-							>
-								Create or edit your repricing rule
-							</p>
-						</div>
-					</div>
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+  );
 
-					<Button
-						className='flex items-center justify-center gap-0.5 px-3 py-2 text-white'
-						onClick={handleAddRule}
-						style={{
-							borderRadius: "5px",
-							background: "#335CFF",
-							boxShadow: "0 1px 2px 0 rgba(20, 21, 26, 0.05)",
-							padding: "8px 10px 8px 12px",
-						}}
-					>
-						<Plus size={16} style={{ color: "white" }} />
-						<span
-							style={{
-								color: "#FFF",
-								fontFamily:
-									"Inter, -apple-system, Roboto, Helvetica, sans-serif",
-								fontSize: "14px",
-								fontWeight: "400",
-								lineHeight: "20px",
-								letterSpacing: "-0.07px",
-							}}
-						>
-							Add Rule
-						</span>
-					</Button>
-				</div>
+  // ─── Toggle active/paused ───────────────────────────────────────────────
 
-				{/* Rules Grid */}
-				<div className='grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3'>
-					{rules.map((rule) => (
-						<RepricingRulesCard
-							key={rule.id}
-							rule={rule}
-							selected={selectedRules.has(rule.id)}
-							onToggle={handleToggleRule}
-							onSelect={handleSelectRule}
-							onManage={handleManageRule}
-							onDownload={handleDownloadRule}
-							onRunPreview={handleRunPreview}
-						/>
-					))}
-				</div>
-			</div>
-		</div>
-	);
-};
+  const handleToggle = useCallback(
+    (id: string, active: boolean) => {
+      // Optimistic update
+      setRules((prev) =>
+        prev.map((r) =>
+          r.id === id ? { ...r, status: active ? "ACTIVE" : "PAUSED" } : r
+        )
+      );
+      startTransition(async () => {
+        try {
+          if (active) {
+            await activateRule(id);
+          } else {
+            await pauseRule(id);
+          }
+        } catch (err) {
+          // Revert on error
+          setRules((prev) =>
+            prev.map((r) =>
+              r.id === id ? { ...r, status: active ? "PAUSED" : "ACTIVE" } : r
+            )
+          );
+          toast.error(err instanceof Error ? err.message : "Failed to update rule");
+        }
+      });
+    },
+    []
+  );
 
-export default RepricingRules;
+  // ─── Navigate to wizard ─────────────────────────────────────────────────
 
+  const handleManage = useCallback((id: string) => {
+    router.push(`/repricing/manage?id=${id}`);
+  }, [router]);
+
+  // ─── Run preview ────────────────────────────────────────────────────────
+
+  const handleRunPreview = useCallback((id: string) => {
+    startTransition(async () => {
+      try {
+        toast.loading("Running preview…", { id: `preview-${id}` });
+        const job = await simulateRule(id);
+        toast.success("Preview ready!", { id: `preview-${id}` });
+        router.push(`/repricing/auto-overview?jobId=${job.id}`);
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : "Preview failed", {
+          id: `preview-${id}`,
+        });
+      }
+    });
+  }, [router]);
+
+  // ─── Drag to reorder ────────────────────────────────────────────────────
+
+  const handleDragEnd = useCallback(
+    (event: DragEndEvent) => {
+      const { active, over } = event;
+      if (!over || active.id === over.id) return;
+
+      const oldIndex = rules.findIndex((r) => r.id === active.id);
+      const newIndex = rules.findIndex((r) => r.id === over.id);
+      const reordered = arrayMove(rules, oldIndex, newIndex);
+
+      // Optimistic update
+      setRules(reordered);
+
+      // Persist
+      startTransition(async () => {
+        try {
+          await reorderRules(reordered.map((r) => r.id));
+        } catch {
+          toast.error("Failed to save order");
+          setRules(rules); // revert
+        }
+      });
+    },
+    [rules]
+  );
+
+  return (
+    <div className="min-h-screen w-full bg-bg-secondary p-6">
+      <div className="mx-auto max-w-7xl">
+        {/* Header */}
+        <div className="mb-4 flex items-center justify-between rounded-xl border border-border-primary bg-background px-4 py-3">
+          <div>
+            <h1 className="text-xl font-bold text-text-primary">Repricing Rules</h1>
+            <p className="mt-0.5 text-sm text-text-secondary">
+              Create and manage your automated pricing rules
+            </p>
+          </div>
+          <Button
+            color="primary"
+            size="sm"
+            onClick={() => router.push("/repricing/manage")}
+            className="flex items-center gap-1.5 bg-brand-solid hover:bg-brand-solid_hover"
+          >
+            <Plus className="h-4 w-4" />
+            Add Rule
+          </Button>
+        </div>
+
+        {/* Empty state */}
+        {rules.length === 0 && (
+          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border-primary bg-background py-16 text-center">
+            <p className="text-base font-medium text-text-primary">No repricing rules yet</p>
+            <p className="mt-1 text-sm text-text-secondary">
+              Create your first rule to start automating your pricing.
+            </p>
+            <Button
+              color="primary"
+              size="sm"
+              onClick={() => router.push("/repricing/manage")}
+              className="mt-4 bg-brand-solid hover:bg-brand-solid_hover"
+            >
+              <Plus className="mr-1.5 h-4 w-4" />
+              Add Rule
+            </Button>
+          </div>
+        )}
+
+        {/* Rules grid with DnD */}
+        {rules.length > 0 && (
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext
+              items={rules.map((r) => r.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {rules.map((rule) => (
+                  <SortableCard
+                    key={rule.id}
+                    rule={rule}
+                    onToggle={handleToggle}
+                    onManage={handleManage}
+                    onRunPreview={handleRunPreview}
+                  />
+                ))}
+              </div>
+            </SortableContext>
+          </DndContext>
+        )}
+      </div>
+    </div>
+  );
+}
