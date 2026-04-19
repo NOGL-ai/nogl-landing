@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/lib/prismaDb";
+import { prisma, isPrismaAvailable } from "@/lib/prismaDb";
 import { getAuthSession } from "@/lib/auth";
 import type {
   AlertAudience,
@@ -8,6 +8,12 @@ import type {
   AlertStatus,
   AlertType,
 } from "@prisma/client";
+import {
+  MOCK_CMO_ALERTS,
+  MOCK_CFO_ALERTS,
+  MOCK_CMO_COUNTS,
+  MOCK_CFO_COUNTS,
+} from "@/lib/alerts/mockAlerts";
 
 const PAGE_SIZE_DEFAULT = 50;
 
@@ -56,6 +62,22 @@ export async function listAlerts(params: {
 }): Promise<{ alerts: AlertRow[]; total: number; page: number }> {
   await getAuthSession();
 
+  // Dev fallback when no DATABASE_URL is set
+  if (!isPrismaAvailable) {
+    const pool = params.audience === "CMO" ? MOCK_CMO_ALERTS : MOCK_CFO_ALERTS;
+    let rows = pool.filter((a) => {
+      if (params.severity?.length && !params.severity.includes(a.severity)) return false;
+      const allowedStatuses = params.status?.length ? params.status : ["OPEN", "SNOOZED"];
+      if (!allowedStatuses.includes(a.status)) return false;
+      if (params.type?.length && !params.type.includes(a.type)) return false;
+      if (params.search && !a.title.toLowerCase().includes(params.search.toLowerCase())) return false;
+      return true;
+    });
+    const page = params.page ?? 1;
+    const pageSize = params.pageSize ?? PAGE_SIZE_DEFAULT;
+    return { alerts: rows.slice((page - 1) * pageSize, page * pageSize), total: rows.length, page };
+  }
+
   const page = params.page ?? 1;
   const pageSize = params.pageSize ?? PAGE_SIZE_DEFAULT;
 
@@ -101,6 +123,10 @@ export async function getAlertCounts(params: {
 }): Promise<AlertCountsResult> {
   await getAuthSession();
 
+  if (!isPrismaAvailable) {
+    return params.audience === "CMO" ? MOCK_CMO_COUNTS : MOCK_CFO_COUNTS;
+  }
+
   const rows = await prisma.alert.groupBy({
     by: ["severity"],
     where: {
@@ -143,6 +169,7 @@ export async function getAlertCounts(params: {
 
 export async function resolveAlert(id: string): Promise<void> {
   const session = await getAuthSession();
+  if (!isPrismaAvailable) return; // mock: optimistic update handled client-side
   await prisma.alert.update({
     where: { id },
     data: {
@@ -155,6 +182,7 @@ export async function resolveAlert(id: string): Promise<void> {
 
 export async function snoozeAlert(id: string, until: Date): Promise<void> {
   await getAuthSession();
+  if (!isPrismaAvailable) return;
   await prisma.alert.update({
     where: { id },
     data: { status: "SNOOZED", snoozeUntil: until },
@@ -163,6 +191,7 @@ export async function snoozeAlert(id: string, until: Date): Promise<void> {
 
 export async function bulkResolveAlerts(ids: string[]): Promise<void> {
   const session = await getAuthSession();
+  if (!isPrismaAvailable) return;
   await prisma.alert.updateMany({
     where: { id: { in: ids } },
     data: {
@@ -178,6 +207,7 @@ export async function bulkAssignAlerts(
   userId: string,
 ): Promise<void> {
   await getAuthSession();
+  if (!isPrismaAvailable) return;
   await prisma.alert.updateMany({
     where: { id: { in: ids } },
     data: { assignedToUserId: userId },
@@ -207,6 +237,7 @@ export async function getSubscriptions(params: {
   audience: AlertAudience;
 }): Promise<SubscriptionRow[]> {
   await getAuthSession();
+  if (!isPrismaAvailable) return [];
   const rows = await prisma.alertSubscription.findMany({
     where: {
       userId: params.userId,
@@ -230,6 +261,7 @@ export async function upsertSubscription(params: {
   digestMode?: string;
 }): Promise<void> {
   await getAuthSession();
+  if (!isPrismaAvailable) return;
   await prisma.alertSubscription.upsert({
     where: {
       userId_companyId_audience_alertType: {
