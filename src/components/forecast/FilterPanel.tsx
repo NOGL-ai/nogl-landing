@@ -1,5 +1,5 @@
-import { Calendar, Sliders01 as SlidersHorizontal, X } from '@untitledui/icons';
 "use client";
+import { Calendar, Sliders01 as SlidersHorizontal, X } from '@untitledui/icons';
 
 import { useEffect, useRef, useState } from "react";
 

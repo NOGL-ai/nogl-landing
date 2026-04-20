@@ -1,5 +1,5 @@
-import { Download01 as Download, Share01 as Share2, List as LayoutList, LayoutGrid01 as LayoutGrid, SwitchVertical01 as ArrowUpDown, ArrowUp, ArrowDown, ChevronLeft, ChevronRight, X, Settings01 as Settings, LinkExternal01 as ExternalLink, Grid01 as Grid, HelpCircle } from '@untitledui/icons';
 "use client";
+import { Download01 as Download, Share01 as Share2, List as LayoutList, LayoutGrid01 as LayoutGrid, SwitchVertical01 as ArrowUpDown, ArrowUp, ArrowDown, ChevronLeft, ChevronRight, X, Settings01 as Settings, LinkExternal01 as ExternalLink, Grid01 as Grid, HelpCircle } from '@untitledui/icons';
 
 import { useState, useMemo } from "react";
 import dynamic from "next/dynamic";

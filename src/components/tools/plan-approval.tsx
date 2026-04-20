@@ -1,3 +1,4 @@
+"use client";
 import { Pencil01 as PencilIcon, Trash01 as TrashIcon, Plus as PlusIcon, Check as CheckIcon, X as XIcon } from '@untitledui/icons';
 // @ts-nocheck
 /**
@@ -8,7 +9,6 @@ import { Pencil01 as PencilIcon, Trash01 as TrashIcon, Plus as PlusIcon, Check a
  * and approve or reject the plan before execution.
  */
 
-"use client";
 
 import { useState, useEffect } from "react";
 import { Button } from '@/components/base/buttons/button';

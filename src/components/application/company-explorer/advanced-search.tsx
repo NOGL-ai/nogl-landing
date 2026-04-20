@@ -1,5 +1,5 @@
-import { SwitchVertical01 as ArrowUpDown, InfoCircle as Info, SearchLg as Search, X, HelpCircle as CircleHelp, Expand01 as Expand, AlertTriangle as TriangleAlert } from '@untitledui/icons';
 "use client";
+import { SwitchVertical01 as ArrowUpDown, InfoCircle as Info, SearchLg as Search, X, HelpCircle as CircleHelp, Expand01 as Expand, AlertTriangle as TriangleAlert } from '@untitledui/icons';
 
 import * as React from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";

@@ -1,5 +1,5 @@
-import { X, SearchLg as Search, Plus, Globe01 as Globe } from '@untitledui/icons';
 "use client";
+import { X, SearchLg as Search, Plus, Globe01 as Globe } from '@untitledui/icons';
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 

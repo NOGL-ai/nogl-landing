@@ -1,11 +1,9 @@
-import { LayoutGrid01 as LayoutGrid, RefreshCcw01 as RefreshCcw } from '@untitledui/icons';
 "use client";
 
-
+import { LayoutGrid01 as LayoutGrid, RefreshCcw01 as RefreshCcw } from '@untitledui/icons';
 import { useEffect, useMemo, useState } from "react";
 
 import { Button } from '@/components/base/buttons/button';
-import { Card } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -63,20 +61,24 @@ function aggregate(metric: PivotMetric, values: number[]) {
 
 function PivotSkeleton() {
   return (
-    <Card className="overflow-hidden p-6">
+    <div className="overflow-hidden rounded-xl border border-border-primary bg-bg-primary p-6 shadow-xs">
       <div className="animate-pulse space-y-4">
         <div className="grid gap-3 md:grid-cols-4">
-          {Array.from({ length: 4 }).map((_, index) => <div key={index} className="h-10 rounded-md bg-muted" />)}
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div key={index} className="h-10 rounded-md bg-bg-tertiary animate-pulse" />
+          ))}
         </div>
         <div className="space-y-2">
           {Array.from({ length: 8 }).map((_, row) => (
             <div key={row} className="grid grid-cols-6 gap-2">
-              {Array.from({ length: 6 }).map((_, col) => <div key={col} className="h-10 rounded-md bg-muted" />)}
+              {Array.from({ length: 6 }).map((_, col) => (
+                <div key={col} className="h-10 rounded-md bg-bg-tertiary animate-pulse" />
+              ))}
             </div>
           ))}
         </div>
       </div>
-    </Card>
+    </div>
   );
 }
 
@@ -127,6 +129,18 @@ export function PivotTab({ slug }: PivotTabProps) {
     };
   }, [state.data, rowDimension, colDimension]);
 
+  const maxCellValue = useMemo(() => {
+    if (!matrix) return 0;
+    let max = 0;
+    matrix.rows.forEach(row => {
+      matrix.cols.forEach(col => {
+        const v = matrix.cellMap.get(`${row}::${col}`);
+        if (typeof v === 'number' && v > max) max = v;
+      });
+    });
+    return max;
+  }, [matrix]);
+
   const rowTotals = useMemo(() => new Map(
     matrix?.rows.map((row) => {
       const values = matrix.cols.map((col) => matrix.cellMap.get(`${row}::${col}`)).filter((value): value is number => typeof value === "number");
@@ -146,6 +160,17 @@ export function PivotTab({ slug }: PivotTabProps) {
     return aggregate(metric, values);
   }, [metric, rowTotals]);
 
+  function getCellHeatStyle(value: number | null, max: number): { bg: string; text: string } {
+    if (value === null || max === 0) return { bg: '', text: 'text-text-primary' };
+    const ratio = value / max;
+    if (ratio >= 0.8) return { bg: 'bg-brand-700', text: 'text-white' };
+    if (ratio >= 0.6) return { bg: 'bg-brand-600', text: 'text-white' };
+    if (ratio >= 0.4) return { bg: 'bg-brand-500', text: 'text-white' };
+    if (ratio >= 0.2) return { bg: 'bg-brand-100', text: 'text-text-brand' };
+    if (ratio >= 0.05) return { bg: 'bg-brand-50', text: 'text-text-brand' };
+    return { bg: '', text: 'text-text-primary' };
+  }
+
   const handleRetry = () => {
     setRetryKey((current) => current + 1);
   };
@@ -154,22 +179,22 @@ export function PivotTab({ slug }: PivotTabProps) {
 
   if (state.error) {
     return (
-      <Card className="space-y-4 p-6">
-        <div className="text-sm text-destructive">Failed to load</div>
+      <div className="space-y-4 rounded-xl border border-border-primary bg-bg-secondary p-6">
+        <div className="text-sm text-text-error">Failed to load</div>
         <Button color="secondary" onClick={handleRetry}>
           <RefreshCcw className="mr-2 h-4 w-4" />
           Retry
         </Button>
-      </Card>
+      </div>
     );
   }
 
   const PIVOT_PRESETS: Array<{ label: string; row: PivotDimension; col: PivotColDimension; metric: PivotMetric }> = [
-    { label: "Category Overview",    row: "category",      col: "month",         metric: "count" },
-    { label: "Price Analysis",       row: "price_range",   col: "discount_tier", metric: "count" },
-    { label: "Discount Breakdown",   row: "discount_tier", col: "price_range",   metric: "count" },
-    { label: "Brand by Price",       row: "brand",         col: "price_range",   metric: "count" },
-    { label: "Monthly Avg Price",    row: "category",      col: "month",         metric: "avg_price" },
+    { label: "Category Overview",  row: "category",      col: "month",         metric: "count" },
+    { label: "Price Analysis",     row: "price_range",   col: "discount_tier", metric: "count" },
+    { label: "Discount Breakdown", row: "discount_tier", col: "price_range",   metric: "count" },
+    { label: "Brand by Price",     row: "brand",         col: "price_range",   metric: "count" },
+    { label: "Monthly Avg Price",  row: "category",      col: "month",         metric: "avg_price" },
   ];
 
   function getPivotTitle(row: PivotDimension, col: PivotColDimension): string {
@@ -185,36 +210,51 @@ export function PivotTab({ slug }: PivotTabProps) {
       {/* Title */}
       <div className="flex items-start justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-foreground">{getPivotTitle(rowDimension, colDimension)}</h2>
-          <p className="text-sm text-muted-foreground">Click a cell to drill into data</p>
+          <h2 className="text-lg font-semibold text-text-primary">{getPivotTitle(rowDimension, colDimension)}</h2>
+          <p className="text-sm text-text-tertiary">Click a cell to drill into data</p>
         </div>
       </div>
 
       {/* Presets */}
       <div>
-        <p className="mb-2 text-sm text-muted-foreground">
+        <p className="mb-2 text-sm text-text-tertiary">
           <span className="font-medium">Presets</span>{" "}
           Apply a preset configuration to quickly set controls for common use cases:
         </p>
         <div className="flex flex-wrap gap-2">
-          {PIVOT_PRESETS.map((preset) => (
-            <button
-              key={preset.label}
-              type="button"
-              onClick={() => {
-                setRowDimension(preset.row);
-                setColDimension(preset.col);
-                setMetric(preset.metric);
-              }}
-              className="rounded-lg border border-border px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-            >
-              {preset.label}
-            </button>
-          ))}
+          {PIVOT_PRESETS.map((preset) => {
+            const isActive = preset.row === rowDimension && preset.col === colDimension && preset.metric === metric;
+            return (
+              <button
+                key={preset.label}
+                type="button"
+                onClick={() => {
+                  setRowDimension(preset.row);
+                  setColDimension(preset.col);
+                  setMetric(preset.metric);
+                }}
+                className={`rounded-full border px-3 py-1.5 text-xs font-medium shadow-xs transition-colors ${
+                  isActive
+                    ? 'border-border-brand bg-brand-50 text-text-brand-secondary'
+                    : 'border-border-primary bg-bg-primary text-text-secondary hover:bg-bg-secondary hover:text-text-primary'
+                }`}
+              >
+                {preset.label}
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      <Card className="p-4">
+      {/* Controls */}
+      <div className="rounded-xl border border-border-primary bg-bg-secondary p-4 shadow-xs">
+        <div className="mb-3 flex items-center gap-3 font-mono text-xs text-text-tertiary">
+          <span>Row: <strong className="font-semibold text-text-secondary">{rowDimension.replace('_', ' ')}</strong></span>
+          <span className="text-text-disabled">·</span>
+          <span>Col: <strong className="font-semibold text-text-secondary">{colDimension.replace('_', ' ')}</strong></span>
+          <span className="text-text-disabled">·</span>
+          <span>Metric: <strong className="font-semibold text-text-secondary">{metric.replace('_', ' ')}</strong></span>
+        </div>
         <div className="grid gap-3 xl:grid-cols-4">
           <Select value={rowDimension} onValueChange={(value: PivotDimension) => setRowDimension(value)}>
             <SelectTrigger><SelectValue placeholder="Row" /></SelectTrigger>
@@ -253,56 +293,66 @@ export function PivotTab({ slug }: PivotTabProps) {
             </SelectContent>
           </Select>
         </div>
-      </Card>
+      </div>
 
       {state.data && matrix && matrix.rows.length === 0 && (
-        <Card className="flex items-center justify-center gap-3 p-8 text-muted-foreground">
+        <div className="flex items-center justify-center gap-3 rounded-xl border border-border-primary bg-bg-secondary p-8 text-text-tertiary">
           <LayoutGrid className="h-5 w-5" />
           <span>No pivot data for this company</span>
-        </Card>
+        </div>
       )}
 
       {state.data && matrix && matrix.rows.length > 0 && (
-        <Card className="overflow-hidden">
+        <div className="overflow-hidden rounded-xl border border-border-primary bg-bg-primary shadow-xs">
           <div className="max-h-[500px] overflow-x-auto overflow-y-auto">
             <table className="min-w-full border-separate border-spacing-0 text-sm">
-              <thead className="sticky top-0 z-20 bg-background">
+              <thead className="sticky top-0 z-20 bg-bg-primary">
                 <tr>
-                  <th className="sticky left-0 z-30 min-w-[180px] border-b border-border bg-background px-4 py-3 text-left font-semibold">Row</th>
-                  {matrix.cols.map((col) => <th key={col} className="border-b border-border bg-background px-4 py-3 text-right font-semibold">{col}</th>)}
-                  <th className="border-b border-border bg-background px-4 py-3 text-right font-semibold">Total</th>
+                  <th className="sticky left-0 z-30 min-w-[180px] border-b border-border-primary bg-bg-primary px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.08em] text-text-tertiary">Row</th>
+                  {matrix.cols.map((col) => (
+                    <th key={col} className="border-b border-border-primary bg-bg-primary px-4 py-3 text-right text-xs font-semibold uppercase tracking-[0.08em] text-text-tertiary">{col}</th>
+                  ))}
+                  <th className="border-b border-border-primary bg-bg-primary px-4 py-3 text-right text-xs font-semibold uppercase tracking-[0.08em] text-text-tertiary">Total</th>
                 </tr>
               </thead>
               <tbody>
                 {matrix.rows.map((row) => (
                   <tr key={row}>
-                    <td className="sticky left-0 z-10 min-w-[180px] border-b border-border bg-background px-4 py-3 font-medium text-foreground">{row}</td>
+                    <td className="sticky left-0 z-10 min-w-[180px] border-b border-border-primary bg-bg-primary px-4 py-3 text-sm font-medium text-text-primary">{row}</td>
                     {matrix.cols.map((col) => {
                       const value = matrix.cellMap.get(`${row}::${col}`) ?? null;
-                      const highlight = value !== null && matrix.threshold !== null && value >= matrix.threshold;
+                      const heat = getCellHeatStyle(value, maxCellValue);
                       return (
                         <td
                           key={`${row}-${col}`}
-                          className={`border-b border-border px-4 py-3 text-right ${highlight ? "bg-primary/10 font-medium text-primary" : ""} ${value === null ? "text-muted-foreground" : "text-foreground"}`}
+                          className={`border-b border-border-primary px-4 py-3 text-right tabular-nums transition-colors ${
+                            heat.bg
+                              ? `${heat.bg} font-semibold ${heat.text}`
+                              : value === null
+                                ? 'text-text-disabled'
+                                : 'text-text-primary'
+                          }`}
                         >
                           {formatValue(metric, value)}
                         </td>
                       );
                     })}
-                    <td className="border-b border-border px-4 py-3 text-right font-semibold text-foreground">{formatValue(metric, rowTotals.get(row) ?? null)}</td>
+                    <td className="border-b border-border-primary px-4 py-3 text-right tabular-nums font-semibold text-text-primary">{formatValue(metric, rowTotals.get(row) ?? null)}</td>
                   </tr>
                 ))}
               </tbody>
               <tfoot>
                 <tr>
-                  <td className="sticky left-0 z-10 min-w-[180px] border-t border-border bg-background px-4 py-3 font-semibold text-foreground">Total</td>
-                  {matrix.cols.map((col) => <td key={`total-${col}`} className="border-t border-border px-4 py-3 text-right font-semibold text-foreground">{formatValue(metric, colTotals.get(col) ?? null)}</td>)}
-                  <td className="border-t border-border px-4 py-3 text-right font-semibold text-foreground">{formatValue(metric, grandTotal)}</td>
+                  <td className="sticky left-0 z-10 min-w-[180px] border-t border-border-primary bg-bg-secondary px-4 py-3 text-sm font-semibold text-text-primary">Total</td>
+                  {matrix.cols.map((col) => (
+                    <td key={`total-${col}`} className="border-t border-border-primary bg-bg-secondary px-4 py-3 text-right tabular-nums font-semibold text-text-primary">{formatValue(metric, colTotals.get(col) ?? null)}</td>
+                  ))}
+                  <td className="border-t border-border-primary bg-bg-secondary px-4 py-3 text-right tabular-nums font-semibold text-text-primary">{formatValue(metric, grandTotal)}</td>
                 </tr>
               </tfoot>
             </table>
           </div>
-        </Card>
+        </div>
       )}
     </div>
   );

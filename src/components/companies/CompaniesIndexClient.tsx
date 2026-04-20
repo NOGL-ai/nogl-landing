@@ -1,5 +1,5 @@
-import { SearchLg as Search } from '@untitledui/icons';
 "use client";
+import { SearchLg as Search } from '@untitledui/icons';
 
 
 import { useMemo, useState } from "react";

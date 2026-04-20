@@ -1,5 +1,5 @@
-import { LinkExternal01 as ExternalLink } from '@untitledui/icons';
 "use client";
+import { LinkExternal01 as ExternalLink } from '@untitledui/icons';
 
 
 import { useTranslations } from "next-intl";

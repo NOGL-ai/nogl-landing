@@ -1,6 +1,6 @@
+"use client";
 import { DownloadCloud01 as DownloadCloudIcon, Calendar as CalendarIcon, FilterFunnel01 as FilterIcon } from '@untitledui/icons';
 // @ts-nocheck
-"use client";
 
 import React, { useState } from "react";
 

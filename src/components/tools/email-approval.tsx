@@ -1,3 +1,4 @@
+"use client";
 import { Check as CheckIcon, X as XIcon, Mail01 as MailIcon, Eye as EyeIcon, Edit01 as EditIcon, LinkExternal01 as ExternalLinkIcon } from '@untitledui/icons';
 /**
  * Email Approval UI Component
@@ -7,7 +8,6 @@ import { Check as CheckIcon, X as XIcon, Mail01 as MailIcon, Eye as EyeIcon, Edi
  * editing capabilities.
  */
 
-"use client";
 
 import { useState, useEffect } from "react";
 import { Button } from '@/components/base/buttons/button';

@@ -1,3 +1,4 @@
+'use client';
 import { ChevronDown, ChevronUp, LinkExternal01 as ExternalLink, TrendUp01 as TrendingUp, Package, Tag01 as Tag, Calendar, Star01 as Star, Image01 as ImageIcon, MarkerPin01 as MapPin } from '@untitledui/icons';
 /**
  * SimilaritySearchResults Component
@@ -5,7 +6,6 @@ import { ChevronDown, ChevronUp, LinkExternal01 as ExternalLink, TrendUp01 as Tr
  * Displays the results of a similarity search, showing match count and closest match
  */
 
-'use client';
 
 import React, { useState } from 'react';
 import { SimilaritySearchResult, SimilarityMatch } from '@/types/market-intelligence';
