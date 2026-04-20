@@ -57,7 +57,7 @@ export function ProductTypesTable({
         return (
           <span
             className={
-              isActive ? "text-primary underline underline-offset-2" : "text-foreground"
+              isActive ? "text-text-brand underline underline-offset-2" : "text-text-primary"
             }
           >
             {info.getValue()}
@@ -70,7 +70,7 @@ export function ProductTypesTable({
       enableSorting: true,
       meta: { align: "right" },
       cell: (info) => (
-        <span className="tabular-nums text-muted-foreground">
+        <span className="tabular-nums text-text-tertiary">
           {info.getValue().toLocaleString()}
         </span>
       ),
@@ -87,7 +87,7 @@ export function ProductTypesTable({
       enableSorting: true,
       meta: { align: "right" },
       cell: (info) => (
-        <span className="tabular-nums text-foreground">{fmtPrice(info.getValue())}</span>
+        <span className="tabular-nums text-text-primary">{fmtPrice(info.getValue())}</span>
       ),
     }),
     columnHelper.accessor("avg_discount_pct", {
@@ -98,9 +98,9 @@ export function ProductTypesTable({
       cell: (info) => {
         const v = info.getValue();
         return v != null && v > 0 ? (
-          <span className="tabular-nums text-emerald-500">{v.toFixed(1)}%</span>
+          <span className="tabular-nums text-text-success">{v.toFixed(1)}%</span>
         ) : (
-          <span className="text-muted-foreground/50">—</span>
+          <span className="text-text-disabled">—</span>
         );
       },
     }),
@@ -130,10 +130,10 @@ export function ProductTypesTable({
   });
 
   return (
-    <Card className="overflow-hidden p-0">
-      <div className="flex items-center justify-between border-b border-border px-5 py-3">
-        <h3 className="text-sm font-semibold text-foreground">Product Types</h3>
-        <span className="text-xs text-muted-foreground">
+    <Card className="overflow-hidden p-0 shadow-xs">
+      <div className="flex items-center justify-between border-b border-border-primary px-5 py-3">
+        <h3 className="text-sm font-semibold text-text-primary">Product Types</h3>
+        <span className="text-xs text-text-tertiary">
           {totalProducts.toLocaleString()} products · click row to filter
         </span>
       </div>
@@ -141,15 +141,15 @@ export function ProductTypesTable({
       {loading ? (
         <div className="space-y-2 p-4">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-10 animate-pulse rounded bg-muted" />
+            <div key={i} className="h-10 animate-pulse rounded bg-bg-tertiary" />
           ))}
         </div>
       ) : rows.length === 0 ? (
-        <p className="px-5 py-8 text-sm text-muted-foreground">No category data yet.</p>
+        <p className="px-5 py-8 text-sm text-text-tertiary">No category data yet.</p>
       ) : (
         <div className="overflow-x-auto overflow-y-auto" style={{ maxHeight: 440 }}>
           <table className="min-w-full text-sm">
-            <thead className="sticky top-0 z-10 border-b border-border bg-card">
+            <thead className="sticky top-0 z-10 border-b border-border-primary bg-bg-primary">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
@@ -158,11 +158,11 @@ export function ProductTypesTable({
                     return (
                       <th
                         key={header.id}
-                        className={`px-4 py-2.5 text-xs font-medium uppercase tracking-wider text-muted-foreground
+                        className={`px-4 py-2.5 text-xs font-medium uppercase tracking-wider text-text-tertiary
                           ${align === "right" ? "text-right" : align === "center" ? "text-center" : "text-left"}
                           ${header.id === "type" ? "px-5" : ""}
                           ${header.id === "price_range" ? "px-5" : ""}
-                          ${canSort ? "cursor-pointer select-none hover:text-foreground" : ""}
+                          ${canSort ? "cursor-pointer select-none hover:text-text-primary" : ""}
                         `}
                         onClick={canSort ? header.column.getToggleSortingHandler() : undefined}
                       >
@@ -176,13 +176,13 @@ export function ProductTypesTable({
                 </tr>
               ))}
             </thead>
-            <tbody className="divide-y divide-border">
+            <tbody className="divide-y divide-border-primary">
               {table.getRowModel().rows.map((row) => {
                 const isActive = row.original.type === activeType;
                 return (
                   <tr
                     key={row.id}
-                    className={`cursor-pointer transition-colors hover:bg-muted/20 ${isActive ? "bg-primary/5" : ""}`}
+                    className={`cursor-pointer transition-colors hover:bg-bg-secondary ${isActive ? "bg-brand-50" : ""}`}
                     onClick={() =>
                       onTypeSelect(isActive ? null : row.original.type)
                     }
