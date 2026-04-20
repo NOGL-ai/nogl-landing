@@ -1,5 +1,10 @@
 import '@testing-library/jest-dom'
 
+// Polyfill TextEncoder/TextDecoder for jose/next-auth in jsdom
+const { TextEncoder, TextDecoder } = require('util')
+global.TextEncoder = TextEncoder
+global.TextDecoder = TextDecoder
+
 // Mock global Request and Response for Next.js
 global.Request = global.Request || class Request {
   constructor(input, init) {

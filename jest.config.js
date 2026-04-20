@@ -12,6 +12,7 @@ const customJestConfig = {
   testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^react-aria-components$': '<rootDir>/__mocks__/react-aria-components.tsx',
   },
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
@@ -44,7 +45,7 @@ const customJestConfig = {
   // Add coverage provider configuration
   coverageProvider: 'v8',
   // Disable coverage collection for problematic files
-  collectCoverage: true,
+  collectCoverage: false,
   coverageReporters: ['text', 'lcov', 'html'],
 }
 

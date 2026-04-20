@@ -46,7 +46,7 @@ describe('Auth Middleware', () => {
       role: 'USER',
     })
 
-    const response = await withAuth(mockRequest, mockHandler)
+    const response = await withAuth(mockHandler)(mockRequest)
 
     expect(response).toBeDefined()
     expect(mockHandler).toHaveBeenCalledWith(
@@ -60,7 +60,7 @@ describe('Auth Middleware', () => {
     // Mock no session
     mockGetServerSession.mockResolvedValue(null)
 
-    const response = await withAuth(mockRequest, mockHandler)
+    const response = await withAuth(mockHandler)(mockRequest)
 
     expect(response.status).toBe(401)
     expect(await response.json()).toEqual({ error: 'Unauthorized' })
@@ -77,7 +77,7 @@ describe('Auth Middleware', () => {
     const { prisma } = require('../../lib/prismaDb')
     prisma.user.findUnique.mockResolvedValue(null)
 
-    const response = await withAuth(mockRequest, mockHandler)
+    const response = await withAuth(mockHandler)(mockRequest)
 
     expect(response.status).toBe(404)
     expect(await response.json()).toEqual({ error: 'User not found' })
@@ -95,7 +95,7 @@ describe('Auth Middleware', () => {
     const { prisma } = require('../../lib/prismaDb')
     prisma.user.findUnique.mockRejectedValue(new Error('Database error'))
 
-    const response = await withAuth(mockRequest, mockHandler)
+    const response = await withAuth(mockHandler)(mockRequest)
 
     expect(response.status).toBe(500)
     expect(await response.json()).toEqual({ error: 'Internal server error' })

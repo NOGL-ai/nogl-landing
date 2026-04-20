@@ -1,0 +1,46 @@
+---
+title: Competitor Tracking
+description: Monitor competitor prices in real time and get notified when they change.
+---
+
+# Competitor Tracking
+
+NOGL scrapes competitor product pages daily (and on-demand) to keep your price intelligence up to date.
+
+## Adding a competitor
+
+1. Go to **Companies → Tracked Competitors**.
+2. Click **Add Competitor**.
+3. Enter the competitor's website URL (e.g. `https://www.example-shop.de`).
+4. NOGL will auto-discover their catalog. This can take up to 30 minutes for large stores.
+
+## Matching competitor products to yours
+
+Once a competitor is added, NOGL tries to auto-match their products to your SKUs using title similarity and barcode matching.
+
+To review matches:
+1. Open the competitor profile.
+2. Go to the **Product Matches** tab.
+3. Accept, reject, or manually reassign matches.
+
+## Price history
+
+The **Price History** tab shows a chart of the competitor's price over time for any matched product. You can compare their price to yours side-by-side.
+
+## Scrape frequency
+
+| Plan | Default scrape frequency |
+|------|------------------------|
+| Starter | Daily (midnight UTC) |
+| Growth | Every 6 hours |
+| Enterprise | Every hour + on-demand |
+
+To trigger an on-demand scrape, open the competitor profile and click **Refresh Now**.
+
+## Price change alerts
+
+You can be notified immediately when a tracked competitor changes a price. See [Alerts](/en/fractional-cfo/docs/core-features/alerts) for configuration.
+
+## Removing a competitor
+
+Open the competitor profile, click **Actions → Remove**. All historical price data is retained for 12 months.

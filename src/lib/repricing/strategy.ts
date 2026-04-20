@@ -7,7 +7,7 @@ import type { RuleEngineInput, CompetitorPriceSample } from "./types";
 /** Round a number to `decimals` decimal places using "round half up" */
 export function roundHalfUp(value: number, decimals = 2): number {
   const factor = Math.pow(10, decimals);
-  return Math.round(value * factor) / factor;
+  return Math.round((value + Number.EPSILON) * factor) / factor;
 }
 
 function filterCompetitors(

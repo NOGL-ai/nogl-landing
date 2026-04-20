@@ -1024,3 +1024,28 @@ model DashboardWidget {
   @@index([dashboardId])
   @@schema("dashboards")
 }
+
+/// Per-page feedback ("Was this helpful?") for in-repo MDX docs.
+/// userId nullable to tolerate sessions expiring mid-read; ip stored as sha256(ip+salt).
+model DocFeedback {
+  id        String            @id @default(cuid())
+  docPath   String            // "fractional-cfo/docs/core-features/forecasting"
+  locale    String            // "en" | "de"
+  rating    DocFeedbackRating
+  comment   String?           @db.Text
+  userId    String?
+  ipHash    String?           @db.VarChar(64)
+  userAgent String?           @db.VarChar(512)
+  createdAt DateTime          @default(now())
+
+  @@index([docPath, createdAt])
+  @@index([docPath, locale, rating])
+  @@schema("public")
+}
+
+enum DocFeedbackRating {
+  UP
+  DOWN
+
+  @@schema("public")
+}

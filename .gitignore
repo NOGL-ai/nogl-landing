@@ -72,3 +72,5 @@ test-*.js
 
 # Local Next.js output outside default `.next/`
 .next-build/
+# Fumadocs generated source
+.source/

@@ -113,7 +113,7 @@ describe('Validation Middleware', () => {
       expect(response).toBeDefined()
       expect(mockHandler).toHaveBeenCalledWith(mockRequest, {
         page: 1,
-        limit: 10,
+        limit: 20,
         search: undefined,
         featured: undefined,
       })

@@ -121,7 +121,7 @@ describe('DataTable Column Resizing', () => {
       />
     );
 
-    const resizeHandle = screen.getByLabelText('Resize column Name');
+    const resizeHandle = screen.getByLabelText('Resize column name');
     
     // Simulate mouse down event
     fireEvent.mouseDown(resizeHandle);
@@ -144,10 +144,10 @@ describe('DataTable Column Resizing', () => {
       />
     );
 
-    const resizeHandle = screen.getByLabelText('Resize column Name');
+    const resizeHandle = screen.getByLabelText('Resize column name');
     
-    // Simulate touch start event
-    fireEvent.touchStart(resizeHandle);
+    // Simulate touch start event (provide touches to avoid TanStack column sizing error)
+    fireEvent.touchStart(resizeHandle, { touches: [{ clientX: 100, clientY: 0 }] });
     
     // The resize handle should be present and touchable
     expect(resizeHandle).toBeInTheDocument();

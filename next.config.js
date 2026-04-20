@@ -1,4 +1,17 @@
 /** @type {import('next').NextConfig} */
+// fumadocs-mdx/next is ESM-only; guard the require so Jest (CJS context) doesn't crash.
+// Next.js processes this file via jiti (ESM-aware) in dev/build, so the fumadocs
+// wrapper activates normally there. In Jest, NODE_ENV='test' so we skip it.
+let _createMDX = null;
+if (process.env.NODE_ENV !== 'test' && !process.env.JEST_WORKER_ID) {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    _createMDX = require('fumadocs-mdx/next').createMDX;
+  } catch {
+    // fumadocs-mdx not installed or ESM interop unavailable — skip MDX wrapper
+  }
+}
+// _createMDX is either the real createMDX function or null (passthrough)
 
 const nextConfig = {
 	reactStrictMode: true,
@@ -183,4 +196,4 @@ const nextConfig = {
 	transpilePackages: ["undici", "mermaid", "react-markdown", "remark-gfm", "remark-parse", "remark-rehype", "rehype-stringify", "unified", "vfile", "vfile-message", "unist-util-visit", "unist-util-stringify-position", "mdast-util-from-markdown", "mdast-util-to-hast", "micromark"],
 };
 
-module.exports = nextConfig;
+module.exports = _createMDX ? _createMDX()(nextConfig) : nextConfig;

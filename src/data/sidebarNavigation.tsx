@@ -84,7 +84,7 @@ export const mainNavigationItems: NavigationSection = {
 				{
 					id: "company-explorer",
 					title: "Company Explorer",
-					path: "/companies",
+					path: "/companies/explore",
 					icon: null,
 				},
 				{
