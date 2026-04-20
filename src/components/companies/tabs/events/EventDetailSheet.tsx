@@ -2,6 +2,9 @@
 import { LinkExternal01 as ExternalLink } from '@untitledui/icons';
 
 
+import { LinkExternal01 as ExternalLink } from '@untitledui/icons';
+
+
 
 
 import {

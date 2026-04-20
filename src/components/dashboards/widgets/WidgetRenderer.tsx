@@ -2,6 +2,9 @@
 import { Loading01 as LoaderCircleIcon, AlertCircle as AlertCircleIcon } from '@untitledui/icons';
 
 
+import { Loading01 as LoaderCircleIcon, AlertCircle as AlertCircleIcon } from '@untitledui/icons';
+
+
 import { useWidgetData } from "@/hooks/useWidgetData";
 import type {
   DashboardWidgetRow,
