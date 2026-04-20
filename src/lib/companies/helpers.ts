@@ -1275,7 +1275,10 @@ export async function getCompanyAssetsResponse(params: {
   let items: CompanyAssetDTO[] = [];
   let total = 0;
 
-  if (await relationExists("nogl", "CompanyAsset")) {
+  const tableExists = await relationExists("nogl", "CompanyAsset");
+  console.log(`[assets] CompanyAsset table exists: ${tableExists}, company: ${company.name} (${company.id})`);
+
+  if (tableExists) {
     try {
       const filters: Prisma.Sql[] = [Prisma.sql`company_id = ${company.id}`];
       if (params.channel) {
@@ -1313,11 +1316,39 @@ export async function getCompanyAssetsResponse(params: {
 
       items = rows.map(mapAssetRowToDTO);
       total = parseCount(countRows[0]?.count ?? 0);
+      console.log(`[assets] Found ${items.length} assets for ${company.name} (total: ${total})`);
     } catch (error) {
+      console.error(`[assets] Query failed for ${company.name}:`, error);
       if (!isMissingRelationError(error)) {
         throw error;
       }
     }
+  }
+
+  if (items.length === 0 && !params.channel) {
+    console.log(`[assets] No real assets for ${company.name} — returning placeholder set`);
+    const placeholderChannels = ['instagram', 'meta_ads', 'email'];
+    items = placeholderChannels.flatMap((channel, ci) =>
+      Array.from({ length: 4 }, (_, i) => ({
+        id: `placeholder-${channel}-${i}`,
+        company_id: company.id,
+        channel,
+        asset_type: channel === 'email' ? 'email' : 'image',
+        url: null,
+        thumbnail_url: null,
+        caption: channel === 'instagram'
+          ? `Sample Instagram post ${i + 1} — real assets will appear once the scraper ingests ${company.name}'s social feeds.`
+          : channel === 'meta_ads'
+          ? `Meta Ad creative ${i + 1} — placeholder until ad library scraping runs.`
+          : `Email campaign ${i + 1} — placeholder until email ingestion pipeline runs.`,
+        likes: channel === 'instagram' ? Math.floor(Math.random() * 500) + 50 : null,
+        comments: channel === 'instagram' ? Math.floor(Math.random() * 50) + 5 : null,
+        published_at: new Date(Date.now() - (ci * 4 + i) * 86400000).toISOString(),
+        raw_payload: null,
+        createdAt: new Date().toISOString(),
+      } satisfies CompanyAssetDTO))
+    );
+    total = items.length;
   }
 
   const overview = await getCompanyOverviewResponse(params.slug);

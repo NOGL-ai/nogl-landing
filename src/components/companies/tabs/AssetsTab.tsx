@@ -4,8 +4,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 
 import { FilterBar } from "@/components/companies/FilterBar";
-import { Card } from "@/components/ui/card";
-import type { CompanyAssetsResponse } from "@/types/company";
+import type { CompanyAssetDTO, CompanyAssetsResponse } from "@/types/company";
 import {
   fetchJson,
   formatDateTime,
@@ -27,23 +26,79 @@ type AssetsState = {
   page: number;
 };
 
+function getFrequencyLabel(countPerMonth: number): { label: string; color: string } {
+  if (countPerMonth === 0) return { label: "N/A", color: "text-text-disabled" };
+  if (countPerMonth < 2) return { label: "Infrequent", color: "text-text-tertiary" };
+  if (countPerMonth < 8) return { label: "Regular", color: "text-text-secondary" };
+  return { label: "Frequent", color: "text-text-brand-secondary" };
+}
+
 function StatsBar({ data }: { data: CompanyAssetsResponse }) {
-  const stats = [
-    { label: "Instagram Followers", value: formatNumber(data.ig_followers) },
-    { label: "Avg Likes", value: formatNumber(data.ig_avg_likes) },
-    { label: "Assets", value: formatNumber(data.ig_asset_count) },
-  ];
+  const mostLiked =
+    data.items
+      .filter((a) => typeof a.likes === "number")
+      .sort((a, b) => (b.likes ?? 0) - (a.likes ?? 0))[0] ?? null;
 
   return (
-    <div className="grid gap-4 md:grid-cols-3">
-      {stats.map((stat) => (
-        <Card key={stat.label} className="p-5">
-          <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
-            {stat.label}
+    <div className="space-y-4">
+      <div className="grid gap-4 md:grid-cols-3">
+        <div className="rounded-xl border border-border-primary bg-bg-primary p-5 shadow-xs">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-text-tertiary">
+            Instagram Followers
           </p>
-          <p className="mt-3 text-2xl font-semibold tracking-tight text-foreground">{stat.value}</p>
-        </Card>
-      ))}
+          <p className="mt-3 text-2xl font-semibold tracking-tight text-text-primary">
+            {data.ig_followers != null ? formatNumber(data.ig_followers) : "N/A"}
+          </p>
+        </div>
+        <div className="rounded-xl border border-border-primary bg-bg-primary p-5 shadow-xs">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-text-tertiary">
+            Avg. Likes
+          </p>
+          <p className="mt-3 text-2xl font-semibold tracking-tight text-text-primary">
+            {data.ig_avg_likes != null ? formatNumber(data.ig_avg_likes) : "N/A"}
+          </p>
+        </div>
+        <div className="rounded-xl border border-border-primary bg-bg-primary p-5 shadow-xs">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-text-tertiary">
+            Total Assets
+          </p>
+          <p className="mt-3 text-2xl font-semibold tracking-tight text-text-primary">
+            {formatNumber(data.pagination.total)}
+          </p>
+        </div>
+      </div>
+
+      {mostLiked && (
+        <div className="rounded-xl border border-border-primary bg-bg-primary p-5 shadow-xs">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-text-tertiary">
+            Most-liked post
+          </p>
+          <div className="flex gap-4">
+            {mostLiked.thumbnail_url && (
+              <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-bg-tertiary">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={mostLiked.thumbnail_url}
+                  alt="Most liked"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            )}
+            <div className="min-w-0">
+              <p className="line-clamp-2 text-sm text-text-secondary">
+                {mostLiked.caption ?? "—"}
+              </p>
+              <div className="mt-2 flex items-center gap-3 text-xs text-text-tertiary">
+                {mostLiked.likes != null && <span>❤ {mostLiked.likes.toLocaleString()}</span>}
+                {mostLiked.comments != null && (
+                  <span>💬 {mostLiked.comments.toLocaleString()}</span>
+                )}
+                {mostLiked.published_at && <span>{formatDateTime(mostLiked.published_at)}</span>}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -57,10 +112,9 @@ export function AssetsTab({ slug }: AssetsTabProps) {
     page: 1,
   });
 
-  // Available channels (populated from initial unfiltered load)
   const [allChannels, setAllChannels] = useState<string[]>([]);
-  // Active filters
   const [channelFilter, setChannelFilter] = useState<string | null>(null);
+  const [selectedAsset, setSelectedAsset] = useState<CompanyAssetDTO | null>(null);
 
   function buildUrl(channel: string | null, page = 1) {
     const params = new URLSearchParams({ page: String(page) });
@@ -68,7 +122,6 @@ export function AssetsTab({ slug }: AssetsTabProps) {
     return `/api/companies/${slug}/assets?${params.toString()}`;
   }
 
-  // Load (or reload on filter change)
   useEffect(() => {
     let cancelled = false;
     async function load() {
@@ -77,7 +130,6 @@ export function AssetsTab({ slug }: AssetsTabProps) {
         const data = await fetchJson<CompanyAssetsResponse>(buildUrl(channelFilter, 1));
         if (!cancelled) {
           setState({ data, error: null, loading: false, loadingMore: false, page: 1 });
-          // Populate channel list from all items on first unfiltered load
           if (!channelFilter) {
             const channels = [...new Set(data.items.map((i) => i.channel).filter(Boolean))];
             setAllChannels(channels);
@@ -94,7 +146,9 @@ export function AssetsTab({ slug }: AssetsTabProps) {
       }
     }
     void load();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug, channelFilter]);
 
@@ -132,7 +186,6 @@ export function AssetsTab({ slug }: AssetsTabProps) {
 
   const { data } = state;
 
-  // Channel breakdown from current loaded items
   const channelCounts = data.items.reduce<Record<string, number>>((acc, item) => {
     acc[item.channel] = (acc[item.channel] ?? 0) + 1;
     return acc;
@@ -143,8 +196,8 @@ export function AssetsTab({ slug }: AssetsTabProps) {
     <div className="space-y-6">
       <StatsBar data={data} />
 
-      {/* ── Filter bar ── */}
-      <div className="flex flex-wrap items-center gap-3 rounded-xl border border-border bg-muted/30 px-4 py-3">
+      {/* Filter bar */}
+      <div className="flex flex-wrap items-center gap-3 rounded-xl border border-border-primary bg-bg-secondary px-4 py-3">
         <FilterBar
           filters={[
             {
@@ -162,81 +215,114 @@ export function AssetsTab({ slug }: AssetsTabProps) {
           resultLabel="assets"
           right={
             state.loading ? (
-              <span className="text-xs text-muted-foreground animate-pulse">Filtering…</span>
+              <span className="animate-pulse text-xs text-text-tertiary">Filtering…</span>
             ) : undefined
           }
         />
       </div>
 
-      {/* Channel breakdown table */}
+      {/* Channel breakdown */}
       {channels.length > 0 && (
-        <Card className="overflow-hidden p-0">
-          <div className="border-b border-border px-5 py-3">
-            <h3 className="text-sm font-semibold text-foreground">Channel Breakdown</h3>
+        <div className="overflow-hidden rounded-xl border border-border-primary bg-bg-primary shadow-xs">
+          <div className="border-b border-border-primary px-5 py-3">
+            <h3 className="text-sm font-semibold text-text-primary">Channel Breakdown</h3>
           </div>
-          <div className="overflow-x-auto">
-            <table className="min-w-full text-sm">
-              <thead className="border-b border-border bg-muted/30">
-                <tr>
-                  <th className="px-5 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                    Channel
-                  </th>
-                  <th className="px-5 py-2.5 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                    Assets
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {channels.map(([channel, count]) => (
-                  <tr
-                    key={channel}
-                    className={`cursor-pointer hover:bg-muted/20 transition-colors ${channelFilter === channel ? "bg-primary/5" : ""}`}
-                    onClick={() => setChannelFilter(channelFilter === channel ? null : channel)}
+          <div className="divide-y divide-border-primary">
+            {channels.map(([channel, count]) => {
+              const perWeek = (count / 4).toFixed(2);
+              const freq = getFrequencyLabel(count / 4);
+              const isActive = channelFilter === channel;
+              return (
+                <div
+                  key={channel}
+                  className={`flex cursor-pointer items-center gap-4 px-5 py-3 transition-colors hover:bg-bg-secondary ${isActive ? "bg-brand-50" : ""}`}
+                  onClick={() => setChannelFilter(isActive ? null : channel)}
+                >
+                  <div className="h-2 w-2 shrink-0 rounded-full bg-brand-500" />
+                  <span
+                    className={`flex-1 text-sm font-medium capitalize ${isActive ? "text-text-brand-secondary" : "text-text-primary"}`}
                   >
-                    <td className="px-5 py-3 font-medium text-foreground">{channel}</td>
-                    <td className="px-5 py-3 text-right tabular-nums text-muted-foreground">
-                      {count.toLocaleString()}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                    {channel.replace(/_/g, " ")}
+                  </span>
+                  <span className={`text-xs ${freq.color}`}>{freq.label}</span>
+                  <span className="tabular-nums text-xs text-text-tertiary">{perWeek}/wk</span>
+                  <span className="w-8 text-right text-xs font-semibold tabular-nums text-text-primary">
+                    {count}
+                  </span>
+                </div>
+              );
+            })}
           </div>
-        </Card>
+        </div>
       )}
 
       {/* Asset grid */}
       {data.items.length === 0 ? (
-        <Card className="p-6 text-sm text-muted-foreground">No assets collected yet</Card>
+        <div className="rounded-xl border border-border-primary bg-bg-primary p-6 text-sm text-text-tertiary">
+          No assets collected yet
+        </div>
       ) : (
         <>
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {data.items.map((item) => (
               <div
                 key={item.id}
-                className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card"
+                className="group flex cursor-pointer flex-col overflow-hidden rounded-xl border border-border-primary bg-bg-primary shadow-xs transition-all hover:border-border-secondary hover:shadow-md"
+                onClick={() => setSelectedAsset(item)}
               >
-                <div className="relative aspect-square overflow-hidden bg-muted">
+                <div className="relative aspect-square overflow-hidden bg-bg-tertiary">
                   {item.thumbnail_url ? (
                     <Image
                       src={item.thumbnail_url}
                       alt={item.caption ?? `${item.channel} asset`}
                       fill
                       className="object-cover transition-transform duration-300 group-hover:scale-105"
-                      unoptimized={true}
+                      unoptimized
                     />
                   ) : (
-                    <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-                      No preview
+                    <div className="flex h-full flex-col items-center justify-center gap-2 p-4">
+                      <div className="text-2xl">
+                        {item.channel === "instagram"
+                          ? "📸"
+                          : item.channel === "meta_ads"
+                            ? "📣"
+                            : item.channel === "email"
+                              ? "✉️"
+                              : "🖼️"}
+                      </div>
+                      <p className="line-clamp-3 text-center text-xs text-text-tertiary">
+                        {item.caption ?? "No preview"}
+                      </p>
+                    </div>
+                  )}
+                  {item.thumbnail_url && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-bg-primary/0 transition-colors group-hover:bg-bg-primary/40">
+                      <span className="rounded-full bg-black/50 px-3 py-1 text-sm font-medium text-white opacity-0 transition-opacity group-hover:opacity-100">
+                        View
+                      </span>
                     </div>
                   )}
                 </div>
-                <div className="flex items-center justify-between px-3 py-2">
-                  <div className="min-w-0">
-                    <p className="truncate text-xs font-medium text-foreground">{data.company.name}</p>
-                    <p className="text-xs text-muted-foreground">{item.channel}</p>
+                <div className="flex flex-col gap-1 p-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-medium capitalize text-text-tertiary">
+                      {item.channel?.replace(/_/g, " ")}
+                    </span>
+                    <span className="text-xs text-text-tertiary">
+                      {formatDateTime(item.published_at)}
+                    </span>
                   </div>
-                  <p className="ml-2 shrink-0 text-xs text-muted-foreground">{formatDateTime(item.published_at)}</p>
+                  {item.caption && (
+                    <p className="line-clamp-2 text-xs leading-relaxed text-text-secondary">
+                      {item.caption}
+                    </p>
+                  )}
+                  {(item.likes != null || item.comments != null) && (
+                    <div className="mt-1 flex items-center gap-3 text-xs text-text-tertiary">
+                      {item.likes != null && <span>❤ {item.likes.toLocaleString()}</span>}
+                      {item.comments != null && <span>💬 {item.comments.toLocaleString()}</span>}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -248,13 +334,99 @@ export function AssetsTab({ slug }: AssetsTabProps) {
                 type="button"
                 onClick={() => void loadMore()}
                 disabled={state.loadingMore}
-                className="rounded-full border border-border bg-muted/40 px-8 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:opacity-50"
+                className="rounded-full border border-border-primary bg-bg-secondary px-8 py-2.5 text-sm font-medium text-text-primary shadow-xs transition-colors hover:bg-bg-tertiary disabled:opacity-50"
               >
                 {state.loadingMore ? "Loading..." : "+ Load More"}
               </button>
             </div>
           )}
         </>
+      )}
+
+      {/* Asset detail modal */}
+      {selectedAsset && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-bg-primary/80 p-4 backdrop-blur-sm"
+          onClick={() => setSelectedAsset(null)}
+        >
+          <div
+            className="relative w-full max-w-2xl overflow-hidden rounded-2xl border border-border-primary bg-bg-primary shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-bg-secondary text-text-tertiary transition-colors hover:text-text-primary"
+              onClick={() => setSelectedAsset(null)}
+            >
+              ✕
+            </button>
+
+            {selectedAsset.thumbnail_url && (
+              <div className="relative aspect-video w-full bg-bg-tertiary">
+                <Image
+                  src={selectedAsset.thumbnail_url}
+                  alt={selectedAsset.caption ?? "Asset"}
+                  fill
+                  className="object-contain"
+                  unoptimized
+                />
+              </div>
+            )}
+
+            <div className="space-y-4 p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-semibold text-text-primary">{data.company.name}</p>
+                  <p className="text-xs capitalize text-text-tertiary">
+                    {selectedAsset.channel?.replace(/_/g, " ")} ·{" "}
+                    {formatDateTime(selectedAsset.published_at)}
+                  </p>
+                </div>
+                {selectedAsset.url && (
+                  <a
+                    href={selectedAsset.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-xs text-text-brand-secondary hover:underline"
+                  >
+                    View original →
+                  </a>
+                )}
+              </div>
+
+              {selectedAsset.caption && (
+                <p className="text-sm leading-relaxed text-text-secondary">
+                  {selectedAsset.caption}
+                </p>
+              )}
+
+              <div className="flex items-center gap-4 border-t border-border-primary pt-4">
+                {selectedAsset.likes != null && (
+                  <div className="text-center">
+                    <p className="text-xs text-text-tertiary">Likes</p>
+                    <p className="text-base font-semibold tabular-nums text-text-primary">
+                      {selectedAsset.likes.toLocaleString()}
+                    </p>
+                  </div>
+                )}
+                {selectedAsset.comments != null && (
+                  <div className="text-center">
+                    <p className="text-xs text-text-tertiary">Comments</p>
+                    <p className="text-base font-semibold tabular-nums text-text-primary">
+                      {selectedAsset.comments.toLocaleString()}
+                    </p>
+                  </div>
+                )}
+                <div className="text-center">
+                  <p className="text-xs text-text-tertiary">Channel</p>
+                  <p className="text-base font-semibold capitalize text-text-primary">
+                    {selectedAsset.channel?.replace(/_/g, " ")}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
