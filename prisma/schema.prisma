@@ -8,7 +8,7 @@ datasource db {
   url               = env("DATABASE_URL")
   directUrl         = env("DIRECT_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
-  schemas           = ["nogl", "public", "forecast", "dashboards", "assets", "alerts"]
+  schemas           = ["nogl", "public", "forecast", "dashboards", "assets", "alerts", "ads_events"]
 }
 
 model User {
@@ -92,6 +92,7 @@ model ApiKey {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scopes    ApiKeyScope[]
 
   @@index([userId])
   @@schema("nogl")
@@ -226,6 +227,7 @@ model Competitor {
   company                Company?
   priceComparisons       CompetitorPriceComparison[]
   CompetitorPriceHistory CompetitorPriceHistory[]
+  adAccounts             AdAccount[]
 
   @@index([domain])
   @@index([createdAt])
@@ -320,6 +322,7 @@ model Company {
   notifications           Notification[]
   marketingAssetsAsTenant MarketingAsset[]      @relation("TenantAssets")
   marketingAssetsAsBrand  MarketingAsset[]      @relation("BrandAssets")
+  adAccounts              AdAccount[]
 
   @@index([slug])
   @@index([domain])
@@ -1459,6 +1462,208 @@ model DashboardWidget {
   @@schema("dashboards")
 }
 
+// ============================================================================
+// ads_events — ads ingestion pipeline (P1)
+// ============================================================================
+
+enum AdsPlatform {
+  META_ADS_LIBRARY
+  INSTAGRAM
+  TIKTOK
+  FACEBOOK
+
+  @@schema("ads_events")
+}
+
+enum AdsEventType {
+  CREATIVE_SEEN
+  CREATIVE_UPDATED
+  POST_METRICS
+  PROFILE_SNAPSHOT
+  PLACEMENT_CHANGE
+
+  @@schema("ads_events")
+}
+
+enum ScraperSource {
+  FB_AD_ACTOR_V2
+  IG_MONITOR
+  TIKTOK_SCRAPER
+  MANUAL
+
+  @@schema("ads_events")
+}
+
+enum RunStatus {
+  RUNNING
+  OK
+  PARTIAL
+  FAILED
+
+  @@schema("ads_events")
+}
+
+enum ApiKeyScopeType {
+  INGEST
+  READ_TOP_HOOKS
+  ADMIN
+
+  @@schema("ads_events")
+}
+
+enum AdAccountStatus {
+  ACTIVE
+  UNMAPPED
+  ARCHIVED
+
+  @@schema("ads_events")
+}
+
+model AdAccount {
+  id           String          @id @default(cuid())
+  platform     AdsPlatform
+  external_id  String
+  handle       String?
+  display_name String?
+  status       AdAccountStatus @default(UNMAPPED)
+  companyId    String?
+  competitorId String?
+  metadata     Json?
+  last_seen_at DateTime?
+  created_at   DateTime        @default(now())
+  updated_at   DateTime        @updatedAt
+
+  company    Company?     @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  competitor Competitor?  @relation(fields: [competitorId], references: [id], onDelete: SetNull)
+  creatives  AdCreative[]
+  events     AdEvent[]
+  runs       ScraperRun[]
+
+  @@unique([platform, external_id])
+  @@index([companyId])
+  @@index([competitorId])
+  @@index([status])
+  @@schema("ads_events")
+}
+
+model AdCreative {
+  id                   String      @id @default(cuid())
+  account_id           String
+  platform             AdsPlatform
+  external_creative_id String
+  creative_hash        String      @unique
+  type                 String?
+  media_url            String?
+  thumbnail_url        String?
+  caption              String?
+  first_seen_at        DateTime    @default(now())
+  last_seen_at         DateTime    @default(now())
+  raw                  Json?
+  created_at           DateTime    @default(now())
+
+  account AdAccount @relation(fields: [account_id], references: [id], onDelete: Cascade)
+  events  AdEvent[]
+
+  @@unique([platform, external_creative_id])
+  @@index([account_id, last_seen_at])
+  @@schema("ads_events")
+}
+
+model AdEvent {
+  id               String        @id @default(cuid())
+  account_id       String
+  creative_id      String?
+  event_type       AdsEventType
+  ts               DateTime
+  source           ScraperSource
+  ingestion_run_id String
+  idempotency_key  String
+  payload          Json
+  metrics          Json?
+  created_at       DateTime      @default(now())
+
+  account  AdAccount   @relation(fields: [account_id], references: [id], onDelete: Cascade)
+  creative AdCreative? @relation(fields: [creative_id], references: [id], onDelete: SetNull)
+
+  @@unique([ts, idempotency_key])
+  @@index([account_id, ts])
+  @@index([event_type, ts])
+  @@index([ingestion_run_id])
+  @@schema("ads_events")
+}
+
+model AdMetricDaily {
+  id          String      @id @default(cuid())
+  account_id  String
+  creative_id String?
+  platform    AdsPlatform
+  day         DateTime    @db.Date
+  impressions Int?
+  reach       Int?
+  likes       Int?
+  comments    Int?
+  shares      Int?
+  saves       Int?
+  hook_score  Decimal?    @db.Decimal(6, 3)
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
+
+  @@unique([account_id, creative_id, day, platform])
+  @@index([day])
+  @@schema("ads_events")
+}
+
+model ScraperRun {
+  id              String        @id @default(cuid())
+  source          ScraperSource
+  account_id      String?
+  started_at      DateTime      @default(now())
+  finished_at     DateTime?
+  status          RunStatus     @default(RUNNING)
+  bullmq_job_id   String?
+  external_job_id String?
+  events_in       Int           @default(0)
+  events_accepted Int           @default(0)
+  events_rejected Int           @default(0)
+  error_code      String?
+  error_message   String?
+  lag_seconds     Int?
+
+  account AdAccount? @relation(fields: [account_id], references: [id], onDelete: SetNull)
+
+  @@index([source, started_at])
+  @@index([status])
+  @@schema("ads_events")
+}
+
+model DeadLetterEvent {
+  id            String        @id @default(cuid())
+  source        ScraperSource
+  reason_code   String
+  zod_issues    Json?
+  raw           Json
+  bullmq_job_id String?
+  received_at   DateTime      @default(now())
+  retried_at    DateTime?
+
+  @@index([source, received_at])
+  @@index([reason_code])
+  @@schema("ads_events")
+}
+
+model ApiKeyScope {
+  id                 String          @id @default(cuid())
+  api_key_id         String
+  source             ScraperSource?
+  scope              ApiKeyScopeType
+  rate_limit_per_min Int             @default(120)
+  created_at         DateTime        @default(now())
+
+  apiKey ApiKey @relation(fields: [api_key_id], references: [id], onDelete: Cascade)
+
+  @@unique([api_key_id, scope, source])
+  @@index([api_key_id])
+  @@schema("ads_events")
 /// Per-page feedback ("Was this helpful?") for in-repo MDX docs.
 /// userId nullable to tolerate sessions expiring mid-read; ip stored as sha256(ip+salt).
 model DocFeedback {

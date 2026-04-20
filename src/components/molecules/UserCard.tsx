@@ -6,6 +6,7 @@ import Badge from "@/shared/Badge";
 import convertNumbThousand from "@/utils/convertNumbThousand";
 import Link from "next/link";
 import Image from "next/image";
+import type { Route } from 'next';
 
 export interface UserCardProps {
 	className?: string;
@@ -33,7 +34,7 @@ const UserCard: FC<UserCardProps> = ({
 	if (variant === "detailed") {
 		return (
 			<Link
-				href={href}
+				href={href as Route}
 				className={`nc-CardAuthorBox2 [ nc-box-1 ] [ nc-dark-box-bg ] group relative flex flex-col items-center justify-center p-4 text-center sm:p-6 ${className}`}
 			>
 				{/* Background Image */}
@@ -90,7 +91,7 @@ const UserCard: FC<UserCardProps> = ({
 	// Default variant
 	return (
 		<Link
-			href={href}
+			href={href as Route}
 			className={`nc-CardAuthorBox [ nc-box-1 ] [ nc-dark-box-bg ] group relative flex flex-col items-center justify-center p-4 text-center sm:p-6 ${className}`}
 		>
 			<Avatar

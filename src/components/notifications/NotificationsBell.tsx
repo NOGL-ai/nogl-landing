@@ -21,6 +21,7 @@ import type {
 	AggregateUnread,
 	NotificationWithActor,
 } from "@/lib/notifications/types";
+import type { Route } from 'next';
 
 const POLL_INTERVAL_MS = 60_000;
 const PREVIEW_LIMIT = 10;
@@ -152,7 +153,7 @@ export function NotificationsBell({
 								<li key={item.id}>
 									{item.actionUrl ? (
 										<Link
-											href={item.actionUrl}
+											href={item.actionUrl as Route}
 											onClick={() => handleRowClick(item)}
 											className={`flex gap-3 px-4 py-3 transition-colors hover:bg-primary_hover ${
 												item.status === "UNREAD" ? "bg-secondary_bg/30" : ""
@@ -179,7 +180,7 @@ export function NotificationsBell({
 
 				<div className="border-t border-border px-4 py-2.5">
 					<Link
-						href={`${locale}/notifications`}
+						href={`${locale}/notifications` as Route}
 						onClick={() => setOpen(false)}
 						className="block text-center text-xs font-medium text-brand-secondary hover:text-brand-secondary_hover"
 					>

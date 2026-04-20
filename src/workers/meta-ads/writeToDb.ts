@@ -8,6 +8,8 @@ export type MetaAdJobMeta = {
 	brandId: string;
 	searchQuery: string;
 	country: string;
+	pageId?: string;
+	locale?: string;
 };
 
 export async function upsertMetaAdToDb(ad: MetaAd, meta: MetaAdJobMeta): Promise<string> {

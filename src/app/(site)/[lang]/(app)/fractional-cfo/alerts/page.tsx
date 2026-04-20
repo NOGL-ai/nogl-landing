@@ -4,6 +4,7 @@ import { listAlerts, getAlertCounts } from "@/actions/alerts";
 import { AlertInbox } from "@/components/alerts/AlertInbox";
 import { CALUMET_COMPANY_ID } from "@/components/alerts/alertConfig";
 import type { Locale } from "@/i18n";
+import type { Route } from 'next';
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +15,7 @@ export default async function CfoAlertsPage({
 }) {
   await params;
   const session = await getAuthSession();
-  if (!session?.user) redirect("/auth/signin");
+  if (!session?.user) redirect("/auth/signin" as Route);
 
   const [{ alerts }, counts] = await Promise.all([
     listAlerts({

@@ -16,6 +16,8 @@ export async function runMetaAdsScrape(data: MetaAdsScrapeJob): Promise<{ total:
 		country: data.country,
 		maxAds: data.maxAds ?? 100,
 		headlessMode: data.headlessMode ?? true,
+		pageId: data.pageId,
+		locale: data.locale,
 	});
 
 	try {

@@ -8,6 +8,7 @@ import {
   listVariants,
 } from "@/actions/replenishment";
 import ReplenishmentClient from "./ReplenishmentClient";
+import type { Route } from 'next';
 
 export const dynamic = "force-dynamic";
 
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
 
 export default async function ReplenishmentPage() {
   const session = await getAuthSession();
-  if (!session) redirect("/auth/signin");
+  if (!session) redirect("/auth/signin" as Route);
 
   const [orders, suppliers, variants] = await Promise.all([
     listPurchaseOrders({
