@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import { useTheme } from "next-themes";
-import ApexCharts from "apexcharts";
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 
 import { Card } from "@/components/ui/card";
 
@@ -23,9 +22,9 @@ interface GenderDistributionWidgetProps {
 // ── Mock data ─────────────────────────────────────────────────────────────────
 
 const DEFAULT_DATA: GenderEntry[] = [
-  { gender: "Male", count: 1842, pct: 59, color: "#3b82f6" },
-  { gender: "Unisex", count: 905, pct: 29, color: "#8b5cf6" },
-  { gender: "Female", count: 374, pct: 12, color: "#ec4899" },
+  { gender: "Male",   count: 1842, pct: 59, color: "#3b82f6" },
+  { gender: "Unisex", count: 905,  pct: 29, color: "#8b5cf6" },
+  { gender: "Female", count: 374,  pct: 12, color: "#ec4899" },
 ];
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -35,82 +34,10 @@ export function GenderDistributionWidget({
   loading = false,
 }: GenderDistributionWidgetProps) {
   const { resolvedTheme } = useTheme();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const chartInstanceRef = useRef<ApexCharts | null>(null);
-
   const isDark = resolvedTheme === "dark";
 
-  useEffect(() => {
-    if (!containerRef.current || loading || data.length === 0) return;
-
-    const labelColor = isDark ? "#9ca3af" : "#6b7280";
-    const bgColor = isDark ? "transparent" : "#ffffff";
-
-    const options: ApexCharts.ApexOptions = {
-      chart: {
-        type: "donut",
-        height: 200,
-        toolbar: { show: false },
-        background: bgColor,
-        foreColor: labelColor,
-        animations: { enabled: false },
-      },
-      series: data.map((d) => d.pct),
-      labels: data.map((d) => d.gender),
-      colors: data.map((d) => d.color),
-      plotOptions: {
-        pie: {
-          donut: {
-            size: "65%",
-            labels: {
-              show: true,
-              total: {
-                show: true,
-                showAlways: true,
-                label: "Total",
-                fontSize: "11px",
-                color: labelColor,
-                formatter: () =>
-                  data.reduce((acc, d) => acc + d.count, 0).toLocaleString(),
-              },
-            },
-          },
-        },
-      },
-      dataLabels: {
-        enabled: true,
-        formatter: (val: number) => `${Math.round(val)}%`,
-        style: { fontSize: "10px", fontWeight: "600", colors: ["#ffffff"] },
-        dropShadow: { enabled: false },
-      },
-      legend: {
-        show: true,
-        position: "right",
-        fontSize: "11px",
-        labels: { colors: labelColor },
-        markers: { size: 6 },
-      },
-      stroke: { width: 0 },
-      tooltip: {
-        theme: isDark ? "dark" : "light",
-        y: { formatter: (val) => `${val}%` },
-      },
-    };
-
-    try { chartInstanceRef.current?.destroy(); } catch { /* ignore */ }
-    chartInstanceRef.current = null;
-
-    const chart = new ApexCharts(containerRef.current, options);
-    chartInstanceRef.current = chart;
-    void chart.render();
-
-    return () => {
-      try { chartInstanceRef.current?.destroy(); } catch { /* ignore */ }
-      chartInstanceRef.current = null;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, loading, isDark]);
-
+  const textColor = isDark ? "#9ca3af" : "#6b7280";
+  const gridColor = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)";
   const total = data.reduce((acc, d) => acc + d.count, 0);
 
   return (
@@ -119,20 +46,71 @@ export function GenderDistributionWidget({
         <h3 className="text-sm font-semibold text-foreground">Gender Distribution</h3>
       </div>
 
-      {/* Chart — always keep in DOM */}
-      <div className="relative">
-        <div ref={containerRef} style={{ minHeight: 200 }} />
-
+      <div className="relative" style={{ minHeight: 200 }}>
         {loading && (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-primary" />
           </div>
         )}
-
         {!loading && data.length === 0 && (
           <p className="flex h-[200px] items-center justify-center text-sm text-muted-foreground">
             No gender data.
           </p>
+        )}
+        {!loading && data.length > 0 && (
+          <div className="flex items-center gap-6">
+            {/* Donut chart with center label */}
+            <div className="relative shrink-0" style={{ width: 160, height: 160 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={data}
+                    dataKey="pct"
+                    nameKey="gender"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={50}
+                    outerRadius={72}
+                    startAngle={90}
+                    endAngle={-270}
+                    strokeWidth={0}
+                  >
+                    {data.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    contentStyle={{
+                      background: isDark ? "#111827" : "#ffffff",
+                      border: `1px solid ${gridColor}`,
+                      borderRadius: 8,
+                      fontSize: 12,
+                    }}
+                    labelStyle={{ color: textColor }}
+                    formatter={(value) => [`${value as number}%`, ""] as [string, string]}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+              {/* Center label overlay */}
+              <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
+                <span className="text-sm font-bold text-foreground">{total.toLocaleString()}</span>
+                <span className="text-[10px] text-muted-foreground">Total</span>
+              </div>
+            </div>
+
+            {/* Legend */}
+            <div className="flex flex-col gap-2">
+              {data.map((d) => (
+                <div key={d.gender} className="flex items-center gap-2 text-xs">
+                  <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: d.color }} />
+                  <span className="text-foreground">{d.gender}</span>
+                  <span className="ml-2 tabular-nums text-muted-foreground">
+                    {total > 0 ? ((d.count / total) * 100).toFixed(1) : d.pct}%
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
       </div>
 
@@ -158,10 +136,7 @@ export function GenderDistributionWidget({
                 <tr key={row.gender} className="transition-colors hover:bg-muted/20">
                   <td className="px-3 py-2">
                     <div className="flex items-center gap-2">
-                      <span
-                        className="h-2.5 w-2.5 rounded-full"
-                        style={{ backgroundColor: row.color }}
-                      />
+                      <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: row.color }} />
                       <span className="text-foreground">{row.gender}</span>
                     </div>
                   </td>
@@ -178,7 +153,6 @@ export function GenderDistributionWidget({
         </div>
       )}
 
-      {/* Footnote */}
       <p className="mt-3 text-[10px] leading-relaxed text-muted-foreground">
         Not all products are categorized with a gender, and some products may be categorized with
         multiple genders.

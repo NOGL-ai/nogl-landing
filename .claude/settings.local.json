@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm install *)"
+      "Bash(rm -rf \"C:/Users/TUHIN~1.MAL/AppData/Local/Temp/claude\")",
+      "Bash(wmic logicaldisk *)"
     ]
   }
 }

@@ -205,7 +205,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
     const colSql = buildDimensionSql(colDimension);
     const metricSql = buildMetricSql(metric);
 
-    const pivotRows = await prisma.$queryRaw<PivotQueryRow[]>(Prisma.sql`
+    const pivotRows = (await prisma.$queryRaw(Prisma.sql`
       SELECT
         ${rowSql} AS row,
         ${colSql} AS col,
@@ -213,7 +213,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
       FROM public.products
       ${whereSql}
       GROUP BY 1, 2
-    `);
+    `)) as PivotQueryRow[];
 
     const rawCells: RawCell[] = pivotRows.map((row: PivotQueryRow) => ({
       row: row.row ?? "Unknown",
