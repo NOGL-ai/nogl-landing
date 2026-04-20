@@ -13,7 +13,7 @@ interface DonutBadgeProps {
 export function DonutBadge({ pct }: DonutBadgeProps) {
   const clamped = Math.min(Math.max(Math.round(pct), 0), 100);
   const filled = `#3b82f6`;
-  const track = `hsl(var(--muted))`;
+  const track = `hsl(var(--bg-tertiary))`;
 
   return (
     <div className="inline-flex items-center justify-center">
@@ -24,8 +24,8 @@ export function DonutBadge({ pct }: DonutBadgeProps) {
         }}
       >
         {/* Inner circle to create donut hole */}
-        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-card">
-          <span className="text-[9px] font-semibold leading-none text-foreground">
+        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-bg-primary">
+          <span className="text-[9px] font-semibold leading-none text-text-primary">
             {clamped}%
           </span>
         </div>

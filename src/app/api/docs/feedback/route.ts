@@ -10,7 +10,7 @@ import { authOptions } from '@/lib/auth';
 const Body = z.object({
   docPath: z
     .string()
-    .regex(/^fractional-cfo[/]docs[/][\w\-/]+$/)
+    .regex(/^fractional-cfo\/docs\/[\w\-\/]+$/)
     .max(200),
   locale: z.enum(['en', 'de']),
   rating: z.enum(['UP', 'DOWN']),

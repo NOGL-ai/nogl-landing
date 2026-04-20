@@ -1,5 +1,6 @@
-// @ts-nocheck
 "use client";
+
+// @ts-nocheck
 
 import type { HTMLAttributes, PropsWithChildren } from "react";
 import { Fragment, useContext, useState } from "react";
@@ -160,4 +161,3 @@ export const RangeCalendar = ({ presets, ...props }: RangeCalendarProps) => {
         </ContextWrapper>
     );
 };
-

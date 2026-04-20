@@ -1,5 +1,6 @@
-// @ts-nocheck
 "use client";
+
+// @ts-nocheck
 
 import type { ComponentProps, ComponentPropsWithRef } from "react";
 import { Children, createContext, isValidElement, useContext } from "react";
@@ -145,4 +146,3 @@ EmptyState.FeaturedIcon = FeaturedIcon;
 EmptyState.FileTypeIcon = FileTypeIcon;
 
 export { EmptyState };
-

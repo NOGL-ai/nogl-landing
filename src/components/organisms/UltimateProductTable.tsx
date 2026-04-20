@@ -1,8 +1,9 @@
+"use client";
+
 // eslint-disable-next-line no-restricted-imports -- icon has no @untitledui/icons equivalent; keep in lucide-react until UUI ships it
 import { FilterX } from 'lucide-react';
 import { SearchLg as Search, FilterFunnel01 as Filter, X, ChevronDown, SwitchVertical01 as ArrowUpDown, ArrowUp, ArrowDown, DotsHorizontal as MoreHorizontal, Eye, Trash01 as Trash2, TrendUp01 as TrendingUp, CurrencyDollar as DollarSign, Tag01 as Tag, Calendar, Settings01 as Settings, Download01 as Download, List, PieChart01 as PieChart, AlertCircle, Clock, Minus, Plus, Edit01 as Edit, Copy01 as Copy, Star01 as Star, Upload01 as Upload, RefreshCw01 as RefreshCw, Grid03 as Grid3X3, Columns01 as Columns, ArrowNarrowUp as SortAsc, ArrowNarrowDown as SortDesc, Zap, Target01 as Target, BarChart03 as BarChart3, Activity, CheckCircle } from '@untitledui/icons';
 // @ts-nocheck
-"use client";
 
 import React, { useState, useMemo, useCallback } from "react";
 import {
@@ -1289,4 +1290,3 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 };
 
 export default UltimateProductTable;
-

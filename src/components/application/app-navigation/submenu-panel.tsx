@@ -1,5 +1,8 @@
-import { ChevronDown } from '@untitledui/icons';
 "use client";
+import { ChevronDown } from '@untitledui/icons';
+
+import { ChevronDown } from '@untitledui/icons';
+
 
 import React, { useMemo, useRef, useState } from "react";
 
@@ -44,17 +47,17 @@ function AccordionGroup({ group, activeUrl, onNavigate, theme, depth = 0 }: Acco
                     depth === 0 ? "px-3 py-1.5" : "px-2 py-1",
                     hasActive
                         ? "text-[#182230] dark:text-white font-medium"
-                        : "text-[--color-gray-700] dark:text-[--color-gray-400] hover:bg-[--color-gray-100] dark:hover:bg-[#1a1f2d]",
+                        : "text-(--color-gray-700) dark:text-(--color-gray-400) hover:bg-(--color-gray-100) dark:hover:bg-[#1a1f2d]",
                 ].join(" ")}
             >
                 <div className="flex items-center gap-2 min-w-0">
-                    {Icon && <Icon className="w-4 h-4 shrink-0 text-[--color-gray-500] dark:text-[--color-gray-400]" />}
+                    {Icon && <Icon className="w-4 h-4 shrink-0 text-(--color-gray-500) dark:text-(--color-gray-400)" />}
                     <span className="truncate">{group.label}</span>
                     {group.badge && <span className="ml-1 shrink-0">{group.badge}</span>}
                 </div>
                 <ChevronDown
                     className={[
-                        "w-3.5 h-3.5 shrink-0 text-[--color-gray-500] dark:text-[--color-gray-400] transition-transform duration-200",
+                        "w-3.5 h-3.5 shrink-0 text-(--color-gray-500) dark:text-(--color-gray-400) transition-transform duration-200",
                         isOpen ? "rotate-180" : "",
                     ].join(" ")}
                 />
@@ -65,8 +68,8 @@ function AccordionGroup({ group, activeUrl, onNavigate, theme, depth = 0 }: Acco
                     className={[
                         "mt-0.5 border-l",
                         depth === 0
-                            ? "ml-3 pl-2 border-[--color-gray-200] dark:border-[--color-gray-800]"
-                            : "ml-2 pl-1.5 border-[--color-gray-200]/60 dark:border-[--color-gray-800]/60",
+                            ? "ml-3 pl-2 border-(--color-gray-200) dark:border-(--color-gray-800)"
+                            : "ml-2 pl-1.5 border-(--color-gray-200)/60 dark:border-(--color-gray-800)/60",
                     ].join(" ")}
                 >
                     {group.groupItems.map((item) => {
@@ -181,9 +184,9 @@ export const SubmenuPanel: React.FC<SubmenuPanelProps> = ({
             }}
             onClick={(e) => e.stopPropagation()}
         >
-            <div className="flex flex-col justify-between h-full border border-[--color-gray-200] dark:border-[--color-gray-800] bg-white dark:bg-[--color-gray-950] rounded-r-xl overflow-hidden">
+            <div className="flex flex-col justify-between h-full border border-(--color-gray-200) dark:border-(--color-gray-800) bg-white dark:bg-(--color-gray-950) rounded-r-xl overflow-hidden">
                 <div className="flex flex-col items-start gap-2 self-stretch px-4 pt-6 flex-1 min-h-0">
-                    <h2 className="self-stretch text-[--color-brand-700] dark:text-[--color-gray-300] font-semibold text-[14px] leading-5 shrink-0">
+                    <h2 className="self-stretch text-(--color-brand-700) dark:text-(--color-gray-300) font-semibold text-[14px] leading-5 shrink-0">
                         {item.label}
                     </h2>
 
@@ -212,10 +215,10 @@ export const SubmenuPanel: React.FC<SubmenuPanelProps> = ({
                                             {subItem.icon && (
                                                 <subItem.icon
                                                     aria-hidden="true"
-                                                    className="size-4 text-[--color-gray-500] dark:text-[--color-gray-400]"
+                                                    className="size-4 text-(--color-gray-500) dark:text-(--color-gray-400)"
                                                 />
                                             )}
-                                            <h3 className="text-[10px] font-bold uppercase tracking-wider text-[--color-gray-500] dark:text-[--color-gray-400] leading-4">
+                                            <h3 className="text-[10px] font-bold uppercase tracking-wider text-(--color-gray-500) dark:text-(--color-gray-400) leading-4">
                                                 {subItem.label}
                                             </h3>
                                         </div>
@@ -252,7 +255,7 @@ export const SubmenuPanel: React.FC<SubmenuPanelProps> = ({
 
                 {user && (
                     <div className="flex flex-col items-start self-stretch px-4 pb-5 shrink-0">
-                        <div className="flex items-start gap-2 self-stretch pt-5 border-t border-[--color-gray-200] dark:border-[--color-gray-800]">
+                        <div className="flex items-start gap-2 self-stretch pt-5 border-t border-(--color-gray-200) dark:border-(--color-gray-800)">
                             <SimpleAccountCard
                                 user={user}
                                 onLogout={onLogout}

@@ -1,5 +1,9 @@
-import { TrendUp01 as TrendingUpIcon, TrendDown01 as TrendingDownIcon, Minus as MinusIcon } from '@untitledui/icons';
 "use client";
+import { TrendUp01 as TrendingUpIcon, TrendDown01 as TrendingDownIcon, Minus as MinusIcon } from '@untitledui/icons';
+
+
+import { TrendUp01 as TrendingUpIcon, TrendDown01 as TrendingDownIcon, Minus as MinusIcon } from '@untitledui/icons';
+
 
 import type { StatConfig } from "@/lib/dashboards/widgetSchemas";
 import { z } from "zod";
