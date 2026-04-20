@@ -10,6 +10,8 @@ export type MetaAdsScrapeInput = {
 	pageId?: string;
 	headlessMode?: boolean;
 	delayBetweenRequests?: number;
+	flareSolverrUrl?: string;
+	locale?: string;
 };
 
 export type MetaAd = {
@@ -48,7 +50,7 @@ export class SessionDeadError extends Error {
 }
 
 export class MetaAdsLibraryScraperV2 {
-	input: Required<Pick<MetaAdsScrapeInput, "country" | "adType" | "maxAds" | "delayBetweenRequests">> &
+	input: Required<Pick<MetaAdsScrapeInput, "country" | "adType" | "maxAds" | "delayBetweenRequests" | "flareSolverrUrl" | "locale">> &
 		MetaAdsScrapeInput;
 	baseUrl = "https://www.facebook.com/ads/library";
 	scrapedAds = new Set<string>();
@@ -63,6 +65,8 @@ export class MetaAdsLibraryScraperV2 {
 			pageId: input.pageId ?? "",
 			headlessMode: input.headlessMode ?? true,
 			delayBetweenRequests: input.delayBetweenRequests ?? 3000,
+			flareSolverrUrl: input.flareSolverrUrl ?? process.env.FLARESOLVERR_URL ?? "",
+			locale: input.locale ?? process.env.META_ADS_LOCALE ?? "de_DE",
 		};
 	}
 
@@ -73,6 +77,7 @@ export class MetaAdsLibraryScraperV2 {
 		params.append("ad_type", this.input.adType);
 		params.append("active_status", "all");
 		params.append("view_all_page_id", this.input.pageId ?? "");
+		params.append("hl", this.input.locale.split("_")[0]);
 		return `${this.baseUrl}?${params.toString()}`;
 	}
 
@@ -392,6 +397,33 @@ export class MetaAdsLibraryScraperV2 {
 		return false;
 	}
 
+	async harvestFacebookCookies(): Promise<Array<{ name: string; value: string; domain: string; path: string }>> {
+		const solverUrl = this.input.flareSolverrUrl;
+		if (!solverUrl) return [];
+		try {
+			const res = await fetch(`${solverUrl}/v1`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ cmd: "request.get", url: "https://www.facebook.com/", maxTimeout: 60_000 }),
+				signal: AbortSignal.timeout(90_000),
+			});
+			const json = (await res.json()) as {
+				solution?: { cookies?: Array<{ name: string; value: string; domain?: string; path?: string }> };
+			};
+			const cookies = (json.solution?.cookies ?? []).map((c) => ({
+				name: c.name,
+				value: c.value,
+				domain: (c.domain ?? ".facebook.com").startsWith(".") ? c.domain! : `.${c.domain ?? "facebook.com"}`,
+				path: c.path ?? "/",
+			}));
+			console.log(`[meta-ads] FlareSolverr harvested ${cookies.length} cookies`);
+			return cookies;
+		} catch (e) {
+			console.log(`[meta-ads] FlareSolverr harvest skipped: ${(e as Error).message}`);
+			return [];
+		}
+	}
+
 	async run(onAd: (ad: MetaAd) => Promise<void>): Promise<{ total: number }> {
 		const browser: Browser = await chromium.launch({
 			headless: this.input.headlessMode,
@@ -409,7 +441,15 @@ export class MetaAdsLibraryScraperV2 {
 		try {
 			const ua = ModernAntiDetection.getRandomUserAgent();
 			const viewport = ModernAntiDetection.getRandomViewport();
-			const context = await browser.newContext({ userAgent: ua, viewport });
+			const acceptLang = this.input.locale.replace("_", "-") + "," + this.input.locale.split("_")[0] + ";q=0.9,en-US;q=0.8,en;q=0.7";
+			const context = await browser.newContext({ userAgent: ua, viewport, extraHTTPHeaders: { "Accept-Language": acceptLang } });
+
+			// Warm context with real facebook.com cookies via FlareSolverr
+			const bootstrapCookies = await this.harvestFacebookCookies();
+			if (bootstrapCookies.length > 0) {
+				await context.addCookies(bootstrapCookies);
+				console.log(`[meta-ads] injected ${bootstrapCookies.length} FlareSolverr cookies`);
+			}
 			const page = await context.newPage();
 			await ModernAntiDetection.setupAdvancedStealth(page);
 			await this.setupNetworkInterception(page);

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import type { Route } from 'next';
 
 const NotFound = () => {
 	return (
@@ -54,7 +55,7 @@ const NotFound = () => {
 
 						<div className='flex flex-wrap items-center justify-center gap-3'>
 							<Link
-								href='/'
+								href={'/' as Route}
 								className='border-stroke font-satoshi hover:bg-gray inline-flex items-center gap-2 rounded-full border bg-white px-6 py-3 font-medium text-black duration-200 ease-out'
 							>
 								<svg
@@ -75,7 +76,7 @@ const NotFound = () => {
 							</Link>
 
 							<Link
-								href='/'
+								href={'/' as Route}
 								className='bg-primary font-satoshi hover:bg-primary-dark inline-flex rounded-full px-7 py-3 font-medium text-white'
 							>
 								Take me home

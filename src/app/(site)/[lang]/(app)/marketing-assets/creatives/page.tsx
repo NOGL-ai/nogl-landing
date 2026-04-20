@@ -11,7 +11,17 @@ type RawCreative = {
   first_seen_at: Date; hook_score: unknown; handle: string | null;
 };
 
+const ASSET_TYPE_TO_PLATFORM: Record<string, string> = {
+  META_AD: "META_ADS_LIBRARY",
+  INSTAGRAM: "INSTAGRAM",
+  TIKTOK_AD: "TIKTOK",
+  YOUTUBE_AD: "YOUTUBE",
+};
+
 async function loadCreatives(platform?: string): Promise<RecentCreative[]> {
+  const results: RecentCreative[] = [];
+
+  // 1. Load from ads_events.AdCreative (event-sourced pipeline)
   try {
     const where = platform ? `WHERE c.platform = $1` : "";
     const rows = (await prisma.$queryRawUnsafe(
@@ -27,16 +37,58 @@ async function loadCreatives(platform?: string): Promise<RecentCreative[]> {
        ORDER BY c.first_seen_at DESC LIMIT 120`,
       ...(platform ? [platform] : []),
     )) as RawCreative[];
-    return rows.map((r) => ({
-      id: r.id, platform: r.platform,
-      media_url: r.media_url, thumbnail_url: r.thumbnail_url, caption: r.caption,
-      first_seen_at: new Date(r.first_seen_at).toISOString(),
-      hook_score: r.hook_score != null ? String(r.hook_score) : null,
-      handle: r.handle,
-    }));
+    for (const r of rows) {
+      results.push({
+        id: r.id, platform: r.platform,
+        media_url: r.media_url, thumbnail_url: r.thumbnail_url, caption: r.caption,
+        first_seen_at: new Date(r.first_seen_at).toISOString(),
+        hook_score: r.hook_score != null ? String(r.hook_score) : null,
+        handle: r.handle,
+      });
+    }
   } catch {
-    return [];
+    // ads_events schema may not exist in all envs — continue
   }
+
+  // 2. Load from MarketingAsset (Playwright scraper pipeline)
+  try {
+    const adAssetTypes = Object.keys(ASSET_TYPE_TO_PLATFORM);
+    const assetPlatforms = platform
+      ? Object.entries(ASSET_TYPE_TO_PLATFORM)
+          .filter(([, p]) => p === platform)
+          .map(([t]) => t)
+      : adAssetTypes;
+
+    if (assetPlatforms.length > 0) {
+      const assets = await prisma.marketingAsset.findMany({
+        where: { assetType: { in: assetPlatforms } },
+        orderBy: { capturedAt: "desc" },
+        take: 120,
+        include: { brand: { select: { slug: true, name: true } } },
+      });
+      const existingIds = new Set(results.map((r) => r.id));
+      for (const a of assets) {
+        if (existingIds.has(a.id)) continue;
+        const plat = ASSET_TYPE_TO_PLATFORM[a.assetType] ?? a.assetType;
+        results.push({
+          id: a.id,
+          platform: plat,
+          media_url: a.mediaUrls[0] ?? null,
+          thumbnail_url: a.mediaUrls[0] ?? null,
+          caption: a.title ?? a.bodyText ?? null,
+          first_seen_at: a.capturedAt.toISOString(),
+          hook_score: null,
+          handle: a.brand?.slug ?? null,
+        });
+      }
+    }
+  } catch {
+    // silent
+  }
+
+  // Sort merged results by first_seen_at DESC
+  results.sort((a, b) => b.first_seen_at.localeCompare(a.first_seen_at));
+  return results.slice(0, 120);
 }
 
 const PLATFORMS = ["ALL", "META_ADS_LIBRARY", "INSTAGRAM", "FACEBOOK", "TIKTOK"];
@@ -81,6 +133,8 @@ export default async function CreativesPage({
             );
           })}
         </div>
+
+        <p className="text-xs text-text-tertiary">{creatives.length} creatives</p>
 
         {creatives.length === 0 ? (
           <div className="flex h-64 items-center justify-center rounded-xl border border-dashed border-border-secondary text-sm text-text-tertiary">

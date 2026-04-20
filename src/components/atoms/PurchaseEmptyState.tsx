@@ -1,5 +1,6 @@
 import Card from "./Card";
 import Link from "next/link";
+import type { Route } from 'next';
 
 export default function PurchaseEmptyState() {
 	return (
@@ -211,7 +212,7 @@ export default function PurchaseEmptyState() {
 
 				<Link
 					className='text-md bg-brand-solid px-5.5 font-satoshi hover:bg-brand-solid_hover mt-4 inline-block rounded-md py-2 font-medium text-white duration-300'
-					href='/#pricing'
+					href={'/#pricing' as Route}
 				>
 					Pricing
 				</Link>

@@ -20,6 +20,7 @@ export async function triggerApifyFallback(input: MetaAdsFallbackInput): Promise
 		searchQuery: input.searchQuery,
 		country: input.country,
 		maxAds: input.maxAds ?? 100,
+		...(input.pageId ? { pageId: input.pageId } : {}),
 		...(publicUrl
 			? {
 					webhookUrl: `${publicUrl}/api/ingest/apify`,

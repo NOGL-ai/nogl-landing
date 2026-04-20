@@ -1,6 +1,7 @@
 import { PostDataType } from "@/data/types";
 import React, { FC } from "react";
 import Badge from "@/shared/Badge";
+import type { Route } from 'next';
 
 export interface CategoryBadgeListProps {
 	className?: string;
@@ -23,7 +24,7 @@ const CategoryBadgeList: FC<CategoryBadgeListProps> = ({
 					className={itemClass}
 					key={index}
 					name={item.name}
-					href={item.href}
+					href={item.href as Route}
 				/>
 			))}
 		</div>

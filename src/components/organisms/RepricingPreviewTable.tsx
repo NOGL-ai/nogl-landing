@@ -12,6 +12,7 @@ import { ProposalStatusBadge } from "@/components/molecules/repricing/ProposalSt
 import { ConfirmApplyDialog } from "@/components/molecules/repricing/ConfirmApplyDialog";
 import { applyJob, rejectProposals } from "@/actions/repricing/execution";
 import type { RepricingJobDTO, RepricingProposalDTO } from "@/lib/repricing/types";
+import type { Route } from 'next';
 
 const ROWS_PER_PAGE = 10;
 
@@ -96,7 +97,7 @@ export function RepricingPreviewTable({ job, proposals }: Props) {
       try {
         await applyJob(job.id, pendingApplyIds);
         toast.success("Prices applied successfully");
-        router.push("/repricing/auto-history");
+        router.push("/repricing/auto-history" as Route);
         router.refresh();
       } catch (err) {
         toast.error(err instanceof Error ? err.message : "Failed to apply");

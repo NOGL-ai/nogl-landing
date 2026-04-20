@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { RepricingPreviewTable } from "@/components/organisms/RepricingPreviewTable";
 import { getJob } from "@/actions/repricing/execution";
+import type { Route } from 'next';
 
 export const metadata: Metadata = {
   title: "Repricing Preview | Nogl",
@@ -28,7 +29,7 @@ export default async function AutoRepricingOverviewPage({ searchParams }: PagePr
           <div className="rounded-xl border border-border-primary bg-background p-8 text-center">
             <p className="text-text-secondary">
               No preview selected.{" "}
-              <Link href="/repricing/auto-rules" className="text-brand-solid underline">
+              <Link href={"/repricing/auto-rules" as Route} className="text-brand-solid underline">
                 Go to rules →
               </Link>
             </p>
@@ -48,7 +49,7 @@ export default async function AutoRepricingOverviewPage({ searchParams }: PagePr
         {/* Header */}
         <div className="mb-4 flex items-center gap-3 rounded-xl border border-border-primary bg-background px-4 py-3">
           <Link
-            href="/repricing/auto-rules"
+            href={"/repricing/auto-rules" as Route}
             className="flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
           >
             <ArrowLeft className="h-4 w-4" />

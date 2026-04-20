@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import type { Route } from 'next';
 
 export const DATE_RANGE_PARAM = "range";
 
@@ -42,7 +43,7 @@ export function DateRangeSelect({ className }: DateRangeSelectProps) {
       const nextRange = isDateRangeValue(next) ? next : "4w";
       const params = new URLSearchParams(searchParams.toString());
       params.set(DATE_RANGE_PARAM, nextRange);
-      router.push(`${pathname}?${params.toString()}`, { scroll: false });
+      router.push(`${pathname}?${params.toString()}` as Route, { scroll: false });
     },
     [pathname, router, searchParams],
   );

@@ -76,6 +76,8 @@ test-*.js
 
 # Local Next.js output outside default `.next/`
 .next-build/
+# Fumadocs generated source
+.source/
 
 # Forecast demo datasets (public Kaggle downloads — not committed)
 scripts/data/*.csv

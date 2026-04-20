@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Route } from 'next';
 
 export default function Breadcrumb({ pageTitle }: { pageTitle: string }) {
 	return (
@@ -10,7 +11,7 @@ export default function Breadcrumb({ pageTitle }: { pageTitle: string }) {
 					</h2>
 					<ol className='flex items-center justify-center'>
 						<li>
-							<Link href='/' className='text-body text-base'>
+							<Link href={'/' as Route} className='text-body text-base'>
 								Home
 							</Link>
 						</li>
