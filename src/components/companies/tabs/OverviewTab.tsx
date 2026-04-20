@@ -31,9 +31,9 @@ function SkeletonRows({ count }: { count: number }) {
     <div className="space-y-2">
       {Array.from({ length: count }).map((_, i) => (
         <div key={i} className="flex items-center gap-3">
-          <div className="h-3 w-32 animate-pulse rounded bg-muted" />
-          <div className="h-1.5 flex-1 animate-pulse rounded-full bg-muted" />
-          <div className="h-3 w-10 animate-pulse rounded bg-muted" />
+          <div className="h-3 w-32 animate-pulse rounded bg-bg-tertiary" />
+          <div className="h-1.5 flex-1 animate-pulse rounded-full bg-bg-tertiary" />
+          <div className="h-3 w-10 animate-pulse rounded bg-bg-tertiary" />
         </div>
       ))}
     </div>
@@ -109,9 +109,9 @@ export function OverviewTab({ data }: OverviewTabProps) {
 
         {/* Product Types */}
         <Card className="overflow-hidden p-0 lg:col-span-2">
-          <div className="flex items-center justify-between border-b border-border px-5 py-3">
-            <h3 className="text-sm font-semibold text-foreground">Product Types</h3>
-            <span className="text-xs text-muted-foreground">
+          <div className="flex items-center justify-between border-b border-border-primary px-5 py-3">
+            <h3 className="text-sm font-semibold text-text-primary">Product Types</h3>
+            <span className="text-xs text-text-tertiary">
               {snapshot.total_products?.toLocaleString()} products
             </span>
           </div>
@@ -119,7 +119,7 @@ export function OverviewTab({ data }: OverviewTabProps) {
             {ptLoading ? (
               <SkeletonRows count={6} />
             ) : topTypes.length === 0 ? (
-              <p className="text-xs text-muted-foreground">No category data yet.</p>
+              <p className="text-xs text-text-tertiary">No category data yet.</p>
             ) : (
               <div className="space-y-2.5">
                 {topTypes.map((pt) => {
@@ -130,14 +130,19 @@ export function OverviewTab({ data }: OverviewTabProps) {
                   const barPct = maxTypeCount > 0 ? (pt.count / maxTypeCount) * 100 : 0;
                   return (
                     <div key={pt.type ?? "general"} className="flex items-center gap-3">
-                      <span className="w-44 shrink-0 truncate text-sm text-foreground">{label}</span>
-                      <div className="flex-1 rounded-full bg-muted" style={{ height: "6px" }}>
+                      <span className="w-44 shrink-0 truncate text-sm text-text-primary">{label}</span>
+                      <div className="flex-1 rounded-full bg-bg-tertiary" style={{ height: "6px" }}>
                         <div
-                          className="rounded-full bg-primary/50"
-                          style={{ width: `${barPct}%`, height: "6px" }}
+                          className="rounded-full"
+                          style={{
+                            width: `${barPct}%`,
+                            height: "6px",
+                            background: "var(--color-brand-600)",
+                            opacity: barPct < 100 ? 0.4 + (barPct / 100) * 0.6 : 1,
+                          }}
                         />
                       </div>
-                      <span className="w-14 shrink-0 text-right text-xs tabular-nums text-muted-foreground">
+                      <span className="w-14 shrink-0 text-right text-xs tabular-nums text-text-tertiary">
                         {pt.count.toLocaleString()}
                       </span>
                     </div>
@@ -150,15 +155,15 @@ export function OverviewTab({ data }: OverviewTabProps) {
 
         {/* Recent Marketing Assets */}
         <Card className="overflow-hidden p-0">
-          <div className="border-b border-border px-5 py-3">
-            <h3 className="text-sm font-semibold text-foreground">Recent Marketing Assets</h3>
+          <div className="border-b border-border-primary px-5 py-3">
+            <h3 className="text-sm font-semibold text-text-primary">Recent Marketing Assets</h3>
           </div>
           {recentAssets.length === 0 ? (
-            <p className="px-5 py-8 text-sm text-muted-foreground">No assets collected yet.</p>
+            <p className="px-5 py-8 text-sm text-text-tertiary">No assets collected yet.</p>
           ) : (
             <div className="grid grid-cols-2 gap-1 p-1">
               {recentAssets.slice(0, 6).map((asset) => (
-                <div key={asset.id} className="aspect-square overflow-hidden rounded bg-muted">
+                <div key={asset.id} className="aspect-square overflow-hidden rounded bg-bg-tertiary">
                   {asset.thumbnail_url ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
@@ -167,7 +172,7 @@ export function OverviewTab({ data }: OverviewTabProps) {
                       className="h-full w-full object-cover"
                     />
                   ) : (
-                    <div className="flex h-full items-center justify-center text-xs text-muted-foreground">
+                    <div className="flex h-full items-center justify-center text-xs text-text-tertiary">
                       {asset.channel}
                     </div>
                   )}
@@ -183,35 +188,35 @@ export function OverviewTab({ data }: OverviewTabProps) {
 
         {/* Best Selling Products */}
         <Card className="overflow-hidden p-0 lg:col-span-2">
-          <div className="border-b border-border px-5 py-3">
-            <h3 className="text-sm font-semibold text-foreground">Best Selling Products</h3>
+          <div className="border-b border-border-primary px-5 py-3">
+            <h3 className="text-sm font-semibold text-text-primary">Best Selling Products</h3>
           </div>
           {ptLoading ? (
             <div className="space-y-3 p-5">
               {[1, 2, 3].map((i) => (
                 <div key={i} className="flex items-center gap-3">
-                  <div className="h-8 w-8 animate-pulse rounded bg-muted" />
-                  <div className="h-12 w-12 animate-pulse rounded bg-muted" />
+                  <div className="h-8 w-8 animate-pulse rounded bg-bg-tertiary" />
+                  <div className="h-12 w-12 animate-pulse rounded bg-bg-tertiary" />
                   <div className="flex-1 space-y-1.5">
-                    <div className="h-3 animate-pulse rounded bg-muted" />
-                    <div className="h-3 w-24 animate-pulse rounded bg-muted" />
+                    <div className="h-3 animate-pulse rounded bg-bg-tertiary" />
+                    <div className="h-3 w-24 animate-pulse rounded bg-bg-tertiary" />
                   </div>
                 </div>
               ))}
             </div>
           ) : topProducts.length === 0 ? (
-            <p className="px-5 py-8 text-sm text-muted-foreground">No product data yet.</p>
+            <p className="px-5 py-8 text-sm text-text-tertiary">No product data yet.</p>
           ) : (
-            <div className="divide-y divide-border">
+            <div className="divide-y divide-border-primary">
               {topProducts.slice(0, 5).map((product, i) => (
                 <div
                   key={product.product_id}
-                  className="flex items-center gap-3 px-5 py-3 transition-colors hover:bg-muted/20"
+                  className="flex items-center gap-3 px-5 py-3 transition-colors hover:bg-bg-secondary"
                 >
-                  <span className="w-6 text-center text-base font-bold text-muted-foreground/40 tabular-nums">
+                  <span className="w-6 text-center text-base font-bold text-text-disabled tabular-nums">
                     {i + 1}
                   </span>
-                  <div className="h-12 w-12 shrink-0 overflow-hidden rounded bg-muted/40">
+                  <div className="h-12 w-12 shrink-0 overflow-hidden rounded bg-bg-tertiary">
                     {product.product_image_url ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
@@ -224,14 +229,14 @@ export function OverviewTab({ data }: OverviewTabProps) {
                     )}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium text-foreground">
+                    <p className="truncate text-sm font-medium text-text-primary">
                       {product.product_title}
                     </p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-text-tertiary">
                       {product.discount_price != null ? (
                         <>
                           <span className="mr-1 line-through">{fmtPrice(product.original_price)}</span>
-                          <span className="font-medium text-foreground">{fmtPrice(product.discount_price)}</span>
+                          <span className="font-medium text-text-primary">{fmtPrice(product.discount_price)}</span>
                         </>
                       ) : (
                         fmtPrice(product.original_price)
@@ -241,7 +246,7 @@ export function OverviewTab({ data }: OverviewTabProps) {
                   <div className="flex shrink-0 gap-1.5">
                     <button
                       type="button"
-                      className="rounded border border-border px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted"
+                      className="rounded border border-border-primary px-2.5 py-1 text-xs text-text-tertiary transition-colors hover:bg-bg-secondary"
                     >
                       Explore
                     </button>
@@ -250,7 +255,7 @@ export function OverviewTab({ data }: OverviewTabProps) {
                         href={product.product_url}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-1 rounded border border-border px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted"
+                        className="inline-flex items-center gap-1 rounded border border-border-primary px-2.5 py-1 text-xs text-text-tertiary transition-colors hover:bg-bg-secondary"
                       >
                         View <ExternalLink className="h-3 w-3" />
                       </a>
@@ -264,10 +269,10 @@ export function OverviewTab({ data }: OverviewTabProps) {
 
         {/* Total Discounted Products */}
         <Card className="p-5">
-          <h3 className="mb-4 text-sm font-semibold text-foreground">Total Discounted Products</h3>
+          <h3 className="mb-4 text-sm font-semibold text-text-primary">Total Discounted Products</h3>
           {ptLoading ? (
             <div className="flex flex-col items-center gap-3 py-4">
-              <div className="h-24 w-24 animate-pulse rounded-full bg-muted" />
+              <div className="h-24 w-24 animate-pulse rounded-full bg-bg-tertiary" />
             </div>
           ) : (
             <div className="flex flex-col items-center gap-3 py-2">
@@ -282,28 +287,27 @@ export function OverviewTab({ data }: OverviewTabProps) {
                 const offset = circ - pct * circ;
                 return (
                   <svg viewBox="0 0 128 128" className="h-28 w-28">
-                    <circle cx="64" cy="64" r={radius} stroke="currentColor" strokeWidth={sw} fill="none" className="text-muted" />
+                    <circle cx="64" cy="64" r={radius} stroke="var(--color-border-primary)" strokeWidth={sw} fill="none" />
                     {pct > 0 && (
                       <circle
                         cx="64" cy="64" r={radius}
-                        stroke="currentColor" strokeWidth={sw} fill="none"
+                        stroke="var(--color-brand-600)" strokeWidth={sw} fill="none"
                         strokeDasharray={circ} strokeDashoffset={offset}
                         strokeLinecap="round"
-                        className="text-primary"
                         style={{ transform: "rotate(-90deg)", transformOrigin: "64px 64px" }}
                       />
                     )}
-                    <text x="64" y="57" textAnchor="middle" dominantBaseline="middle" fontSize="18" fontWeight="700" className="fill-foreground">
+                    <text x="64" y="57" textAnchor="middle" dominantBaseline="middle" fontSize="18" fontWeight="700" fill="var(--color-text-primary)">
                       {discountedPct != null ? `${discountedPct}%` : "—"}
                     </text>
-                    <text x="64" y="76" textAnchor="middle" dominantBaseline="middle" fontSize="10" className="fill-muted-foreground">
+                    <text x="64" y="76" textAnchor="middle" dominantBaseline="middle" fontSize="10" fill="var(--color-text-tertiary)">
                       discounted
                     </text>
                   </svg>
                 );
               })()}
-              <p className="text-center text-sm text-muted-foreground">
-                <span className="font-semibold text-foreground">
+              <p className="text-center text-sm text-text-tertiary">
+                <span className="font-semibold text-text-primary">
                   {totalDiscounted != null
                     ? `${totalDiscounted.toLocaleString()} / ${snapshot.total_products.toLocaleString()}`
                     : `— / ${snapshot.total_products.toLocaleString()}`}
@@ -320,31 +324,33 @@ export function OverviewTab({ data }: OverviewTabProps) {
       {dist.length > 0 && maxDistCount > 0 && (
         <Card className="p-5">
           <div className="mb-3 flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-foreground">Price Distribution</h3>
-            <span className="text-xs text-muted-foreground">% of Product Prices</span>
+            <h3 className="text-sm font-semibold text-text-primary">Price Distribution</h3>
+            <span className="text-xs text-text-tertiary">% of Product Prices</span>
           </div>
           <div className="space-y-2">
             {dist.map((bucket) => (
               <div key={bucket.range} className="flex items-center gap-3">
-                <span className="w-20 shrink-0 whitespace-nowrap text-xs text-muted-foreground">
+                <span className="w-20 shrink-0 whitespace-nowrap text-xs text-text-tertiary">
                   {`€${bucket.range.replace(/-/g, "–")}`}
                 </span>
-                <div className="h-6 flex-1 overflow-hidden rounded bg-muted/50">
+                <div className="h-6 flex-1 overflow-hidden rounded bg-bg-tertiary">
                   <div
-                    className="flex h-6 items-center justify-end rounded bg-primary/60 pr-1.5 transition-all dark:bg-primary/80"
+                    className="flex h-6 items-center justify-end rounded pr-1.5 transition-all"
                     style={{
                       width: `${maxDistCount > 0 ? (bucket.count / maxDistCount) * 100 : 0}%`,
                       minWidth: bucket.count > 0 ? "24px" : "0",
+                      background: "var(--color-brand-600)",
+                      opacity: 0.75,
                     }}
                   >
                     {bucket.percentage >= 4 && (
-                      <span className="text-[10px] font-medium text-primary-foreground">
+                      <span className="text-[10px] font-medium text-white">
                         {Math.round(bucket.percentage)}%
                       </span>
                     )}
                   </div>
                 </div>
-                <span className="w-14 shrink-0 text-right text-xs tabular-nums text-muted-foreground">
+                <span className="w-14 shrink-0 text-right text-xs tabular-nums text-text-tertiary">
                   {bucket.count.toLocaleString()}
                 </span>
               </div>

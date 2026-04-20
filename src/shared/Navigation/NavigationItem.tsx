@@ -1,5 +1,6 @@
 import { ChevronDown as ChevronDownIcon } from '@untitledui/icons';
 "use client";
+import { ChevronDown as ChevronDownIcon } from '@untitledui/icons';
 
 import { PathName } from "@/routers/types";
 import { Popover, Transition } from "@headlessui/react";

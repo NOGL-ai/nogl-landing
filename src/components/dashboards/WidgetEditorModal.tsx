@@ -1,5 +1,6 @@
-import { Loading01 as LoaderCircleIcon, Check as CheckIcon, AlertCircle as AlertCircleIcon, Stars01 as SparklesIcon, MagicWand01 as WandSparklesIcon } from '@untitledui/icons';
 "use client";
+import { Loading01 as LoaderCircleIcon, Check as CheckIcon, AlertCircle as AlertCircleIcon, Stars01 as SparklesIcon, MagicWand01 as WandSparklesIcon } from '@untitledui/icons';
+
 
 import { useState, useTransition, type Dispatch, type SetStateAction } from "react";
 import {

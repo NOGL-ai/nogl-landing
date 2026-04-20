@@ -102,35 +102,35 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
               onClick={item.onClick}
               className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors duration-200 group ${
                 currentTheme === 'dark' 
-                  ? "bg-[--color-gray-950] hover:bg-[--color-gray-800]" 
+                  ? "bg-(--color-gray-950) hover:bg-(--color-gray-800)" 
                   : "bg-secondary_bg hover:bg-secondary_bg"
               }`}
             >
               <div className={`transition-colors ${
                 currentTheme === 'dark' 
-                  ? "text-[--color-gray-500] group-hover:text-[--color-gray-400]" 
-                  : "text-[--color-gray-400] group-hover:text-[--color-gray-500]"
+                  ? "text-(--color-gray-500) group-hover:text-(--color-gray-400)" 
+                  : "text-(--color-gray-400) group-hover:text-(--color-gray-500)"
               }`}>
                 {item.icon}
               </div>
               <span className={`font-semibold text-base flex-1 text-left ${
                 currentTheme === 'dark' 
-                  ? "text-[--color-gray-300]" 
-                  : "text-[--color-gray-500]"
+                  ? "text-(--color-gray-300)" 
+                  : "text-(--color-gray-500)"
               }`}>
                 {item.label}
               </span>
               {item.badge && (
                 <div className={`border rounded-md px-2 py-1 flex items-center gap-1 ${
                   currentTheme === 'dark' 
-                    ? "bg-[--color-gray-900] border-[--color-gray-700]" 
+                    ? "bg-(--color-gray-900) border-(--color-gray-700)" 
                     : "bg-secondary_bg border-border"
                 }`}>
-                  <div className="w-2 h-2 bg-[--color-success-500] rounded-full"></div>
+                  <div className="w-2 h-2 bg-(--color-success-500) rounded-full"></div>
                   <span className={`text-xs font-medium ${
                     currentTheme === 'dark' 
                       ? "text-[#d5d7ae]" 
-                      : "text-[--color-gray-500]"
+                      : "text-(--color-gray-500)"
                   }`}>Online</span>
                 </div>
               )}
@@ -145,22 +145,22 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
               onClick={item.onClick}
               className={`p-2 rounded-md transition-colors duration-200 group relative ${
                 currentTheme === 'dark' 
-                  ? "bg-[--color-gray-950] hover:bg-[--color-gray-800]" 
+                  ? "bg-(--color-gray-950) hover:bg-(--color-gray-800)" 
                   : "bg-secondary_bg hover:bg-secondary_bg"
               }`}
               title={item.label}
             >
               <div className={`transition-colors ${
                 currentTheme === 'dark' 
-                  ? "text-[--color-gray-500] group-hover:text-[--color-gray-400]" 
-                  : "text-[--color-gray-400] group-hover:text-[--color-gray-500]"
+                  ? "text-(--color-gray-500) group-hover:text-(--color-gray-400)" 
+                  : "text-(--color-gray-400) group-hover:text-(--color-gray-500)"
               }`}>
                 {item.icon}
               </div>
               {item.badge && (
-                <div className={`absolute -top-1 -right-1 w-3 h-3 bg-[--color-success-500] rounded-full border ${
+                <div className={`absolute -top-1 -right-1 w-3 h-3 bg-(--color-success-500) rounded-full border ${
                   currentTheme === 'dark' 
-                    ? "border-[--color-gray-950]" 
+                    ? "border-(--color-gray-950)" 
                     : "border-secondary_bg"
                 }`}></div>
               )}
@@ -171,10 +171,10 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
 
       {/* Featured Card - Used Space */}
       {/* {showContent && isFeaturedCardVisible && (
-        <div className="bg-[--color-gray-900] border border-[--color-gray-800] rounded-xl p-4 relative">
+        <div className="bg-(--color-gray-900) border border-(--color-gray-800) rounded-xl p-4 relative">
           <button
             onClick={dismissFeaturedCard}
-            className="absolute top-2 right-2 p-2 rounded-lg hover:bg-[--color-gray-800] transition-colors"
+            className="absolute top-2 right-2 p-2 rounded-lg hover:bg-(--color-gray-800) transition-colors"
           >
             <svg className="w-5 h-5 text-white opacity-70" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -183,13 +183,13 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
           
           <div className="mb-4">
             <h3 className="text-white font-semibold text-sm mb-1">Used space</h3>
-            <p className="text-[--color-gray-400] text-sm">
+            <p className="text-(--color-gray-400) text-sm">
               Your team has used {usedSpacePercentage}% of your available space. Need more?
             </p>
           </div>
 
           <div className="mb-4">
-            <div className="w-full bg-[--color-gray-700] rounded-full h-2">
+            <div className="w-full bg-(--color-gray-700) rounded-full h-2">
               <div 
                 className="bg-white h-2 rounded-full transition-all duration-300"
                 style={{ width: `${usedSpacePercentage}%` }}
@@ -200,7 +200,7 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
           <div className="flex gap-3">
             <button
               onClick={dismissFeaturedCard}
-              className="text-[--color-gray-400] font-semibold text-sm hover:text-white transition-colors"
+              className="text-(--color-gray-400) font-semibold text-sm hover:text-white transition-colors"
             >
               Dismiss
             </button>

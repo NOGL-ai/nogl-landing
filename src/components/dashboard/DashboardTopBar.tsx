@@ -1,6 +1,7 @@
+"use client";
+
 import { Bell01 as Bell, Columns02 as Columns2, Lock01 as Lock } from '@untitledui/icons';
 // @ts-nocheck
-"use client";
 
 
 import { useTranslations } from "next-intl";
@@ -59,4 +60,3 @@ export function DashboardTopBar() {
     </div>
   );
 }
-

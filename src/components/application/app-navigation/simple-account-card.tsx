@@ -20,23 +20,23 @@ interface SimpleAccountCardProps {
 const THEME_CLASSES = {
   card: 'bg-background border-border hover:bg-secondary_bg',
   text: {
-    name: 'text-[--color-gray-900] dark:text-neutral-50',
-    email: 'text-[--color-gray-600] dark:text-[--color-gray-400]',
-    menuItem: 'text-[--color-gray-700] dark:text-[--color-gray-300]',
-    shortcut: 'text-[--color-gray-600] dark:text-[--color-gray-400]',
-    sectionHeader: 'text-[--color-gray-600] dark:text-[--color-gray-400]',
+    name: 'text-(--color-gray-900) dark:text-neutral-50',
+    email: 'text-(--color-gray-600) dark:text-(--color-gray-400)',
+    menuItem: 'text-(--color-gray-700) dark:text-(--color-gray-300)',
+    shortcut: 'text-(--color-gray-600) dark:text-(--color-gray-400)',
+    sectionHeader: 'text-(--color-gray-600) dark:text-(--color-gray-400)',
   },
-  button: 'bg-transparent dark:bg-[--color-gray-800]',
+  button: 'bg-transparent dark:bg-(--color-gray-800)',
   menu: {
-    outer: 'bg-neutral-50 dark:bg-[--color-gray-800] border-[rgba(0,0,0,0.08)] dark:border-[--color-gray-800]',
-    inner: 'bg-white dark:bg-[--color-gray-950] border-[--color-gray-200] dark:border-transparent',
-    divider: 'border-[--color-gray-200] dark:border-[--color-gray-800]',
-    shortcut: 'border-[--color-gray-200] dark:border-[--color-gray-700]',
-    switchAccount: 'bg-neutral-50 dark:bg-[--color-gray-800]',
-    addAccount: 'bg-white dark:bg-[--color-gray-900] border-[--color-gray-300] dark:border-[--color-gray-700]',
+    outer: 'bg-neutral-50 dark:bg-(--color-gray-800) border-[rgba(0,0,0,0.08)] dark:border-(--color-gray-800)',
+    inner: 'bg-white dark:bg-(--color-gray-950) border-(--color-gray-200) dark:border-transparent',
+    divider: 'border-(--color-gray-200) dark:border-(--color-gray-800)',
+    shortcut: 'border-(--color-gray-200) dark:border-(--color-gray-700)',
+    switchAccount: 'bg-neutral-50 dark:bg-(--color-gray-800)',
+    addAccount: 'bg-white dark:bg-(--color-gray-900) border-(--color-gray-300) dark:border-(--color-gray-700)',
   },
-  onlineIndicatorBorder: 'border-white dark:border-[--color-gray-950]',
-  icon: 'stroke-[--color-gray-400] dark:stroke-[--color-gray-500]',
+  onlineIndicatorBorder: 'border-white dark:border-(--color-gray-950)',
+  icon: 'stroke-(--color-gray-400) dark:stroke-(--color-gray-500)',
 } as const;
 
 // Memoized component for better performance
@@ -178,7 +178,7 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
                 </div>
               )}
               {/* Online indicator */}
-              <div className={`absolute bg-[--color-success-500] border-[1.5px] border-solid ${THEME_CLASSES.onlineIndicatorBorder} bottom-0 right-0 rounded-[5px] size-[10px]`} data-name="_Avatar online indicator" />
+              <div className={`absolute bg-(--color-success-500) border-[1.5px] border-solid ${THEME_CLASSES.onlineIndicatorBorder} bottom-0 right-0 rounded-[5px] size-[10px]`} data-name="_Avatar online indicator" />
             </div>
           )}
           
@@ -340,7 +340,7 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
                               </span>
                             </div>
                           )}
-                          <div className={`absolute bg-[--color-success-500] border-[1.5px] border-solid ${THEME_CLASSES.onlineIndicatorBorder} bottom-0 right-0 rounded-[5px] size-[10px]`} data-name="_Avatar online indicator" />
+                          <div className={`absolute bg-(--color-success-500) border-[1.5px] border-solid ${THEME_CLASSES.onlineIndicatorBorder} bottom-0 right-0 rounded-[5px] size-[10px]`} data-name="_Avatar online indicator" />
                         </div>
                         <div className="content-stretch flex flex-col items-start leading-[20px] not-italic relative shrink-0 text-[14px]" data-name="Text and supporting text">
                           <p className={`font-['Inter:Semi_Bold',_sans-serif] font-semibold relative shrink-0 ${THEME_CLASSES.text.name}`}>
@@ -352,7 +352,7 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
                         </div>
                       </div>
                       <div className="absolute content-stretch flex items-center justify-center right-[8px] top-[8px]" data-name="Checkbox">
-                        <div className="bg-[--color-brand-600] border border-[--color-brand-600] border-solid relative rounded-[8px] shrink-0 size-[16px]" data-name="_Checkbox base">
+                        <div className="bg-(--color-brand-600) border border-(--color-brand-600) border-solid relative rounded-[8px] shrink-0 size-[16px]" data-name="_Checkbox base">
                           <div className="overflow-clip relative rounded-[inherit] size-[16px]">
                             <div className="absolute bg-white inset-[31.25%] rounded-[9999px]" data-name="Check" />
                           </div>
@@ -390,7 +390,7 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
               <div className="box-border content-stretch flex items-center px-[6px] py-0 relative shrink-0 w-full" data-name="_Nav account card menu item">
               <button
                 type="button"
-                className="box-border content-stretch flex flex-[1_0_0] gap-[12px] items-center min-h-px min-w-px overflow-clip p-[8px] relative rounded-[6px] shrink-0 w-full text-left cursor-pointer transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#375dfb]/60 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[--color-gray-950] hover:bg-[--color-gray-100] dark:hover:bg-[#1f2533]"
+                className="box-border content-stretch flex flex-[1_0_0] gap-[12px] items-center min-h-px min-w-px overflow-clip p-[8px] relative rounded-[6px] shrink-0 w-full text-left cursor-pointer transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#375dfb]/60 focus-visible:ring-offset-white dark:focus-visible:ring-offset-(--color-gray-950) hover:bg-(--color-gray-100) dark:hover:bg-[#1f2533]"
                 data-name="Content"
                 onClick={(event) => {
                   event.preventDefault();

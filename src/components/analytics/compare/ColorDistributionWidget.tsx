@@ -1,5 +1,6 @@
-import { Download01 as Download, FileDownload01 as FileDown, Lock01 as Lock, ChevronDown } from '@untitledui/icons';
 "use client";
+import { Download01 as Download, FileDownload01 as FileDown, Lock01 as Lock, ChevronDown } from '@untitledui/icons';
+
 
 import { useState, useRef, useEffect } from "react";
 import { useTheme } from "next-themes";

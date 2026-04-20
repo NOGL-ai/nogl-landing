@@ -1,6 +1,6 @@
+"use client";
 import { ArrowRight as ArrowRightIcon } from '@untitledui/icons';
 // @ts-nocheck
-"use client";
 
 import React, { FC, useEffect, useState, ReactNode } from "react";
 import Heading from "@/shared/Heading";
