@@ -1,10 +1,7 @@
+import { Globe02 as GlobeAltIcon, ChevronDown as ChevronDownIcon, CurrencyDollar as BanknotesIcon } from '@untitledui/icons';
 // @ts-nocheck
 import { Popover, Tab, Transition } from "@headlessui/react";
-import {
-	BanknotesIcon,
-	GlobeAltIcon,
-	ChevronDownIcon,
-} from "@heroicons/react/24/outline";
+
 import { FC, Fragment } from "react";
 import { headerCurrency } from "./CurrencyDropdown";
 import { usePathname, useRouter } from "next/navigation";

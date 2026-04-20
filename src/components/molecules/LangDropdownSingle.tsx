@@ -1,8 +1,7 @@
 "use client";
 
+import { ChevronDown as ChevronDownIcon, Globe02 as GlobeAltIcon } from '@untitledui/icons';
 import { Popover, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/24/solid";
-import { GlobeAltIcon } from "@heroicons/react/24/outline";
 import { FC, Fragment } from "react";
 
 export const headerLanguage = [
