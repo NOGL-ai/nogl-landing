@@ -15,6 +15,12 @@
       "port": 3001
     },
     {
+      "name": "Next.js Dev Server (3002)",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["cross-env", "NEXT_TELEMETRY_DISABLED=1", "next", "dev", "-p", "3002"],
+      "port": 3002
+    },
+    {
       "name": "Next.js Dev Server (clean)",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev:clean"],
