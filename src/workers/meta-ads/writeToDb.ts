@@ -20,10 +20,39 @@ export async function upsertMetaAdToDb(ad: MetaAd, meta: MetaAdJobMeta): Promise
 		.digest("hex");
 
 	const capturedAt = ad.scrapedAt ? new Date(ad.scrapedAt) : new Date();
-	const mediaUrls =
-		typeof ad.adCreative === "object" && ad.adCreative !== null
-			? (((ad.adCreative as { images?: string[] }).images ?? []) as string[])
-			: [];
+	const mediaUrls: string[] = [];
+	if (typeof ad.adCreative === "object" && ad.adCreative !== null) {
+		const creative = ad.adCreative as {
+			images?: string[];
+			cards?: Array<{
+				resized_image_url?: string;
+				original_image_url?: string;
+				video_sd_url?: string | null;
+				video_hd_url?: string | null;
+				video_preview_image_url?: string | null;
+			}>;
+			image_url?: string;
+			video_sd_url?: string | null;
+			video_hd_url?: string | null;
+		};
+		if (creative.images?.length) mediaUrls.push(...creative.images.filter(Boolean));
+		if (creative.cards?.length) {
+			for (const card of creative.cards) {
+				const url =
+					card.resized_image_url ||
+					card.original_image_url ||
+					card.video_preview_image_url ||
+					card.video_sd_url ||
+					card.video_hd_url;
+				if (url) mediaUrls.push(url);
+			}
+		}
+		if (creative.image_url) mediaUrls.push(creative.image_url);
+		if (!mediaUrls.length) {
+			if (creative.video_sd_url) mediaUrls.push(creative.video_sd_url);
+			else if (creative.video_hd_url) mediaUrls.push(creative.video_hd_url);
+		}
+	}
 
 	await prisma.marketingAsset.upsert({
 		where: { contentHash },
