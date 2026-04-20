@@ -1,7 +1,6 @@
 "use client";
 import { Calendar as CalendarIcon, X as XIcon, Plus as PlusIcon, ChevronDown as ChevronDownIcon } from '@untitledui/icons';
 
-import { Calendar as CalendarIcon, X as XIcon, Plus as PlusIcon, ChevronDown as ChevronDownIcon } from '@untitledui/icons';
 
 import { useState } from "react";
 
