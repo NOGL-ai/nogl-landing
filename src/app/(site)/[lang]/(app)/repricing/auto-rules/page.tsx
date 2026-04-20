@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import RepricingRules from "@/components/organisms/RepricingRules";
+import { listRules } from "@/actions/repricing/rules";
 
 export const metadata: Metadata = {
 	title: "Auto Repricing Rules | Nogl",
@@ -17,6 +18,8 @@ export const metadata: Metadata = {
 	},
 };
 
-export default function AutoRepricingRulesPage() {
-	return <RepricingRules />;
+export default async function AutoRepricingRulesPage() {
+	// Server-side fetch — falls back to empty list if not authenticated yet
+	const rules = await listRules().catch(() => []);
+	return <RepricingRules initialRules={rules} />;
 }

@@ -72,6 +72,16 @@ export type CompanyEventDTO = {
   createdAt: string;
 };
 
+export const KNOWN_EVENT_TYPES = [
+  "PROMOTION",
+  "PRICE_DROP",
+  "NEWSLETTER",
+  "INSTAGRAM_POST",
+  "PRODUCT_NEWS",
+  "SPECIAL_EVENT",
+] as const;
+export type KnownEventType = (typeof KNOWN_EVENT_TYPES)[number];
+
 export type CompanyAssetDTO = {
   id: string;
   company_id: string;
@@ -124,6 +134,19 @@ export type CompanyPricingTopProduct = {
   original_price: number | null;
   discount_price: number | null;
   category: string | null;
+  last_seen?: string | null;
+};
+
+export type CompanyPricingProduct = {
+  product_id: string;
+  product_title: string;
+  product_image_url: string | null;
+  product_url: string | null;
+  category: string | null;
+  original_price: number | null;
+  discount_price: number | null;
+  discount_pct: number | null;
+  last_seen: string | null;
 };
 
 export type CompanyPricingProduct = {
@@ -161,6 +184,7 @@ export type CompanyPricingResponse = {
   product_types: CompanyPricingProductTypeRow[];
   products: CompanyPricingProduct[];
   price_distribution?: PriceDistributionBucket[] | null;
+  products: CompanyPricingProduct[];
   pagination: PageMeta;
   product_types_pagination: PageMeta;
 };

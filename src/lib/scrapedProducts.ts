@@ -52,21 +52,47 @@ function getPool(): Pool | null {
   return pool;
 }
 
-export async function getScrapedProducts(limit = 20): Promise<ScrapedProduct[]> {
+export async function getScrapedProducts(
+  limit = 20,
+  searchQuery?: string,
+): Promise<ScrapedProduct[]> {
   const db = getPool();
   if (!db) {
     return [];
   }
 
   const safeLimit = Math.max(1, Math.min(limit, 100));
-  const query = `
+  let queryText: string;
+  let params: unknown[];
+
+  if (searchQuery && searchQuery.trim().length > 0) {
+    // Full-text ILIKE search across payload title/name fields and url
+    const term = `%${searchQuery.trim().replace(/[%_]/g, "\\$&")}%`;
+    queryText = `
+      SELECT url, source, item_type, updated_at, payload
+      FROM scraping.scraped_items
+      WHERE item_type = 'product'
+        AND (
+          payload->>'title' ILIKE $1
+          OR payload->>'name' ILIKE $1
+          OR url ILIKE $1
+        )
+      ORDER BY updated_at DESC
+      LIMIT $2
+    `;
+    params = [term, safeLimit];
+  } else {
+    queryText = `
       SELECT url, source, item_type, updated_at, payload
       FROM scraping.scraped_items
       WHERE item_type = 'product'
       ORDER BY updated_at DESC
       LIMIT $1
     `;
-  const result = await db.query<ScrapedItemRow>(query, [safeLimit]);
+    params = [safeLimit];
+  }
+
+  const result = await db.query<ScrapedItemRow>(queryText, params);
   const rows = result.rows;
 
   return rows.map((row) => {

@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import { Table } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from '@/components/base/buttons/button';
+import { Input } from '@/components/base/input/input';
 import { Label } from "@/components/ui/label";
 import Checkbox from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
@@ -129,7 +129,7 @@ export function DataTableAdvancedFilters<TData>({
 	return (
 		<div className="space-y-4">
 			<Button
-				variant="secondary"
+				color="secondary"
 				size="sm"
 				onClick={() => setIsOpen(!isOpen)}
 				className="flex items-center gap-2"
@@ -139,7 +139,7 @@ export function DataTableAdvancedFilters<TData>({
 				<Icon name="Filter" className="h-4 w-4" />
 				Advanced Filters
 				{activeFiltersCount > 0 && (
-					<Badge variant="secondary" className="ml-1">
+					<Badge color="secondary" className="ml-1">
 						{activeFiltersCount}
 					</Badge>
 				)}
@@ -155,7 +155,7 @@ export function DataTableAdvancedFilters<TData>({
 					<div className="flex items-center justify-between">
 						<h3 className="text-lg font-semibold">Advanced Filters</h3>
 						<Button
-							variant="ghost"
+							color="tertiary"
 							size="sm"
 							onClick={clearAllFilters}
 							disabled={activeFiltersCount === 0}
@@ -306,7 +306,7 @@ function MultiSelectFilter({ options, selectedValues, onSelectionChange, placeho
 		<Popover open={isOpen} onOpenChange={setIsOpen}>
 			<PopoverTrigger asChild>
 				<Button
-					variant="secondary"
+					color="secondary"
 					role="combobox"
 					aria-expanded={isOpen}
 					className="w-full justify-between"
@@ -314,12 +314,12 @@ function MultiSelectFilter({ options, selectedValues, onSelectionChange, placeho
 					{selectedValues.length > 0 ? (
 						<div className="flex flex-wrap gap-1">
 							{selectedValues.slice(0, 2).map((value) => (
-								<Badge key={value} variant="secondary" className="text-xs">
+								<Badge key={value} color="secondary" className="text-xs">
 									{value}
 								</Badge>
 							))}
 							{selectedValues.length > 2 && (
-								<Badge variant="secondary" className="text-xs">
+								<Badge color="secondary" className="text-xs">
 									+{selectedValues.length - 2} more
 								</Badge>
 							)}
@@ -337,7 +337,7 @@ function MultiSelectFilter({ options, selectedValues, onSelectionChange, placeho
 							<span className="text-sm font-medium">Select options</span>
 							{selectedValues.length > 0 && (
 								<Button
-									variant="ghost"
+									color="tertiary"
 									size="sm"
 									onClick={handleClear}
 									className="h-6 px-2 text-xs"
@@ -400,7 +400,7 @@ function DateRangeFilter({ onDateRangeChange, currentRange }: DateRangeFilterPro
 		<Popover open={isOpen} onOpenChange={setIsOpen}>
 			<PopoverTrigger asChild>
 				<Button
-					variant="secondary"
+					color="secondary"
 					role="combobox"
 					aria-expanded={isOpen}
 					className="w-full justify-between"

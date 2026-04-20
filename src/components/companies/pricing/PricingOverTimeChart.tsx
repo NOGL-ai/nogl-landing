@@ -1,24 +1,42 @@
 "use client";
+import { Download01 as Download } from '@untitledui/icons';
 
-import React, { useEffect, useMemo, useState } from "react";
+
+import { useMemo, useState } from "react";
 import { useTheme } from "next-themes";
-import { useTranslations } from "next-intl";
-import { Download, Image as ImageIcon } from "lucide-react";
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+import { format, parseISO } from "date-fns";
+
+
 import { Card } from "@/components/ui/card";
+import type { PricingTimeseriesData } from "@/types/pricing";
+import { CHART_BLUE, formatMetricValue } from "./utils";
 
 export type PricingMetric = "discount" | "current_price" | "full_price";
 export type TimeRange = "weekly" | "monthly";
 
-export interface PricingTimeseriesPoint {
-  date: string;
-  value: number;
-}
+// Re-export types so existing imports still resolve
+export type { PricingTimeseriesData };
+export type { PricingTimeseriesPoint } from "@/types/pricing";
 
-export interface PricingTimeseriesData {
-  discount: PricingTimeseriesPoint[];
-  current_price: PricingTimeseriesPoint[];
-  full_price: PricingTimeseriesPoint[];
-}
+const METRIC_KEYS: Record<PricingMetric, { label: string; key: keyof PricingTimeseriesData }> = {
+  discount:      { label: "Avg. Discount",     key: "discount" },
+  current_price: { label: "Avg. Current Price", key: "current_price" },
+  full_price:    { label: "Avg. Full Price",    key: "full_price" },
+};
+
+const TIME_RANGE_OPTIONS: Array<{ value: TimeRange; label: string }> = [
+  { value: "weekly",  label: "W" },
+  { value: "monthly", label: "M" },
+];
 
 interface PricingOverTimeChartProps {
   slug: string;
@@ -28,235 +46,87 @@ interface PricingOverTimeChartProps {
   onExportCsv?: () => Promise<void>;
 }
 
-type ChartDatum = {
-  date: string;
-  label: string;
-  shortLabel: string;
-  value: number;
-  x: number;
-  y: number;
-};
-
-const METRIC_KEYS: Record<PricingMetric, { label: string; key: keyof PricingTimeseriesData }> = {
-  discount: { label: "Avg. Discount", key: "discount" },
-  current_price: { label: "Avg. Current Price", key: "current_price" },
-  full_price: { label: "Avg. Full Price", key: "full_price" },
-};
-
-const TIME_RANGE_OPTIONS: Array<{ value: TimeRange; label: string }> = [
-  { value: "weekly", label: "W" },
-  { value: "monthly", label: "M" },
-];
-
 export function PricingOverTimeChart({
-  slug,
   data,
   loading = false,
   error = null,
   onExportCsv,
 }: PricingOverTimeChartProps) {
-  const { theme } = useTheme();
-  const t = useTranslations();
-  const [mounted, setMounted] = useState(false);
-  const [activePointIndex, setActivePointIndex] = useState<number | null>(null);
-  const [metric, setMetric] = useState<PricingMetric>("discount");
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
+
+  const [metric, setMetric]       = useState<PricingMetric>("discount");
   const [timeRange, setTimeRange] = useState<TimeRange>("weekly");
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    setActivePointIndex(null);
-  }, [metric, timeRange, slug]);
-
-  const metricData = data?.[METRIC_KEYS[metric].key] || [];
+  const rawPoints = data?.[METRIC_KEYS[metric].key] ?? [];
 
   const visibleData = useMemo(() => {
-    const normalizedData = metricData.map((point) => ({
-      ...point,
-      value: metric === "discount" ? Math.round(point.value * 100) : point.value,
+    const normalised = rawPoints.map((p) => ({
+      ...p,
+      value: metric === "discount" ? Math.round(p.value * 100) : p.value,
     }));
-
-    if (timeRange === "monthly" && normalizedData.length > 8) {
-      return normalizedData.filter((_, index) => index % 4 === 0 || index === normalizedData.length - 1);
+    if (timeRange === "monthly" && normalised.length > 8) {
+      return normalised.filter((_, i) => i % 4 === 0 || i === normalised.length - 1);
     }
+    return normalised;
+  }, [rawPoints, metric, timeRange]);
 
-    return normalizedData;
-  }, [metric, metricData, timeRange]);
-
-  const isDark =
-    theme === "dark" ||
-    (theme === "system" &&
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches);
-
-  const formatMetricValue = (value: number) => {
-    if (metric === "discount") {
-      return `${Math.round(value)}%`;
-    }
-
-    return `EUR ${value.toFixed(2)}`;
-  };
-
-  const chartGeometry = useMemo(() => {
-    const width = 720;
-    const height = 320;
-    const padding = { top: 16, right: 20, bottom: 36, left: 72 };
-    const innerWidth = width - padding.left - padding.right;
-    const innerHeight = height - padding.top - padding.bottom;
-
-    if (visibleData.length === 0) {
-      return null;
-    }
-
-    const values = visibleData.map((point) => point.value);
-    const minValue = Math.min(...values);
-    const maxValue = Math.max(...values);
-    const spread = maxValue - minValue || Math.max(1, maxValue * 0.1);
-    const yMin = Math.max(0, minValue - spread * 0.15);
-    const yMax = maxValue + spread * 0.15;
-
-    const points: ChartDatum[] = visibleData.map((point, index) => {
-      const x =
-        padding.left +
-        (visibleData.length === 1 ? innerWidth / 2 : (index / (visibleData.length - 1)) * innerWidth);
-      const ratio = yMax === yMin ? 0.5 : (point.value - yMin) / (yMax - yMin);
-      const y = padding.top + innerHeight - ratio * innerHeight;
-      const date = new Date(point.date);
-
-      return {
-        date: point.date,
-        label: date.toLocaleDateString("en-GB", {
-          day: "2-digit",
-          month: "short",
-          year: "numeric",
-        }),
-        shortLabel: date.toLocaleDateString("en-GB", {
-          day: "2-digit",
-          month: "short",
-        }),
-        value: point.value,
-        x,
-        y,
-      };
-    });
-
-    const linePath = points
-      .map((point, index) => `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`)
-      .join(" ");
-    const areaPath = `${linePath} L ${points[points.length - 1].x} ${height - padding.bottom} L ${points[0].x} ${height - padding.bottom} Z`;
-    const tickCount = 4;
-    const yTicks = Array.from({ length: tickCount }, (_, index) => {
-      const value = yMin + ((yMax - yMin) / (tickCount - 1)) * index;
-      return {
-        value,
-        y: padding.top + innerHeight - (index / (tickCount - 1)) * innerHeight,
-      };
-    });
-
-    return {
-      width,
-      height,
-      padding,
-      points,
-      linePath,
-      areaPath,
-      yTicks,
-    };
-  }, [visibleData]);
-
-  const activePoint =
-    activePointIndex == null || !chartGeometry
-      ? null
-      : chartGeometry.points[activePointIndex] ?? null;
-
-  const handleExportImage = async () => {
-    if (typeof window === "undefined") {
-      return;
-    }
-
-    const svg = document.getElementById(`pricing-over-time-chart-${slug}`);
-    if (!svg) {
-      return;
-    }
-
-    const serializer = new XMLSerializer();
-    const svgBlob = new Blob([serializer.serializeToString(svg)], {
-      type: "image/svg+xml;charset=utf-8",
-    });
-    const url = window.URL.createObjectURL(svgBlob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `pricing-over-time-${metric}-${timeRange}.svg`;
-    a.click();
-    window.URL.revokeObjectURL(url);
-  };
+  const textColor  = isDark ? "#9ca3af" : "#6b7280";
+  const gridColor  = isDark ? "#374151" : "#e5e7eb";
+  const gradientId = "pricingAreaGradient";
 
   const handleExportCsv = async () => {
-    if (!onExportCsv) {
-      const csvContent = [
-        ["Date", METRIC_KEYS[metric].label],
-        ...metricData.map((point) => [
-          point.date,
-          metric === "discount" ? `${(point.value * 100).toFixed(1)}%` : `EUR ${point.value.toFixed(2)}`,
-        ]),
-      ]
-        .map((row) => row.join(","))
-        .join("\n");
-
-      const blob = new Blob([csvContent], { type: "text/csv" });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `pricing-over-time-${metric}-${timeRange}.csv`;
-      a.click();
-      window.URL.revokeObjectURL(url);
-    } else {
+    if (onExportCsv) {
       await onExportCsv();
+      return;
     }
+    const csvContent = [
+      ["Date", METRIC_KEYS[metric].label],
+      ...rawPoints.map((p) => [
+        p.date,
+        metric === "discount"
+          ? `${(p.value * 100).toFixed(1)}%`
+          : `EUR ${p.value.toFixed(2)}`,
+      ]),
+    ]
+      .map((row) => row.join(","))
+      .join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `pricing-over-time-${metric}-${timeRange}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   if (error) {
     return (
       <Card className="flex items-center justify-center border-destructive/30 bg-destructive/5 p-8">
         <div className="text-center">
-          <p className="text-sm font-medium text-destructive">
-            {t("companies.pricing.overTime.error") || "Failed to load pricing trends"}
-          </p>
+          <p className="text-sm font-medium text-destructive">Failed to load pricing trends</p>
           <p className="text-xs text-muted-foreground">{error}</p>
         </div>
       </Card>
     );
   }
 
-  if (!mounted) {
-    return <Card className="h-96 animate-pulse bg-muted" />;
-  }
+  const dateFrom = rawPoints[0]?.date;
+  const dateTo   = rawPoints[rawPoints.length - 1]?.date;
 
   return (
     <Card className="flex flex-col overflow-hidden">
+      {/* Header */}
       <div className="border-b border-border px-6 py-4">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-lg font-semibold text-foreground">
-            {t("companies.pricing.overTime.title") || "Pricing Over Time"}
-          </h2>
-
+          <h2 className="text-lg font-semibold text-foreground">Pricing Over Time</h2>
           <div className="flex gap-2">
             <button
-              onClick={handleExportImage}
-              className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-50"
-              disabled={!metricData.length}
-              title="Export as SVG"
-            >
-              <ImageIcon className="h-4 w-4" />
-              <span className="hidden sm:inline">Image</span>
-            </button>
-            <button
               onClick={handleExportCsv}
-              className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-50"
-              disabled={!metricData.length}
+              disabled={!rawPoints.length}
               title="Export as CSV"
+              className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-50"
             >
               <Download className="h-4 w-4" />
               <span className="hidden sm:inline">CSV</span>
@@ -264,6 +134,7 @@ export function PricingOverTimeChart({
           </div>
         </div>
 
+        {/* Metric tabs + time range */}
         <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="inline-flex rounded-lg border border-border bg-muted/30 p-1">
             {(Object.keys(METRIC_KEYS) as PricingMetric[]).map((m) => (
@@ -280,7 +151,6 @@ export function PricingOverTimeChart({
               </button>
             ))}
           </div>
-
           <div className="inline-flex rounded-lg border border-border bg-muted/30 p-1">
             {TIME_RANGE_OPTIONS.map(({ value, label }) => (
               <button
@@ -298,140 +168,85 @@ export function PricingOverTimeChart({
           </div>
         </div>
 
-        {metricData.length > 0 && (
+        {dateFrom && dateTo && (
           <p className="mt-3 text-xs text-muted-foreground">
-            {metricData[0]?.date && metricData[metricData.length - 1]?.date
-              ? `${metricData[0].date} to ${metricData[metricData.length - 1].date}`
-              : null}
+            {dateFrom} to {dateTo}
           </p>
         )}
       </div>
 
-      <div className="flex-1 overflow-hidden px-4 py-6">
+      {/* Chart */}
+      <div className="flex-1 overflow-hidden px-2 py-4">
         {loading ? (
           <div className="flex h-64 items-center justify-center">
-            <div className="text-center">
-              <div className="mb-2 inline-block h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-primary" />
-              <p className="text-sm text-muted-foreground">
-                {t("companies.pricing.overTime.loading") || "Loading..."}
-              </p>
-            </div>
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-primary" />
           </div>
-        ) : chartGeometry ? (
-          <div className="space-y-3">
-            <div className="overflow-hidden rounded-xl border border-border/60 bg-background/60">
-              <svg
-                id={`pricing-over-time-chart-${slug}`}
-                viewBox={`0 0 ${chartGeometry.width} ${chartGeometry.height}`}
-                className="h-80 w-full"
-                role="img"
-                aria-label={`${METRIC_KEYS[metric].label} over time`}
-                onMouseLeave={() => setActivePointIndex(null)}
-              >
-                <defs>
-                  <linearGradient id={`pricing-gradient-${slug}`} x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.35" />
-                    <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.04" />
-                  </linearGradient>
-                </defs>
-
-                {chartGeometry.yTicks.map((tick) => (
-                  <g key={`${tick.y}-${tick.value}`}>
-                    <line
-                      x1={chartGeometry.padding.left}
-                      x2={chartGeometry.width - chartGeometry.padding.right}
-                      y1={tick.y}
-                      y2={tick.y}
-                      stroke={isDark ? "#374151" : "#e5e7eb"}
-                      strokeDasharray="4 4"
-                    />
-                    <text
-                      x={chartGeometry.padding.left - 12}
-                      y={tick.y + 4}
-                      textAnchor="end"
-                      fontSize="12"
-                      fill={isDark ? "#9ca3af" : "#6b7280"}
-                    >
-                      {formatMetricValue(tick.value)}
-                    </text>
-                  </g>
-                ))}
-
-                <path d={chartGeometry.areaPath} fill={`url(#pricing-gradient-${slug})`} />
-                <path
-                  d={chartGeometry.linePath}
-                  fill="none"
-                  stroke="#3b82f6"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-
-                {chartGeometry.points.map((point, index) => (
-                  <g key={`${point.date}-${index}`}>
-                    <line
-                      x1={point.x}
-                      x2={point.x}
-                      y1={chartGeometry.padding.top}
-                      y2={chartGeometry.height - chartGeometry.padding.bottom}
-                      stroke="#3b82f6"
-                      strokeOpacity={activePointIndex === index ? 0.16 : 0}
-                    />
-                    <circle
-                      cx={point.x}
-                      cy={point.y}
-                      r={activePointIndex === index ? 5 : 3}
-                      fill="#3b82f6"
-                      stroke={isDark ? "#111827" : "#ffffff"}
-                      strokeWidth="2"
-                      onMouseEnter={() => setActivePointIndex(index)}
-                    />
-                  </g>
-                ))}
-
-                {chartGeometry.points.map((point, index) => {
-                  const labelStep = Math.max(1, Math.ceil(chartGeometry.points.length / 6));
-                  const showLabel = index % labelStep === 0 || index === chartGeometry.points.length - 1;
-
-                  return (
-                    <text
-                      key={`label-${point.date}-${index}`}
-                      x={point.x}
-                      y={chartGeometry.height - 10}
-                      textAnchor="middle"
-                      fontSize="12"
-                      fill={isDark ? "#9ca3af" : "#6b7280"}
-                    >
-                      {showLabel ? point.shortLabel : ""}
-                    </text>
-                  );
-                })}
-              </svg>
-            </div>
-
-            {activePoint && (
-              <div className="flex items-center justify-between rounded-lg border border-border/60 bg-muted/30 px-3 py-2 text-sm">
-                <span className="text-muted-foreground">{activePoint.label}</span>
-                <span className="font-medium text-foreground">{formatMetricValue(activePoint.value)}</span>
-              </div>
-            )}
+        ) : visibleData.length === 0 ? (
+          <div className="flex h-64 items-center justify-center">
+            <p className="text-sm text-muted-foreground">No pricing data available</p>
           </div>
         ) : (
-          <div className="flex h-64 items-center justify-center">
-            <div className="text-center">
-              <p className="text-sm text-muted-foreground">
-                {t("companies.pricing.overTime.empty") || "No pricing data available"}
-              </p>
-            </div>
-          </div>
+          <ResponsiveContainer width="100%" height={320}>
+            <AreaChart data={visibleData} margin={{ top: 4, right: 8, left: 8, bottom: 0 }}>
+              <defs>
+                <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor={CHART_BLUE} stopOpacity={0.35} />
+                  <stop offset="100%" stopColor={CHART_BLUE} stopOpacity={0.04} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="4 4" stroke={gridColor} vertical={false} />
+              <XAxis
+                dataKey="date"
+                tick={{ fill: textColor, fontSize: 12 }}
+                axisLine={false}
+                tickLine={false}
+                tickFormatter={(d: string) => {
+                  try {
+                    return format(
+                      parseISO(d),
+                      timeRange === "monthly" ? "MMM yy" : "dd MMM",
+                    );
+                  } catch {
+                    return d;
+                  }
+                }}
+              />
+              <YAxis
+                tick={{ fill: textColor, fontSize: 12 }}
+                axisLine={false}
+                tickLine={false}
+                tickFormatter={(v: number) => formatMetricValue(v, metric)}
+              />
+              <Tooltip
+                contentStyle={{
+                  background: isDark ? "#111827" : "#ffffff",
+                  border: `1px solid ${gridColor}`,
+                  borderRadius: 8,
+                  fontSize: 12,
+                }}
+                labelStyle={{ color: textColor }}
+                labelFormatter={(label: unknown) => {
+                  try { return format(parseISO(label as string), "dd MMM yyyy"); } catch { return String(label); }
+                }}
+                formatter={(value) => [formatMetricValue(value as number, metric), METRIC_KEYS[metric].label] as [string, string]}
+              />
+              <Area
+                type="monotone"
+                dataKey="value"
+                stroke={CHART_BLUE}
+                strokeWidth={3}
+                fill={`url(#${gradientId})`}
+                dot={false}
+                activeDot={{ r: 4, strokeWidth: 2, stroke: isDark ? "#111827" : "#ffffff" }}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
         )}
       </div>
 
-      {metricData.length > 0 && (
+      {rawPoints.length > 0 && (
         <div className="border-t border-border bg-muted/20 px-6 py-3">
-          <p className="text-xs text-muted-foreground">
-            {t("companies.pricing.overTime.datapoints") || "Datapoints"}: {metricData.length}
-          </p>
+          <p className="text-xs text-muted-foreground">Datapoints: {rawPoints.length}</p>
         </div>
       )}
     </Card>

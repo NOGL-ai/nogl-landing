@@ -1,359 +1,189 @@
-// @ts-nocheck
 "use client";
+import { Settings02 as Settings2, Play, Clock, AlertTriangle } from '@untitledui/icons';
+
 
 import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import Toggle from "@/components/ui/toggle";
-import Checkbox from "@/shared/Checkbox";
-import Button from "@/shared/Button";
-import Avatar from "@/shared/Avatar";
-import StatusBadge from "../atoms/StatusBadge";
-import { cn } from "@/lib/utils";
-import { Settings2, Download, Clock } from "lucide-react";
 
-export interface RepricingRule {
-	id: string;
-	title: string;
-	enabled: boolean;
-	lastRun: string | null;
-	repricingType: "preview" | "live";
-	status: "enabled" | "disabled" | "preview";
-	productCount: string;
-	competitorCount: string;
-}
+import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/base/buttons/button";
+import type { RepricingRuleDTO } from "@/lib/repricing/types";
+import { formatDistanceToNow } from "date-fns";
+
+// ─── Kept for backward compat with pages that still import the old interface ──
+export type { RepricingRuleDTO as RepricingRule };
 
 export interface RepricingRulesCardProps {
-	rule: RepricingRule;
-	onToggle?: (id: string, enabled: boolean) => void;
-	onSelect?: (id: string, selected: boolean) => void;
-	onManage?: (id: string) => void;
-	onDownload?: (id: string) => void;
-	onRunPreview?: (id: string) => void;
-	selected?: boolean;
-	className?: string;
+  rule: RepricingRuleDTO;
+  onToggle?: (id: string, active: boolean) => void;
+  onManage?: (id: string) => void;
+  onRunPreview?: (id: string) => void;
+  className?: string;
 }
 
-const RepricingRulesCard: React.FC<RepricingRulesCardProps> = ({
-	rule,
-	onToggle,
-	onSelect,
-	onManage,
-	onDownload,
-	onRunPreview,
-	selected = false,
-	className = "",
-}) => {
-	return (
-		<Card
-			className={cn(
-				"border-bg-soft-200 w-full border bg-white shadow-sm",
-				className
-			)}
-			style={{
-				borderRadius: "8px",
-				border: "1px solid #E2E4E9",
-				background: "#FFF",
-				boxShadow:
-					"0 4px 6px -1px rgba(0, 0, 0, 0.10), 0 2px 4px -2px rgba(0, 0, 0, 0.05)",
-			}}
-		>
-			<CardContent className='p-4'>
-				<div className='flex h-full flex-col justify-between'>
-					{/* Header with checkbox, title, and toggle */}
-					<div className='mb-4 flex items-center gap-2'>
-						<div className='flex flex-1 items-start gap-2'>
-							<div
-								className='relative'
-								style={{ width: "24px", height: "24px" }}
-							>
-								<input
-									type='checkbox'
-									checked={selected}
-									onChange={(e) => onSelect?.(rule.id, e.target.checked)}
-									className='w-4.5 h-4.5 focus:ring-primary-500 rounded border border-neutral-300 bg-white focus:outline-none focus:ring-2'
-									style={{
-										width: "18px",
-										height: "18px",
-										position: "absolute",
-										left: "3px",
-										top: "3px",
-										borderRadius: "3px",
-										border: "1px solid #CED4DA",
-										background: "#FFF",
-									}}
-								/>
-							</div>
-							<h3
-								className='flex-1 text-base font-medium leading-6'
-								style={{
-									color: "#0E121B",
-									fontFamily:
-										"Inter, -apple-system, Roboto, Helvetica, sans-serif",
-									fontSize: "16px",
-									fontWeight: "500",
-									lineHeight: "24px",
-									letterSpacing: "-0.176px",
-									display: "-webkit-box",
-									WebkitBoxOrient: "vertical",
-									WebkitLineClamp: 2,
-									overflow: "hidden",
-									textOverflow: "ellipsis",
-								}}
-							>
-								{rule.title}
-							</h3>
-						</div>
-						<Toggle
-							checked={rule.enabled}
-							onChange={(checked) => onToggle?.(rule.id, checked)}
-							disabled={true}
-						/>
-					</div>
-
-					{/* Divider */}
-					<div
-						className='bg-stroke-soft-200 mb-5 h-px w-full'
-						style={{ background: "#E1E4EA" }}
-					/>
-
-					{/* Content Section */}
-					<div className='mb-5 flex flex-col gap-5'>
-						{/* Product and Competitors Row */}
-						<div className='flex items-start gap-4'>
-							{/* Product Column */}
-							<div className='flex flex-col gap-1.5' style={{ width: "204px" }}>
-								<span
-									className='text-xs leading-4'
-									style={{
-										color: "#525866",
-										fontFamily:
-											"Inter, -apple-system, Roboto, Helvetica, sans-serif",
-										fontSize: "12px",
-										fontWeight: "400",
-										lineHeight: "16px",
-									}}
-								>
-									Product
-								</span>
-								<div className='flex items-center gap-2'>
-									<Avatar
-										sizeClass='w-6 h-6'
-										containerClassName=''
-										userName='All'
-										imgUrl=''
-										radius='rounded-full'
-									/>
-									<button
-										onClick={() => {
-											/* Handle show products */
-										}}
-										className='text-primary-base text-sm underline'
-										style={{
-											color: "#375DFB",
-											fontFamily:
-												"Inter, -apple-system, Roboto, Helvetica, sans-serif",
-											fontSize: "14px",
-											fontWeight: "400",
-											lineHeight: "20px",
-											letterSpacing: "-0.084px",
-											textDecoration: "underline",
-										}}
-									>
-										Show
-									</button>
-								</div>
-							</div>
-
-							{/* Competitors Column */}
-							<div className='flex flex-1 flex-col gap-1.5'>
-								<span
-									className='text-xs leading-4'
-									style={{
-										color: "#525866",
-										fontFamily:
-											"Inter, -apple-system, Roboto, Helvetica, sans-serif",
-										fontSize: "12px",
-										fontWeight: "400",
-										lineHeight: "16px",
-									}}
-								>
-									Competitors
-								</span>
-								<div className='flex items-center gap-2'>
-									<Avatar
-										sizeClass='w-6 h-6'
-										containerClassName=''
-										userName='All'
-										imgUrl=''
-										radius='rounded-full'
-									/>
-									<button
-										onClick={() => {
-											/* Handle show competitors */
-										}}
-										className='text-primary-base text-sm underline'
-										style={{
-											color: "#375DFB",
-											fontFamily:
-												"Inter, -apple-system, Roboto, Helvetica, sans-serif",
-											fontSize: "14px",
-											fontWeight: "400",
-											lineHeight: "20px",
-											letterSpacing: "-0.084px",
-											textDecoration: "underline",
-										}}
-									>
-										Show
-									</button>
-								</div>
-							</div>
-						</div>
-
-						{/* Last Run and Repricing Type Row */}
-						<div className='flex items-start gap-4'>
-							{/* Last Run Column */}
-							<div className='flex flex-col gap-1.5' style={{ width: "204px" }}>
-								<span
-									className='text-xs leading-4'
-									style={{
-										color: "#525866",
-										fontFamily:
-											"Inter, -apple-system, Roboto, Helvetica, sans-serif",
-										fontSize: "12px",
-										fontWeight: "400",
-										lineHeight: "16px",
-									}}
-								>
-									Last Run
-								</span>
-								<div className='flex items-center gap-1'>
-									<Clock
-										size={20}
-										className='text-text-sub-600'
-										style={{ color: "#525866" }}
-									/>
-									<span
-										className='text-sm'
-										style={{
-											fontFamily:
-												"Inter, -apple-system, Roboto, Helvetica, sans-serif",
-											fontSize: "14px",
-											fontWeight: "400",
-											lineHeight: "20px",
-											letterSpacing: "-0.084px",
-										}}
-									>
-										<span style={{ color: "#0E121B" }}>Never | </span>
-										<button
-											onClick={() => onRunPreview?.(rule.id)}
-											className='text-primary-base'
-											style={{ color: "#335CFF" }}
-										>
-											Run Preview
-										</button>
-									</span>
-								</div>
-							</div>
-
-							{/* Repricing Type Column */}
-							<div className='flex flex-1 flex-col gap-1.5'>
-								<span
-									className='text-xs leading-4'
-									style={{
-										color: "#525866",
-										fontFamily:
-											"Inter, -apple-system, Roboto, Helvetica, sans-serif",
-										fontSize: "12px",
-										fontWeight: "400",
-										lineHeight: "16px",
-									}}
-								>
-									Repricing Type
-								</span>
-								<StatusBadge status={rule.repricingType as any} />
-							</div>
-						</div>
-
-						{/* Status Row */}
-						<div className='flex items-start gap-4'>
-							<div className='flex flex-col gap-1.5' style={{ width: "204px" }}>
-								<span
-									className='text-xs leading-4'
-									style={{
-										color: "#525866",
-										fontFamily:
-											"Inter, -apple-system, Roboto, Helvetica, sans-serif",
-										fontSize: "12px",
-										fontWeight: "400",
-										lineHeight: "16px",
-									}}
-								>
-									Status
-								</span>
-								<StatusBadge status={rule.status} />
-							</div>
-						</div>
-					</div>
-
-					{/* Action Buttons */}
-					<div className='flex items-center gap-4'>
-						<Button
-							className='border-stroke-soft-200 text-text-sub-600 flex flex-1 items-center justify-center gap-1 border bg-white px-2 py-2 hover:bg-secondary_bg'
-							onClick={() => onManage?.(rule.id)}
-							style={{
-								borderRadius: "5px",
-								border: "1px solid #E1E4EA",
-								background: "#FFF",
-								boxShadow: "0 1px 2px 0 rgba(10, 13, 20, 0.03)",
-							}}
-						>
-							<Settings2 size={20} style={{ color: "#525866" }} />
-							<span
-								style={{
-									color: "#525866",
-									fontFamily:
-										"Inter, -apple-system, Roboto, Helvetica, sans-serif",
-									fontSize: "14px",
-									fontWeight: "500",
-									lineHeight: "20px",
-									letterSpacing: "-0.084px",
-								}}
-							>
-								Manage
-							</span>
-						</Button>
-
-						<Button
-							className='border-stroke-soft-200 flex flex-1 items-center justify-center gap-1 border px-2 py-2 text-white hover:bg-blue-600'
-							onClick={() => onDownload?.(rule.id)}
-							style={{
-								borderRadius: "5px",
-								border: "1px solid #E1E4EA",
-								background: "#335CFF",
-								boxShadow: "0 1px 2px 0 rgba(10, 13, 20, 0.03)",
-							}}
-						>
-							<Download size={20} style={{ color: "white" }} />
-							<span
-								style={{
-									color: "#FFF",
-									fontFamily:
-										"Inter, -apple-system, Roboto, Helvetica, sans-serif",
-									fontSize: "14px",
-									fontWeight: "500",
-									lineHeight: "20px",
-									letterSpacing: "-0.084px",
-								}}
-							>
-								Download
-							</span>
-						</Button>
-					</div>
-				</div>
-			</CardContent>
-		</Card>
-	);
+const STATUS_STYLES: Record<
+  RepricingRuleDTO["status"],
+  { label: string; className: string }
+> = {
+  DRAFT:    { label: "Draft",   className: "bg-tertiary text-tertiary" },
+  ACTIVE:   { label: "Active",  className: "bg-success-secondary text-success-primary" },
+  PAUSED:   { label: "Paused",  className: "bg-warning-secondary text-warning-primary" },
+  ARCHIVED: { label: "Archived",className: "bg-error-secondary text-error-primary" },
 };
 
-export default RepricingRulesCard;
+function strategyLabel(rule: RepricingRuleDTO): string {
+  const dir =
+    rule.comparisonLogic === "BELOW" ? "below" :
+    rule.comparisonLogic === "ABOVE" ? "above" : "equal to";
+  const ref =
+    rule.comparisonSource === "CHEAPEST" ? "cheapest competitor" :
+    rule.comparisonSource === "AVERAGE"  ? "average competitor" :
+    rule.comparisonSource === "MY_PRICE" ? "my price" :
+    "competitor";
+  const offset =
+    rule.setPrice > 0
+      ? rule.priceDirection === "PERCENTAGE"
+        ? ` ${rule.setPrice}%`
+        : ` €${rule.setPrice.toFixed(2)}`
+      : "";
+  return `${offset ? offset + " " : ""}${dir} ${ref}`;
+}
 
+export default function RepricingRulesCard({
+  rule,
+  onToggle,
+  onManage,
+  onRunPreview,
+  className,
+}: RepricingRulesCardProps) {
+  const { label: statusLabel, className: statusClass } = STATUS_STYLES[rule.status] ?? STATUS_STYLES.DRAFT;
+  const isActive = rule.status === "ACTIVE";
+  const hasConflicts = (rule.conflictsWithRuleIds?.length ?? 0) > 0;
+
+  const lastRunText = rule.lastRunAt
+    ? formatDistanceToNow(new Date(rule.lastRunAt), { addSuffix: true })
+    : "Never";
+
+  const scopeLabel =
+    rule.scopeType === "ALL" ? "All products" :
+    rule.scopeType === "CATEGORIES" ? `${rule.categoryIds.length} categories` :
+    `${rule.productIds.length} products`;
+
+  return (
+    <div
+      className={cn(
+        "flex flex-col rounded-xl border border-border-primary bg-background shadow-sm",
+        className
+      )}
+    >
+      {/* Card header */}
+      <div className="flex items-start justify-between gap-2 border-b border-border-primary px-4 py-3">
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2">
+            <h3 className="truncate text-sm font-semibold text-text-primary">
+              {rule.name}
+            </h3>
+            {hasConflicts && (
+              <span
+                title={`Conflicts with: ${rule.conflictsWithRuleIds?.join(", ")}`}
+                className="inline-flex items-center gap-1 rounded-full bg-warning-secondary px-2 py-0.5 text-xs font-medium text-warning-primary"
+              >
+                <AlertTriangle className="h-3 w-3" />
+                Conflict
+              </span>
+            )}
+          </div>
+          <p className="mt-0.5 line-clamp-1 text-xs text-text-secondary">
+            {strategyLabel(rule)}
+          </p>
+        </div>
+        {/* Active/Paused toggle */}
+        <button
+          role="switch"
+          aria-checked={isActive}
+          aria-label={isActive ? "Pause rule" : "Activate rule"}
+          onClick={() => onToggle?.(rule.id, !isActive)}
+          className={cn(
+            "relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-brand-solid focus:ring-offset-1",
+            isActive ? "bg-success-solid" : "bg-tertiary"
+          )}
+        >
+          <span
+            className={cn(
+              "inline-block h-4 w-4 translate-y-0.5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out",
+              isActive ? "translate-x-4" : "translate-x-0.5"
+            )}
+          />
+        </button>
+      </div>
+
+      {/* Card body */}
+      <div className="grid grid-cols-2 gap-x-4 gap-y-3 px-4 py-3 text-sm">
+        <div>
+          <p className="text-xs text-text-tertiary">Scope</p>
+          <p className="mt-0.5 font-medium text-text-primary">{scopeLabel}</p>
+        </div>
+        <div>
+          <p className="text-xs text-text-tertiary">Competitors</p>
+          <p className="mt-0.5 font-medium text-text-primary">
+            {rule.competitorIds.length > 0 ? `${rule.competitorIds.length} selected` : "All"}
+          </p>
+        </div>
+        <div>
+          <p className="text-xs text-text-tertiary">Schedule</p>
+          <p className="mt-0.5 font-medium text-text-primary">
+            {rule.scheduleType === "MANUAL" ? "Manual" :
+             rule.scheduleType === "HOURLY" ? "Hourly" :
+             rule.scheduleType === "DAILY"  ? `Daily at ${rule.scheduleHour ?? 7}:00` :
+             "Weekly"}
+          </p>
+        </div>
+        <div>
+          <p className="text-xs text-text-tertiary">Status</p>
+          <span
+            className={cn(
+              "mt-0.5 inline-block rounded-full px-2 py-0.5 text-xs font-medium",
+              statusClass
+            )}
+          >
+            {statusLabel}
+          </span>
+        </div>
+      </div>
+
+      {/* Last run */}
+      <div className="flex items-center gap-1.5 border-t border-border-primary px-4 py-2 text-xs text-text-secondary">
+        <Clock className="h-3.5 w-3.5 flex-shrink-0" />
+        <span>Last run: {lastRunText}</span>
+        {rule.autoApply && (
+          <Badge className="ml-auto bg-brand-secondary px-1.5 py-0.5 text-xs text-brand-secondary">
+            Autopilot
+          </Badge>
+        )}
+      </div>
+
+      {/* Actions */}
+      <div className="flex gap-2 border-t border-border-primary px-4 py-3">
+        <Button
+          color="secondary"
+          size="sm"
+          className="flex flex-1 items-center justify-center gap-1.5 border border-border-primary bg-background text-text-secondary hover:bg-bg-secondary"
+          onClick={() => onManage?.(rule.id)}
+        >
+          <Settings2 className="h-4 w-4" />
+          Manage
+        </Button>
+        <Button
+          color="primary"
+          size="sm"
+          className="flex flex-1 items-center justify-center gap-1.5 bg-brand-solid hover:bg-brand-solid_hover"
+          onClick={() => onRunPreview?.(rule.id)}
+          isDisabled={rule.status === "ARCHIVED"}
+        >
+          <Play className="h-4 w-4" />
+          Preview
+        </Button>
+      </div>
+    </div>
+  );
+}

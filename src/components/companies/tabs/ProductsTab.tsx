@@ -1,8 +1,11 @@
 "use client";
+import { LayoutGrid01 as LayoutGrid, List } from '@untitledui/icons';
+
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+
 
 import { Card } from "@/components/ui/card";
 import { fetchJson, InlineError } from "./shared";
@@ -10,6 +13,8 @@ import type {
   CompanyProductsListResponse,
   ProductListItem,
 } from "@/types/companyProducts";
+
+type ViewMode = "grid" | "list";
 
 // ── Price formatter ───────────────────────────────────────────────────────────
 
@@ -138,6 +143,97 @@ function ProductCard({
   );
 }
 
+// ── Product list row ─────────────────────────────────────────────────────────
+
+function ProductRow({
+  product,
+  slug,
+  lang,
+}: {
+  product: ProductListItem;
+  slug: string;
+  lang: string;
+}) {
+  const href = `/${lang}/companies/${slug}/products/${encodeURIComponent(product.id)}`;
+  const hasDiscount =
+    product.discount_pct != null && product.discount_pct > 0;
+
+  return (
+    <Link href={href as `/${string}`}>
+      <article
+        data-testid="product-row"
+        className="group flex items-center gap-4 rounded-xl border border-border bg-card px-4 py-3 transition-colors hover:bg-muted/40"
+      >
+        {/* Thumbnail */}
+        <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-border bg-white">
+          {product.image_url ? (
+            <Image
+              src={product.image_url}
+              alt={product.title}
+              fill
+              className="object-contain p-1"
+              sizes="48px"
+              unoptimized
+            />
+          ) : (
+            <div className="flex h-full items-center justify-center text-muted-foreground/30">
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1}
+                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+          )}
+        </div>
+
+        {/* Title + brand */}
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-medium text-foreground group-hover:text-foreground">
+            {product.title}
+          </p>
+          <div className="mt-0.5 flex items-center gap-2">
+            {product.brand && (
+              <span className="text-xs text-muted-foreground">{product.brand}</span>
+            )}
+            {product.category && (
+              <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+                {product.category}
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Discount badge */}
+        {hasDiscount && (
+          <span className="shrink-0 rounded-full bg-destructive/10 px-2 py-0.5 text-xs font-semibold text-destructive">
+            -{Math.round(product.discount_pct!)}%
+          </span>
+        )}
+
+        {/* Price */}
+        <div className="shrink-0 text-right">
+          <span className="text-sm font-semibold text-foreground">
+            {fmtPrice(product.current_price)}
+          </span>
+          <p className="text-xs text-muted-foreground">{timeAgo(product.first_seen)}</p>
+        </div>
+      </article>
+    </Link>
+  );
+}
+
+function ProductRowSkeleton() {
+  return (
+    <div className="animate-pulse flex items-center gap-4 rounded-xl border border-border bg-card px-4 py-3">
+      <div className="h-12 w-12 shrink-0 rounded-lg bg-muted" />
+      <div className="flex-1 space-y-2">
+        <div className="h-3 w-2/3 rounded bg-muted" />
+        <div className="h-3 w-1/3 rounded bg-muted" />
+      </div>
+      <div className="h-4 w-16 rounded bg-muted" />
+    </div>
+  );
+}
+
 // ── Main component ────────────────────────────────────────────────────────────
 
 type ProductsTabProps = {
@@ -171,6 +267,7 @@ export function ProductsTab({ slug, lang }: ProductsTabProps) {
 
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
+  const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // FIX 2 — Stable categories fetched once on mount
@@ -336,6 +433,24 @@ export function ProductsTab({ slug, lang }: ProductsTabProps) {
             Clear filters
           </button>
         )}
+
+        {/* View mode toggle */}
+        <div className="ml-auto flex items-center rounded-lg border border-border p-1">
+          <button
+            onClick={() => setViewMode("grid")}
+            title="Grid view"
+            className={`rounded p-1.5 transition-colors ${viewMode === "grid" ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"}`}
+          >
+            <LayoutGrid className="h-4 w-4" />
+          </button>
+          <button
+            onClick={() => setViewMode("list")}
+            title="List view"
+            className={`rounded p-1.5 transition-colors ${viewMode === "list" ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"}`}
+          >
+            <List className="h-4 w-4" />
+          </button>
+        </div>
       </div>
 
       {/* FIX 2 — Stable category chips from one-time fetch */}
@@ -379,13 +494,21 @@ export function ProductsTab({ slug, lang }: ProductsTabProps) {
       {/* Error */}
       {state.error && <InlineError message={state.error} />}
 
-      {/* Grid */}
+      {/* Products */}
       {state.loading ? (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {Array.from({ length: 12 }).map((_, i) => (
-            <ProductCardSkeleton key={i} />
-          ))}
-        </div>
+        viewMode === "grid" ? (
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+            {Array.from({ length: 12 }).map((_, i) => (
+              <ProductCardSkeleton key={i} />
+            ))}
+          </div>
+        ) : (
+          <div className="flex flex-col gap-2">
+            {Array.from({ length: 12 }).map((_, i) => (
+              <ProductRowSkeleton key={i} />
+            ))}
+          </div>
+        )
       ) : products.length === 0 ? (
         <Card className="py-16 text-center">
           <p className="text-sm font-medium text-foreground">
@@ -400,10 +523,21 @@ export function ProductsTab({ slug, lang }: ProductsTabProps) {
             </button>
           )}
         </Card>
-      ) : (
+      ) : viewMode === "grid" ? (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {products.map((product) => (
             <ProductCard
+              key={product.id}
+              product={product}
+              slug={slug}
+              lang={lang}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2">
+          {products.map((product) => (
+            <ProductRow
               key={product.id}
               product={product}
               slug={slug}

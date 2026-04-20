@@ -1,15 +1,9 @@
 "use client";
 
+// eslint-disable-next-line no-restricted-imports -- CurrencyBangladeshiIcon has no @untitledui/icons equivalent
+import { CurrencyBangladeshiIcon } from '@heroicons/react/24/outline';
+import { ChevronDown as ChevronDownIcon, CurrencyDollar as CurrencyDollarIcon, CurrencyEuro as CurrencyEuroIcon, CurrencyPound as CurrencyPoundIcon, CurrencyRupee as CurrencyRupeeIcon, CurrencyDollar as BanknotesIcon } from '@untitledui/icons';
 import { Popover, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/24/solid";
-import {
-	CurrencyDollarIcon,
-	CurrencyBangladeshiIcon,
-	CurrencyEuroIcon,
-	CurrencyPoundIcon,
-	CurrencyRupeeIcon,
-	BanknotesIcon,
-} from "@heroicons/react/24/outline";
 import { Fragment } from "react";
 
 export const headerCurrency = [

@@ -1,9 +1,22 @@
 "use client";
+import {
+  LinkExternal01 as ExternalLink,
+  LayoutGrid01 as LayoutGrid,
+  List,
+  SwitchVertical01 as ArrowUpDown,
+  ArrowUp,
+  ArrowDown,
+} from '@untitledui/icons';
 
-import { ExternalLink } from "lucide-react";
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import {
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  useReactTable,
+  type SortingState,
+} from "@tanstack/react-table";
 
 import { FilterBar } from "@/components/companies/FilterBar";
 import { Card } from "@/components/ui/card";
@@ -328,13 +341,20 @@ function ProductRow({
 function PricingSkeleton() {
   return (
     <div className="space-y-6">
-      <div className="h-10 w-80 animate-pulse rounded-lg bg-muted" />
-      <div className="h-56 animate-pulse rounded-xl bg-muted" />
-      <div className="grid gap-6 lg:grid-cols-3">
-        <div className="h-48 animate-pulse rounded-xl bg-muted" />
-        <div className="h-48 animate-pulse rounded-xl bg-muted lg:col-span-2" />
+      <div className="h-8 w-1/3 animate-pulse rounded bg-bg-tertiary" />
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        {[...Array(5)].map((_, i) => (
+          <div key={i} className="h-44 animate-pulse rounded-xl bg-bg-tertiary" />
+        ))}
       </div>
-      <div className="h-40 animate-pulse rounded-xl bg-muted" />
+      <div className="grid gap-6 lg:grid-cols-3">
+        <div className="flex flex-col gap-6">
+          <div className="h-32 animate-pulse rounded-xl bg-bg-tertiary" />
+          <div className="h-64 animate-pulse rounded-xl bg-bg-tertiary" />
+        </div>
+        <div className="h-96 animate-pulse rounded-xl bg-bg-tertiary lg:col-span-2" />
+      </div>
+      <div className="h-96 animate-pulse rounded-xl bg-bg-tertiary" />
     </div>
   );
 }
@@ -371,7 +391,7 @@ export function PricingTab({ slug }: PricingTabProps) {
     params.set("product_limit", "20");
     const qs = params.toString();
     return `/api/companies/${slug}/pricing${qs ? `?${qs}` : ""}`;
-  }
+  }, [slug, filters]);
 
   // Single effect — re-fetch whenever slug, filters, sort, or productPage change
   useEffect(() => {
@@ -419,7 +439,6 @@ export function PricingTab({ slug }: PricingTabProps) {
   if (!state.data) return null;
 
   const { data } = state;
-
   const priceDist: PriceDistributionBucket[] = data.price_distribution ?? [];
 
   const validPrices = data.product_types.filter(
@@ -526,6 +545,16 @@ export function PricingTab({ slug }: PricingTabProps) {
             </Card>
           )}
         </div>
+        <p className="text-xs text-text-tertiary">
+          Found:{" "}
+          <span className="font-medium text-text-primary">{formatNumber(data.total_products)}</span>{" "}
+          products ·{" "}
+          <span className="font-medium text-text-primary">{formatNumber(data.total_variants)}</span>{" "}
+          variants ·{" "}
+          <span className="font-medium text-text-primary">{formatNumber(data.total_datapoints)}</span>{" "}
+          total datapoints
+        </p>
+      </div>
 
         {/* Right column (2/3): Product Types table — rows are clickable */}
         <Card className="overflow-hidden p-0 lg:col-span-2">
@@ -606,6 +635,40 @@ export function PricingTab({ slug }: PricingTabProps) {
             </div>
           )}
         </Card>
+      )}
+
+      {/* ── Discount Metrics + Price Distribution | Product Types table ── */}
+      <div className="grid items-stretch gap-6 lg:grid-cols-3">
+
+        {/* Left column */}
+        <div className="flex flex-col gap-6">
+          <DiscountMetricsCard
+            totalDiscounted={data.total_discounted}
+            totalProducts={data.total_products}
+            loading={state.loading}
+          />
+          {priceDist.length > 0 && (
+            <PriceDistributionChart
+              buckets={priceDist}
+              onBucketClick={handleBucketClick}
+              slug={slug}
+              loading={state.loading}
+            />
+          )}
+        </div>
+
+        {/* Right column — TanStack Table */}
+        <div className="lg:col-span-2">
+          <ProductTypesTable
+            rows={tableRows}
+            activeType={filters.productType}
+            onTypeSelect={(type) => setFilter("productType", type)}
+            globalMin={globalMin}
+            globalMax={globalMax}
+            totalProducts={data.total_products}
+            loading={allProductTypesRows.length === 0 && state.loading}
+          />
+        </div>
       </div>
 
       {/* ── Product table ──────────────────────────────────────────────────── */}

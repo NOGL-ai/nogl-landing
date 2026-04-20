@@ -1,11 +1,27 @@
 "use client";
+import { LinkExternal01 as ExternalLink, Globe01 as Globe, Stars01 as Sparkles, TrendUp01 as TrendingUp, CurrencyDollar as DollarSign, Calendar } from '@untitledui/icons';
 
-import { ExternalLink, Globe, Sparkles, TrendingUp, DollarSign, Calendar } from "lucide-react";
+
+
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 
 import { PeriodChip } from "@/components/companies/FilterBar";
 import type { CompanyDTO, CompanySnapshotDTO } from "@/types/company";
+
+// When the DB has no stored score, estimate from snapshot coverage metrics (0–1 fraction)
+function estimateQualityScore(snapshot: CompanySnapshotDTO): number | null {
+  if (!snapshot.total_products || snapshot.total_products === 0) return null;
+  // Price coverage: products with a price / total
+  const priceCoverage = snapshot.avg_price != null ? 0.5 : 0;
+  // Discount coverage bonus
+  const discountBonus = snapshot.total_discounted != null && snapshot.total_products > 0
+    ? Math.min(0.3, (snapshot.total_discounted / snapshot.total_products) * 0.3)
+    : 0;
+  // Volume bonus (more products = better coverage)
+  const volumeBonus = Math.min(0.2, Math.log10(snapshot.total_products) / 20);
+  return Math.min(1, priceCoverage + discountBonus + volumeBonus);
+}
 
 type CompanyInfoBarProps = {
   company: CompanyDTO;
@@ -142,8 +158,11 @@ export function CompanyInfoBar({ company, snapshot }: CompanyInfoBarProps) {
     <div className="border-b border-border bg-bg-primary/95 backdrop-blur supports-[backdrop-filter]:bg-bg-primary/60">
       <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-          {/* Always render — shows grade or "—" when score not yet available */}
-          <QualityBadge score={company.dataset_quality_score} qualityLabel={t("quality")} />
+          {/* Show stored score; fall back to snapshot estimate so we never show "—" when data exists */}
+          <QualityBadge
+            score={company.dataset_quality_score ?? estimateQualityScore(snapshot)}
+            qualityLabel={t("quality")}
+          />
 
           <div className="flex items-center gap-2 whitespace-nowrap rounded-full border border-border bg-bg-secondary px-3 py-1.5 text-xs text-text-secondary transition-colors hover:bg-bg-tertiary hover:text-text-primary">
             <Calendar className="h-3 w-3 flex-shrink-0" />

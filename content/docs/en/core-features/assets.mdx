@@ -1,0 +1,58 @@
+---
+title: Assets
+description: Manage product images, descriptions, and content for your catalog.
+---
+
+# Assets
+
+The Assets module stores and organizes product content: images, descriptions, and any files associated with your catalog items.
+
+## Uploading images
+
+1. Open a product in **My Catalog**.
+2. Click the **Assets** tab.
+3. Drag-and-drop images or click **Upload**.
+4. Accepted formats: JPEG, PNG, WebP. Maximum file size: 5 MB per image.
+
+## Image variants
+
+NOGL automatically generates optimized variants for:
+- Thumbnail (150×150 px)
+- Card (400×400 px)
+- Full (original resolution, max 2000×2000 px)
+
+Variants are served via CDN and automatically selected based on context.
+
+## Bulk image upload
+
+To upload images for multiple products at once:
+
+1. Go to **Catalog → Assets → Bulk Upload**.
+2. Upload a ZIP file where each file is named `{SKU}.jpg` (or `.png`, `.webp`).
+3. NOGL matches each image to the corresponding product by SKU.
+
+## Product descriptions
+
+Each product can have a **short description** (max 160 characters, used in search previews) and a **long description** (rich text, used in detail views and exports).
+
+To edit descriptions:
+1. Open the product.
+2. Click **Description** tab.
+3. Use the rich-text editor. Formatting is preserved in CSV exports.
+
+## Exporting assets
+
+To download all product images in bulk:
+1. Go to **Catalog → Assets → Export**.
+2. Choose a date range or select specific SKUs.
+3. Click **Download ZIP**.
+
+## Storage limits
+
+| Plan | Image storage |
+|------|-------------|
+| Starter | 5 GB |
+| Growth | 25 GB |
+| Enterprise | Unlimited |
+
+Contact support if you're approaching your limit.

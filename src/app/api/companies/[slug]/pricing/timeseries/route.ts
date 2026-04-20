@@ -81,8 +81,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
         companyDomain: company.domain,
       });
 
-      const queryRaw = prisma.$queryRaw as <T>(query: Prisma.Sql) => Promise<T>;
-      const result = await queryRaw<TimeseriesRow[]>(Prisma.sql`
+      const result = (await prisma.$queryRaw(Prisma.sql`
         SELECT
           DATE_TRUNC('day', extraction_timestamp)::date as date,
           AVG(product_discount_percentage) as avg_discount,
@@ -93,7 +92,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
         GROUP BY DATE_TRUNC('day', extraction_timestamp)
         ORDER BY date ASC
         LIMIT 1000
-      `);
+      `)) as TimeseriesRow[];
 
       // Transform the database results into the expected format
       const discount: PricingTimeseriesPoint[] = [];

@@ -12,6 +12,7 @@ import {
   CompanyEventsResponse,
   CompanyListItem,
   CompanyOverviewResponse,
+  CompanyPricingProduct,
   CompanyPricingProductTypeRow,
   CompanyPricingResponse,
   CompanySnapshotDTO,
@@ -165,6 +166,40 @@ function normalizeDomain(domain: string): string {
     .replace(/^www\./i, "")
     .replace(/\/.*$/, "")
     .toLowerCase();
+}
+
+function displayName(name: string, domain: string): string {
+  if (/^[a-z0-9_-]+$/.test(name) && !name.includes(" ")) {
+    return domain
+      .replace(/\.[a-z]{2,}$/, "")
+      .replace(/[-_]/g, " ")
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+  }
+  return name;
+}
+
+function deduplicateByName(companies: CompanyListItem[]): CompanyListItem[] {
+  const seen = new Map<string, CompanyListItem>();
+  for (const company of companies) {
+    const key = company.name.trim().toLowerCase();
+    const existing = seen.get(key);
+    if (!existing || company.total_products > existing.total_products) {
+      seen.set(key, company);
+    }
+  }
+  return Array.from(seen.values());
+}
+
+function deduplicateByDomain(companies: CompanyListItem[]): CompanyListItem[] {
+  const seen = new Map<string, CompanyListItem>();
+  for (const company of companies) {
+    const key = normalizeDomain(company.domain);
+    const existing = seen.get(key);
+    if (!existing || company.total_products > existing.total_products) {
+      seen.set(key, company);
+    }
+  }
+  return Array.from(seen.values());
 }
 
 function toNullableNumber(value: NumericValue): number | null {
@@ -615,7 +650,11 @@ async function buildProductsWhereSql(
   ];
 
   if (filters?.productType) {
-    conditions.push(Prisma.sql`product_category = ${filters.productType}`);
+    if (filters.productType === "Uncategorized") {
+      conditions.push(Prisma.sql`product_category IS NULL`);
+    } else {
+      conditions.push(Prisma.sql`product_category = ${filters.productType}`);
+    }
   }
 
   if (typeof filters?.minPrice === "number" && Number.isFinite(filters.minPrice)) {
@@ -748,6 +787,8 @@ export async function getCompaniesResponse(params: {
   limit: number;
   countryCode?: string;
   trackingStatus?: string;
+  sortBy?: "name" | "total_products" | "last_scraped_at";
+  sortDir?: "asc" | "desc";
 }): Promise<GetCompaniesResponse> {
   const hasCompanyTable = await relationExists("nogl", "Company");
   const hasCompanySnapshotTable = await relationExists("nogl", "CompanySnapshot");
@@ -780,6 +821,19 @@ export async function getCompaniesResponse(params: {
           ? Prisma.sql`WHERE ${Prisma.join(filters, " AND ")}`
           : Prisma.empty;
 
+      const sortColSql =
+        params.sortBy === "total_products"
+          ? hasCompanySnapshotTable
+            ? Prisma.sql`COALESCE(cs.total_products, 0)`
+            : Prisma.sql`0`
+          : params.sortBy === "last_scraped_at"
+          ? hasCompanySnapshotTable
+            ? Prisma.sql`cs.last_scraped_at`
+            : Prisma.sql`c."createdAt"`
+          : Prisma.sql`c.name`;
+      const sortDirSql =
+        params.sortDir === "desc" ? Prisma.sql`DESC NULLS LAST` : Prisma.sql`ASC NULLS LAST`;
+
       const [rows, countRows] = await Promise.all([
         prisma.$queryRaw<CompanyListRow[]>(Prisma.sql`
           SELECT
@@ -807,7 +861,7 @@ export async function getCompaniesResponse(params: {
             ? Prisma.sql`LEFT JOIN nogl."CompanySnapshot" cs ON cs.company_id = c.id`
             : Prisma.empty}
           ${whereSql}
-          ORDER BY c.name ASC
+          ORDER BY ${sortColSql} ${sortDirSql}
           LIMIT ${params.limit}
           OFFSET ${(params.page - 1) * params.limit}
         `),
@@ -821,10 +875,10 @@ export async function getCompaniesResponse(params: {
       const total = parseCount(countRows[0]?.count ?? 0);
 
       if (total > 0) {
-        const companies: CompanyListItem[] = rows.map((row) => ({
+        const rawCompanies: CompanyListItem[] = rows.map((row) => ({
           id: row.id,
           slug: row.slug,
-          name: row.name,
+          name: displayName(row.name, row.domain),
           domain: row.domain,
           country_code: row.country_code,
           industry: row.industry,
@@ -833,6 +887,8 @@ export async function getCompaniesResponse(params: {
           total_products: row.total_products ?? 0,
           last_scraped_at: toIsoString(row.last_scraped_at),
         }));
+
+        const companies = deduplicateByDomain(deduplicateByName(rawCompanies));
 
         return {
           companies,
@@ -908,11 +964,21 @@ export async function getCompanyOverviewResponse(slug: string): Promise<CompanyO
   }
 
   const snapshot = await findSnapshotByCompanyId(company.id);
+  const placeholder = await buildPlaceholderSnapshot(company.id, company.domain, company.name);
   const extensions = buildCompanyOverviewExtensions(company);
+
+  // Use snapshot for everything except total_products — prefer the live count when it's higher
+  const resolvedSnapshot = snapshot
+    ? {
+        ...snapshot,
+        total_products: Math.max(snapshot.total_products, placeholder.total_products),
+        last_scraped_at: placeholder.last_scraped_at ?? snapshot.last_scraped_at,
+      }
+    : placeholder;
 
   return {
     company,
-    snapshot: snapshot ?? (await buildPlaceholderSnapshot(company.id, company.domain, company.name)),
+    snapshot: resolvedSnapshot,
     ...extensions,
   };
 }
@@ -921,17 +987,36 @@ export async function getCompanyEventsResponse(params: {
   slug: string;
   page: number;
   limit: number;
+  eventTypes?: string[];
+  fromDate?: string;
+  toDate?: string;
 }): Promise<CompanyEventsResponse | null> {
   const company = await resolveCompanyBySlug(params.slug);
   if (!company) {
     return null;
   }
 
+  const hasFilters =
+    (params.eventTypes && params.eventTypes.length > 0) ||
+    Boolean(params.fromDate) ||
+    Boolean(params.toDate);
+
   let events: CompanyEventDTO[] = [];
   let total = 0;
 
   if (await relationExists("nogl", "CompanyEvent")) {
     try {
+      const typeFilterSql =
+        params.eventTypes && params.eventTypes.length > 0
+          ? Prisma.sql` AND event_type = ANY(${params.eventTypes})`
+          : Prisma.empty;
+      const fromFilterSql = params.fromDate
+        ? Prisma.sql` AND event_date >= ${new Date(params.fromDate)}`
+        : Prisma.empty;
+      const toFilterSql = params.toDate
+        ? Prisma.sql` AND event_date <= ${new Date(params.toDate)}`
+        : Prisma.empty;
+
       const [rows, countRows] = await Promise.all([
         prisma.$queryRaw<CompanyEventRow[]>(Prisma.sql`
           SELECT
@@ -951,7 +1036,7 @@ export async function getCompanyEventsResponse(params: {
             raw_payload,
             "createdAt" AS created_at
           FROM nogl."CompanyEvent"
-          WHERE company_id = ${company.id}
+          WHERE company_id = ${company.id}${typeFilterSql}${fromFilterSql}${toFilterSql}
           ORDER BY event_date DESC
           LIMIT ${params.limit}
           OFFSET ${(params.page - 1) * params.limit}
@@ -959,7 +1044,7 @@ export async function getCompanyEventsResponse(params: {
         prisma.$queryRaw<CountRow[]>(Prisma.sql`
           SELECT COUNT(*) AS count
           FROM nogl."CompanyEvent"
-          WHERE company_id = ${company.id}
+          WHERE company_id = ${company.id}${typeFilterSql}${fromFilterSql}${toFilterSql}
         `),
       ]);
 
@@ -972,7 +1057,7 @@ export async function getCompanyEventsResponse(params: {
     }
   }
 
-  if (events.length === 0) {
+  if (events.length === 0 && !hasFilters) {
     const now = Date.now();
 
     events = [
@@ -1048,6 +1133,7 @@ export async function getCompanyPricingResponse(params: {
   slug: string;
   page: number;
   limit: number;
+  sort?: 'price_asc' | 'price_desc' | 'discount_desc' | 'last_seen_desc';
   productType?: string;
   minPrice?: number;
   maxPrice?: number;
@@ -1220,6 +1306,18 @@ export async function getCompanyPricingResponse(params: {
   const priceDist = snapshotRow?.price_distribution
     ? (snapshotRow.price_distribution as unknown as PriceDistributionBucket[])
     : null;
+
+  const products: CompanyPricingProduct[] = productsRows.map((r) => ({
+    product_id: r.product_id,
+    product_title: r.product_title ?? 'Unknown',
+    product_image_url: r.product_image_url ?? null,
+    product_url: r.product_url ?? null,
+    category: r.category ?? null,
+    original_price: r.original_price != null ? Number(r.original_price) : null,
+    discount_price: r.discount_price != null ? Number(r.discount_price) : null,
+    discount_pct: r.discount_pct != null ? Number(r.discount_pct) : null,
+    last_seen: r.last_seen ? r.last_seen.toISOString() : null,
+  }));
 
   return {
     company: {

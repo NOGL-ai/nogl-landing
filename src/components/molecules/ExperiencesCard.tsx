@@ -1,9 +1,9 @@
+import { Star01 as StarIcon, Award01 as CheckBadgeIcon, Eye as EyeIcon } from '@untitledui/icons';
 import React, { FC } from "react";
 import { ExpertDataType } from "@/data/types";
 import Link from "next/link";
 import Image from "next/image";
-import { StarIcon, CheckBadgeIcon, EyeIcon } from "@heroicons/react/24/solid";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 
 export interface ExperiencesCardProps {
 	className?: string;

@@ -50,6 +50,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
       slug,
       page,
       limit,
+      sort,
       productType,
       minPrice,
       maxPrice,

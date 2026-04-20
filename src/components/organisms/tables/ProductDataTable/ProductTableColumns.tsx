@@ -6,7 +6,7 @@ import { Product } from "./index";
 import { SortableHeader } from "../DataTable/DataTableHeader";
 import { SelectionCheckbox } from "../DataTable/DataTableSelection";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 import { 
 	Eye, 
 	Edit01, 
@@ -405,7 +405,7 @@ export function ProductTableColumns(products: Product[] = []): ColumnDef<Product
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<Button 
-								variant="ghost" 
+								color="tertiary" 
 								className="h-8 w-8 p-0"
 								aria-label={`Actions for ${product.name}`}
 							>

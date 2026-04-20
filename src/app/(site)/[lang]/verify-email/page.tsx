@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 // Removed DOMPurify import - using validator for sanitization instead
 import { ClipLoader } from "react-spinners"; // Import spinner
+import type { Route } from 'next';
 
 // Custom hook for email verification
 function useEmailVerification(token: string | null) {
@@ -56,7 +57,7 @@ export default function VerifyEmail() {
 	useEffect(() => {
 		if (status === "success") {
 			const timer = setTimeout(() => {
-				router.push("/auth/signin");
+				router.push("/auth/signin" as Route);
 			}, 3000); // Redirect after 3 seconds
 			return () => clearTimeout(timer);
 		}

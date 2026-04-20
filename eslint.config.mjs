@@ -26,6 +26,8 @@ export default [
 			"**/edge-runtime-webpack.js",
 			"**/middleware-build-manifest.js",
 			"next-env.d.ts",
+			".claude/**",
+			"scripts/**",
 		],
 	},
 	{
@@ -82,6 +84,42 @@ export default [
 			"no-undef": "off", // TypeScript handles this
 			"no-var": "off",
 			"prefer-const": "off",
+			"no-empty": "off",
+			"no-case-declarations": "off",
+
+			// Design-system migration guard (Phase 7)
+			// Prevents new imports from libraries/paths that have been fully migrated.
+			// Components NOT yet migrated (badge, select, dropdown-menu, card, dialog, …)
+			// are intentionally absent from this list until their callsites are rewritten.
+			"no-restricted-imports": [
+				"error",
+				{
+					patterns: [
+						{
+							group: ["lucide-react"],
+							message:
+								"lucide-react has been migrated. Import icons from '@untitledui/icons' instead. " +
+								"Add missing icons to migration/mappings/lucide.json if needed.",
+						},
+						{
+							group: ["@heroicons/react", "@heroicons/react/*"],
+							message:
+								"@heroicons/react has been migrated. Import icons from '@untitledui/icons' instead.",
+						},
+						{
+							group: ["@/components/ui/button", "~/components/ui/button"],
+							message:
+								"ui/button has been migrated. Use '@/components/base/buttons/button' instead. " +
+								"Note: use the 'color' prop (not 'variant') on the base Button.",
+						},
+						{
+							group: ["@/components/ui/input", "~/components/ui/input"],
+							message:
+								"ui/input has been migrated. Use '@/components/base/input/input' instead.",
+						},
+					],
+				},
+			],
 		},
 	},
 ];

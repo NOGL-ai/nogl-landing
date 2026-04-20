@@ -1,0 +1,53 @@
+---
+title: Forecasting
+description: Demand and revenue forecasting using AI-powered models.
+---
+
+# Forecasting
+
+The Forecasting module projects future demand and revenue using historical sales data, seasonal patterns, and market signals.
+
+## Accessing forecasts
+
+Navigate to **Dashboard → Forecasting** or use the global search (⌘K) and type "forecast".
+
+## How forecasts work
+
+NOGL uses a time-series model trained on:
+
+- Your past 12 months of sales data
+- Category-level seasonal indices
+- Competitor price movements in your tracked companies
+
+Forecasts are regenerated every 24 hours and cover a **90-day horizon** by default.
+
+## Reading the forecast chart
+
+The chart shows three bands:
+
+| Band | Meaning |
+|------|---------|
+| **Blue line** | Expected (median) units sold per day |
+| **Light blue shading** | 80% confidence interval |
+| **Gray dashed line** | Last year's actuals (same period) |
+
+## Adjusting the forecast
+
+You can apply manual overrides when you have information the model doesn't (e.g. a planned promotion):
+
+1. Click **Add override** above the chart.
+2. Select the date range.
+3. Enter the expected uplift or reduction (e.g. +30%).
+4. Add a note explaining the override.
+
+Overrides are highlighted in orange on the chart and are logged for audit purposes.
+
+## Exporting forecast data
+
+Click **Export → CSV** to download the full 90-day forecast with confidence intervals.
+
+## Limitations
+
+- Forecasts require at least 90 days of historical data.
+- Products launched in the last 30 days use a **cold-start model** based on category averages.
+- Forecasts do not account for events outside the data (e.g. supply chain disruptions unless manually overridden).
