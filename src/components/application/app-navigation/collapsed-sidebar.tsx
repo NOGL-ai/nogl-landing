@@ -337,13 +337,13 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
     return (
         <div
             ref={sidebarRef}
-            className="fixed left-0 top-0 z-50 h-screen bg-white dark:bg-[--color-gray-950] group"
+            className="fixed left-0 top-0 z-50 h-screen bg-white dark:bg-(--color-gray-950) group"
             style={{ width: ICON_SIDEBAR_WIDTH, padding: "4px 0 4px 4px" }}
             onMouseEnter={clearCloseTimeout}
             onMouseLeave={scheduleClosePanel}
         >
             {/* Collapsed Sidebar Content Container */}
-            <div className="flex flex-col h-full bg-white dark:bg-[--color-gray-950] border border-[--color-gray-200] dark:border-[--color-gray-800] rounded-xl">
+            <div className="flex flex-col h-full bg-white dark:bg-(--color-gray-950) border border-(--color-gray-200) dark:border-(--color-gray-800) rounded-xl">
                 {/* Header with Logo */}
                 <div className="flex items-center justify-center pt-5 px-4">
                     <Logo size="sm" showText={false} variant="auto" />
@@ -374,8 +374,8 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
                                             className={`
                                                 flex items-center justify-center w-10 h-10 rounded-md transition-colors duration-200
                                                 ${isActive || isHovered
-                                                    ? 'bg-[--color-gray-50] dark:bg-[--color-gray-800]'
-                                                    : 'hover:bg-[--color-gray-50] dark:hover:bg-[--color-gray-800]/50'
+                                                    ? 'bg-(--color-gray-50) dark:bg-(--color-gray-800)'
+                                                    : 'hover:bg-(--color-gray-50) dark:hover:bg-(--color-gray-800)/50'
                                                 }
                                             `}
                                             title={item.label}
@@ -388,8 +388,8 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
                                             <IconComponent
                                                 className={`w-5 h-5 ${
                                                     isActive || isHovered
-                                                        ? 'text-[--color-gray-500] dark:text-[--color-gray-400]'
-                                                        : 'text-[--color-gray-400] dark:text-[--color-gray-500]'
+                                                        ? 'text-(--color-gray-500) dark:text-(--color-gray-400)'
+                                                        : 'text-(--color-gray-400) dark:text-(--color-gray-500)'
                                                 }`}
                                             />
                                         </button>
@@ -424,10 +424,10 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
                                         return (
                                             <div
                                                 key={item.id}
-                                                className="flex items-center justify-center w-10 h-10 rounded-md transition-colors duration-200 hover:bg-[--color-gray-50] dark:hover:bg-[--color-gray-800]/50"
+                                                className="flex items-center justify-center w-10 h-10 rounded-md transition-colors duration-200 hover:bg-(--color-gray-50) dark:hover:bg-(--color-gray-800)/50"
                                                 title={`${item.label} (${currentTheme})`}
                                             >
-                                                <AnimatedThemeToggler className="w-5 h-5 text-[--color-gray-400] dark:text-[--color-gray-500] hover:text-[--color-gray-500] dark:hover:text-[--color-gray-400] transition-colors duration-200" />
+                                                <AnimatedThemeToggler className="w-5 h-5 text-(--color-gray-400) dark:text-(--color-gray-500) hover:text-(--color-gray-500) dark:hover:text-(--color-gray-400) transition-colors duration-200" />
                                             </div>
                                         );
                                     }
@@ -445,8 +445,8 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
                                             className={`
                                                 flex items-center justify-center w-10 h-10 rounded-md transition-colors duration-200
                                                 ${isActive || isHovered
-                                                    ? 'bg-[--color-gray-50] dark:bg-[--color-gray-800]'
-                                                    : 'hover:bg-[--color-gray-50] dark:hover:bg-[--color-gray-800]/50'
+                                                    ? 'bg-(--color-gray-50) dark:bg-(--color-gray-800)'
+                                                    : 'hover:bg-(--color-gray-50) dark:hover:bg-(--color-gray-800)/50'
                                                 }
                                             `}
                                             title={item.label}
@@ -459,8 +459,8 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
                                             <IconComponent
                                                 className={`w-5 h-5 ${
                                                     isActive || isHovered
-                                                        ? 'text-[--color-gray-500] dark:text-[--color-gray-400]'
-                                                        : 'text-[--color-gray-400] dark:text-[--color-gray-500]'
+                                                        ? 'text-(--color-gray-500) dark:text-(--color-gray-400)'
+                                                        : 'text-(--color-gray-400) dark:text-(--color-gray-500)'
                                                 }`}
                                             />
                                         </button>
@@ -483,10 +483,10 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
                             onFocus={() => handleIconFocus(accountMenu.id)}
                             onBlur={handleIconMouseLeave}
                             onKeyDown={(event) => handleIconKeyDown(accountMenu, event)}
-                            className={`flex w-10 h-10 items-center justify-center rounded-full border border-[rgba(0,0,0,0.08)] dark:border-[rgba(255,255,255,0.08)] overflow-hidden transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#375dfb]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[--color-gray-950]
+                            className={`flex w-10 h-10 items-center justify-center rounded-full border border-[rgba(0,0,0,0.08)] dark:border-[rgba(255,255,255,0.08)] overflow-hidden transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#375dfb]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-(--color-gray-950)
                                 ${hoveredItem === accountMenu.id
-                                    ? 'ring-2 ring-[--color-gray-200] dark:ring-[--color-gray-800] ring-offset-2 ring-offset-white dark:ring-offset-[--color-gray-950]'
-                                    : 'hover:ring-2 hover:ring-[--color-gray-200] dark:hover:ring-[--color-gray-800]'
+                                    ? 'ring-2 ring-(--color-gray-200) dark:ring-(--color-gray-800) ring-offset-2 ring-offset-white dark:ring-offset-(--color-gray-950)'
+                                    : 'hover:ring-2 hover:ring-(--color-gray-200) dark:hover:ring-(--color-gray-800)'
                                 }
                             `}
                             title={user?.name ? `${user.name} account` : 'Account menu'}
