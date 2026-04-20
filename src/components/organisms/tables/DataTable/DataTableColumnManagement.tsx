@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Table } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
@@ -26,7 +26,7 @@ export function DataTableColumnManagement<TData>({
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
 					<Button
-						variant="secondary"
+						color="secondary"
 						className="border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary"
 						aria-label="Manage table columns"
 					>

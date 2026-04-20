@@ -10,7 +10,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -277,7 +277,7 @@ export function WidgetEditorModal({
           <DialogTitle className="flex items-center gap-2">
             {isEditing ? "Edit Widget" : "Add Chart"}
             {widgetType && (
-              <Badge variant="secondary" className="text-xs">
+              <Badge color="secondary" className="text-xs">
                 {widgetType.replace("_", " ")}
               </Badge>
             )}
@@ -408,7 +408,7 @@ export function WidgetEditorModal({
               <Button
                 onClick={handleCopilotGenerate}
                 disabled={!copilotPrompt.trim() || isCopilotPending}
-                variant="outline"
+                color="secondary"
                 className="gap-1.5 self-start"
               >
                 {isCopilotPending ? (
@@ -455,7 +455,7 @@ export function WidgetEditorModal({
         </div>
 
         <DialogFooter className="border-t px-6 py-3">
-          <Button variant="outline" onClick={onClose}>
+          <Button color="secondary" onClick={onClose}>
             Cancel
           </Button>
           <Button

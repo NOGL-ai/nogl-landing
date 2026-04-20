@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Table } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 import Checkbox from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
@@ -119,7 +119,7 @@ export function ProductTableAdvancedFilters({
 		<div className="space-y-4">
 			<div className="flex items-center justify-between">
 				<Button
-					variant="secondary"
+					color="secondary"
 					onClick={() => setIsOpen(!isOpen)}
 					className="relative"
 					aria-label={`Advanced filters. ${activeFiltersCount > 0 ? `${activeFiltersCount} filters active.` : 'No filters active.'}`}
@@ -130,7 +130,7 @@ export function ProductTableAdvancedFilters({
 					Advanced Filters
 					{activeFiltersCount > 0 && (
 						<Badge
-							variant="secondary"
+							color="secondary"
 							className="ml-2 flex h-5 w-5 items-center justify-center rounded-full border-blue-200 bg-blue-100 p-0 text-xs text-blue-700 dark:border-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
 							aria-label={`${activeFiltersCount} active filters`}
 						>
@@ -141,7 +141,7 @@ export function ProductTableAdvancedFilters({
 
 				{activeFiltersCount > 0 && (
 					<Button
-						variant="ghost"
+						color="tertiary"
 						onClick={clearAllFilters}
 						className="h-8 px-2"
 						aria-label="Clear all active filters"
@@ -242,7 +242,7 @@ export function ProductTableAdvancedFilters({
 							</label>
 							<div className="grid grid-cols-2 gap-2">
 								<Button
-									variant="secondary"
+									color="secondary"
 									size="sm"
 									onClick={() => {
 										handlePriceRangeChange([0, 50]);
@@ -255,7 +255,7 @@ export function ProductTableAdvancedFilters({
 									Under €50
 								</Button>
 								<Button
-									variant="secondary"
+									color="secondary"
 									size="sm"
 									onClick={() => {
 										handlePriceRangeChange([100, 1000]);
@@ -268,7 +268,7 @@ export function ProductTableAdvancedFilters({
 									Premium
 								</Button>
 								<Button
-									variant="secondary"
+									color="secondary"
 									size="sm"
 									onClick={() => {
 										// This would need more complex logic in a real app
@@ -281,7 +281,7 @@ export function ProductTableAdvancedFilters({
 									With Data
 								</Button>
 								<Button
-									variant="secondary"
+									color="secondary"
 									size="sm"
 									onClick={() => {
 										handleBrandFilter("Stilnest", true);

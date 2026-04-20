@@ -13,7 +13,7 @@ import {
 	useReactTable,
 } from "@tanstack/react-table";
 import { debounce } from "lodash";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 import { Input } from "@/components/ui/input";
 import {
 	Table,
@@ -134,7 +134,7 @@ export default function MonitoredUrlsTable() {
 				accessorKey: "competitorUrl",
 				header: ({ column }) => (
 					<Button
-						variant='ghost'
+						color="tertiary"
 						onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
 						className='h-8 px-2 lg:px-3'
 					>
@@ -180,9 +180,9 @@ export default function MonitoredUrlsTable() {
 					return (
 						<div className='flex items-center'>
 							{matched ? (
-								<Badge variant='secondary'>Yes</Badge>
+								<Badge color="secondary">Yes</Badge>
 							) : (
-								<Badge variant='outline'>No</Badge>
+								<Badge color="secondary">No</Badge>
 							)}
 						</div>
 					);
@@ -193,7 +193,7 @@ export default function MonitoredUrlsTable() {
 				accessorKey: "competitorPrice",
 				header: ({ column }) => (
 					<Button
-						variant='ghost'
+						color="tertiary"
 						onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
 						className='h-8 px-2 lg:px-3'
 					>
@@ -222,7 +222,7 @@ export default function MonitoredUrlsTable() {
 				accessorKey: "myPrice",
 				header: ({ column }) => (
 					<Button
-						variant='ghost'
+						color="tertiary"
 						onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
 						className='h-8 px-2 lg:px-3'
 					>
@@ -315,7 +315,7 @@ export default function MonitoredUrlsTable() {
 						<div className='flex justify-end'>
 							<DropdownMenu>
 								<DropdownMenuTrigger asChild>
-									<Button variant='ghost' className='h-8 w-8 p-0'>
+									<Button color="tertiary" className='h-8 w-8 p-0'>
 										<MoreHorizontal className='h-4 w-4' />
 									</Button>
 								</DropdownMenuTrigger>
@@ -468,7 +468,7 @@ export default function MonitoredUrlsTable() {
 					</div>
 					<div className='flex items-center gap-2'>
 						<Button
-							variant='secondary'
+							color="secondary"
 							className='h-8 border-border px-2 dark:border-border'
 							onClick={() => table.previousPage()}
 							disabled={!table.getCanPreviousPage()}
@@ -480,7 +480,7 @@ export default function MonitoredUrlsTable() {
 							{table.getPageCount()}
 						</div>
 						<Button
-							variant='secondary'
+							color="secondary"
 							className='h-8 border-border px-2 dark:border-border'
 							onClick={() => table.nextPage()}
 							disabled={!table.getCanNextPage()}

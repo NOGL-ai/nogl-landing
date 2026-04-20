@@ -10,7 +10,7 @@ import { ChevronDown, ChevronUp, LinkExternal01 as ExternalLink, TrendUp01 as Tr
 import React, { useState } from 'react';
 import { SimilaritySearchResult, SimilarityMatch } from '@/types/market-intelligence';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/base/buttons/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface SimilaritySearchResultsProps {
@@ -99,7 +99,7 @@ export default function SimilaritySearchResults({
           <h3 className="font-semibold text-foreground">
             Found {result.totalMatches} similar product{result.totalMatches !== 1 ? 's' : ''}
           </h3>
-          <Badge variant="secondary" className="text-xs">
+          <Badge color="secondary" className="text-xs">
             ≥{Math.round(result.threshold * 100)}% match
           </Badge>
         </div>
@@ -195,7 +195,7 @@ export default function SimilaritySearchResults({
                   {result.closestMatch.url && (
                     <Button
                       size="sm"
-                      variant="outline"
+                      color="secondary"
                       onClick={() => window.open(result.closestMatch!.url, '_blank')}
                       className="text-xs"
                     >
@@ -206,7 +206,7 @@ export default function SimilaritySearchResults({
                   {result.closestMatch.sourceUrl && (
                     <Button
                       size="sm"
-                      variant="ghost"
+                      color="tertiary"
                       onClick={() => window.open(result.closestMatch!.sourceUrl, '_blank')}
                       className="text-xs"
                     >
@@ -226,7 +226,7 @@ export default function SimilaritySearchResults({
         <Card>
           <CardHeader className="pb-3">
             <Button
-              variant="ghost"
+              color="tertiary"
               onClick={() => setShowAllMatches(!showAllMatches)}
               className="justify-start p-0 h-auto font-medium"
             >
@@ -285,7 +285,7 @@ export default function SimilaritySearchResults({
                       {match.url && (
                         <Button
                           size="sm"
-                          variant="ghost"
+                          color="tertiary"
                           onClick={(e) => {
                             e.stopPropagation();
                             window.open(match.url, '_blank');
@@ -307,7 +307,7 @@ export default function SimilaritySearchResults({
       {/* View All Button */}
       {onViewAll && result.totalMatches > 10 && (
         <div className="text-center">
-          <Button variant="outline" onClick={onViewAll}>
+          <Button color="secondary" onClick={onViewAll}>
             View All {result.totalMatches} Matches
           </Button>
         </div>

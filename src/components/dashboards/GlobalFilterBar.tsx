@@ -3,7 +3,7 @@ import { Calendar as CalendarIcon, X as XIcon, Plus as PlusIcon, ChevronDown as 
 
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 import {
   Popover,
   PopoverContent,

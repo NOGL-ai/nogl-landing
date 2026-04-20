@@ -13,7 +13,7 @@ import { getProducts } from '@/lib/services/productClient';
 import { ProductDTO } from '@/types/product';
 import { SimilaritySearchResult } from '@/types/market-intelligence';
 import SimilaritySearchResults from '@/components/competitor/SimilaritySearchResults';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/base/buttons/button';
 import { Badge } from '@/components/ui/badge';
 import toast from 'react-hot-toast';
 

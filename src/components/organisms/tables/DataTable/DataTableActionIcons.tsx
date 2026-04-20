@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 import { Trash01, Edit01 } from "@untitledui/icons";
 import { cx } from "@/utils/cx";
 
@@ -27,7 +27,7 @@ export function DataTableActionIcons({
 		<div className={cx("flex items-center gap-1", className)}>
 			{showEdit && (
 				<Button
-					variant="ghost"
+					color="tertiary"
 					size="sm"
 					onClick={onEdit}
 					aria-label={editLabel}
@@ -38,7 +38,7 @@ export function DataTableActionIcons({
 			)}
 			{showDelete && (
 				<Button
-					variant="ghost"
+					color="tertiary"
 					size="sm"
 					onClick={onDelete}
 					aria-label={deleteLabel}

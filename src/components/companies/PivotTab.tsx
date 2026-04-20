@@ -4,7 +4,7 @@ import { RefreshCcw01 as RefreshCcw, Table as Table2 } from '@untitledui/icons';
 
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 import { Card } from "@/components/ui/card";
 import {
   Select,
@@ -232,7 +232,7 @@ export function PivotTab({ slug, active }: PivotTabProps) {
             ] as const).map(([value, label]) => (
               <Button
                 key={value}
-                variant={controls.range === value ? "primary" : "outline"}
+                color={controls.range === value ? "primary" : "secondary"}
                 size="sm"
                 onClick={() => setControl("range", value)}
               >
@@ -248,7 +248,7 @@ export function PivotTab({ slug, active }: PivotTabProps) {
       {state.error ? (
         <Card className="space-y-4 p-6">
           <InlineError message="Failed to load pivot data" />
-          <Button variant="outline" onClick={handleRetry}>
+          <Button color="secondary" onClick={handleRetry}>
             <RefreshCcw className="mr-2 h-4 w-4" />
             Retry
           </Button>

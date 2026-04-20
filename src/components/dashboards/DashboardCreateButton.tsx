@@ -4,7 +4,7 @@ import { Plus as PlusIcon } from '@untitledui/icons';
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createDashboard } from "@/actions/dashboards";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 import {
   Dialog,
   DialogContent,
@@ -89,7 +89,7 @@ export function DashboardCreateButton({ lang }: { lang: Locale }) {
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setOpen(false)}>
+            <Button color="secondary" onClick={() => setOpen(false)}>
               Cancel
             </Button>
             <Button onClick={handleCreate} disabled={!name.trim() || isPending}>
