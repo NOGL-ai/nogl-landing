@@ -272,7 +272,7 @@ export function EmailApprovalUI({ addResult, args }: EmailApprovalProps) {
                   <label className="text-sm font-medium">To *</label>
                   <Input
                     value={formData.to}
-                    onChange={(e) => updateField("to", e.target.value)}
+                    onChange={(value) => updateField("to", value)}
                     placeholder="recipient@example.com"
                   />
                 </div>
@@ -295,7 +295,7 @@ export function EmailApprovalUI({ addResult, args }: EmailApprovalProps) {
                 <label className="text-sm font-medium">Subject *</label>
                 <Input
                   value={formData.subject}
-                  onChange={(e) => updateField("subject", e.target.value)}
+                  onChange={(value) => updateField("subject", value)}
                   placeholder="Email subject"
                 />
               </div>
@@ -305,9 +305,9 @@ export function EmailApprovalUI({ addResult, args }: EmailApprovalProps) {
                 <div className="flex gap-2">
                   <Input
                     value={newCc}
-                    onChange={(e) => setNewCc(e.target.value)}
+                    onChange={(value) => setNewCc(value)}
                     placeholder="cc@example.com"
-                    onKeyPress={(e) => e.key === "Enter" && addRecipient("cc", newCc)}
+                    onKeyDown={(e) => e.key === "Enter" && addRecipient("cc", newCc)}
                   />
                   <Button
                     size="sm"
@@ -337,9 +337,9 @@ export function EmailApprovalUI({ addResult, args }: EmailApprovalProps) {
                 <div className="flex gap-2">
                   <Input
                     value={newBcc}
-                    onChange={(e) => setNewBcc(e.target.value)}
+                    onChange={(value) => setNewBcc(value)}
                     placeholder="bcc@example.com"
-                    onKeyPress={(e) => e.key === "Enter" && addRecipient("bcc", newBcc)}
+                    onKeyDown={(e) => e.key === "Enter" && addRecipient("bcc", newBcc)}
                   />
                   <Button
                     size="sm"

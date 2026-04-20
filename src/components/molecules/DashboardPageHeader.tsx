@@ -1,5 +1,6 @@
 "use client";
 
+import { Moon01 as MoonIcon, Sun as SunIcon } from '@untitledui/icons';
 import React, { useState } from "react";
 import {
 	FullscreenIcon,
@@ -7,7 +8,6 @@ import {
 	PaintBucketIcon,
 } from "../atoms/DashboardIcons";
 import { useTheme } from "next-themes";
-import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
 
 interface DashboardPageHeaderProps {
 	title?: string;

@@ -1,5 +1,6 @@
 "use client";
 
+import { Menu01 as Bars3Icon } from '@untitledui/icons';
 import { useState, Fragment, useEffect, FC } from "react";
 import {
 	Transition,
@@ -8,7 +9,6 @@ import {
 	DialogPanel,
 } from "@headlessui/react";
 import NavMobile from "./Navigation/NavMobile";
-import { Bars3Icon } from "@heroicons/react/24/outline";
 import { usePathname } from "next/navigation";
 
 export interface MenuBarProps {

@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-restricted-imports -- icon has no @untitledui/icons equivalent; keep in lucide-react until UUI ships it
 import { Cookie } from 'lucide-react';
 import { Eye, Lock01 as Lock, File01 as FileText, Globe01 as Globe, Shield01 as Shield, Users01 as Users, Mail01 as Mail, Phone01 as Phone, MarkerPin01 as MapPin, Scale01 as Scale, Bank as Landmark } from '@untitledui/icons';
 import React from "react";

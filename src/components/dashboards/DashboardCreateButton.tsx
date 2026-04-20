@@ -65,7 +65,7 @@ export function DashboardCreateButton({ lang }: { lang: Locale }) {
                 id="dash-name"
                 placeholder="e.g. Competitor Overview (4w)"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(value) => setName(value)}
                 onKeyDown={(e) => e.key === "Enter" && handleCreate()}
                 autoFocus
               />

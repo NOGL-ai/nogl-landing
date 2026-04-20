@@ -33,7 +33,7 @@ export function DashboardTopBar() {
           <Button
             type="button"
             color="tertiary"
-            size="icon"
+            size="sm"
             className="rounded-full"
             aria-label={t("chrome.notificationsAria")}
           >
@@ -46,7 +46,7 @@ export function DashboardTopBar() {
           <Button
             type="button"
             color="secondary"
-            size="icon"
+            size="sm"
             className="rounded-lg"
             aria-label={t("chrome.accountAria")}
           >

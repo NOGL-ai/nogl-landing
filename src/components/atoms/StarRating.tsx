@@ -1,6 +1,6 @@
 "use client";
 
-import { StarIcon } from "@heroicons/react/24/solid";
+import { Star01 as StarIcon } from '@untitledui/icons';
 import React, { FC, useEffect } from "react";
 import { useState } from "react";
 

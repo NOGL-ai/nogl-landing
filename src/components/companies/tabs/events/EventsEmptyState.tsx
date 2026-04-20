@@ -1,4 +1,5 @@
 "use client";
+// eslint-disable-next-line no-restricted-imports -- icon has no @untitledui/icons equivalent; keep in lucide-react until UUI ships it
 import { CalendarRange } from 'lucide-react';
 
 

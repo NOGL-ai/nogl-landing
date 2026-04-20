@@ -1,5 +1,6 @@
 "use client";
 
+// eslint-disable-next-line no-restricted-imports -- icon has no @untitledui/icons equivalent; keep in lucide-react until UUI ships it
 import { FilterX } from 'lucide-react';
 import { SearchLg as Search, FilterFunnel01 as Filter, X, ChevronDown, SwitchVertical01 as ArrowUpDown, ArrowUp, ArrowDown, DotsHorizontal as MoreHorizontal, Eye, Trash01 as Trash2, TrendUp01 as TrendingUp, CurrencyDollar as DollarSign, Tag01 as Tag, Calendar, Settings01 as Settings, Download01 as Download, List, PieChart01 as PieChart, AlertCircle, Clock, Minus, Plus, Edit01 as Edit, Copy01 as Copy, Star01 as Star, Upload01 as Upload, RefreshCw01 as RefreshCw, Grid03 as Grid3X3, Columns01 as Columns, ArrowNarrowUp as SortAsc, ArrowNarrowDown as SortDesc, Zap, Target01 as Target, BarChart03 as BarChart3, Activity, CheckCircle } from '@untitledui/icons';
 // @ts-nocheck
@@ -303,17 +304,17 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 				header: ({ table }) => (
 					<Checkbox
 						checked={table.getIsAllPageRowsSelected()}
-						onCheckedChange={(value) =>
+						onChange={(value: boolean) =>
 							table.toggleAllPageRowsSelected(!!value)
 						}
-						aria-label='Select all'
+						ariaLabel='Select all'
 					/>
 				),
 				cell: ({ row }) => (
 					<Checkbox
 						checked={row.getIsSelected()}
-						onCheckedChange={(value) => row.toggleSelected(!!value)}
-						aria-label='Select row'
+						onChange={(value: boolean) => row.toggleSelected(!!value)}
+						ariaLabel='Select row'
 					/>
 				),
 				enableSorting: false,
@@ -854,9 +855,9 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 						<Input
 							placeholder='Search products...'
 							value={globalFilter}
-							onChange={(e) => {
-								setGlobalFilter(e.target.value);
-								debouncedSetGlobalFilter(e.target.value);
+							onChange={(value) => {
+								setGlobalFilter(value);
+								debouncedSetGlobalFilter(value);
 							}}
 							className={`w-full border-border bg-background pl-10 text-primary placeholder:text-tertiary transition-colors ${
 								globalFilter
@@ -994,7 +995,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 											<Checkbox
 												id={`brand-${brand}`}
 												checked={filters.brands.includes(brand)}
-												onCheckedChange={(checked) =>
+												onChange={(checked: boolean) =>
 													handleBrandFilter(brand, !!checked)
 												}
 											/>
@@ -1021,7 +1022,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 										<Checkbox
 											id={`currency-${currency}`}
 											checked={filters.currencies.includes(currency)}
-											onCheckedChange={(checked) =>
+											onChange={(checked: boolean) =>
 												handleCurrencyFilter(currency, !!checked)
 											}
 										/>

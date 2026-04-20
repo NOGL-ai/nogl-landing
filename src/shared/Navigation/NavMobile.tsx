@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronDown as ChevronDownIcon } from '@untitledui/icons';
 import React from "react";
 import ButtonClose from "@/shared/ButtonClose";
 import Logo from "@/shared/Logo";
@@ -7,7 +8,6 @@ import { Disclosure } from "@headlessui/react";
 import { NavItemType } from "./NavigationItem";
 import { NAVIGATION_DEMO } from "@/data/navigation";
 import SocialsList from "@/shared/SocialsList";
-import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import ThemeToggler from "@/components/atoms/ThemeToggler";
 import Link from "next/link";
 import { LangDropdown } from "@/components/molecules";

@@ -87,7 +87,7 @@ export function DataTableGlobalSearch<TData>({
 			<Input
 				placeholder={placeholder}
 				value={globalFilter}
-				onChange={(e) => handleSearchChange(e.target.value)}
+				onChange={(value) => handleSearchChange(value)}
 				className={`w-full border-border bg-white pl-10 pr-10 text-primary placeholder:text-tertiary transition-colors dark:border-border dark:bg-secondary_bg ${
 					isFiltered
 						? "border-blue-300 focus:border-blue-500 dark:border-blue-500 dark:focus:border-blue-400"

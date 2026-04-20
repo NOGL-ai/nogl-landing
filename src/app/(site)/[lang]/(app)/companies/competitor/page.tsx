@@ -1,5 +1,6 @@
 "use client";
 
+// eslint-disable-next-line no-restricted-imports -- icon has no @untitledui/icons equivalent; keep in lucide-react until UUI ships it
 import { GripVertical } from 'lucide-react';
 import { Download01 as Download, Plus, SearchLg as Search, Settings01 as Settings } from '@untitledui/icons';
 
