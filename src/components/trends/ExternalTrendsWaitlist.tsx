@@ -41,8 +41,8 @@ export function ExternalTrendsWaitlist() {
             type="email"
             placeholder="you@company.com"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
+            onChange={(value) => setEmail(value)}
+            isRequired
             className="flex-1"
           />
           <Button type="submit" color="primary" size="sm">

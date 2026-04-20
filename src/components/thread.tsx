@@ -1,6 +1,7 @@
+"use client";
+
 import { ArrowDown as ArrowDownIcon, ArrowUp as ArrowUpIcon, Check as CheckIcon, Copy01 as CopyIcon, Pencil01 as PencilIcon, ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon, RefreshCw01 as RefreshCwIcon, Square, VolumeMax as Volume2Icon, VolumeX as VolumeXIcon, ThumbsUp as ThumbsUpIcon, ThumbsDown as ThumbsDownIcon, HelpCircle as HelpCircleIcon } from '@untitledui/icons';
 // @ts-nocheck
-"use client";
 
 
 
@@ -360,7 +361,7 @@ const ComposerAction: FC = () => {
           <TooltipIconButton
             tooltip="Send message"
             side="bottom"
-            type="submit"            size="icon"
+            type="submit"            size="sm"
             className="aui-composer-send size-[34px] rounded-full p-1"
             aria-label="Send message"
           >
@@ -374,7 +375,7 @@ const ComposerAction: FC = () => {
           <Button
             type="button"
             color="secondary"
-            size="icon"
+            size="sm"
             className="aui-composer-cancel size-[34px] rounded-full border border-muted-foreground/60 hover:bg-primary/75 dark:border-muted-foreground/90"
             aria-label="Stop generating"
           >
@@ -617,4 +618,3 @@ const BranchPicker: FC<BranchPickerPrimitive.Root.Props> = ({
     </BranchPickerPrimitive.Root>
   );
 };
-

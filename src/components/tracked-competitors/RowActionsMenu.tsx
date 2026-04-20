@@ -1,5 +1,7 @@
-import { DotsHorizontal as MoreHorizontal, PauseCircle as Pause, Play, Pencil01 as Pencil, Trash01 as Trash2 } from '@untitledui/icons';
 "use client";
+import { DotsHorizontal as MoreHorizontal, PauseCircle as Pause, Play, Pencil01 as Pencil, Trash01 as Trash2 } from '@untitledui/icons';
+
+import { DotsHorizontal as MoreHorizontal, PauseCircle as Pause, Play, Pencil01 as Pencil, Trash01 as Trash2 } from '@untitledui/icons';
 
 import React, { useState } from "react";
 

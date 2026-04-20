@@ -1,3 +1,4 @@
+"use client";
 import {
   LinkExternal01 as ExternalLink,
   LayoutGrid01 as LayoutGrid,
@@ -6,7 +7,6 @@ import {
   ArrowUp,
   ArrowDown,
 } from '@untitledui/icons';
-"use client";
 
 import { useEffect, useMemo, useState } from "react";
 import {

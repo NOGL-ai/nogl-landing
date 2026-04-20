@@ -1,6 +1,7 @@
+"use client";
+
 import { SearchLg as Search, SwitchVertical01 as ArrowUpDown, ArrowUp, ArrowDown, DotsHorizontal as MoreHorizontal, Eye, Trash01 as Trash2, AlertCircle, Edit01 as Edit, CheckCircle } from '@untitledui/icons';
 // @ts-nocheck
-"use client";
 
 import React, { useMemo, useState, useCallback } from "react";
 import {
@@ -116,15 +117,15 @@ export default function MonitoredUrlsTable() {
 				header: ({ table }) => (
 					<Checkbox
 						checked={table.getIsAllPageRowsSelected()}
-						onCheckedChange={(v) => table.toggleAllPageRowsSelected(!!v)}
-						aria-label='Select all'
+						onChange={(v: boolean) => table.toggleAllPageRowsSelected(!!v)}
+						ariaLabel='Select all'
 					/>
 				),
 				cell: ({ row }) => (
 					<Checkbox
 						checked={row.getIsSelected()}
-						onCheckedChange={(v) => row.toggleSelected(!!v)}
-						aria-label='Select row'
+						onChange={(v: boolean) => row.toggleSelected(!!v)}
+						ariaLabel='Select row'
 					/>
 				),
 				enableSorting: false,
@@ -378,9 +379,9 @@ export default function MonitoredUrlsTable() {
 						<Input
 							placeholder='Search monitored URLs...'
 							value={globalFilter}
-							onChange={(e) => {
-								setGlobalFilter(e.target.value);
-								debouncedSetGlobalFilter(e.target.value);
+							onChange={(value) => {
+								setGlobalFilter(value);
+								debouncedSetGlobalFilter(value);
 							}}
 							className='w-full pl-10 sm:w-64 md:w-96'
 						/>
@@ -493,4 +494,3 @@ export default function MonitoredUrlsTable() {
 		</div>
 	);
 }
-

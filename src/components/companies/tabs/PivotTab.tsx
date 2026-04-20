@@ -1,5 +1,6 @@
-import { LayoutGrid01 as LayoutGrid, RefreshCcw01 as RefreshCcw } from '@untitledui/icons';
 "use client";
+
+import { LayoutGrid01 as LayoutGrid, RefreshCcw01 as RefreshCcw } from '@untitledui/icons';
 
 
 import { useEffect, useMemo, useState } from "react";

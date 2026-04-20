@@ -1,6 +1,7 @@
+"use client";
+
 import { Bell01 as Bell, Columns02 as Columns2, Lock01 as Lock } from '@untitledui/icons';
 // @ts-nocheck
-"use client";
 
 
 import { useTranslations } from "next-intl";
@@ -32,7 +33,7 @@ export function DashboardTopBar() {
           <Button
             type="button"
             color="tertiary"
-            size="icon"
+            size="sm"
             className="rounded-full"
             aria-label={t("chrome.notificationsAria")}
           >
@@ -45,7 +46,7 @@ export function DashboardTopBar() {
           <Button
             type="button"
             color="secondary"
-            size="icon"
+            size="sm"
             className="rounded-lg"
             aria-label={t("chrome.accountAria")}
           >
@@ -59,4 +60,3 @@ export function DashboardTopBar() {
     </div>
   );
 }
-

@@ -1,13 +1,8 @@
 "use client";
 
+import { CheckCircle as CheckCircleIcon, AlertTriangle as ExclamationTriangleIcon, InfoCircle as InformationCircleIcon, XCircle as XCircleIcon } from '@untitledui/icons';
 import React from "react";
 import { cn } from "@/lib/utils";
-import {
-	CheckCircleIcon,
-	ExclamationTriangleIcon,
-	InformationCircleIcon,
-	XCircleIcon,
-} from "@heroicons/react/24/outline";
 
 export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
 	variant?: "default" | "success" | "warning" | "error" | "info";

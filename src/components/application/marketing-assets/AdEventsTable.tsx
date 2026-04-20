@@ -1,5 +1,7 @@
-import { ChevronUp, ChevronDown, ChevronSelectorVertical as ChevronsUpDown, ChevronLeft, ChevronRight } from '@untitledui/icons';
 "use client";
+import { ChevronUp, ChevronDown, ChevronSelectorVertical as ChevronsUpDown, ChevronLeft, ChevronRight } from '@untitledui/icons';
+
+import { ChevronUp, ChevronDown, ChevronSelectorVertical as ChevronsUpDown, ChevronLeft, ChevronRight } from '@untitledui/icons';
 
 import { useState, useEffect, useCallback } from "react";
 import {
@@ -131,7 +133,7 @@ export function AdEventsTable() {
         <Input
           placeholder="Search account / run ID…"
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(value) => setSearch(value)}
           className="h-8 w-56 text-sm"
         />
         <FilterSelect label="Platform" value={platform} options={PLATFORMS} onChange={setPlatform} />

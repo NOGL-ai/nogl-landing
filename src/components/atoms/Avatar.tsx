@@ -1,5 +1,5 @@
+import { Award01 as CheckBadgeIcon } from '@untitledui/icons';
 import React from "react";
-import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 
 interface AvatarProps {
 	src?: string;

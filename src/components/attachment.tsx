@@ -1,6 +1,7 @@
+"use client";
+
 import { X as XIcon, Plus as PlusIcon, File01 as FileText } from '@untitledui/icons';
 // @ts-nocheck
-"use client";
 
 import { PropsWithChildren, useEffect, useState, type FC } from "react";
 import Image from "next/image";
@@ -225,8 +226,8 @@ export const ComposerAddAttachment: FC = () => {
       <TooltipIconButton
         tooltip="Add Attachment"
         side="bottom"
-        variant="ghost"
-        size="icon"
+        size="sm"
+        color="tertiary"
         className="aui-composer-add-attachment size-[34px] rounded-full p-1 text-xs font-semibold hover:bg-muted-foreground/15 dark:border-muted-foreground/15 dark:hover:bg-muted-foreground/30"
         aria-label="Add Attachment"
       >
@@ -235,4 +236,3 @@ export const ComposerAddAttachment: FC = () => {
     </ComposerPrimitive.AddAttachment>
   );
 };
-

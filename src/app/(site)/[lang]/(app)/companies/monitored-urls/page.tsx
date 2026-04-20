@@ -1,5 +1,5 @@
-import { ArrowDown, ArrowUp, Download01 as Download, Plus, SearchLg as Search, Settings01 as Settings, Loading01 as Loader2, SearchLg as SearchIcon, Upload01 as Upload } from '@untitledui/icons';
 'use client';
+import { ArrowDown, ArrowUp, Download01 as Download, Plus, SearchLg as Search, Settings01 as Settings, Loading01 as Loader2, SearchLg as SearchIcon, Upload01 as Upload } from '@untitledui/icons';
 
 /// <reference types="react" />
 import * as React from 'react';

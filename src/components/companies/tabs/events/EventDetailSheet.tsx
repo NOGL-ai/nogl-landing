@@ -1,5 +1,7 @@
-import { LinkExternal01 as ExternalLink } from '@untitledui/icons';
 "use client";
+import { LinkExternal01 as ExternalLink } from '@untitledui/icons';
+
+import { LinkExternal01 as ExternalLink } from '@untitledui/icons';
 
 
 

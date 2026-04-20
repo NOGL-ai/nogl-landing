@@ -1,8 +1,8 @@
 "use client";
 
+import { ChevronDown as ChevronDownIcon } from '@untitledui/icons';
 import React from "react";
 import { cn } from "@/lib/utils";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
 
 export interface SelectProps {
 	value?: string;
