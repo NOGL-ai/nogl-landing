@@ -1,7 +1,9 @@
+import { GripVertical } from 'lucide-react';
+import { Download01 as Download, Plus, SearchLg as Search, Settings01 as Settings } from '@untitledui/icons';
 "use client";
 
 import React from "react";
-import { Download, Plus, Search, Settings, GripVertical } from "lucide-react";
+
 import { useRouter } from "next/navigation";
 import {
   DndContext,

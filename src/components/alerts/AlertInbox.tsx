@@ -15,7 +15,7 @@ import {
 } from "@/actions/alerts";
 import type { AlertRow, AlertCountsResult } from "@/actions/alerts";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 import Checkbox from "@/components/ui/checkbox";
 import {
   Check,
@@ -159,11 +159,11 @@ export function AlertInbox({
           Alert Overview
         </h1>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" className="gap-1.5">
+          <Button color="secondary" size="sm" className="gap-1.5">
             <Settings03 className="size-4" />
             Columns
           </Button>
-          <Button variant="outline" size="sm" className="gap-1.5">
+          <Button color="secondary" size="sm" className="gap-1.5">
             <Download01 className="size-4" />
             Export
           </Button>
@@ -233,7 +233,7 @@ export function AlertInbox({
         </div>
 
         <div className="flex items-center gap-2 ml-auto">
-          <Button variant="outline" size="sm" className="gap-1.5 text-sm">
+          <Button color="secondary" size="sm" className="gap-1.5 text-sm">
             <FilterFunnel01 className="size-4" />
             Filter
           </Button>
@@ -249,7 +249,7 @@ export function AlertInbox({
           <div className="h-4 w-px bg-brand-200 dark:bg-brand-700" />
           <Button
             size="sm"
-            variant="outline"
+            color="secondary"
             onClick={handleBulkResolve}
             disabled={isPending}
             className="gap-1.5"
@@ -257,16 +257,16 @@ export function AlertInbox({
             <Check className="size-3.5" />
             Resolve
           </Button>
-          <Button size="sm" variant="outline" disabled className="gap-1.5">
+          <Button size="sm" color="secondary" disabled className="gap-1.5">
             <BellOff01 className="size-3.5" />
             Snooze
           </Button>
-          <Button size="sm" variant="outline" disabled className="gap-1.5">
+          <Button size="sm" color="secondary" disabled className="gap-1.5">
             <UserPlus01 className="size-3.5" />
             Assign to
           </Button>
           {audience === "CFO" && (
-            <Button size="sm" variant="outline" disabled>
+            <Button size="sm" color="secondary" disabled>
               Create Draft Order
             </Button>
           )}

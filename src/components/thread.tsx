@@ -1,22 +1,8 @@
+import { ArrowDown as ArrowDownIcon, ArrowUp as ArrowUpIcon, Check as CheckIcon, Copy01 as CopyIcon, Pencil01 as PencilIcon, ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon, RefreshCw01 as RefreshCwIcon, Square, VolumeMax as Volume2Icon, VolumeX as VolumeXIcon, ThumbsUp as ThumbsUpIcon, ThumbsDown as ThumbsDownIcon, HelpCircle as HelpCircleIcon } from '@untitledui/icons';
 // @ts-nocheck
 "use client";
 
-import {
-  ArrowDownIcon,
-  ArrowUpIcon,
-  CheckIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  CopyIcon,
-  PencilIcon,
-  RefreshCwIcon,
-  Square,
-  Volume2Icon,
-  VolumeXIcon,
-  ThumbsUpIcon,
-  ThumbsDownIcon,
-  HelpCircleIcon,
-} from "lucide-react";
+
 
 import {
   ActionBarPrimitive,
@@ -31,7 +17,7 @@ import type { FC, PropsWithChildren } from "react";
 import { LazyMotion, MotionConfig, domAnimation } from "motion/react";
 import * as m from "motion/react-m";
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 import { MarkdownText } from "@/components/markdown-text";
 import { ToolFallback } from "@/components/tool-fallback";
 import { TooltipIconButton } from "@/components/tooltip-icon-button";
@@ -223,7 +209,7 @@ const ThreadScrollToBottom: FC = () => {
     <ThreadPrimitive.ScrollToBottom asChild>
       <TooltipIconButton
         tooltip="Scroll to bottom"
-        variant="outline"
+        color="secondary"
         className="aui-thread-scroll-to-bottom absolute -top-12 z-10 self-center rounded-full p-4 disabled:invisible dark:bg-background dark:hover:bg-accent"
       >
         <ArrowDownIcon />
@@ -311,7 +297,7 @@ const ThreadSuggestions: FC = () => {
             asChild
           >
             <Button
-              variant="ghost"
+              color="tertiary"
               className="aui-thread-welcome-suggestion h-auto w-full flex-1 flex-wrap items-start justify-start gap-1 rounded-3xl border px-5 py-4 text-left text-sm @md:flex-col dark:hover:bg-accent/60"
               aria-label={suggestedAction.action}
             >
@@ -374,9 +360,7 @@ const ComposerAction: FC = () => {
           <TooltipIconButton
             tooltip="Send message"
             side="bottom"
-            type="submit"
-            variant="default"
-            size="icon"
+            type="submit"            size="icon"
             className="aui-composer-send size-[34px] rounded-full p-1"
             aria-label="Send message"
           >
@@ -389,7 +373,7 @@ const ComposerAction: FC = () => {
         <ComposerPrimitive.Cancel asChild>
           <Button
             type="button"
-            variant="default"
+            color="secondary"
             size="icon"
             className="aui-composer-cancel size-[34px] rounded-full border border-muted-foreground/60 hover:bg-primary/75 dark:border-muted-foreground/90"
             aria-label="Stop generating"
@@ -589,7 +573,7 @@ const EditComposer: FC = () => {
 
         <div className="aui-edit-composer-footer mx-3 mb-3 flex items-center justify-center gap-2 self-end">
           <ComposerPrimitive.Cancel asChild>
-            <Button variant="ghost" size="sm" aria-label="Cancel edit">
+            <Button color="tertiary" size="sm" aria-label="Cancel edit">
               Cancel
             </Button>
           </ComposerPrimitive.Cancel>

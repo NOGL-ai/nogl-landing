@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Input } from '@/components/base/input/input';
+import { Button } from '@/components/base/buttons/button';
 
 export function ExternalTrendsWaitlist() {
   const [email, setEmail] = useState("");
@@ -45,7 +45,7 @@ export function ExternalTrendsWaitlist() {
             required
             className="flex-1"
           />
-          <Button type="submit" variant="primary" size="sm">
+          <Button type="submit" color="primary" size="sm">
             Notify me
           </Button>
         </form>

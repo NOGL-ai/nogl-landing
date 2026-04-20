@@ -1,4 +1,5 @@
-import { FlaskConical } from "lucide-react";
+import { Beaker01 as FlaskConical } from '@untitledui/icons';
+
 import { PlaceholderPage } from "../_PlaceholderPage";
 
 export const metadata = { title: "Demand shaping — Fractional CFO | NOGL" };

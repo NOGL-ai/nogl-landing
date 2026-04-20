@@ -5,7 +5,7 @@ import type { AlertType } from "@prisma/client";
 import { upsertSubscription } from "@/actions/alerts";
 import type { SubscriptionRow } from "@/actions/alerts";
 import { TYPE_LABELS } from "./alertConfig";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 import { cn } from "@/lib/utils";
 import { Bell01, BellOff01, CheckCircle, Save01 } from "@untitledui/icons";
 import { toast } from "react-hot-toast";

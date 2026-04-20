@@ -1,14 +1,10 @@
+import { GripVertical } from 'lucide-react';
+import { Pencil01 as Pencil, Trash01 as Trash2Icon, Copy01 as Copy, DotsHorizontal as MoreHorizontalIcon } from '@untitledui/icons';
 "use client";
 
 import { Component, type ErrorInfo, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
-import {
-  Pencil,
-  Trash2Icon,
-  Copy,
-  GripVertical,
-  MoreHorizontalIcon,
-} from "lucide-react";
+
 import {
   DropdownMenu,
   DropdownMenuContent,

@@ -1,9 +1,10 @@
+import { X as XIcon, Plus as PlusIcon, File01 as FileText } from '@untitledui/icons';
 // @ts-nocheck
 "use client";
 
 import { PropsWithChildren, useEffect, useState, type FC } from "react";
 import Image from "next/image";
-import { XIcon, PlusIcon, FileText } from "lucide-react";
+
 import {
   AttachmentPrimitive,
   ComposerPrimitive,

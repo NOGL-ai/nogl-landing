@@ -3,7 +3,7 @@ import { ExpertDataType } from "@/data/types";
 import Link from "next/link";
 import Image from "next/image";
 import { StarIcon, CheckBadgeIcon, EyeIcon } from "@heroicons/react/24/solid";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 
 export interface ExperiencesCardProps {
 	className?: string;

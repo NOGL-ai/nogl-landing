@@ -1,10 +1,11 @@
+import { Plus as PlusIcon, LayoutGrid01 as LayoutDashboardIcon, Clock as ClockIcon } from '@untitledui/icons';
 import { Suspense } from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { listDashboards, createDashboard } from "@/actions/dashboards";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 import { Badge } from "@/components/ui/badge";
-import { PlusIcon, LayoutDashboardIcon, ClockIcon } from "lucide-react";
+
 import type { Locale } from "@/i18n";
 import { DashboardCreateButton } from "@/components/dashboards/DashboardCreateButton";
 
@@ -121,7 +122,7 @@ function DashboardCard({
           {timeAgo}
         </span>
         {dashboard.isShared && (
-          <Badge variant="secondary" className="text-xs">
+          <Badge color="secondary" className="text-xs">
             Shared
           </Badge>
         )}

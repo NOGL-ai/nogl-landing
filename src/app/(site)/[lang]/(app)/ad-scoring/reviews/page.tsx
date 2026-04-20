@@ -1,5 +1,5 @@
+import { Eye, CheckCircle as CheckCircle2, XCircle, MinusCircle, Clock } from '@untitledui/icons';
 import React from "react";
-import { Eye, CheckCircle2, XCircle, MinusCircle, Clock } from "lucide-react";
 import type { Locale } from "@/i18n";
 import type { ReviewOut, ReviewState } from "@/lib/ad-scoring/types";
 

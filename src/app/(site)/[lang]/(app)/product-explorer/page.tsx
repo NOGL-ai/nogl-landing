@@ -1,5 +1,6 @@
+import { SearchLg as Search, Package, LinkExternal01 as ExternalLink } from '@untitledui/icons';
 import Link from "next/link";
-import { Search, Package, ExternalLink } from "lucide-react";
+
 import { getScrapedProducts } from "@/lib/scrapedProducts";
 
 export const dynamic = "force-dynamic";

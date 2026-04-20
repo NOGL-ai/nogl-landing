@@ -1,5 +1,6 @@
+import { TrendDown01 as TrendingDown, TrendUp01 as TrendingUp, Minus } from '@untitledui/icons';
 import React from "react";
-import { TrendingDown, TrendingUp, Minus } from "lucide-react";
+
 import { cn } from "@/lib/utils";
 
 interface Props {

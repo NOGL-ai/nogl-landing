@@ -12,7 +12,7 @@ import {
   SheetDescription,
   SheetFooter,
 } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 import { Badge } from "@/components/ui/badge";
 import { SEVERITY_COLORS, TYPE_LABELS } from "./alertConfig";
 import { cn } from "@/lib/utils";
@@ -235,7 +235,7 @@ function CmoPriceDetail({ meta }: { meta: Record<string, unknown> }) {
       )}
       {meta.priceDeltaPct != null && (
         <Badge
-          variant="outline"
+          color="secondary"
           className="mt-2 text-error-600 dark:text-error-400 border-error-200 dark:border-error-800"
         >
           {(meta.priceDeltaPct as number) > 0 ? "+" : ""}

@@ -1,8 +1,8 @@
 "use client";
 
+import { Loading01 as Loader2, CheckCircle as CheckCircle2, AlertCircle } from '@untitledui/icons';
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 import { decideReview } from "@/lib/ad-scoring/client";
 import type { ReviewDecision } from "@/lib/ad-scoring/types";
 

@@ -1,7 +1,7 @@
 "use client";
 
+import { DotsVertical as MoreVerticalIcon } from '@untitledui/icons';
 import React, { useEffect, useState } from "react";
-import { MoreVerticalIcon } from "lucide-react";
 
 interface PieChartDataPoint {
 	label: string;

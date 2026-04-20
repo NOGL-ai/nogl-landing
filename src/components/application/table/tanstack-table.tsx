@@ -1,3 +1,4 @@
+import { ArrowDown, ArrowUp, ChevronSelectorVertical as ChevronsUpDown } from '@untitledui/icons';
 "use client";
 
 import React, { useState, useMemo } from 'react';
@@ -14,7 +15,7 @@ import {
   type PaginationState,
   type ColumnFiltersState,
 } from '@tanstack/react-table';
-import { ArrowDown, ArrowUp, ChevronsUpDown } from 'lucide-react';
+
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import Checkbox from '@/components/ui/checkbox';
 import type { TrendComputation } from '@/utils/priceTrend';

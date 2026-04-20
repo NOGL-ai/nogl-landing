@@ -1,18 +1,19 @@
+import { Bell01 as Bell, Columns02 as Columns2, Lock01 as Lock } from '@untitledui/icons';
 // @ts-nocheck
 "use client";
 
-import { Bell, Columns2, Lock } from "lucide-react";
+
 import { useTranslations } from "next-intl";
 import { Suspense } from "react";
 
 import { DateRangeSelect } from "@/components/dashboard/DateRangeSelect";
 import { ProductSearchField } from "@/components/dashboard/ProductSearchField";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 
 function DateRangeFallback() {
   const t = useTranslations("companies");
   return (
-    <Button type="button" variant="outline" size="sm" className="gap-2 rounded-full" disabled>
+    <Button type="button" color="secondary" size="sm" className="gap-2 rounded-full" disabled>
       {t("chrome.rangeLast4w")}
     </Button>
   );
@@ -30,20 +31,20 @@ export function DashboardTopBar() {
         <div className="flex flex-shrink-0 items-center justify-end gap-2">
           <Button
             type="button"
-            variant="ghost"
+            color="tertiary"
             size="icon"
             className="rounded-full"
             aria-label={t("chrome.notificationsAria")}
           >
             <Bell className="h-5 w-5" />
           </Button>
-          <Button type="button" variant="outline" size="sm" className="gap-2 rounded-full text-foreground">
+          <Button type="button" color="secondary" size="sm" className="gap-2 rounded-full text-foreground">
             <Columns2 className="h-4 w-4" aria-hidden />
             {t("chrome.compare")}
           </Button>
           <Button
             type="button"
-            variant="default"
+            color="secondary"
             size="icon"
             className="rounded-lg"
             aria-label={t("chrome.accountAria")}

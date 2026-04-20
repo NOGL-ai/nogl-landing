@@ -1,3 +1,4 @@
+import { Check as CheckIcon, X as XIcon, AlertTriangle as AlertTriangleIcon, LinkExternal01 as ExternalLinkIcon } from '@untitledui/icons';
 /**
  * Competitor Approval UI Component
  * 
@@ -9,14 +10,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from '@/components/base/buttons/button';
+import { Input } from '@/components/base/input/input';
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { CheckIcon, XIcon, AlertTriangleIcon, ExternalLinkIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface CompetitorData {
@@ -240,7 +240,7 @@ export function CompetitorApprovalUI({ addResult, args }: CompetitorApprovalProp
                 {args.action === "CREATE_COMPETITOR" ? "New Competitor Data:" : "Updated Data:"}
               </h4>
               <Button
-                variant="outline"
+                color="secondary"
                 size="sm"
                 onClick={() => setIsEditing(!isEditing)}
               >
@@ -350,7 +350,7 @@ export function CompetitorApprovalUI({ addResult, args }: CompetitorApprovalProp
                 {(formData.categories || []).map((category) => (
                   <Badge
                     key={category}
-                    variant="secondary"
+                    color="secondary"
                     className="flex items-center gap-1"
                   >
                     {category}
@@ -386,7 +386,7 @@ export function CompetitorApprovalUI({ addResult, args }: CompetitorApprovalProp
           </div>
           <div className="flex gap-2">
             <Button
-              variant="outline"
+              color="secondary"
               onClick={handleReject}
               className="text-red-600 hover:text-red-700"
             >

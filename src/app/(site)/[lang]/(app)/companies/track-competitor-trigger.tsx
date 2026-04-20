@@ -1,7 +1,8 @@
+import { Plus } from '@untitledui/icons';
 "use client";
 
 import React from "react";
-import { Plus } from "lucide-react";
+
 
 import TrackCompetitorModal from "@/components/molecules/TrackCompetitorModal";
 

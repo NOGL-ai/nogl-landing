@@ -1,7 +1,8 @@
+import { ChevronDown, ChevronRight, SearchLg as Search } from '@untitledui/icons';
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, ChevronRight, Search } from "lucide-react";
+
 import type { CategoryWithVariants } from "@/types/forecast";
 
 interface CategoryMenuProps {

@@ -1,9 +1,11 @@
+import { GripVertical } from 'lucide-react';
+import { Plus } from '@untitledui/icons';
 "use client";
 
 import React, { useState, useTransition, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { Plus, GripVertical } from "lucide-react";
+
 import {
   DndContext,
   closestCenter,

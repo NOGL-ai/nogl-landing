@@ -1,3 +1,4 @@
+import { Check as CheckIcon, X as XIcon, Mail01 as MailIcon, Eye as EyeIcon, Edit01 as EditIcon, LinkExternal01 as ExternalLinkIcon } from '@untitledui/icons';
 /**
  * Email Approval UI Component
  * 
@@ -9,14 +10,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from '@/components/base/buttons/button';
+import { Input } from '@/components/base/input/input';
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CheckIcon, XIcon, MailIcon, EyeIcon, EditIcon, ExternalLinkIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface EmailData {
@@ -214,7 +214,7 @@ export function EmailApprovalUI({ addResult, args }: EmailApprovalProps) {
                       <span className="text-sm font-medium w-12">CC:</span>
                       <div className="flex flex-wrap gap-1">
                         {formData.cc.map((email, index) => (
-                          <Badge key={index} variant="secondary" className="text-xs">
+                          <Badge key={index} color="secondary" className="text-xs">
                             {email}
                           </Badge>
                         ))}
@@ -227,7 +227,7 @@ export function EmailApprovalUI({ addResult, args }: EmailApprovalProps) {
                       <span className="text-sm font-medium w-12">BCC:</span>
                       <div className="flex flex-wrap gap-1">
                         {formData.bcc.map((email, index) => (
-                          <Badge key={index} variant="outline" className="text-xs">
+                          <Badge key={index} color="secondary" className="text-xs">
                             {email}
                           </Badge>
                         ))}
@@ -251,7 +251,7 @@ export function EmailApprovalUI({ addResult, args }: EmailApprovalProps) {
                     <div className="text-sm font-medium mb-2">Attachments:</div>
                     <div className="flex flex-wrap gap-2">
                       {formData.attachments.map((attachment, index) => (
-                        <Badge key={index} variant="outline" className="flex items-center gap-1">
+                        <Badge key={index} color="secondary" className="flex items-center gap-1">
                           <ExternalLinkIcon className="h-3 w-3" />
                           {attachment}
                         </Badge>
@@ -318,7 +318,7 @@ export function EmailApprovalUI({ addResult, args }: EmailApprovalProps) {
                 </div>
                 <div className="flex flex-wrap gap-1">
                   {(formData.cc || []).map((email, index) => (
-                    <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                    <Badge key={index} color="secondary" className="flex items-center gap-1">
                       {email}
                       <button
                         onClick={() => removeRecipient("cc", email)}
@@ -350,7 +350,7 @@ export function EmailApprovalUI({ addResult, args }: EmailApprovalProps) {
                 </div>
                 <div className="flex flex-wrap gap-1">
                   {(formData.bcc || []).map((email, index) => (
-                    <Badge key={index} variant="outline" className="flex items-center gap-1">
+                    <Badge key={index} color="secondary" className="flex items-center gap-1">
                       {email}
                       <button
                         onClick={() => removeRecipient("bcc", email)}
@@ -387,7 +387,7 @@ export function EmailApprovalUI({ addResult, args }: EmailApprovalProps) {
           </div>
           <div className="flex gap-2">
             <Button
-              variant="outline"
+              color="secondary"
               onClick={handleReject}
               className="text-red-600 hover:text-red-700"
             >
