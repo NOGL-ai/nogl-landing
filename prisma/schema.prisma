@@ -314,6 +314,7 @@ model Company {
   snapshot              CompanySnapshot?
   events                CompanyEvent[]
   assets                CompanyAsset[]
+  forecastTenant        ForecastTenant?
   trackedCompetitors    TrackedCompetitor[] @relation("TenantCompetitors")
   trackedByTenants      TrackedCompetitor[] @relation("CompetitorOf")
   notifications         Notification[]
@@ -669,6 +670,7 @@ model ForecastTenant {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
+  company      Company                      @relation(fields: [companyId], references: [id], onDelete: Cascade)
   saleChannels ForecastSaleChannel[]
   products     ForecastProduct[]
   annotations  ForecastAnnotation[]
@@ -736,12 +738,13 @@ model ForecastVariant {
 }
 
 model ForecastHistoricalSale {
-  id        String   @id @default(cuid())
-  variantId String
-  channelId String
-  saleDate  DateTime @db.Date
-  quantity  Float    @default(0)
-  revenue   Float    @default(0)
+  id         String   @id @default(cuid())
+  variantId  String
+  channelId  String
+  saleDate   DateTime @db.Date
+  quantity   Float    @default(0)
+  revenue    Float    @default(0)
+  isStockout Boolean  @default(false) // censored-demand marker
 
   variant ForecastVariant     @relation(fields: [variantId], references: [id], onDelete: Cascade)
   channel ForecastSaleChannel @relation(fields: [channelId], references: [id], onDelete: Cascade)

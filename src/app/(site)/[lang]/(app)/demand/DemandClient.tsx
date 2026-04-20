@@ -1,389 +1,329 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
-import { addDays, subDays, format } from "date-fns";
-import { Download02 } from "@untitledui/icons";
+import { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { addDays, format, startOfDay } from "date-fns";
+
+import {
+  FORECAST_CHANNELS,
+  FORECAST_HISTORY_DAYS,
+  FORECAST_HORIZON_DAYS,
+  FORECAST_QUANTILES,
+  type ForecastChannelName,
+  type ForecastQuantile,
+  type ForecastScale,
+  type ForecastMetric,
+} from "@/config/forecast";
 import {
   getForecastCategories,
-  getForecastSales,
   getForecastRevenue,
-  getForecastAnnotations,
+  getForecastSales,
+  getForecastSummary,
+  type ForecastCategoryDTO,
+  type ForecastResponse,
+  type ForecastSummaryDTO,
 } from "@/actions/forecast";
-import { ForecastChart } from "@/components/forecast/charts/ForecastChart";
-import { ComparisonForecastChart } from "@/components/forecast/charts/ComparisonForecastChart";
-import { FilterPanel } from "@/components/forecast/FilterPanel";
-import { ExportModal } from "@/components/forecast/ExportModal";
-import { ForecastLoadingSkeleton } from "@/components/forecast/ForecastLoadingSkeleton";
-import {
-  CHANNEL_CONFIGS,
-  DEFAULT_CHANNEL_NAMES,
-  FORECAST_SESSION_KEY,
-} from "@/config/forecast";
-import type {
-  ForecastMetric,
-  ForecastScale,
-  ForecastQuantileValue,
-  ForecastResponse,
-  CategoryWithVariants,
-  ForecastAnnotation,
-  ForecastAnnotationKind,
-} from "@/types/forecast";
-
-const ANNOTATION_LAYER_LABELS: Record<ForecastAnnotationKind, string> = {
-  event_spike: "Events",
-  out_of_stock: "Stock-outs",
-  promotion: "Promotions",
-  launch: "Launches",
-};
-
-const ALL_ANNOTATION_KINDS: ForecastAnnotationKind[] = [
-  "event_spike",
-  "out_of_stock",
-  "promotion",
-  "launch",
-];
+import { cx } from "@/utils/cx";
+import { ForecastChart } from "./ForecastChart";
 
 interface DemandClientProps {
   companyId: string;
   companyName: string;
   companyDomain: string;
+  isDemoTenant: boolean;
 }
 
-export default function DemandClient({
+const ALL_CHANNEL_NAMES: readonly ForecastChannelName[] = FORECAST_CHANNELS.map((c) => c.name);
+
+export function DemandClient({
   companyId,
   companyName,
   companyDomain,
+  isDemoTenant,
 }: DemandClientProps) {
-  const today = new Date();
+  // ─── State ────────────────────────────────────────────────────────────
+  const today = startOfDay(new Date());
+  const [startDate] = useState(() => addDays(today, -FORECAST_HISTORY_DAYS));
+  const [endDate] = useState(() => addDays(today, FORECAST_HORIZON_DAYS));
   const [metric, setMetric] = useState<ForecastMetric>("sale");
   const [scale, setScale] = useState<ForecastScale>("daily");
-  const [quantile, setQuantile] = useState<ForecastQuantileValue>(4);
-  const [dateRange, setDateRange] = useState({
-    start: format(subDays(today, 14), "yyyy-MM-dd"),
-    end: format(addDays(today, 60), "yyyy-MM-dd"),
-  });
-  const [categories, setCategories] = useState<string[]>([]);
-  const [variantIds, setVariantIds] = useState<string[]>([]);
-  const [channels, setChannels] = useState<string[]>([...DEFAULT_CHANNEL_NAMES]);
-  const [isSet, setIsSet] = useState<boolean | undefined>(undefined);
-  const [comparisonMode, setComparisonMode] = useState(false);
-  const [comparedDateRange, setComparedDateRange] = useState({
-    start: "",
-    end: "",
-  });
-
-  const [salesData, setSalesData] = useState<ForecastResponse | null>(null);
-  const [revenueData, setRevenueData] = useState<ForecastResponse | null>(null);
-  const [comparedSales, setComparedSales] = useState<ForecastResponse | null>(null);
-  const [comparedRevenue, setComparedRevenue] = useState<ForecastResponse | null>(null);
-  const [allCategories, setAllCategories] = useState<CategoryWithVariants[]>([]);
-  const [annotations, setAnnotations] = useState<ForecastAnnotation[]>([]);
-  const [enabledKinds, setEnabledKinds] = useState<Set<ForecastAnnotationKind>>(
-    () => new Set<ForecastAnnotationKind>(ALL_ANNOTATION_KINDS)
+  const [quantile, setQuantile] = useState<ForecastQuantile>(4);
+  const [activeChannels, setActiveChannels] = useState<ReadonlySet<ForecastChannelName>>(
+    () => new Set(ALL_CHANNEL_NAMES),
   );
-  const [isLoading, setIsLoading] = useState(false);
-  const [exportOpen, setExportOpen] = useState(false);
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
-  // Load categories once
-  useEffect(() => {
-    getForecastCategories(companyId).then(setAllCategories).catch(console.error);
-  }, [companyId]);
+  // ─── Data ─────────────────────────────────────────────────────────────
+  const summaryQuery = useQuery<ForecastSummaryDTO>({
+    queryKey: ["forecast-summary", companyId],
+    queryFn: () => getForecastSummary(companyId),
+    staleTime: 60_000,
+  });
 
-  // Restore from sessionStorage
-  useEffect(() => {
-    try {
-      const saved = sessionStorage.getItem(FORECAST_SESSION_KEY(companyId));
-      if (saved) {
-        const s = JSON.parse(saved);
-        if (s.metric) setMetric(s.metric);
-        if (s.scale) setScale(s.scale);
-        if (s.quantile) setQuantile(s.quantile);
-        if (s.dateRange) setDateRange(s.dateRange);
-        if (s.categories) setCategories(s.categories);
-        if (s.channels) setChannels(s.channels);
-      }
-    } catch {
-      /* ignore */
-    }
-  }, [companyId]);
+  const categoriesQuery = useQuery<ForecastCategoryDTO[]>({
+    queryKey: ["forecast-categories", companyId],
+    queryFn: () => getForecastCategories(companyId),
+    staleTime: 60_000,
+  });
 
-  // Persist to sessionStorage
-  useEffect(() => {
-    try {
-      sessionStorage.setItem(
-        FORECAST_SESSION_KEY(companyId),
-        JSON.stringify({ metric, scale, quantile, dateRange, categories, channels })
-      );
-    } catch {
-      /* ignore */
-    }
-  }, [metric, scale, quantile, dateRange, categories, channels, companyId]);
-
-  // Debounced data fetch
-  const fetchData = useCallback(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(async () => {
-      setIsLoading(true);
+  const timeseriesQuery = useQuery<ForecastResponse>({
+    queryKey: [
+      "forecast-timeseries",
+      companyId,
+      metric,
+      scale,
+      quantile,
+      activeCategory,
+      Array.from(activeChannels).sort().join(","),
+      startDate.toISOString(),
+      endDate.toISOString(),
+    ],
+    queryFn: () => {
       const params = {
         companyId,
-        start: dateRange.start,
-        end: dateRange.end,
-        categories,
-        variantIds,
-        channels: channels as ("web" | "marketplace" | "b2b")[],
-        isSet,
-        scale,
+        startDate,
+        endDate,
+        channels: Array.from(activeChannels),
+        categories: activeCategory ? [activeCategory] : undefined,
         quantile,
+        scale,
       };
-      try {
-        const [sales, revenue, anns] = await Promise.all([
-          getForecastSales(params),
-          getForecastRevenue(params),
-          getForecastAnnotations({
-            companyId,
-            start: dateRange.start,
-            end: dateRange.end,
-          }),
-        ]);
-        setSalesData(sales);
-        setRevenueData(revenue);
-        setAnnotations(anns);
-
-        if (comparisonMode && comparedDateRange.start) {
-          const cParams = {
-            ...params,
-            start: comparedDateRange.start,
-            end: comparedDateRange.end,
-          };
-          const [cs, cr] = await Promise.all([
-            getForecastSales(cParams),
-            getForecastRevenue(cParams),
-          ]);
-          setComparedSales(cs);
-          setComparedRevenue(cr);
-        }
-      } catch (err) {
-        console.error("[DemandClient] fetch error:", err);
-      } finally {
-        setIsLoading(false);
-      }
-    }, 500);
-  }, [
-    companyId,
-    dateRange,
-    categories,
-    variantIds,
-    channels,
-    isSet,
-    scale,
-    quantile,
-    comparisonMode,
-    comparedDateRange,
-  ]);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
-  const activeData = metric === "sale" ? salesData : revenueData;
-  const activeCompared = metric === "sale" ? comparedSales : comparedRevenue;
-
-  const visibleChannels = CHANNEL_CONFIGS.filter((c) => channels.includes(c.name));
-
-  const visibleAnnotations = annotations.filter((a) => enabledKinds.has(a.kind));
-
-  const annotationLayers = ALL_ANNOTATION_KINDS.map((kind) => ({
-    kind,
-    label: ANNOTATION_LAYER_LABELS[kind],
-    enabled: enabledKinds.has(kind),
-    onToggle: () => {
-      setEnabledKinds((prev) => {
-        const next = new Set(prev);
-        if (next.has(kind)) next.delete(kind);
-        else next.add(kind);
-        return next;
-      });
+      return metric === "sale" ? getForecastSales(params) : getForecastRevenue(params);
     },
-  }));
+    staleTime: 60_000,
+  });
 
-  const prettyRange = `${dateRange.start.split("-").reverse().join(".")} – ${dateRange.end.split("-").reverse().join(".")}`;
-  const prettyCompared = comparedDateRange.start
-    ? `${comparedDateRange.start.split("-").reverse().join(".")} – ${comparedDateRange.end.split("-").reverse().join(".")}`
-    : "";
+  // ─── Derived ──────────────────────────────────────────────────────────
+  const categories = categoriesQuery.data ?? [];
+  const timeseries = timeseriesQuery.data;
+  const summary = summaryQuery.data;
 
-  const productContextLabel =
-    categories.length === 1
-      ? categories[0]
-      : variantIds.length === 1
-        ? "Selected variant"
-        : "All products";
+  const kpis = useMemo(
+    () => [
+      { label: "Total Products", value: summary?.totalProducts?.toLocaleString() ?? "—" },
+      {
+        label: "Avg Price (€)",
+        value: summary ? `€${summary.avgRrp.toFixed(2)}` : "—",
+      },
+      { label: "Channels", value: summary?.channels?.toString() ?? "—" },
+    ],
+    [summary],
+  );
 
-  // One shared onApply handler — used by all FilterPanel triggers so the
-  // comparison toggle + date live in ONE surface (the slide-over).
-  const handleApplyFilters = (f: {
-    dateRange: { start: string; end: string };
-    categories: string[];
-    variantIds: string[];
-    channels: string[];
-    scale: ForecastScale;
-    quantile: ForecastQuantileValue;
-    isSet?: boolean;
-    comparisonMode: boolean;
-    comparedDateRange: { start: string; end: string };
-  }) => {
-    setCategories(f.categories);
-    setVariantIds(f.variantIds);
-    setChannels(f.channels);
-    setScale(f.scale);
-    setQuantile(f.quantile);
-    setIsSet(f.isSet);
-    setDateRange(f.dateRange);
-    setComparisonMode(f.comparisonMode);
-    setComparedDateRange(f.comparedDateRange);
+  // ─── Handlers ─────────────────────────────────────────────────────────
+  const toggleChannel = (name: ForecastChannelName) => {
+    setActiveChannels((prev) => {
+      const next = new Set(prev);
+      if (next.has(name)) {
+        // Keep at least one channel active
+        if (next.size === 1) return prev;
+        next.delete(name);
+      } else {
+        next.add(name);
+      }
+      return next;
+    });
   };
 
+  // ─── Render ───────────────────────────────────────────────────────────
   return (
-    <div className="flex flex-col gap-4">
-      {/* Header — readable company name + product context badge */}
-      <div className="flex flex-wrap items-center gap-3">
-        <div className="flex flex-col">
-          <h1 className="text-2xl font-semibold text-primary">
-            Forecast for {companyName}
-          </h1>
-          <p className="text-sm text-tertiary">{companyDomain}</p>
-        </div>
-        <span className="inline-flex max-w-full items-center rounded-full border border-border-secondary bg-bg-secondary px-3 py-1 text-sm text-secondary">
-          {productContextLabel}
-        </span>
+    <div className="min-h-screen bg-bg-secondary p-6">
+      <div className="mx-auto flex max-w-7xl flex-col gap-6">
+        <header className="flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-semibold text-text-primary">Demand forecast</h1>
+            <p className="text-sm text-text-secondary">
+              {companyName}{" "}
+              <span className="text-text-tertiary">· {companyDomain}</span>
+              {isDemoTenant ? (
+                <span className="ml-2 rounded-full bg-bg-brand-secondary px-2 py-0.5 text-xs font-medium text-brand-secondary">
+                  demo data
+                </span>
+              ) : null}
+            </p>
+          </div>
+        </header>
 
-        <div className="ml-auto">
-          <button
-            type="button"
-            onClick={() => setExportOpen(true)}
-            className="inline-flex items-center gap-2 rounded-lg border border-border-secondary bg-bg-primary px-3 py-2 text-sm font-medium text-secondary transition-colors hover:bg-bg-secondary focus:outline-none focus:ring-2 focus:ring-border-brand"
-          >
-            <Download02 className="h-4 w-4" aria-hidden="true" />
-            Export
-          </button>
-        </div>
-      </div>
+        {/* KPIs */}
+        <section className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          {kpis.map((kpi) => (
+            <div
+              key={kpi.label}
+              className="rounded-xl border border-border-primary bg-background p-4"
+            >
+              <div className="text-xs uppercase tracking-wide text-text-tertiary">{kpi.label}</div>
+              <div className="mt-1 text-2xl font-semibold text-text-primary">{kpi.value}</div>
+            </div>
+          ))}
+        </section>
 
-      {/* Filter bar — 4 labelled fields */}
-      <div className="grid grid-cols-1 gap-3 rounded-xl border border-border-secondary bg-bg-primary p-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-medium text-tertiary">Metric</label>
-          <select
+        {/* Controls */}
+        <section className="flex flex-wrap items-center gap-3 rounded-xl border border-border-primary bg-background p-4">
+          <ToggleGroup
+            label="Metric"
+            options={[
+              { value: "sale", label: "Units" },
+              { value: "revenue", label: "Revenue" },
+            ]}
             value={metric}
-            onChange={(e) => setMetric(e.target.value as ForecastMetric)}
-            className="h-10 rounded-lg border border-border-secondary bg-bg-primary px-3 text-sm text-primary focus:outline-none focus:ring-2 focus:ring-border-brand"
-          >
-            <option value="sale">Sales quantity</option>
-            <option value="revenue">Revenue (€)</option>
-          </select>
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-medium text-tertiary">Granularity</label>
-          <select
+            onChange={setMetric}
+          />
+          <ToggleGroup
+            label="Scale"
+            options={[
+              { value: "daily", label: "D" },
+              { value: "weekly", label: "W" },
+              { value: "monthly", label: "M" },
+            ]}
             value={scale}
-            onChange={(e) => setScale(e.target.value as ForecastScale)}
-            className="h-10 rounded-lg border border-border-secondary bg-bg-primary px-3 text-sm text-primary focus:outline-none focus:ring-2 focus:ring-border-brand"
-          >
-            <option value="daily">Daily</option>
-            <option value="weekly">Weekly</option>
-            <option value="monthly">Monthly</option>
-          </select>
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-medium text-tertiary">Time frame</label>
-          <FilterPanel
-            categories={allCategories}
-            selectedCategories={categories}
-            selectedVariants={variantIds}
-            selectedChannels={channels}
-            scale={scale}
-            quantile={quantile}
-            isSet={isSet}
-            dateRange={dateRange}
-            comparisonMode={comparisonMode}
-            comparedDateRange={comparedDateRange}
-            onApply={handleApplyFilters}
-            triggerLabel={prettyRange}
-            triggerVariant="field"
+            onChange={setScale}
           />
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-medium text-tertiary">Compare to</label>
-          <FilterPanel
-            categories={allCategories}
-            selectedCategories={categories}
-            selectedVariants={variantIds}
-            selectedChannels={channels}
-            scale={scale}
-            quantile={quantile}
-            isSet={isSet}
-            dateRange={dateRange}
-            comparisonMode={comparisonMode}
-            comparedDateRange={comparedDateRange}
-            onApply={handleApplyFilters}
-            triggerLabel={
-              comparisonMode && prettyCompared
-                ? prettyCompared
-                : "Add a comparison period"
-            }
-            triggerVariant="field"
-            initialSection="comparison"
+          <ToggleGroup
+            label="Quantile"
+            options={FORECAST_QUANTILES.map((q) => ({
+              value: q,
+              label: q === 3 ? "P30" : q === 5 ? "P70" : "Median",
+            }))}
+            value={quantile}
+            onChange={setQuantile}
           />
-        </div>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-text-tertiary">Channels</span>
+            {FORECAST_CHANNELS.map((c) => {
+              const active = activeChannels.has(c.name);
+              return (
+                <button
+                  key={c.name}
+                  type="button"
+                  onClick={() => toggleChannel(c.name)}
+                  aria-pressed={active}
+                  className={cx(
+                    "rounded-full border px-3 py-1 text-xs font-medium transition",
+                    active
+                      ? "border-transparent text-white"
+                      : "border-border-primary text-text-tertiary hover:text-text-primary",
+                  )}
+                  style={active ? { backgroundColor: c.colorFg } : undefined}
+                >
+                  {c.label}
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* Category chips */}
+        {categories.length > 0 ? (
+          <section className="flex flex-wrap items-center gap-2">
+            <span className="text-xs text-text-tertiary">Category:</span>
+            <button
+              type="button"
+              onClick={() => setActiveCategory(null)}
+              className={cx(
+                "rounded-full border px-3 py-1 text-xs font-medium",
+                activeCategory === null
+                  ? "border-brand-solid bg-bg-brand-secondary text-brand-secondary"
+                  : "border-border-primary text-text-tertiary hover:text-text-primary",
+              )}
+            >
+              All
+            </button>
+            {categories.map((cat) => (
+              <button
+                key={cat.category}
+                type="button"
+                onClick={() =>
+                  setActiveCategory((prev) => (prev === cat.category ? null : cat.category))
+                }
+                className={cx(
+                  "rounded-full border px-3 py-1 text-xs font-medium capitalize",
+                  activeCategory === cat.category
+                    ? "border-brand-solid bg-bg-brand-secondary text-brand-secondary"
+                    : "border-border-primary text-text-tertiary hover:text-text-primary",
+                )}
+              >
+                {cat.category} ({cat.variants.length})
+              </button>
+            ))}
+          </section>
+        ) : null}
+
+        {/* Chart */}
+        <section className="rounded-xl border border-border-primary bg-background p-4">
+          {timeseriesQuery.isLoading ? (
+            <ChartSkeleton />
+          ) : timeseriesQuery.isError ? (
+            <div className="flex h-80 items-center justify-center text-sm text-error-primary">
+              Failed to load forecast:{" "}
+              {(timeseriesQuery.error as Error)?.message ?? "Unknown error"}
+            </div>
+          ) : timeseries ? (
+            <ForecastChart
+              data={timeseries}
+              metric={metric}
+              activeChannels={activeChannels}
+            />
+          ) : null}
+        </section>
+
+        {/* Footer: data date range */}
+        <footer className="text-xs text-text-tertiary">
+          Showing {format(startDate, "yyyy-MM-dd")} → {format(endDate, "yyyy-MM-dd")} · Quantile{" "}
+          {quantile === 4 ? "P50 (median)" : quantile === 3 ? "P30" : "P70"} · Scale {scale}
+        </footer>
       </div>
+    </div>
+  );
+}
 
-      {/* Chart area */}
-      {isLoading ? (
-        <ForecastLoadingSkeleton />
-      ) : comparisonMode && activeData && activeCompared ? (
-        <ComparisonForecastChart
-          primaryData={activeData.channels}
-          comparedData={activeCompared.channels}
-          primaryLabel={`${dateRange.start} – ${dateRange.end}`}
-          comparedLabel={`${comparedDateRange.start} – ${comparedDateRange.end}`}
-          metric={metric}
-          scale={scale}
-          quantile={quantile}
-          channels={visibleChannels}
-          annotations={visibleAnnotations}
-          annotationLayers={annotationLayers}
-        />
-      ) : activeData ? (
-        <ForecastChart
-          data={activeData.channels}
-          metric={metric}
-          scale={scale}
-          quantile={quantile}
-          channels={visibleChannels}
-          startForecastDate={activeData.startForecastDate}
-          annotations={visibleAnnotations}
-          annotationLayers={annotationLayers}
-        />
-      ) : (
-        <div className="flex h-[360px] items-center justify-center rounded-xl border border-border-secondary bg-bg-primary">
-          <p className="text-sm text-tertiary">
-            We couldn&apos;t find a forecast for this range. Try widening the date
-            range or clearing category filters.
-          </p>
-        </div>
-      )}
+// ─── Reusable bits (kept local; not worth extracting yet) ────────────────
 
-      <ExportModal
-        open={exportOpen}
-        onClose={() => setExportOpen(false)}
-        companyId={companyId}
-        defaultDateRange={dateRange}
-        defaultScale={scale}
-        defaultQuantile={quantile}
-      />
+interface ToggleGroupProps<T extends string | number> {
+  label: string;
+  options: ReadonlyArray<{ value: T; label: string }>;
+  value: T;
+  onChange: (next: T) => void;
+}
+
+function ToggleGroup<T extends string | number>({
+  label,
+  options,
+  value,
+  onChange,
+}: ToggleGroupProps<T>) {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="text-xs text-text-tertiary">{label}</span>
+      <div role="radiogroup" aria-label={label} className="flex rounded-md border border-border-primary">
+        {options.map((opt, idx) => {
+          const active = opt.value === value;
+          return (
+            <button
+              key={String(opt.value)}
+              type="button"
+              role="radio"
+              aria-checked={active}
+              onClick={() => onChange(opt.value)}
+              className={cx(
+                "px-3 py-1 text-xs font-medium transition",
+                idx > 0 && "border-l border-border-primary",
+                active ? "bg-bg-brand-secondary text-brand-secondary" : "text-text-tertiary hover:text-text-primary",
+              )}
+            >
+              {opt.label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function ChartSkeleton() {
+  return (
+    <div className="flex h-96 flex-col gap-3">
+      <div className="h-4 w-48 animate-pulse rounded bg-bg-secondary" />
+      <div className="flex-1 animate-pulse rounded bg-bg-secondary" />
     </div>
   );
 }

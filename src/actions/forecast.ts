@@ -1,46 +1,136 @@
 "use server";
 
-import { format, startOfWeek, startOfMonth } from "date-fns";
-import { getAuthSession } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
-import { forecastCacheGet, forecastCacheSet } from "@/lib/forecast-cache";
-import type {
-  ForecastSalesParams,
-  ForecastResponse,
-  ForecastChannelData,
-  ForecastDataPoint,
-  CategoryWithVariants,
-  ExportParams,
-  ForecastMetric,
-  ForecastAnnotation,
-  ForecastAnnotationKind,
-  ForecastAnnotationSeverity,
-} from "@/types/forecast";
+/**
+ * Server actions for the /en/demand forecast page.
+ * All reads are scoped to a single ForecastTenant (resolved via companyId);
+ * all responses go through an LRU cache keyed by companyId + params.
+ */
 
-async function assertAuth() {
-  // getAuthSession respects the dev bypass in src/lib/auth.ts
-  const session = await getAuthSession();
-  if (!session) throw new Error("Unauthorized");
-  return session;
+import { addDays, format, startOfDay, startOfMonth, startOfWeek } from "date-fns";
+import { z } from "zod";
+
+import { prisma } from "@/lib/prismaDb";
+import { isAuthorized } from "@/lib/isAuthorized";
+import { forecastCacheGet, forecastCacheKey, forecastCacheSet } from "@/lib/forecast/cache";
+import {
+  DEFAULT_QUANTILE,
+  DEFAULT_SCALE,
+  FORECAST_CHANNEL_NAMES,
+  FORECAST_HORIZON_DAYS,
+  FORECAST_HISTORY_DAYS,
+  FORECAST_QUANTILES,
+  type ForecastChannelName,
+  type ForecastQuantile,
+  type ForecastScale,
+} from "@/config/forecast";
+
+// ─── Input validation ────────────────────────────────────────────────────
+
+const dateOrString = z.union([z.date(), z.string()]).transform((v) => new Date(v));
+
+const salesParamsSchema = z.object({
+  companyId: z.string().min(1),
+  startDate: dateOrString.optional(),
+  endDate: dateOrString.optional(),
+  channels: z.array(z.enum(["web", "marketplace", "b2b"])).optional(),
+  categories: z.array(z.string()).optional(),
+  variantIds: z.array(z.string()).optional(),
+  quantile: z.union([z.literal(3), z.literal(4), z.literal(5)]).optional(),
+  scale: z.enum(["daily", "weekly", "monthly"]).optional(),
+});
+
+export type ForecastSalesParams = z.input<typeof salesParamsSchema>;
+
+// ─── DTO types returned to the client ────────────────────────────────────
+
+export interface ForecastSeriesPoint {
+  date: string; // YYYY-MM-DD
+  real_value: number | null;
+  forecast_value: number | null;
+  quantile: ForecastQuantile;
 }
 
-// ── Categories ────────────────────────────────────────────────────────────────
+export type ForecastChannelsMap = Partial<Record<ForecastChannelName, ForecastSeriesPoint[]>>;
 
-export async function getForecastCategories(
-  companyId: string
-): Promise<CategoryWithVariants[]> {
-  await assertAuth();
+export interface ForecastResponse {
+  startForecastDate: string;
+  channels: ForecastChannelsMap;
+  metric: "sale" | "revenue";
+}
 
-  const cacheKey = `${companyId}:categories`;
-  const cached = await forecastCacheGet<CategoryWithVariants[]>(cacheKey);
+export interface ForecastCategoryDTO {
+  category: string;
+  variants: Array<{ id: string; title: string; sku: string }>;
+}
+
+export interface ForecastSummaryDTO {
+  totalProducts: number;
+  avgRrp: number;
+  channels: number;
+  historyPoints: number;
+  forecastPoints: number;
+}
+
+// ─── Helpers ─────────────────────────────────────────────────────────────
+
+async function requireUser() {
+  const user = await isAuthorized();
+  if (!user?.id) throw new Error("Unauthorized");
+  return user;
+}
+
+async function resolveTenantId(companyId: string): Promise<string | null> {
+  const tenant = await prisma.forecastTenant.findUnique({
+    where: { companyId },
+    select: { id: true },
+  });
+  return tenant?.id ?? null;
+}
+
+function dateKey(date: Date, scale: ForecastScale): string {
+  switch (scale) {
+    case "weekly":
+      return format(startOfWeek(date, { weekStartsOn: 1 }), "yyyy-MM-dd");
+    case "monthly":
+      return format(startOfMonth(date), "yyyy-MM-dd");
+    case "daily":
+    default:
+      return format(startOfDay(date), "yyyy-MM-dd");
+  }
+}
+
+function emptyChannelsMap(): ForecastChannelsMap {
+  return FORECAST_CHANNEL_NAMES.reduce<ForecastChannelsMap>((acc, name) => {
+    acc[name] = [];
+    return acc;
+  }, {});
+}
+
+function normalizeRange(params: {
+  startDate?: Date;
+  endDate?: Date;
+}): { startDate: Date; endDate: Date; today: Date } {
+  const today = startOfDay(new Date());
+  const startDate = params.startDate ?? addDays(today, -FORECAST_HISTORY_DAYS);
+  const endDate = params.endDate ?? addDays(today, FORECAST_HORIZON_DAYS);
+  return { startDate, endDate, today };
+}
+
+// ─── Public API: categories ──────────────────────────────────────────────
+
+export async function getForecastCategories(companyId: string): Promise<ForecastCategoryDTO[]> {
+  await requireUser();
+  const cacheKey = forecastCacheKey("categories", companyId);
+  const cached = forecastCacheGet<ForecastCategoryDTO[]>(cacheKey);
   if (cached) return cached;
 
-  const tenant = await prisma.forecastTenant.findUnique({ where: { companyId } });
-  if (!tenant) return [];
+  const tenantId = await resolveTenantId(companyId);
+  if (!tenantId) return [];
 
   const products = await prisma.forecastProduct.findMany({
-    where: { tenantId: tenant.id },
-    include: {
+    where: { tenantId },
+    select: {
+      category: true,
       variants: {
         where: { isActive: true },
         select: { id: true, variantTitle: true, sku: true },
@@ -49,334 +139,303 @@ export async function getForecastCategories(
     orderBy: [{ category: "asc" }, { productTitle: "asc" }],
   });
 
-  const grouped: Record<string, CategoryWithVariants> = {};
-  for (const p of products) {
-    if (!grouped[p.category]) {
-      grouped[p.category] = {
-        category: p.category,
-        label: p.category.replace(/_/g, " "),
-        variants: [],
-      };
+  const map = new Map<string, ForecastCategoryDTO>();
+  for (const p of products as Array<{ category: string; variants: Array<{ id: string; variantTitle: string; sku: string }> }>) {
+    const bucket: ForecastCategoryDTO =
+      map.get(p.category) ?? { category: p.category, variants: [] };
+    for (const v of p.variants) {
+      bucket.variants.push({ id: v.id, title: v.variantTitle, sku: v.sku });
     }
-    grouped[p.category].variants.push(
-      ...p.variants.map((v: { id: string; variantTitle: string; sku: string | null }) => ({
-        id: v.id,
-        title: `${p.productTitle} — ${v.variantTitle}`,
-        sku: v.sku,
-      }))
-    );
+    map.set(p.category, bucket);
   }
-
-  const result = Object.values(grouped);
-  await forecastCacheSet(cacheKey, result);
+  const result = Array.from(map.values());
+  forecastCacheSet(cacheKey, result);
   return result;
 }
 
-// ── Sales forecast ────────────────────────────────────────────────────────────
+// ─── Public API: summary KPIs ────────────────────────────────────────────
 
-export async function getForecastSales(
-  params: ForecastSalesParams
-): Promise<ForecastResponse> {
-  await assertAuth();
-  return fetchForecastData(params, "sale");
-}
-
-export async function getForecastRevenue(
-  params: ForecastSalesParams
-): Promise<ForecastResponse> {
-  await assertAuth();
-  return fetchForecastData(params, "revenue");
-}
-
-// ── Annotations ───────────────────────────────────────────────────────────────
-
-export async function getForecastAnnotations(params: {
-  companyId: string;
-  start: string;
-  end: string;
-  kinds?: ForecastAnnotationKind[];
-}): Promise<ForecastAnnotation[]> {
-  await assertAuth();
-
-  const kindsKey = (params.kinds ?? []).slice().sort().join(",");
-  const cacheKey = `annotations:${params.companyId}:${params.start}:${params.end}:${kindsKey}`;
-  const cached = await forecastCacheGet<ForecastAnnotation[]>(cacheKey);
+export async function getForecastSummary(companyId: string): Promise<ForecastSummaryDTO> {
+  await requireUser();
+  const cacheKey = forecastCacheKey("summary", companyId);
+  const cached = forecastCacheGet<ForecastSummaryDTO>(cacheKey);
   if (cached) return cached;
 
-  const tenant = await prisma.forecastTenant.findUnique({
-    where: { companyId: params.companyId },
-  });
-  if (!tenant) return [];
+  const tenantId = await resolveTenantId(companyId);
+  if (!tenantId) {
+    const empty: ForecastSummaryDTO = {
+      totalProducts: 0,
+      avgRrp: 0,
+      channels: 0,
+      historyPoints: 0,
+      forecastPoints: 0,
+    };
+    forecastCacheSet(cacheKey, empty);
+    return empty;
+  }
 
-  const startDate = new Date(params.start);
-  const endDate = new Date(params.end);
-
-  const rows = await prisma.forecastAnnotation.findMany({
-    where: {
-      tenantId: tenant.id,
-      // annotationDate <= end AND (endDate ?? annotationDate) >= start
-      annotationDate: { lte: endDate },
-      OR: [
-        { endDate: null, annotationDate: { gte: startDate } },
-        { endDate: { gte: startDate } },
-      ],
-      ...(params.kinds?.length ? { kind: { in: params.kinds } } : {}),
-    },
-    orderBy: { annotationDate: "asc" },
-  });
-
-  const result: ForecastAnnotation[] = rows.map(
-    (r: {
-      id: string;
-      annotationDate: Date;
-      endDate: Date | null;
-      kind: string;
-      severity: string;
-      title: string;
-      description: string | null;
-      delta: number | null;
-      channelName: string | null;
-      variantId: string | null;
-    }) => ({
-      id: r.id,
-      annotationDate: format(r.annotationDate, "yyyy-MM-dd"),
-      endDate: r.endDate ? format(r.endDate, "yyyy-MM-dd") : null,
-      kind: r.kind as ForecastAnnotationKind,
-      severity: r.severity as ForecastAnnotationSeverity,
-      title: r.title,
-      description: r.description,
-      delta: r.delta,
-      channelName: r.channelName,
-      variantId: r.variantId,
-    })
-  );
-
-  await forecastCacheSet(cacheKey, result);
-  return result;
-}
-
-// ── Export ────────────────────────────────────────────────────────────────────
-
-export async function exportForecastData(params: ExportParams): Promise<object[]> {
-  await assertAuth();
-
-  const tenant = await prisma.forecastTenant.findUnique({
-    where: { companyId: params.companyId },
-    include: { saleChannels: true },
-  });
-  if (!tenant) throw new Error("Tenant not found");
-
-  const startDate = new Date(params.start);
-  const endDate = new Date(params.end);
-  const variantFilter = await buildVariantFilter(tenant.id, params);
-
-  const [historical, quantiles] = await Promise.all([
-    prisma.forecastHistoricalSale.findMany({
-      where: {
-        variantId: { in: variantFilter },
-        saleDate: { gte: startDate, lte: endDate },
-      },
-      include: {
-        variant: {
-          include: { product: { select: { productTitle: true, category: true } } },
-        },
-        channel: { select: { name: true } },
-      },
+  const [products, variants, channels, historyPoints, forecastPoints] = await Promise.all([
+    prisma.forecastProduct.count({ where: { tenantId } }),
+    prisma.forecastVariant.findMany({
+      where: { product: { tenantId }, isActive: true },
+      select: { rrp: true },
     }),
-    prisma.forecastQuantile.findMany({
-      where: {
-        variantId: { in: variantFilter },
-        forecastDate: { gte: startDate, lte: endDate },
-        quantile: params.quantile,
-      },
-      include: {
-        variant: {
-          include: { product: { select: { productTitle: true, category: true } } },
-        },
-        channel: { select: { name: true } },
-      },
-    }),
+    prisma.forecastSaleChannel.count({ where: { tenantId } }),
+    prisma.forecastHistoricalSale.count({ where: { variant: { product: { tenantId } } } }),
+    prisma.forecastQuantile.count({ where: { variant: { product: { tenantId } } } }),
   ]);
 
-  const rows: object[] = [];
+  const variantList = variants as Array<{ rrp: unknown }>;
+  const avgRrp = variantList.length
+    ? variantList.reduce((s: number, v) => s + Number(v.rrp), 0) / variantList.length
+    : 0;
 
-  const historicalMap = new Map<string, number>();
-  for (const h of historical) {
-    const key = `${h.variantId}:${h.channelId}:${dateKey(h.saleDate, params.scale)}`;
-    historicalMap.set(key, (historicalMap.get(key) ?? 0) + h.quantity);
-  }
-  const quantileMap = new Map<string, number>();
-  for (const q of quantiles) {
-    const key = `${q.variantId}:${q.channelId}:${dateKey(q.forecastDate, params.scale)}`;
-    quantileMap.set(key, (quantileMap.get(key) ?? 0) + q.forecastValue);
-  }
-
-  const allKeys = new Set([...historicalMap.keys(), ...quantileMap.keys()]);
-  for (const k of allKeys) {
-    const [variantId, channelId, date] = k.split(":");
-    const h = historical.find((x: { variantId: string; channelId: string }) => x.variantId === variantId && x.channelId === channelId);
-    const q = quantiles.find((x: { variantId: string; channelId: string }) => x.variantId === variantId && x.channelId === channelId);
-    const product = h?.variant.product ?? q?.variant.product;
-    const channelName = h?.channel.name ?? q?.channel.name ?? "";
-
-    rows.push({
-      date,
-      category: product?.category ?? "",
-      product: product?.productTitle ?? variantId,
-      channel: channelName,
-      real_value: historicalMap.get(k) ?? null,
-      forecast_value: quantileMap.get(k) ?? null,
-    });
-  }
-
-  rows.sort((a: any, b: any) => a.date.localeCompare(b.date));
-  return params.preview ? rows.slice(0, 5) : rows;
-}
-
-// ── Internal helpers ──────────────────────────────────────────────────────────
-
-async function fetchForecastData(
-  params: ForecastSalesParams,
-  metric: ForecastMetric
-): Promise<ForecastResponse> {
-  const cacheKey = `${params.companyId}:${metric}:${JSON.stringify(params)}`;
-  const cached = await forecastCacheGet<ForecastResponse>(cacheKey);
-  if (cached) return cached;
-
-  const tenant = await prisma.forecastTenant.findUnique({
-    where: { companyId: params.companyId },
-    include: { saleChannels: true },
-  });
-  if (!tenant) throw new Error("Tenant not found");
-
-  const channels = tenant.saleChannels.filter(
-    (c: { id: string; name: string }) =>
-      !params.channels || params.channels.includes(c.name as "web" | "marketplace" | "b2b")
-  );
-
-  const startDate = new Date(params.start);
-  const endDate = new Date(params.end);
-  const variantFilter = await buildVariantFilter(tenant.id, params);
-
-  const [historical, quantiles] = await Promise.all([
-    prisma.forecastHistoricalSale.findMany({
-      where: {
-        variantId: { in: variantFilter },
-        saleDate: { gte: startDate, lte: endDate },
-        channelId: { in: channels.map((c: { id: string }) => c.id) },
-      },
-    }),
-    prisma.forecastQuantile.findMany({
-      where: {
-        variantId: { in: variantFilter },
-        forecastDate: { gte: startDate, lte: endDate },
-        channelId: { in: channels.map((c: { id: string }) => c.id) },
-        quantile: params.quantile,
-      },
-    }),
-  ]);
-
-  const result = aggregateToChannelData({
-    historical,
-    quantiles,
+  const result: ForecastSummaryDTO = {
+    totalProducts: products,
+    avgRrp: Math.round(avgRrp * 100) / 100,
     channels,
-    scale: params.scale,
-    magicNumber: tenant.magicNumber,
-    metric,
-  });
-
-  await forecastCacheSet(cacheKey, result);
-  return result;
-}
-
-async function buildVariantFilter(
-  tenantId: string,
-  params: Pick<ForecastSalesParams, "categories" | "variantIds" | "isSet" | "companyId" | "start" | "end" | "scale" | "quantile">
-): Promise<string[]> {
-  const products = await prisma.forecastProduct.findMany({
-    where: {
-      tenantId,
-      ...(params.categories?.length ? { category: { in: params.categories } } : {}),
-      ...(params.isSet !== undefined ? { isSet: params.isSet } : {}),
-    },
-    select: { variants: { select: { id: true } } },
-  });
-  const allVariants = products.flatMap(
-    (p: { variants: { id: string }[] }) => p.variants.map((v: { id: string }) => v.id)
-  );
-  return params.variantIds?.length
-    ? allVariants.filter((id: string) => params.variantIds!.includes(id))
-    : allVariants;
-}
-
-function dateKey(date: Date, scale: ForecastSalesParams["scale"]): string {
-  if (scale === "daily") return format(date, "yyyy-MM-dd");
-  if (scale === "weekly") return format(startOfWeek(date, { weekStartsOn: 1 }), "yyyy-MM-dd");
-  return format(startOfMonth(date), "yyyy-MM");
-}
-
-function aggregateToChannelData(opts: {
-  historical: { variantId: string; channelId: string; saleDate: Date; quantity: number; revenue: number }[];
-  quantiles: { variantId: string; channelId: string; forecastDate: Date; forecastValue: number; revenueValue: number }[];
-  channels: { id: string; name: string }[];
-  scale: ForecastSalesParams["scale"];
-  magicNumber: number;
-  metric: ForecastMetric;
-}): ForecastResponse {
-  const today = format(new Date(), "yyyy-MM-dd");
-
-  // Build real-value map by channelId + dateKey → sum
-  const realMap = new Map<string, number>();
-  for (const h of opts.historical) {
-    const dk = dateKey(h.saleDate, opts.scale);
-    const k = `${h.channelId}::${dk}`;
-    realMap.set(k, (realMap.get(k) ?? 0) + (opts.metric === "revenue" ? h.revenue : h.quantity));
-  }
-
-  // Build forecast-value map by channelId + dateKey → sum
-  const forecastMap = new Map<string, number>();
-  let minForecastDate: string | null = null;
-  for (const q of opts.quantiles) {
-    const dk = dateKey(q.forecastDate, opts.scale);
-    const k = `${q.channelId}::${dk}`;
-    forecastMap.set(
-      k,
-      (forecastMap.get(k) ?? 0) +
-        (opts.metric === "revenue" ? q.revenueValue : q.forecastValue) * opts.magicNumber
-    );
-    if (!minForecastDate || dk < minForecastDate) minForecastDate = dk;
-  }
-
-  // Collect all unique date keys
-  const allDates = new Set<string>();
-  for (const k of realMap.keys()) allDates.add(k.split("::")[1]);
-  for (const k of forecastMap.keys()) allDates.add(k.split("::")[1]);
-  const sortedDates = Array.from(allDates).sort();
-
-  const channels: ForecastChannelData = {};
-  for (const ch of opts.channels) {
-    channels[ch.name] = sortedDates.map((d): ForecastDataPoint => {
-      const realKey = `${ch.id}::${d}`;
-      const forecastKey = `${ch.id}::${d}`;
-      const rv = realMap.get(realKey) ?? null;
-      const fv = forecastMap.get(forecastKey) ?? null;
-      const isFuture = d >= today;
-      return {
-        date: d,
-        real_value: isFuture ? null : rv,
-        forecast_value: isFuture || fv !== null ? round(fv ?? 0) : null,
-        quantile: 4,
-      };
-    });
-  }
-
-  return {
-    startForecastDate: minForecastDate ?? today,
-    channels,
+    historyPoints,
+    forecastPoints,
   };
+  forecastCacheSet(cacheKey, result);
+  return result;
 }
 
-function round(v: number): number {
-  if (v < 10) return Math.round(v * 10) / 10;
-  return Math.round(v);
+// ─── Public API: sales + revenue timeseries ──────────────────────────────
+
+async function getForecastTimeseries(
+  rawParams: ForecastSalesParams,
+  metric: "sale" | "revenue",
+): Promise<ForecastResponse> {
+  await requireUser();
+  const parsed = salesParamsSchema.parse(rawParams);
+  const { startDate, endDate, today } = normalizeRange(parsed);
+  const scale: ForecastScale = parsed.scale ?? DEFAULT_SCALE;
+  const quantile: ForecastQuantile = (parsed.quantile ?? DEFAULT_QUANTILE) as ForecastQuantile;
+  if (!FORECAST_QUANTILES.includes(quantile)) {
+    throw new Error(`Invalid quantile: ${quantile}`);
+  }
+
+  const cacheKey = forecastCacheKey(`timeseries:${metric}`, parsed.companyId, {
+    startDate,
+    endDate,
+    channels: parsed.channels,
+    categories: parsed.categories,
+    variantIds: parsed.variantIds,
+    quantile,
+    scale,
+  });
+  const cached = forecastCacheGet<ForecastResponse>(cacheKey);
+  if (cached) return cached;
+
+  const tenantId = await resolveTenantId(parsed.companyId);
+  if (!tenantId) {
+    const empty: ForecastResponse = {
+      startForecastDate: format(today, "yyyy-MM-dd"),
+      channels: {},
+      metric,
+    };
+    forecastCacheSet(cacheKey, empty);
+    return empty;
+  }
+
+  // Build variant filter
+  const variantWhere: Record<string, unknown> = { product: { tenantId } };
+  if (parsed.categories?.length) {
+    variantWhere.product = { tenantId, category: { in: parsed.categories } };
+  }
+  if (parsed.variantIds?.length) variantWhere.id = { in: parsed.variantIds };
+
+  const channelFilter = parsed.channels?.length
+    ? { name: { in: parsed.channels } }
+    : undefined;
+
+  const channels = (await prisma.forecastSaleChannel.findMany({
+    where: { tenantId, ...(channelFilter ?? {}) },
+    select: { id: true, name: true },
+  })) as Array<{ id: string; name: string }>;
+  if (!channels.length) {
+    const empty: ForecastResponse = {
+      startForecastDate: format(today, "yyyy-MM-dd"),
+      channels: {},
+      metric,
+    };
+    forecastCacheSet(cacheKey, empty);
+    return empty;
+  }
+  const channelById = new Map(channels.map((c) => [c.id, c.name as ForecastChannelName]));
+  const channelIds = channels.map((c) => c.id);
+
+  const [historical, forecast] = await Promise.all([
+    prisma.forecastHistoricalSale.findMany({
+      where: {
+        variant: variantWhere,
+        channelId: { in: channelIds },
+        saleDate: { gte: startDate, lte: endDate },
+        isStockout: false,
+      },
+      select: { channelId: true, saleDate: true, quantity: true, revenue: true },
+    }),
+    prisma.forecastQuantile.findMany({
+      where: {
+        variant: variantWhere,
+        channelId: { in: channelIds },
+        forecastDate: { gte: startDate, lte: endDate },
+        quantile,
+      },
+      select: {
+        channelId: true,
+        forecastDate: true,
+        forecastValue: true,
+        revenueValue: true,
+      },
+    }),
+  ]);
+
+  // Bucket by channel × dateKey
+  type Bucket = { real: number; forecast: number };
+  const buckets = new Map<string, Bucket>();
+  const keyOf = (channelId: string, d: Date) => `${channelId}|${dateKey(d, scale)}`;
+
+  for (const h of historical) {
+    const k = keyOf(h.channelId, h.saleDate);
+    const b = buckets.get(k) ?? { real: 0, forecast: 0 };
+    b.real += metric === "sale" ? h.quantity : Number(h.revenue);
+    buckets.set(k, b);
+  }
+  for (const q of forecast) {
+    const k = keyOf(q.channelId, q.forecastDate);
+    const b = buckets.get(k) ?? { real: 0, forecast: 0 };
+    b.forecast += metric === "sale" ? q.forecastValue : Number(q.revenueValue);
+    buckets.set(k, b);
+  }
+
+  // Assemble response: for each channel, sorted date series with null for the
+  // opposite side of the `today` divider so client charts can draw the ribbon.
+  const out: ForecastChannelsMap = emptyChannelsMap();
+  const todayKey = dateKey(today, scale);
+
+  // Group keys back into channel-scoped lists
+  const byChannel = new Map<string, Array<{ date: string; real: number; forecast: number }>>();
+  for (const [key, b] of buckets) {
+    const [channelId, date] = key.split("|");
+    const list = byChannel.get(channelId) ?? [];
+    list.push({ date, real: b.real, forecast: b.forecast });
+    byChannel.set(channelId, list);
+  }
+
+  for (const [channelId, list] of byChannel) {
+    const name = channelById.get(channelId);
+    if (!name) continue;
+    list.sort((a, b) => a.date.localeCompare(b.date));
+    out[name] = list.map<ForecastSeriesPoint>((p) => ({
+      date: p.date,
+      real_value: p.date <= todayKey && p.real > 0 ? round(p.real) : null,
+      forecast_value: p.date >= todayKey && p.forecast > 0 ? round(p.forecast) : null,
+      quantile,
+    }));
+  }
+
+  // Filter out channels with no points at all
+  for (const key of Object.keys(out) as ForecastChannelName[]) {
+    if (!out[key]?.length) delete out[key];
+  }
+
+  const result: ForecastResponse = {
+    startForecastDate: todayKey,
+    channels: out,
+    metric,
+  };
+  forecastCacheSet(cacheKey, result);
+  return result;
+}
+
+export async function getForecastSales(params: ForecastSalesParams): Promise<ForecastResponse> {
+  return getForecastTimeseries(params, "sale");
+}
+
+export async function getForecastRevenue(params: ForecastSalesParams): Promise<ForecastResponse> {
+  return getForecastTimeseries(params, "revenue");
+}
+
+// ─── Public API: CSV export rows ─────────────────────────────────────────
+
+export interface ForecastExportRow {
+  date: string;
+  category: string;
+  product: string;
+  channel: ForecastChannelName;
+  real_value: number | null;
+  forecast_value: number | null;
+}
+
+export async function exportForecastData(
+  params: ForecastSalesParams,
+): Promise<ForecastExportRow[]> {
+  await requireUser();
+  const parsed = salesParamsSchema.parse(params);
+  const { startDate, endDate } = normalizeRange(parsed);
+  const tenantId = await resolveTenantId(parsed.companyId);
+  if (!tenantId) return [];
+  const quantile = (parsed.quantile ?? DEFAULT_QUANTILE) as ForecastQuantile;
+
+  const [historical, forecast] = await Promise.all([
+    prisma.forecastHistoricalSale.findMany({
+      where: {
+        variant: { product: { tenantId } },
+        saleDate: { gte: startDate, lte: endDate },
+        isStockout: false,
+      },
+      select: {
+        saleDate: true,
+        quantity: true,
+        channel: { select: { name: true } },
+        variant: {
+          select: { product: { select: { productTitle: true, category: true } } },
+        },
+      },
+    }),
+    prisma.forecastQuantile.findMany({
+      where: {
+        variant: { product: { tenantId } },
+        forecastDate: { gte: startDate, lte: endDate },
+        quantile,
+      },
+      select: {
+        forecastDate: true,
+        forecastValue: true,
+        channel: { select: { name: true } },
+        variant: {
+          select: { product: { select: { productTitle: true, category: true } } },
+        },
+      },
+    }),
+  ]);
+
+  const rows: ForecastExportRow[] = [];
+  for (const h of historical) {
+    rows.push({
+      date: format(h.saleDate, "yyyy-MM-dd"),
+      category: h.variant.product.category,
+      product: h.variant.product.productTitle,
+      channel: h.channel.name as ForecastChannelName,
+      real_value: h.quantity,
+      forecast_value: null,
+    });
+  }
+  for (const q of forecast) {
+    rows.push({
+      date: format(q.forecastDate, "yyyy-MM-dd"),
+      category: q.variant.product.category,
+      product: q.variant.product.productTitle,
+      channel: q.channel.name as ForecastChannelName,
+      real_value: null,
+      forecast_value: round(q.forecastValue),
+    });
+  }
+  return rows;
+}
+
+function round(n: number): number {
+  return Math.round(n * 100) / 100;
 }
