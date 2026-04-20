@@ -1,0 +1,50 @@
+---
+title: FAQ
+description: Frequently asked questions about the NOGL platform.
+---
+
+# Frequently Asked Questions
+
+## General
+
+### How often is competitor data refreshed?
+
+By default, competitor prices are scraped daily (midnight UTC). Growth and Enterprise plans get 6-hour and 1-hour refresh cycles respectively. You can also trigger an on-demand refresh from the competitor profile page.
+
+### Can I track prices on Amazon and other marketplaces?
+
+Yes. Add the marketplace URL or specific product listing URL in **Companies → Add Competitor**. NOGL will attempt to track that listing. Note that some marketplaces use dynamic pricing that changes by minute; NOGL captures a snapshot at each scrape time.
+
+### Is there an API?
+
+Yes. The NOGL REST API is available on Growth and Enterprise plans. Documentation is available at `/api/docs` in your workspace.
+
+## Pricing & Billing
+
+### What counts as a "tracked product"?
+
+A tracked product is any SKU in your catalog with **Status: Active** that has at least one competitor match. Inactive and draft products do not count toward your plan limit.
+
+### Can I downgrade my plan?
+
+Yes, at the end of your billing cycle. If you have more tracked products than the lower plan allows, you'll need to deactivate some products first.
+
+## Repricing
+
+### What happens if no competitor data is available for a rule?
+
+If a repricing rule cannot find competitor data for a product, it **does not change the price**. The rule logs a "no competitor data" event in the repricing history.
+
+### Can a rule change my price multiple times per day?
+
+Only if the competitor price changes multiple times per day and your plan includes sub-daily scrapes. On the Starter plan (daily scrapes), each rule can trigger at most once per 24 hours per product.
+
+## Data & Security
+
+### Where is my data stored?
+
+All data is stored in the EU (Frankfurt, Germany). NOGL is GDPR-compliant.
+
+### Can I delete my data?
+
+Yes. Go to **Settings → Workspace → Data Retention** and request a full data export and deletion. Account deletion is processed within 30 days.

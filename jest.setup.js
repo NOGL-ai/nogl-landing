@@ -1,5 +1,10 @@
 import '@testing-library/jest-dom'
 
+// Polyfill TextEncoder/TextDecoder for jose/next-auth in jsdom
+const { TextEncoder, TextDecoder } = require('util')
+global.TextEncoder = TextEncoder
+global.TextDecoder = TextDecoder
+
 // WHATWG Streams polyfills — ai-v5 (pulled in by @mastra/core) expects
 // TransformStream/ReadableStream/WritableStream to be global. jsdom does not
 // provide them, so importing any module that touches ai-v5 explodes at load.

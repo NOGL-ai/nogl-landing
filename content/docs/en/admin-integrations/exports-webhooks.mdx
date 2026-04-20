@@ -1,0 +1,73 @@
+---
+title: Exports & Webhooks
+description: Export your data and stream events to external systems via webhooks.
+---
+
+# Exports & Webhooks
+
+## Data exports
+
+NOGL lets you export any dataset as CSV or JSON from within the product.
+
+### Available exports
+
+| Dataset | Location | Includes |
+|---------|---------|---------|
+| Product catalog | Catalog → Export | All fields including competitor matches |
+| Price history | Catalog → Product → Export | Full audit trail with timestamps |
+| Replenishment recommendations | Catalog → Replenishment → Export | Current snapshot |
+| Repricing history | Repricing → History → Export | Every rule-triggered price change |
+| Competitor prices | Companies → Export | All tracked products and their prices |
+| Alert history | Settings → Alert History → Export | All alerts with timestamps |
+
+### Scheduling exports
+
+1. Go to **Settings → Exports → Scheduled**.
+2. Choose the dataset, frequency, and destination (email, SFTP, or S3).
+3. Optionally filter by category, brand, or date range.
+
+## Webhooks
+
+Webhooks let NOGL send real-time event data to any HTTP endpoint you control (e.g. a Zapier webhook, your ERP, or a custom integration).
+
+### Supported events
+
+| Event | Fired when |
+|-------|-----------|
+| `product.price_changed` | A repricing rule updates a product's price |
+| `competitor.price_changed` | A tracked competitor changes their price |
+| `alert.triggered` | Any configured alert fires |
+| `catalog.import_completed` | A catalog import job finishes |
+| `replenishment.flagged` | A product crosses the reorder threshold |
+
+### Setting up a webhook
+
+1. Go to **Settings → Integrations → Webhooks**.
+2. Click **Add Webhook**.
+3. Enter the endpoint URL.
+4. Select the events to subscribe to.
+5. Click **Save**.
+
+NOGL sends a test event immediately; confirm receipt before saving.
+
+### Webhook payload format
+
+```json
+{
+  "event": "product.price_changed",
+  "timestamp": "2025-04-20T10:30:00Z",
+  "data": {
+    "product_id": "prod_abc123",
+    "sku": "TSHIRT-L-BLK",
+    "old_price": 29.99,
+    "new_price": 27.99,
+    "currency": "EUR",
+    "rule_id": "rule_xyz",
+    "triggered_by": "competitor_match"
+  }
+}
+```
+
+### Retries
+
+Failed webhook deliveries (non-2xx response or timeout) are retried with exponential backoff: 1 min, 5 min, 15 min, 1 hour, then abandoned. Failed deliveries are logged in **Settings → Integrations → Webhook Logs**.

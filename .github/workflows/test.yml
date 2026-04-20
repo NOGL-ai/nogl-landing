@@ -30,7 +30,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '20'
         cache: 'npm'
 
     - name: Install dependencies
@@ -41,6 +41,9 @@ jobs:
         PGPASSWORD=postgres psql -h localhost -U postgres -c "CREATE DATABASE test_shadow;" || true
         PGPASSWORD=postgres psql -h localhost -U postgres -d test_db -c "CREATE SCHEMA IF NOT EXISTS nogl;"
         PGPASSWORD=postgres psql -h localhost -U postgres -d test_db -c "CREATE SCHEMA IF NOT EXISTS forecast;"
+        PGPASSWORD=postgres psql -h localhost -U postgres -d test_db -c "CREATE SCHEMA IF NOT EXISTS dashboards;"
+        PGPASSWORD=postgres psql -h localhost -U postgres -d test_db -c "CREATE SCHEMA IF NOT EXISTS assets;"
+        PGPASSWORD=postgres psql -h localhost -U postgres -d test_db -c "CREATE SCHEMA IF NOT EXISTS alerts;"
         npx prisma db push --accept-data-loss
         npx prisma generate
       env:
@@ -104,7 +107,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '20'
         cache: 'npm'
 
     - name: Install dependencies

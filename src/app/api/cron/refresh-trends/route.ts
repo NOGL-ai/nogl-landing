@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { refreshTrends } from "@/actions/trends";
+import { refreshTrendsInternal } from "@/actions/trends";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -13,7 +13,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    await refreshTrends();
+    await refreshTrendsInternal();
     return NextResponse.json({ ok: true, refreshedAt: new Date().toISOString() });
   } catch (err) {
     console.error("[cron/refresh-trends]", err);

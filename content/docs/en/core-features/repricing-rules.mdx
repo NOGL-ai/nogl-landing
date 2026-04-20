@@ -1,0 +1,47 @@
+---
+title: Repricing Rules
+description: Configure automated pricing rules to stay competitive and protect margins.
+---
+
+# Repricing Rules
+
+Auto-repricing rules watch your tracked competitors and adjust your prices automatically within guardrails you define.
+
+## Creating a rule
+
+1. Go to **Repricing → Auto Repricing Rules**.
+2. Click **New Rule**.
+3. Fill in:
+   - **Name** — a label for internal reference
+   - **Products** — choose individual SKUs or a category
+   - **Strategy** — see strategies below
+   - **Min price** and **Max price** — hard limits the rule cannot breach
+4. Click **Save & Activate**.
+
+## Strategies
+
+| Strategy | Behavior |
+|----------|---------|
+| **Match cheapest** | Sets your price equal to the lowest tracked competitor |
+| **Beat by amount** | Sets your price N euros below the cheapest competitor |
+| **Beat by percent** | Sets your price N% below the cheapest competitor |
+| **Stay within band** | Keeps your price within X% of the competitor average |
+| **Maximize margin** | Raises your price as long as you remain the cheapest |
+
+## Guardrails
+
+Every rule requires a **minimum price** and **maximum price**. The rule will never set a price outside this range, regardless of competitor activity.
+
+We recommend setting min price ≥ your cost + minimum acceptable margin.
+
+## Rule priority
+
+When a product matches multiple rules, the rule with the **highest priority number** wins. You can drag-and-drop rules in the list to reorder them.
+
+## Viewing repricing history
+
+Go to **Repricing → Auto Repricing History** to see a log of every price change made by a rule, including which competitor triggered it.
+
+## Pausing rules
+
+Click the toggle next to any rule to pause it. Paused rules do not apply changes but remain configured for easy reactivation.
