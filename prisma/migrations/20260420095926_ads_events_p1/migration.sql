@@ -41,6 +41,8 @@ CREATE TABLE "ads_events"."AdAccount" (
     "last_seen_at" TIMESTAMP(3),
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
+    CONSTRAINT "AdAccount_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "ads_events"."AdCreative" (
@@ -57,6 +59,8 @@ CREATE TABLE "ads_events"."AdCreative" (
     "last_seen_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "raw" JSONB,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "AdCreative_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "ads_events"."AdEvent" (
@@ -71,6 +75,8 @@ CREATE TABLE "ads_events"."AdEvent" (
     "payload" JSONB NOT NULL,
     "metrics" JSONB,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "AdEvent_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "ads_events"."AdMetricDaily" (
@@ -88,6 +94,8 @@ CREATE TABLE "ads_events"."AdMetricDaily" (
     "hook_score" DECIMAL(6,3),
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
+    CONSTRAINT "AdMetricDaily_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "ads_events"."ScraperRun" (
@@ -105,6 +113,8 @@ CREATE TABLE "ads_events"."ScraperRun" (
     "error_code" TEXT,
     "error_message" TEXT,
     "lag_seconds" INTEGER,
+    CONSTRAINT "ScraperRun_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "ads_events"."DeadLetterEvent" (
@@ -116,6 +126,8 @@ CREATE TABLE "ads_events"."DeadLetterEvent" (
     "bullmq_job_id" TEXT,
     "received_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "retried_at" TIMESTAMP(3),
+    CONSTRAINT "DeadLetterEvent_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "ads_events"."ApiKeyScope" (
@@ -125,6 +137,8 @@ CREATE TABLE "ads_events"."ApiKeyScope" (
     "scope" "ads_events"."ApiKeyScopeType" NOT NULL,
     "rate_limit_per_min" INTEGER NOT NULL DEFAULT 120,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "ApiKeyScope_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateIndex
 CREATE INDEX "AdAccount_companyId_idx" ON "ads_events"."AdAccount"("companyId");
