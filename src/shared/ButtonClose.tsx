@@ -1,5 +1,5 @@
+import { X as XMarkIcon } from '@untitledui/icons';
 import React from "react";
-import { XMarkIcon } from "@heroicons/react/24/solid";
 import twFocusClass from "@/utils/twFocusClass";
 
 export interface ButtonCloseProps {

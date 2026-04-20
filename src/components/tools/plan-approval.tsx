@@ -213,8 +213,7 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
             >
               <Checkbox
                 checked={todo.completed}
-                onCheckedChange={(checked) => updateTodo(todo.id, { completed: !!checked })}
-                disabled={!editing}
+                onChange={(checked: boolean) => updateTodo(todo.id, { completed: !!checked })}
                 className="mt-1"
               />
               
@@ -227,7 +226,7 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
                     <div className="flex-1 space-y-2">
                       <Input
                         value={todo.title}
-                        onChange={(e) => updateTodo(todo.id, { title: e.target.value })}
+                        onChange={(value) => updateTodo(todo.id, { title: value })}
                         className="text-sm"
                         placeholder="Task title"
                       />
@@ -240,7 +239,7 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
                       />
                       <Input
                         value={todo.estimatedTime || ""}
-                        onChange={(e) => updateTodo(todo.id, { estimatedTime: e.target.value })}
+                        onChange={(value) => updateTodo(todo.id, { estimatedTime: value })}
                         className="text-sm"
                         placeholder="Estimated time (optional)"
                       />
@@ -307,7 +306,7 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
             <div className="space-y-2">
               <Input
                 value={newTodoTitle}
-                onChange={(e) => setNewTodoTitle(e.target.value)}
+                onChange={(value) => setNewTodoTitle(value)}
                 placeholder="Add new task..."
                 className="text-sm"
               />
@@ -321,7 +320,7 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
               <div className="flex gap-2">
                 <Input
                   value={newTodoEstimatedTime}
-                  onChange={(e) => setNewTodoEstimatedTime(e.target.value)}
+                  onChange={(value) => setNewTodoEstimatedTime(value)}
                   placeholder="Estimated time (optional)"
                   className="text-sm flex-1"
                 />

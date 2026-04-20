@@ -72,7 +72,7 @@ export function CompaniesIndexClient({
               <Input
                 type="search"
                 value={search}
-                onChange={(event) => setSearch(event.target.value)}
+                onChange={(value) => setSearch(value)}
                 placeholder="Filter by company name or domain"
                 className="h-12 rounded-2xl border-border pl-11"
               />

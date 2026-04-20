@@ -909,11 +909,21 @@ export async function getCompanyOverviewResponse(slug: string): Promise<CompanyO
   }
 
   const snapshot = await findSnapshotByCompanyId(company.id);
+  const placeholder = await buildPlaceholderSnapshot(company.id, company.domain, company.name);
   const extensions = buildCompanyOverviewExtensions(company);
+
+  // Use snapshot for everything except total_products — prefer the live count when it's higher
+  const resolvedSnapshot = snapshot
+    ? {
+        ...snapshot,
+        total_products: Math.max(snapshot.total_products, placeholder.total_products),
+        last_scraped_at: placeholder.last_scraped_at ?? snapshot.last_scraped_at,
+      }
+    : placeholder;
 
   return {
     company,
-    snapshot: snapshot ?? (await buildPlaceholderSnapshot(company.id, company.domain, company.name)),
+    snapshot: resolvedSnapshot,
     ...extensions,
   };
 }

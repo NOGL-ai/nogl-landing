@@ -1,8 +1,9 @@
+import { ChevronDown as ChevronDownIcon } from '@untitledui/icons';
 "use client";
 
 import { PathName } from "@/routers/types";
 import { Popover, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/24/solid";
+
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

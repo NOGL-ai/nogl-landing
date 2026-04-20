@@ -1,5 +1,6 @@
 "use client"
 
+// eslint-disable-next-line no-restricted-imports -- icon has no @untitledui/icons equivalent; keep in lucide-react until UUI ships it
 import { GripVerticalIcon } from 'lucide-react';
 import * as React from "react"
 import * as ResizablePrimitive from "react-resizable-panels"

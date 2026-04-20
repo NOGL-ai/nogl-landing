@@ -1,7 +1,7 @@
 "use client";
 
+import { ChevronDown as ChevronDownIcon } from '@untitledui/icons';
 import { Popover, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import { Fragment } from "react";
 import { PathName } from "@/routers/types";
 import Link from "next/link";

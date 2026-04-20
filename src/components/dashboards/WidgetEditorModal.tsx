@@ -302,7 +302,7 @@ export function WidgetEditorModal({
                 <Input
                   placeholder="e.g. Top Products by Price Drop"
                   value={title}
-                  onChange={(e) => setTitle(e.target.value)}
+                  onChange={(value) => setTitle(value)}
                 />
               </div>
 
@@ -551,10 +551,8 @@ function TopTableFields({
         <Label>Rows</Label>
         <Input
           type="number"
-          min={1}
-          max={100}
-          value={rowLimit}
-          onChange={(e) => setRowLimit(Number(e.target.value))}
+          value={String(rowLimit)}
+          onChange={(value) => setRowLimit(Number(value))}
         />
       </div>
 
@@ -620,11 +618,11 @@ function ChartFields({
     <div className="grid grid-cols-2 gap-4">
       <div className="flex flex-col gap-1.5">
         <Label>X axis field</Label>
-        <Input value={xField} onChange={(e) => setXField(e.target.value)} placeholder="e.g. date" />
+        <Input value={xField} onChange={(value) => setXField(value)} placeholder="e.g. date" />
       </div>
       <div className="flex flex-col gap-1.5">
         <Label>Y axis field</Label>
-        <Input value={yField} onChange={(e) => setYField(e.target.value)} placeholder="e.g. competitorPrice" />
+        <Input value={yField} onChange={(value) => setYField(value)} placeholder="e.g. competitorPrice" />
       </div>
       {showOrientation && (
         <div className="flex flex-col gap-1.5">
@@ -654,15 +652,15 @@ function PieFields({
     <div className="grid grid-cols-2 gap-4">
       <div className="flex flex-col gap-1.5">
         <Label>Group by field</Label>
-        <Input value={xField} onChange={(e) => setXField(e.target.value)} placeholder="e.g. companyName" />
+        <Input value={xField} onChange={(value) => setXField(value)} placeholder="e.g. companyName" />
       </div>
       <div className="flex flex-col gap-1.5">
         <Label>Value field</Label>
-        <Input value={yField} onChange={(e) => setYField(e.target.value)} placeholder="e.g. total_products" />
+        <Input value={yField} onChange={(value) => setYField(value)} placeholder="e.g. total_products" />
       </div>
       <div className="flex flex-col gap-1.5">
         <Label>Max slices</Label>
-        <Input type="number" min={2} max={20} value={rowLimit} onChange={(e) => setRowLimit(Number(e.target.value))} />
+        <Input type="number" value={String(rowLimit)} onChange={(value) => setRowLimit(Number(value))} />
       </div>
     </div>
   );

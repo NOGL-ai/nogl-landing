@@ -1,3 +1,4 @@
+import { ArrowRight as ArrowRightIcon } from '@untitledui/icons';
 // @ts-nocheck
 "use client";
 
@@ -5,7 +6,6 @@ import React, { FC, useEffect, useState, ReactNode } from "react";
 import Heading from "@/shared/Heading";
 import Nav from "@/shared/Nav";
 import ButtonSecondary from "@/shared/ButtonSecondary";
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import { Button } from '@/components/base/buttons/button';
 
 export interface HeaderFilterProps {

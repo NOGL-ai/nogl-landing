@@ -31,8 +31,8 @@ export function DataTableToolbar<TData>({
 					<Input
 						placeholder={searchPlaceholder}
 						value={(table.getColumn(searchKey || "")?.getFilterValue() as string) ?? ""}
-						onChange={(event) =>
-							table.getColumn(searchKey || "")?.setFilterValue(event.target.value)
+						onChange={(value) =>
+							table.getColumn(searchKey || "")?.setFilterValue(value)
 						}
 						className="pl-10"
 						aria-label={`Search ${searchKey || "data"}`}
