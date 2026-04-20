@@ -52,7 +52,7 @@ function buildQuery(
 }
 
 export function EventsTab({ slug }: EventsTabProps) {
-  const [period, setPeriod] = useState<PeriodValue>("3m");
+  const [period, setPeriod] = useState<PeriodValue>("all");
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<CompanyEventDTO | null>(null);
   const [newIds, setNewIds] = useState<Set<string>>(new Set());
@@ -220,14 +220,14 @@ export function EventsTab({ slug }: EventsTabProps) {
           newIds={newIds}
         />
         {state.loadingMore && (
-          <p className="py-4 text-center text-sm text-muted-foreground">
+          <p className="py-4 text-center text-sm text-text-tertiary">
             Loading more events…
           </p>
         )}
         {state.hasMore && <div ref={sentinelRef} className="h-4" />}
         {!state.hasMore && state.events.length > 0 && (
-          <p className="py-4 text-center text-xs text-muted-foreground">
-            No more events to load
+          <p className="py-4 text-center text-xs text-text-quaternary">
+            All events loaded
           </p>
         )}
       </>

@@ -128,6 +128,40 @@ export const navigationStructure: NavigationSection[] = [
                             },
                         ],
                     },
+
+                    // ── Pricing Tools (accordion) ─────────────────────────
+                    {
+                        label: 'Price Alerts',
+                        href: '/en/alerts',
+                        icon: Bell01,
+                    },
+                    {
+                        label: 'Pricing Tools',
+                        icon: Sale02,
+                        isAccordionGroup: true,
+                        groupItems: [
+                            {
+                                label: 'Overview',
+                                href: '/en/marketing-assets',
+                                icon: BarChartSquare02,
+                            },
+                            {
+                                label: 'Creatives',
+                                href: '/en/marketing-assets/creatives',
+                                icon: Image03,
+                            },
+                            {
+                                label: 'Raw Events',
+                                href: '/en/marketing-assets/events',
+                                icon: Database01,
+                            },
+                            {
+                                label: 'Accounts',
+                                href: '/en/marketing-assets/accounts',
+                                icon: UserSquare,
+                            },
+                        ],
+                    },
                     // ── Ad Scoring (accordion) ───────────────────────────
                     {
                         label: 'Ad Scoring',

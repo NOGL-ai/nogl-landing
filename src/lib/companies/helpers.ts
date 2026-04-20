@@ -997,9 +997,7 @@ export async function getCompanyEventsResponse(params: {
   }
 
   const hasFilters =
-    (params.eventTypes && params.eventTypes.length > 0) ||
-    Boolean(params.fromDate) ||
-    Boolean(params.toDate);
+    params.eventTypes != null && params.eventTypes.length > 0;
 
   let events: CompanyEventDTO[] = [];
   let total = 0;
@@ -1050,6 +1048,9 @@ export async function getCompanyEventsResponse(params: {
 
       events = rows.map(mapEventRowToDTO);
       total = parseCount(countRows[0]?.count ?? 0);
+      if (events.length === 0 && !hasFilters) {
+        console.log(`[events] No events found for company ${company.id} (${company.name}). Table exists but may be empty.`);
+      }
     } catch (error) {
       if (!isMissingRelationError(error)) {
         throw error;
