@@ -18,6 +18,7 @@
 		"db:studio": "prisma studio",
 		"db:push": "prisma db push",
 		"db:seed": "tsx prisma/seed.ts",
+		"seed:alerts-demo": "node --env-file=.env --import tsx/esm scripts/seed-alerts-demo.ts",
 		"seed:dashboards-demo": "npx tsx scripts/seed-dashboards-demo.ts",
 		"db:seed:force": "npx ts-node prisma/seed.ts --force",
 		"seed:forecast-demo": "tsx scripts/seed-forecast-demo.ts",

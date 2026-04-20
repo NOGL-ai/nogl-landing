@@ -8,7 +8,7 @@ datasource db {
   url               = env("DATABASE_URL")
   directUrl         = env("DIRECT_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
-  schemas           = ["nogl", "public", "forecast", "dashboards", "assets"]
+  schemas           = ["nogl", "public", "forecast", "dashboards", "assets", "alerts"]
 }
 
 model User {
@@ -659,6 +659,101 @@ enum public_UserRole {
   @@schema("public")
 }
 
+// ─── Alerts schema ──────────────────────────────────────────────────────────
+
+enum AlertSeverity {
+  HOT
+  WARM
+  COLD
+  SNOOZED
+  RESOLVED
+
+  @@schema("alerts")
+}
+
+enum AlertStatus {
+  OPEN
+  SNOOZED
+  RESOLVED
+  DISMISSED
+
+  @@schema("alerts")
+}
+
+enum AlertType {
+  // CMO types
+  PRICE_DROP
+  PRICE_INCREASE
+  COMPETITOR_NEW_PRODUCT
+  COMPETITOR_STOCKOUT
+  PROMO_START
+  PROMO_END
+  AD_CREATIVE_CHANGE
+  NEWSLETTER_RECEIVED
+  // CFO types
+  STOCKOUT_IMMINENT
+  LOW_INVENTORY
+  REORDER_POINT_HIT
+  OVERSTOCK
+  STOCKOUT_ACTIVE
+  LEAD_TIME_BREACH
+  SUPPLIER_DELAY
+
+  @@schema("alerts")
+}
+
+enum AlertAudience {
+  CMO
+  CFO
+
+  @@schema("alerts")
+}
+
+model Alert {
+  id                  String        @id @default(cuid())
+  companyId           String
+  audience            AlertAudience
+  type                AlertType
+  severity            AlertSeverity
+  status              AlertStatus   @default(OPEN)
+  title               String
+  description         String?
+  subjectProductId    String?
+  subjectVariantId    String?
+  subjectCompetitorId String?
+  estimatedImpact     Float?
+  impactCurrency      String        @default("EUR")
+  impactWindowDays    Int           @default(180)
+  metadata            Json          @default("{}")
+  assignedToUserId    String?
+  snoozeUntil         DateTime?
+  resolvedAt          DateTime?
+  resolvedByUserId    String?
+  triggeredAt         DateTime      @default(now())
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+
+  @@index([companyId, audience, status, severity, triggeredAt])
+  @@index([subjectProductId])
+  @@index([type])
+  @@schema("alerts")
+}
+
+model AlertSubscription {
+  id         String        @id @default(cuid())
+  userId     String
+  companyId  String
+  audience   AlertAudience
+  alertType  AlertType
+  enabled    Boolean       @default(true)
+  digestMode String        @default("REALTIME")
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  @@unique([userId, companyId, audience, alertType])
+  @@schema("alerts")
+}
+
 // ─── Forecast schema ─────────────────────────────────────────────────────────
 
 model ForecastTenant {
@@ -991,7 +1086,7 @@ model RepricingProposal {
   @@schema("public")
 }
 
-model Alert {
+model RepricingAlert {
   id        String    @id @default(cuid())
   kind      AlertKind
   severity  AlertSev  @default(INFO)
@@ -1008,6 +1103,7 @@ model Alert {
 
   @@index([readAt, createdAt])
   @@index([kind, createdAt])
+  @@map("Alert")
   @@schema("public")
 }
 

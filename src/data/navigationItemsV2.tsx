@@ -24,6 +24,7 @@ import {
     Grid03,
     BarChart02,
     Share01,
+    Bell01,
     Upload01,
     Beaker02,
     BookOpen01,
@@ -105,6 +106,11 @@ export const navigationStructure: NavigationSection[] = [
                     },
 
                     // ── Pricing Tools (accordion) ─────────────────────────
+                    {
+                        label: 'Price Alerts',
+                        href: '/en/alerts',
+                        icon: Bell01,
+                    },
                     {
                         label: 'Pricing Tools',
                         icon: Sale02,

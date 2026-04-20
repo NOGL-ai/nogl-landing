@@ -2,6 +2,12 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "Next.js Dev Server (worktree)",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--", "-p", "3001"],
+      "port": 3001
+    },
+    {
       "name": "Next.js Dev Server",
       "runtimeExecutable": "npx",
       "runtimeArgs": ["next", "dev"],

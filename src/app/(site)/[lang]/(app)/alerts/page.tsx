@@ -7,7 +7,7 @@ import type { Locale } from "@/i18n";
 
 export const dynamic = "force-dynamic";
 
-export default async function CfoAlertsPage({
+export default async function CmoAlertsPage({
   params,
 }: {
   params: Promise<{ lang: Locale }>;
@@ -19,15 +19,15 @@ export default async function CfoAlertsPage({
   const [{ alerts }, counts] = await Promise.all([
     listAlerts({
       companyId: CALUMET_COMPANY_ID,
-      audience: "CFO",
+      audience: "CMO",
       status: ["OPEN", "SNOOZED"],
     }),
-    getAlertCounts({ companyId: CALUMET_COMPANY_ID, audience: "CFO" }),
+    getAlertCounts({ companyId: CALUMET_COMPANY_ID, audience: "CMO" }),
   ]);
 
   return (
     <AlertInbox
-      audience="CFO"
+      audience="CMO"
       companyId={CALUMET_COMPANY_ID}
       initialAlerts={alerts}
       initialCounts={counts}
