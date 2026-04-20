@@ -45,7 +45,7 @@ export const SidebarNavigationSectionsSubheadings = ({
                 <div key={section.label} className={cx(sectionIndex > 0 && "mt-8")}>
                     {/* Section Label */}
                     <div className="px-5 mb-1">
-                        <h3 className={"text-[10px] font-bold uppercase tracking-wider text-[--color-gray-500] dark:text-[--color-gray-300]"}>
+                        <h3 className={"text-[10px] font-bold uppercase tracking-wider text-(--color-gray-500) dark:text-(--color-gray-300)"}>
                             {section.label}
                         </h3>
                     </div>

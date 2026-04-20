@@ -87,8 +87,8 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
                                 <div key={item.id} className="flex items-center py-[2px]">
                                     <div className="flex items-center gap-3 px-3 py-2 rounded-md w-full">
                                         <div className="flex items-center gap-3 w-full">
-                                            <AnimatedThemeToggler className="w-5 h-5 text-[--color-gray-400] dark:text-[--color-gray-500] pointer-events-auto" />
-                                            <span className="flex-1 text-left font-semibold text-base text-[--color-gray-700] dark:text-[--color-gray-300] pointer-events-none">
+                                            <AnimatedThemeToggler className="w-5 h-5 text-(--color-gray-400) dark:text-(--color-gray-500) pointer-events-auto" />
+                                            <span className="flex-1 text-left font-semibold text-base text-(--color-gray-700) dark:text-(--color-gray-300) pointer-events-none">
                                                 {item.label}
                                             </span>
                                         </div>
@@ -104,8 +104,8 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
                                     <button
                                         className={`flex items-center gap-3 px-3 py-2 rounded-md w-full transition-colors ${
                                             isActive 
-                                                ? 'bg-[--color-gray-50] dark:bg-[--color-gray-800]' 
-                                                : 'bg-white dark:bg-[--color-gray-950] hover:bg-[--color-gray-50] dark:hover:bg-[--color-gray-800]'
+                                                ? 'bg-(--color-gray-50) dark:bg-(--color-gray-800)' 
+                                                : 'bg-white dark:bg-(--color-gray-950) hover:bg-(--color-gray-50) dark:hover:bg-(--color-gray-800)'
                                         }`}
                                         onClick={() => {
                                             if (hasSubItems) {
@@ -118,22 +118,22 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
                                         <item.icon 
                                             className={`w-5 h-5 ${
                                                 isActive 
-                                                    ? 'text-[--color-gray-400]' 
-                                                    : 'text-[--color-gray-400]'
+                                                    ? 'text-(--color-gray-400)' 
+                                                    : 'text-(--color-gray-400)'
                                             }`} 
                                         />
                                         <span className={`flex-1 text-left font-semibold text-base ${
                                             isActive 
-                                                ? 'text-[--color-gray-800] dark:text-[--color-gray-50]' 
-                                                : 'text-[--color-gray-700] dark:text-[--color-gray-300]'
+                                                ? 'text-(--color-gray-800) dark:text-(--color-gray-50)' 
+                                                : 'text-(--color-gray-700) dark:text-(--color-gray-300)'
                                         }`}>
                                             {item.label}
                                         </span>
                                         {hasSubItems && (
                                             isExpanded ? (
-                                                <ChevronUp className="w-4 h-4 text-[--color-gray-400]" />
+                                                <ChevronUp className="w-4 h-4 text-(--color-gray-400)" />
                                             ) : (
-                                                <ChevronDown className="w-4 h-4 text-[--color-gray-400]" />
+                                                <ChevronDown className="w-4 h-4 text-(--color-gray-400)" />
                                             )
                                         )}
                                     </button>
