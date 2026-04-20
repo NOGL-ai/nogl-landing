@@ -1,5 +1,6 @@
-import { SwitchVertical01 as ArrowUpDown, ArrowUp, ArrowDown, Download01 as Download, List as LayoutList, LayoutGrid01 as LayoutGrid, ChevronLeft, ChevronRight, InfoCircle as Info, Grid01 as Grid } from '@untitledui/icons';
 "use client";
+
+import { SwitchVertical01 as ArrowUpDown, ArrowUp, ArrowDown, Download01 as Download, List as LayoutList, LayoutGrid01 as LayoutGrid, ChevronLeft, ChevronRight, InfoCircle as Info, Grid01 as Grid } from '@untitledui/icons';
 
 import {
   createColumnHelper,

@@ -1,5 +1,6 @@
-import { SwitchVertical01 as ArrowUpDown, ArrowUp, ArrowDown } from '@untitledui/icons';
 "use client";
+
+import { SwitchVertical01 as ArrowUpDown, ArrowUp, ArrowDown } from '@untitledui/icons';
 
 import {
   createColumnHelper,

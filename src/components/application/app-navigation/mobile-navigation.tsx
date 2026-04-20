@@ -1,5 +1,6 @@
-// @ts-nocheck
 "use client";
+
+// @ts-nocheck
 
 import React, { useState, useEffect, useMemo } from "react";
 import { useTheme } from "next-themes";
@@ -169,4 +170,3 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
         </div>
     );
 };
-

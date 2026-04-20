@@ -1,5 +1,6 @@
-// @ts-nocheck
 "use client";
+
+// @ts-nocheck
 
 import type { FC, HTMLAttributes } from "react";
 import { useCallback, useEffect, useRef } from "react";
@@ -209,4 +210,3 @@ export const NavAccountCard = ({
         </div>
     );
 };
-

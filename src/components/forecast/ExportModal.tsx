@@ -1,5 +1,6 @@
-import { X, Download01 as Download } from '@untitledui/icons';
 "use client";
+
+import { X, Download01 as Download } from '@untitledui/icons';
 
 import { useState } from "react";
 

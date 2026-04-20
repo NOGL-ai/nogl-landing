@@ -1,5 +1,6 @@
-import { SearchLg as Search, X } from '@untitledui/icons';
 "use client";
+
+import { SearchLg as Search, X } from '@untitledui/icons';
 
 
 import { useTranslations } from "next-intl";

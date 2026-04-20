@@ -1,3 +1,5 @@
+"use client";
+
 import { Check as CheckIcon, X as XIcon, AlertTriangle as AlertTriangleIcon, LinkExternal01 as ExternalLinkIcon } from '@untitledui/icons';
 /**
  * Competitor Approval UI Component
@@ -7,7 +9,6 @@ import { Check as CheckIcon, X as XIcon, AlertTriangle as AlertTriangleIcon, Lin
  * and editing capabilities.
  */
 
-"use client";
 
 import { useState, useEffect } from "react";
 import { Button } from '@/components/base/buttons/button';

@@ -1,5 +1,6 @@
-// @ts-nocheck
 "use client";
+
+// @ts-nocheck
 
 import type { FC, HTMLAttributes, MouseEventHandler, ReactNode } from "react";
 import { ChevronDown, Share04 } from "@untitledui/icons";
@@ -142,4 +143,3 @@ export const NavItemBase = ({ current, type, badge, href, icon: Icon, children, 
         </AriaLink>
     );
 };
-
