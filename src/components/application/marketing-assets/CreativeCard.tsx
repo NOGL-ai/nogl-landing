@@ -43,6 +43,7 @@ export function CreativeCard({ creative }: { creative: RecentCreative }) {
             src={imgSrc}
             alt={creative.caption ?? "Ad creative"}
             fill
+            unoptimized
             className="object-cover"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
           />
