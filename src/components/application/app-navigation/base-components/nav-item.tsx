@@ -8,12 +8,12 @@ import { Badge } from "@/components/base/badges/badges";
 import { cx, sortCx } from "@/utils/cx";
 
 const getStyles = () => sortCx({
-    root: `group relative flex w-full cursor-pointer items-center rounded-[6px] bg-background hover:bg-secondary_bg dark:bg-[#0a0d12] dark:hover:bg-[#252b37]/50 outline-focus-ring transition-all duration-200 ease-in-out select-none focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-2`,
-    rootSelected: "bg-[#fafafa] hover:bg-[#fafafa] dark:bg-[#252b37] dark:hover:bg-[#252b37]",
+    root: `group relative flex w-full cursor-pointer items-center rounded-[6px] bg-background hover:bg-secondary_bg dark:bg-[--color-gray-950] dark:hover:bg-[--color-gray-800]/50 outline-focus-ring transition-all duration-200 ease-in-out select-none focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-2`,
+    rootSelected: "bg-[--color-gray-50] hover:bg-[--color-gray-50] dark:bg-[--color-gray-800] dark:hover:bg-[--color-gray-800]",
     content: `bg-transparent box-border content-stretch flex flex-[1_0_0] gap-[12px] items-center min-h-px min-w-px px-[12px] py-[8px] relative rounded-[6px] shrink-0`,
     textAndIcon: `content-stretch flex flex-[1_0_0] gap-[8px] items-center min-h-px min-w-px relative shrink-0`,
     avatar: `border-[0.417px] border-[rgba(0,0,0,0.08)] dark:border-[rgba(255,255,255,0.06)] border-solid relative rounded-[200px] shrink-0 size-[20px]`,
-    badge: `bg-[#fafafa] dark:bg-[#181d27] border border-[#e9eaeb] dark:border-[#414651] border-solid box-border content-stretch flex items-center px-[8px] py-[2px] relative rounded-[16px] shrink-0`,
+    badge: `bg-[--color-gray-50] dark:bg-[--color-gray-900] border border-[--color-gray-200] dark:border-[--color-gray-700] border-solid box-border content-stretch flex items-center px-[8px] py-[2px] relative rounded-[16px] shrink-0`,
     chevron: `overflow-clip relative shrink-0 size-[16px]`,
 });
 
@@ -57,13 +57,13 @@ export const NavItemBase = ({ current, type, badge, href, icon: Icon, children, 
             // If calling without props fails, it's a regular icon component
         }
         // Regular icon component - pass the required props with Figma colors
-        return <Icon aria-hidden="true" className={`size-5 shrink-0 transition-inherit-all ${current ? "text-[#a4a7ae] dark:text-[#717680]" : "text-[#a4a7ae] dark:text-[#717680]"}`} />;
+        return <Icon aria-hidden="true" className={`size-5 shrink-0 transition-inherit-all ${current ? "text-[--color-gray-400] dark:text-[--color-gray-500]" : "text-[--color-gray-400] dark:text-[--color-gray-500]"}`} />;
     })();
 
     const badgeElement =
         badge && (typeof badge === "string" || typeof badge === "number") ? (
             <div className={styles.badge}>
-                <p className={"font-['Inter',_sans-serif] font-medium leading-[18px] not-italic relative shrink-0 text-[#414651] dark:text-[#d5d7da] text-[12px] text-center"}>
+                <p className={"font-['Inter',_sans-serif] font-medium leading-[18px] not-italic relative shrink-0 text-[--color-gray-700] dark:text-[--color-gray-300] text-[12px] text-center"}>
                     {badge}
                 </p>
             </div>
@@ -72,7 +72,7 @@ export const NavItemBase = ({ current, type, badge, href, icon: Icon, children, 
         );
 
     const labelElement = (
-        <p className={`font-['Inter',_sans-serif] font-semibold leading-[24px] not-italic relative shrink-0 text-[16px] ${current ? "text-[#252b37] dark:text-[#e9eaeb]" : "text-[#414651] dark:text-[#d5d7da]"} ${truncate ? "truncate" : ""}`}>
+        <p className={`font-['Inter',_sans-serif] font-semibold leading-[24px] not-italic relative shrink-0 text-[16px] ${current ? "text-[--color-gray-800] dark:text-[--color-gray-200]" : "text-[--color-gray-700] dark:text-[--color-gray-300]"} ${truncate ? "truncate" : ""}`}>
             {children}
         </p>
     );
@@ -92,7 +92,7 @@ export const NavItemBase = ({ current, type, badge, href, icon: Icon, children, 
                     </div>
                     {badgeElement}
                     <div className={styles.chevron}>
-                        <ChevronDown aria-hidden="true" className={"absolute bottom-1/4 left-[37.5%] right-[37.5%] top-1/4 size-4 text-[#a4a7ae] dark:text-[#717680] in-open:-scale-y-100"} />
+                        <ChevronDown aria-hidden="true" className={"absolute bottom-1/4 left-[37.5%] right-[37.5%] top-1/4 size-4 text-[--color-gray-400] dark:text-[--color-gray-500] in-open:-scale-y-100"} />
                     </div>
                 </div>
             </summary>

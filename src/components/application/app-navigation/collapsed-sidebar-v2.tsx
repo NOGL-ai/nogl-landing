@@ -230,10 +230,10 @@ const CollapsedSidebarV2: React.FC<CollapsedSidebarV2Props> = ({
     }, [hoveredItem]);
 
     return (
-        <div className="flex h-screen bg-white dark:bg-[#0a0d12]" style={{ padding: '4px 0 4px 4px' }}>
+        <div className="flex h-screen bg-white dark:bg-[--color-gray-950]" style={{ padding: '4px 0 4px 4px' }}>
             {/* Icon Sidebar Content Container */}
             <div
-                className="flex flex-col justify-between items-start shrink-0 self-stretch border border-[#e9eaeb] dark:border-[#252b37] bg-white dark:bg-[#0a0d12] rounded-xl"
+                className="flex flex-col justify-between items-start shrink-0 self-stretch border border-[--color-gray-200] dark:border-[--color-gray-800] bg-white dark:bg-[--color-gray-950] rounded-xl"
                 style={{ width: '64px' }}
             >
                 {/* Navigation - Figma: padding-top: 20px, gap: 16px */}
@@ -295,8 +295,8 @@ const CollapsedSidebarV2: React.FC<CollapsedSidebarV2Props> = ({
                                             className={`
                                                 flex items-center justify-center w-10 h-10 rounded-md transition-colors duration-200
                                                 ${isActive || isHovered
-                                                    ? 'bg-[#fafafa] dark:bg-[#252b37]'
-                                                    : 'hover:bg-[#fafafa] dark:hover:bg-[#252b37]/50'
+                                                    ? 'bg-[--color-gray-50] dark:bg-[--color-gray-800]'
+                                                    : 'hover:bg-[--color-gray-50] dark:hover:bg-[--color-gray-800]/50'
                                                 }
                                             `}
                                             title={item.label}
@@ -307,8 +307,8 @@ const CollapsedSidebarV2: React.FC<CollapsedSidebarV2Props> = ({
                                             <IconComponent
                                                 className={`w-5 h-5 ${
                                                     isActive || isHovered
-                                                        ? 'text-[#717680] dark:text-[#a4a7ae]'
-                                                        : 'text-[#a4a7ae] dark:text-[#717680]'
+                                                        ? 'text-[--color-gray-500] dark:text-[--color-gray-400]'
+                                                        : 'text-[--color-gray-400] dark:text-[--color-gray-500]'
                                                 }`}
                                             />
                                         </button>
@@ -344,8 +344,8 @@ const CollapsedSidebarV2: React.FC<CollapsedSidebarV2Props> = ({
                                             className={`
                                                 flex items-center justify-center w-10 h-10 rounded-md transition-colors duration-200
                                                 ${isActive || isHovered
-                                                    ? 'bg-[#fafafa] dark:bg-[#252b37]'
-                                                    : 'hover:bg-[#fafafa] dark:hover:bg-[#252b37]/50'
+                                                    ? 'bg-[--color-gray-50] dark:bg-[--color-gray-800]'
+                                                    : 'hover:bg-[--color-gray-50] dark:hover:bg-[--color-gray-800]/50'
                                                 }
                                             `}
                                             title={item.label}
@@ -356,8 +356,8 @@ const CollapsedSidebarV2: React.FC<CollapsedSidebarV2Props> = ({
                                             <IconComponent
                                                 className={`w-5 h-5 ${
                                                     isActive || isHovered
-                                                        ? 'text-[#717680] dark:text-[#a4a7ae]'
-                                                        : 'text-[#a4a7ae] dark:text-[#717680]'
+                                                        ? 'text-[--color-gray-500] dark:text-[--color-gray-400]'
+                                                        : 'text-[--color-gray-400] dark:text-[--color-gray-500]'
                                                 }`}
                                             />
                                         </button>
