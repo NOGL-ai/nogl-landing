@@ -1,8 +1,6 @@
 "use client";
 import { ChevronDown } from '@untitledui/icons';
 
-import { ChevronDown } from '@untitledui/icons';
-
 import React, { useMemo, useRef, useState } from "react";
 
 import { NavItemBase } from "@/components/application/app-navigation/base-components/nav-item";

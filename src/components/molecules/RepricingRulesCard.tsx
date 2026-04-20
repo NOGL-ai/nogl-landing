@@ -1,7 +1,6 @@
 "use client";
 import { Settings02 as Settings2, Play, Clock, AlertTriangle } from '@untitledui/icons';
 
-import { Settings02 as Settings2, Play, Clock, AlertTriangle } from '@untitledui/icons';
 
 import React from "react";
 
