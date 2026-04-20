@@ -19,6 +19,7 @@ import pino from "pino";
 import { getBullMQConnection } from "../connection";
 import { INGEST_QUEUE_NAME, type AdEventBatchJobData } from "../ingest";
 import { prisma } from "@/lib/prismaDb";
+import { uploadCreativeToS3 } from "@/lib/s3-creatives";
 import {
   adsEventEnvelopeSchema,
   isSupportedSchemaVersion,
@@ -80,6 +81,8 @@ async function processBatch(job: Job<AdEventBatchJobData>) {
     const accountCache = new Map<string, string>(); // platform:external_id -> id
     const rows: Prisma.AdEventCreateManyInput[] = [];
 
+    const s3Uploads: Promise<void>[] = [];
+
     for (const evt of envelope.events) {
       const key = evt.platform + ":" + evt.external_account_id;
       let accountId = accountCache.get(key);
@@ -88,13 +91,42 @@ async function processBatch(job: Job<AdEventBatchJobData>) {
         accountId = acc.id;
         accountCache.set(key, acc.id);
       }
-      rows.push(mappers.toAdEventRow(evt, envelope, accountId!, runId, null));
+
+      // Upsert AdCreative for CREATIVE_SEEN events and link creative_id.
+      let creativeId: string | null = null;
+      const creativeArgs = mappers.toAdCreativeUpsert(evt, accountId!);
+      if (creativeArgs) {
+        const creative = await prisma.adCreative.upsert(creativeArgs);
+        creativeId = creative.id;
+
+        // Fire-and-forget S3 upload — never blocks ingest.
+        const originalUrl = creative.media_url;
+        if (originalUrl && !originalUrl.includes("10.10.10.180")) {
+          s3Uploads.push(
+            uploadCreativeToS3(originalUrl, evt.platform, creativeArgs.where.creative_hash)
+              .then(async (s3Url) => {
+                if (s3Url) {
+                  await prisma.adCreative.update({
+                    where: { id: creative.id },
+                    data: { media_url: s3Url },
+                  });
+                }
+              })
+              .catch(() => { /* silent — S3 is optional */ }),
+          );
+        }
+      }
+
+      rows.push(mappers.toAdEventRow(evt, envelope, accountId!, runId, creativeId));
     }
 
     const result = await prisma.adEvent.createMany({
       data: rows,
       skipDuplicates: true,
     });
+
+    // Await S3 uploads in background (don't let them fail the job).
+    if (s3Uploads.length) void Promise.allSettled(s3Uploads);
     accepted = result.count;
     rejected = envelope.events.length - accepted;
 

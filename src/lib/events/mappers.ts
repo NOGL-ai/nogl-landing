@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import { Prisma } from "@prisma/client";
 import type { AdsEvent } from "./schema";
 import type { AdsEventEnvelope } from "./envelope";
@@ -24,6 +25,44 @@ export function toAdEventRow(
     idempotency_key: event.idempotency_key,
     payload: event.payload as Prisma.InputJsonValue,
     metrics: (event.metrics ?? Prisma.JsonNull) as Prisma.InputJsonValue | typeof Prisma.JsonNull,
+  };
+}
+
+/** Returns upsert args for AdCreative, or null if the event type doesn't produce a creative. */
+export function toAdCreativeUpsert(event: AdsEvent, accountId: string) {
+  if (event.event_type !== "CREATIVE_SEEN" || event.platform !== "META_ADS_LIBRARY") return null;
+
+  const payload = event.payload as {
+    ad_archive_id: string;
+    ad_text?: string;
+    media_urls?: string[];
+  };
+
+  const hash =
+    event.creative_hash ??
+    crypto
+      .createHash("sha256")
+      .update(event.platform + ":" + payload.ad_archive_id)
+      .digest("hex")
+      .slice(0, 32);
+
+  return {
+    where: { creative_hash: hash },
+    update: {
+      last_seen_at: new Date(),
+      caption: payload.ad_text ?? undefined,
+      raw: payload as Prisma.InputJsonValue,
+    },
+    create: {
+      account_id: accountId,
+      platform: event.platform,
+      external_creative_id: payload.ad_archive_id,
+      creative_hash: hash,
+      caption: payload.ad_text ?? null,
+      media_url: payload.media_urls?.[0] ?? null,
+      thumbnail_url: payload.media_urls?.[1] ?? null,
+      raw: payload as Prisma.InputJsonValue,
+    },
   };
 }
 
