@@ -13,6 +13,7 @@ import type {
  
 type AnyRecord = Record<string, any>;
 import { createAlert } from "@/actions/alerts";
+import { createNotification } from "@/lib/notifications/emit";
 import { computeNextRunAt } from "./schedule-utils";
 
 const ALERT_LARGE_DELTA_PCT = 5;  // fire alert when |delta|/current > 5%
@@ -234,6 +235,7 @@ export async function applyJob(
   });
 
   // Fire alerts for large price changes (outside the transaction)
+  let largeDeltaCount = 0;
   for (const p of toApply) {
     if (p.proposedPrice == null) continue;
     const proposed = Number(p.proposedPrice);
@@ -241,6 +243,7 @@ export async function applyJob(
     const deltaPct = Math.abs((proposed - current) / current) * 100;
 
     if (deltaPct >= ALERT_LARGE_DELTA_PCT) {
+      largeDeltaCount += 1;
       const severity = deltaPct >= ALERT_SEVERE_DELTA_PCT ? "WARN" : "INFO";
       await createAlert({
         kind: "PRICE_CHANGE_APPLIED",
@@ -252,6 +255,29 @@ export async function applyJob(
         ruleId: job.ruleId,
         jobId,
       });
+    }
+  }
+
+  // Summary notification to the rule creator when any large deltas landed.
+  if (largeDeltaCount > 0) {
+    try {
+      const ruleMeta = await prisma.repricingRule.findUnique({
+        where: { id: job.ruleId },
+        select: { name: true, createdById: true },
+      });
+      if (ruleMeta?.createdById) {
+        await createNotification({
+          recipientId: ruleMeta.createdById,
+          type: "MENTION",
+          title: `Your rule "${ruleMeta.name}" applied ${largeDeltaCount} price change${largeDeltaCount === 1 ? "" : "s"}`,
+          description: `Total impact €${totalImpact.toFixed(2)} across ${toApply.length} product${toApply.length === 1 ? "" : "s"}.`,
+          actionUrl: `/en/repricing/auto-history?job=${jobId}`,
+          actorId: user.id,
+          metadata: { jobId, ruleId: job.ruleId, largeDeltaCount, totalImpact },
+        });
+      }
+    } catch (err) {
+      console.error("[notifications] repricing emit failed", err);
     }
   }
 
