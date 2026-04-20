@@ -192,9 +192,10 @@ describe('SidebarItem Component', () => {
 
     it('renders default badge with correct styles', () => {
       render(<SidebarItem item={mockItemWithDefaultBadge} isActive={false} isCollapsed={false} />);
-      
+
       const badge = screen.getByText('5');
-      expect(badge).toHaveClass('bg-gray-100', 'text-gray-700');
+      // Default badge uses design-token class names (bg-secondary_bg / text-secondary)
+      expect(badge).toHaveClass('bg-secondary_bg', 'text-secondary');
     });
 
     it('hides badge when collapsed', () => {

@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
+const path = require("path");
 
 const nextConfig = {
+	// Only needed in local worktree (nested 3 levels deep); on Vercel the repo root is __dirname
+	...(process.env.VERCEL ? {} : { outputFileTracingRoot: path.join(__dirname, "../../..") }),
 	reactStrictMode: true,
 	typedRoutes: true,
 	output: 'standalone',
@@ -180,7 +183,7 @@ const nextConfig = {
 	typescript: {
 		ignoreBuildErrors: true,
 	},
-	transpilePackages: ["undici", "mermaid"],
+	transpilePackages: ["undici", "mermaid", "react-markdown", "remark-gfm", "remark-parse", "remark-rehype", "rehype-stringify", "unified", "vfile", "vfile-message", "unist-util-visit", "unist-util-stringify-position", "mdast-util-from-markdown", "mdast-util-to-hast", "micromark"],
 };
 
 module.exports = nextConfig;

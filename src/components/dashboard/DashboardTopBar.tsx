@@ -1,7 +1,7 @@
 // @ts-nocheck
 "use client";
 
-import { Bell, LayoutGrid, Lock } from "lucide-react";
+import { Bell, Columns2, Lock } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Suspense } from "react";
 
@@ -37,8 +37,8 @@ export function DashboardTopBar() {
           >
             <Bell className="h-5 w-5" />
           </Button>
-          <Button type="button" variant="outline" size="sm" className="gap-2 rounded-full">
-            <LayoutGrid className="h-4 w-4" aria-hidden />
+          <Button type="button" variant="outline" size="sm" className="gap-2 rounded-full text-foreground">
+            <Columns2 className="h-4 w-4" aria-hidden />
             {t("chrome.compare")}
           </Button>
           <Button

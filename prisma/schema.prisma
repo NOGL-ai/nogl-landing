@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
 datasource db {
@@ -7,35 +8,37 @@ datasource db {
   url               = env("DATABASE_URL")
   directUrl         = env("DIRECT_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
-  schemas           = ["nogl", "public"]
+  schemas           = ["nogl", "public", "forecast", "dashboards", "assets"]
 }
 
 model User {
-  id                    String    @id @default(cuid())
-  name                  String?
-  username              String?   @unique
-  email                 String    @unique
-  emailVerified         DateTime?
-  image                 String?
-  password              String?
-  passwordResetToken    String?   @unique
-  passwordResetTokenExp DateTime?
-  role                  UserRole  @default(USER)
-  onboardingCompleted   Boolean   @default(false)
-  bio                   String?
-  isCommunityMember     Boolean   @default(false)
-  userType              String?
-  referralSource        String?
-  otherReferralSource   String?
-  socialLinks           String?
-  expertise             String?
-  subscriptionId        String?
-  currentPeriodEnd      DateTime?
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
-  accounts              Account[]
-  apiKeys               ApiKey[]
-  sessions              Session[]
+  id                     String         @id @default(cuid())
+  name                   String?
+  username               String?        @unique
+  email                  String         @unique
+  emailVerified          DateTime?
+  image                  String?
+  password               String?
+  passwordResetToken     String?        @unique
+  passwordResetTokenExp  DateTime?
+  role                   UserRole       @default(USER)
+  onboardingCompleted    Boolean        @default(false)
+  bio                    String?
+  isCommunityMember      Boolean        @default(false)
+  userType               String?
+  referralSource         String?
+  otherReferralSource    String?
+  socialLinks            String?
+  expertise              String?
+  subscriptionId         String?
+  currentPeriodEnd       DateTime?
+  createdAt              DateTime       @default(now())
+  updatedAt              DateTime       @updatedAt
+  accounts               Account[]
+  apiKeys                ApiKey[]
+  sessions               Session[]
+  notifications          Notification[] @relation("NotificationRecipient")
+  triggeredNotifications Notification[] @relation("NotificationActor")
 
   @@index([role])
   @@schema("nogl")
@@ -151,6 +154,11 @@ model products {
   product_price_range         String?                     @db.VarChar(50)
   product_has_promotion       Boolean?
   product_page_image_url      String?
+  product_image_url           String?
+  company_id                  String?               @db.VarChar(255)
+  ean                         String?               @db.VarChar(50)
+  mpn                         String?               @db.VarChar(100)
+  stock_status                String?               @db.VarChar(50)
   product_image_count         Int?
   product_has_hover_images    Boolean?
   product_variants_count      Int?
@@ -307,6 +315,9 @@ model Company {
   events                CompanyEvent[]
   assets                CompanyAsset[]
   forecastTenant        ForecastTenant?
+  trackedCompetitors    TrackedCompetitor[] @relation("TenantCompetitors")
+  trackedByTenants      TrackedCompetitor[] @relation("CompetitorOf")
+  notifications         Notification[]
 
   @@index([slug])
   @@index([domain])
@@ -648,6 +659,226 @@ enum public_UserRole {
   @@schema("public")
 }
 
+// ─── Forecast schema ─────────────────────────────────────────────────────────
+
+model ForecastTenant {
+  id           String   @id @default(cuid())
+  companyId    String   @unique
+  magicNumber  Float    @default(1.0)
+  hasBundle    Boolean  @default(false)
+  isDemoTenant Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  company      Company                      @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  saleChannels ForecastSaleChannel[]
+  products     ForecastProduct[]
+  annotations  ForecastAnnotation[]
+  purchaseOrders ReplenishmentPurchaseOrder[]
+  suppliers    ReplenishmentSupplier[]
+
+  @@schema("forecast")
+}
+
+model ForecastSaleChannel {
+  id       String   @id @default(cuid())
+  tenantId String
+  name     String
+  label    String
+  colorFg  String
+  colorBg  String
+  weight   Float    @default(1.0)
+  createdAt DateTime @default(now())
+
+  tenant          ForecastTenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  historicalSales ForecastHistoricalSale[]
+  quantiles       ForecastQuantile[]
+
+  @@unique([tenantId, name])
+  @@schema("forecast")
+}
+
+model ForecastProduct {
+  id           String   @id @default(cuid())
+  tenantId     String
+  externalId   String?
+  productTitle String
+  handle       String?
+  brand        String?
+  category     String
+  isSet        Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  tenant   ForecastTenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  variants ForecastVariant[]
+
+  @@index([tenantId, category])
+  @@schema("forecast")
+}
+
+model ForecastVariant {
+  id           String   @id @default(cuid())
+  productId    String
+  variantTitle String
+  sku          String?
+  gtin         String?
+  rrp          Float    @default(0.0)
+  currency     String   @default("EUR")
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+
+  product         ForecastProduct         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  historicalSales ForecastHistoricalSale[]
+  quantiles       ForecastQuantile[]
+  poLines         ReplenishmentPOLine[]
+
+  @@index([productId])
+  @@schema("forecast")
+}
+
+model ForecastHistoricalSale {
+  id         String   @id @default(cuid())
+  variantId  String
+  channelId  String
+  saleDate   DateTime @db.Date
+  quantity   Float    @default(0)
+  revenue    Float    @default(0)
+  isStockout Boolean  @default(false) // censored-demand marker
+
+  variant ForecastVariant     @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  channel ForecastSaleChannel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  @@unique([variantId, channelId, saleDate])
+  @@index([variantId, saleDate])
+  @@index([channelId, saleDate])
+  @@schema("forecast")
+}
+
+model ForecastQuantile {
+  id            String   @id @default(cuid())
+  variantId     String
+  channelId     String
+  forecastDate  DateTime @db.Date
+  quantile      Int
+  forecastValue Float
+  revenueValue  Float
+  isBundleTotal Boolean  @default(false)
+
+  variant ForecastVariant     @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  channel ForecastSaleChannel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  @@unique([variantId, channelId, forecastDate, quantile])
+  @@index([variantId, forecastDate])
+  @@index([channelId, forecastDate])
+  @@schema("forecast")
+}
+
+model ForecastSet {
+  id          String   @id @default(cuid())
+  tenantId    String
+  name        String
+  description String?
+  sourceUrl   String?
+  variantIds  String[]
+  createdAt   DateTime @default(now())
+
+  @@index([tenantId])
+  @@schema("forecast")
+}
+
+// ─── Forecast annotations (event spikes, stock-outs, promotions) ─────────────
+
+model ForecastAnnotation {
+  id             String   @id @default(cuid())
+  tenantId       String
+  annotationDate DateTime @db.Date
+  endDate        DateTime? @db.Date
+  kind           String   // "event_spike" | "out_of_stock" | "promotion" | "launch"
+  severity       String   @default("info") // "info" | "warning" | "critical"
+  title          String
+  description    String?
+  delta          Float?
+  channelName    String?  // optional scope: "web" | "marketplace" | "b2b"
+  variantId      String?  // optional scope to a specific variant
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  tenant         ForecastTenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, annotationDate])
+  @@index([tenantId, kind])
+  @@schema("forecast")
+}
+
+// ─── Replenishment (Kanban purchase-order pipeline) ──────────────────────────
+
+model ReplenishmentSupplier {
+  id           String   @id @default(cuid())
+  tenantId     String
+  name         String
+  contact      String?
+  email        String?
+  phone        String?
+  city         String?
+  country      String   @default("DE")
+  leadTimeDays Int      @default(30)
+  paymentTerms String?  // e.g. "Net 30", "2% 10 Net 30"
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  tenant         ForecastTenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  purchaseOrders ReplenishmentPurchaseOrder[]
+
+  @@unique([tenantId, name])
+  @@index([tenantId, isActive])
+  @@schema("forecast")
+}
+
+model ReplenishmentPurchaseOrder {
+  id          String    @id @default(cuid())
+  tenantId    String
+  poNumber    String
+  supplierId  String?
+  status      String    @default("draft") // "draft" | "approved" | "partially_arrived" | "arrived" | "cancelled"
+  totalAmount Float     @default(0)
+  currency    String    @default("EUR")
+  eta         DateTime? @db.Date
+  approvedAt  DateTime?
+  arrivedAt   DateTime?
+  notes       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  tenant    ForecastTenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  supplier  ReplenishmentSupplier? @relation(fields: [supplierId], references: [id])
+  lineItems ReplenishmentPOLine[]
+
+  @@unique([tenantId, poNumber])
+  @@index([tenantId, status])
+  @@index([tenantId, eta])
+  @@index([supplierId])
+  @@schema("forecast")
+}
+
+model ReplenishmentPOLine {
+  id              String @id @default(cuid())
+  purchaseOrderId String
+  variantId       String
+  quantity        Int
+  unitCost        Float
+  arrivedQty      Int    @default(0)
+  createdAt       DateTime @default(now())
+
+  purchaseOrder ReplenishmentPurchaseOrder @relation(fields: [purchaseOrderId], references: [id], onDelete: Cascade)
+  variant       ForecastVariant            @relation(fields: [variantId], references: [id])
+
+  @@index([purchaseOrderId])
+  @@index([variantId])
+  @@schema("forecast")
+}
+
 // ─── Repricing Engine ────────────────────────────────────────────────────────
 
 model RepricingRule {
@@ -780,112 +1011,6 @@ model Alert {
   @@schema("public")
 }
 
-// ─── Forecast / Demand Planning ──────────────────────────────────────────
-// Tenant-scoped demand forecasting. Each ForecastTenant is 1:1 with a
-// Company (from the nogl schema); all downstream entities cascade through it.
-// Models live in the `public` schema to match the repricing pattern.
-
-model ForecastTenant {
-  id           String   @id @default(cuid())
-  companyId    String   @unique
-  company      Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  magicNumber  Float    @default(1.0) // qty→revenue multiplier fallback when variant rrp is missing
-  hasBundle    Boolean  @default(false)
-  isDemoTenant Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  products ForecastProduct[]
-  channels ForecastSaleChannel[]
-
-  @@schema("public")
-}
-
-model ForecastSaleChannel {
-  id       String         @id @default(cuid())
-  tenantId String
-  tenant   ForecastTenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  name     String // "web" | "marketplace" | "b2b"
-  label    String
-  colorFg  String
-  colorBg  String
-  weight   Float          @default(1.0)
-
-  historicalSales ForecastHistoricalSale[]
-  quantiles       ForecastQuantile[]
-
-  @@unique([tenantId, name])
-  @@schema("public")
-}
-
-model ForecastProduct {
-  id           String         @id @default(cuid())
-  tenantId     String
-  tenant       ForecastTenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  productTitle String
-  category     String // "cameras" | "lenses" | "accessories" | "lighting" | "tripods"
-  brand        String?
-  isSet        Boolean        @default(false)
-  createdAt    DateTime       @default(now())
-
-  variants ForecastVariant[]
-
-  @@unique([tenantId, productTitle])
-  @@index([tenantId, category])
-  @@schema("public")
-}
-
-model ForecastVariant {
-  id           String          @id @default(cuid())
-  productId    String
-  product      ForecastProduct @relation(fields: [productId], references: [id], onDelete: Cascade)
-  variantTitle String
-  sku          String
-  rrp          Decimal         @db.Decimal(10, 2)
-  currency     String          @default("EUR")
-  isActive     Boolean         @default(true)
-
-  historicalSales ForecastHistoricalSale[]
-  quantiles       ForecastQuantile[]
-
-  @@unique([productId, sku])
-  @@schema("public")
-}
-
-model ForecastHistoricalSale {
-  id         String              @id @default(cuid())
-  variantId  String
-  variant    ForecastVariant     @relation(fields: [variantId], references: [id], onDelete: Cascade)
-  channelId  String
-  channel    ForecastSaleChannel @relation(fields: [channelId], references: [id], onDelete: Cascade)
-  saleDate   DateTime            @db.Date
-  quantity   Int
-  revenue    Decimal             @db.Decimal(12, 2)
-  isStockout Boolean             @default(false) // censored-demand marker
-
-  @@unique([variantId, channelId, saleDate])
-  @@index([variantId, saleDate])
-  @@index([channelId, saleDate])
-  @@schema("public")
-}
-
-model ForecastQuantile {
-  id            String              @id @default(cuid())
-  variantId     String
-  variant       ForecastVariant     @relation(fields: [variantId], references: [id], onDelete: Cascade)
-  channelId     String
-  channel       ForecastSaleChannel @relation(fields: [channelId], references: [id], onDelete: Cascade)
-  forecastDate  DateTime            @db.Date
-  quantile      Int // 3 (p30 / pessimistic) | 4 (median) | 5 (p70 / optimistic)
-  forecastValue Float
-  revenueValue  Decimal             @db.Decimal(12, 2)
-  isBundleTotal Boolean             @default(false)
-
-  @@unique([variantId, channelId, forecastDate, quantile])
-  @@index([forecastDate])
-  @@schema("public")
-}
-
 // ─── Repricing Enums ─────────────────────────────────────────────────────────
 
 enum RuleStatus {
@@ -992,4 +1117,172 @@ enum AlertSev {
   CRITICAL
 
   @@schema("public")
+}
+
+// ─── Tracked Competitors (tenant-scoped) ─────────────────────────────────────
+
+model TrackedCompetitor {
+  id              String                  @id @default(cuid())
+  tenantCompanyId String
+  competitorId    String
+  status          TrackedCompetitorStatus @default(ACTIVE)
+  priority        Int                     @default(0)
+  nickname        String?
+  addedAt         DateTime                @default(now())
+  addedByUserId   String?
+  pausedAt        DateTime?
+  pauseReason     String?
+  notes           String?                 @db.Text
+
+  tenant          Company                 @relation("TenantCompetitors", fields: [tenantCompanyId], references: [id], onDelete: Cascade)
+  competitor      Company                 @relation("CompetitorOf", fields: [competitorId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantCompanyId, competitorId])
+  @@index([tenantCompanyId, status])
+  @@schema("nogl")
+}
+
+enum TrackedCompetitorStatus {
+  ACTIVE
+  PAUSED
+  ARCHIVED
+
+  @@schema("nogl")
+}
+
+// ─── Trend Materialized Views (from main) ────────────────────────────────────
+
+/// Materialized view refreshed nightly. Read-only — do not write.
+model CompanyTrend4w {
+  company_id           String   @id
+  name                 String
+  slug                 String
+  domain               String?
+  logo_url             String?
+  new_products_4w      Int      @map("new_products_4w")
+  new_products_prev_4w Int      @map("new_products_prev_4w")
+  avg_price_change_4w  Decimal? @map("avg_price_change_4w") @db.Decimal(10, 4)
+  total_products       Int      @map("total_products")
+  refreshed_at         DateTime @map("refreshed_at")
+
+  @@map("CompanyTrend4w")
+  @@schema("nogl")
+}
+
+/// Materialized view refreshed nightly. Read-only — do not write.
+model CategoryTrend4w {
+  category             String   @id
+  new_products_4w      Int      @map("new_products_4w")
+  new_products_prev_4w Int      @map("new_products_prev_4w")
+  company_count        Int      @map("company_count")
+  total_products       Int      @map("total_products")
+  refreshed_at         DateTime @map("refreshed_at")
+
+  @@map("CategoryTrend4w")
+  @@schema("nogl")
+}
+
+/// Materialized view refreshed nightly. Read-only — do not write.
+model CompanyTrendWeekly12 {
+  company_id   String
+  week_start   DateTime
+  new_products Int      @map("new_products")
+
+  @@id([company_id, week_start])
+  @@map("CompanyTrendWeekly12")
+  @@schema("nogl")
+}
+
+// ─── Notifications (cross-cutting inbox) ─────────────────────────────────────
+
+enum NotificationType {
+  MENTION
+  INVITE_ACCEPTED
+  INVITE_DECLINED
+  BILLING_PAYMENT_FAILED
+  BILLING_INVOICE_READY
+  BILLING_CARD_EXPIRING
+  SYSTEM_ANNOUNCEMENT
+  SHARE_INVITE
+  EXPORT_READY
+
+  @@schema("nogl")
+}
+
+enum NotificationStatus {
+  UNREAD
+  READ
+  ARCHIVED
+
+  @@schema("nogl")
+}
+
+model Notification {
+  id          String             @id @default(cuid())
+  recipientId String
+  tenantId    String?
+  type        NotificationType
+  status      NotificationStatus @default(UNREAD)
+  title       String
+  description String?            @db.Text
+  actionUrl   String?
+  actorId     String?
+  metadata    Json?
+  createdAt   DateTime           @default(now())
+  readAt      DateTime?
+
+  recipient User     @relation("NotificationRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  actor     User?    @relation("NotificationActor", fields: [actorId], references: [id], onDelete: SetNull)
+  tenant    Company? @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([recipientId, status, createdAt])
+  @@index([tenantId, type, createdAt])
+  @@schema("nogl")
+}
+
+// ---------------------------------------------------------------------------
+// Dashboards (Particl-style builder)
+// ---------------------------------------------------------------------------
+
+enum DashboardPersona {
+  CFO
+  CMO
+  OPS
+  GENERIC
+
+  @@schema("dashboards")
+}
+
+model Dashboard {
+  id            String            @id @default(cuid())
+  tenantId      String
+  ownerId       String
+  name          String
+  description   String?
+  isShared      Boolean           @default(false)
+  persona       DashboardPersona  @default(GENERIC)
+  globalFilters Json              @default("{}")
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  widgets       DashboardWidget[]
+
+  @@index([tenantId, ownerId])
+  @@index([tenantId, isShared])
+  @@schema("dashboards")
+}
+
+model DashboardWidget {
+  id          String    @id @default(cuid())
+  dashboardId String
+  title       String
+  type        String
+  layout      Json
+  config      Json
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  dashboard Dashboard @relation(fields: [dashboardId], references: [id], onDelete: Cascade)
+
+  @@index([dashboardId])
+  @@schema("dashboards")
 }

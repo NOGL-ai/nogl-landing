@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LabelList, Cell } from "recharts";
 import { useTheme } from "next-themes";
-import ApexCharts from "apexcharts";
 
 import { Card } from "@/components/ui/card";
 import type { PriceDistributionBucket } from "@/types/company";
@@ -22,94 +21,16 @@ export function PriceDistributionChart({
   loading = false,
 }: PriceDistributionChartProps) {
   const { resolvedTheme } = useTheme();
-  const containerRef = useRef<HTMLDivElement>(null);
-  // useRef (not useState) — avoids extra re-render on instantiation
-  const chartInstanceRef = useRef<ApexCharts | null>(null);
-
   const isDark = resolvedTheme === "dark";
 
-  useEffect(() => {
-    if (!containerRef.current || loading || buckets.length === 0) return;
+  const textColor = isDark ? "#9ca3af" : "#6b7280";
+  const gridColor = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)";
 
-    const labelColor = isDark ? "#9ca3af" : "#6b7280";
-    const gridColor = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)";
-    const bgColor = isDark ? "transparent" : "#ffffff";
-
-    const options: ApexCharts.ApexOptions = {
-      chart: {
-        type: "bar",
-        height: 290,
-        toolbar: { show: false },
-        zoom: { enabled: false },
-        background: bgColor,
-        foreColor: labelColor,
-        animations: { enabled: false },
-        events: {
-          dataPointSelection(_e, _ctx, config) {
-            const idx: number = config.dataPointIndex;
-            if (idx >= 0 && buckets[idx]) {
-              onBucketClick?.(buckets[idx]);
-            }
-          },
-        },
-      },
-      plotOptions: {
-        bar: {
-          horizontal: false,
-          columnWidth: "75%",
-          borderRadius: 4,
-          dataLabels: { position: "inside" },
-        },
-      },
-      dataLabels: {
-        enabled: true,
-        formatter: (val: number) => (val >= 5 ? `${Math.round(val)}%` : ""),
-        style: { fontSize: "9px", fontWeight: "700", colors: ["#ffffff"] },
-        offsetY: 4,
-      },
-      stroke: { show: false },
-      series: [{ name: "% of Products", data: buckets.map((b) => b.percentage) }],
-      xaxis: {
-        categories: buckets.map((b) => `€${b.range.replace(/-/g, "–")}`),
-        axisBorder: { show: false },
-        axisTicks: { show: false },
-        labels: { style: { fontSize: "11px", colors: labelColor } },
-      },
-      yaxis: {
-        labels: {
-          style: { fontSize: "11px", colors: labelColor },
-          formatter: (val) => `${Math.round(val)}%`,
-        },
-      },
-      fill: { colors: [CHART_BLUE], opacity: 0.85 },
-      states: {
-        hover:  { filter: { type: "lighten" } },
-        active: { filter: { type: "darken" } },
-      },
-      grid: { borderColor: gridColor, strokeDashArray: 4 },
-      tooltip: {
-        theme: isDark ? "dark" : "light",
-        y: { formatter: (val) => `${val.toFixed(1)}%` },
-      },
-      responsive: [
-        { breakpoint: 1024, options: { plotOptions: { bar: { columnWidth: "80%" } } } },
-      ],
-    };
-
-    // Destroy previous instance before creating a new one
-    try { chartInstanceRef.current?.destroy(); } catch { /* ignore */ }
-    chartInstanceRef.current = null;
-
-    const chart = new ApexCharts(containerRef.current, options);
-    chartInstanceRef.current = chart;
-    void chart.render();
-
-    return () => {
-      try { chartInstanceRef.current?.destroy(); } catch { /* ignore */ }
-      chartInstanceRef.current = null;
-    };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [buckets, loading, isDark, onBucketClick]);
+  const chartData = buckets.map((b) => ({
+    label: `€${b.range.replace(/-/g, "–")}`,
+    value: b.percentage,
+    _bucket: b,
+  }));
 
   return (
     <Card className="flex flex-1 flex-col p-5">
@@ -130,10 +51,7 @@ export function PriceDistributionChart({
         </p>
       )}
 
-      {/* Always keep container in the DOM — unmounting it while the chart
-          is alive causes a removeChild crash in ApexCharts' useEffect cleanup */}
-      <div className="relative">
-        <div ref={containerRef} style={{ minHeight: 290 }} />
+      <div className="relative" style={{ minHeight: 290 }}>
         {loading && (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-primary" />
@@ -143,6 +61,56 @@ export function PriceDistributionChart({
           <p className="flex h-[290px] items-center justify-center text-sm text-muted-foreground">
             No distribution data.
           </p>
+        )}
+        {!loading && buckets.length > 0 && (
+          <ResponsiveContainer width="100%" height={290}>
+            <BarChart data={chartData} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="4 4" stroke={gridColor} vertical={false} />
+              <XAxis
+                dataKey="label"
+                tick={{ fill: textColor, fontSize: 11 }}
+                axisLine={false}
+                tickLine={false}
+              />
+              <YAxis
+                tick={{ fill: textColor, fontSize: 11 }}
+                axisLine={false}
+                tickLine={false}
+                tickFormatter={(v: number) => `${Math.round(v)}%`}
+              />
+              <Tooltip
+                contentStyle={{
+                  background: isDark ? "#111827" : "#ffffff",
+                  border: `1px solid ${gridColor}`,
+                  borderRadius: 8,
+                  fontSize: 12,
+                }}
+                labelStyle={{ color: textColor }}
+                formatter={(value) => [`${(value as number).toFixed(1)}%`, "% of Products"] as [string, string]}
+              />
+              <Bar
+                dataKey="value"
+                radius={[4, 4, 0, 0]}
+                cursor={onBucketClick ? "pointer" : undefined}
+                onClick={(_data: unknown, index: number) => {
+                  if (buckets[index]) onBucketClick?.(buckets[index]);
+                }}
+              >
+                {chartData.map((_entry, index) => (
+                  <Cell key={`cell-${index}`} fill={CHART_BLUE} fillOpacity={0.85} />
+                ))}
+                <LabelList
+                  dataKey="value"
+                  position="insideTop"
+                  formatter={(value: unknown) => {
+                    const v = value as number;
+                    return v >= 5 ? `${Math.round(v)}%` : "";
+                  }}
+                  style={{ fill: "#ffffff", fontSize: 9, fontWeight: 700 }}
+                />
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
         )}
       </div>
     </Card>

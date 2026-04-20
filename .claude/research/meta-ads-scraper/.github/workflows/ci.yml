@@ -1,0 +1,89 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    # 04:00 UTC nightly — smoke test runs here only.
+    - cron: '0 4 * * *'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-and-test:
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install deps
+        run: npm install --no-audit --no-fund
+
+      - name: Syntax check entry point
+        run: node --check src/main.js
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit tests
+        run: npm test
+
+  smoke:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install deps
+        run: npm install --no-audit --no-fund
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Prepare Apify input
+        run: |
+          mkdir -p apify_storage/key_value_stores/default
+          cat > apify_storage/key_value_stores/default/INPUT.json <<'JSON'
+          {
+            "searchQuery": "nike",
+            "country": "US",
+            "adType": "ALL",
+            "maxAds": 5,
+            "headlessMode": true,
+            "enableGraphQLInterception": true,
+            "useAdvancedStealth": true
+          }
+          JSON
+
+      - name: Smoke scrape
+        env:
+          APIFY_LOCAL_STORAGE_DIR: ./apify_storage
+        run: |
+          set +e
+          timeout 10m npm start
+          echo "scraper exit: $?"
+
+      - name: Summarize output
+        id: summary
+        run: |
+          count=$(find apify_storage/datasets/default -type f -name '*.json' 2>/dev/null | wc -l)
+          echo "records=$count" | tee -a "$GITHUB_OUTPUT"
+
+      - name: Fail the job if zero records produced
+        if: steps.summary.outputs.records == '0'
+        run: |
+          echo "::error::Nightly smoke produced 0 records — Meta DOM/GraphQL may have rotated."
+          exit 1
