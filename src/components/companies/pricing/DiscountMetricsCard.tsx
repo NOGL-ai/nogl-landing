@@ -1,7 +1,7 @@
 "use client";
 
+import { InfoCircle as Info } from '@untitledui/icons';
 import { useTranslations } from "next-intl";
-import { Info } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 interface DiscountMetricsCardProps {
@@ -19,7 +19,7 @@ export function DiscountMetricsCard({
   const percentage = totalProducts > 0 ? Math.round((totalDiscounted / totalProducts) * 100) : 0;
 
   if (loading) {
-    return <Card className="h-32 animate-pulse bg-muted" />;
+    return <Card className="h-32 animate-pulse bg-bg-tertiary" />;
   }
 
   // Calculate donut chart values for 64x64 SVG
@@ -31,11 +31,11 @@ export function DiscountMetricsCard({
     <Card className="flex flex-col overflow-hidden p-5">
       {/* Header */}
       <div className="mb-4 flex items-center gap-2">
-        <h3 className="text-sm font-semibold text-foreground">
+        <h3 className="text-sm font-semibold text-text-primary">
           {t("pricing.totalDiscounted") || "Total Discounted Products"}
         </h3>
         <div
-          className="flex items-center justify-center rounded-full p-1 text-muted-foreground transition-colors hover:text-foreground"
+          className="flex items-center justify-center rounded-full p-1 text-text-tertiary transition-colors hover:text-text-primary"
           title={t("pricing.totalDiscountedTooltip") || "Active discounted products where the average current price of its variants is less than the average full price."}
         >
           <Info className="h-4 w-4" />
@@ -78,18 +78,18 @@ export function DiscountMetricsCard({
           </svg>
           {/* Percentage text overlay */}
           <div className="absolute text-center">
-            <p className="text-xs font-bold text-foreground">{percentage}%</p>
+            <p className="text-xs font-bold text-text-primary">{percentage}%</p>
           </div>
         </div>
 
         {/* Metrics - Right side */}
         <div className="flex flex-col gap-1">
-          <p className="text-sm font-medium text-foreground">
+          <p className="text-sm font-medium text-text-primary">
             <span className="font-bold">{totalDiscounted.toLocaleString()}</span>
-            <span className="mx-1 text-muted-foreground">/</span>
-            <span className="text-muted-foreground">{totalProducts.toLocaleString()}</span>
+            <span className="mx-1 text-text-tertiary">/</span>
+            <span className="text-text-tertiary">{totalProducts.toLocaleString()}</span>
           </p>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-text-tertiary">
             {t("pricing.productsDiscounted") || "products discounted"}
           </p>
         </div>

@@ -36,14 +36,14 @@ export function PriceDistributionChart({
     <Card className="flex flex-1 flex-col p-5">
       <div className="mb-3 flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-semibold text-foreground">Price Distribution</h3>
-          <p className="text-xs text-muted-foreground">P5–P95</p>
+          <h3 className="text-sm font-semibold text-text-primary">Price Distribution</h3>
+          <p className="text-xs text-text-tertiary">P5–P95</p>
         </div>
-        <span className="text-xs text-muted-foreground">% of Product Prices</span>
+        <span className="text-xs text-text-tertiary">% of Product Prices</span>
       </div>
 
       {onBucketClick && (
-        <p className="mb-3 flex items-center gap-1.5 text-xs text-muted-foreground">
+        <p className="mb-3 flex items-center gap-1.5 text-xs text-text-tertiary">
           <svg className="h-3 w-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
           </svg>
@@ -58,7 +58,7 @@ export function PriceDistributionChart({
           </div>
         )}
         {!loading && buckets.length === 0 && (
-          <p className="flex h-[290px] items-center justify-center text-sm text-muted-foreground">
+          <p className="flex h-[290px] items-center justify-center text-sm text-text-tertiary">
             No distribution data.
           </p>
         )}

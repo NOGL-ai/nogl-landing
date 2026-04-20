@@ -1,17 +1,14 @@
 "use client";
+import { SwitchVertical01 as ArrowUpDown, InfoCircle as Info, SearchLg as Search, X, HelpCircle as CircleHelp, Expand01 as Expand, AlertTriangle as TriangleAlert } from '@untitledui/icons';
+
+
+import { SwitchVertical01 as ArrowUpDown, InfoCircle as Info, SearchLg as Search, X, HelpCircle as CircleHelp, Expand01 as Expand, AlertTriangle as TriangleAlert } from '@untitledui/icons';
+
 
 import * as React from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table";
-import {
-  ArrowUpDown,
-  CircleHelp,
-  Expand,
-  Info,
-  Search,
-  TriangleAlert,
-  X,
-} from "lucide-react";
+
 import {
   getAdvancedCompanies,
   type AdvancedCompanyDataType,

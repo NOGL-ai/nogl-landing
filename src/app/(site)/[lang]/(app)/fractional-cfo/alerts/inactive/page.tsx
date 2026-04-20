@@ -1,4 +1,5 @@
-import { Archive } from "lucide-react";
+import { Archive } from '@untitledui/icons';
+
 import { PlaceholderPage } from "../../_PlaceholderPage";
 
 export const metadata = { title: "Inactive alerts — Fractional CFO | NOGL" };

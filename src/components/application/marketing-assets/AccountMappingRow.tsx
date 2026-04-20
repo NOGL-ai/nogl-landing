@@ -2,8 +2,8 @@
 
 import { useState, useTransition } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from '@/components/base/buttons/button';
+import { Input } from '@/components/base/input/input';
 import { mapAdAccount } from "@/actions/ads-events/accounts";
 
 export interface AdAccountRow {
@@ -87,7 +87,7 @@ export function AccountMappingRow({ account, onMapped }: { account: AdAccountRow
             </Button>
             <Button
               type="button"
-              variant="ghost"
+              color="tertiary"
               size="sm"
               className="h-7 text-xs"
               onClick={() => setEditing(false)}
@@ -97,7 +97,7 @@ export function AccountMappingRow({ account, onMapped }: { account: AdAccountRow
           </form>
         ) : (
           <Button
-            variant="outline"
+            color="secondary"
             size="sm"
             className="h-7 text-xs"
             onClick={() => setEditing(true)}

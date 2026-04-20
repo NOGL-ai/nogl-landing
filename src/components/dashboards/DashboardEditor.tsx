@@ -1,4 +1,9 @@
 "use client";
+import { Plus as PlusIcon, Loading01 as LoaderCircleIcon, Pencil01 as Pencil, Trash01 as Trash2, ChevronRight as ChevronRightIcon, Settings02 as Settings2Icon, Lock01 as LockIcon, LockUnlocked01 as UnlockIcon, Share01 as Share2Icon, DotsHorizontal as MoreHorizontalIcon, CheckCircle as CheckCircle2Icon, HelpCircle as HelpCircleIcon, Copy01 as Copy } from '@untitledui/icons';
+
+
+import { Plus as PlusIcon, Loading01 as LoaderCircleIcon, Pencil01 as Pencil, Trash01 as Trash2, ChevronRight as ChevronRightIcon, Settings02 as Settings2Icon, Lock01 as LockIcon, LockUnlocked01 as UnlockIcon, Share01 as Share2Icon, DotsHorizontal as MoreHorizontalIcon, CheckCircle as CheckCircle2Icon, HelpCircle as HelpCircleIcon, Copy01 as Copy } from '@untitledui/icons';
+
 
 import { useCallback, useRef, useState } from "react";
 import Link from "next/link";
@@ -21,7 +26,7 @@ import { WidgetFrame } from "./widgets/WidgetFrame";
 import { WidgetRenderer } from "./widgets/WidgetRenderer";
 import { WidgetEditorModal } from "./WidgetEditorModal";
 import { GlobalFilterBar } from "./GlobalFilterBar";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 import { Badge } from "@/components/ui/badge";
 import {
   Tooltip,
@@ -36,21 +41,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  ChevronRightIcon,
-  PlusIcon,
-  Settings2Icon,
-  LockIcon,
-  UnlockIcon,
-  Share2Icon,
-  MoreHorizontalIcon,
-  CheckCircle2Icon,
-  LoaderCircleIcon,
-  HelpCircleIcon,
-  Pencil,
-  Trash2,
-  Copy,
-} from "lucide-react";
+
 import type { Locale } from "@/i18n";
 
 // react-grid-layout must be loaded client-side only (uses document).
@@ -201,7 +192,7 @@ export function DashboardEditor({
               <ChevronRightIcon className="h-3.5 w-3.5 text-muted-foreground" />
               <span className="font-medium">{dashboard.name}</span>
               {dashboard.isShared && (
-                <Badge variant="secondary" className="ml-1 text-xs">
+                <Badge color="secondary" className="ml-1 text-xs">
                   Shared
                 </Badge>
               )}
@@ -227,7 +218,7 @@ export function DashboardEditor({
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
-                    variant={arrangeMode ? "primary" : "outline"}
+                    color={arrangeMode ? "primary" : "secondary"}
                     size="sm"
                     className="gap-1.5"
                     onClick={toggleArrangeMode}
@@ -262,7 +253,7 @@ export function DashboardEditor({
               {/* Settings / share / more */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-8 w-8 p-0">
+                  <Button color="secondary" size="sm" className="h-8 w-8 p-0">
                     <MoreHorizontalIcon className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>

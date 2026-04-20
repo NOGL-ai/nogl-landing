@@ -20,10 +20,55 @@ export async function upsertMetaAdToDb(ad: MetaAd, meta: MetaAdJobMeta): Promise
 		.digest("hex");
 
 	const capturedAt = ad.scrapedAt ? new Date(ad.scrapedAt) : new Date();
-	const mediaUrls =
-		typeof ad.adCreative === "object" && ad.adCreative !== null
-			? (((ad.adCreative as { images?: string[] }).images ?? []) as string[])
-			: [];
+	const mediaUrls: string[] = [];
+	let cardTitle: string | undefined;
+	let cardBody: string | undefined;
+	if (typeof ad.adCreative === "object" && ad.adCreative !== null) {
+		const creative = ad.adCreative as {
+			images?: string[];
+			cards?: Array<{
+				title?: string;
+				body?: string;
+				resized_image_url?: string;
+				original_image_url?: string;
+				video_sd_url?: string | null;
+				video_hd_url?: string | null;
+				video_preview_image_url?: string | null;
+			}>;
+			image_url?: string;
+			video_sd_url?: string | null;
+			video_hd_url?: string | null;
+		};
+		if (creative.images?.length) mediaUrls.push(...creative.images.filter(Boolean));
+		if (creative.cards?.length) {
+			for (const card of creative.cards) {
+				const url =
+					card.resized_image_url ||
+					card.original_image_url ||
+					card.video_preview_image_url ||
+					card.video_sd_url ||
+					card.video_hd_url;
+				if (url) mediaUrls.push(url);
+			}
+			const firstCard = creative.cards[0];
+			if (firstCard) {
+				cardTitle = firstCard.title;
+				cardBody = firstCard.body;
+			}
+		}
+		if (creative.image_url) mediaUrls.push(creative.image_url);
+		if (!mediaUrls.length) {
+			if (creative.video_sd_url) mediaUrls.push(creative.video_sd_url);
+			else if (creative.video_hd_url) mediaUrls.push(creative.video_hd_url);
+		}
+	}
+
+	const isTemplate = (s: string | null | undefined) => !!s && /^\s*\{\{/.test(s);
+	const rawContent = ad.adContent ?? "";
+	const resolvedTitle = isTemplate(rawContent)
+		? cardTitle || cardBody || `${ad.pageName ?? "Meta Ad"}`
+		: rawContent.substring(0, 160) || `${ad.pageName ?? "Meta Ad"}`;
+	const resolvedBody = isTemplate(rawContent) ? cardBody || cardTitle || null : rawContent || null;
 
 	await prisma.marketingAsset.upsert({
 		where: { contentHash },
@@ -34,8 +79,8 @@ export async function upsertMetaAdToDb(ad: MetaAd, meta: MetaAdJobMeta): Promise
 			source: "PLAYWRIGHT_SELF_HOSTED",
 			capturedAt,
 			sourceUrl: `https://www.facebook.com/ads/library/?id=${ad.adId ?? ""}`,
-			title: (ad.adContent ?? "").substring(0, 160) || `${ad.pageName ?? "Meta Ad"}`,
-			bodyText: ad.adContent ?? null,
+			title: resolvedTitle.substring(0, 160),
+			bodyText: resolvedBody,
 			language: null,
 			region: meta.country,
 			mediaUrls,
@@ -47,8 +92,8 @@ export async function upsertMetaAdToDb(ad: MetaAd, meta: MetaAdJobMeta): Promise
 		},
 		update: {
 			capturedAt,
-			title: (ad.adContent ?? "").substring(0, 160) || `${ad.pageName ?? "Meta Ad"}`,
-			bodyText: ad.adContent ?? null,
+			title: resolvedTitle.substring(0, 160),
+			bodyText: resolvedBody,
 			mediaUrls,
 			payload: {
 				...(ad as unknown as Record<string, unknown>),

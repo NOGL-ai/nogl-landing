@@ -1,6 +1,11 @@
 "use client";
+import { LinkExternal01 as ExternalLink } from '@untitledui/icons';
 
-import { ExternalLink } from "lucide-react";
+
+import { LinkExternal01 as ExternalLink } from '@untitledui/icons';
+
+
+
 
 import {
   Sheet,

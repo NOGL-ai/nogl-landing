@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 import type { CompanyCompetitorPreviewDTO } from "@/types/company";
 
 type CompetitorAvatarStackProps = {
@@ -29,7 +29,7 @@ export function CompetitorAvatarStack({ competitors, compareLabel }: CompetitorA
           </div>
         ))}
       </div>
-      <Button type="button" variant="outline" size="sm" className="rounded-full">
+      <Button type="button" color="secondary" size="sm" className="rounded-full">
         {compareLabel}
       </Button>
     </div>

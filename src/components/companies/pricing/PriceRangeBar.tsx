@@ -20,14 +20,14 @@ export function PriceRangeBar({ min, max, globalMin, globalMax }: PriceRangeBarP
 
   return (
     <div className="flex items-center gap-2">
-      <span className="w-14 text-right text-xs text-muted-foreground">{fmtPrice(min)}</span>
-      <div className="relative h-1.5 w-20 flex-shrink-0 rounded-full bg-muted">
+      <span className="w-14 text-right text-xs text-text-tertiary">{fmtPrice(min)}</span>
+      <div className="relative h-1.5 w-20 flex-shrink-0 rounded-full bg-bg-tertiary">
         <div
-          className="absolute h-1.5 rounded-full bg-primary/60"
+          className="absolute h-1.5 rounded-full bg-brand-600"
           style={{ left: `${left}%`, width: `${Math.min(width, 100 - left)}%` }}
         />
       </div>
-      <span className="w-14 text-xs text-muted-foreground">{fmtPrice(max)}</span>
+      <span className="w-14 text-xs text-text-tertiary">{fmtPrice(max)}</span>
     </div>
   );
 }

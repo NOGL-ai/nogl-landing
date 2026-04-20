@@ -1,5 +1,5 @@
+import { Palette, Package as Package2, Plus } from '@untitledui/icons';
 import React from "react";
-import { Palette, Package2, Plus } from "lucide-react";
 import type { Locale } from "@/i18n";
 import type { BrandProfile } from "@/lib/ad-scoring/types";
 

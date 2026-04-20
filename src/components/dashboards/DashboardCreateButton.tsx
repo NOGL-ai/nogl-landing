@@ -1,9 +1,14 @@
 "use client";
+import { Plus as PlusIcon } from '@untitledui/icons';
+
+
+import { Plus as PlusIcon } from '@untitledui/icons';
+
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createDashboard } from "@/actions/dashboards";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 import {
   Dialog,
   DialogContent,
@@ -11,7 +16,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+import { Input } from '@/components/base/input/input';
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -20,7 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { PlusIcon } from "lucide-react";
+
 import type { Locale } from "@/i18n";
 
 type Persona = "CFO" | "CMO" | "OPS" | "GENERIC";
@@ -62,7 +67,7 @@ export function DashboardCreateButton({ lang }: { lang: Locale }) {
                 id="dash-name"
                 placeholder="e.g. Competitor Overview (4w)"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(value) => setName(value)}
                 onKeyDown={(e) => e.key === "Enter" && handleCreate()}
                 autoFocus
               />
@@ -88,7 +93,7 @@ export function DashboardCreateButton({ lang }: { lang: Locale }) {
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setOpen(false)}>
+            <Button color="secondary" onClick={() => setOpen(false)}>
               Cancel
             </Button>
             <Button onClick={handleCreate} disabled={!name.trim() || isPending}>

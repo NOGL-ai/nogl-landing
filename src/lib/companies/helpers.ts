@@ -168,6 +168,40 @@ function normalizeDomain(domain: string): string {
     .toLowerCase();
 }
 
+function displayName(name: string, domain: string): string {
+  if (/^[a-z0-9_-]+$/.test(name) && !name.includes(" ")) {
+    return domain
+      .replace(/\.[a-z]{2,}$/, "")
+      .replace(/[-_]/g, " ")
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+  }
+  return name;
+}
+
+function deduplicateByName(companies: CompanyListItem[]): CompanyListItem[] {
+  const seen = new Map<string, CompanyListItem>();
+  for (const company of companies) {
+    const key = company.name.trim().toLowerCase();
+    const existing = seen.get(key);
+    if (!existing || company.total_products > existing.total_products) {
+      seen.set(key, company);
+    }
+  }
+  return Array.from(seen.values());
+}
+
+function deduplicateByDomain(companies: CompanyListItem[]): CompanyListItem[] {
+  const seen = new Map<string, CompanyListItem>();
+  for (const company of companies) {
+    const key = normalizeDomain(company.domain);
+    const existing = seen.get(key);
+    if (!existing || company.total_products > existing.total_products) {
+      seen.set(key, company);
+    }
+  }
+  return Array.from(seen.values());
+}
+
 function toNullableNumber(value: NumericValue): number | null {
   if (value === null) {
     return null;
@@ -749,6 +783,8 @@ export async function getCompaniesResponse(params: {
   limit: number;
   countryCode?: string;
   trackingStatus?: string;
+  sortBy?: "name" | "total_products" | "last_scraped_at";
+  sortDir?: "asc" | "desc";
 }): Promise<GetCompaniesResponse> {
   const hasCompanyTable = await relationExists("nogl", "Company");
   const hasCompanySnapshotTable = await relationExists("nogl", "CompanySnapshot");
@@ -781,6 +817,19 @@ export async function getCompaniesResponse(params: {
           ? Prisma.sql`WHERE ${Prisma.join(filters, " AND ")}`
           : Prisma.empty;
 
+      const sortColSql =
+        params.sortBy === "total_products"
+          ? hasCompanySnapshotTable
+            ? Prisma.sql`COALESCE(cs.total_products, 0)`
+            : Prisma.sql`0`
+          : params.sortBy === "last_scraped_at"
+          ? hasCompanySnapshotTable
+            ? Prisma.sql`cs.last_scraped_at`
+            : Prisma.sql`c."createdAt"`
+          : Prisma.sql`c.name`;
+      const sortDirSql =
+        params.sortDir === "desc" ? Prisma.sql`DESC NULLS LAST` : Prisma.sql`ASC NULLS LAST`;
+
       const [rows, countRows] = await Promise.all([
         prisma.$queryRaw<CompanyListRow[]>(Prisma.sql`
           SELECT
@@ -808,7 +857,7 @@ export async function getCompaniesResponse(params: {
             ? Prisma.sql`LEFT JOIN nogl."CompanySnapshot" cs ON cs.company_id = c.id`
             : Prisma.empty}
           ${whereSql}
-          ORDER BY c.name ASC
+          ORDER BY ${sortColSql} ${sortDirSql}
           LIMIT ${params.limit}
           OFFSET ${(params.page - 1) * params.limit}
         `),
@@ -822,10 +871,10 @@ export async function getCompaniesResponse(params: {
       const total = parseCount(countRows[0]?.count ?? 0);
 
       if (total > 0) {
-        const companies: CompanyListItem[] = rows.map((row) => ({
+        const rawCompanies: CompanyListItem[] = rows.map((row) => ({
           id: row.id,
           slug: row.slug,
-          name: row.name,
+          name: displayName(row.name, row.domain),
           domain: row.domain,
           country_code: row.country_code,
           industry: row.industry,
@@ -834,6 +883,8 @@ export async function getCompaniesResponse(params: {
           total_products: row.total_products ?? 0,
           last_scraped_at: toIsoString(row.last_scraped_at),
         }));
+
+        const companies = deduplicateByDomain(deduplicateByName(rawCompanies));
 
         return {
           companies,
@@ -909,11 +960,21 @@ export async function getCompanyOverviewResponse(slug: string): Promise<CompanyO
   }
 
   const snapshot = await findSnapshotByCompanyId(company.id);
+  const placeholder = await buildPlaceholderSnapshot(company.id, company.domain, company.name);
   const extensions = buildCompanyOverviewExtensions(company);
+
+  // Use snapshot for everything except total_products — prefer the live count when it's higher
+  const resolvedSnapshot = snapshot
+    ? {
+        ...snapshot,
+        total_products: Math.max(snapshot.total_products, placeholder.total_products),
+        last_scraped_at: placeholder.last_scraped_at ?? snapshot.last_scraped_at,
+      }
+    : placeholder;
 
   return {
     company,
-    snapshot: snapshot ?? (await buildPlaceholderSnapshot(company.id, company.domain, company.name)),
+    snapshot: resolvedSnapshot,
     ...extensions,
   };
 }
@@ -932,9 +993,7 @@ export async function getCompanyEventsResponse(params: {
   }
 
   const hasFilters =
-    (params.eventTypes && params.eventTypes.length > 0) ||
-    Boolean(params.fromDate) ||
-    Boolean(params.toDate);
+    params.eventTypes != null && params.eventTypes.length > 0;
 
   let events: CompanyEventDTO[] = [];
   let total = 0;
@@ -985,6 +1044,9 @@ export async function getCompanyEventsResponse(params: {
 
       events = rows.map(mapEventRowToDTO);
       total = parseCount(countRows[0]?.count ?? 0);
+      if (events.length === 0 && !hasFilters) {
+        console.log(`[events] No events found for company ${company.id} (${company.name}). Table exists but may be empty.`);
+      }
     } catch (error) {
       if (!isMissingRelationError(error)) {
         throw error;

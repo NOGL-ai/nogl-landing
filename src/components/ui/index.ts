@@ -1,5 +1,6 @@
-// Untitled UI Components - Barrel Exports
-// Re-export all components from their nested locations
+// ⚠️  LEGACY — shadcn-derived primitives. Do NOT import for new code.
+// Canonical design system lives in `src/components/base/**`.
+// These exports exist only until the migration in migration/MIGRATION.md completes.
 
 // Buttons
 export { Button } from "./button";

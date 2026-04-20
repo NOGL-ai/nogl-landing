@@ -1,4 +1,9 @@
 "use client";
+import { Download01 as Download } from '@untitledui/icons';
+
+
+import { Download01 as Download } from '@untitledui/icons';
+
 
 import { useMemo, useState } from "react";
 import { useTheme } from "next-themes";
@@ -12,7 +17,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { format, parseISO } from "date-fns";
-import { Download } from "lucide-react";
+
 
 import { Card } from "@/components/ui/card";
 import type { PricingTimeseriesData } from "@/types/pricing";

@@ -1,8 +1,12 @@
 "use client";
+import { Clock } from '@untitledui/icons';
+
+import { Clock } from '@untitledui/icons';
+
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { Clock } from "lucide-react";
+
 import { useCallback, useMemo } from "react";
 
 import {

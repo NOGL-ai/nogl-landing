@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Table } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 import { Badge } from "@/components/ui/badge";
 import { Icon } from "../Icon";
 // Define Product interface locally to avoid circular dependency
@@ -125,7 +125,7 @@ export function ProductTableBulkActions({
 						{selectedCount} product{selectedCount !== 1 ? "s" : ""} selected
 					</span>
 					<Badge
-						variant="secondary"
+						color="secondary"
 						className="text-xs"
 						aria-label={`${selectedCount} of ${totalRows} total products selected`}
 					>
@@ -134,7 +134,7 @@ export function ProductTableBulkActions({
 				</div>
 				<div className="flex items-center space-x-2">
 					<Button
-						variant="secondary"
+						color="secondary"
 						size="sm"
 						onClick={handleExport}
 						className="border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary"
@@ -144,7 +144,7 @@ export function ProductTableBulkActions({
 						Export
 					</Button>
 					<Button
-						variant="secondary"
+						color="secondary"
 						size="sm"
 						onClick={handleBulkEdit}
 						className="border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary"
@@ -154,7 +154,7 @@ export function ProductTableBulkActions({
 						Bulk Edit
 					</Button>
 					<Button
-						variant="secondary"
+						color="secondary"
 						size="sm"
 						onClick={handleBulkDelete}
 						className="border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary"

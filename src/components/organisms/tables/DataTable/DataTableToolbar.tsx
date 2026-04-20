@@ -2,8 +2,8 @@
 
 import React from "react";
 import { Table } from "@tanstack/react-table";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Input } from '@/components/base/input/input';
+import { Button } from '@/components/base/buttons/button';
 import { Icon } from "../Icon";
 
 interface DataTableToolbarProps<TData> {
@@ -31,8 +31,8 @@ export function DataTableToolbar<TData>({
 					<Input
 						placeholder={searchPlaceholder}
 						value={(table.getColumn(searchKey || "")?.getFilterValue() as string) ?? ""}
-						onChange={(event) =>
-							table.getColumn(searchKey || "")?.setFilterValue(event.target.value)
+						onChange={(value) =>
+							table.getColumn(searchKey || "")?.setFilterValue(value)
 						}
 						className="pl-10"
 						aria-label={`Search ${searchKey || "data"}`}
@@ -40,7 +40,7 @@ export function DataTableToolbar<TData>({
 				</div>
 				{isFiltered && (
 					<Button
-						variant="ghost"
+						color="tertiary"
 						onClick={() => table.resetColumnFilters()}
 						className="h-8 px-2 lg:px-3"
 						aria-label="Clear all filters"

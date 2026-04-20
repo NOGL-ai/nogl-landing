@@ -1,6 +1,7 @@
+import { Star01 as StarIcon, ArrowRight as ArrowRightIcon } from '@untitledui/icons';
 import React, { FC } from "react";
 import { AuthorType } from "@/data/types";
-import { StarIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
+
 import Avatar from "@/shared/Avatar";
 import Badge from "@/shared/Badge";
 import convertNumbThousand from "@/utils/convertNumbThousand";

@@ -1,5 +1,6 @@
 "use client";
 
+import { Check as CheckIcon, Copy01 as CopyIcon } from '@untitledui/icons';
 import "@assistant-ui/react-markdown/styles/dot.css";
 
 import {
@@ -12,7 +13,6 @@ import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import { type FC, memo, useState } from "react";
-import { CheckIcon, CopyIcon } from "lucide-react";
 
 import { TooltipIconButton } from "@/components/tooltip-icon-button";
 import { MermaidDiagram } from "@/components/mermaid-diagram";

@@ -1,5 +1,9 @@
-// @ts-nocheck
 "use client";
+
+// eslint-disable-next-line no-restricted-imports -- icon has no @untitledui/icons equivalent; keep in lucide-react until UUI ships it
+import { FilterX } from 'lucide-react';
+import { SearchLg as Search, FilterFunnel01 as Filter, X, ChevronDown, SwitchVertical01 as ArrowUpDown, ArrowUp, ArrowDown, DotsHorizontal as MoreHorizontal, Eye, Trash01 as Trash2, TrendUp01 as TrendingUp, CurrencyDollar as DollarSign, Tag01 as Tag, Calendar, Settings01 as Settings, Download01 as Download, List, PieChart01 as PieChart, AlertCircle, Clock, Minus, Plus, Edit01 as Edit, Copy01 as Copy, Star01 as Star, Upload01 as Upload, RefreshCw01 as RefreshCw, Grid03 as Grid3X3, Columns01 as Columns, ArrowNarrowUp as SortAsc, ArrowNarrowDown as SortDesc, Zap, Target01 as Target, BarChart03 as BarChart3, Activity, CheckCircle } from '@untitledui/icons';
+// @ts-nocheck
 
 import React, { useState, useMemo, useCallback } from "react";
 import {
@@ -15,8 +19,8 @@ import {
 	VisibilityState,
 	FilterFn,
 } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from '@/components/base/buttons/button';
+import { Input } from '@/components/base/input/input';
 import Checkbox from "@/components/ui/checkbox";
 import {
 	Table,
@@ -46,45 +50,7 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover";
 import { Slider } from "@/components/ui/slider";
-import {
-	Search,
-	Filter,
-	X,
-	ChevronDown,
-	ArrowUpDown,
-	ArrowUp,
-	ArrowDown,
-	MoreHorizontal,
-	Eye,
-	Edit,
-	Copy,
-	Trash2,
-	Star,
-	TrendingUp,
-	DollarSign,
-	Tag,
-	Calendar,
-	Settings,
-	Download,
-	Upload,
-	RefreshCw,
-	Grid3X3,
-	List,
-	Columns,
-	SortAsc,
-	SortDesc,
-	FilterX,
-	Zap,
-	Target,
-	BarChart3,
-	PieChart,
-	Activity,
-	AlertCircle,
-	CheckCircle,
-	Clock,
-	Minus,
-	Plus,
-} from "lucide-react";
+
 import { debounce } from "lodash";
 import {
 	SiShopify,
@@ -338,17 +304,17 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 				header: ({ table }) => (
 					<Checkbox
 						checked={table.getIsAllPageRowsSelected()}
-						onCheckedChange={(value) =>
+						onChange={(value: boolean) =>
 							table.toggleAllPageRowsSelected(!!value)
 						}
-						aria-label='Select all'
+						ariaLabel='Select all'
 					/>
 				),
 				cell: ({ row }) => (
 					<Checkbox
 						checked={row.getIsSelected()}
-						onCheckedChange={(value) => row.toggleSelected(!!value)}
-						aria-label='Select row'
+						onChange={(value: boolean) => row.toggleSelected(!!value)}
+						ariaLabel='Select row'
 					/>
 				),
 				enableSorting: false,
@@ -409,7 +375,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 				header: ({ column }) => {
 					return (
 						<Button
-							variant='ghost'
+							color="tertiary"
 							onClick={() =>
 								column.toggleSorting(column.getIsSorted() === "asc")
 							}
@@ -450,7 +416,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 				accessorFn: (row) => compareById[row.id] ?? 0,
 				header: ({ column }) => (
 					<Button
-						variant='ghost'
+						color="tertiary"
 						onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
 						className='h-8 px-2 lg:px-3'
 					>
@@ -480,7 +446,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 				accessorFn: (row) => parseEuro(row.cost) ?? null,
 				header: ({ column }) => (
 					<Button
-						variant='ghost'
+						color="tertiary"
 						onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
 						className='h-8 px-2 lg:px-3'
 					>
@@ -515,7 +481,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 				accessorFn: (row) => parseEuro(row.price) ?? null,
 				header: ({ column }) => (
 					<Button
-						variant='ghost'
+						color="tertiary"
 						onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
 						className='h-8 px-2 lg:px-3'
 					>
@@ -550,7 +516,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 				accessorKey: "currency",
 				header: ({ column }) => (
 					<Button
-						variant='ghost'
+						color="tertiary"
 						onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
 						className='h-8 px-2 lg:px-3'
 					>
@@ -586,7 +552,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 				},
 				header: ({ column }) => (
 					<Button
-						variant='ghost'
+						color="tertiary"
 						onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
 						className='h-8 px-2 lg:px-3'
 					>
@@ -758,7 +724,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 					return (
 						<DropdownMenu>
 							<DropdownMenuTrigger asChild>
-								<Button variant='ghost' className='h-8 w-8 p-0'>
+								<Button color="tertiary" className='h-8 w-8 p-0'>
 									<MoreHorizontal className='h-4 w-4' />
 								</Button>
 							</DropdownMenuTrigger>
@@ -889,9 +855,9 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 						<Input
 							placeholder='Search products...'
 							value={globalFilter}
-							onChange={(e) => {
-								setGlobalFilter(e.target.value);
-								debouncedSetGlobalFilter(e.target.value);
+							onChange={(value) => {
+								setGlobalFilter(value);
+								debouncedSetGlobalFilter(value);
 							}}
 							className={`w-full border-border bg-background pl-10 text-primary placeholder:text-tertiary transition-colors ${
 								globalFilter
@@ -903,7 +869,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 
 					<div className='flex w-full items-center gap-2 sm:w-auto'>
 						<Button
-							variant='secondary'
+							color="secondary"
 							onClick={() => setShowFilters(!showFilters)}
 							className='relative flex-1 border-border text-secondary hover:bg-secondary_bg sm:flex-none'
 						>
@@ -911,7 +877,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 							Filters
 							{activeFiltersCount > 0 && (
 								<Badge
-									variant='secondary'
+									color="secondary"
 									className='ml-2 flex h-5 w-5 items-center justify-center rounded-full border-blue-200 bg-blue-100 p-0 text-xs text-blue-700 dark:border-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
 								>
 									{activeFiltersCount}
@@ -920,7 +886,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 						</Button>
 
 						<Button
-							variant='secondary'
+							color="secondary"
 							onClick={clearAllFilters}
 							className='flex-1 border-border text-secondary hover:bg-secondary_bg sm:flex-none'
 						>
@@ -933,7 +899,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 				<div className='flex w-full items-center gap-2 sm:w-auto'>
 					<div className='flex items-center space-x-1'>
 						<Button
-							variant={viewMode === "table" ? "primary" : "secondary"}
+							color={viewMode === "table" ? "primary" : "secondary"}
 							size='sm'
 							onClick={() => setViewMode("table")}
 							className={
@@ -945,7 +911,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 							<List className='h-4 w-4' />
 						</Button>
 						<Button
-							variant={viewMode === "grid" ? "primary" : "secondary"}
+							color={viewMode === "grid" ? "primary" : "secondary"}
 							size='sm'
 							onClick={() => setViewMode("grid")}
 							className={
@@ -961,7 +927,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<Button
-								variant='secondary'
+								color="secondary"
 								className='border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary'
 							>
 								<Columns className='mr-2 h-4 w-4' />
@@ -1029,7 +995,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 											<Checkbox
 												id={`brand-${brand}`}
 												checked={filters.brands.includes(brand)}
-												onCheckedChange={(checked) =>
+												onChange={(checked: boolean) =>
 													handleBrandFilter(brand, !!checked)
 												}
 											/>
@@ -1056,7 +1022,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 										<Checkbox
 											id={`currency-${currency}`}
 											checked={filters.currencies.includes(currency)}
-											onCheckedChange={(checked) =>
+											onChange={(checked: boolean) =>
 												handleCurrencyFilter(currency, !!checked)
 											}
 										/>
@@ -1078,7 +1044,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 							</label>
 							<div className='grid grid-cols-2 gap-2'>
 								<Button
-									variant='secondary'
+									color="secondary"
 									size='sm'
 									onClick={() => {
 										handlePriceRangeChange([0, 50]);
@@ -1090,7 +1056,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 									Under €50
 								</Button>
 								<Button
-									variant='secondary'
+									color="secondary"
 									size='sm'
 									onClick={() => {
 										handlePriceRangeChange([100, 1000]);
@@ -1102,7 +1068,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 									Premium
 								</Button>
 								<Button
-									variant='secondary'
+									color="secondary"
 									size='sm'
 									onClick={() => {
 										setFilters((prev) => ({
@@ -1116,7 +1082,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 									With Data
 								</Button>
 								<Button
-									variant='secondary'
+									color="secondary"
 									size='sm'
 									onClick={() => {
 										handleBrandFilter("Stilnest", true);
@@ -1146,7 +1112,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 						</div>
 						<div className='flex items-center space-x-2'>
 							<Button
-								variant='secondary'
+								color="secondary"
 								size='sm'
 								className='border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary'
 							>
@@ -1154,7 +1120,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 								Export
 							</Button>
 							<Button
-								variant='secondary'
+								color="secondary"
 								size='sm'
 								className='border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary'
 							>
@@ -1162,7 +1128,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 								Bulk Edit
 							</Button>
 							<Button
-								variant='secondary'
+								color="secondary"
 								size='sm'
 								className='border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary'
 							>
@@ -1281,7 +1247,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 					</div>
 					<div className='flex items-center space-x-2'>
 						<Button
-							variant='secondary'
+							color="secondary"
 							className='hidden h-8 w-8 border-border p-0 text-secondary hover:bg-secondary_bg lg:flex dark:border-border dark:text-tertiary'
 							onClick={() => table.setPageIndex(0)}
 							disabled={!table.getCanPreviousPage()}
@@ -1290,7 +1256,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 							<ArrowUp className='h-4 w-4' />
 						</Button>
 						<Button
-							variant='secondary'
+							color="secondary"
 							className='h-8 w-8 border-border p-0 text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary'
 							onClick={() => table.previousPage()}
 							disabled={!table.getCanPreviousPage()}
@@ -1299,7 +1265,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 							<ArrowUp className='h-4 w-4' />
 						</Button>
 						<Button
-							variant='secondary'
+							color="secondary"
 							className='h-8 w-8 border-border p-0 text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary'
 							onClick={() => table.nextPage()}
 							disabled={!table.getCanNextPage()}
@@ -1308,7 +1274,7 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 							<ArrowDown className='h-4 w-4' />
 						</Button>
 						<Button
-							variant='secondary'
+							color="secondary"
 							className='hidden h-8 w-8 border-border p-0 text-secondary hover:bg-secondary_bg lg:flex dark:border-border dark:text-tertiary'
 							onClick={() => table.setPageIndex(table.getPageCount() - 1)}
 							disabled={!table.getCanNextPage()}
@@ -1324,4 +1290,3 @@ const UltimateProductTable: React.FC<UltimateProductTableProps> = ({
 };
 
 export default UltimateProductTable;
-

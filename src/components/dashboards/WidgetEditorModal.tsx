@@ -1,4 +1,9 @@
 "use client";
+import { Loading01 as LoaderCircleIcon, Check as CheckIcon, AlertCircle as AlertCircleIcon, Stars01 as SparklesIcon, MagicWand01 as WandSparklesIcon } from '@untitledui/icons';
+
+
+import { Loading01 as LoaderCircleIcon, Check as CheckIcon, AlertCircle as AlertCircleIcon, Stars01 as SparklesIcon, MagicWand01 as WandSparklesIcon } from '@untitledui/icons';
+
 
 import { useState, useTransition, type Dispatch, type SetStateAction } from "react";
 import {
@@ -9,8 +14,8 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from '@/components/base/buttons/button';
+import { Input } from '@/components/base/input/input';
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -21,13 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import {
-  SparklesIcon,
-  LoaderCircleIcon,
-  CheckIcon,
-  AlertCircleIcon,
-  WandSparklesIcon,
-} from "lucide-react";
+
 import { createWidget, updateWidget } from "@/actions/dashboards";
 import { generateWidgetFromPrompt } from "@/actions/dashboards/copilot";
 import type {
@@ -282,7 +281,7 @@ export function WidgetEditorModal({
           <DialogTitle className="flex items-center gap-2">
             {isEditing ? "Edit Widget" : "Add Chart"}
             {widgetType && (
-              <Badge variant="secondary" className="text-xs">
+              <Badge color="secondary" className="text-xs">
                 {widgetType.replace("_", " ")}
               </Badge>
             )}
@@ -307,7 +306,7 @@ export function WidgetEditorModal({
                 <Input
                   placeholder="e.g. Top Products by Price Drop"
                   value={title}
-                  onChange={(e) => setTitle(e.target.value)}
+                  onChange={(value) => setTitle(value)}
                 />
               </div>
 
@@ -413,7 +412,7 @@ export function WidgetEditorModal({
               <Button
                 onClick={handleCopilotGenerate}
                 disabled={!copilotPrompt.trim() || isCopilotPending}
-                variant="outline"
+                color="secondary"
                 className="gap-1.5 self-start"
               >
                 {isCopilotPending ? (
@@ -460,7 +459,7 @@ export function WidgetEditorModal({
         </div>
 
         <DialogFooter className="border-t px-6 py-3">
-          <Button variant="outline" onClick={onClose}>
+          <Button color="secondary" onClick={onClose}>
             Cancel
           </Button>
           <Button
@@ -556,10 +555,8 @@ function TopTableFields({
         <Label>Rows</Label>
         <Input
           type="number"
-          min={1}
-          max={100}
-          value={rowLimit}
-          onChange={(e) => setRowLimit(Number(e.target.value))}
+          value={String(rowLimit)}
+          onChange={(value) => setRowLimit(Number(value))}
         />
       </div>
 
@@ -625,11 +622,11 @@ function ChartFields({
     <div className="grid grid-cols-2 gap-4">
       <div className="flex flex-col gap-1.5">
         <Label>X axis field</Label>
-        <Input value={xField} onChange={(e) => setXField(e.target.value)} placeholder="e.g. date" />
+        <Input value={xField} onChange={(value) => setXField(value)} placeholder="e.g. date" />
       </div>
       <div className="flex flex-col gap-1.5">
         <Label>Y axis field</Label>
-        <Input value={yField} onChange={(e) => setYField(e.target.value)} placeholder="e.g. competitorPrice" />
+        <Input value={yField} onChange={(value) => setYField(value)} placeholder="e.g. competitorPrice" />
       </div>
       {showOrientation && (
         <div className="flex flex-col gap-1.5">
@@ -659,15 +656,15 @@ function PieFields({
     <div className="grid grid-cols-2 gap-4">
       <div className="flex flex-col gap-1.5">
         <Label>Group by field</Label>
-        <Input value={xField} onChange={(e) => setXField(e.target.value)} placeholder="e.g. companyName" />
+        <Input value={xField} onChange={(value) => setXField(value)} placeholder="e.g. companyName" />
       </div>
       <div className="flex flex-col gap-1.5">
         <Label>Value field</Label>
-        <Input value={yField} onChange={(e) => setYField(e.target.value)} placeholder="e.g. total_products" />
+        <Input value={yField} onChange={(value) => setYField(value)} placeholder="e.g. total_products" />
       </div>
       <div className="flex flex-col gap-1.5">
         <Label>Max slices</Label>
-        <Input type="number" min={2} max={20} value={rowLimit} onChange={(e) => setRowLimit(Number(e.target.value))} />
+        <Input type="number" value={String(rowLimit)} onChange={(value) => setRowLimit(Number(value))} />
       </div>
     </div>
   );

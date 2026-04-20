@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 import { Badge } from "@/components/ui/badge";
 import { Icon } from "../Icon";
 
@@ -36,7 +36,7 @@ export function ProductTableFilters() {
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-2">
 					<Button
-						variant="secondary"
+						color="secondary"
 						onClick={() => {}}
 						className="relative"
 						aria-label={`Filter products. ${activeFilters.length > 0 ? `${activeFilters.length} filters active.` : 'No filters active.'}`}
@@ -47,7 +47,7 @@ export function ProductTableFilters() {
 						Filters
 						{activeFilters.length > 0 && (
 							<Badge
-								variant="secondary"
+								color="secondary"
 								className="ml-2 flex h-5 w-5 items-center justify-center rounded-full border-blue-200 bg-blue-100 p-0 text-xs text-blue-700 dark:border-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
 								aria-label={`${activeFilters.length} active filters`}
 							>
@@ -58,7 +58,7 @@ export function ProductTableFilters() {
 
 					{activeFilters.length > 0 && (
 						<Button
-							variant="ghost"
+							color="tertiary"
 							onClick={clearAllFilters}
 							className="h-8 px-2"
 							aria-label="Clear all active filters"
@@ -81,7 +81,7 @@ export function ProductTableFilters() {
 					return (
 						<Button
 							key={filter.id}
-							variant={isActive ? "primary" : "secondary"}
+							color={isActive ? "primary" : "secondary"}
 							size="sm"
 							onClick={() => handleFilterToggle(filter.id)}
 							className={isActive ? "" : "border-border text-secondary hover:bg-secondary_bg dark:border-border dark:text-tertiary"}

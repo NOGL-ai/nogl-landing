@@ -1,7 +1,11 @@
 "use client";
+import { Settings02 as Settings2, Play, Clock, AlertTriangle } from '@untitledui/icons';
+
+
+import { Settings02 as Settings2, Play, Clock, AlertTriangle } from '@untitledui/icons';
 
 import React from "react";
-import { Settings2, Play, Clock, AlertTriangle } from "lucide-react";
+
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/base/buttons/button";

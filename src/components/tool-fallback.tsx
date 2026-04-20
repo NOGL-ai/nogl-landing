@@ -1,7 +1,7 @@
+import { Check as CheckIcon, ChevronDown as ChevronDownIcon, ChevronUp as ChevronUpIcon } from '@untitledui/icons';
 import type { ToolCallMessagePartComponent } from "@assistant-ui/react";
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 
 export const ToolFallback: ToolCallMessagePartComponent = ({
   toolName,

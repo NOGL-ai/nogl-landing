@@ -1,7 +1,12 @@
 "use client";
+import { DotsHorizontal as MoreHorizontal, PauseCircle as Pause, Play, Pencil01 as Pencil, Trash01 as Trash2 } from '@untitledui/icons';
+
+
+import { DotsHorizontal as MoreHorizontal, PauseCircle as Pause, Play, Pencil01 as Pencil, Trash01 as Trash2 } from '@untitledui/icons';
+
 
 import React, { useState } from "react";
-import { MoreHorizontal, Pause, Play, Pencil, Trash2 } from "lucide-react";
+
 import {
   pauseTrackedCompetitor,
   resumeTrackedCompetitor,

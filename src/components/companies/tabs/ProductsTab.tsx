@@ -1,9 +1,14 @@
 "use client";
+import { LayoutGrid01 as LayoutGrid, List } from '@untitledui/icons';
+
+
+import { LayoutGrid01 as LayoutGrid, List } from '@untitledui/icons';
+
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { LayoutGrid, List } from "lucide-react";
+
 
 import { Card } from "@/components/ui/card";
 import { fetchJson, InlineError } from "./shared";

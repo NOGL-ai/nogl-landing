@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useTransition } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 import { markAllRead } from "@/actions/notifications";
 import { useNotificationsStream } from "@/hooks/useNotificationsStream";
 import { NotificationRow } from "./NotificationRow";
@@ -76,7 +76,7 @@ export function InboxTabs({
           )}
         </div>
         <Button
-          variant="secondary"
+          color="secondary"
           size="sm"
           onClick={handleMarkAllRead}
           disabled={isPending || localUnread === 0}

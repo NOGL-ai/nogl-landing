@@ -1,8 +1,13 @@
 "use client";
+import { LayoutGrid01 as LayoutGrid } from '@untitledui/icons';
+
+
+import { LayoutGrid01 as LayoutGrid } from '@untitledui/icons';
+
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutGrid } from "lucide-react";
+
 import { useTranslations } from "next-intl";
 
 type TabDef = {

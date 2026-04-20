@@ -1,9 +1,14 @@
 "use client";
+import { FilterFunnel01 as Filter, CheckSquare, XSquare, ChevronDown } from '@untitledui/icons';
+
+
+import { FilterFunnel01 as Filter, CheckSquare, XSquare, ChevronDown } from '@untitledui/icons';
+
 
 import React, { useState, useMemo, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { Filter, CheckSquare, XSquare, ChevronDown } from "lucide-react";
+
 import { formatDistanceToNow } from "date-fns";
 
 import { Button } from "@/components/base/buttons/button";

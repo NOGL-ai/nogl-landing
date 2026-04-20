@@ -1,9 +1,13 @@
 "use client";
 
+// eslint-disable-next-line no-restricted-imports -- icon has no @untitledui/icons equivalent; keep in lucide-react until UUI ships it
+import { GripVertical } from 'lucide-react';
+import { Plus } from '@untitledui/icons';
+
 import React, { useState, useTransition, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { Plus, GripVertical } from "lucide-react";
+
 import {
   DndContext,
   closestCenter,

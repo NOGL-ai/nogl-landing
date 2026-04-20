@@ -1,4 +1,9 @@
 "use client";
+import { ChevronUp, ChevronDown, ChevronSelectorVertical as ChevronsUpDown, ChevronLeft, ChevronRight } from '@untitledui/icons';
+
+
+import { ChevronUp, ChevronDown, ChevronSelectorVertical as ChevronsUpDown, ChevronLeft, ChevronRight } from '@untitledui/icons';
+
 
 import { useState, useEffect, useCallback } from "react";
 import {
@@ -13,9 +18,9 @@ import {
   type PaginationState,
   type ColumnFiltersState,
 } from "@tanstack/react-table";
-import { ChevronUp, ChevronDown, ChevronsUpDown, ChevronLeft, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+
+import { Button } from '@/components/base/buttons/button';
+import { Input } from '@/components/base/input/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AdEventSheet, type AdEventRow } from "./AdEventSheet";
 
@@ -130,7 +135,7 @@ export function AdEventsTable() {
         <Input
           placeholder="Search account / run ID…"
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(value) => setSearch(value)}
           className="h-8 w-56 text-sm"
         />
         <FilterSelect label="Platform" value={platform} options={PLATFORMS} onChange={setPlatform} />
@@ -203,7 +208,7 @@ export function AdEventsTable() {
         </span>
         <div className="flex items-center gap-2">
           <Button
-            variant="outline"
+            color="secondary"
             size="sm"
             className="h-7 w-7 p-0"
             onClick={() => table.previousPage()}
@@ -215,7 +220,7 @@ export function AdEventsTable() {
             {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
           </span>
           <Button
-            variant="outline"
+            color="secondary"
             size="sm"
             className="h-7 w-7 p-0"
             onClick={() => table.nextPage()}

@@ -320,8 +320,8 @@ model Company {
   trackedCompetitors      TrackedCompetitor[]   @relation("TenantCompetitors")
   trackedByTenants        TrackedCompetitor[]   @relation("CompetitorOf")
   notifications           Notification[]
-  marketingAssetsAsTenant MarketingAsset[]      @relation("TenantAssets")
   marketingAssetsAsBrand  MarketingAsset[]      @relation("BrandAssets")
+  assetTenant             Tenant?
   adAccounts              AdAccount[]
 
   @@index([slug])
@@ -1248,6 +1248,21 @@ enum AssetSource {
   @@schema("assets")
 }
 
+// Tenant — one per monitored brand, id is a human-readable slug (e.g. "calumet_de")
+model Tenant {
+  id        String   @id  // slug: "calumet_de", "teltec_de", etc.
+  name      String
+  companyId String?  @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company Company? @relation(fields: [companyId], references: [id])
+  assets  MarketingAsset[]
+  runs    AssetCaptureRun[]
+
+  @@schema("assets")
+}
+
 model MarketingAsset {
   id          String      @id @default(cuid())
   tenantId    String
@@ -1267,7 +1282,7 @@ model MarketingAsset {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
-  tenant Company @relation("TenantAssets", fields: [tenantId], references: [id])
+  tenant Tenant  @relation(fields: [tenantId], references: [id])
   brand  Company @relation("BrandAssets", fields: [brandId], references: [id], onDelete: Cascade)
 
   @@unique([contentHash])
@@ -1289,6 +1304,8 @@ model AssetCaptureRun {
   itemCount   Int         @default(0)
   error       String?     @db.Text
   metadata    Json?
+
+  tenant Tenant  @relation(fields: [tenantId], references: [id])
 
   @@index([tenantId, brandId, startedAt])
   @@schema("assets")
@@ -1664,6 +1681,8 @@ model ApiKeyScope {
   @@unique([api_key_id, scope, source])
   @@index([api_key_id])
   @@schema("ads_events")
+}
+
 /// Per-page feedback ("Was this helpful?") for in-repo MDX docs.
 /// userId nullable to tolerate sessions expiring mid-read; ip stored as sha256(ip+salt).
 model DocFeedback {

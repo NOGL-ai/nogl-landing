@@ -1,7 +1,7 @@
 "use client";
 
+import { UploadCloud01 as UploadCloud, Loading01 as Loader2, CheckCircle as CheckCircle2, AlertCircle } from '@untitledui/icons';
 import React, { useState, useRef, useCallback } from "react";
-import { UploadCloud, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 import { uploadAsset, triggerRun } from "@/lib/ad-scoring/client";
 import type { Platform, AssetType } from "@/lib/ad-scoring/types";
 
