@@ -1143,3 +1143,46 @@ enum TrackedCompetitorStatus {
 
   @@schema("nogl")
 }
+
+// ─── Trend Materialized Views (from main) ────────────────────────────────────
+
+/// Materialized view refreshed nightly. Read-only — do not write.
+model CompanyTrend4w {
+  company_id           String   @id
+  name                 String
+  slug                 String
+  domain               String?
+  logo_url             String?
+  new_products_4w      Int      @map("new_products_4w")
+  new_products_prev_4w Int      @map("new_products_prev_4w")
+  avg_price_change_4w  Decimal? @map("avg_price_change_4w") @db.Decimal(10, 4)
+  total_products       Int      @map("total_products")
+  refreshed_at         DateTime @map("refreshed_at")
+
+  @@map("CompanyTrend4w")
+  @@schema("nogl")
+}
+
+/// Materialized view refreshed nightly. Read-only — do not write.
+model CategoryTrend4w {
+  category             String   @id
+  new_products_4w      Int      @map("new_products_4w")
+  new_products_prev_4w Int      @map("new_products_prev_4w")
+  company_count        Int      @map("company_count")
+  total_products       Int      @map("total_products")
+  refreshed_at         DateTime @map("refreshed_at")
+
+  @@map("CategoryTrend4w")
+  @@schema("nogl")
+}
+
+/// Materialized view refreshed nightly. Read-only — do not write.
+model CompanyTrendWeekly12 {
+  company_id   String
+  week_start   DateTime
+  new_products Int      @map("new_products")
+
+  @@id([company_id, week_start])
+  @@map("CompanyTrendWeekly12")
+  @@schema("nogl")
+}

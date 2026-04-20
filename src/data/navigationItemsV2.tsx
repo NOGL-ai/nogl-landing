@@ -28,6 +28,7 @@ import {
     Beaker02,
     BookOpen01,
     Database01,
+    CheckSquare,
 } from "@untitledui/icons";
 import type { ReactNode } from "react";
 
@@ -145,6 +146,37 @@ export const navigationStructure: NavigationSection[] = [
                                 label: 'Exports',
                                 href: '/en/analytics/exports',
                                 icon: Share01,
+                            },
+                        ],
+                    },
+
+                    // ── Product Catalog (from main) ───────────────────────
+                    {
+                        label: 'Product Catalog',
+                        href: '/en/product-explorer',
+                        icon: Package,
+                    },
+
+                    // ── Ad Scoring (from main) ────────────────────────────
+                    {
+                        label: 'Ad Scoring',
+                        icon: Star01,
+                        isAccordionGroup: true,
+                        groupItems: [
+                            {
+                                label: 'Upload & Score',
+                                href: '/en/ad-scoring/assets',
+                                icon: Package,
+                            },
+                            {
+                                label: 'Reviews',
+                                href: '/en/ad-scoring/reviews',
+                                icon: CheckSquare,
+                            },
+                            {
+                                label: 'Brands',
+                                href: '/en/ad-scoring/brands',
+                                icon: BarChartSquare02,
                             },
                         ],
                     },
