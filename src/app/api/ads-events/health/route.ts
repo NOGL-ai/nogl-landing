@@ -22,7 +22,7 @@ async function getQueueStats() {
     const counts = await q.getJobCounts("waiting", "active", "completed", "failed", "delayed");
     return { name: q.name, ...counts, healthy: true };
   } catch {
-    return { name: "ads-events:ingest", healthy: false };
+    return { name: "ads-events-ingest", healthy: false };
   }
 }
 

@@ -7,7 +7,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const QUEUES: Record<string, () => ReturnType<typeof getIngestQueue>> = {
-  "ads-events:ingest": getIngestQueue,
+  "ads-events-ingest": getIngestQueue,
 };
 
 export async function POST(req: NextRequest) {

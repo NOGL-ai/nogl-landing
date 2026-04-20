@@ -2,7 +2,7 @@ import { Queue, type JobsOptions } from "bullmq";
 import { getBullMQConnection } from "./connection";
 import type { AdsEventEnvelope } from "@/lib/events";
 
-export const INGEST_QUEUE_NAME = "ads-events:ingest";
+export const INGEST_QUEUE_NAME = "ads-events-ingest";
 
 export type AdEventBatchJobData = {
   envelope: AdsEventEnvelope;
