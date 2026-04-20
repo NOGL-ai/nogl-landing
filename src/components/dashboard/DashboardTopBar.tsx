@@ -1,7 +1,8 @@
+import { Bell01 as Bell, Columns02 as Columns2, Lock01 as Lock } from '@untitledui/icons';
 // @ts-nocheck
 "use client";
 
-import { Bell, Columns2, Lock } from "lucide-react";
+
 import { useTranslations } from "next-intl";
 import { Suspense } from "react";
 

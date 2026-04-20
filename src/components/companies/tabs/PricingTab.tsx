@@ -1,7 +1,8 @@
+import { LinkExternal01 as ExternalLink, LayoutGrid01 as LayoutGrid, List } from '@untitledui/icons';
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ExternalLink, LayoutGrid, List } from "lucide-react";
+
 
 import { FilterBar } from "@/components/companies/FilterBar";
 import { Card } from "@/components/ui/card";

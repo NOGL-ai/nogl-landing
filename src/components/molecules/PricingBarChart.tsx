@@ -1,7 +1,7 @@
 "use client";
 
+import { DotsVertical as MoreVerticalIcon, Plus as PlusIcon } from '@untitledui/icons';
 import React, { useState, useEffect } from "react";
-import { MoreVerticalIcon, PlusIcon } from "lucide-react";
 import { calculateStackedMaxValue, calculateBarHeight } from "@/utils/chart-scaling";
 
 interface BarChartDataPoint {

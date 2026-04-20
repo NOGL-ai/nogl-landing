@@ -1,4 +1,5 @@
-import { Settings } from "lucide-react";
+import { Settings01 as Settings } from '@untitledui/icons';
+
 import { PlaceholderPage } from "../../_PlaceholderPage";
 
 export const metadata = { title: "Alert customization — Fractional CFO | NOGL" };

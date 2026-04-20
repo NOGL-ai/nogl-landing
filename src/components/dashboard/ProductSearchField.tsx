@@ -1,6 +1,7 @@
+import { SearchLg as Search, X } from '@untitledui/icons';
 "use client";
 
-import { Search, X } from "lucide-react";
+
 import { useTranslations } from "next-intl";
 import { useRouter, usePathname } from "next/navigation";
 import { useState, useCallback } from "react";

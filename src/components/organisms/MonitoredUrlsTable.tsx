@@ -1,3 +1,4 @@
+import { SearchLg as Search, SwitchVertical01 as ArrowUpDown, ArrowUp, ArrowDown, DotsHorizontal as MoreHorizontal, Eye, Trash01 as Trash2, AlertCircle, Edit01 as Edit, CheckCircle } from '@untitledui/icons';
 // @ts-nocheck
 "use client";
 
@@ -24,18 +25,7 @@ import {
 } from "@/components/ui/table";
 import Checkbox from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import {
-	Search,
-	ArrowUpDown,
-	ArrowUp,
-	ArrowDown,
-	MoreHorizontal,
-	Eye,
-	Edit,
-	Trash2,
-	CheckCircle,
-	AlertCircle,
-} from "lucide-react";
+
 import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,

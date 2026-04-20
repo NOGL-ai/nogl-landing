@@ -1,3 +1,5 @@
+import { FilterX } from 'lucide-react';
+import { SearchLg as Search, FilterFunnel01 as Filter, X, ChevronDown, SwitchVertical01 as ArrowUpDown, ArrowUp, ArrowDown, DotsHorizontal as MoreHorizontal, Eye, Trash01 as Trash2, TrendUp01 as TrendingUp, CurrencyDollar as DollarSign, Tag01 as Tag, Calendar, Settings01 as Settings, Download01 as Download, List, PieChart01 as PieChart, AlertCircle, Clock, Minus, Plus, Edit01 as Edit, Copy01 as Copy, Star01 as Star, Upload01 as Upload, RefreshCw01 as RefreshCw, Grid03 as Grid3X3, Columns01 as Columns, ArrowNarrowUp as SortAsc, ArrowNarrowDown as SortDesc, Zap, Target01 as Target, BarChart03 as BarChart3, Activity, CheckCircle } from '@untitledui/icons';
 // @ts-nocheck
 "use client";
 
@@ -46,45 +48,7 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover";
 import { Slider } from "@/components/ui/slider";
-import {
-	Search,
-	Filter,
-	X,
-	ChevronDown,
-	ArrowUpDown,
-	ArrowUp,
-	ArrowDown,
-	MoreHorizontal,
-	Eye,
-	Edit,
-	Copy,
-	Trash2,
-	Star,
-	TrendingUp,
-	DollarSign,
-	Tag,
-	Calendar,
-	Settings,
-	Download,
-	Upload,
-	RefreshCw,
-	Grid3X3,
-	List,
-	Columns,
-	SortAsc,
-	SortDesc,
-	FilterX,
-	Zap,
-	Target,
-	BarChart3,
-	PieChart,
-	Activity,
-	AlertCircle,
-	CheckCircle,
-	Clock,
-	Minus,
-	Plus,
-} from "lucide-react";
+
 import { debounce } from "lodash";
 import {
 	SiShopify,

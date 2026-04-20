@@ -1,3 +1,4 @@
+import { SwitchVertical01 as ArrowUpDown, ArrowUp, ArrowDown, Download01 as Download, List as LayoutList, LayoutGrid01 as LayoutGrid, InfoCircle as Info, LinkExternal01 as ExternalLink } from '@untitledui/icons';
 "use client";
 
 import {
@@ -8,7 +9,7 @@ import {
   useReactTable,
   type SortingState,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ArrowUp, ArrowDown, Download, LayoutList, LayoutGrid, Info, ExternalLink } from "lucide-react";
+
 import { useState } from "react";
 import Link from "next/link";
 

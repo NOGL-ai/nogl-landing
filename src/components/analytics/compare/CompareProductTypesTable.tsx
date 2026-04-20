@@ -1,3 +1,4 @@
+import { SwitchVertical01 as ArrowUpDown, ArrowUp, ArrowDown, Download01 as Download, List as LayoutList, LayoutGrid01 as LayoutGrid, ChevronLeft, ChevronRight, InfoCircle as Info, Grid01 as Grid } from '@untitledui/icons';
 "use client";
 
 import {
@@ -8,18 +9,7 @@ import {
   useReactTable,
   type SortingState,
 } from "@tanstack/react-table";
-import {
-  ArrowUpDown,
-  ArrowUp,
-  ArrowDown,
-  Download,
-  Grid,
-  LayoutList,
-  LayoutGrid,
-  ChevronLeft,
-  ChevronRight,
-  Info,
-} from "lucide-react";
+
 import { useState } from "react";
 
 import { Card } from "@/components/ui/card";

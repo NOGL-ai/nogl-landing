@@ -1,7 +1,8 @@
+import { ChevronDown } from '@untitledui/icons';
 "use client";
 
 import React, { useMemo, useRef, useState } from "react";
-import { ChevronDown } from "lucide-react";
+
 import { NavItemBase } from "@/components/application/app-navigation/base-components/nav-item";
 import { IconMenuItem, SubMenuItem, isSubItemActive } from "@/data/navigationItemsV2";
 import { SimpleAccountCard } from "./simple-account-card";

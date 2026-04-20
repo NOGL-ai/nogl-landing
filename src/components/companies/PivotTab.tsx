@@ -1,6 +1,7 @@
+import { RefreshCcw01 as RefreshCcw, Table as Table2 } from '@untitledui/icons';
 "use client";
 
-import { RefreshCcw, Table2 } from "lucide-react";
+
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";

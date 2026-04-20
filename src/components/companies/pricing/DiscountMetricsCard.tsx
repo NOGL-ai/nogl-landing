@@ -1,7 +1,7 @@
 "use client";
 
+import { InfoCircle as Info } from '@untitledui/icons';
 import { useTranslations } from "next-intl";
-import { Info } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 interface DiscountMetricsCardProps {

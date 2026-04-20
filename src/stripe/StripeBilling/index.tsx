@@ -1,6 +1,7 @@
+import { Check as CheckIcon } from '@untitledui/icons';
 "use client";
 import React from "react";
-import { CheckIcon } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import {
 	Card,

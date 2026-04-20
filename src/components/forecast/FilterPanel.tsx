@@ -1,7 +1,8 @@
+import { Calendar, Sliders01 as SlidersHorizontal, X } from '@untitledui/icons';
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Calendar, SlidersHorizontal, X } from "lucide-react";
+
 import { DateRangePicker } from "./DateRangePicker";
 import { ToggleGroup } from "./ToggleGroup";
 import { QuantileSelect } from "./QuantileSelect";

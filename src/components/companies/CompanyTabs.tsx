@@ -1,7 +1,8 @@
+import { LayoutGrid01 as LayoutGrid } from '@untitledui/icons';
 "use client";
 
 import { useEffect, useState } from "react";
-import { LayoutGrid } from "lucide-react";
+
 import { useTranslations } from "next-intl";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

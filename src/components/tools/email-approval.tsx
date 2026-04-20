@@ -1,3 +1,4 @@
+import { Check as CheckIcon, X as XIcon, Mail01 as MailIcon, Eye as EyeIcon, Edit01 as EditIcon, LinkExternal01 as ExternalLinkIcon } from '@untitledui/icons';
 /**
  * Email Approval UI Component
  * 
@@ -16,7 +17,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CheckIcon, XIcon, MailIcon, EyeIcon, EditIcon, ExternalLinkIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface EmailData {

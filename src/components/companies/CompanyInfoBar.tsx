@@ -1,6 +1,7 @@
+import { LinkExternal01 as ExternalLink, Globe01 as Globe, Stars01 as Sparkles, TrendUp01 as TrendingUp, CurrencyDollar as DollarSign, Calendar } from '@untitledui/icons';
 "use client";
 
-import { ExternalLink, Globe, Sparkles, TrendingUp, DollarSign, Calendar } from "lucide-react";
+
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 

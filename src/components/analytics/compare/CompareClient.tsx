@@ -1,3 +1,4 @@
+import { Download01 as Download, Share01 as Share2, List as LayoutList, LayoutGrid01 as LayoutGrid, SwitchVertical01 as ArrowUpDown, ArrowUp, ArrowDown, ChevronLeft, ChevronRight, X, Settings01 as Settings, LinkExternal01 as ExternalLink, Grid01 as Grid, HelpCircle } from '@untitledui/icons';
 "use client";
 
 import { useState, useMemo } from "react";
@@ -10,22 +11,7 @@ import {
   useReactTable,
   type SortingState,
 } from "@tanstack/react-table";
-import {
-  Download,
-  Share2,
-  LayoutList,
-  LayoutGrid,
-  Grid,
-  ArrowUpDown,
-  ArrowUp,
-  ArrowDown,
-  ChevronLeft,
-  ChevronRight,
-  HelpCircle,
-  X,
-  Settings,
-  ExternalLink,
-} from "lucide-react";
+
 
 import { Card } from "@/components/ui/card";
 import { FilterBar, PeriodChip } from "@/components/companies/FilterBar";

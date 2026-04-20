@@ -1,4 +1,5 @@
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle as CheckCircle2 } from '@untitledui/icons';
+
 import { useTranslations } from "next-intl";
 
 type DatasetQualityCalloutProps = {

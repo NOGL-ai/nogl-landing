@@ -1,7 +1,8 @@
+import { ChevronDown, Settings01 as Settings, Download01 as Download, Eye, Trash01 as Trash2, LinkExternal01 as ExternalLink } from '@untitledui/icons';
 'use client';
 
 import React from 'react';
-import { ChevronDown, Settings, Download, Eye, Trash2, ExternalLink } from 'lucide-react';
+
 
 const CompanyExplorer = () => {
   const [searchValue, setSearchValue] = React.useState('');

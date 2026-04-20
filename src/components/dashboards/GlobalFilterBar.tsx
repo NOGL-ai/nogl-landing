@@ -1,7 +1,8 @@
+import { Calendar as CalendarIcon, X as XIcon, Plus as PlusIcon, ChevronDown as ChevronDownIcon } from '@untitledui/icons';
 "use client";
 
 import { useState } from "react";
-import { CalendarIcon, XIcon, PlusIcon, ChevronDownIcon } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import {
   Popover,

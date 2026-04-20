@@ -1,6 +1,6 @@
+import { Eye, InfoCircle as Info } from '@untitledui/icons';
 import React from "react";
 import { notFound } from "next/navigation";
-import { Eye, Info } from "lucide-react";
 import type { Locale } from "@/i18n";
 import type { ReviewOut } from "@/lib/ad-scoring/types";
 import ReviewDecisionForm from "@/components/application/ad-scoring/ReviewDecisionForm";

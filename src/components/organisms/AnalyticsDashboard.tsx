@@ -1,8 +1,9 @@
+import { DownloadCloud01 as DownloadCloudIcon, Calendar as CalendarIcon, FilterFunnel01 as FilterIcon } from '@untitledui/icons';
 // @ts-nocheck
 "use client";
 
 import React, { useState } from "react";
-import { DownloadCloudIcon, CalendarIcon, FilterIcon } from "lucide-react";
+
 import MetricCard from "@/components/molecules/MetricCard";
 import WorldMap from "@/components/molecules/WorldMap";
 import PricingBarChart from "@/components/molecules/PricingBarChart";

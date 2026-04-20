@@ -1,3 +1,4 @@
+import { Pencil01 as PencilIcon, Trash01 as TrashIcon, Plus as PlusIcon, Check as CheckIcon, X as XIcon } from '@untitledui/icons';
 // @ts-nocheck
 /**
  * Plan Approval UI Component
@@ -16,7 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Checkbox from "@/components/ui/checkbox";
-import { PencilIcon, TrashIcon, PlusIcon, CheckIcon, XIcon } from "lucide-react";
+
 import { cn } from "@/lib/utils";
 
 interface Todo {

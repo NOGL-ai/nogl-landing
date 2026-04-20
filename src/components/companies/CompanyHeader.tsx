@@ -1,6 +1,7 @@
+import { LinkExternal01 as ExternalLink } from '@untitledui/icons';
 "use client";
 
-import { ExternalLink } from "lucide-react";
+
 import { useTranslations } from "next-intl";
 
 import { CountryPill } from "@/components/companies/CountryPill";

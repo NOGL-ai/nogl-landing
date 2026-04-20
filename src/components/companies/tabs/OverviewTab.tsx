@@ -1,6 +1,6 @@
 "use client";
 
-import { ExternalLink } from "lucide-react";
+import { LinkExternal01 as ExternalLink } from '@untitledui/icons';
 import { useEffect, useState } from "react";
 
 import { CompanyProfile } from "@/components/companies/CompanyProfile";
@@ -39,7 +39,6 @@ function SkeletonRows({ count }: { count: number }) {
     </div>
   );
 }
-
 
 export function OverviewTab({ data }: OverviewTabProps) {
   const { company, snapshot, socials, competitors, datasetQualityUiStatus } = data;

@@ -1,4 +1,5 @@
-import { Database } from "lucide-react";
+import { Database01 as Database } from '@untitledui/icons';
+
 import { PlaceholderPage } from "../_PlaceholderPage";
 
 export const metadata = { title: "Import data — Fractional CFO | NOGL" };

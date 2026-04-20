@@ -1,7 +1,8 @@
+import { X, Download01 as Download } from '@untitledui/icons';
 "use client";
 
 import { useState } from "react";
-import { X, Download } from "lucide-react";
+
 import { ToggleGroup } from "./ToggleGroup";
 import { QuantileSelect } from "./QuantileSelect";
 import { exportForecastData } from "@/actions/forecast";

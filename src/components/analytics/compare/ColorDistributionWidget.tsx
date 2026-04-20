@@ -1,3 +1,4 @@
+import { Download01 as Download, FileDownload01 as FileDown, Lock01 as Lock, ChevronDown } from '@untitledui/icons';
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -13,7 +14,7 @@ import {
   Cell,
   LabelList,
 } from "recharts";
-import { Download, FileDown, Lock, ChevronDown } from "lucide-react";
+
 
 import { Card } from "@/components/ui/card";
 

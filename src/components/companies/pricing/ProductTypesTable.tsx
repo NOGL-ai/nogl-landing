@@ -1,3 +1,4 @@
+import { SwitchVertical01 as ArrowUpDown, ArrowUp, ArrowDown } from '@untitledui/icons';
 "use client";
 
 import {
@@ -8,7 +9,7 @@ import {
   useReactTable,
   type SortingState,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
+
 import { useState } from "react";
 
 import { Card } from "@/components/ui/card";

@@ -1,3 +1,4 @@
+import { Loading01 as LoaderCircleIcon, Check as CheckIcon, AlertCircle as AlertCircleIcon, Stars01 as SparklesIcon, MagicWand01 as WandSparklesIcon } from '@untitledui/icons';
 "use client";
 
 import { useState, useTransition, type Dispatch, type SetStateAction } from "react";
@@ -21,13 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import {
-  SparklesIcon,
-  LoaderCircleIcon,
-  CheckIcon,
-  AlertCircleIcon,
-  WandSparklesIcon,
-} from "lucide-react";
+
 import { createWidget, updateWidget } from "@/actions/dashboards";
 import { generateWidgetFromPrompt } from "@/actions/dashboards/copilot";
 import type {

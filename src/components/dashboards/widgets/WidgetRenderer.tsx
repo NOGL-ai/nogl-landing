@@ -1,3 +1,4 @@
+import { Loading01 as LoaderCircleIcon, AlertCircle as AlertCircleIcon } from '@untitledui/icons';
 "use client";
 
 import { useWidgetData } from "@/hooks/useWidgetData";
@@ -13,7 +14,7 @@ import { PieWidget } from "./PieWidget";
 import { HeatmapWidget } from "./HeatmapWidget";
 import { SparklineWidget } from "./SparklineWidget";
 import { MarkdownWidget } from "./MarkdownWidget";
-import { LoaderCircleIcon, AlertCircleIcon } from "lucide-react";
+
 
 interface Props {
   widget: DashboardWidgetRow;

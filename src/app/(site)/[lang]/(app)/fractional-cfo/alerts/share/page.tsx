@@ -1,4 +1,5 @@
-import { Share2 } from "lucide-react";
+import { Share01 as Share2 } from '@untitledui/icons';
+
 import { PlaceholderPage } from "../../_PlaceholderPage";
 
 export const metadata = { title: "Share alerts — Fractional CFO | NOGL" };

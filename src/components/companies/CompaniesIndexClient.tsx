@@ -1,6 +1,7 @@
+import { SearchLg as Search } from '@untitledui/icons';
 "use client";
 
-import { Search } from "lucide-react";
+
 import { useMemo, useState } from "react";
 
 import { CountryPill } from "@/components/companies/CountryPill";

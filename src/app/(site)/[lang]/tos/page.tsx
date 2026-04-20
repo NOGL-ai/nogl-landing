@@ -1,25 +1,9 @@
+import { File01 as FileText, Globe01 as Globe, AlertTriangle, Shield01 as Shield, User01 as User, CreditCard01 as CreditCard, SlashCircle01 as Ban, Scale01 as Scale, Bank as Landmark, Mail01 as Mail, Link01 as LinkIcon, Building01 as Building, Phone01 as Phone, MarkerPin01 as MapPin } from '@untitledui/icons';
 import React from "react";
 import { getSEOTags, renderSchemaTags } from "@/lib/seo";
 import Breadcrumb from "@/components/atoms/Breadcrumb";
 import Section from "@/components/organisms/section";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-	FileText,
-	Shield,
-	User,
-	CreditCard,
-	Ban,
-	Scale,
-	Landmark,
-	Mail,
-	Link as LinkIcon,
-	Globe,
-	AlertTriangle,
-	// Clock,
-	Building,
-	Phone,
-	MapPin,
-} from "lucide-react";
 
 export const metadata = getSEOTags({
 	title: `Terms of Service | ${process.env.SITE_NAME}`,

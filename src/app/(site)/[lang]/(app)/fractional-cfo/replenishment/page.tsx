@@ -1,4 +1,5 @@
-import { Boxes } from "lucide-react";
+import { Cube04 as Boxes } from '@untitledui/icons';
+
 import { PlaceholderPage } from "../_PlaceholderPage";
 
 export const metadata = { title: "Replenishment — Fractional CFO | NOGL" };

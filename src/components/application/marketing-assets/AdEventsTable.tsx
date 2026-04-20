@@ -1,3 +1,4 @@
+import { ChevronUp, ChevronDown, ChevronSelectorVertical as ChevronsUpDown, ChevronLeft, ChevronRight } from '@untitledui/icons';
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -13,7 +14,7 @@ import {
   type PaginationState,
   type ColumnFiltersState,
 } from "@tanstack/react-table";
-import { ChevronUp, ChevronDown, ChevronsUpDown, ChevronLeft, ChevronRight } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";

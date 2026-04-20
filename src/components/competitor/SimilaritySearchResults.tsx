@@ -1,3 +1,4 @@
+import { ChevronDown, ChevronUp, LinkExternal01 as ExternalLink, TrendUp01 as TrendingUp, Package, Tag01 as Tag, Calendar, Star01 as Star, Image01 as ImageIcon, MarkerPin01 as MapPin } from '@untitledui/icons';
 /**
  * SimilaritySearchResults Component
  * 
@@ -11,18 +12,6 @@ import { SimilaritySearchResult, SimilarityMatch } from '@/types/market-intellig
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { 
-  ChevronDown, 
-  ChevronUp, 
-  ExternalLink, 
-  Star, 
-  TrendingUp,
-  Image as ImageIcon,
-  Package,
-  Tag,
-  Calendar,
-  MapPin
-} from 'lucide-react';
 
 interface SimilaritySearchResultsProps {
   result: SimilaritySearchResult;

@@ -1,3 +1,4 @@
+import { Check as CheckIcon, X as XIcon, AlertTriangle as AlertTriangleIcon, LinkExternal01 as ExternalLinkIcon } from '@untitledui/icons';
 /**
  * Competitor Approval UI Component
  * 
@@ -16,7 +17,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { CheckIcon, XIcon, AlertTriangleIcon, ExternalLinkIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface CompetitorData {

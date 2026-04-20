@@ -61,10 +61,11 @@ for (const file of walk(join(root, 'src'))) {
     for (const raw of m[1]
       .split(',')
       .map(s => s.trim().replace(/\s+/g, ' '))
-      .filter(Boolean)
+      .filter(s => Boolean(s) && !s.startsWith('//')) // skip inline comments
     ) {
       const parts = raw.split(/\s+/);
       const exportedName = parts[0];
+      if (!exportedName || !/^\w/.test(exportedName)) continue;
       const localName = parts[2] ?? parts[0]; // "Name as Alias" or just "Name"
       const uuiName = mapping[exportedName];
 

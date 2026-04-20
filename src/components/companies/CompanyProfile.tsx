@@ -1,7 +1,8 @@
 "use client";
 
+import { Facebook, Instagram } from 'lucide-react';
+import { LinkExternal01 as ExternalLink, MusicNote01 as Music2 } from '@untitledui/icons';
 import type { ReactNode } from "react";
-import { ExternalLink, Facebook, Instagram, Music2 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 
 import { CompetitorAvatarStack } from "@/components/companies/profile/CompetitorAvatarStack";

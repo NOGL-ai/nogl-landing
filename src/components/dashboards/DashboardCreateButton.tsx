@@ -1,3 +1,4 @@
+import { Plus as PlusIcon } from '@untitledui/icons';
 "use client";
 
 import { useState, useTransition } from "react";
@@ -20,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { PlusIcon } from "lucide-react";
+
 import type { Locale } from "@/i18n";
 
 type Persona = "CFO" | "CMO" | "OPS" | "GENERIC";

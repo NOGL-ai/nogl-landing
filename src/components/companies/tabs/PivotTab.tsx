@@ -1,6 +1,7 @@
+import { LayoutGrid01 as LayoutGrid, RefreshCcw01 as RefreshCcw } from '@untitledui/icons';
 "use client";
 
-import { LayoutGrid, RefreshCcw } from "lucide-react";
+
 import { useEffect, useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";

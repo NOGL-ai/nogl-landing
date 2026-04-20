@@ -1,7 +1,8 @@
+import { ArrowLeft } from '@untitledui/icons';
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+
 import { RepricingPreviewTable } from "@/components/organisms/RepricingPreviewTable";
 import { getJob } from "@/actions/repricing/execution";
 import type { Route } from 'next';

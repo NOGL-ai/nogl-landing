@@ -1,4 +1,5 @@
-import { PieChart } from "lucide-react";
+import { PieChart01 as PieChart } from '@untitledui/icons';
+
 import { PlaceholderPage } from "../_PlaceholderPage";
 
 export const metadata = { title: "Analytics — Fractional CFO | NOGL" };
