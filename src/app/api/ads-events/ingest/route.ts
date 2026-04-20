@@ -192,7 +192,7 @@ export async function POST(req: NextRequest) {
     envelope.run_id ??
     crypto.createHash("sha256").update(JSON.stringify(envelope)).digest("hex").slice(0, 32);
   const jobId =
-    "ads-ingest:" +
+    "ads-ingest-" +
     crypto
       .createHash("sha256")
       .update(envelope.events.map((e) => e.idempotency_key).sort().join(","))

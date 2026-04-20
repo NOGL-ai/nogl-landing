@@ -24,7 +24,8 @@ module.exports = {
     {
       name: "worker:ingest",
       script: "node_modules/.bin/tsx",
-      args: "src/lib/queues/workers/ingest.worker.ts",
+      args: "--env-file .env src/lib/queues/workers/ingest.worker.ts",
+      cwd: "/root/nogl-landing",
       instances: 1,
       exec_mode: "fork",
       watch: false,
