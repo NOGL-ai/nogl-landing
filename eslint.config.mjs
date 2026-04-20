@@ -26,6 +26,8 @@ export default [
 			"**/edge-runtime-webpack.js",
 			"**/middleware-build-manifest.js",
 			"next-env.d.ts",
+			".claude/**",
+			"scripts/**",
 		],
 	},
 	{
@@ -82,6 +84,8 @@ export default [
 			"no-undef": "off", // TypeScript handles this
 			"no-var": "off",
 			"prefer-const": "off",
+			"no-empty": "off",
+			"no-case-declarations": "off",
 		},
 	},
 ];

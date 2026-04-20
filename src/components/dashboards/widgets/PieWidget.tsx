@@ -53,9 +53,9 @@ export function PieWidget({ slices, config }: Props) {
           ))}
         </Pie>
         <Tooltip
-          formatter={(value: number, name: string) => [
-            value.toLocaleString(),
-            name,
+          formatter={(value, name) => [
+            Number(value).toLocaleString(),
+            String(name),
           ]}
           contentStyle={{
             fontSize: 12,

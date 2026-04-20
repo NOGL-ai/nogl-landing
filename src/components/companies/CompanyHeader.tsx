@@ -16,8 +16,10 @@ function formatPrice(value: number | null | undefined, na: string): string {
   return typeof value === "number" ? `€${value.toFixed(2)}` : na;
 }
 
-function formatDiscount(value: number | null | undefined, na: string): string {
-  return typeof value === "number" ? `${value.toFixed(1)}%` : na;
+function formatDiscount(value: number | null | undefined, na: string, hasProducts = false): string {
+  if (typeof value === "number") return `${value.toFixed(1)}%`;
+  // If we have products but no discount data, the discount rate is effectively 0%
+  return hasProducts ? "0%" : na;
 }
 
 function TrackingStatusBadge({
@@ -29,9 +31,9 @@ function TrackingStatusBadge({
 }) {
   const config =
     status === "TRACKED"
-      ? { label: labels.tracked, dot: "bg-emerald-500", variant: "success" as const }
+      ? { label: labels.tracked, dot: "bg-white/90", variant: "success" as const }
       : status === "PAUSED"
-        ? { label: labels.paused, dot: "bg-amber-500", variant: "warning" as const }
+        ? { label: labels.paused, dot: "bg-white/90", variant: "warning" as const }
         : { label: labels.untracked, dot: "bg-zinc-400", variant: "secondary" as const };
 
   return (
@@ -90,7 +92,7 @@ export function CompanyHeader({ company, snapshot }: CompanyHeaderProps) {
           <div className="grid grid-cols-3 gap-2 sm:gap-3 sm:shrink-0">
             <KpiChip label={t("totalProducts")} value={snapshot.total_products.toLocaleString()} />
             <KpiChip label={t("avgPrice")} value={formatPrice(snapshot.avg_price, na)} />
-            <KpiChip label={t("discountRate")} value={formatDiscount(snapshot.avg_discount_pct, na)} />
+            <KpiChip label={t("discountRate")} value={formatDiscount(snapshot.avg_discount_pct, na, snapshot.total_products > 0)} />
           </div>
         </div>
       </div>

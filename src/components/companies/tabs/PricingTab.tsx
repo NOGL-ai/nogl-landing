@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { ExternalLink, LayoutGrid, List } from "lucide-react";
 
 import { FilterBar } from "@/components/companies/FilterBar";
 import { Card } from "@/components/ui/card";
@@ -9,6 +10,7 @@ import { PriceDistributionChart } from "@/components/companies/pricing/PriceDist
 import { PricingOverTimeChart } from "@/components/companies/pricing/PricingOverTimeChart";
 import { ProductTypesTable } from "@/components/companies/pricing/ProductTypesTable";
 import { TopProductCard } from "@/components/companies/pricing/TopProductCard";
+import { fmtPrice } from "@/components/companies/pricing/utils";
 import { usePricingTimeseries } from "@/hooks/usePricingTimeseries";
 import type { CompanyPricingProductTypeRow, CompanyPricingResponse, PriceDistributionBucket } from "@/types/company";
 import { fetchJson, formatNumber, InlineError } from "./shared";
@@ -63,6 +65,8 @@ export function PricingTab({ slug }: PricingTabProps) {
     minPrice: null,
     maxPrice: null,
   });
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [sort, setSort] = useState<SortOption>("price_asc");
 
   const timeseries = usePricingTimeseries({ slug });
 
@@ -118,13 +122,28 @@ export function PricingTab({ slug }: PricingTabProps) {
     }));
   }
 
+  // useMemo must be unconditional — derive from state.data which may be null before load
+  const topProducts = state.data?.top_products ?? [];
+  const sortedTopProducts = useMemo(() => {
+    const arr = [...topProducts];
+    if (sort === "price_asc")  arr.sort((a, b) => (a.original_price ?? 0) - (b.original_price ?? 0));
+    if (sort === "price_desc") arr.sort((a, b) => (b.original_price ?? 0) - (a.original_price ?? 0));
+    if (sort === "discount_desc") {
+      arr.sort((a, b) => {
+        const da = a.discount_price != null && a.original_price ? 1 - a.discount_price / a.original_price : 0;
+        const db = b.discount_price != null && b.original_price ? 1 - b.discount_price / b.original_price : 0;
+        return db - da;
+      });
+    }
+    return arr;
+  }, [topProducts, sort]);
+
   if (state.loading && !state.data) return <PricingSkeleton />;
   if (state.error && !state.data) return <InlineError message={state.error} />;
   if (!state.data) return null;
 
   const { data } = state;
   const priceDist: PriceDistributionBucket[] = data.price_distribution ?? [];
-  const topProducts = data.top_products ?? [];
 
   // Use unfiltered rows for the table and price range bars so they stay stable
   const tableRows = allProductTypesRows.length > 0 ? allProductTypesRows : data.product_types;
@@ -189,31 +208,127 @@ export function PricingTab({ slug }: PricingTabProps) {
         </p>
       </div>
 
-      {/* ── Best Selling Products ── */}
+      {/* ── Top Products ── */}
       {topProducts.length > 0 && (
         <Card className="p-5">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-base font-semibold text-foreground">Best Selling Products</h2>
-            <span className="text-xs text-muted-foreground">
-              {topProducts.length} products · Sort by: Price
-            </span>
-          </div>
-          <div
-            className="relative overflow-hidden"
-            style={{
-              maxHeight: 340,
-              maskImage: "linear-gradient(to bottom, black 0%, black 60%, transparent 100%)",
-              WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 60%, transparent 100%)",
-            }}
-          >
-            <div className="overflow-y-auto" style={{ maxHeight: 340 }}>
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-                {topProducts.map((product, i) => (
-                  <TopProductCard key={product.product_id} rank={i + 1} product={product} />
-                ))}
+          {/* Header — one line on all viewports */}
+          <div className="mb-4 flex min-w-0 items-center gap-3">
+            <h2 className="min-w-0 flex-1 truncate text-base font-semibold text-foreground">
+              Top Products by Price
+            </h2>
+            <div className="flex flex-shrink-0 flex-wrap items-center gap-2">
+              <span className="text-xs text-muted-foreground">{sortedTopProducts.length} products</span>
+              <select
+                value={sort}
+                onChange={(e) => setSort(e.target.value as SortOption)}
+                className="rounded border border-border bg-background px-2 py-1 text-xs text-foreground"
+              >
+                <option value="price_asc">Price ↑</option>
+                <option value="price_desc">Price ↓</option>
+                <option value="discount_desc">Discount ↓</option>
+              </select>
+              <div className="inline-flex overflow-hidden rounded border border-border">
+                <button
+                  type="button"
+                  onClick={() => setViewMode("grid")}
+                  className={`px-2 py-1 transition-colors ${viewMode === "grid" ? "bg-muted text-foreground" : "text-muted-foreground hover:bg-muted/50"}`}
+                  aria-label="Grid view"
+                >
+                  <LayoutGrid className="h-3.5 w-3.5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewMode("list")}
+                  className={`px-2 py-1 transition-colors ${viewMode === "list" ? "bg-muted text-foreground" : "text-muted-foreground hover:bg-muted/50"}`}
+                  aria-label="List view"
+                >
+                  <List className="h-3.5 w-3.5" />
+                </button>
               </div>
             </div>
           </div>
+
+          {/* Grid view */}
+          {viewMode === "grid" && (
+            <div className="relative" style={{ height: 340 }}>
+              <div className="h-full overflow-y-auto">
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+                  {sortedTopProducts.map((product, i) => (
+                    <TopProductCard key={product.product_id} rank={i + 1} product={product} />
+                  ))}
+                </div>
+              </div>
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-card to-transparent" />
+            </div>
+          )}
+
+          {/* List view — horizontal scroll table */}
+          {viewMode === "list" && (
+            <div className="relative" style={{ height: 420 }}>
+              <div className="h-full overflow-auto">
+                <table className="w-full min-w-[640px] border-collapse text-sm">
+                  <thead>
+                    <tr className="border-b border-border text-xs text-muted-foreground">
+                      <th className="sticky top-0 bg-card pb-2 pl-1 pr-3 text-left font-medium">#</th>
+                      <th className="sticky top-0 bg-card pb-2 pr-3 text-left font-medium">Image</th>
+                      <th className="sticky top-0 bg-card pb-2 pr-3 text-left font-medium">Product</th>
+                      <th className="sticky top-0 bg-card pb-2 pr-3 text-right font-medium">Full Price</th>
+                      <th className="sticky top-0 bg-card pb-2 pr-3 text-right font-medium">Sale Price</th>
+                      <th className="sticky top-0 bg-card pb-2 pr-3 text-right font-medium">Discount</th>
+                      <th className="sticky top-0 bg-card pb-2 text-right font-medium">Link</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {sortedTopProducts.map((product, i) => {
+                      const discountPct =
+                        product.discount_price != null && product.original_price
+                          ? Math.round((1 - product.discount_price / product.original_price) * 100)
+                          : null;
+                      return (
+                        <tr key={product.product_id} className="border-b border-border/50 hover:bg-muted/30">
+                          <td className="py-2 pl-1 pr-3 text-xs font-bold text-muted-foreground">#{i + 1}</td>
+                          <td className="py-2 pr-3">
+                            <div className="h-10 w-10 overflow-hidden rounded bg-muted/30">
+                              {product.product_image_url ? (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img src={product.product_image_url} alt={product.product_title} className="h-full w-full object-contain p-1" />
+                              ) : (
+                                <div className="flex h-full w-full items-center justify-center text-[8px] text-muted-foreground">N/A</div>
+                              )}
+                            </div>
+                          </td>
+                          <td className="max-w-[220px] py-2 pr-3">
+                            <p className="line-clamp-2 text-xs font-medium text-foreground">{product.product_title}</p>
+                          </td>
+                          <td className="py-2 pr-3 text-right text-xs text-muted-foreground line-through">
+                            {product.original_price != null ? fmtPrice(product.original_price) : "—"}
+                          </td>
+                          <td className="py-2 pr-3 text-right text-xs font-semibold text-emerald-500">
+                            {product.discount_price != null ? fmtPrice(product.discount_price) : fmtPrice(product.original_price)}
+                          </td>
+                          <td className="py-2 pr-3 text-right text-xs">
+                            {discountPct != null ? (
+                              <span className="rounded bg-emerald-50 px-1.5 py-0.5 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">
+                                -{discountPct}%
+                              </span>
+                            ) : "—"}
+                          </td>
+                          <td className="py-2 text-right">
+                            {product.product_url && (
+                              <a href={product.product_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 rounded border border-border px-2 py-1 text-xs text-muted-foreground hover:bg-muted">
+                                View <ExternalLink className="h-3 w-3" />
+                              </a>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-card to-transparent" />
+            </div>
+          )}
         </Card>
       )}
 
@@ -251,7 +366,7 @@ export function PricingTab({ slug }: PricingTabProps) {
         </div>
       </div>
 
-      {/* ── Pricing Over Time (ApexCharts area) ── */}
+      {/* ── Pricing Over Time ── */}
       <PricingOverTimeChart
         slug={slug}
         data={timeseries.data ?? undefined}

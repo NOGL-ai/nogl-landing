@@ -1,5 +1,22 @@
 import '@testing-library/jest-dom'
 
+// WHATWG Streams polyfills — ai-v5 (pulled in by @mastra/core) expects
+// TransformStream/ReadableStream/WritableStream to be global. jsdom does not
+// provide them, so importing any module that touches ai-v5 explodes at load.
+// We pull them from node:stream/web where available, else noop so imports
+// succeed even if tests never actually use streams.
+try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const streamsWeb = require('node:stream/web')
+  if (!global.TransformStream) global.TransformStream = streamsWeb.TransformStream
+  if (!global.ReadableStream) global.ReadableStream = streamsWeb.ReadableStream
+  if (!global.WritableStream) global.WritableStream = streamsWeb.WritableStream
+} catch {
+  if (!global.TransformStream) global.TransformStream = class TransformStream {}
+  if (!global.ReadableStream) global.ReadableStream = class ReadableStream {}
+  if (!global.WritableStream) global.WritableStream = class WritableStream {}
+}
+
 // Mock global Request and Response for Next.js
 global.Request = global.Request || class Request {
   constructor(input, init) {
@@ -48,6 +65,48 @@ global.Response = global.Response || class Response {
     })
   }
 }
+
+// ── Global mocks to prevent module-level side-effects that keep handles open ──
+
+// Prevent nodemailer from creating SMTP transport handles at import time.
+jest.mock('nodemailer', () => ({
+  createTransport: jest.fn(() => ({
+    sendMail: jest.fn().mockResolvedValue({ messageId: 'test-id' }),
+    verify: jest.fn().mockResolvedValue(true),
+  })),
+}))
+
+// Stub Prisma client globally — prevents connection pool from opening during
+// module evaluation in every test file that transitively imports prismaDb.
+jest.mock('@/lib/prismaDb', () => ({
+  prisma: {
+    user: { findUnique: jest.fn(), findMany: jest.fn(), create: jest.fn(), update: jest.fn(), delete: jest.fn(), count: jest.fn() },
+    company: { findUnique: jest.fn(), findMany: jest.fn(), create: jest.fn(), update: jest.fn(), delete: jest.fn(), count: jest.fn() },
+    product: { findUnique: jest.fn(), findMany: jest.fn(), create: jest.fn(), update: jest.fn(), delete: jest.fn(), count: jest.fn() },
+    forecastTenant: { findUnique: jest.fn(), findMany: jest.fn(), create: jest.fn(), update: jest.fn(), upsert: jest.fn(), count: jest.fn() },
+    forecastProduct: { findUnique: jest.fn(), findMany: jest.fn(), create: jest.fn(), update: jest.fn(), count: jest.fn() },
+    forecastAnnotation: { findMany: jest.fn(), create: jest.fn(), delete: jest.fn(), deleteMany: jest.fn() },
+    replenishmentPurchaseOrder: { findMany: jest.fn(), findUnique: jest.fn(), update: jest.fn(), create: jest.fn() },
+    replenishmentSupplier: { findMany: jest.fn(), create: jest.fn(), upsert: jest.fn() },
+    session: { deleteMany: jest.fn() },
+    $disconnect: jest.fn().mockResolvedValue(undefined),
+    $connect: jest.fn().mockResolvedValue(undefined),
+    $transaction: jest.fn((fn) => fn({ user: { findUnique: jest.fn(), update: jest.fn() } })),
+  },
+}))
+
+// Stub @/lib/auth so auth.ts does not load nodemailer / Prisma / bcrypt
+// transitively during test module evaluation.
+jest.mock('@/lib/auth', () => ({
+  authOptions: {
+    providers: [],
+    session: { strategy: 'jwt' },
+    callbacks: {},
+  },
+  getAuthSession: jest.fn().mockResolvedValue(null),
+}))
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 // Mock Next.js router
 jest.mock('next/navigation', () => ({

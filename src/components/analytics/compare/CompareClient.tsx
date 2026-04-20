@@ -35,7 +35,7 @@ import type { PriceDistributionBucket } from "@/types/company";
 import { CompareProductTypesTable, MOCK_PRODUCT_TYPES } from "./CompareProductTypesTable";
 import { CompaniesCompareTable, MOCK_COMPANIES } from "./CompaniesCompareTable";
 
-// Dynamically import ApexCharts-based components to prevent SSR window errors
+// Dynamically import chart components to prevent SSR window errors
 const PriceDistributionChart = dynamic(
   () => import("@/components/companies/pricing/PriceDistributionChart").then((m) => ({ default: m.PriceDistributionChart })),
   { ssr: false, loading: () => <div className="h-[200px] animate-pulse rounded bg-muted" /> }

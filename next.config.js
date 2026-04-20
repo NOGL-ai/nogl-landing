@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
+const path = require("path");
 
 const nextConfig = {
+	// Only needed in local worktree (nested 3 levels deep); on Vercel the repo root is __dirname
+	...(process.env.VERCEL ? {} : { outputFileTracingRoot: path.join(__dirname, "../../..") }),
 	reactStrictMode: true,
 	typedRoutes: true,
 	output: 'standalone',

@@ -100,6 +100,8 @@ function triggerScraperSync(): void {
 }
 
 // GET /api/competitors - List with pagination, filters, search
+// When tenantCompanyId is supplied, queries via TrackedCompetitor join table (Company-to-Company).
+// Otherwise falls back to the global Competitor model (legacy path).
 export const GET = withRequestLogging(
   withRateLimit(100, 15 * 60 * 1000)(
     async (request: NextRequest) => {
@@ -115,6 +117,7 @@ export const GET = withRequestLogging(
 
       // Parse query params
       const { searchParams } = new URL(request.url);
+      const tenantCompanyId = searchParams.get('tenantCompanyId') || undefined;
       const pageRaw = parseInt(searchParams.get('page') || '1');
       const limitRaw = Math.min(parseInt(searchParams.get('limit') || '10'), 100);
       const search = searchParams.get('search') || '';
@@ -131,77 +134,144 @@ export const GET = withRequestLogging(
       const sortOrder = sortOrderParam === 'asc' ? 'asc' : 'desc';
 
       // Cache key
-      const cacheKey = JSON.stringify({ page, limit, search, status, sortBy, sortOrder });
+      const cacheKey = JSON.stringify({ tenantCompanyId, page, limit, search, status, sortBy, sortOrder });
       const cached = queryCache.get(cacheKey);
       if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
         return withSecurityHeaders(NextResponse.json(cached.data));
       }
 
-      // Build where clause
-      const where: any = {
-        deletedAt: null, // Exclude soft-deleted
-      };
-
-      if (search) {
-        where.OR = [
-          { name: { contains: search, mode: 'insensitive' } },
-          { domain: { contains: search, mode: 'insensitive' } },
-        ];
-      }
-
-      if (status) {
-        where.status = status;
-      }
-
       try {
-        // Execute queries
-        const [competitors, total] = await Promise.all([
-          prisma.competitor.findMany({
-            where,
-            skip: (page - 1) * limit,
-            take: limit,
-            orderBy: { [sortBy]: sortOrder },
-            include: {
-              _count: {
-                select: { priceComparisons: true },
-              },
-            },
-          }),
-          prisma.competitor.count({ where }),
-        ]);
+        let responseData: any;
 
-        const responseData = {
-          competitors,
-          pagination: {
-            page,
-            limit,
-            total,
-            totalPages: Math.ceil(total / limit),
-          },
-          filters: { search, status },
-        };
+        if (tenantCompanyId) {
+          // --- Tenant-scoped path via TrackedCompetitor join table ---
+          // Fix: never allow callers to request ARCHIVED rows via ?status=ARCHIVED.
+          // Fix: push search into trackedWhere.competitor so count + skip/take are accurate.
+          const trackedWhere: any = {
+            tenantCompanyId,
+            // Allow filtering by ACTIVE or PAUSED; ARCHIVED is never surfaced externally
+            status: (status && status !== 'ARCHIVED') ? status : { not: 'ARCHIVED' },
+          };
+
+          if (search) {
+            trackedWhere.competitor = {
+              is: {
+                OR: [
+                  { name: { contains: search, mode: 'insensitive' } },
+                  { domain: { contains: search, mode: 'insensitive' } },
+                ],
+              },
+            };
+          }
+
+          const [tracked, total] = await Promise.all([
+            prisma.trackedCompetitor.findMany({
+              where: trackedWhere,
+              include: {
+                competitor: {
+                  select: {
+                    id: true,
+                    name: true,
+                    slug: true,
+                    domain: true,
+                    country_code: true,
+                    website: true,
+                    snapshot: { select: { total_products: true } },
+                  },
+                },
+              },
+              orderBy: [{ priority: 'asc' }, { addedAt: 'asc' }],
+              skip: (page - 1) * limit,
+              take: limit,
+            }),
+            // count now uses the same where (including search via relation filter)
+            prisma.trackedCompetitor.count({ where: trackedWhere }),
+          ]);
+
+          // Map TrackedCompetitor + Company → CompetitorDTO shape the page expects
+          const competitors = (tracked as any[])
+            .filter((t: any) => t.competitor)
+            .map((t: any) => ({
+              id: t.competitor.id,
+              name: t.nickname ?? t.competitor.name,
+              domain: t.competitor.domain,
+              website: t.competitor.website ?? null,
+              description: null,
+              productCount: t.competitor.snapshot?.total_products ?? 0,
+              marketPosition: null,
+              status: t.status, // TrackedCompetitorStatus: ACTIVE | PAUSED | ARCHIVED
+              categories: [],
+              lastScrapedAt: null,
+              createdAt: t.addedAt.toISOString(),
+              updatedAt: t.addedAt.toISOString(),
+              // Tracked-specific extras the UI uses
+              trackedId: t.id,
+              trackedStatus: t.status,
+              priority: t.priority,
+              nickname: t.nickname ?? null,
+              addedAt: t.addedAt.toISOString(),
+              pauseReason: t.pauseReason ?? null,
+              slug: t.competitor.slug ?? null,
+              country_code: t.competitor.country_code ?? null,
+            }));
+
+          responseData = {
+            competitors,
+            pagination: {
+              page,
+              limit,
+              total,
+              totalPages: Math.ceil(total / limit),
+            },
+            filters: { search, status, tenantCompanyId },
+          };
+        } else {
+          // --- Legacy global Competitor path ---
+          const where: any = { deletedAt: null };
+          if (search) {
+            where.OR = [
+              { name: { contains: search, mode: 'insensitive' } },
+              { domain: { contains: search, mode: 'insensitive' } },
+            ];
+          }
+          if (status) where.status = status;
+
+          const [competitors, total] = await Promise.all([
+            prisma.competitor.findMany({
+              where,
+              skip: (page - 1) * limit,
+              take: limit,
+              orderBy: { [sortBy]: sortOrder },
+              include: { _count: { select: { priceComparisons: true } } },
+            }),
+            prisma.competitor.count({ where }),
+          ]);
+
+          responseData = {
+            competitors,
+            pagination: {
+              page,
+              limit,
+              total,
+              totalPages: Math.ceil(total / limit),
+            },
+            filters: { search, status },
+          };
+        }
 
         const isValidResponse =
           Array.isArray(responseData.competitors) &&
           typeof responseData.pagination?.page === "number" &&
-          typeof responseData.pagination?.limit === "number" &&
-          typeof responseData.pagination?.total === "number" &&
-          typeof responseData.pagination?.totalPages === "number";
+          typeof responseData.pagination?.total === "number";
 
         if (!isValidResponse) {
           return NextResponse.json(
-            {
-              error: "Failed to fetch competitors",
-              message: "Competitor API response contract violation",
-            },
+            { error: "Failed to fetch competitors", message: "Response contract violation" },
             { status: 500 }
           );
         }
 
-        // Cache result
         queryCache.set(cacheKey, { data: responseData, timestamp: Date.now() });
-
-        // Cleanup cache
         if (queryCache.size > 100) {
           const entries = Array.from(queryCache.entries());
           entries.sort((a, b) => b[1].timestamp - a[1].timestamp);
@@ -210,7 +280,7 @@ export const GET = withRequestLogging(
         }
 
         const response = withSecurityHeaders(NextResponse.json(responseData));
-        response.headers.set('Cache-Control', 'public, max-age=300, s-maxage=300');
+        response.headers.set('Cache-Control', 'public, max-age=60, s-maxage=60');
         response.headers.set('X-Api-Resource', 'competitors');
         return response;
       } catch (error: any) {

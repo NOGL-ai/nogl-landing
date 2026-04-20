@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, type Dispatch, type SetStateAction } from "react";
 import {
   Dialog,
   DialogContent,
@@ -45,6 +45,7 @@ import { WIDGET_CATALOG } from "@/lib/dashboards/widgetSchemas";
 type WidgetTypeOpt = WidgetType;
 
 const ENTITY_KINDS = ["product", "company", "category", "brand"] as const;
+type EntityKind = (typeof ENTITY_KINDS)[number];
 const RANK_FIELDS = [
   { value: "competitorPrice", label: "Price" },
   { value: "priceDiff", label: "Price Gap $" },
@@ -94,8 +95,7 @@ export function WidgetEditorModal({
   );
   // top_table specific
   const [entity, setEntity] = useState<"competitor" | "self">("competitor");
-  const [entityKind, setEntityKind] =
-    useState<(typeof ENTITY_KINDS)[number]>("product");
+  const [entityKind, setEntityKind] = useState<EntityKind>("product");
   const [rankField, setRankField] = useState("competitorPrice");
   const [rankDir, setRankDir] = useState<"asc" | "desc">("desc");
   const [rowLimit, setRowLimit] = useState(10);
@@ -492,7 +492,7 @@ function TopTableFields({
   rowDensity, setRowDensity,
 }: {
   entity: "competitor" | "self"; setEntity: (v: "competitor" | "self") => void;
-  entityKind: string; setEntityKind: (v: string) => void;
+  entityKind: EntityKind; setEntityKind: Dispatch<SetStateAction<EntityKind>>;
   rankField: string; setRankField: (v: string) => void;
   rankDir: "asc" | "desc"; setRankDir: (v: "asc" | "desc") => void;
   rowLimit: number; setRowLimit: (v: number) => void;
@@ -519,7 +519,7 @@ function TopTableFields({
 
       <div className="flex flex-col gap-1.5">
         <Label>Entity kind</Label>
-        <Select value={entityKind} onValueChange={setEntityKind}>
+        <Select value={entityKind} onValueChange={(v) => setEntityKind(v as EntityKind)}>
           <SelectTrigger><SelectValue /></SelectTrigger>
           <SelectContent>
             {ENTITY_KINDS.map((k) => (

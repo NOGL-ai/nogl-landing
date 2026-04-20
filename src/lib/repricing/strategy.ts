@@ -4,10 +4,20 @@
  */
 import type { RuleEngineInput, CompetitorPriceSample } from "./types";
 
-/** Round a number to `decimals` decimal places using "round half up" */
+/**
+ * Round a number to `decimals` decimal places using "round half up".
+ *
+ * IEEE-754 double-precision cannot represent values like 1.005 exactly
+ * (they become 1.00499999...), which makes naive `Math.round(n * 100) / 100`
+ * produce 1.00 instead of 1.01. The `(1 + Number.EPSILON)` correction nudges
+ * the multiplied value up by one representable increment so "exact halves"
+ * round up as operators expect. Sign-preserving for negative prices.
+ */
 export function roundHalfUp(value: number, decimals = 2): number {
+  if (!Number.isFinite(value)) return value;
   const factor = Math.pow(10, decimals);
-  return Math.round(value * factor) / factor;
+  const sign = value < 0 ? -1 : 1;
+  return (sign * Math.round(Math.abs(value) * factor * (1 + Number.EPSILON))) / factor;
 }
 
 function filterCompetitors(

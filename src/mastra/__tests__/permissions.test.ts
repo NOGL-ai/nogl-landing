@@ -1,18 +1,31 @@
 /**
  * Permission Tests
- * 
+ *
  * Tests for role-based permission checks in Mastra tools.
  */
 
-import { 
-  isAdmin, 
-  canModifyCompetitor, 
-  canModifyProducts, 
+// Mock the AI config module so importing the permission helpers (which
+// transitively touch "@/lib/ai-config") doesn't require an OpenAI API key
+// in CI.
+jest.mock("@/lib/ai-config", () => ({
+  openai: jest.fn(() => ({})),
+  openaiProvider: jest.fn(() => ({})),
+}));
+
+// Mock auth to avoid pulling in NextAuth during unit tests.
+jest.mock("@/lib/auth", () => ({
+  getAuthSession: jest.fn(async () => null),
+}));
+
+import {
+  isAdmin,
+  canModifyCompetitor,
+  canModifyProducts,
   canSendEmails,
   requireAdmin,
   requireCompetitorModification,
   requireProductModification,
-  requireEmailSending
+  requireEmailSending,
 } from "../utils/prisma-context";
 
 describe("Permission Checks", () => {
