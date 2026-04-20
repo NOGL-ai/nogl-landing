@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
+import { Input } from '@/components/base/input/input';
 import { Button } from '@/components/base/buttons/button';
 
 export function ExternalTrendsWaitlist() {

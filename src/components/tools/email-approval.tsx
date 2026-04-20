@@ -11,7 +11,7 @@ import { Check as CheckIcon, X as XIcon, Mail01 as MailIcon, Eye as EyeIcon, Edi
 
 import { useState, useEffect } from "react";
 import { Button } from '@/components/base/buttons/button';
-import { Input } from "@/components/ui/input";
+import { Input } from '@/components/base/input/input';
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";

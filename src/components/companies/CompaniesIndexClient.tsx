@@ -7,7 +7,7 @@ import { useMemo, useState } from "react";
 import { CountryPill } from "@/components/companies/CountryPill";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Input } from '@/components/base/input/input';
 import type { CompanyListItem } from "@/types/company";
 
 type CompaniesIndexClientProps = {

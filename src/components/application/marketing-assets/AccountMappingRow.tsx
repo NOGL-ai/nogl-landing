@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from '@/components/base/buttons/button';
-import { Input } from "@/components/ui/input";
+import { Input } from '@/components/base/input/input';
 import { mapAdAccount } from "@/actions/ads-events/accounts";
 
 export interface AdAccountRow {

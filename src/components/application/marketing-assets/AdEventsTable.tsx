@@ -16,7 +16,7 @@ import {
 } from "@tanstack/react-table";
 
 import { Button } from '@/components/base/buttons/button';
-import { Input } from "@/components/ui/input";
+import { Input } from '@/components/base/input/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AdEventSheet, type AdEventRow } from "./AdEventSheet";
 

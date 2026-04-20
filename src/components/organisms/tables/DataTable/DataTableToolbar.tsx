@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Table } from "@tanstack/react-table";
-import { Input } from "@/components/ui/input";
+import { Input } from '@/components/base/input/input';
 import { Button } from '@/components/base/buttons/button';
 import { Icon } from "../Icon";
 
