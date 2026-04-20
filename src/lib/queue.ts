@@ -2,12 +2,12 @@ import { Queue, QueueEvents, Worker, type Processor, type QueueOptions, type Wor
 import IORedis, { type Redis, type RedisOptions } from "ioredis";
 
 export const QUEUE_NAMES = {
-	homepageCapture: "assets:homepage-capture",
-	emailProcess: "assets:email-process",
-	apifyIngest: "assets:apify-ingest",
-	computeProxies: "assets:compute-proxies",
-	scoreAesthetic: "assets:score-aesthetic",
-	metaAdsScrape: "assets:meta-ads-scrape",
+	homepageCapture: "assets-homepage-capture",
+	emailProcess: "assets-email-process",
+	apifyIngest: "assets-apify-ingest",
+	computeProxies: "assets-compute-proxies",
+	scoreAesthetic: "assets-score-aesthetic",
+	metaAdsScrape: "assets-meta-ads-scrape",
 } as const;
 
 export type QueueName = (typeof QUEUE_NAMES)[keyof typeof QUEUE_NAMES];

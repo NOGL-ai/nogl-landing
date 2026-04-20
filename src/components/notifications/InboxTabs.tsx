@@ -11,6 +11,7 @@ import type {
   ListNotificationsResult,
   NotificationTab,
 } from "@/lib/notifications/types";
+import type { Route } from 'next';
 
 const TABS: { value: NotificationTab; label: string }[] = [
   { value: "all", label: "All" },
@@ -50,7 +51,7 @@ export function InboxTabs({
   const handleTabChange = (value: string) => {
     const params = new URLSearchParams(searchParams?.toString() ?? "");
     params.set("tab", value);
-    router.push(`${pathname}?${params.toString()}`);
+    router.push(`${pathname}?${params.toString()}` as Route);
   };
 
   const handleMarkAllRead = () => {
