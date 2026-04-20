@@ -19,6 +19,12 @@ export async function GET(request: NextRequest) {
     const limit = Math.min(parsePositiveInt(searchParams.get("limit"), 20), 100);
     const countryCode = searchParams.get("country_code")?.trim() || undefined;
     const trackingStatus = searchParams.get("tracking_status")?.trim() || undefined;
+    const sortByRaw = searchParams.get("sort_by")?.trim();
+    const sortBy = (["name", "total_products", "last_scraped_at"].includes(sortByRaw ?? "")
+      ? sortByRaw
+      : "name") as "name" | "total_products" | "last_scraped_at";
+    const sortDirRaw = searchParams.get("sort_dir")?.trim();
+    const sortDir = (["asc", "desc"].includes(sortDirRaw ?? "") ? sortDirRaw : "asc") as "asc" | "desc";
 
     const response = await getCompaniesResponse({
       search,
@@ -26,6 +32,8 @@ export async function GET(request: NextRequest) {
       limit,
       countryCode,
       trackingStatus,
+      sortBy,
+      sortDir,
     });
 
     return NextResponse.json(response);
