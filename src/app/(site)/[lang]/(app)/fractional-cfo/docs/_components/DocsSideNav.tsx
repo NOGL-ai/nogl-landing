@@ -2,20 +2,25 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { source } from '@/lib/docs/source';
 import type { Route } from 'next';
 import { cn } from '@/lib/utils';
 
-interface DocsSideNavProps {
-  lang: string;
+export interface NavPage {
+  url: string;
+  slugs: string[];
+  data: { title: string };
 }
 
-export function DocsSideNav({ lang }: DocsSideNavProps) {
-  const pathname = usePathname();
-  const pages = source.getPages(lang);
+interface DocsSideNavProps {
+  lang: string;
+  pages: NavPage[];
+}
 
-  // Group pages by their folder (first slug segment after the language)
-  const grouped = new Map<string, typeof pages>();
+export function DocsSideNav({ lang, pages }: DocsSideNavProps) {
+  const pathname = usePathname();
+
+  // Group pages by their folder (first slug segment)
+  const grouped = new Map<string, NavPage[]>();
 
   for (const page of pages) {
     const folder = page.slugs.length > 1 ? page.slugs[0] : '_root';

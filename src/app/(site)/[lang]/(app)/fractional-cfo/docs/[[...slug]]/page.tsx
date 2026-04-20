@@ -11,7 +11,7 @@ interface PageProps {
 export default async function DocsPage({ params }: PageProps) {
   const { lang, slug = [] } = await params;
 
-  // Resolve the page from the docs source
+  // Resolve the page from the docs source (server-only; source imports Node.js modules)
   const page = source.getPage(slug, lang);
 
   if (!page) {
@@ -23,11 +23,20 @@ export default async function DocsPage({ params }: PageProps) {
   const MDX = page.data.body;
   const toc = (page.data.toc as Array<{ title: string; url: string; depth: number }>) ?? [];
 
+  // Build nav pages on the server so DocsSideNav (client component) doesn't
+  // import fumadocs-mdx runtime (which uses node:path and can't be client-bundled)
+  const navPages = source.getPages(lang).map((p) => ({
+    url: p.url,
+    slugs: p.slugs,
+    data: { title: p.data.title },
+  }));
+
   return (
     <DocsPageShell
       lang={lang}
       page={page}
       toc={toc}
+      navPages={navPages}
     >
       <MDX />
     </DocsPageShell>
@@ -42,6 +51,6 @@ export async function generateMetadata({ params }: PageProps) {
 
   return {
     title: page.data.title,
-    description: page.data.description,
+    description: (page.data as { description?: string }).description,
   };
 }

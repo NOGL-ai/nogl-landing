@@ -1,7 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { DocsSideNav } from './DocsSideNav';
+import { DocsSideNav, type NavPage } from './DocsSideNav';
 import { DocsToc } from './DocsToc';
 import { DocsBreadcrumbs } from './DocsBreadcrumbs';
 import { DocsFeedback } from './DocsFeedback';
@@ -17,10 +17,11 @@ interface DocsPageShellProps {
     };
   };
   toc: Array<{ title: string; url: string; depth: number }>;
+  navPages: NavPage[];
   children: ReactNode;
 }
 
-export function DocsPageShell({ lang, page, toc, children }: DocsPageShellProps) {
+export function DocsPageShell({ lang, page, toc, navPages, children }: DocsPageShellProps) {
   const docPath = `fractional-cfo/docs/${page.slugs.join('/')}`;
 
   return (
@@ -28,7 +29,7 @@ export function DocsPageShell({ lang, page, toc, children }: DocsPageShellProps)
       {/* Left: Side Navigation */}
       <aside className="hidden lg:block border-r border-border bg-background/50">
         <div className="sticky top-16 overflow-y-auto max-h-[calc(100vh-4rem)] p-4">
-          <DocsSideNav lang={lang} />
+          <DocsSideNav lang={lang} pages={navPages} />
         </div>
       </aside>
 
