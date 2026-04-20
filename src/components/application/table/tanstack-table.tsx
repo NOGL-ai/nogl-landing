@@ -2,6 +2,9 @@
 import { ArrowDown, ArrowUp, ChevronSelectorVertical as ChevronsUpDown } from '@untitledui/icons';
 
 
+import { ArrowDown, ArrowUp, ChevronSelectorVertical as ChevronsUpDown } from '@untitledui/icons';
+
+
 import React, { useState, useMemo } from 'react';
 import {
   createColumnHelper,

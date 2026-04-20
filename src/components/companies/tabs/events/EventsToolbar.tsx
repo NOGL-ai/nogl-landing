@@ -29,8 +29,8 @@ export function EventsToolbar({
     <div className="space-y-3">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-xl font-semibold text-foreground">Events</h1>
-          <p className="text-sm text-muted-foreground">
+          <h1 className="text-xl font-semibold text-text-primary">Events</h1>
+          <p className="text-sm text-text-tertiary">
             {total.toLocaleString()} event{total === 1 ? "" : "s"} in selected range
           </p>
         </div>

@@ -411,7 +411,8 @@ export function CompaniesIndexClient({ companies, pagination, lang, error = null
             onPageChange={(p) => updateParam("page", String(p))}
             className="mt-6"
           />
-        )}      </div>
+        )}
+      </div>
     </div>
   );
 }
