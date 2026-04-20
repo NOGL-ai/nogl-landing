@@ -2,6 +2,9 @@
 import { FilterFunnel01 as Filter, CheckSquare, XSquare, ChevronDown } from '@untitledui/icons';
 
 
+import { FilterFunnel01 as Filter, CheckSquare, XSquare, ChevronDown } from '@untitledui/icons';
+
+
 import React, { useState, useMemo, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
