@@ -110,7 +110,7 @@ async function resolveTopTable(
       take: config.limit,
     });
 
-    const mapped: TableRow[] = rows.map((r, idx) => ({
+    const mapped: TableRow[] = rows.map((r: (typeof rows)[number], idx: number) => ({
       rank: idx + 1,
       name: r.productName ?? "—",
       brand: r.competitor?.name ?? "—",
@@ -134,7 +134,7 @@ async function resolveTopTable(
       orderBy: { createdAt: "desc" },
     });
 
-    const mapped: TableRow[] = companies.map((c, idx) => ({
+    const mapped: TableRow[] = companies.map((c: (typeof companies)[number], idx: number) => ({
       rank: c.snapshot?.rank ?? idx + 1,
       companyName: c.name,
       domain: c.domain ?? "—",
@@ -266,7 +266,7 @@ async function resolveLineChart(
 
   const series = config.yFields.map((yField) => ({
     name: yField,
-    data: rows.map((r) => ({
+    data: rows.map((r: (typeof rows)[number]) => ({
       x: r.recordDate.toISOString().split("T")[0],
       y:
         yField === "averagePrice"
@@ -303,12 +303,15 @@ async function resolveBarChart(
 
   const series = config.yFields.map((yField) => ({
     name: yField,
-    data: competitors.map((comp) => {
+    data: competitors.map((comp: (typeof competitors)[number]) => {
       const comps = comp.priceComparisons;
       const avg =
         comps.length > 0
-          ? comps.reduce((sum, c) => sum + toNum(c.competitorPrice), 0) /
-            comps.length
+          ? comps.reduce(
+              (sum: number, c: (typeof comps)[number]) =>
+                sum + toNum(c.competitorPrice),
+              0
+            ) / comps.length
           : 0;
       return { x: comp.name, y: avg };
     }),
@@ -332,14 +335,14 @@ async function resolvePie(
   });
 
   const slices = companies
-    .map((c) => ({
+    .map((c: (typeof companies)[number]) => ({
       label: c.name,
       value:
         config.valueField === "total_products"
           ? c.snapshot?.total_products ?? 1
           : c.snapshot?.ig_followers ?? 1,
     }))
-    .filter((s) => s.value > 0);
+    .filter((s: { label: string; value: number }) => s.value > 0);
 
   return { type: "pie", slices };
 }
@@ -359,7 +362,7 @@ async function resolveHeatmap(
     orderBy: { priceDate: "desc" },
   });
 
-  const cells = comps.slice(0, 40).map((r) => ({
+  const cells = comps.slice(0, 40).map((r: (typeof comps)[number]) => ({
     row: r.competitor?.name ?? "Unknown",
     col: r.productSku?.split("-")[0] ?? "General",
     value: Math.abs(toNum(r.priceDiffPct ?? 0)),
@@ -386,7 +389,7 @@ async function resolveSparkline(
   const series = [
     {
       name: config.metric,
-      data: rows.map((r) => ({
+      data: rows.map((r: (typeof rows)[number]) => ({
         x: r.recordDate.toISOString().split("T")[0],
         y: toNum(r.averagePrice),
       })),

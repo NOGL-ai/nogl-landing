@@ -91,10 +91,10 @@ export function TopTableWidget({ rows, config }: Props) {
               <td className="py-1 pr-2 text-muted-foreground">{Number(row.rank ?? idx + 1)}</td>
               <td className="py-1 pr-2">
                 <div className="flex items-center gap-2">
-                  {row.imageUrl && !isCompact && (
+                  {typeof row.imageUrl === "string" && row.imageUrl && !isCompact && (
                     <div className="relative h-7 w-7 shrink-0 overflow-hidden rounded-sm border bg-muted">
                       <Image
-                        src={String(row.imageUrl)}
+                        src={row.imageUrl}
                         alt=""
                         fill
                         className="object-cover"

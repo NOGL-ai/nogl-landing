@@ -45,7 +45,7 @@ export default async function DashboardsPage({
           <EmptyState lang={lang} />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {dashboards.map((d) => (
+            {dashboards.map((d: (typeof dashboards)[number]) => (
               <DashboardCard key={d.id} dashboard={d} lang={lang} />
             ))}
           </div>
