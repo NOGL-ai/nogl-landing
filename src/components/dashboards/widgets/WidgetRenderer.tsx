@@ -1,4 +1,5 @@
 "use client";
+import { Loading01 as LoaderCircleIcon, AlertCircle as AlertCircleIcon } from '@untitledui/icons';
 
 import { Loading01 as LoaderCircleIcon, AlertCircle as AlertCircleIcon } from '@untitledui/icons';
 

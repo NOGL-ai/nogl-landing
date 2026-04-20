@@ -1,4 +1,5 @@
 "use client";
+import { ChevronDown, ChevronRight, SearchLg as Search } from '@untitledui/icons';
 
 import { ChevronDown, ChevronRight, SearchLg as Search } from '@untitledui/icons';
 

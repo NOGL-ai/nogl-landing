@@ -1,4 +1,5 @@
 "use client";
+import { X as XIcon } from '@untitledui/icons';
 
 import { X as XIcon } from '@untitledui/icons';
 

@@ -1,4 +1,5 @@
 "use client";
+import { Download01 as Download, FileDownload01 as FileDown, Lock01 as Lock, ChevronDown } from '@untitledui/icons';
 
 import { Download01 as Download, FileDownload01 as FileDown, Lock01 as Lock, ChevronDown } from '@untitledui/icons';
 

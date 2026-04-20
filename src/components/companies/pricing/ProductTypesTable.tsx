@@ -1,4 +1,5 @@
 "use client";
+import { SwitchVertical01 as ArrowUpDown, ArrowUp, ArrowDown } from '@untitledui/icons';
 
 import { SwitchVertical01 as ArrowUpDown, ArrowUp, ArrowDown } from '@untitledui/icons';
 

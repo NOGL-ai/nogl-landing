@@ -1,4 +1,5 @@
 "use client";
+import { Plus as PlusIcon } from '@untitledui/icons';
 
 import { Plus as PlusIcon } from '@untitledui/icons';
 

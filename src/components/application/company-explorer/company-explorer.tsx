@@ -1,5 +1,5 @@
-import { ChevronDown, Settings01 as Settings, Download01 as Download, Eye, Trash01 as Trash2, LinkExternal01 as ExternalLink } from '@untitledui/icons';
 'use client';
+import { ChevronDown, Settings01 as Settings, Download01 as Download, Eye, Trash01 as Trash2, LinkExternal01 as ExternalLink } from '@untitledui/icons';
 
 import React from 'react';
 

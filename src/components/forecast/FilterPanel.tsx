@@ -1,4 +1,5 @@
 "use client";
+import { Calendar, Sliders01 as SlidersHorizontal, X } from '@untitledui/icons';
 
 import { Calendar, Sliders01 as SlidersHorizontal, X } from '@untitledui/icons';
 

@@ -1,4 +1,5 @@
 "use client";
+import { SearchLg as Search } from '@untitledui/icons';
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";

@@ -1,4 +1,5 @@
 "use client";
+import { RefreshCcw01 as RefreshCcw, Table as Table2 } from '@untitledui/icons';
 
 import { RefreshCcw01 as RefreshCcw, Table as Table2 } from '@untitledui/icons';
 

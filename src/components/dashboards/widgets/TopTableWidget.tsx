@@ -1,4 +1,5 @@
 "use client";
+import { Star01 as StarIcon } from '@untitledui/icons';
 
 import { Star01 as StarIcon } from '@untitledui/icons';
 

@@ -1,4 +1,5 @@
 "use client";
+import { LinkExternal01 as ExternalLink, Globe01 as Globe, Stars01 as Sparkles, TrendUp01 as TrendingUp, CurrencyDollar as DollarSign, Calendar } from '@untitledui/icons';
 
 import { LinkExternal01 as ExternalLink, Globe01 as Globe, Stars01 as Sparkles, TrendUp01 as TrendingUp, CurrencyDollar as DollarSign, Calendar } from '@untitledui/icons';
 

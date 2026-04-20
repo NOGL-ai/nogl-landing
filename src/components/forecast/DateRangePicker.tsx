@@ -1,4 +1,5 @@
 "use client";
+import { CalendarDate as CalendarDays } from '@untitledui/icons';
 
 import { CalendarDate as CalendarDays } from '@untitledui/icons';
 
