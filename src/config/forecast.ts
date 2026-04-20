@@ -31,6 +31,16 @@ export const FORECAST_CHANNELS: readonly ForecastChannelDef[] = [
   { name: "b2b", label: "B2B", colorFg: "#12B76A", colorBg: "#ECFDF3", weight: 0.1 },
 ] as const;
 
+/**
+ * Alias of FORECAST_CHANNELS kept for FilterPanel / ChannelFilter consumers
+ * that expect the generic `ForecastChannelConfig[]` shape.
+ *
+ * Spread into a fresh array so the type is mutable (assignable to the
+ * non-readonly `ForecastChannelConfig[]` prop of `ChannelFilter`). The
+ * values themselves are still the canonical `FORECAST_CHANNELS` entries.
+ */
+export const CHANNEL_CONFIGS: ForecastChannelDef[] = [...FORECAST_CHANNELS];
+
 export const FORECAST_CHANNEL_NAMES: readonly ForecastChannelName[] = FORECAST_CHANNELS.map(
   (c) => c.name,
 );
@@ -38,6 +48,40 @@ export const FORECAST_CHANNEL_NAMES: readonly ForecastChannelName[] = FORECAST_C
 export type ForecastQuantile = 3 | 4 | 5;
 export const FORECAST_QUANTILES: readonly ForecastQuantile[] = [3, 4, 5] as const;
 export const DEFAULT_QUANTILE: ForecastQuantile = 4;
+
+/**
+ * Human-readable label for each quantile, used by chart legends, tooltips,
+ * and accessibility text in `<ForecastChart />`.
+ *  - 3 → pessimistic lower bound
+ *  - 4 → median (most likely)
+ *  - 5 → optimistic upper bound
+ */
+export const QUANTILE_LABELS: Record<ForecastQuantile, string> = {
+  3: "Pessimistic",
+  4: "Median",
+  5: "Optimistic",
+} as const;
+
+/**
+ * Per-channel palette for HISTORY bars (saturated, matches
+ * `FORECAST_CHANNELS[i].colorFg`). Indexed positionally so charts that receive
+ * a filtered subset of channels still get stable colors.
+ */
+export const HISTORY_PALETTE: readonly string[] = [
+  "#2970FF", // web   — blue
+  "#F79009", // marketplace — amber
+  "#12B76A", // b2b   — green
+] as const;
+
+/**
+ * Per-channel palette for FORECAST bars. Lighter / desaturated versions of
+ * `HISTORY_PALETTE` so the forecast stack is visually subordinate to actuals.
+ */
+export const FORECAST_PALETTE: readonly string[] = [
+  "#84ADFF", // web   — light blue
+  "#FEC84B", // marketplace — light amber
+  "#6CE9A6", // b2b   — light green
+] as const;
 
 export type ForecastScale = "daily" | "weekly" | "monthly";
 export const DEFAULT_SCALE: ForecastScale = "daily";
