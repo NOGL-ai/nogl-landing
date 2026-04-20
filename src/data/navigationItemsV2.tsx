@@ -30,6 +30,9 @@ import {
     BookOpen01,
     Database01,
     CheckSquare,
+    Image03,
+    Activity,
+    CpuChip01,
 } from "@untitledui/icons";
 import type { ReactNode } from "react";
 
@@ -99,10 +102,33 @@ export const navigationStructure: NavigationSection[] = [
                         href: '/en/trends',
                         icon: TrendUp02,
                     },
+                    // ── Marketing Assets (accordion) ─────────────────────
                     {
-                        label: 'Marketing Asset Library',
-                        href: '/en/marketing-assets',
+                        label: 'Marketing Assets',
                         icon: LayersThree01,
+                        isAccordionGroup: true,
+                        groupItems: [
+                            {
+                                label: 'Overview',
+                                href: '/en/marketing-assets',
+                                icon: BarChartSquare02,
+                            },
+                            {
+                                label: 'Creatives',
+                                href: '/en/marketing-assets/creatives',
+                                icon: Image03,
+                            },
+                            {
+                                label: 'Raw Events',
+                                href: '/en/marketing-assets/events',
+                                icon: Database01,
+                            },
+                            {
+                                label: 'Accounts',
+                                href: '/en/marketing-assets/accounts',
+                                icon: UserSquare,
+                            },
+                        ],
                     },
 
                     // ── Pricing Tools (accordion) ─────────────────────────
@@ -282,6 +308,20 @@ export const navigationStructure: NavigationSection[] = [
                         href: '/en/fractional-cfo/import',
                         icon: Upload01,
                         badge: <CountBadge n={1} />,
+                    },
+                ],
+            },
+
+            // ── 4. Admin (ops-only, ADMIN role gate handled at route level) ──
+            {
+                id: 'admin-ops',
+                label: 'Admin',
+                icon: CpuChip01,
+                subItems: [
+                    {
+                        label: 'Queue Monitor',
+                        href: '/en/admin/queues',
+                        icon: Activity,
                     },
                 ],
             },
