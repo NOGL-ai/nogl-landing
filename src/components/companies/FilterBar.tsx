@@ -1,6 +1,7 @@
 "use client";
+import { ChevronDown, X } from '@untitledui/icons';
 
-import { ChevronDown, X } from "lucide-react";
+
 import { useEffect, useRef, useState } from "react";
 
 // ── FilterChip ──────────────────────────────────────────────────────────────
@@ -52,8 +53,8 @@ function FilterChip({
         onClick={() => setOpen((o) => !o)}
         className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors
           ${hasValue
-            ? "border-primary/50 bg-primary/10 text-primary"
-            : "border-border bg-background text-muted-foreground hover:border-border/80 hover:bg-muted/50 hover:text-foreground"
+            ? "border-border-brand bg-brand-50 text-text-brand"
+            : "border-border-primary bg-bg-primary text-text-tertiary hover:border-border-primary hover:bg-bg-secondary hover:text-text-primary"
           }`}
       >
         <span>{displayLabel}</span>
@@ -68,7 +69,7 @@ function FilterChip({
       </button>
 
       {open && (
-        <div className="absolute left-0 top-full z-50 mt-1.5 min-w-[160px] overflow-hidden rounded-xl border border-border bg-popover shadow-lg">
+        <div className="absolute left-0 top-full z-50 mt-1.5 min-w-[160px] overflow-hidden rounded-xl border border-border-primary bg-popover shadow-lg">
           {inputMode ? (
             <div className="p-3">
               <input
@@ -76,7 +77,7 @@ function FilterChip({
                 placeholder={inputPlaceholder ?? "Enter value…"}
                 defaultValue={value ?? ""}
                 autoFocus
-                className="w-full rounded-lg border border-border bg-background px-2.5 py-1.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/50"
+                className="w-full rounded-lg border border-border-primary bg-bg-primary px-2.5 py-1.5 text-xs text-text-primary placeholder:text-text-quaternary focus:outline-none focus:ring-1 focus:ring-brand-600/50"
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     onChange((e.target as HTMLInputElement).value || null);
@@ -85,7 +86,7 @@ function FilterChip({
                   if (e.key === "Escape") setOpen(false);
                 }}
               />
-              <p className="mt-1.5 text-[10px] text-muted-foreground">Press Enter to apply</p>
+              <p className="mt-1.5 text-[10px] text-text-tertiary">Press Enter to apply</p>
             </div>
           ) : (
             <div className="py-1">
@@ -95,9 +96,9 @@ function FilterChip({
                   type="button"
                   onClick={() => { onChange(opt.value === value ? null : opt.value); setOpen(false); }}
                   className={`flex w-full items-center gap-2 px-3 py-2 text-left text-xs transition-colors
-                    ${opt.value === value ? "bg-primary/10 font-medium text-primary" : "text-foreground hover:bg-muted"}`}
+                    ${opt.value === value ? "bg-brand-50 font-medium text-text-brand" : "text-text-primary hover:bg-bg-secondary"}`}
                 >
-                  {opt.value === value && <span className="h-1.5 w-1.5 rounded-full bg-primary" />}
+                  {opt.value === value && <span className="h-1.5 w-1.5 rounded-full bg-brand-600" />}
                   {opt.value !== value && <span className="h-1.5 w-1.5" />}
                   {opt.label}
                 </button>
@@ -141,14 +142,14 @@ export function PeriodChip({ value, onChange }: { value: string; onChange: (v: s
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="inline-flex items-center gap-1.5 rounded-full border border-border bg-bg-secondary px-3 py-1.5 text-xs font-medium text-text-secondary transition-colors hover:bg-bg-tertiary hover:text-text-primary"
+        className="inline-flex items-center gap-1.5 rounded-full border border-border-primary bg-bg-secondary px-3 py-1.5 text-xs font-medium text-text-secondary transition-colors hover:bg-bg-tertiary hover:text-text-primary"
       >
         <span>{label}</span>
         <ChevronDown className={`h-3 w-3 shrink-0 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full z-50 mt-1.5 min-w-[120px] overflow-hidden rounded-xl border border-border bg-popover shadow-lg">
+        <div className="absolute right-0 top-full z-50 mt-1.5 min-w-[120px] overflow-hidden rounded-xl border border-border-primary bg-popover shadow-lg">
           <div className="py-1">
             {PERIOD_OPTIONS.map((opt) => (
               <button
@@ -156,9 +157,9 @@ export function PeriodChip({ value, onChange }: { value: string; onChange: (v: s
                 type="button"
                 onClick={() => { onChange(opt.value); setOpen(false); }}
                 className={`flex w-full items-center gap-2 px-3 py-2 text-left text-xs transition-colors
-                  ${opt.value === value ? "bg-primary/10 font-medium text-primary" : "text-foreground hover:bg-muted"}`}
+                  ${opt.value === value ? "bg-brand-50 font-medium text-text-brand" : "text-text-primary hover:bg-bg-secondary"}`}
               >
-                {opt.value === value && <span className="h-1.5 w-1.5 rounded-full bg-primary" />}
+                {opt.value === value && <span className="h-1.5 w-1.5 rounded-full bg-brand-600" />}
                 {opt.value !== value && <span className="h-1.5 w-1.5" />}
                 {opt.label}
               </button>
@@ -215,14 +216,14 @@ export function FilterBar({ filters, values, onChange, resultCount, resultLabel 
         <button
           type="button"
           onClick={() => filters.forEach((f) => onChange(f.key, null))}
-          className="text-xs text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
+          className="text-xs text-text-tertiary underline-offset-2 hover:text-text-primary hover:underline"
         >
           Clear all
         </button>
       )}
 
       {resultCount !== undefined && (
-        <span className="ml-1 text-xs text-muted-foreground">
+        <span className="ml-1 text-xs text-text-tertiary">
           {resultCount.toLocaleString()} {resultLabel}
         </span>
       )}

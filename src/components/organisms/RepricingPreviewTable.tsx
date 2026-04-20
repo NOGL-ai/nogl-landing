@@ -1,9 +1,11 @@
 "use client";
+import { FilterFunnel01 as Filter, CheckSquare, XSquare, ChevronDown } from '@untitledui/icons';
+
 
 import React, { useState, useMemo, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { Filter, CheckSquare, XSquare, ChevronDown } from "lucide-react";
+
 import { formatDistanceToNow } from "date-fns";
 
 import { Button } from "@/components/base/buttons/button";
@@ -12,6 +14,7 @@ import { ProposalStatusBadge } from "@/components/molecules/repricing/ProposalSt
 import { ConfirmApplyDialog } from "@/components/molecules/repricing/ConfirmApplyDialog";
 import { applyJob, rejectProposals } from "@/actions/repricing/execution";
 import type { RepricingJobDTO, RepricingProposalDTO } from "@/lib/repricing/types";
+import type { Route } from 'next';
 
 const ROWS_PER_PAGE = 10;
 
@@ -96,7 +99,7 @@ export function RepricingPreviewTable({ job, proposals }: Props) {
       try {
         await applyJob(job.id, pendingApplyIds);
         toast.success("Prices applied successfully");
-        router.push("/repricing/auto-history");
+        router.push("/repricing/auto-history" as Route);
         router.refresh();
       } catch (err) {
         toast.error(err instanceof Error ? err.message : "Failed to apply");

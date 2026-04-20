@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Table } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select-new";
 import { Icon } from "../Icon";
 
@@ -74,7 +74,7 @@ export function DataTablePagination<TData>({
 				</div>
 				<div className="flex items-center space-x-2" role="group" aria-label="Pagination controls">
 					<Button
-						variant="secondary"
+						color="secondary"
 						className="hidden h-8 w-8 p-0 lg:flex"
 						onClick={() => table.setPageIndex(0)}
 						disabled={!table.getCanPreviousPage()}
@@ -83,7 +83,7 @@ export function DataTablePagination<TData>({
 						<Icon name="ArrowLeft" className="h-4 w-4" aria-hidden={true} />
 					</Button>
 					<Button
-						variant="secondary"
+						color="secondary"
 						className="h-8 w-8 p-0"
 						onClick={() => table.previousPage()}
 						disabled={!table.getCanPreviousPage()}
@@ -92,7 +92,7 @@ export function DataTablePagination<TData>({
 						<Icon name="ArrowLeft" className="h-4 w-4" aria-hidden={true} />
 					</Button>
 					<Button
-						variant="secondary"
+						color="secondary"
 						className="h-8 w-8 p-0"
 						onClick={() => table.nextPage()}
 						disabled={!table.getCanNextPage()}
@@ -101,7 +101,7 @@ export function DataTablePagination<TData>({
 						<Icon name="ArrowRight" className="h-4 w-4" aria-hidden={true} />
 					</Button>
 					<Button
-						variant="secondary"
+						color="secondary"
 						className="hidden h-8 w-8 p-0 lg:flex"
 						onClick={() => table.setPageIndex(table.getPageCount() - 1)}
 						disabled={!table.getCanNextPage()}

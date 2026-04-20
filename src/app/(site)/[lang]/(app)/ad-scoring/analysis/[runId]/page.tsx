@@ -1,15 +1,10 @@
+import { CheckCircle as CheckCircle2, AlertTriangle, XCircle, MinusCircle, Eye, InfoCircle as Info } from '@untitledui/icons';
 import React from "react";
 import { notFound, redirect } from "next/navigation";
-import {
-  CheckCircle2,
-  AlertTriangle,
-  XCircle,
-  MinusCircle,
-  Eye,
-  Info,
-} from "lucide-react";
+
 import type { Locale } from "@/i18n";
 import type { AnalysisReport, MetricDetail, MetricStatus } from "@/lib/ad-scoring/types";
+import type { Route } from 'next';
 
 export const metadata = {
   title: "Analysis Report",
@@ -146,7 +141,7 @@ export default async function AnalysisReportPage({
       if (byAsset?.ok) {
         const latestRun = await byAsset.json() as { id: string };
         // redirect() must be called outside try/catch to propagate correctly
-        redirect(`/ad-scoring/analysis/${latestRun.id}`);
+        redirect(`/ad-scoring/analysis/${latestRun.id}` as Route);
       }
       notFound();
     }

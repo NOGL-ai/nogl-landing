@@ -134,6 +134,7 @@ export type CompanyPricingTopProduct = {
   original_price: number | null;
   discount_price: number | null;
   category: string | null;
+  last_seen?: string | null;
 };
 
 export type CompanyPricingProduct = {

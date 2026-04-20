@@ -1,9 +1,11 @@
 "use client";
 
-import { LayoutGrid, RefreshCcw } from "lucide-react";
+import { LayoutGrid01 as LayoutGrid, RefreshCcw01 as RefreshCcw } from '@untitledui/icons';
+
+
 import { useEffect, useMemo, useState } from "react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 import { Card } from "@/components/ui/card";
 import {
   Select,
@@ -155,7 +157,7 @@ export function PivotTab({ slug }: PivotTabProps) {
     return (
       <Card className="space-y-4 p-6">
         <div className="text-sm text-destructive">Failed to load</div>
-        <Button variant="outline" onClick={handleRetry}>
+        <Button color="secondary" onClick={handleRetry}>
           <RefreshCcw className="mr-2 h-4 w-4" />
           Retry
         </Button>

@@ -1,4 +1,6 @@
 "use client";
+import { Download01 as Download, Share01 as Share2, List as LayoutList, LayoutGrid01 as LayoutGrid, SwitchVertical01 as ArrowUpDown, ArrowUp, ArrowDown, ChevronLeft, ChevronRight, X, Settings01 as Settings, LinkExternal01 as ExternalLink, Grid01 as Grid, HelpCircle } from '@untitledui/icons';
+
 
 import { useState, useMemo } from "react";
 import dynamic from "next/dynamic";
@@ -10,22 +12,7 @@ import {
   useReactTable,
   type SortingState,
 } from "@tanstack/react-table";
-import {
-  Download,
-  Share2,
-  LayoutList,
-  LayoutGrid,
-  Grid,
-  ArrowUpDown,
-  ArrowUp,
-  ArrowDown,
-  ChevronLeft,
-  ChevronRight,
-  HelpCircle,
-  X,
-  Settings,
-  ExternalLink,
-} from "lucide-react";
+
 
 import { Card } from "@/components/ui/card";
 import { FilterBar, PeriodChip } from "@/components/companies/FilterBar";
@@ -35,7 +22,7 @@ import type { PriceDistributionBucket } from "@/types/company";
 import { CompareProductTypesTable, MOCK_PRODUCT_TYPES } from "./CompareProductTypesTable";
 import { CompaniesCompareTable, MOCK_COMPANIES } from "./CompaniesCompareTable";
 
-// Dynamically import ApexCharts-based components to prevent SSR window errors
+// Dynamically import chart components to prevent SSR window errors
 const PriceDistributionChart = dynamic(
   () => import("@/components/companies/pricing/PriceDistributionChart").then((m) => ({ default: m.PriceDistributionChart })),
   { ssr: false, loading: () => <div className="h-[200px] animate-pulse rounded bg-muted" /> }

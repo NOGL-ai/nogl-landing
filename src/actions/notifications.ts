@@ -126,7 +126,7 @@ export async function getAggregateUnread(): Promise<AggregateUnread> {
     prisma.notification.count({
       where: { recipientId, status: "UNREAD" },
     }),
-    prisma.alert.count({ where: { readAt: null } }),
+    prisma.repricingAlert.count({ where: { readAt: null } }),
   ]);
 
   return {

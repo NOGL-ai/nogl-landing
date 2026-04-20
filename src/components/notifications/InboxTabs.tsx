@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useTransition } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 import { markAllRead } from "@/actions/notifications";
 import { useNotificationsStream } from "@/hooks/useNotificationsStream";
 import { NotificationRow } from "./NotificationRow";
@@ -11,6 +11,7 @@ import type {
   ListNotificationsResult,
   NotificationTab,
 } from "@/lib/notifications/types";
+import type { Route } from 'next';
 
 const TABS: { value: NotificationTab; label: string }[] = [
   { value: "all", label: "All" },
@@ -50,7 +51,7 @@ export function InboxTabs({
   const handleTabChange = (value: string) => {
     const params = new URLSearchParams(searchParams?.toString() ?? "");
     params.set("tab", value);
-    router.push(`${pathname}?${params.toString()}`);
+    router.push(`${pathname}?${params.toString()}` as Route);
   };
 
   const handleMarkAllRead = () => {
@@ -75,7 +76,7 @@ export function InboxTabs({
           )}
         </div>
         <Button
-          variant="secondary"
+          color="secondary"
           size="sm"
           onClick={handleMarkAllRead}
           disabled={isPending || localUnread === 0}

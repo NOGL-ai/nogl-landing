@@ -1,12 +1,12 @@
-// @ts-nocheck
 "use client";
+import { ArrowRight as ArrowRightIcon } from '@untitledui/icons';
+// @ts-nocheck
 
 import React, { FC, useEffect, useState, ReactNode } from "react";
 import Heading from "@/shared/Heading";
 import Nav from "@/shared/Nav";
 import ButtonSecondary from "@/shared/ButtonSecondary";
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 
 export interface HeaderFilterProps {
 	tabActive: string;
@@ -42,7 +42,7 @@ const HeaderFilter: FC<HeaderFilterProps> = ({
 						<Button
 							key={index}
 							onClick={() => handleClickTab(item)}
-							variant={tabActiveState === item ? "default" : "ghost"}
+							color={tabActiveState === item ? "secondary" : "tertiary"}
 							className={`m-1 min-w-fit border-0 transition-colors ${
 								tabActiveState === item
 									? "bg-black text-white hover:bg-neutral-800"

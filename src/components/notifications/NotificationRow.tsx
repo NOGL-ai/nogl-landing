@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { TypeIcon } from "./typeIcon";
 import { archive, markRead } from "@/actions/notifications";
 import type { NotificationWithActor } from "@/lib/notifications/types";
+import type { Route } from 'next';
 
 function initials(name: string | null | undefined) {
   if (!name) return "?";
@@ -109,7 +110,7 @@ export function NotificationRow({ item }: { item: NotificationWithActor }) {
 
   if (item.actionUrl) {
     return (
-      <Link href={item.actionUrl} onClick={handleClick} className="block">
+      <Link href={item.actionUrl as Route} onClick={handleClick} className="block">
         {content}
       </Link>
     );

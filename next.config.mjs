@@ -88,6 +88,9 @@ const nextConfig = {
 			{ protocol: "https", hostname: "b.basemaps.cartocdn.com", port: "", pathname: "/**" },
 			{ protocol: "https", hostname: "c.basemaps.cartocdn.com", port: "", pathname: "/**" },
 			{ protocol: "https", hostname: "d.basemaps.cartocdn.com", port: "", pathname: "/**" },
+			// Facebook Ads Library / Meta CDN
+			{ protocol: "https", hostname: "**.fbcdn.net", pathname: "/**" },
+			{ protocol: "https", hostname: "**.facebook.com", pathname: "/**" },
 		],
 	},
 	eslint: {

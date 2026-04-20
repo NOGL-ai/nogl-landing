@@ -1,5 +1,6 @@
+import { LinkExternal01 as ExternalLink, Calendar, Clock, Tag01 as Tag, TrendDown01 as TrendingDown } from '@untitledui/icons';
 import Link from "next/link";
-import { ExternalLink, Calendar, Clock, Tag, TrendingDown } from "lucide-react";
+
 
 import { ProductImageGallery } from "./ProductImageGallery";
 import { PriceSparklineChart } from "./PriceSparklineChart";

@@ -1,5 +1,5 @@
+import { UploadCloud01 as UploadCloud, Image01 as ImageIcon, VideoRecorder as Video, CheckCircle as CheckCircle2, Clock, AlertCircle } from '@untitledui/icons';
 import React from "react";
-import { UploadCloud, ImageIcon, Video, CheckCircle2, Clock, AlertCircle } from "lucide-react";
 import type { Locale } from "@/i18n";
 import AssetUploadForm from "@/components/application/ad-scoring/AssetUploadForm";
 

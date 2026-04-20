@@ -1,6 +1,22 @@
 "use client";
+import {
+  LinkExternal01 as ExternalLink,
+  LayoutGrid01 as LayoutGrid,
+  List,
+  SwitchVertical01 as ArrowUpDown,
+  ArrowUp,
+  ArrowDown,
+} from '@untitledui/icons';
 
 import { useEffect, useMemo, useState } from "react";
+import {
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  useReactTable,
+  type SortingState,
+} from "@tanstack/react-table";
 
 import { FilterBar } from "@/components/companies/FilterBar";
 import { Card } from "@/components/ui/card";
@@ -9,8 +25,9 @@ import { PriceDistributionChart } from "@/components/companies/pricing/PriceDist
 import { PricingOverTimeChart } from "@/components/companies/pricing/PricingOverTimeChart";
 import { ProductTypesTable } from "@/components/companies/pricing/ProductTypesTable";
 import { TopProductCard } from "@/components/companies/pricing/TopProductCard";
+import { fmtPrice } from "@/components/companies/pricing/utils";
 import { usePricingTimeseries } from "@/hooks/usePricingTimeseries";
-import type { CompanyPricingProductTypeRow, CompanyPricingResponse, PriceDistributionBucket } from "@/types/company";
+import type { CompanyPricingProductTypeRow, CompanyPricingResponse, CompanyPricingTopProduct, PriceDistributionBucket } from "@/types/company";
 import { fetchJson, formatNumber, InlineError } from "./shared";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -34,23 +51,143 @@ type PricingFilters = {
 function PricingSkeleton() {
   return (
     <div className="space-y-6">
-      <div className="h-8 w-1/3 animate-pulse rounded bg-muted" />
+      <div className="h-8 w-1/3 animate-pulse rounded bg-bg-tertiary" />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {[...Array(5)].map((_, i) => (
-          <div key={i} className="h-44 animate-pulse rounded-xl bg-muted" />
+          <div key={i} className="h-44 animate-pulse rounded-xl bg-bg-tertiary" />
         ))}
       </div>
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="flex flex-col gap-6">
-          <div className="h-32 animate-pulse rounded-xl bg-muted" />
-          <div className="h-64 animate-pulse rounded-xl bg-muted" />
+          <div className="h-32 animate-pulse rounded-xl bg-bg-tertiary" />
+          <div className="h-64 animate-pulse rounded-xl bg-bg-tertiary" />
         </div>
-        <div className="h-96 animate-pulse rounded-xl bg-muted lg:col-span-2" />
+        <div className="h-96 animate-pulse rounded-xl bg-bg-tertiary lg:col-span-2" />
       </div>
-      <div className="h-96 animate-pulse rounded-xl bg-muted" />
+      <div className="h-96 animate-pulse rounded-xl bg-bg-tertiary" />
     </div>
   );
 }
+
+// ── TanStack column definitions ───────────────────────────────────────────────
+const productColumnHelper = createColumnHelper<CompanyPricingTopProduct>();
+
+const productColumns = [
+  productColumnHelper.display({
+    id: "rank",
+    header: "#",
+    enableSorting: false,
+    cell: (info) => (
+      <span className="text-xs font-semibold tabular-nums text-text-disabled">
+        {info.row.index + 1}
+      </span>
+    ),
+  }),
+  productColumnHelper.display({
+    id: "image",
+    header: "",
+    enableSorting: false,
+    cell: (info) => {
+      const product = info.row.original;
+      return (
+        <div className="h-10 w-10 shrink-0 overflow-hidden rounded bg-bg-tertiary">
+          {product.product_image_url ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={product.product_image_url} alt={product.product_title}
+              className="h-full w-full object-contain p-1" />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center text-[8px] text-text-quaternary">—</div>
+          )}
+        </div>
+      );
+    },
+  }),
+  productColumnHelper.accessor("product_title", {
+    header: "Product",
+    enableSorting: true,
+    cell: (info) => (
+      <p className="line-clamp-2 max-w-[220px] text-xs font-medium text-text-primary">
+        {info.getValue()}
+      </p>
+    ),
+  }),
+  productColumnHelper.accessor("category", {
+    header: "Category",
+    enableSorting: true,
+    cell: (info) => info.getValue() ? (
+      <span className="rounded bg-bg-secondary px-1.5 py-0.5 text-[10px] text-text-tertiary">
+        {info.getValue()}
+      </span>
+    ) : <span className="text-text-disabled">—</span>,
+  }),
+  productColumnHelper.accessor("original_price", {
+    header: "Price",
+    enableSorting: true,
+    meta: { align: "right" },
+    cell: (info) => {
+      const v = info.getValue();
+      const product = info.row.original;
+      return (
+        <span className={`tabular-nums text-xs ${product.discount_price != null ? "line-through text-text-tertiary" : "font-medium text-text-primary"}`}>
+          {v != null ? fmtPrice(v) : "—"}
+        </span>
+      );
+    },
+  }),
+  productColumnHelper.accessor("discount_price", {
+    header: "Sale",
+    enableSorting: true,
+    meta: { align: "right" },
+    cell: (info) => {
+      const v = info.getValue();
+      return v != null ? (
+        <span className="tabular-nums text-xs font-semibold text-text-success">{fmtPrice(v)}</span>
+      ) : <span className="text-text-disabled">—</span>;
+    },
+  }),
+  productColumnHelper.display({
+    id: "discount_pct",
+    header: "Disc.",
+    enableSorting: false,
+    meta: { align: "right" },
+    cell: (info) => {
+      const { original_price, discount_price } = info.row.original;
+      if (discount_price == null || !original_price) return <span className="text-text-disabled">—</span>;
+      const pct = Math.round((1 - discount_price / original_price) * 100);
+      return pct > 0 ? (
+        <span className="rounded bg-success-50 px-1.5 py-0.5 text-[10px] font-semibold text-text-success">
+          -{pct}%
+        </span>
+      ) : <span className="text-text-disabled">—</span>;
+    },
+  }),
+  productColumnHelper.accessor("last_seen", {
+    header: "Last seen",
+    enableSorting: true,
+    cell: (info) => {
+      const v = info.getValue();
+      if (!v) return <span className="text-text-disabled">—</span>;
+      const diff = Date.now() - new Date(v).getTime();
+      const days = Math.floor(diff / 86400000);
+      const label = days === 0 ? "Today" : days === 1 ? "Yesterday" : `${days}d ago`;
+      return <span className="tabular-nums text-xs text-text-tertiary">{label}</span>;
+    },
+  }),
+  productColumnHelper.accessor("product_url", {
+    id: "link",
+    header: "",
+    enableSorting: false,
+    cell: (info) => {
+      const url = info.getValue();
+      return url ? (
+        <a href={url} target="_blank" rel="noreferrer"
+          className="inline-flex items-center gap-1 rounded border border-border-primary px-2 py-1 text-xs text-text-tertiary transition-colors hover:bg-bg-secondary">
+          View <ExternalLink className="h-3 w-3" />
+        </a>
+      ) : null;
+    },
+  }),
+];
 
 // ── Main component ────────────────────────────────────────────────────────────
 export function PricingTab({ slug }: PricingTabProps) {
@@ -63,6 +200,9 @@ export function PricingTab({ slug }: PricingTabProps) {
     minPrice: null,
     maxPrice: null,
   });
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [sort, setSort] = useState<SortOption>("price_asc");
+  const [listSorting, setListSorting] = useState<SortingState>([]);
 
   const timeseries = usePricingTimeseries({ slug });
 
@@ -118,13 +258,45 @@ export function PricingTab({ slug }: PricingTabProps) {
     }));
   }
 
+  // useMemo must be unconditional — derive from state.data which may be null before load
+  const topProducts = state.data?.top_products ?? [];
+  const sortedTopProducts = useMemo(() => {
+    const arr = [...topProducts];
+    if (sort === "price_asc")  arr.sort((a, b) => (a.original_price ?? 0) - (b.original_price ?? 0));
+    if (sort === "price_desc") arr.sort((a, b) => (b.original_price ?? 0) - (a.original_price ?? 0));
+    if (sort === "discount_desc") {
+      arr.sort((a, b) => {
+        const da = a.discount_price != null && a.original_price ? 1 - a.discount_price / a.original_price : 0;
+        const db = b.discount_price != null && b.original_price ? 1 - b.discount_price / b.original_price : 0;
+        return db - da;
+      });
+    }
+    if (sort === "last_seen_desc") {
+      arr.sort((a, b) => {
+        if (!a.last_seen && !b.last_seen) return 0;
+        if (!a.last_seen) return 1;
+        if (!b.last_seen) return -1;
+        return new Date(b.last_seen).getTime() - new Date(a.last_seen).getTime();
+      });
+    }
+    return arr;
+  }, [topProducts, sort]);
+
+  const listTable = useReactTable({
+    data: sortedTopProducts,
+    columns: productColumns,
+    state: { sorting: listSorting },
+    onSortingChange: setListSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+  });
+
   if (state.loading && !state.data) return <PricingSkeleton />;
   if (state.error && !state.data) return <InlineError message={state.error} />;
   if (!state.data) return null;
 
   const { data } = state;
   const priceDist: PriceDistributionBucket[] = data.price_distribution ?? [];
-  const topProducts = data.top_products ?? [];
 
   // Use unfiltered rows for the table and price range bars so they stay stable
   const tableRows = allProductTypesRows.length > 0 ? allProductTypesRows : data.product_types;
@@ -136,7 +308,7 @@ export function PricingTab({ slug }: PricingTabProps) {
     <div className="space-y-6">
       {/* ── Filter error banner (shown when a filter-request fails but data still exists) ── */}
       {state.error && state.data && (
-        <div className="flex items-center gap-2 rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-2 text-xs text-destructive">
+        <div className="flex items-center gap-2 rounded-lg border border-border-error bg-bg-error px-4 py-2 text-xs text-text-error">
           <span className="font-medium">Filter error:</span> {state.error}
         </div>
       )}
@@ -175,45 +347,122 @@ export function PricingTab({ slug }: PricingTabProps) {
             onChange={setFilter}
           />
           {state.loading && (
-            <span className="animate-pulse text-xs text-muted-foreground">Filtering…</span>
+            <span className="animate-pulse text-xs text-text-tertiary">Filtering…</span>
           )}
         </div>
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-text-tertiary">
           Found:{" "}
-          <span className="font-medium text-foreground">{formatNumber(data.total_products)}</span>{" "}
+          <span className="font-medium text-text-primary">{formatNumber(data.total_products)}</span>{" "}
           products ·{" "}
-          <span className="font-medium text-foreground">{formatNumber(data.total_variants)}</span>{" "}
+          <span className="font-medium text-text-primary">{formatNumber(data.total_variants)}</span>{" "}
           variants ·{" "}
-          <span className="font-medium text-foreground">{formatNumber(data.total_datapoints)}</span>{" "}
+          <span className="font-medium text-text-primary">{formatNumber(data.total_datapoints)}</span>{" "}
           total datapoints
         </p>
       </div>
 
-      {/* ── Best Selling Products ── */}
+      {/* ── Top Products ── */}
       {topProducts.length > 0 && (
         <Card className="p-5">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-base font-semibold text-foreground">Best Selling Products</h2>
-            <span className="text-xs text-muted-foreground">
-              {topProducts.length} products · Sort by: Price
-            </span>
-          </div>
-          <div
-            className="relative overflow-hidden"
-            style={{
-              maxHeight: 340,
-              maskImage: "linear-gradient(to bottom, black 0%, black 60%, transparent 100%)",
-              WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 60%, transparent 100%)",
-            }}
-          >
-            <div className="overflow-y-auto" style={{ maxHeight: 340 }}>
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-                {topProducts.map((product, i) => (
-                  <TopProductCard key={product.product_id} rank={i + 1} product={product} />
-                ))}
+          {/* Header — one line on all viewports */}
+          <div className="mb-4 flex min-w-0 items-center gap-3">
+            <h2 className="min-w-0 flex-1 truncate text-base font-semibold text-text-primary">
+              Top Pricing
+            </h2>
+            <div className="flex flex-shrink-0 flex-wrap items-center gap-2">
+              <span className="text-xs text-text-tertiary">{sortedTopProducts.length} products</span>
+              <select
+                value={sort}
+                onChange={(e) => setSort(e.target.value as SortOption)}
+                className="rounded border border-border-primary bg-bg-primary px-2 py-1 text-xs text-text-primary"
+              >
+                <option value="price_asc">Price ↑</option>
+                <option value="price_desc">Price ↓</option>
+                <option value="discount_desc">Discount ↓</option>
+                <option value="last_seen_desc">Recently added</option>
+              </select>
+              <div className="inline-flex overflow-hidden rounded-lg border border-border-primary shadow-xs">
+                <button
+                  type="button"
+                  onClick={() => setViewMode("grid")}
+                  className={`px-2 py-1 transition-colors ${viewMode === "grid" ? "bg-bg-secondary text-text-primary" : "text-text-tertiary hover:bg-bg-secondary"}`}
+                  aria-label="Grid view"
+                >
+                  <LayoutGrid className="h-3.5 w-3.5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewMode("list")}
+                  className={`px-2 py-1 transition-colors ${viewMode === "list" ? "bg-bg-secondary text-text-primary" : "text-text-tertiary hover:bg-bg-secondary"}`}
+                  aria-label="List view"
+                >
+                  <List className="h-3.5 w-3.5" />
+                </button>
               </div>
             </div>
           </div>
+
+          {/* Grid view */}
+          {viewMode === "grid" && (
+            <div className="relative" style={{ height: 340 }}>
+              <div className="h-full overflow-y-auto">
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+                  {sortedTopProducts.map((product, i) => (
+                    <TopProductCard key={product.product_id} rank={i + 1} product={product} />
+                  ))}
+                </div>
+              </div>
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-bg-primary to-transparent" />
+            </div>
+          )}
+
+          {/* List view — TanStack Table */}
+          {viewMode === "list" && (
+            <div className="overflow-x-auto" style={{ maxHeight: 420 }}>
+              <table className="min-w-full text-sm">
+                <thead className="sticky top-0 z-10 border-b border-border-primary bg-bg-primary">
+                  {listTable.getHeaderGroups().map((hg) => (
+                    <tr key={hg.id}>
+                      {hg.headers.map((header) => {
+                        const align = (header.column.columnDef.meta as any)?.align ?? "left";
+                        const canSort = header.column.getCanSort();
+                        return (
+                          <th key={header.id}
+                            className={`whitespace-nowrap px-3 py-2 text-xs font-medium uppercase tracking-[0.08em] text-text-tertiary
+                              ${align === "right" ? "text-right" : "text-left"}
+                              ${canSort ? "cursor-pointer select-none hover:text-text-primary" : ""}`}
+                            onClick={canSort ? header.column.getToggleSortingHandler() : undefined}
+                          >
+                            {flexRender(header.column.columnDef.header, header.getContext())}
+                            {canSort && (
+                              header.column.getIsSorted() === "asc" ? <ArrowUp className="ml-1 inline h-3 w-3" /> :
+                              header.column.getIsSorted() === "desc" ? <ArrowDown className="ml-1 inline h-3 w-3" /> :
+                              <ArrowUpDown className="ml-1 inline h-3 w-3 opacity-30" />
+                            )}
+                          </th>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </thead>
+                <tbody className="divide-y divide-border-primary">
+                  {listTable.getRowModel().rows.map((row) => (
+                    <tr key={row.id} className="transition-colors hover:bg-bg-secondary">
+                      {row.getVisibleCells().map((cell) => {
+                        const align = (cell.column.columnDef.meta as any)?.align ?? "left";
+                        return (
+                          <td key={cell.id}
+                            className={`px-3 py-2.5 ${align === "right" ? "text-right" : "text-left"}`}>
+                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </Card>
       )}
 
@@ -251,7 +500,7 @@ export function PricingTab({ slug }: PricingTabProps) {
         </div>
       </div>
 
-      {/* ── Pricing Over Time (ApexCharts area) ── */}
+      {/* ── Pricing Over Time ── */}
       <PricingOverTimeChart
         slug={slug}
         data={timeseries.data ?? undefined}

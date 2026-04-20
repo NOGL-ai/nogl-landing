@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import type { Route } from 'next';
 
 const OPTIONS = [
   { value: "4w", label: "Last 4 weeks" },
@@ -25,7 +26,7 @@ export function PeriodSelector({ period }: { period: Period }) {
   function onChange(value: string) {
     const next = new URLSearchParams(params.toString());
     next.set("period", value);
-    router.push(`${pathname}?${next.toString()}`);
+    router.push(`${pathname}?${next.toString()}` as Route);
   }
 
   return (

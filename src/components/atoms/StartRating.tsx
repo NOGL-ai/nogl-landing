@@ -1,4 +1,4 @@
-import { StarIcon } from "@heroicons/react/24/solid";
+import { Star01 as StarIcon } from '@untitledui/icons';
 import React, { FC } from "react";
 
 export interface StartRatingProps {

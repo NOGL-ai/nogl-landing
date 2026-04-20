@@ -164,11 +164,8 @@ export async function getTrendingCategories({
   });
 }
 
-/** Admin-only: refresh all three materialized views concurrently. */
-export async function refreshTrends(): Promise<void> {
-  const session = await getAuthSession();
-  if (session?.user?.role !== "ADMIN") throw new Error("Unauthorized");
-
+/** Internal: refresh all three materialized views — no auth check (caller is responsible). */
+export async function refreshTrendsInternal(): Promise<void> {
   await prisma.$executeRawUnsafe(
     `REFRESH MATERIALIZED VIEW CONCURRENTLY nogl."CompanyTrend4w"`
   );
@@ -178,4 +175,11 @@ export async function refreshTrends(): Promise<void> {
   await prisma.$executeRawUnsafe(
     `REFRESH MATERIALIZED VIEW CONCURRENTLY nogl."CompanyTrendWeekly12"`
   );
+}
+
+/** Admin-only: refresh all three materialized views concurrently. */
+export async function refreshTrends(): Promise<void> {
+  const session = await getAuthSession();
+  if (session?.user?.role !== "ADMIN") throw new Error("Unauthorized");
+  await refreshTrendsInternal();
 }

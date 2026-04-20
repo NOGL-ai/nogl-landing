@@ -96,6 +96,25 @@ export const mainNavigationItems: NavigationSection = {
 			],
 		},
 		{
+			id: "marketing-assets",
+			title: "Marketing Assets",
+			path: "/marketing-assets",
+			icon: (
+				<svg
+					width='20'
+					height='20'
+					viewBox='0 0 20 20'
+					fill='none'
+					xmlns='http://www.w3.org/2000/svg'
+				>
+					<path
+						d='M3.25 3.25H13.75V6.25H16.75V16.75H6.25V13.75H3.25V3.25ZM4.75 4.75V12.25H12.25V4.75H4.75ZM7.75 13.75V15.25H15.25V7.75H13.75V13.75H7.75ZM6.25 6.25V10.75L7.75 9.25L9.25 10.75L11.25 8.75V6.25H6.25Z'
+						fill='currentColor'
+					/>
+				</svg>
+			),
+		},
+		{
 			id: "repricing",
 			title: "Repricing",
 			path: "/repricing",
@@ -133,6 +152,35 @@ export const mainNavigationItems: NavigationSection = {
 					icon: null,
 				},
 			],
+		},
+		{
+			id: "demand",
+			title: "Demand Forecast",
+			path: "/demand",
+			icon: (
+				<svg
+					width='20'
+					height='20'
+					viewBox='0 0 20 20'
+					fill='none'
+					xmlns='http://www.w3.org/2000/svg'
+				>
+					<path
+						d='M2.5 15.833L7.5 10.833L10.833 14.167L17.5 7.5'
+						stroke='currentColor'
+						strokeWidth='1.5'
+						strokeLinecap='round'
+						strokeLinejoin='round'
+					/>
+					<path
+						d='M13.333 7.5H17.5V11.667'
+						stroke='currentColor'
+						strokeWidth='1.5'
+						strokeLinecap='round'
+						strokeLinejoin='round'
+					/>
+				</svg>
+			),
 		},
 		{
 			id: "reports",

@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
 datasource db {
@@ -7,7 +8,7 @@ datasource db {
   url               = env("DATABASE_URL")
   directUrl         = env("DIRECT_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
-  schemas           = ["nogl", "public", "dashboards"]
+  schemas           = ["nogl", "public", "forecast", "dashboards", "assets", "alerts", "ads_events"]
 }
 
 model User {
@@ -91,6 +92,7 @@ model ApiKey {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scopes    ApiKeyScope[]
 
   @@index([userId])
   @@schema("nogl")
@@ -153,6 +155,11 @@ model products {
   product_price_range         String?                     @db.VarChar(50)
   product_has_promotion       Boolean?
   product_page_image_url      String?
+  product_image_url           String?
+  company_id                  String?               @db.VarChar(255)
+  ean                         String?               @db.VarChar(50)
+  mpn                         String?               @db.VarChar(100)
+  stock_status                String?               @db.VarChar(50)
   product_image_count         Int?
   product_has_hover_images    Boolean?
   product_variants_count      Int?
@@ -220,6 +227,7 @@ model Competitor {
   company                Company?
   priceComparisons       CompetitorPriceComparison[]
   CompetitorPriceHistory CompetitorPriceHistory[]
+  adAccounts             AdAccount[]
 
   @@index([domain])
   @@index([createdAt])
@@ -287,28 +295,34 @@ model CompetitorPriceHistory {
 }
 
 model Company {
-  id                    String                @id @default(cuid())
-  slug                  String                @unique
-  name                  String
-  domain                String                @unique
-  country_code          String                @db.VarChar(2)
-  locale                String?               @db.VarChar(10)
-  website               String?
-  source_key            String?
-  industry              String?
-  product_types         String[]
-  dataset_quality_score Decimal?              @db.Decimal(3, 2)
-  tracking_status       CompanyTrackingStatus @default(UNTRACKED)
-  tracked_competitor_id String?               @unique
-  wm_key                String?               @unique
-  arango_id             String?
-  createdAt             DateTime              @default(now())
-  updatedAt             DateTime              @updatedAt
-  competitor            Competitor?           @relation(fields: [tracked_competitor_id], references: [id])
-  snapshot              CompanySnapshot?
-  events                CompanyEvent[]
-  assets                CompanyAsset[]
-  notifications         Notification[]
+  id                      String                @id @default(cuid())
+  slug                    String                @unique
+  name                    String
+  domain                  String                @unique
+  country_code            String                @db.VarChar(2)
+  locale                  String?               @db.VarChar(10)
+  website                 String?
+  source_key              String?
+  industry                String?
+  product_types           String[]
+  dataset_quality_score   Decimal?              @db.Decimal(3, 2)
+  tracking_status         CompanyTrackingStatus @default(UNTRACKED)
+  tracked_competitor_id   String?               @unique
+  wm_key                  String?               @unique
+  arango_id               String?
+  createdAt               DateTime              @default(now())
+  updatedAt               DateTime              @updatedAt
+  competitor              Competitor?           @relation(fields: [tracked_competitor_id], references: [id])
+  snapshot                CompanySnapshot?
+  events                  CompanyEvent[]
+  assets                  CompanyAsset[]
+  forecastTenant          ForecastTenant?
+  trackedCompetitors      TrackedCompetitor[]   @relation("TenantCompetitors")
+  trackedByTenants        TrackedCompetitor[]   @relation("CompetitorOf")
+  notifications           Notification[]
+  marketingAssetsAsBrand  MarketingAsset[]      @relation("BrandAssets")
+  assetTenant             Tenant?
+  adAccounts              AdAccount[]
 
   @@index([slug])
   @@index([domain])
@@ -650,6 +664,321 @@ enum public_UserRole {
   @@schema("public")
 }
 
+// ─── Alerts schema ──────────────────────────────────────────────────────────
+
+enum AlertSeverity {
+  HOT
+  WARM
+  COLD
+  SNOOZED
+  RESOLVED
+
+  @@schema("alerts")
+}
+
+enum AlertStatus {
+  OPEN
+  SNOOZED
+  RESOLVED
+  DISMISSED
+
+  @@schema("alerts")
+}
+
+enum AlertType {
+  // CMO types
+  PRICE_DROP
+  PRICE_INCREASE
+  COMPETITOR_NEW_PRODUCT
+  COMPETITOR_STOCKOUT
+  PROMO_START
+  PROMO_END
+  AD_CREATIVE_CHANGE
+  NEWSLETTER_RECEIVED
+  // CFO types
+  STOCKOUT_IMMINENT
+  LOW_INVENTORY
+  REORDER_POINT_HIT
+  OVERSTOCK
+  STOCKOUT_ACTIVE
+  LEAD_TIME_BREACH
+  SUPPLIER_DELAY
+
+  @@schema("alerts")
+}
+
+enum AlertAudience {
+  CMO
+  CFO
+
+  @@schema("alerts")
+}
+
+model Alert {
+  id                  String        @id @default(cuid())
+  companyId           String
+  audience            AlertAudience
+  type                AlertType
+  severity            AlertSeverity
+  status              AlertStatus   @default(OPEN)
+  title               String
+  description         String?
+  subjectProductId    String?
+  subjectVariantId    String?
+  subjectCompetitorId String?
+  estimatedImpact     Float?
+  impactCurrency      String        @default("EUR")
+  impactWindowDays    Int           @default(180)
+  metadata            Json          @default("{}")
+  assignedToUserId    String?
+  snoozeUntil         DateTime?
+  resolvedAt          DateTime?
+  resolvedByUserId    String?
+  triggeredAt         DateTime      @default(now())
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+
+  @@index([companyId, audience, status, severity, triggeredAt])
+  @@index([subjectProductId])
+  @@index([type])
+  @@schema("alerts")
+}
+
+model AlertSubscription {
+  id         String        @id @default(cuid())
+  userId     String
+  companyId  String
+  audience   AlertAudience
+  alertType  AlertType
+  enabled    Boolean       @default(true)
+  digestMode String        @default("REALTIME")
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  @@unique([userId, companyId, audience, alertType])
+  @@schema("alerts")
+}
+
+// ─── Forecast schema ─────────────────────────────────────────────────────────
+
+model ForecastTenant {
+  id           String   @id @default(cuid())
+  companyId    String   @unique
+  magicNumber  Float    @default(1.0)
+  hasBundle    Boolean  @default(false)
+  isDemoTenant Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  company      Company                      @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  saleChannels ForecastSaleChannel[]
+  products     ForecastProduct[]
+  annotations  ForecastAnnotation[]
+  purchaseOrders ReplenishmentPurchaseOrder[]
+  suppliers    ReplenishmentSupplier[]
+
+  @@schema("forecast")
+}
+
+model ForecastSaleChannel {
+  id       String   @id @default(cuid())
+  tenantId String
+  name     String
+  label    String
+  colorFg  String
+  colorBg  String
+  weight   Float    @default(1.0)
+  createdAt DateTime @default(now())
+
+  tenant          ForecastTenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  historicalSales ForecastHistoricalSale[]
+  quantiles       ForecastQuantile[]
+
+  @@unique([tenantId, name])
+  @@schema("forecast")
+}
+
+model ForecastProduct {
+  id           String   @id @default(cuid())
+  tenantId     String
+  externalId   String?
+  productTitle String
+  handle       String?
+  brand        String?
+  category     String
+  isSet        Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  tenant   ForecastTenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  variants ForecastVariant[]
+
+  @@index([tenantId, category])
+  @@schema("forecast")
+}
+
+model ForecastVariant {
+  id           String   @id @default(cuid())
+  productId    String
+  variantTitle String
+  sku          String?
+  gtin         String?
+  rrp          Float    @default(0.0)
+  currency     String   @default("EUR")
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+
+  product         ForecastProduct         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  historicalSales ForecastHistoricalSale[]
+  quantiles       ForecastQuantile[]
+  poLines         ReplenishmentPOLine[]
+
+  @@index([productId])
+  @@schema("forecast")
+}
+
+model ForecastHistoricalSale {
+  id         String   @id @default(cuid())
+  variantId  String
+  channelId  String
+  saleDate   DateTime @db.Date
+  quantity   Float    @default(0)
+  revenue    Float    @default(0)
+  isStockout Boolean  @default(false) // censored-demand marker
+
+  variant ForecastVariant     @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  channel ForecastSaleChannel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  @@unique([variantId, channelId, saleDate])
+  @@index([variantId, saleDate])
+  @@index([channelId, saleDate])
+  @@schema("forecast")
+}
+
+model ForecastQuantile {
+  id            String   @id @default(cuid())
+  variantId     String
+  channelId     String
+  forecastDate  DateTime @db.Date
+  quantile      Int
+  forecastValue Float
+  revenueValue  Float
+  isBundleTotal Boolean  @default(false)
+
+  variant ForecastVariant     @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  channel ForecastSaleChannel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  @@unique([variantId, channelId, forecastDate, quantile])
+  @@index([variantId, forecastDate])
+  @@index([channelId, forecastDate])
+  @@schema("forecast")
+}
+
+model ForecastSet {
+  id          String   @id @default(cuid())
+  tenantId    String
+  name        String
+  description String?
+  sourceUrl   String?
+  variantIds  String[]
+  createdAt   DateTime @default(now())
+
+  @@index([tenantId])
+  @@schema("forecast")
+}
+
+// ─── Forecast annotations (event spikes, stock-outs, promotions) ─────────────
+
+model ForecastAnnotation {
+  id             String   @id @default(cuid())
+  tenantId       String
+  annotationDate DateTime @db.Date
+  endDate        DateTime? @db.Date
+  kind           String   // "event_spike" | "out_of_stock" | "promotion" | "launch"
+  severity       String   @default("info") // "info" | "warning" | "critical"
+  title          String
+  description    String?
+  delta          Float?
+  channelName    String?  // optional scope: "web" | "marketplace" | "b2b"
+  variantId      String?  // optional scope to a specific variant
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  tenant         ForecastTenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, annotationDate])
+  @@index([tenantId, kind])
+  @@schema("forecast")
+}
+
+// ─── Replenishment (Kanban purchase-order pipeline) ──────────────────────────
+
+model ReplenishmentSupplier {
+  id           String   @id @default(cuid())
+  tenantId     String
+  name         String
+  contact      String?
+  email        String?
+  phone        String?
+  city         String?
+  country      String   @default("DE")
+  leadTimeDays Int      @default(30)
+  paymentTerms String?  // e.g. "Net 30", "2% 10 Net 30"
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  tenant         ForecastTenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  purchaseOrders ReplenishmentPurchaseOrder[]
+
+  @@unique([tenantId, name])
+  @@index([tenantId, isActive])
+  @@schema("forecast")
+}
+
+model ReplenishmentPurchaseOrder {
+  id          String    @id @default(cuid())
+  tenantId    String
+  poNumber    String
+  supplierId  String?
+  status      String    @default("draft") // "draft" | "approved" | "partially_arrived" | "arrived" | "cancelled"
+  totalAmount Float     @default(0)
+  currency    String    @default("EUR")
+  eta         DateTime? @db.Date
+  approvedAt  DateTime?
+  arrivedAt   DateTime?
+  notes       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  tenant    ForecastTenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  supplier  ReplenishmentSupplier? @relation(fields: [supplierId], references: [id])
+  lineItems ReplenishmentPOLine[]
+
+  @@unique([tenantId, poNumber])
+  @@index([tenantId, status])
+  @@index([tenantId, eta])
+  @@index([supplierId])
+  @@schema("forecast")
+}
+
+model ReplenishmentPOLine {
+  id              String @id @default(cuid())
+  purchaseOrderId String
+  variantId       String
+  quantity        Int
+  unitCost        Float
+  arrivedQty      Int    @default(0)
+  createdAt       DateTime @default(now())
+
+  purchaseOrder ReplenishmentPurchaseOrder @relation(fields: [purchaseOrderId], references: [id], onDelete: Cascade)
+  variant       ForecastVariant            @relation(fields: [variantId], references: [id])
+
+  @@index([purchaseOrderId])
+  @@index([variantId])
+  @@schema("forecast")
+}
+
 // ─── Repricing Engine ────────────────────────────────────────────────────────
 
 model RepricingRule {
@@ -762,7 +1091,7 @@ model RepricingProposal {
   @@schema("public")
 }
 
-model Alert {
+model RepricingAlert {
   id        String    @id @default(cuid())
   kind      AlertKind
   severity  AlertSev  @default(INFO)
@@ -779,6 +1108,7 @@ model Alert {
 
   @@index([readAt, createdAt])
   @@index([kind, createdAt])
+  @@map("Alert")
   @@schema("public")
 }
 
@@ -889,6 +1219,130 @@ enum AlertSev {
 
   @@schema("public")
 }
+
+// ============================================================
+// Marketing Asset Library — polymorphic asset storage
+// ============================================================
+
+enum AssetType {
+  EMAIL
+  HOMEPAGE
+  HOMEPAGE_MOBILE
+  INSTAGRAM
+  META_AD
+  YOUTUBE_AD
+  TIKTOK_AD
+
+  @@schema("assets")
+}
+
+enum AssetSource {
+  APIFY_META
+  APIFY_YOUTUBE
+  APIFY_TIKTOK
+  APIFY_INSTAGRAM
+  IMAP_SELF_HOSTED
+  PLAYWRIGHT_SELF_HOSTED
+  SEED
+
+  @@schema("assets")
+}
+
+// Tenant — one per monitored brand, id is a human-readable slug (e.g. "calumet_de")
+model Tenant {
+  id        String   @id  // slug: "calumet_de", "teltec_de", etc.
+  name      String
+  companyId String?  @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company Company? @relation(fields: [companyId], references: [id])
+  assets  MarketingAsset[]
+  runs    AssetCaptureRun[]
+
+  @@schema("assets")
+}
+
+model MarketingAsset {
+  id          String      @id @default(cuid())
+  tenantId    String
+  brandId     String
+  assetType   AssetType
+  source      AssetSource
+  capturedAt  DateTime
+  sourceUrl   String?
+  title       String?
+  bodyText    String?     @db.Text
+  language    String?
+  region      String?
+  mediaUrls   String[]
+  contentHash String
+  payload     Json
+  proxies     Json?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  tenant Tenant  @relation(fields: [tenantId], references: [id])
+  brand  Company @relation("BrandAssets", fields: [brandId], references: [id], onDelete: Cascade)
+
+  @@unique([contentHash])
+  @@index([tenantId, brandId, assetType, capturedAt])
+  @@index([tenantId, assetType, capturedAt])
+  @@index([brandId, capturedAt])
+  @@schema("assets")
+}
+
+model AssetCaptureRun {
+  id          String      @id @default(cuid())
+  tenantId    String
+  brandId     String
+  assetType   AssetType
+  source      AssetSource
+  status      String
+  startedAt   DateTime    @default(now())
+  completedAt DateTime?
+  itemCount   Int         @default(0)
+  error       String?     @db.Text
+  metadata    Json?
+
+  tenant Tenant  @relation(fields: [tenantId], references: [id])
+
+  @@index([tenantId, brandId, startedAt])
+  @@schema("assets")
+}
+
+// ─── Tracked Competitors (tenant-scoped) ─────────────────────────────────────
+
+model TrackedCompetitor {
+  id              String                  @id @default(cuid())
+  tenantCompanyId String
+  competitorId    String
+  status          TrackedCompetitorStatus @default(ACTIVE)
+  priority        Int                     @default(0)
+  nickname        String?
+  addedAt         DateTime                @default(now())
+  addedByUserId   String?
+  pausedAt        DateTime?
+  pauseReason     String?
+  notes           String?                 @db.Text
+
+  tenant     Company @relation("TenantCompetitors", fields: [tenantCompanyId], references: [id], onDelete: Cascade)
+  competitor Company @relation("CompetitorOf", fields: [competitorId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantCompanyId, competitorId])
+  @@index([tenantCompanyId, status])
+  @@schema("nogl")
+}
+
+enum TrackedCompetitorStatus {
+  ACTIVE
+  PAUSED
+  ARCHIVED
+
+  @@schema("nogl")
+}
+
+// ─── Trend Materialized Views ────────────────────────────────────────────────
 
 /// Materialized view refreshed nightly. Read-only — do not write.
 model CompanyTrend4w {
@@ -1023,6 +1477,210 @@ model DashboardWidget {
 
   @@index([dashboardId])
   @@schema("dashboards")
+}
+
+// ============================================================================
+// ads_events — ads ingestion pipeline (P1)
+// ============================================================================
+
+enum AdsPlatform {
+  META_ADS_LIBRARY
+  INSTAGRAM
+  TIKTOK
+  FACEBOOK
+
+  @@schema("ads_events")
+}
+
+enum AdsEventType {
+  CREATIVE_SEEN
+  CREATIVE_UPDATED
+  POST_METRICS
+  PROFILE_SNAPSHOT
+  PLACEMENT_CHANGE
+
+  @@schema("ads_events")
+}
+
+enum ScraperSource {
+  FB_AD_ACTOR_V2
+  IG_MONITOR
+  TIKTOK_SCRAPER
+  MANUAL
+
+  @@schema("ads_events")
+}
+
+enum RunStatus {
+  RUNNING
+  OK
+  PARTIAL
+  FAILED
+
+  @@schema("ads_events")
+}
+
+enum ApiKeyScopeType {
+  INGEST
+  READ_TOP_HOOKS
+  ADMIN
+
+  @@schema("ads_events")
+}
+
+enum AdAccountStatus {
+  ACTIVE
+  UNMAPPED
+  ARCHIVED
+
+  @@schema("ads_events")
+}
+
+model AdAccount {
+  id           String          @id @default(cuid())
+  platform     AdsPlatform
+  external_id  String
+  handle       String?
+  display_name String?
+  status       AdAccountStatus @default(UNMAPPED)
+  companyId    String?
+  competitorId String?
+  metadata     Json?
+  last_seen_at DateTime?
+  created_at   DateTime        @default(now())
+  updated_at   DateTime        @updatedAt
+
+  company    Company?     @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  competitor Competitor?  @relation(fields: [competitorId], references: [id], onDelete: SetNull)
+  creatives  AdCreative[]
+  events     AdEvent[]
+  runs       ScraperRun[]
+
+  @@unique([platform, external_id])
+  @@index([companyId])
+  @@index([competitorId])
+  @@index([status])
+  @@schema("ads_events")
+}
+
+model AdCreative {
+  id                   String      @id @default(cuid())
+  account_id           String
+  platform             AdsPlatform
+  external_creative_id String
+  creative_hash        String      @unique
+  type                 String?
+  media_url            String?
+  thumbnail_url        String?
+  caption              String?
+  first_seen_at        DateTime    @default(now())
+  last_seen_at         DateTime    @default(now())
+  raw                  Json?
+  created_at           DateTime    @default(now())
+
+  account AdAccount @relation(fields: [account_id], references: [id], onDelete: Cascade)
+  events  AdEvent[]
+
+  @@unique([platform, external_creative_id])
+  @@index([account_id, last_seen_at])
+  @@schema("ads_events")
+}
+
+model AdEvent {
+  id               String        @id @default(cuid())
+  account_id       String
+  creative_id      String?
+  event_type       AdsEventType
+  ts               DateTime
+  source           ScraperSource
+  ingestion_run_id String
+  idempotency_key  String
+  payload          Json
+  metrics          Json?
+  created_at       DateTime      @default(now())
+
+  account  AdAccount   @relation(fields: [account_id], references: [id], onDelete: Cascade)
+  creative AdCreative? @relation(fields: [creative_id], references: [id], onDelete: SetNull)
+
+  @@unique([ts, idempotency_key])
+  @@index([account_id, ts])
+  @@index([event_type, ts])
+  @@index([ingestion_run_id])
+  @@schema("ads_events")
+}
+
+model AdMetricDaily {
+  id          String      @id @default(cuid())
+  account_id  String
+  creative_id String?
+  platform    AdsPlatform
+  day         DateTime    @db.Date
+  impressions Int?
+  reach       Int?
+  likes       Int?
+  comments    Int?
+  shares      Int?
+  saves       Int?
+  hook_score  Decimal?    @db.Decimal(6, 3)
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
+
+  @@unique([account_id, creative_id, day, platform])
+  @@index([day])
+  @@schema("ads_events")
+}
+
+model ScraperRun {
+  id              String        @id @default(cuid())
+  source          ScraperSource
+  account_id      String?
+  started_at      DateTime      @default(now())
+  finished_at     DateTime?
+  status          RunStatus     @default(RUNNING)
+  bullmq_job_id   String?
+  external_job_id String?
+  events_in       Int           @default(0)
+  events_accepted Int           @default(0)
+  events_rejected Int           @default(0)
+  error_code      String?
+  error_message   String?
+  lag_seconds     Int?
+
+  account AdAccount? @relation(fields: [account_id], references: [id], onDelete: SetNull)
+
+  @@index([source, started_at])
+  @@index([status])
+  @@schema("ads_events")
+}
+
+model DeadLetterEvent {
+  id            String        @id @default(cuid())
+  source        ScraperSource
+  reason_code   String
+  zod_issues    Json?
+  raw           Json
+  bullmq_job_id String?
+  received_at   DateTime      @default(now())
+  retried_at    DateTime?
+
+  @@index([source, received_at])
+  @@index([reason_code])
+  @@schema("ads_events")
+}
+
+model ApiKeyScope {
+  id                 String          @id @default(cuid())
+  api_key_id         String
+  source             ScraperSource?
+  scope              ApiKeyScopeType
+  rate_limit_per_min Int             @default(120)
+  created_at         DateTime        @default(now())
+
+  apiKey ApiKey @relation(fields: [api_key_id], references: [id], onDelete: Cascade)
+
+  @@unique([api_key_id, scope, source])
+  @@index([api_key_id])
+  @@schema("ads_events")
 }
 
 /// Per-page feedback ("Was this helpful?") for in-repo MDX docs.

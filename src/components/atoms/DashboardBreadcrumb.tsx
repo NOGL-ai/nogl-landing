@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Route } from 'next';
 
 type PropsType = { pageTitle: string };
 
@@ -13,7 +14,7 @@ export default function Breadcrumb({ pageTitle }: PropsType) {
 				<ul className='flex items-center md:justify-end'>
 					<li>
 						<Link
-							href='/'
+							href={'/' as Route}
 							className='text-body hover:text-primary dark:hover:text-primary text-sm'
 						>
 							Home

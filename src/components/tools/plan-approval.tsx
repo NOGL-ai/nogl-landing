@@ -1,3 +1,6 @@
+"use client";
+
+import { Pencil01 as PencilIcon, Trash01 as TrashIcon, Plus as PlusIcon, Check as CheckIcon, X as XIcon } from '@untitledui/icons';
 // @ts-nocheck
 /**
  * Plan Approval UI Component
@@ -7,16 +10,15 @@
  * and approve or reject the plan before execution.
  */
 
-"use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from '@/components/base/buttons/button';
+import { Input } from '@/components/base/input/input';
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Checkbox from "@/components/ui/checkbox";
-import { PencilIcon, TrashIcon, PlusIcon, CheckIcon, XIcon } from "lucide-react";
+
 import { cn } from "@/lib/utils";
 
 interface Todo {
@@ -146,7 +148,7 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
               <CheckIcon className="h-5 w-5 text-blue-600" />
               Execution Plan Approval
               {args.urgent && (
-                <Badge variant="destructive" className="ml-2">
+                <Badge color="primary-destructive" className="ml-2">
                   Urgent
                 </Badge>
               )}
@@ -157,7 +159,7 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
           </div>
           <div className="flex items-center gap-2">
             <Button
-              variant="outline"
+              color="secondary"
               size="sm"
               onClick={() => setEditing(!editing)}
             >
@@ -177,7 +179,7 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
 
         {args.estimatedDuration && (
           <div className="mt-2">
-            <Badge variant="secondary">
+            <Badge color="secondary">
               Estimated Duration: {args.estimatedDuration}
             </Badge>
           </div>
@@ -212,8 +214,7 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
             >
               <Checkbox
                 checked={todo.completed}
-                onCheckedChange={(checked) => updateTodo(todo.id, { completed: !!checked })}
-                disabled={!editing}
+                onChange={(checked: boolean) => updateTodo(todo.id, { completed: !!checked })}
                 className="mt-1"
               />
               
@@ -226,7 +227,7 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
                     <div className="flex-1 space-y-2">
                       <Input
                         value={todo.title}
-                        onChange={(e) => updateTodo(todo.id, { title: e.target.value })}
+                        onChange={(value) => updateTodo(todo.id, { title: value })}
                         className="text-sm"
                         placeholder="Task title"
                       />
@@ -239,7 +240,7 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
                       />
                       <Input
                         value={todo.estimatedTime || ""}
-                        onChange={(e) => updateTodo(todo.id, { estimatedTime: e.target.value })}
+                        onChange={(value) => updateTodo(todo.id, { estimatedTime: value })}
                         className="text-sm"
                         placeholder="Estimated time (optional)"
                       />
@@ -258,7 +259,7 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
                         </p>
                       )}
                       {todo.estimatedTime && (
-                        <Badge variant="outline" className="mt-1 text-xs">
+                        <Badge color="secondary" className="mt-1 text-xs">
                           {todo.estimatedTime}
                         </Badge>
                       )}
@@ -272,7 +273,7 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
                   {editingTodoId === todo.id ? (
                     <Button
                       size="sm"
-                      variant="ghost"
+                      color="tertiary"
                       onClick={() => saveEdit(todo.id)}
                     >
                       <CheckIcon className="h-4 w-4" />
@@ -280,7 +281,7 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
                   ) : (
                     <Button
                       size="sm"
-                      variant="ghost"
+                      color="tertiary"
                       onClick={() => startEditing(todo.id)}
                     >
                       <PencilIcon className="h-4 w-4" />
@@ -288,7 +289,7 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
                   )}
                   <Button
                     size="sm"
-                    variant="ghost"
+                    color="tertiary"
                     onClick={() => removeTodo(todo.id)}
                     className="text-red-600 hover:text-red-700"
                   >
@@ -306,7 +307,7 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
             <div className="space-y-2">
               <Input
                 value={newTodoTitle}
-                onChange={(e) => setNewTodoTitle(e.target.value)}
+                onChange={(value) => setNewTodoTitle(value)}
                 placeholder="Add new task..."
                 className="text-sm"
               />
@@ -320,7 +321,7 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
               <div className="flex gap-2">
                 <Input
                   value={newTodoEstimatedTime}
-                  onChange={(e) => setNewTodoEstimatedTime(e.target.value)}
+                  onChange={(value) => setNewTodoEstimatedTime(value)}
                   placeholder="Estimated time (optional)"
                   className="text-sm flex-1"
                 />
@@ -344,7 +345,7 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
           </div>
           <div className="flex gap-2">
             <Button
-              variant="outline"
+              color="secondary"
               onClick={handleReject}
               className="text-red-600 hover:text-red-700"
             >
@@ -364,4 +365,3 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
     </Card>
   );
 }
-

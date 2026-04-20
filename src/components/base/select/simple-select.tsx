@@ -1,5 +1,6 @@
-// @ts-nocheck
 "use client";
+
+// @ts-nocheck
 
 import { type SelectHTMLAttributes, forwardRef } from "react";
 import { ChevronDown } from "@untitledui/icons";
@@ -109,8 +110,3 @@ export const SimpleSelect = forwardRef<HTMLSelectElement, SimpleSelectProps>(
 );
 
 SimpleSelect.displayName = "SimpleSelect";
-
-
-
-
-

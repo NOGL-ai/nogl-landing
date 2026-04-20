@@ -49,6 +49,9 @@ const Sidebar: React.FC<SidebarProps> = ({
 
 	return (
 		<div
+			data-testid='sidebar-root'
+			role='navigation'
+			aria-label='Primary sidebar'
 			className={clsx(
 				"sticky-sidebar flex bg-[#111729] transition-all duration-300 ease-in-out",
 				isCollapsed && !isHovered ? "w-[80px]" : "w-[272px]",
@@ -101,8 +104,8 @@ const Sidebar: React.FC<SidebarProps> = ({
 
 					{/* Toggle and dropdown (only visible when expanded) */}
 					{shouldShowExpandedContent && (
-						<div className='flex items-center gap-2'>
-							<button className='p-1'>
+						<div className='flex items-center gap-2' data-testid='sidebar-header-actions'>
+							<button className='p-1' aria-label='Company menu' type='button'>
 								<svg
 									width='18'
 									height='18'
@@ -119,7 +122,13 @@ const Sidebar: React.FC<SidebarProps> = ({
 									/>
 								</svg>
 							</button>
-							<button onClick={onToggleCollapse} className='p-1'>
+							<button
+								onClick={onToggleCollapse}
+								className='p-1'
+								aria-label='Toggle sidebar'
+								data-testid='sidebar-toggle'
+								type='button'
+							>
 								<svg
 									width='20'
 									height='20'

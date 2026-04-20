@@ -1,12 +1,14 @@
 "use client";
+import { ChevronDown as ChevronDownIcon } from '@untitledui/icons';
 
 import { PathName } from "@/routers/types";
 import { Popover, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/24/solid";
+
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { FC, Fragment, useEffect, useState } from "react";
+import type { Route } from 'next';
 
 // <--- NavItemType --->
 export interface MegamenuItem {
@@ -122,7 +124,7 @@ const NavigationItem: FC<NavigationItemWithRouterProps> = ({ menuItem }) => {
 				<Link
 					rel='noopener noreferrer'
 					className='text-neutral-6000 inline-flex items-center rounded px-2 py-1 font-normal hover:bg-neutral-100 hover:text-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-neutral-200'
-					href={item.href || ""}
+					href={(item.href || "") as Route}
 				>
 					{item.name}
 				</Link>
@@ -237,7 +239,7 @@ const NavigationItem: FC<NavigationItemWithRouterProps> = ({ menuItem }) => {
 				target={item.targetBlank ? "_blank" : undefined}
 				rel='noopener noreferrer'
 				className='text-neutral-6000 flex items-center rounded-md px-4 py-2 font-normal hover:bg-neutral-100 hover:text-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-neutral-200 '
-				href={item.href || ""}
+				href={(item.href || "") as Route}
 			>
 				{item.name}
 				{item.type && (
@@ -256,7 +258,7 @@ const NavigationItem: FC<NavigationItemWithRouterProps> = ({ menuItem }) => {
 			<Link
 				rel='noopener noreferrer'
 				className='inline-flex items-center rounded-full px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 xl:px-5 xl:text-base dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-neutral-200'
-				href={item.href || "/"}
+				href={(item.href || "/") as Route}
 			>
 				{item.name}
 				{item.type && (

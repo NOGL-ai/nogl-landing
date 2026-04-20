@@ -37,6 +37,10 @@ logs
 # Vercel
 .vercel
 
+# Marketing assets scraper local artifacts
+/storage/
+.claude/research/meta-ads-scraper/
+
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
@@ -74,3 +78,9 @@ test-*.js
 .next-build/
 # Fumadocs generated source
 .source/
+
+# Forecast demo datasets (public Kaggle downloads — not committed)
+scripts/data/*.csv
+scripts/data/*.zip
+scripts/data/*.json
+!scripts/data/README.md

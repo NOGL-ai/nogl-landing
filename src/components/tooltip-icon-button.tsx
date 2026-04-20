@@ -9,7 +9,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 import { cn } from "@/lib/utils";
 
 export type TooltipIconButtonProps = ComponentPropsWithRef<typeof Button> & {
@@ -25,8 +25,8 @@ export const TooltipIconButton = forwardRef<
     <Tooltip>
       <TooltipTrigger asChild>
         <Button
-          variant="ghost"
-          size="icon"
+          color="tertiary"
+          size="sm"
           {...rest}
           className={cn("aui-button-icon size-6 p-1", className)}
           ref={ref}

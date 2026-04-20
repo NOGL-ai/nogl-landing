@@ -39,7 +39,7 @@ export async function listDashboards() {
     orderBy: { updatedAt: "desc" },
   });
 
-  return dashboards.map((d) => ({
+  return dashboards.map((d: (typeof dashboards)[number]) => ({
     id: d.id,
     name: d.name,
     description: d.description,
@@ -90,7 +90,7 @@ export async function getDashboard(id: string) {
     createdAt: dashboard.createdAt.toISOString(),
     updatedAt: dashboard.updatedAt.toISOString(),
     globalFilters: dashboard.globalFilters as GlobalFilters,
-    widgets: dashboard.widgets.map((w) => ({
+    widgets: dashboard.widgets.map((w: (typeof dashboard.widgets)[number]) => ({
       ...w,
       createdAt: w.createdAt.toISOString(),
       updatedAt: w.updatedAt.toISOString(),

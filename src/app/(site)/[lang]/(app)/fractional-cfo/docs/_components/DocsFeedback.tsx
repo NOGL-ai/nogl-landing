@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/base/buttons/button';
 import { Textarea } from '@/components/ui/textarea';
 
 interface DocsFeedbackProps {
@@ -55,7 +55,7 @@ export function DocsFeedback({ docPath, locale }: DocsFeedbackProps) {
       {rating === null ? (
         <div className="flex gap-2">
           <Button
-            variant="outline"
+            color="secondary"
             size="sm"
             onClick={() => setRating('UP')}
             aria-label="Yes, this was helpful"
@@ -63,7 +63,7 @@ export function DocsFeedback({ docPath, locale }: DocsFeedbackProps) {
             👍 Yes
           </Button>
           <Button
-            variant="outline"
+            color="secondary"
             size="sm"
             onClick={() => setRating('DOWN')}
             aria-label="No, this was not helpful"
@@ -91,7 +91,7 @@ export function DocsFeedback({ docPath, locale }: DocsFeedbackProps) {
             </Button>
             <Button
               size="sm"
-              variant="ghost"
+              color="tertiary"
               onClick={() => setRating(null)}
               disabled={loading}
             >

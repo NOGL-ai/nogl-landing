@@ -359,14 +359,14 @@ const UserProfile: React.FC<UserProfileProps> = ({ isCollapsed }) => {
 										) : (
 											<>
 												<Link
-													href={"/auth/signin"}
+													href={"/auth/signin" as Route}
 													className='font-satoshi px-5 py-2 font-medium text-black dark:text-white'
 													onClick={() => close()}
 												>
 													Sign In
 												</Link>
 												<Link
-													href={"/auth/signup"}
+													href={"/auth/signup" as Route}
 													className='bg-primary-500 font-satoshi hover:bg-primary-600 border-primary-400 rounded-full border-2 px-5 py-2 font-medium text-white shadow-lg'
 													onClick={() => close()}
 												>

@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
+import { ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon } from '@untitledui/icons';
 import { AnimatePresence, motion, MotionConfig } from "framer-motion";
 import Image, { StaticImageData } from "next/image";
 import { useState } from "react";
