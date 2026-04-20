@@ -1,5 +1,6 @@
-import { RefreshCcw01 as RefreshCcw, Table as Table2 } from '@untitledui/icons';
 "use client";
+
+import { RefreshCcw01 as RefreshCcw, Table as Table2 } from '@untitledui/icons';
 
 
 import { useEffect, useMemo, useRef, useState } from "react";

@@ -1,5 +1,6 @@
-// @ts-nocheck
 "use client";
+
+// @ts-nocheck
 
 import type { FocusEventHandler, PointerEventHandler, RefAttributes, RefObject } from "react";
 import { useCallback, useContext, useRef, useState } from "react";
@@ -151,4 +152,3 @@ export const ComboBox = ({ placeholder = "Search", shortcut = true, size = "sm",
         </SelectContext.Provider>
     );
 };
-

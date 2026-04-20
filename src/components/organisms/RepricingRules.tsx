@@ -1,6 +1,7 @@
+"use client";
+
 import { GripVertical } from 'lucide-react';
 import { Plus } from '@untitledui/icons';
-"use client";
 
 import React, { useState, useTransition, useCallback } from "react";
 import { useRouter } from "next/navigation";

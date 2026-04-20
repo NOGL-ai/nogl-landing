@@ -1,5 +1,6 @@
-// @ts-nocheck
 "use client";
+
+// @ts-nocheck
 
 import React, { useMemo } from "react";
 import { InfoCircle } from "@untitledui/icons";
@@ -420,5 +421,3 @@ function ToggleCard({ enabled, onToggle, title, children }: ToggleCardProps) {
 		</div>
 	);
 }
-
-

@@ -1,5 +1,6 @@
-// @ts-nocheck
 "use client";
+
+// @ts-nocheck
 
 import type { FocusEventHandler, KeyboardEvent, PointerEventHandler, RefAttributes, RefObject } from "react";
 import { createContext, useCallback, useContext, useRef, useState } from "react";
@@ -362,4 +363,3 @@ const MultiSelect = MultiSelectBase as typeof MultiSelectBase & {
 MultiSelect.Item = SelectItem;
 
 export { MultiSelect as MultiSelect };
-

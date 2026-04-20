@@ -1,5 +1,6 @@
-import { Check as CheckIcon } from '@untitledui/icons';
 "use client";
+
+import { Check as CheckIcon } from '@untitledui/icons';
 import React from "react";
 
 import { Button } from '@/components/base/buttons/button';

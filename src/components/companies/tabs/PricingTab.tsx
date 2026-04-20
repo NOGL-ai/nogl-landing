@@ -1,5 +1,6 @@
-import { LinkExternal01 as ExternalLink, LayoutGrid01 as LayoutGrid, List } from '@untitledui/icons';
 "use client";
+
+import { LinkExternal01 as ExternalLink, LayoutGrid01 as LayoutGrid, List } from '@untitledui/icons';
 
 import { useEffect, useMemo, useState } from "react";
 
