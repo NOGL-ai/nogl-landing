@@ -9,8 +9,6 @@ import {
     LifeBuoy01,
     PieChart03,
     Sun,
-    Sale02,
-    Sale04,
     Wallet01,
     Target04,
     SearchMd,
@@ -81,7 +79,7 @@ export const navigationStructure: NavigationSection[] = [
     {
         section: 'main',
         items: [
-            // ── 1. Fractional CMO ──────────────────────────────────────────
+            // ── 1. Fractional CMO (market intelligence) ───────────────────
             {
                 id: 'fractional-cmo',
                 label: 'Fractional CMO',
@@ -130,66 +128,7 @@ export const navigationStructure: NavigationSection[] = [
                             },
                         ],
                     },
-
-                    // ── Pricing Tools (accordion) ─────────────────────────
-                    {
-                        label: 'Price Alerts',
-                        href: '/en/alerts',
-                        icon: Bell01,
-                    },
-                    {
-                        label: 'Pricing Tools',
-                        icon: Sale02,
-                        isAccordionGroup: true,
-                        groupItems: [
-                            {
-                                label: 'Price Report',
-                                icon: Sale04,
-                                isAccordionGroup: true,
-                                groupItems: [
-                                    {
-                                        label: 'Dashboard',
-                                        href: '/en/dashboard',
-                                        icon: BarChartSquare02,
-                                    },
-                                    {
-                                        label: 'Price Rules',
-                                        href: '/en/repricing/auto-rules',
-                                        icon: RefreshCw01,
-                                    },
-                                    {
-                                        label: 'Reports',
-                                        href: '/en/reports',
-                                        icon: FileX01,
-                                    },
-                                ],
-                            },
-                            {
-                                label: 'Product Taxonomy',
-                                href: '/en/analytics/taxonomy',
-                                icon: Grid03,
-                            },
-                            {
-                                label: 'Product Editor',
-                                href: '/en/analytics/editor',
-                                icon: FileX01,
-                            },
-                            {
-                                label: 'Exports',
-                                href: '/en/analytics/exports',
-                                icon: Share01,
-                            },
-                        ],
-                    },
-
-                    // ── Product Catalog (from main) ───────────────────────
-                    {
-                        label: 'Product Catalog',
-                        href: '/en/product-explorer',
-                        icon: Package,
-                    },
-
-                    // ── Ad Scoring (from main) ────────────────────────────
+                    // ── Ad Scoring (accordion) ───────────────────────────
                     {
                         label: 'Ad Scoring',
                         icon: Star01,
@@ -198,7 +137,7 @@ export const navigationStructure: NavigationSection[] = [
                             {
                                 label: 'Upload & Score',
                                 href: '/en/ad-scoring/assets',
-                                icon: Package,
+                                icon: Upload01,
                             },
                             {
                                 label: 'Reviews',
@@ -212,8 +151,7 @@ export const navigationStructure: NavigationSection[] = [
                             },
                         ],
                     },
-
-                    // ── Advanced Analytics (accordion) ────────────────────
+                    // ── Advanced Analytics (accordion) ───────────────────
                     {
                         label: 'Advanced Analytics',
                         icon: BarChartSquare02,
@@ -235,38 +173,68 @@ export const navigationStructure: NavigationSection[] = [
                                 icon: BarChart02,
                             },
                             {
-                                label: 'Product Export',
-                                href: '/en/analytics/export',
-                                icon: Share01,
-                            },
-                            {
                                 label: 'Benchmarking',
                                 href: '/en/analytics/benchmarking',
                                 icon: LineChartUp03,
+                            },
+                            {
+                                label: 'Product Export',
+                                href: '/en/analytics/export',
+                                icon: Share01,
                             },
                         ],
                     },
                 ],
             },
 
-            // ── 2. Fractional CFO ──────────────────────────────────────────
+            // ── 2. Fractional CFO (pricing & finance) ─────────────────────
             {
                 id: 'fractional-cfo',
                 label: 'Fractional CFO',
                 icon: Wallet01,
                 subItems: [
-                    // Alerts (accordion, mirroring the screenshot)
                     {
-                        label: 'Alerts',
-                        icon: NotificationBox,
+                        label: 'Price Alerts',
+                        href: '/en/alerts',
+                        icon: Bell01,
+                    },
+                    // ── Repricing (accordion) ───────────────────────────
+                    {
+                        label: 'Repricing',
+                        icon: RefreshCw01,
                         isAccordionGroup: true,
                         groupItems: [
-                            { label: 'Overview',      href: '/en/fractional-cfo/alerts',               icon: NotificationBox },
-                            { label: 'Customization', href: '/en/fractional-cfo/alerts/customization', icon: Settings03 },
-                            { label: 'Inactive',      href: '/en/fractional-cfo/alerts/inactive',      icon: FileX01 },
-                            { label: 'Share',         href: '/en/fractional-cfo/alerts/share',         icon: Share01 },
-                            { label: 'Notifications', href: '/en/fractional-cfo/alerts/notifications', icon: NotificationBox },
+                            {
+                                label: 'Repricing Rules',
+                                href: '/en/repricing/auto-rules',
+                                icon: RefreshCw01,
+                            },
+                            {
+                                label: 'Repricing Preview',
+                                href: '/en/repricing/preview',
+                                icon: FileCheck02,
+                            },
+                            {
+                                label: 'Repricing History',
+                                href: '/en/repricing/history',
+                                icon: FileX01,
+                            },
+                            {
+                                label: 'Dashboard',
+                                href: '/en/dashboard',
+                                icon: BarChartSquare02,
+                            },
+                            {
+                                label: 'Reports',
+                                href: '/en/reports',
+                                icon: FileX01,
+                            },
                         ],
+                    },
+                    {
+                        label: 'Product Catalog',
+                        href: '/en/product-explorer',
+                        icon: Package,
                     },
                     {
                         label: 'Forecast',
@@ -288,6 +256,18 @@ export const navigationStructure: NavigationSection[] = [
                         label: 'Analytics',
                         href: '/en/fractional-cfo/analytics',
                         icon: PieChart03,
+                    },
+                    // ── Alerts (CFO-specific, accordion) ───────────────
+                    {
+                        label: 'Alerts',
+                        icon: NotificationBox,
+                        isAccordionGroup: true,
+                        groupItems: [
+                            { label: 'Overview',      href: '/en/fractional-cfo/alerts',               icon: NotificationBox },
+                            { label: 'Customization', href: '/en/fractional-cfo/alerts/customization', icon: Settings03 },
+                            { label: 'Inactive',      href: '/en/fractional-cfo/alerts/inactive',      icon: FileX01 },
+                            { label: 'Share',         href: '/en/fractional-cfo/alerts/share',         icon: Share01 },
+                        ],
                     },
                     {
                         label: 'Docs',

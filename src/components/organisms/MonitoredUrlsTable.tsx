@@ -1,4 +1,5 @@
 "use client";
+
 import { SearchLg as Search, SwitchVertical01 as ArrowUpDown, ArrowUp, ArrowDown, DotsHorizontal as MoreHorizontal, Eye, Trash01 as Trash2, AlertCircle, Edit01 as Edit, CheckCircle } from '@untitledui/icons';
 // @ts-nocheck
 
@@ -493,4 +494,3 @@ export default function MonitoredUrlsTable() {
 		</div>
 	);
 }
-

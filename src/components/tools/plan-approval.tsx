@@ -1,4 +1,5 @@
 "use client";
+
 import { Pencil01 as PencilIcon, Trash01 as TrashIcon, Plus as PlusIcon, Check as CheckIcon, X as XIcon } from '@untitledui/icons';
 // @ts-nocheck
 /**
@@ -365,4 +366,3 @@ export function PlanApprovalUI({ addResult, args }: PlanApprovalProps) {
     </Card>
   );
 }
-

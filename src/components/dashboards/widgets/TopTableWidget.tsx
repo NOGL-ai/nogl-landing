@@ -1,6 +1,8 @@
 "use client";
 import { Star01 as StarIcon } from '@untitledui/icons';
 
+import { Star01 as StarIcon } from '@untitledui/icons';
+
 import type { TableRow } from "@/lib/dashboards/widgetSchemas";
 import type { TopTableConfig } from "@/lib/dashboards/widgetSchemas";
 import { z } from "zod";

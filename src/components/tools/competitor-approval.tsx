@@ -1,4 +1,5 @@
 "use client";
+
 import { Check as CheckIcon, X as XIcon, AlertTriangle as AlertTriangleIcon, LinkExternal01 as ExternalLinkIcon } from '@untitledui/icons';
 /**
  * Competitor Approval UI Component

@@ -1,4 +1,5 @@
 "use client";
+
 import { X as XIcon, Plus as PlusIcon, File01 as FileText } from '@untitledui/icons';
 // @ts-nocheck
 
@@ -235,4 +236,3 @@ export const ComposerAddAttachment: FC = () => {
     </ComposerPrimitive.AddAttachment>
   );
 };
-

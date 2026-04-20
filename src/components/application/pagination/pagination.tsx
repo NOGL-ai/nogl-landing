@@ -1,5 +1,6 @@
-// @ts-nocheck
 "use client";
+
+// @ts-nocheck
 
 import { ArrowLeft, ArrowRight } from "@untitledui/icons";
 import { ButtonGroup, ButtonGroupItem } from "@/components/base/button-group/button-group";
@@ -329,4 +330,3 @@ export const PaginationButtonGroup = ({ align = "left", page = 1, total = 10, ..
         </div>
     );
 };
-

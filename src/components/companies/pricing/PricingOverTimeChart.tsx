@@ -1,6 +1,8 @@
 "use client";
 import { Download01 as Download } from '@untitledui/icons';
 
+import { Download01 as Download } from '@untitledui/icons';
+
 import { useMemo, useState } from "react";
 import { useTheme } from "next-themes";
 import {

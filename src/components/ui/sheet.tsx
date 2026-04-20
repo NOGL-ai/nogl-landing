@@ -1,6 +1,8 @@
 "use client";
 import { X as XIcon } from '@untitledui/icons';
 
+import { X as XIcon } from '@untitledui/icons';
+
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 
