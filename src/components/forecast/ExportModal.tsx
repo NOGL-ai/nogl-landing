@@ -55,12 +55,10 @@ export function ExportModal({
     try {
       const rows = await exportForecastData({
         companyId,
-        start: defaultDateRange.start,
-        end: defaultDateRange.end,
+        startDate: defaultDateRange.start,
+        endDate: defaultDateRange.end,
         scale,
-        productGranularity: granularity,
         quantile,
-        preview: true,
       });
       setPreviewRows(rows);
       setPreview(true);
@@ -74,12 +72,10 @@ export function ExportModal({
     try {
       const rows = await exportForecastData({
         companyId,
-        start: defaultDateRange.start,
-        end: defaultDateRange.end,
+        startDate: defaultDateRange.start,
+        endDate: defaultDateRange.end,
         scale,
-        productGranularity: granularity,
         quantile,
-        preview: false,
       });
       const csv = toCsv(rows);
       const blob = new Blob([csv], { type: "text/csv" });
