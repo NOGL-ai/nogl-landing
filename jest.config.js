@@ -20,6 +20,7 @@ const customJestConfig = {
   ],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^react-aria-components$': '<rootDir>/__mocks__/react-aria-components.tsx',
   },
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
@@ -54,7 +55,7 @@ const customJestConfig = {
   // Coverage is opt-in: run `npm run test:coverage` explicitly.
   // test:ci does NOT pass --coverage so this has no effect there.
   collectCoverage: false,
-  coverageReporters: ['text', 'lcov'],
+  coverageReporters: ['text', 'lcov', 'html'],
 }
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

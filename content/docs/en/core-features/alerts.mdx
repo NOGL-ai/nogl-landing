@@ -1,0 +1,51 @@
+---
+title: Alerts
+description: Configure notifications for price changes, stock levels, and margin thresholds.
+---
+
+# Alerts
+
+Alerts notify you (by email or in-app) when something important happens that requires your attention.
+
+## Types of alerts
+
+| Alert type | Trigger |
+|-----------|---------|
+| **Competitor price drop** | A tracked competitor drops their price by more than X% |
+| **Stock-out risk** | A product's days of stock falls below your reorder point |
+| **Margin below threshold** | A product's margin drops below your set minimum |
+| **Repricing blocked** | A rule could not apply because it would breach a guardrail |
+| **Catalog import error** | A scheduled catalog import fails or contains validation errors |
+
+## Setting up alerts
+
+1. Go to **Settings → Alerts**.
+2. Toggle on each alert type you want to receive.
+3. For each type, set the threshold (e.g. "notify when competitor drops price > 5%").
+4. Choose delivery channels: **In-app**, **Email**, or both.
+5. Click **Save**.
+
+## Per-product alert overrides
+
+You can set different thresholds per product:
+
+1. Open a product in **My Catalog**.
+2. Scroll to the **Alerts** section.
+3. Override any workspace-level threshold.
+
+## Viewing alert history
+
+All alerts are logged in **Settings → Alert History**. You can filter by type, date range, and product.
+
+## Muting alerts
+
+To temporarily mute all alerts (e.g. during a planned maintenance window):
+
+1. Go to **Settings → Alerts**.
+2. Click **Mute all** and choose a duration (1 hour, 4 hours, or 24 hours).
+
+Individual alert types can also be toggled off at any time.
+
+## Alert digest
+
+Instead of individual emails per alert, you can opt for a **Daily digest** that summarizes all alerts from the previous 24 hours. Configure this in **Settings → Alerts → Delivery**.

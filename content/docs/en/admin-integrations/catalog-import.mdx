@@ -1,0 +1,67 @@
+---
+title: Catalog Import
+description: Import your product catalog from Shopify, WooCommerce, or CSV.
+---
+
+# Catalog Import
+
+NOGL supports automatic and manual catalog imports to keep your product data in sync.
+
+## Shopify integration
+
+1. Go to **Settings → Integrations → Shopify**.
+2. Click **Connect** and follow the OAuth flow.
+3. Grant the required scopes (read products, read inventory).
+4. Once connected, NOGL imports your catalog immediately and syncs every 4 hours.
+
+Fields synced: title, SKU, price, cost (requires Shopify cost field), stock, status, images, category (mapped from Shopify collections).
+
+## WooCommerce integration
+
+1. In WooCommerce, generate a REST API key under **WooCommerce → Settings → Advanced → REST API**.
+2. In NOGL, go to **Settings → Integrations → WooCommerce**.
+3. Enter your store URL and the API key/secret.
+4. Click **Test connection** then **Save**.
+
+## CSV import
+
+### Download the template
+
+1. Go to **Settings → Data Sources → Catalog Import**.
+2. Click **Download CSV template**.
+
+### Required columns
+
+| Column | Format | Example |
+|--------|--------|---------|
+| `sku` | String, unique | `TSHIRT-L-BLK` |
+| `title` | String | `Black T-Shirt, Large` |
+| `price` | Decimal, EUR | `29.99` |
+| `cost` | Decimal, EUR | `12.00` |
+| `stock` | Integer | `150` |
+| `status` | ACTIVE / INACTIVE / DRAFT | `ACTIVE` |
+
+### Optional columns
+
+`description`, `image_url`, `category`, `brand`, `min_price`, `max_price`, `channel`, `ean`
+
+### Uploading
+
+1. Fill in the template.
+2. Go to **Settings → Data Sources → Catalog Import**.
+3. Click **Upload CSV** and select your file.
+4. Review the validation summary (errors are highlighted with row numbers).
+5. Click **Import** to confirm.
+
+## Scheduled imports
+
+You can schedule automatic CSV imports from an SFTP or HTTP endpoint:
+
+1. Go to **Settings → Data Sources → Scheduled Import**.
+2. Configure the source URL/SFTP credentials.
+3. Set the frequency (daily, hourly, or custom cron).
+4. Map the source columns to NOGL fields.
+
+## Import history
+
+All import jobs are logged at **Settings → Data Sources → Import History** with status, row counts, and any error details.
