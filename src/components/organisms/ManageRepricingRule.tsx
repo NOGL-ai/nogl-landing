@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import { Button } from "@/components/base/buttons/button";
@@ -13,40 +13,14 @@ import { ApplyToProductsStep } from "@/components/molecules/repricing/ApplyToPro
 import { RepricingMethodStep } from "@/components/molecules/repricing/RepricingMethodStep";
 import { OptionsStep } from "@/components/molecules/repricing/OptionsStep";
 import { ExportSettingsStep } from "@/components/molecules/repricing/ExportSettingsStep";
+import { createRule, updateRule, getRuleFormData } from "@/actions/repricing/rules";
+import { simulateRule } from "@/actions/repricing/execution";
 import {
 	defaultRepricingRule,
 	type RepricingRuleFormData,
 	type ValidationError,
 	type Competitor,
 } from "@/types/repricing-rule";
-
-// Mock competitors data - in real app, these would come from API
-const mockCompetitors: Competitor[] = [
-	{
-		id: "1",
-		name: "Amazon.com",
-		url: "https://www.amazon.com",
-		lastChecked: new Date(Date.now() - 3600000).toISOString(),
-		enabled: true,
-		avatar: "/images/competitors/amazon.png",
-	},
-	{
-		id: "2",
-		name: "eBay",
-		url: "https://www.ebay.com",
-		lastChecked: new Date(Date.now() - 7200000).toISOString(),
-		enabled: true,
-		avatar: "/images/competitors/ebay.png",
-	},
-	{
-		id: "3",
-		name: "Walmart",
-		url: "https://www.walmart.com",
-		lastChecked: new Date(Date.now() - 1800000).toISOString(),
-		enabled: false,
-		avatar: "/images/competitors/walmart.png",
-	},
-];
 
 // Mock translations - in real app, these would come from i18n
 const translations = {
@@ -103,7 +77,33 @@ export default function ManageRepricingRule() {
 	const [isSubmittingPreview, setIsSubmittingPreview] = useState(false);
 	const [isLoadingRule, setIsLoadingRule] = useState(false);
 	const [errors, setErrors] = useState<Record<string, string>>({});
-	const [competitors, setCompetitors] = useState<Competitor[]>(mockCompetitors);
+	const [competitors, setCompetitors] = useState<Competitor[]>([]);
+
+	// Load competitors from API
+	useEffect(() => {
+		fetch("/api/competitors?enabled=true&limit=100")
+			.then((r) => r.json())
+			.then((data) => {
+				// Normalise to Competitor[]
+				const list = Array.isArray(data)
+					? data
+					: Array.isArray(data?.competitors)
+					? data.competitors
+					: [];
+				setCompetitors(
+					list.map((c: { id: string; name: string; domain?: string; website?: string; lastScrapedAt?: string; isMonitoring?: boolean }) => ({
+						id: c.id,
+						name: c.name,
+						url: c.domain ? `https://${c.domain}` : (c.website ?? ""),
+						lastChecked: c.lastScrapedAt ?? new Date().toISOString(),
+						enabled: c.isMonitoring ?? true,
+					}))
+				);
+			})
+			.catch(() => {
+				// silently ignore — competitor step still works, just empty
+			});
+	}, []);
 
 	// Load existing rule for editing
 	useEffect(() => {
@@ -115,26 +115,9 @@ export default function ManageRepricingRule() {
 	const loadExistingRule = async (id: string) => {
 		setIsLoadingRule(true);
 		try {
-			// TODO: Replace with actual API call
-			// const response = await fetch(`/api/repricing/rules/${id}`);
-			// const rule = await response.json();
-			
-			// Simulate API call
-			await new Promise((resolve) => setTimeout(resolve, 800));
-			
-			// Mock: Load a sample rule for demo
-			const mockRule: RepricingRuleFormData = {
-				...defaultRepricingRule,
-				name: `Repricing Rule ${id}`,
-				pricing: {
-					...defaultRepricingRule.pricing,
-					set_price: 5,
-				},
-			};
-			
-			setFormData(mockRule);
-			
-			toast.success(`Rule loaded successfully\nEditing: ${mockRule.name}`);
+			const formValues = await getRuleFormData(id);
+			setFormData(formValues);
+			toast.success(`Rule loaded\nEditing: ${formValues.name}`);
 		} catch (error) {
 			console.error("Error loading rule:", error);
 			toast.error("Failed to load repricing rule\nPlease try again");
@@ -198,29 +181,20 @@ export default function ManageRepricingRule() {
 		}
 
 		try {
-			// TODO: Replace with actual API call
-			// const method = ruleId ? 'PUT' : 'POST';
-			// const url = ruleId ? `/api/repricing/rules/${ruleId}` : '/api/repricing/rules';
-			// await fetch(url, {
-			//   method,
-			//   headers: { 'Content-Type': 'application/json' },
-			//   body: JSON.stringify(formData),
-			// });
+			// Create or update the rule via server action
+			const saved = ruleId
+				? await updateRule(ruleId, formData)
+				: await createRule(formData);
 
-			// Simulate API call
-			await new Promise((resolve) => setTimeout(resolve, 1000));
-
-			// Show success toast
 			const action = ruleId ? "updated" : "created";
-			const message = preview
-				? `Repricing rule ${action}!\nYour rule preview is ready to view`
-				: `Repricing rule ${action}!\nYour rule is now active and ready to use`;
-			toast.success(message);
 
-			// Navigate based on action
 			if (preview) {
-				router.push("/repricing/auto-overview" as any);
+				// Run simulation and navigate to preview page with jobId
+				const job = await simulateRule(saved.id);
+				toast.success(`Repricing rule ${action}!\nPreview is ready.`);
+				router.push(`/repricing/auto-overview?jobId=${job.id}` as any);
 			} else {
+				toast.success(`Repricing rule ${action}!\nYour rule is saved.`);
 				router.push("/repricing/auto-rules" as any);
 			}
 		} catch (error) {
@@ -525,8 +499,8 @@ export default function ManageRepricingRule() {
 							}}
 							isPremium={false} // TODO: Get from user session
 							onUpgradeClick={() => {
-								// TODO: Open upgrade modal
-								console.log("Show upgrade modal");
+								// TODO(premium): open upgrade modal when billing is wired
+								console.warn("Upgrade modal not yet implemented");
 							}}
 							translations={{
 								title: "Step 7 - Repricing Method",
@@ -647,8 +621,8 @@ export default function ManageRepricingRule() {
 								emailAddress: errors["export_settings.email_address"],
 							}}
 							onUpgradeClick={() => {
-								// TODO: Open upgrade modal
-								console.log("Show upgrade modal");
+								// TODO(premium): open upgrade modal when billing is wired
+								console.warn("Upgrade modal not yet implemented");
 							}}
 						/>
 					</form>

@@ -9,9 +9,17 @@
     },
     {
       "name": "Next.js Dev Server",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
-      "port": 3000
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["next", "dev"],
+      "port": 3000,
+      "autoPort": true
+    },
+    {
+      "name": "Next.js Preview",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["next", "dev"],
+      "port": 3100,
+      "autoPort": true
     },
     {
       "name": "Next.js Dev Server (clean)",

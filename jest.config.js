@@ -9,7 +9,15 @@ const createJestConfig = nextJest({
 const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testEnvironment: 'jest-environment-jsdom',
-  testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
+  testPathIgnorePatterns: [
+    '<rootDir>/.next/',
+    '<rootDir>/node_modules/',
+    '<rootDir>/tests/e2e/',
+    '<rootDir>/tests/performance/',
+    // Mastra agent tests require real OpenAI keys + AI infrastructure;
+    // they are integration-level and excluded from the CI unit-test run.
+    '<rootDir>/src/mastra/__tests__/',
+  ],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
@@ -41,11 +49,12 @@ const customJestConfig = {
   testEnvironmentOptions: {
     customExportConditions: [''],
   },
-  // Add coverage provider configuration
+  // Coverage provider — v8 is fast when scoping is narrow.
   coverageProvider: 'v8',
-  // Disable coverage collection for problematic files
-  collectCoverage: true,
-  coverageReporters: ['text', 'lcov', 'html'],
+  // Coverage is opt-in: run `npm run test:coverage` explicitly.
+  // test:ci does NOT pass --coverage so this has no effect there.
+  collectCoverage: false,
+  coverageReporters: ['text', 'lcov'],
 }
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

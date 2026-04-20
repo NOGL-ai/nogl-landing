@@ -72,6 +72,16 @@ export type CompanyEventDTO = {
   createdAt: string;
 };
 
+export const KNOWN_EVENT_TYPES = [
+  "PROMOTION",
+  "PRICE_DROP",
+  "NEWSLETTER",
+  "INSTAGRAM_POST",
+  "PRODUCT_NEWS",
+  "SPECIAL_EVENT",
+] as const;
+export type KnownEventType = (typeof KNOWN_EVENT_TYPES)[number];
+
 export type CompanyAssetDTO = {
   id: string;
   company_id: string;

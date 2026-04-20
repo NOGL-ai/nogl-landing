@@ -83,13 +83,34 @@ function getOpenAIKey(): string {
   );
 }
 
-// Configure OpenAI provider with API key from environment
-const selectedKey = getOpenAIKey();
-console.log(`[AI-CONFIG] Initializing OpenAI with key: ${maskApiKey(selectedKey)}`);
+// Lazy-initialize the OpenAI provider so importing this module during
+// tests / CI (where no API key is configured) does not throw at load time.
+// The provider is only instantiated on first use.
+let _openaiInstance: ReturnType<typeof createOpenAI> | null = null;
 
-export const openai = createOpenAI({
-  apiKey: selectedKey,
-});
+function getOpenAIProvider(): ReturnType<typeof createOpenAI> {
+  if (_openaiInstance) return _openaiInstance;
+  const selectedKey = getOpenAIKey();
+  console.log(`[AI-CONFIG] Initializing OpenAI with key: ${maskApiKey(selectedKey)}`);
+  _openaiInstance = createOpenAI({ apiKey: selectedKey });
+  return _openaiInstance;
+}
+
+// Proxy that defers the underlying provider until it is actually called.
+// `openai(...)` is invoked as a function (e.g. `openai('gpt-4o')`) in the
+// codebase, so we forward any call/apply through the lazy provider.
+export const openai: ReturnType<typeof createOpenAI> = new Proxy(
+  (() => {}) as unknown as ReturnType<typeof createOpenAI>,
+  {
+    get(_target, prop, receiver) {
+      return Reflect.get(getOpenAIProvider(), prop, receiver);
+    },
+    apply(_target, thisArg, argArray) {
+      const provider = getOpenAIProvider();
+      return Reflect.apply(provider as unknown as (...a: unknown[]) => unknown, thisArg, argArray);
+    },
+  }
+);
 
 // Export for use in Mastra agents
 export { openai as openaiProvider };

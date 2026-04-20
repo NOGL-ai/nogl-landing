@@ -21,7 +21,7 @@ describe('Sidebar Navigation Data', () => {
       const itemIds = mainNavigationItems.items.map(item => item.id);
       expect(itemIds).toContain('dashboard');
       expect(itemIds).toContain('my-catalog');
-      expect(itemIds).toContain('competitors');
+      expect(itemIds).toContain('companies');
       expect(itemIds).toContain('repricing');
       expect(itemIds).toContain('reports');
       expect(itemIds).toContain('product-feed');
@@ -59,11 +59,15 @@ describe('Sidebar Navigation Data', () => {
     it('has items with submenus', () => {
       const itemsWithSubmenus = mainNavigationItems.items.filter(item => item.submenu);
       expect(itemsWithSubmenus.length).toBeGreaterThan(0);
-      
-      const competitorsItem = mainNavigationItems.items.find(item => item.id === 'competitors');
-      expect(competitorsItem?.submenu).toBeDefined();
-      expect(Array.isArray(competitorsItem?.submenu)).toBe(true);
-      expect(competitorsItem?.submenu?.length).toBeGreaterThan(0);
+
+      const companiesItem = mainNavigationItems.items.find(item => item.id === 'companies');
+      expect(companiesItem?.submenu).toBeDefined();
+      expect(Array.isArray(companiesItem?.submenu)).toBe(true);
+      expect(companiesItem?.submenu?.length).toBeGreaterThan(0);
+
+      const submenuIds = companiesItem?.submenu?.map(sub => sub.id) || [];
+      expect(submenuIds).toContain('company-explorer');
+      expect(submenuIds).toContain('tracked-competitors');
     });
 
     it('has valid submenu structure', () => {
@@ -276,14 +280,29 @@ describe('Sidebar Navigation Data', () => {
     });
 
     it('has no duplicate paths across all items', () => {
+      // A submenu item may intentionally share its path with its parent (the
+      // "overview"/default sub-entry for a section, e.g. Companies ->
+      // Company Explorer both link to /companies). Those intentional overlaps
+      // are excluded before checking uniqueness so the test only flags
+      // genuinely duplicate routes.
+      const parentPathsWithSubmenus = mainNavigationItems.items
+        .filter(item => item.submenu)
+        .map(item => item.path);
+
+      const submenuPaths = mainNavigationItems.items
+        .filter(item => item.submenu)
+        .flatMap(item =>
+          item
+            .submenu!.map(sub => sub.path)
+            .filter(path => !parentPathsWithSubmenus.includes(path)),
+        );
+
       const allPaths = [
         ...mainNavigationItems.items.map(item => item.path),
         ...otherNavigationItems.items.map(item => item.path),
-        ...mainNavigationItems.items
-          .filter(item => item.submenu)
-          .flatMap(item => item.submenu!.map(sub => sub.path)),
+        ...submenuPaths,
       ];
-      
+
       const uniquePaths = new Set(allPaths);
       expect(uniquePaths.size).toBe(allPaths.length);
     });
