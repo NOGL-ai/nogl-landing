@@ -14,6 +14,7 @@ import {
   MOCK_CMO_COUNTS,
   MOCK_CFO_COUNTS,
 } from "@/lib/alerts/mockAlerts";
+import type { CreateAlertInput } from "@/lib/repricing/types";
 
 const PAGE_SIZE_DEFAULT = 50;
 
@@ -67,12 +68,19 @@ export async function listAlerts(params: {
   // Dev fallback when no DATABASE_URL is set
   if (!isPrismaAvailable) {
     const pool = params.audience === "CMO" ? MOCK_CMO_ALERTS : MOCK_CFO_ALERTS;
-    let rows = pool.filter((a) => {
+    const rows = pool.filter((a: AlertRow) => {
       if (params.severity?.length && !params.severity.includes(a.severity)) return false;
-      const allowedStatuses = params.status?.length ? params.status : ["OPEN", "SNOOZED"];
+      const allowedStatuses: AlertStatus[] = params.status?.length
+        ? params.status
+        : ["OPEN", "SNOOZED"];
       if (!allowedStatuses.includes(a.status)) return false;
       if (params.type?.length && !params.type.includes(a.type)) return false;
-      if (params.search && !a.title.toLowerCase().includes(params.search.toLowerCase())) return false;
+      if (
+        params.search &&
+        !a.title.toLowerCase().includes(params.search.toLowerCase())
+      ) {
+        return false;
+      }
       return true;
     });
     const page = params.page ?? 1;
@@ -286,4 +294,39 @@ export async function upsertSubscription(params: {
       digestMode: params.digestMode ?? "REALTIME",
     },
   });
+}
+
+// ── Legacy createAlert shim ────────────────────────────────────────────────
+//
+// The repricing engine (src/actions/repricing/execution.ts) was written
+// against the pre-merge alerts schema, which used a flat `{ kind, message,
+// productId, ruleId, jobId }` shape and an `AlertKindLocal` enum of
+// PRICE_CHANGE_APPLIED | RULE_RUN_FAILED | GUARDRAIL_BLOCK_SPIKE.
+//
+// The new alerts schema (Alert model in prisma/schema.prisma) is fundamentally
+// different: it's keyed by companyId + audience (CMO/CFO) + type, and the new
+// AlertType enum has none of the repricing kinds above. There is therefore no
+// 1:1 mapping back to the new schema without a product-level decision about
+// how repricing events should surface in the CMO/CFO inboxes.
+//
+// Until that decision lands, this shim accepts the legacy input shape so the
+// repricing server actions continue to type-check, but it does not persist —
+// it logs for observability and returns null. All CMO/CFO-facing alerts
+// continue to flow through the new createAlert in src/lib/alerts/createAlert.ts.
+export async function createAlert(
+  input: CreateAlertInput,
+): Promise<null> {
+  if (process.env.NODE_ENV !== "production") {
+    console.warn(
+      "[alerts.createAlert shim] dropping legacy repricing alert — new schema has no matching AlertType:",
+      {
+        kind: input.kind,
+        severity: input.severity,
+        title: input.title,
+        ruleId: input.ruleId,
+        jobId: input.jobId,
+      },
+    );
+  }
+  return null;
 }
