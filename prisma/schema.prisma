@@ -293,31 +293,33 @@ model CompetitorPriceHistory {
 }
 
 model Company {
-  id                    String                @id @default(cuid())
-  slug                  String                @unique
-  name                  String
-  domain                String                @unique
-  country_code          String                @db.VarChar(2)
-  locale                String?               @db.VarChar(10)
-  website               String?
-  source_key            String?
-  industry              String?
-  product_types         String[]
-  dataset_quality_score Decimal?              @db.Decimal(3, 2)
-  tracking_status       CompanyTrackingStatus @default(UNTRACKED)
-  tracked_competitor_id String?               @unique
-  wm_key                String?               @unique
-  arango_id             String?
-  createdAt             DateTime              @default(now())
-  updatedAt             DateTime              @updatedAt
-  competitor            Competitor?           @relation(fields: [tracked_competitor_id], references: [id])
-  snapshot              CompanySnapshot?
-  events                CompanyEvent[]
-  assets                CompanyAsset[]
-  forecastTenant        ForecastTenant?
-  trackedCompetitors    TrackedCompetitor[] @relation("TenantCompetitors")
-  trackedByTenants      TrackedCompetitor[] @relation("CompetitorOf")
-  notifications         Notification[]
+  id                      String                @id @default(cuid())
+  slug                    String                @unique
+  name                    String
+  domain                  String                @unique
+  country_code            String                @db.VarChar(2)
+  locale                  String?               @db.VarChar(10)
+  website                 String?
+  source_key              String?
+  industry                String?
+  product_types           String[]
+  dataset_quality_score   Decimal?              @db.Decimal(3, 2)
+  tracking_status         CompanyTrackingStatus @default(UNTRACKED)
+  tracked_competitor_id   String?               @unique
+  wm_key                  String?               @unique
+  arango_id               String?
+  createdAt               DateTime              @default(now())
+  updatedAt               DateTime              @updatedAt
+  competitor              Competitor?           @relation(fields: [tracked_competitor_id], references: [id])
+  snapshot                CompanySnapshot?
+  events                  CompanyEvent[]
+  assets                  CompanyAsset[]
+  forecastTenant          ForecastTenant?
+  trackedCompetitors      TrackedCompetitor[]   @relation("TenantCompetitors")
+  trackedByTenants        TrackedCompetitor[]   @relation("CompetitorOf")
+  notifications           Notification[]
+  marketingAssetsAsTenant MarketingAsset[]      @relation("TenantAssets")
+  marketingAssetsAsBrand  MarketingAsset[]      @relation("BrandAssets")
 
   @@index([slug])
   @@index([domain])
@@ -1215,6 +1217,80 @@ enum AlertSev {
   @@schema("public")
 }
 
+// ============================================================
+// Marketing Asset Library — polymorphic asset storage
+// ============================================================
+
+enum AssetType {
+  EMAIL
+  HOMEPAGE
+  HOMEPAGE_MOBILE
+  INSTAGRAM
+  META_AD
+  YOUTUBE_AD
+  TIKTOK_AD
+
+  @@schema("assets")
+}
+
+enum AssetSource {
+  APIFY_META
+  APIFY_YOUTUBE
+  APIFY_TIKTOK
+  APIFY_INSTAGRAM
+  IMAP_SELF_HOSTED
+  PLAYWRIGHT_SELF_HOSTED
+  SEED
+
+  @@schema("assets")
+}
+
+model MarketingAsset {
+  id          String      @id @default(cuid())
+  tenantId    String
+  brandId     String
+  assetType   AssetType
+  source      AssetSource
+  capturedAt  DateTime
+  sourceUrl   String?
+  title       String?
+  bodyText    String?     @db.Text
+  language    String?
+  region      String?
+  mediaUrls   String[]
+  contentHash String
+  payload     Json
+  proxies     Json?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  tenant Company @relation("TenantAssets", fields: [tenantId], references: [id])
+  brand  Company @relation("BrandAssets", fields: [brandId], references: [id], onDelete: Cascade)
+
+  @@unique([contentHash])
+  @@index([tenantId, brandId, assetType, capturedAt])
+  @@index([tenantId, assetType, capturedAt])
+  @@index([brandId, capturedAt])
+  @@schema("assets")
+}
+
+model AssetCaptureRun {
+  id          String      @id @default(cuid())
+  tenantId    String
+  brandId     String
+  assetType   AssetType
+  source      AssetSource
+  status      String
+  startedAt   DateTime    @default(now())
+  completedAt DateTime?
+  itemCount   Int         @default(0)
+  error       String?     @db.Text
+  metadata    Json?
+
+  @@index([tenantId, brandId, startedAt])
+  @@schema("assets")
+}
+
 // ─── Tracked Competitors (tenant-scoped) ─────────────────────────────────────
 
 model TrackedCompetitor {
@@ -1230,8 +1306,8 @@ model TrackedCompetitor {
   pauseReason     String?
   notes           String?                 @db.Text
 
-  tenant          Company                 @relation("TenantCompetitors", fields: [tenantCompanyId], references: [id], onDelete: Cascade)
-  competitor      Company                 @relation("CompetitorOf", fields: [competitorId], references: [id], onDelete: Cascade)
+  tenant     Company @relation("TenantCompetitors", fields: [tenantCompanyId], references: [id], onDelete: Cascade)
+  competitor Company @relation("CompetitorOf", fields: [competitorId], references: [id], onDelete: Cascade)
 
   @@unique([tenantCompanyId, competitorId])
   @@index([tenantCompanyId, status])
@@ -1246,7 +1322,7 @@ enum TrackedCompetitorStatus {
   @@schema("nogl")
 }
 
-// ─── Trend Materialized Views (from main) ────────────────────────────────────
+// ─── Trend Materialized Views ────────────────────────────────────────────────
 
 /// Materialized view refreshed nightly. Read-only — do not write.
 model CompanyTrend4w {

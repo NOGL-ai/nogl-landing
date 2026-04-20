@@ -4,22 +4,15 @@
     {
       "name": "Next.js Dev Server (worktree)",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev", "--", "-p", "3001"],
-      "port": 3001
-    },
-    {
-      "name": "Next.js Dev Server",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["next", "dev"],
+      "runtimeArgs": ["run", "dev"],
       "port": 3000,
       "autoPort": true
     },
     {
-      "name": "Next.js Preview",
+      "name": "Next.js Dev Server (3001)",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["next", "dev"],
-      "port": 3100,
-      "autoPort": true
+      "runtimeArgs": ["cross-env", "NEXT_TELEMETRY_DISABLED=1", "next", "dev", "-p", "3001"],
+      "port": 3001
     },
     {
       "name": "Next.js Dev Server (clean)",
