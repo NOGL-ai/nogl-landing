@@ -227,7 +227,7 @@ export function DashboardEditor({
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
-                    variant={arrangeMode ? "default" : "outline"}
+                    variant={arrangeMode ? "primary" : "outline"}
                     size="sm"
                     className="gap-1.5"
                     onClick={toggleArrangeMode}
@@ -262,7 +262,7 @@ export function DashboardEditor({
               {/* Settings / share / more */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="icon" className="h-8 w-8">
+                  <Button variant="outline" size="sm" className="h-8 w-8 p-0">
                     <MoreHorizontalIcon className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>

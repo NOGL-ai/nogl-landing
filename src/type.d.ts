@@ -1,4 +1,16 @@
 declare module "react-use-keypress";
+declare module "*.png" {
+  const src: string;
+  export default src;
+}
+declare module "*.jpg" {
+  const src: string;
+  export default src;
+}
+declare module "*.svg" {
+  const src: string;
+  export default src;
+}
 
 // Static image imports — next-env.d.ts provides these during `next build/dev`,
 // but tsc --noEmit runs before build so we declare them here for standalone type-checks.

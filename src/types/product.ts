@@ -83,6 +83,7 @@ export type GetProductsResponse = {
 
 // Competitor types
 export type CompetitorStatus = 'ACTIVE' | 'INACTIVE' | 'MONITORING' | 'PAUSED';
+export type TrackedCompetitorStatus = 'ACTIVE' | 'PAUSED' | 'ARCHIVED';
 
 export type CompetitorDTO = {
   id: string;
@@ -92,7 +93,7 @@ export type CompetitorDTO = {
   description?: string | null;
   productCount: number;
   marketPosition?: number | null;
-  status: CompetitorStatus;
+  status: CompetitorStatus | TrackedCompetitorStatus;
   categories: string[];
   lastScrapedAt?: string | null;
   createdAt: string;
@@ -100,6 +101,15 @@ export type CompetitorDTO = {
   _count?: {
     priceComparisons: number;
   };
+  // Populated when fetched via tenantCompanyId (TrackedCompetitor join)
+  trackedId?: string;
+  trackedStatus?: TrackedCompetitorStatus;
+  priority?: number;
+  nickname?: string | null;
+  addedAt?: string;
+  pauseReason?: string | null;
+  slug?: string | null;
+  country_code?: string | null;
 };
 
 export type CompetitorPriceComparisonDTO = {

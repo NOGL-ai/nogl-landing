@@ -365,20 +365,40 @@ async function getDomainsToProcess(
   return result.rows.map((row) => row.domain);
 }
 
+/**
+ * Derive the `source` key the scraping DB uses for a given company domain.
+ *  calumet.de       -> calumet
+ *  www.asos.com     -> asos
+ *  foo.co.uk        -> foo
+ */
+function domainToSourceKey(domain: string): string {
+  return domain
+    .toLowerCase()
+    .replace(/^www\./, "")
+    .split(".")[0];
+}
+
 async function bridgeDomain(
   scraperClient: PgClient,
   landingClient: PgClient,
   domain: string
 ): Promise<number> {
+  // Broadened filter: pick rows where either the URL contains the domain
+  // OR the scraping pipeline tagged `source` with the company's short key.
+  // This catches legacy rows (~3k for calumet) where URL domains differ but
+  // the crawler stamped source='calumet'.
+  const sourceKey = domainToSourceKey(domain);
   const scraperResult = await scraperClient.query<ScrapedItemRow>(
     `
       SELECT DISTINCT ON (url) url, payload, created_at
       FROM scraping.scraped_items
-      WHERE url ILIKE $1
+      WHERE (url ILIKE $1 OR source = $2)
         AND payload IS NOT NULL
+        AND (payload->>'title') IS NOT NULL
+        AND (payload->>'title') !~ '^[0-9]{3}'
       ORDER BY url ASC, created_at DESC
     `,
-    [`%${domain}%`]
+    [`%${domain}%`, sourceKey]
   );
 
   let insertedCount = 0;
