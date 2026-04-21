@@ -30,7 +30,8 @@ jobs:
             npm run build
 
             echo "=== Restart web server ==="
-            pm2 restart next --update-env
+            pm2 restart next --update-env || pm2 start ecosystem.config.js --env production
+            pm2 save
             sleep 5
             curl -sf http://localhost:3000/api/health && echo "Health OK" || echo "Health check failed (server still starting)"
 
