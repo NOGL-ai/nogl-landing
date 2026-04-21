@@ -108,6 +108,7 @@ export type CompanyCompetitorPreviewDTO = {
   name: string;
   slug: string | null;
   logoUrl: string | null;
+  domain?: string | null;
 };
 
 export type CompanyDatasetQualityUiStatus = "ok" | "warning";

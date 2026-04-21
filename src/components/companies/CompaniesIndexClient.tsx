@@ -92,7 +92,21 @@ function CompanyCard({
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-bg-tertiary text-sm font-semibold text-text-tertiary">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={`https://img.logo.dev/${company.domain}?format=png&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ`}
+            alt=""
+            className="h-9 w-9 shrink-0 rounded-lg border border-border-primary bg-bg-primary object-contain p-0.5"
+            onError={(e) => {
+              const img = e.currentTarget as HTMLImageElement;
+              img.style.display = "none";
+              img.nextElementSibling?.removeAttribute("hidden");
+            }}
+          />
+          <div
+            hidden
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-bg-tertiary text-sm font-semibold text-text-tertiary"
+          >
             {company.name.slice(0, 2).toUpperCase()}
           </div>
           <div className="min-w-0">
@@ -373,7 +387,21 @@ export function CompaniesIndexClient({ companies, pagination, lang, error = null
                         onClick={() => handleCompanyVisit(company)}
                         className="flex items-center gap-3"
                       >
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-bg-tertiary text-xs font-semibold text-text-tertiary">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={`https://img.logo.dev/${company.domain}?format=png&size=40&token=pk_bjGBOZlPTmCYjnqmgu3OpQ`}
+                          alt=""
+                          className="h-8 w-8 shrink-0 rounded-lg border border-border-primary bg-bg-primary object-contain p-0.5"
+                          onError={(e) => {
+                            const img = e.currentTarget as HTMLImageElement;
+                            img.style.display = "none";
+                            img.nextElementSibling?.removeAttribute("hidden");
+                          }}
+                        />
+                        <div
+                          hidden
+                          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-bg-tertiary text-xs font-semibold text-text-tertiary"
+                        >
                           {company.name.slice(0, 2).toUpperCase()}
                         </div>
                         <div>
