@@ -11,25 +11,23 @@ export default async function OverviewPage({
 }) {
   const { slug, lang } = await params;
 
+  let data: CompanyOverviewResponse;
   try {
     const baseUrl = await getBaseUrl();
     const response = await fetch(`${baseUrl}/api/companies/${slug}`, {
       cache: "no-store",
     });
-
-    if (!response.ok) {
-      notFound();
-    }
-
-    const data = (await response.json()) as CompanyOverviewResponse;
-
-    // Redirect stale id-based URLs to the canonical slug URL
-    if (data.company.slug && data.company.slug !== slug) {
-      redirect(`/${lang}/companies/${data.company.slug}/overview`);
-    }
-
-    return <OverviewTab data={data} />;
+    if (!response.ok) notFound();
+    data = (await response.json()) as CompanyOverviewResponse;
   } catch {
     notFound();
   }
+
+  // Redirect stale id-based URLs to the canonical slug URL — must be outside
+  // try/catch because Next.js redirect() throws internally and catch would swallow it.
+  if (data!.company.slug && data!.company.slug !== slug) {
+    redirect(`/${lang}/companies/${data!.company.slug}/overview`);
+  }
+
+  return <OverviewTab data={data!} />;
 }
