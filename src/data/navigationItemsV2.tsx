@@ -184,6 +184,29 @@ export const navigationStructure: NavigationSection[] = [
                             },
                         ],
                     },
+                    // ── Tools (accordion) ────────────────────────────────
+                    {
+                        label: 'Tools',
+                        icon: Settings03,
+                        isAccordionGroup: true,
+                        groupItems: [
+                            {
+                                label: 'Product Type Taxonomy',
+                                href: '/en/tools/taxonomy',
+                                icon: LayersThree01,
+                            },
+                            {
+                                label: 'Product Editor',
+                                href: '/en/tools/product-editor',
+                                icon: Package,
+                            },
+                            {
+                                label: 'Exports',
+                                href: '/en/tools/exports',
+                                icon: Share01,
+                            },
+                        ],
+                    },
                 ],
             },
 
