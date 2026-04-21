@@ -103,21 +103,21 @@ export function PriceHistoryChart({
   }, [history]);
 
   if (!mounted) {
-    return <div className="h-64 animate-pulse rounded-xl bg-muted" />;
+    return <div className="h-64 animate-pulse rounded-xl bg-bg-tertiary" />;
   }
 
   if (history.length === 0) {
     return (
-      <div className="flex h-40 items-center justify-center rounded-xl border border-border bg-muted/30">
-        <p className="text-sm text-muted-foreground">No price history available</p>
+      <div className="flex h-40 items-center justify-center rounded-xl border border-border-primary bg-bg-secondary">
+        <p className="text-sm text-text-tertiary">No price history available</p>
       </div>
     );
   }
 
   if (history.length === 1) {
     return (
-      <div className="flex h-32 items-center justify-center rounded-xl border border-border bg-muted/30">
-        <p className="text-sm text-muted-foreground">
+      <div className="flex h-32 items-center justify-center rounded-xl border border-border-primary bg-bg-secondary">
+        <p className="text-sm text-text-tertiary">
           Price History: {fmtPrice(history[0].price)} (no changes tracked)
         </p>
       </div>
@@ -245,15 +245,15 @@ export function PriceHistoryChart({
 
       {/* Tooltip row */}
       {activePoint && (
-        <div className="flex items-center justify-between rounded-lg border border-border/60 bg-muted/30 px-3 py-2 text-sm">
-          <span className="text-muted-foreground">{activePoint.label}</span>
-          <span className="font-semibold text-foreground">
+        <div className="flex items-center justify-between rounded-lg border border-border-primary/60 bg-bg-secondary px-3 py-2 text-sm">
+          <span className="text-text-tertiary">{activePoint.label}</span>
+          <span className="font-semibold text-text-primary">
             {fmtPrice(activePoint.price)}
           </span>
         </div>
       )}
 
-      <p className="text-xs text-muted-foreground">
+      <p className="text-xs text-text-tertiary">
         {history.length} data point{history.length !== 1 ? "s" : ""} tracked
       </p>
     </div>

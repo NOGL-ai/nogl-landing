@@ -11,7 +11,7 @@ export function DatasetQualityCallout({ variant }: DatasetQualityCalloutProps) {
 
   if (variant === "ok") {
     return (
-      <div className="flex items-center gap-2 rounded-full border border-border bg-bg-secondary px-3 py-1 text-xs font-medium text-emerald-700">
+      <div className="flex items-center gap-2 rounded-full border border-border-primary bg-bg-secondary px-3 py-1 text-xs font-medium text-text-success">
         <CheckCircle2 className="h-4 w-4 shrink-0" aria-hidden />
         <span>{t("datasetQualityOk")}</span>
       </div>
@@ -19,7 +19,7 @@ export function DatasetQualityCallout({ variant }: DatasetQualityCalloutProps) {
   }
 
   return (
-    <div className="flex items-center gap-2 rounded-full border border-border bg-bg-secondary px-3 py-1 text-xs font-medium text-orange-600">
+    <div className="flex items-center gap-2 rounded-full border border-border-primary bg-bg-secondary px-3 py-1 text-xs font-medium text-orange-600">
       <svg className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
         <path
           strokeLinecap="round"
