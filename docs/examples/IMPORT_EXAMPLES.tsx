@@ -54,8 +54,8 @@ import {
 // ============================================
 
 // For production builds, consider specific imports for better tree-shaking
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/components/base/buttons/button";
+import { Input } from "@/components/base/input/input";
 import { Modal } from "@/components/ui/modal";
 
 // Dynamic imports for large components that aren't always needed
