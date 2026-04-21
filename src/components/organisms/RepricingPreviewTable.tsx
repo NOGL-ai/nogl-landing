@@ -1,5 +1,5 @@
 "use client";
-import { FilterFunnel01 as Filter, CheckSquare, XSquare, ChevronDown } from '@untitledui/icons';
+import { FilterFunnel01 as Filter, CheckSquare, XSquare, ChevronDown, AlertTriangle, LayoutGrid01 } from '@untitledui/icons';
 
 
 import React, { useState, useMemo, useTransition } from "react";
@@ -23,9 +23,10 @@ type StatusFilter = "ALL" | RepricingProposalDTO["status"];
 interface Props {
   job: RepricingJobDTO & { ruleName?: string };
   proposals: RepricingProposalDTO[];
+  discoveryCount?: number;
 }
 
-export function RepricingPreviewTable({ job, proposals }: Props) {
+export function RepricingPreviewTable({ job, proposals, discoveryCount }: Props) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -52,6 +53,10 @@ export function RepricingPreviewTable({ job, proposals }: Props) {
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / ROWS_PER_PAGE));
   const pageRows = filtered.slice((page - 1) * ROWS_PER_PAGE, page * ROWS_PER_PAGE);
+
+  const isStale = job.startedAt
+    ? Date.now() - new Date(job.startedAt).getTime() > 6 * 60 * 60 * 1000
+    : false;
 
   const willApplyRows = proposals.filter((p) => p.status === "WILL_APPLY");
   const totalImpact = willApplyRows.reduce((sum, p) => {
@@ -125,6 +130,20 @@ export function RepricingPreviewTable({ job, proposals }: Props) {
 
   return (
     <div className="flex flex-col gap-4">
+      {/* ─── Discovery banner ───────────────────────────────────────────── */}
+      {(discoveryCount ?? 0) > 0 && (
+        <div className="flex items-center gap-3 rounded-xl border border-warning-200 bg-warning-50 px-4 py-3">
+          <AlertTriangle className="h-4 w-4 shrink-0 text-warning-600" />
+          <p className="text-sm text-text-secondary">
+            <span className="font-semibold text-text-primary">Competitors auto-discovery complete</span>
+            {" — "}{discoveryCount} new competitor suggestions are ready.{" "}
+            <a href="/en/companies/competitor" className="text-text-brand underline-offset-2 hover:underline">
+              Review here
+            </a>
+          </p>
+        </div>
+      )}
+
       {/* ─── Stats ──────────────────────────────────────────────────────── */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <StatCard label="Analyzed" value={job.productsAnalyzed} />
@@ -146,6 +165,21 @@ export function RepricingPreviewTable({ job, proposals }: Props) {
 
       {/* ─── Toolbar ────────────────────────────────────────────────────── */}
       <div className="flex flex-wrap items-center gap-2 rounded-lg border border-border-primary bg-background px-3 py-2">
+        {/* Columns + Filters */}
+        <Button color="secondary" size="sm" className="flex items-center gap-1.5 border-border-primary">
+          <LayoutGrid01 className="h-4 w-4" />
+          Columns
+        </Button>
+        <Button color="secondary" size="sm" className="flex items-center gap-1.5 border-border-primary">
+          <Filter className="h-4 w-4" />
+          Filters
+          {statusFilter !== "ALL" && (
+            <span className="ml-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-brand-solid text-[10px] text-white">
+              1
+            </span>
+          )}
+        </Button>
+
         {/* Status filter */}
         <div className="relative">
           <select
@@ -202,10 +236,18 @@ export function RepricingPreviewTable({ job, proposals }: Props) {
             onClick={() => requestApply(undefined)}
             isDisabled={isPending || willApplyRows.length === 0}
           >
-            Apply all ({willApplyRows.length})
+            Launch all rules preview ({willApplyRows.length})
           </Button>
         </div>
       </div>
+
+      {/* ─── Stale preview warning ──────────────────────────────────────── */}
+      {isStale && (
+        <div className="flex items-center gap-2 rounded-lg border border-warning-200 bg-warning-50 px-3 py-2 text-xs text-warning-700">
+          <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
+          One or more rules were triggered over 6 hours ago. Please launch a new preview.
+        </div>
+      )}
 
       {/* ─── Table ──────────────────────────────────────────────────────── */}
       <div className="overflow-x-auto rounded-xl border border-border-primary bg-background">
@@ -221,16 +263,16 @@ export function RepricingPreviewTable({ job, proposals }: Props) {
                   aria-label="Select all on this page"
                 />
               </Th>
-              <Th>Product</Th>
-              <Th>Triggered rule</Th>
+              <Th>Product Name</Th>
+              <Th>Triggered Rule</Th>
               <Th className="text-right">Price</Th>
               <Th className="text-right">Cost</Th>
               <Th className="text-right">Markup</Th>
-              <Th className="text-right">New price</Th>
-              <Th>Min / Max</Th>
-              <Th>Competitor prices</Th>
+              <Th className="text-right">New Price</Th>
+              <Th>Min/Max Price</Th>
+              <Th>Competitor Prices</Th>
               <Th>Status</Th>
-              <Th>Executed</Th>
+              <Th>Executed At</Th>
               <Th>Actions</Th>
             </tr>
           </thead>
@@ -251,6 +293,7 @@ export function RepricingPreviewTable({ job, proposals }: Props) {
                 proposal={proposal}
                 jobName={job.ruleName}
                 executedAt={job.finishedAt ?? job.startedAt}
+                isStale={isStale}
                 selected={selected.has(proposal.id)}
                 onToggleSelect={() => toggleRow(proposal.id)}
                 onApprove={() => requestApply([proposal.id])}
@@ -327,6 +370,7 @@ function ProposalRow({
   proposal,
   jobName,
   executedAt,
+  isStale,
   selected,
   onToggleSelect,
   onApprove,
@@ -336,6 +380,7 @@ function ProposalRow({
   proposal: RepricingProposalDTO;
   jobName?: string;
   executedAt: Date | string | null | undefined;
+  isStale: boolean;
   selected: boolean;
   onToggleSelect: () => void;
   onApprove: () => void;
@@ -366,17 +411,26 @@ function ProposalRow({
       {/* Product */}
       <Td>
         <div>
-          <p className="font-medium text-text-primary">{proposal.productSku}</p>
+          <p className="font-medium text-text-primary line-clamp-2">
+            {proposal.productName ?? proposal.productSku}
+          </p>
           {proposal.productName && (
-            <p className="text-xs text-text-secondary line-clamp-1">
-              {proposal.productName}
+            <p className="mt-0.5 font-mono text-xs text-text-tertiary">
+              {proposal.productSku}
             </p>
           )}
         </div>
       </Td>
 
       {/* Triggered rule */}
-      <Td className="text-text-secondary">{jobName ?? "—"}</Td>
+      <Td>
+        <div>
+          <p className="text-text-secondary">{jobName ?? "—"}</p>
+          {isStale && (
+            <p className="mt-0.5 text-[10px] text-warning-600">Old Preview Data</p>
+          )}
+        </div>
+      </Td>
 
       {/* Price */}
       <Td className="text-right font-mono text-text-primary">
