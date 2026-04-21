@@ -28,7 +28,6 @@ import {
     BookOpen01,
     Database01,
     CheckSquare,
-    Image03,
     Activity,
     CpuChip01,
 } from "@untitledui/icons";
@@ -85,6 +84,11 @@ export const navigationStructure: NavigationSection[] = [
                 label: 'Fractional CMO',
                 icon: Target04,
                 subItems: [
+                    // ── Digital Shelf Analytics (section heading) ────────
+                    {
+                        label: 'Digital Shelf Analytics',
+                        isSubHeading: true,
+                    },
                     {
                         label: 'Competitor Explorer',
                         href: '/en/companies',
@@ -96,37 +100,19 @@ export const navigationStructure: NavigationSection[] = [
                         icon: Star01,
                     },
                     {
-                        label: 'Market Trends',
+                        label: 'Trends',
                         href: '/en/trends',
                         icon: TrendUp02,
                     },
-                    // ── Marketing Assets (accordion) ─────────────────────
                     {
-                        label: 'Marketing Assets',
+                        label: 'Marketing Asset Library',
+                        href: '/en/marketing-assets',
                         icon: LayersThree01,
-                        isAccordionGroup: true,
-                        groupItems: [
-                            {
-                                label: 'Overview',
-                                href: '/en/marketing-assets',
-                                icon: BarChartSquare02,
-                            },
-                            {
-                                label: 'Creatives',
-                                href: '/en/marketing-assets/creatives',
-                                icon: Image03,
-                            },
-                            {
-                                label: 'Raw Events',
-                                href: '/en/marketing-assets/events',
-                                icon: Database01,
-                            },
-                            {
-                                label: 'Accounts',
-                                href: '/en/marketing-assets/accounts',
-                                icon: UserSquare,
-                            },
-                        ],
+                    },
+                    {
+                        label: 'Events Feed',
+                        href: '/en/marketing-assets/events',
+                        icon: Database01,
                     },
 
                     // ── Ad Scoring (accordion) ───────────────────────────
