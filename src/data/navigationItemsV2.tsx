@@ -30,7 +30,6 @@ import {
     CheckSquare,
     Activity,
     CpuChip01,
-    Image03,
 } from "@untitledui/icons";
 import type { ReactNode } from "react";
 
@@ -85,27 +84,24 @@ export const navigationStructure: NavigationSection[] = [
                 label: 'Fractional CMO',
                 icon: Target04,
                 subItems: [
-                    // ── Digital Self Analytics ────────────────────────────
-                    { label: 'Digital Self Analytics', isSubHeading: true },
-                    { label: 'Competitor Explorer',    href: '/en/companies',            icon: SearchMd },
-                    { label: 'Tracked Competitors',    href: '/en/companies/competitor', icon: Star01 },
-                    { label: 'Market Trends',          href: '/en/trends',               icon: TrendUp02 },
+                    // ── Digital Shelf Analytics (accordion) ──────────────
                     {
-                        label: 'Marketing Assets',
-                        icon: LayersThree01,
+                        label: 'Digital Shelf Analytics',
+                        icon: BarChartSquare02,
                         isAccordionGroup: true,
                         groupItems: [
-                            { label: 'Overview',   href: '/en/marketing-assets',           icon: BarChartSquare02 },
-                            { label: 'Creatives',  href: '/en/marketing-assets/creatives', icon: Image03 },
-                            { label: 'Raw Events', href: '/en/marketing-assets/events',    icon: Database01 },
-                            { label: 'Accounts',   href: '/en/marketing-assets/accounts',  icon: UserSquare },
+                            { label: 'Competitor Explorer', href: '/en/companies',              icon: SearchMd },
+                            { label: 'Tracked Competitors', href: '/en/companies/competitor',   icon: Star01 },
+                            { label: 'Trends',              href: '/en/trends',                 icon: TrendUp02 },
+                            { label: 'Asset Library',       href: '/en/marketing-assets',       icon: LayersThree01 },
+                            { label: 'Events Feed',         href: '/en/marketing-assets/events',icon: Database01 },
+                            { label: 'Product Explorer',    href: '/en/product-explorer',       icon: Package },
                         ],
                     },
-                    // ── Ad Performance ────────────────────────────────────
-                    { label: 'Ad Performance', isSubHeading: true },
+                    // ── Creative Scoring (accordion) ─────────────────────
                     {
-                        label: 'Ad Scoring',
-                        icon: Star01,
+                        label: 'Creative Scoring',
+                        icon: Beaker02,
                         isAccordionGroup: true,
                         groupItems: [
                             { label: 'Upload & Score', href: '/en/ad-scoring/assets',  icon: Upload01 },
@@ -113,21 +109,31 @@ export const navigationStructure: NavigationSection[] = [
                             { label: 'Brands',         href: '/en/ad-scoring/brands',  icon: BarChartSquare02 },
                         ],
                     },
-                    // ── Analytics ─────────────────────────────────────────
-                    { label: 'Analytics', isSubHeading: true },
+                    // ── Advanced Analysis (accordion) ────────────────────
                     {
-                        label: 'Advanced Analytics',
+                        label: 'Advanced Analysis',
                         icon: BarChartSquare02,
                         isAccordionGroup: true,
                         groupItems: [
-                            { label: 'Dashboards',     href: '/en/analytics/dashboards',   icon: BarChartSquare02 },
-                            { label: 'Compare',        href: '/en/analytics/compare',      icon: Grid03 },
-                            { label: 'Tools',          href: '/en/analytics/tools',        icon: BarChart02 },
-                            { label: 'Benchmarking',   href: '/en/analytics/benchmarking', icon: LineChartUp03 },
-                            { label: 'Product Export', href: '/en/analytics/export',       icon: Share01 },
+                            { label: 'Dashboards',           href: '/en/analytics/dashboards',    icon: BarChartSquare02 },
+                            { label: 'Compare',              href: '/en/analytics/compare',       icon: Grid03 },
+                            { label: 'Competitive Compare',  href: '/en/analytics/multi-company', icon: Grid03 },
+                            { label: 'Product Matrix',       href: '/en/analytics/product-matrix',icon: Grid03 },
+                            { label: 'Benchmarking',         href: '/en/analytics/benchmarking',  icon: LineChartUp03 },
+                            { label: 'White Space',          href: '/en/analytics/white-space',   icon: BarChart02 },
                         ],
                     },
-                    { label: 'Product Catalog', href: '/en/product-explorer', icon: Package },
+                    // ── Tools (accordion) ────────────────────────────────
+                    {
+                        label: 'Tools',
+                        icon: Settings03,
+                        isAccordionGroup: true,
+                        groupItems: [
+                            { label: 'Taxonomy',       href: '/en/tools/taxonomy',        icon: Grid03 },
+                            { label: 'Product Editor', href: '/en/tools/product-editor',  icon: FileCheck02 },
+                            { label: 'Exports',        href: '/en/tools/exports',         icon: Share01 },
+                        ],
+                    },
                 ],
             },
 
