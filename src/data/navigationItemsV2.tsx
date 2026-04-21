@@ -191,7 +191,7 @@ export const navigationStructure: NavigationSection[] = [
                         isAccordionGroup: true,
                         groupItems: [
                             {
-                                label: 'Product Type Taxonomy',
+                                label: 'Taxonomy',
                                 href: '/en/tools/taxonomy',
                                 icon: Grid03,
                             },
