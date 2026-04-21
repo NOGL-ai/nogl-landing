@@ -345,82 +345,98 @@ export function CompareClient() {
     colHelper.accessor("rank", {
       header: "Rank",
       enableSorting: true,
-      meta: { align: "center" },
+      meta: { align: "center", thClass: "w-10 sm:w-12", tdClass: "w-10 sm:w-12" },
       cell: (info) => (
         <span className="tabular-nums text-muted-foreground">{info.getValue()}</span>
       ),
     }),
     colHelper.display({
       id: "competitor",
-      header: "Competitor",
+      header: "Brand",
       enableSorting: false,
-      meta: { align: "left" },
+      meta: {
+        align: "center",
+        thClass: "w-11 px-2 sm:w-14 sm:px-3",
+        tdClass: "w-11 px-2 sm:w-14 sm:px-3",
+      },
       cell: (info) => {
         const brand = info.row.original.company_name;
         return (
-          <Tooltip delayDuration={200}>
-            <TooltipTrigger asChild>
-              <button
-                type="button"
-                className="inline-flex shrink-0 rounded-full outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                aria-label={brand}
-              >
-                <div className="relative h-6 w-6 shrink-0">
-                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-[9px] font-bold text-primary">
-                    {info.row.original.company_initials}
+          <div className="flex justify-center">
+            <Tooltip delayDuration={200}>
+              <TooltipTrigger asChild>
+                <button
+                  type="button"
+                  className="inline-flex shrink-0 rounded-full outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  aria-label={brand}
+                >
+                  <div className="relative h-8 w-8 shrink-0 sm:h-9 sm:w-9">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-[10px] font-semibold text-primary shadow-inner ring-1 ring-border/70 sm:h-9 sm:w-9 sm:text-[11px]">
+                      {info.row.original.company_initials}
+                    </div>
+                    {info.row.original.company_logo_url ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={info.row.original.company_logo_url}
+                        alt=""
+                        className="absolute inset-0 h-8 w-8 rounded-full border border-border/80 bg-background object-contain p-0.5 shadow-sm ring-1 ring-black/5 sm:h-9 sm:w-9"
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                        }}
+                      />
+                    ) : null}
                   </div>
-                  {info.row.original.company_logo_url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={info.row.original.company_logo_url}
-                      alt=""
-                      className="absolute inset-0 h-6 w-6 rounded-full border border-border bg-background object-contain p-0.5"
-                      onError={(e) => {
-                        e.currentTarget.style.display = "none";
-                      }}
-                    />
-                  ) : null}
-                </div>
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="top" sideOffset={6}>
-              {brand}
-            </TooltipContent>
-          </Tooltip>
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="top" sideOffset={6}>
+                {brand}
+              </TooltipContent>
+            </Tooltip>
+          </div>
         );
       },
     }),
     colHelper.accessor("product_title", {
-      header: "Product Title",
+      header: "Product",
       enableSorting: true,
-      meta: { align: "left" },
-      cell: (info) => (
-        <span className="max-w-[200px] truncate font-medium text-foreground" title={info.getValue()}>
-          {info.getValue()}
-        </span>
-      ),
+      meta: {
+        align: "left",
+        thClass: "min-w-0 w-[32%] sm:w-[34%] lg:w-[36%]",
+        tdClass: "min-w-0 w-[32%] sm:w-[34%] lg:w-[36%]",
+      },
+      cell: (info) => {
+        const title = info.getValue();
+        return (
+          <p
+            className="m-0 line-clamp-2 text-left text-xs font-normal leading-snug tracking-tight text-muted-foreground sm:text-[13px] sm:leading-snug sm:text-foreground/90"
+            title={title}
+          >
+            {title}
+          </p>
+        );
+      },
     }),
     colHelper.display({
       id: "image",
       header: "Image",
       enableSorting: false,
-      meta: { align: "center" },
+      meta: { align: "center", thClass: "w-14 sm:w-16", tdClass: "w-14 sm:w-16" },
       cell: (info) =>
         info.row.original.image_url ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={info.row.original.image_url}
             alt={info.row.original.product_title}
-            className="h-10 w-10 rounded object-cover"
+            className="mx-auto h-9 w-9 rounded object-cover ring-1 ring-border/60 sm:h-10 sm:w-10"
           />
         ) : (
-          <div className="mx-auto h-10 w-10 rounded bg-muted" />
+          <div className="mx-auto h-9 w-9 rounded bg-muted ring-1 ring-border/40 sm:h-10 sm:w-10" />
         ),
     }),
     colHelper.accessor("price", {
       header: "Price",
       enableSorting: true,
-      meta: { align: "right" },
+      meta: { align: "right", thClass: "w-[4.5rem] sm:w-24", tdClass: "w-[4.5rem] sm:w-24" },
       cell: (info) => (
         <span className="tabular-nums text-foreground">{fmtPrice(info.getValue())}</span>
       ),
@@ -428,7 +444,7 @@ export function CompareClient() {
     colHelper.accessor("avg_discount_pct", {
       header: "Avg. Discount",
       enableSorting: true,
-      meta: { align: "right" },
+      meta: { align: "right", thClass: "w-24 sm:w-28", tdClass: "w-24 sm:w-28" },
       cell: (info) => {
         const v = info.getValue();
         return v > 0 ? (
@@ -441,7 +457,7 @@ export function CompareClient() {
     colHelper.accessor("variant_count", {
       header: "# Variants",
       enableSorting: true,
-      meta: { align: "right" },
+      meta: { align: "right", thClass: "w-16 sm:w-20", tdClass: "w-16 sm:w-20" },
       cell: (info) => (
         <span className="tabular-nums text-muted-foreground">{info.getValue()}</span>
       ),
@@ -450,9 +466,9 @@ export function CompareClient() {
       id: "actions",
       header: "Actions",
       enableSorting: false,
-      meta: { align: "center" },
+      meta: { align: "center", thClass: "w-36 sm:w-44", tdClass: "w-36 sm:w-44" },
       cell: (info) => (
-        <div className="flex items-center justify-center gap-1.5">
+        <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-1.5">
           <Link
             href={`/en/companies?company=${encodeURIComponent(info.row.original.company_slug)}`}
             className="inline-flex items-center gap-1 rounded-md border border-border bg-background px-2 py-1 text-xs font-medium text-foreground transition-colors hover:bg-muted"
@@ -669,20 +685,22 @@ export function CompareClient() {
           </div>
 
           {/* Table */}
-          <div className="overflow-x-auto">
-            <table className="min-w-full text-sm">
+          <div className="overflow-x-auto [-webkit-overflow-scrolling:touch]">
+            <table className="w-full min-w-[36rem] table-fixed text-sm sm:min-w-[52rem]">
               <thead className="border-b border-border bg-card">
                 {productTable.getHeaderGroups().map((headerGroup) => (
                   <tr key={headerGroup.id}>
                     {headerGroup.headers.map((header) => {
                       const align = header.column.columnDef.meta?.align ?? "left";
+                      const thExtra = header.column.columnDef.meta?.thClass ?? "";
                       const canSort = header.column.getCanSort();
                       return (
                         <th
                           key={header.id}
-                          className={`whitespace-nowrap px-4 py-2.5 text-xs font-medium uppercase tracking-wider text-muted-foreground
+                          className={`whitespace-nowrap px-3 py-2 text-xs font-medium uppercase tracking-wider text-muted-foreground sm:px-4 sm:py-2.5
                             ${align === "right" ? "text-right" : align === "center" ? "text-center" : "text-left"}
                             ${canSort ? "cursor-pointer select-none hover:text-foreground" : ""}
+                            ${thExtra}
                           `}
                           onClick={canSort ? header.column.getToggleSortingHandler() : undefined}
                         >
@@ -699,11 +717,13 @@ export function CompareClient() {
                   <tr key={row.id} className="transition-colors hover:bg-muted/20">
                     {row.getVisibleCells().map((cell) => {
                       const align = cell.column.columnDef.meta?.align ?? "left";
+                      const tdExtra = cell.column.columnDef.meta?.tdClass ?? "";
                       return (
                         <td
                           key={cell.id}
-                          className={`px-4 py-3
+                          className={`px-3 py-2 align-middle sm:px-4 sm:py-2.5
                             ${align === "right" ? "text-right" : align === "center" ? "text-center" : "text-left"}
+                            ${tdExtra}
                           `}
                         >
                           {flexRender(cell.column.columnDef.cell, cell.getContext())}

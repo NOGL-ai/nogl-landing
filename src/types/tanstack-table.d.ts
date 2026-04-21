@@ -10,5 +10,9 @@ declare module "@tanstack/react-table" {
     align?: "left" | "center" | "right";
     /** Used by ProductDataTable to mark the row-header column */
     isRowHeader?: boolean;
+    /** Extra classes on <th> (e.g. width) */
+    thClass?: string;
+    /** Extra classes on <td> (e.g. min-w-0 for truncation) */
+    tdClass?: string;
   }
 }
