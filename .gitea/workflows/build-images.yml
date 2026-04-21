@@ -28,13 +28,9 @@ jobs:
             echo "=== Sync code from Gitea ==="
             mkdir -p /root/nogl-builds
             if [ -d /root/nogl-builds/nogl-landing/.git ]; then
-              cd /root/nogl-builds/nogl-landing
-              git fetch origin main
-              git reset --hard origin/main
+              cd /root/nogl-builds/nogl-landing && git fetch origin main && git reset --hard origin/main
             else
-              git clone http://nogladmin:${NOGL_REGISTRY_TOKEN}@10.10.10.171:3000/nogladmin/nogl-landing.git \
-                /root/nogl-builds/nogl-landing
-              cd /root/nogl-builds/nogl-landing
+              git clone "http://nogladmin:${NOGL_REGISTRY_TOKEN}@10.10.10.171:3000/nogladmin/nogl-landing.git" /root/nogl-builds/nogl-landing && cd /root/nogl-builds/nogl-landing
             fi
 
             SHA=$(git rev-parse --short HEAD)
