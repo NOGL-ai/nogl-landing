@@ -1,0 +1,64 @@
+name: Build and push worker images
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-worker-images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build & push worker images via pve03
+        uses: appleboy/ssh-action@v1
+        env:
+          NOGL_REGISTRY_TOKEN: ${{ secrets.NOGL_REGISTRY_TOKEN }}
+        with:
+          host: 10.10.10.24
+          username: root
+          key: ${{ secrets.NOGL_PVE03_SSH_KEY }}
+          envs: NOGL_REGISTRY_TOKEN
+          command_timeout: 90m
+          script: |
+            set -e
+            export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+            REGISTRY=10.10.10.171:3000
+            ORG=nogladmin
+
+            echo "=== Sync code from Gitea ==="
+            mkdir -p /root/nogl-builds
+            if [ -d /root/nogl-builds/nogl-landing/.git ]; then
+              cd /root/nogl-builds/nogl-landing && git fetch origin main && git reset --hard origin/main
+            else
+              git clone "http://nogladmin:${NOGL_REGISTRY_TOKEN}@10.10.10.171:3000/nogladmin/nogl-landing.git" /root/nogl-builds/nogl-landing && cd /root/nogl-builds/nogl-landing
+            fi
+
+            SHA=$(git rev-parse --short HEAD)
+            echo "Building SHA: $SHA"
+
+            echo "=== Disk check before build ==="
+            DISK_FREE=$(df / --output=avail -BG | tail -1 | tr -d 'G')
+            echo "Disk free: ${DISK_FREE}G"
+            if [ "${DISK_FREE}" -lt 5 ]; then
+              echo "Low disk — pruning before build"
+              docker system prune -af --filter until=24h
+            fi
+
+            echo "=== Login to Gitea registry ==="
+            echo "$NOGL_REGISTRY_TOKEN" | docker login "$REGISTRY" -u "$ORG" --password-stdin
+
+            echo "=== Build nogl-worker-ingest ==="
+            INGEST_IMAGE="$REGISTRY/$ORG/nogl-worker-ingest"
+            docker build --network=host --cache-from "$INGEST_IMAGE:latest" -t "$INGEST_IMAGE:$SHA" -t "$INGEST_IMAGE:latest" -f docker/worker-ingest.Dockerfile .
+            docker push "$INGEST_IMAGE:$SHA"
+            docker push "$INGEST_IMAGE:latest"
+
+            echo "=== Build nogl-worker-browser ==="
+            BROWSER_IMAGE="$REGISTRY/$ORG/nogl-worker-browser"
+            docker build --network=host --cache-from "$BROWSER_IMAGE:latest" -t "$BROWSER_IMAGE:$SHA" -t "$BROWSER_IMAGE:latest" -f docker/worker-browser.Dockerfile .
+            docker push "$BROWSER_IMAGE:$SHA"
+            docker push "$BROWSER_IMAGE:latest"
+
+            echo "=== Prune dangling images ==="
+            docker image prune -f
+            echo "=== Build complete: $SHA ==="

@@ -88,6 +88,9 @@ tsconfig.tsbuildinfo
 
 # Scripts that aren't needed in production
 scripts
+# Allow worker entry scripts (needed by worker Docker images)
+!scripts/start-workers-data.ts
+!scripts/start-workers-browser.ts
 
 # Test databases
 *.db
@@ -97,3 +100,8 @@ test-*.js
 # Vercel
 .vercel
 vercel.json
+
+# Worker infra (not needed in web app image)
+docker
+docker-compose.workers.yml
+komodo

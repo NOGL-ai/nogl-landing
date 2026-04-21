@@ -1,0 +1,20 @@
+# Shared ignore file for worker Docker builds.
+# Reference from docker build context: use --file docker/worker-*.Dockerfile
+# from the repo root so this file is NOT auto-picked — it's here for documentation.
+# The root .dockerignore applies to all builds from the repo root.
+
+# These should NOT reach the worker image build context:
+src/app
+src/components
+src/hooks
+src/middleware.ts
+src/middleware
+public
+tests
+.next
+.next-build
+.storybook
+.github
+.gitea
+docs
+*.md
