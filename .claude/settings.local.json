@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(rm -rf \"C:/Users/TUHIN~1.MAL/AppData/Local/Temp/claude\")",
-      "Bash(wmic logicaldisk *)"
+      "Bash(wmic logicaldisk *)",
+      "Bash(pnpm tsc *)",
+      "Bash(npx tsc *)"
     ]
   }
 }
