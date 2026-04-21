@@ -16,6 +16,7 @@ import {
 
 
 import { Card } from "@/components/ui/card";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { FilterBar, PeriodChip } from "@/components/companies/FilterBar";
 import { fmtPrice } from "@/components/companies/pricing/utils";
 import type { PriceDistributionBucket } from "@/types/company";
@@ -357,30 +358,35 @@ export function CompareClient() {
       cell: (info) => {
         const brand = info.row.original.company_name;
         return (
-          <div
-            className="inline-flex cursor-default shrink-0"
-            title={brand}
-            aria-label={brand}
-          >
-            <span className="sr-only">{brand}</span>
-            <div className="relative h-6 w-6 shrink-0">
-              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-[9px] font-bold text-primary">
-                {info.row.original.company_initials}
-              </div>
-              {info.row.original.company_logo_url ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={info.row.original.company_logo_url}
-                  alt=""
-                  className="absolute inset-0 h-6 w-6 rounded-full border border-border bg-background object-contain p-0.5"
-                  onError={(e) => {
-                    // Hide broken favicon and reveal initials badge underneath.
-                    e.currentTarget.style.display = "none";
-                  }}
-                />
-              ) : null}
-            </div>
-          </div>
+          <Tooltip delayDuration={200}>
+            <TooltipTrigger asChild>
+              <button
+                type="button"
+                className="inline-flex shrink-0 rounded-full outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                aria-label={brand}
+              >
+                <div className="relative h-6 w-6 shrink-0">
+                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-[9px] font-bold text-primary">
+                    {info.row.original.company_initials}
+                  </div>
+                  {info.row.original.company_logo_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={info.row.original.company_logo_url}
+                      alt=""
+                      className="absolute inset-0 h-6 w-6 rounded-full border border-border bg-background object-contain p-0.5"
+                      onError={(e) => {
+                        e.currentTarget.style.display = "none";
+                      }}
+                    />
+                  ) : null}
+                </div>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="top" sideOffset={6}>
+              {brand}
+            </TooltipContent>
+          </Tooltip>
         );
       },
     }),
