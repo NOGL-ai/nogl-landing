@@ -132,9 +132,9 @@ const ROWS_PER_PAGE_OPTIONS = [10, 25, 50, 100];
 const colHelper = createColumnHelper<TrackedProduct>();
 
 function SortIcon({ isSorted }: { isSorted: false | "asc" | "desc" }) {
-  if (isSorted === "asc") return <ArrowUp className="ml-1 inline h-3 w-3" />;
-  if (isSorted === "desc") return <ArrowDown className="ml-1 inline h-3 w-3" />;
-  return <ArrowUpDown className="ml-1 inline h-3 w-3 opacity-30" />;
+  if (isSorted === "asc") return <ArrowUp className="h-3 w-3 shrink-0" aria-hidden />;
+  if (isSorted === "desc") return <ArrowDown className="h-3 w-3 shrink-0" aria-hidden />;
+  return <ArrowUpDown className="h-3 w-3 shrink-0 opacity-40" aria-hidden />;
 }
 
 function PriceTrackedProductsColumnSettings({ table }: { table: Table<TrackedProduct> }) {
@@ -440,8 +440,8 @@ export function CompareClient() {
       enableSorting: true,
       meta: {
         align: "center",
-        thClass: "w-10 sm:w-12",
-        tdClass: "w-10 sm:w-12",
+        thClass: "min-w-0 w-10 sm:w-12",
+        tdClass: "min-w-0 w-10 sm:w-12",
         configureLabel: "Rank",
       },
       cell: (info) => (
@@ -454,8 +454,8 @@ export function CompareClient() {
       enableSorting: false,
       meta: {
         align: "center",
-        thClass: "w-11 px-2 sm:w-14 sm:px-3",
-        tdClass: "w-11 px-2 sm:w-14 sm:px-3",
+        thClass: "min-w-0 w-11 px-1.5 sm:w-14 sm:px-3",
+        tdClass: "min-w-0 w-11 px-1.5 sm:w-14 sm:px-3",
         configureLabel: "Competitor",
       },
       cell: (info) => {
@@ -522,8 +522,8 @@ export function CompareClient() {
       enableSorting: false,
       meta: {
         align: "center",
-        thClass: "w-14 sm:w-16",
-        tdClass: "w-14 sm:w-16",
+        thClass: "min-w-0 w-14 sm:w-16",
+        tdClass: "min-w-0 w-14 sm:w-16",
         configureLabel: "Image",
       },
       cell: (info) =>
@@ -543,8 +543,8 @@ export function CompareClient() {
       enableSorting: true,
       meta: {
         align: "right",
-        thClass: "w-[4.5rem] sm:w-24",
-        tdClass: "w-[4.5rem] sm:w-24",
+        thClass: "min-w-0 w-[5rem] sm:w-24",
+        tdClass: "min-w-0 w-[5rem] sm:w-24",
         configureLabel: "Price",
         configureInfo:
           "Latest observed selling price for this product from tracked storefronts (primary variant or best offer when multiple).",
@@ -558,8 +558,8 @@ export function CompareClient() {
       enableSorting: true,
       meta: {
         align: "right",
-        thClass: "w-24 sm:w-28",
-        tdClass: "w-24 sm:w-28",
+        thClass: "min-w-0 w-[7.25rem] sm:w-32",
+        tdClass: "min-w-0 w-[7.25rem] sm:w-32",
         configureLabel: "Avg. Discount",
         configureInfo:
           "Approximate discount versus list or reference price when list data exists; otherwise shown as unavailable.",
@@ -578,8 +578,8 @@ export function CompareClient() {
       enableSorting: true,
       meta: {
         align: "right",
-        thClass: "w-16 sm:w-20",
-        tdClass: "w-16 sm:w-20",
+        thClass: "min-w-0 w-[4.5rem] sm:w-24",
+        tdClass: "min-w-0 w-[4.5rem] sm:w-24",
         configureLabel: "# Variants",
       },
       cell: (info) => (
@@ -592,8 +592,8 @@ export function CompareClient() {
       enableSorting: false,
       meta: {
         align: "center",
-        thClass: "w-36 sm:w-44",
-        tdClass: "w-36 sm:w-44",
+        thClass: "min-w-0 w-[8.5rem] sm:w-44",
+        tdClass: "min-w-0 w-[8.5rem] sm:w-44",
         configureLabel: "Actions",
       },
       cell: (info) => (
@@ -755,11 +755,11 @@ export function CompareClient() {
         {/* ── Price Tracked Products table ── */}
         <Card className="overflow-hidden p-0">
           {/* Section header */}
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-5 py-3">
-            <h2 className="text-sm font-semibold text-foreground">Price Tracked Products</h2>
-            <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-3 sm:px-5">
+            <h2 className="min-w-0 text-sm font-semibold text-foreground">Price Tracked Products</h2>
+            <div className="flex flex-wrap items-center justify-end gap-2 sm:flex-nowrap">
               {/* Sort by */}
-              <div className="flex items-center gap-1.5">
+              <div className="flex min-w-0 flex-1 basis-[14rem] items-center gap-1.5 sm:flex-none sm:basis-auto">
                 <span className="text-xs text-muted-foreground">Sort by:</span>
                 <select
                   value={sortBy}
@@ -825,7 +825,7 @@ export function CompareClient() {
 
           {/* Table */}
           <div className="overflow-x-auto [-webkit-overflow-scrolling:touch]">
-            <table className="w-full min-w-[36rem] table-fixed text-sm sm:min-w-[52rem]">
+            <table className="w-full min-w-[38rem] table-fixed text-sm sm:min-w-[54rem]">
               <thead className="border-b border-border bg-card">
                 {productTable.getHeaderGroups().map((headerGroup) => (
                   <tr key={headerGroup.id}>
@@ -833,18 +833,42 @@ export function CompareClient() {
                       const align = header.column.columnDef.meta?.align ?? "left";
                       const thExtra = header.column.columnDef.meta?.thClass ?? "";
                       const canSort = header.column.getCanSort();
+                      const justify =
+                        align === "right"
+                          ? "justify-end"
+                          : align === "center"
+                            ? "justify-center"
+                            : "justify-start";
                       return (
                         <th
                           key={header.id}
-                          className={`whitespace-nowrap px-3 py-2 text-xs font-medium uppercase tracking-wider text-muted-foreground sm:px-4 sm:py-2.5
-                            ${align === "right" ? "text-right" : align === "center" ? "text-center" : "text-left"}
+                          className={`min-w-0 px-2 py-2 align-bottom text-[10px] font-medium uppercase leading-tight tracking-wide text-muted-foreground sm:px-4 sm:py-2.5 sm:text-xs sm:tracking-wider
                             ${canSort ? "cursor-pointer select-none hover:text-foreground" : ""}
                             ${thExtra}
                           `}
+                          scope="col"
                           onClick={canSort ? header.column.getToggleSortingHandler() : undefined}
                         >
-                          {flexRender(header.column.columnDef.header, header.getContext())}
-                          {canSort && <SortIcon isSorted={header.column.getIsSorted()} />}
+                          <div
+                            className={`flex min-w-0 flex-wrap items-end gap-x-1 gap-y-0.5 sm:flex-nowrap sm:items-center ${justify}`}
+                          >
+                            <span
+                              className={`min-w-0 max-w-full hyphens-auto break-words [overflow-wrap:anywhere] sm:max-w-none ${
+                                align === "right"
+                                  ? "text-right"
+                                  : align === "center"
+                                    ? "text-center"
+                                    : "text-left"
+                              }`}
+                            >
+                              {flexRender(header.column.columnDef.header, header.getContext())}
+                            </span>
+                            {canSort ? (
+                              <span className="inline-flex shrink-0 pb-px sm:pb-0" aria-hidden>
+                                <SortIcon isSorted={header.column.getIsSorted()} />
+                              </span>
+                            ) : null}
+                          </div>
                         </th>
                       );
                     })}
@@ -860,7 +884,7 @@ export function CompareClient() {
                       return (
                         <td
                           key={cell.id}
-                          className={`px-3 py-2 align-middle sm:px-4 sm:py-2.5
+                          className={`min-w-0 px-2 py-2 align-middle sm:px-4 sm:py-2.5
                             ${align === "right" ? "text-right" : align === "center" ? "text-center" : "text-left"}
                             ${tdExtra}
                           `}
@@ -879,7 +903,7 @@ export function CompareClient() {
                       {productTable.getVisibleLeafColumns().map((col) => (
                         <td
                           key={col.id}
-                          className="px-3 py-2 text-center text-muted-foreground/30 sm:px-4 sm:py-2.5"
+                          className="min-w-0 px-2 py-2 text-center text-muted-foreground/30 sm:px-4 sm:py-2.5"
                         >
                           —
                         </td>
