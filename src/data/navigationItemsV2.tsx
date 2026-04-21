@@ -115,6 +115,11 @@ export const navigationStructure: NavigationSection[] = [
                                 href: '/en/marketing-assets/events',
                                 icon: Database01,
                             },
+                            {
+                                label: 'Product Explorer',
+                                href: '/en/product-explorer',
+                                icon: Package,
+                            },
                         ],
                     },
 
@@ -140,11 +145,6 @@ export const navigationStructure: NavigationSection[] = [
                                 icon: BarChartSquare02,
                             },
                         ],
-                    },
-                    {
-                        label: 'Product Explorer',
-                        href: '/en/product-explorer',
-                        icon: Package,
                     },
                     // ── Advanced Analysis (accordion) ────────────────────
                     {
