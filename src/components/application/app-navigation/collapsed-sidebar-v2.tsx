@@ -189,11 +189,7 @@ const CollapsedSidebarV2: React.FC<CollapsedSidebarV2Props> = ({
         if (item.href && !item.subItems) {
             handleNavigation(item.href);
         } else if (item.subItems) {
-            if (hoveredItem === item.id) {
-                setHoveredItem(null);
-            } else {
-                openPanelForItem(item.id);
-            }
+            openPanelForItem(item.id);
         }
     }, [handleNavigation, hoveredItem, openPanelForItem]);
 

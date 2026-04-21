@@ -30,13 +30,15 @@ export type OverviewResponse = {
   totals: { events_7d: number; creatives_total: number; accounts_unmapped: number };
 };
 
-type RawEventDay = { day: string; platform: string; cnt: bigint };
-type RawCreative = {
-  id: string; platform: string; media_url: string | null;
-  thumbnail_url: string | null; caption: string | null;
-  first_seen_at: Date; hook_score: unknown; handle: string | null;
+// Map MarketingAsset.assetType → EventsPerDayRow column
+const ASSET_TYPE_TO_COL: Record<string, keyof Omit<EventsPerDayRow, "day" | "total">> = {
+  META_AD: "META_ADS_LIBRARY",
+  INSTAGRAM: "INSTAGRAM",
+  TIKTOK_AD: "TIKTOK",
+  FACEBOOK: "FACEBOOK",
 };
-type RawCount = { n: bigint };
+
+type RawDayRow = { day: Date; asset_type: string; cnt: bigint };
 
 export async function GET() {
   try {
@@ -49,7 +51,8 @@ export async function GET() {
     return NextResponse.json(resp);
   } catch {
     const empty: OverviewResponse = {
-      eventsPerDay: [], recentCreatives: [],
+      eventsPerDay: [],
+      recentCreatives: [],
       totals: { events_7d: 0, creatives_total: 0, accounts_unmapped: 0 },
     };
     return NextResponse.json(empty);
@@ -57,12 +60,15 @@ export async function GET() {
 }
 
 async function getEventsPerDay(): Promise<EventsPerDayRow[]> {
-  const rows = (await prisma.$queryRawUnsafe(
-    `SELECT date_trunc('day', ts) AS day, platform, COUNT(*) AS cnt
-     FROM ads_events."AdEvent"
-     WHERE ts >= NOW() - INTERVAL '30 days'
-     GROUP BY 1, 2 ORDER BY 1 ASC`,
-  )) as RawEventDay[];
+  const rows = (await prisma.$queryRaw`
+    SELECT date_trunc('day', "capturedAt") AS day,
+           "assetType" AS asset_type,
+           COUNT(*) AS cnt
+    FROM assets."MarketingAsset"
+    WHERE "capturedAt" >= NOW() - INTERVAL '30 days'
+    GROUP BY 1, 2
+    ORDER BY 1 ASC
+  `) as RawDayRow[];
 
   const byDay = new Map<string, EventsPerDayRow>();
   for (const r of rows) {
@@ -72,43 +78,47 @@ async function getEventsPerDay(): Promise<EventsPerDayRow[]> {
     }
     const entry = byDay.get(key)!;
     const n = Number(r.cnt);
-    const platform = r.platform as keyof Omit<EventsPerDayRow, "day" | "total">;
-    if (platform in entry) (entry[platform] as number) += n;
+    const col = ASSET_TYPE_TO_COL[r.asset_type];
+    if (col) entry[col] += n;
     entry.total += n;
   }
   return Array.from(byDay.values());
 }
 
 async function getRecentCreatives(): Promise<RecentCreative[]> {
-  const rows = (await prisma.$queryRawUnsafe(
-    `SELECT c.id, c.platform, c.media_url, c.thumbnail_url, c.caption,
-            c.first_seen_at, m.hook_score, a.handle
-     FROM ads_events."AdCreative" c
-     JOIN ads_events."AdAccount" a ON a.id = c.account_id
-     LEFT JOIN LATERAL (
-       SELECT hook_score FROM ads_events."AdMetricDaily"
-       WHERE creative_id = c.id ORDER BY day DESC LIMIT 1
-     ) m ON true
-     ORDER BY c.first_seen_at DESC LIMIT 12`,
-  )) as RawCreative[];
-  return rows.map((r) => ({
-    id: r.id, platform: r.platform,
-    media_url: r.media_url, thumbnail_url: r.thumbnail_url, caption: r.caption,
-    first_seen_at: new Date(r.first_seen_at).toISOString(),
-    hook_score: r.hook_score != null ? String(r.hook_score) : null,
-    handle: r.handle,
+  const assets = await prisma.marketingAsset.findMany({
+    take: 12,
+    orderBy: { capturedAt: "desc" },
+    select: {
+      id: true,
+      assetType: true,
+      mediaUrls: true,
+      title: true,
+      capturedAt: true,
+      brandId: true,
+    },
+  });
+  return assets.map((a) => ({
+    id: a.id,
+    platform: a.assetType,
+    media_url: a.mediaUrls[0] ?? null,
+    thumbnail_url: a.mediaUrls[0] ?? null,
+    caption: a.title,
+    first_seen_at: a.capturedAt.toISOString(),
+    hook_score: null,
+    handle: a.brandId,
   }));
 }
 
 async function getTotals() {
-  const [evts, creatives, unmapped] = (await Promise.all([
-    prisma.$queryRawUnsafe(`SELECT COUNT(*) AS n FROM ads_events."AdEvent" WHERE ts >= NOW() - INTERVAL '7 days'`),
-    prisma.$queryRawUnsafe(`SELECT COUNT(*) AS n FROM ads_events."AdCreative"`),
-    prisma.$queryRawUnsafe(`SELECT COUNT(*) AS n FROM ads_events."AdAccount" WHERE status = 'UNMAPPED'`),
-  ])) as [RawCount[], RawCount[], RawCount[]];
+  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+  const [creatives_total, events_7d] = await Promise.all([
+    prisma.marketingAsset.count(),
+    prisma.marketingAsset.count({ where: { capturedAt: { gte: sevenDaysAgo } } }),
+  ]);
   return {
-    events_7d: Number(evts[0].n),
-    creatives_total: Number(creatives[0].n),
-    accounts_unmapped: Number(unmapped[0].n),
+    events_7d,
+    creatives_total,
+    accounts_unmapped: 0,
   };
 }

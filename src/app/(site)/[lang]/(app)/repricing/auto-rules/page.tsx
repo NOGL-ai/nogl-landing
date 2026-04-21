@@ -21,5 +21,5 @@ export const metadata: Metadata = {
 export default async function AutoRepricingRulesPage() {
 	// Server-side fetch — falls back to empty list if not authenticated yet
 	const rules = await listRules().catch(() => []);
-	return <RepricingRules initialRules={rules} />;
+	return <RepricingRules initialRules={rules} discoveryCount={0} />;
 }

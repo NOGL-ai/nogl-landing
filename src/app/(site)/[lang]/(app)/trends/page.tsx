@@ -1,4 +1,3 @@
-    "use server";
 import { Suspense } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { TrendsGrid, TrendsGridSkeleton } from "@/components/trends/TrendsGrid";
@@ -36,6 +35,7 @@ async function InternalTab({ lang, period }: { lang: string; period: Period }) {
   }
 
   async function handleRefresh() {
+    "use server";
     await refreshTrends();
   }
 
