@@ -64,7 +64,7 @@ async function getEventsPerDay(): Promise<EventsPerDayRow[]> {
     SELECT date_trunc('day', "capturedAt") AS day,
            "assetType" AS asset_type,
            COUNT(*) AS cnt
-    FROM "MarketingAsset"
+    FROM assets."MarketingAsset"
     WHERE "capturedAt" >= NOW() - INTERVAL '30 days'
     GROUP BY 1, 2
     ORDER BY 1 ASC
