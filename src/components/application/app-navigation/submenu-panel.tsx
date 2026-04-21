@@ -196,7 +196,7 @@ export const SubmenuPanel: React.FC<SubmenuPanelProps> = ({
             <div className="flex flex-col justify-between h-full border border-(--color-gray-200) dark:border-(--color-gray-800) bg-white dark:bg-(--color-gray-950) rounded-r-xl overflow-hidden">
                 <div className="flex flex-col items-start gap-2 self-stretch px-4 pt-6 flex-1 min-h-0">
                     <h2 className="self-stretch text-(--color-brand-700) dark:text-(--color-gray-300) font-semibold text-[14px] leading-5 shrink-0">
-                        {item.label}
+                        {item.panelTitle ?? item.label}
                     </h2>
 
                     <nav className="flex flex-col items-start self-stretch gap-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] flex-1">

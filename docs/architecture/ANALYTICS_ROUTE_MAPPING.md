@@ -6,15 +6,13 @@ Ensure analytics navigation links always resolve to implemented pages and avoid 
 
 ## Current Mapping
 
-- `/en/analytics/compare` -> `CompareClient` page
-- `/en/analytics/multi-company` -> `CompareClient` page (competitive compare entry point)
-- Shared UI component: `src/app/(site)/[lang]/(app)/analytics/_components/ComparePageContent.tsx`
+- `/en/analytics/compare` -> **Two-company snapshot**: `TwoCompanyCompareClient` (`src/components/analytics/compare/TwoCompanyCompareClient.tsx`), wrapped by `compare/page.tsx`.
+- `/en/analytics/multi-company` -> **Full competitive analysis**: `CompareClient` via `ComparePageContent` (`src/app/(site)/[lang]/(app)/analytics/_components/ComparePageContent.tsx`).
 
 ## Rationale
 
-- Sidebar navigation includes a "Competitive Compare" item that points to `/en/analytics/multi-company`.
-- A dedicated `multi-company` page keeps legacy/deep links stable and prevents empty or missing-content states.
-- Both routes intentionally render the same comparison experience for now.
+- **Compare** is a focused “A vs B” metrics view using the same summary API; **Competitive Compare** is the full multi-company workspace (tables, charts, filters).
+- A dedicated `multi-company` page keeps legacy/deep links stable.
 
 ## Maintenance Rule
 

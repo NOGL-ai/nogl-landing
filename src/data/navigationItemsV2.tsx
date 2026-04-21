@@ -30,6 +30,7 @@ import {
     CheckSquare,
     Activity,
     CpuChip01,
+    SwitchHorizontal01 as CompareCompaniesIcon,
 } from "@untitledui/icons";
 import type { ReactNode } from "react";
 
@@ -46,6 +47,8 @@ export interface SubMenuItem {
 export interface IconMenuItem {
     id: string;
     label: string;
+    /** Expanded flyout title (defaults to `label` when omitted). */
+    panelTitle?: string;
     icon: any;
     href?: string;
     subItems?: SubMenuItem[];
@@ -82,6 +85,7 @@ export const navigationStructure: NavigationSection[] = [
             {
                 id: 'fractional-cmo',
                 label: 'Fractional CMO',
+                panelTitle: 'Marketing & analytics',
                 icon: Target04,
                 subItems: [
                     // ── Digital Shelf Analytics (accordion) ──────────────
@@ -116,7 +120,7 @@ export const navigationStructure: NavigationSection[] = [
                         isAccordionGroup: true,
                         groupItems: [
                             { label: 'Dashboards',           href: '/en/analytics/dashboards',    icon: BarChartSquare02 },
-                            { label: 'Compare',              href: '/en/analytics/compare',       icon: Grid03 },
+                            { label: 'Compare',              href: '/en/analytics/compare',       icon: CompareCompaniesIcon },
                             { label: 'Competitive Compare',  href: '/en/analytics/multi-company', icon: Grid03 },
                             { label: 'Product Matrix',       href: '/en/analytics/product-matrix',icon: Grid03 },
                             { label: 'Benchmarking',         href: '/en/analytics/benchmarking',  icon: LineChartUp03 },
