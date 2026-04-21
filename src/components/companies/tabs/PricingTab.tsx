@@ -11,6 +11,7 @@ import {
 
 
 import { useEffect, useMemo, useState } from "react";
+import { useParams } from "next/navigation";
 import {
   createColumnHelper,
   flexRender,
@@ -547,16 +548,6 @@ export function PricingTab({ slug }: PricingTabProps) {
             </Card>
           )}
         </div>
-        <p className="text-xs text-text-tertiary">
-          Found:{" "}
-          <span className="font-medium text-text-primary">{formatNumber(data.total_products)}</span>{" "}
-          products ·{" "}
-          <span className="font-medium text-text-primary">{formatNumber(data.total_variants)}</span>{" "}
-          variants ·{" "}
-          <span className="font-medium text-text-primary">{formatNumber(data.total_datapoints)}</span>{" "}
-          total datapoints
-        </p>
-      </div>
 
         {/* Right column (2/3): Product Types table — rows are clickable */}
         <Card className="overflow-hidden p-0 lg:col-span-2">
@@ -637,7 +628,7 @@ export function PricingTab({ slug }: PricingTabProps) {
             </div>
           )}
         </Card>
-      )}
+      </div>
 
 
       {/* ── Product table ──────────────────────────────────────────────────── */}

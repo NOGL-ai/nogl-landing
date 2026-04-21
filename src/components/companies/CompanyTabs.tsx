@@ -2,9 +2,6 @@
 import { LayoutGrid01 as LayoutGrid } from '@untitledui/icons';
 
 
-import { LayoutGrid01 as LayoutGrid } from '@untitledui/icons';
-
-
 import { useEffect, useState } from "react";
 
 import { useTranslations } from "next-intl";

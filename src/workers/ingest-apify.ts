@@ -1,4 +1,5 @@
 import { ApifyClient } from "apify-client";
+import { Prisma } from "@prisma/client";
 
 import { prisma } from "@/lib/prismaDb";
 import { QUEUE_NAMES, makeWorker, getQueue } from "@/lib/queue";
@@ -64,12 +65,12 @@ async function writeAsset(
 			region: asset.region ?? null,
 			mediaUrls: asset.mediaUrls,
 			contentHash: asset.contentHash,
-			payload: asset.payload,
+			payload: asset.payload as Prisma.InputJsonValue,
 		},
 		update: {
 			capturedAt: asset.capturedAt,
 			mediaUrls: asset.mediaUrls,
-			payload: asset.payload,
+			payload: asset.payload as Prisma.InputJsonValue,
 		},
 	});
 }

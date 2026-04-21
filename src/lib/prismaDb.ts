@@ -72,5 +72,5 @@ if (databaseUrl && process.env.NODE_ENV !== 'production') {
   globalForPrisma.prisma = prismaClient;
 }
 
-export const prisma: any = prismaClient;
+export const prisma: PrismaClient = prismaClient as PrismaClient;
 export const isPrismaAvailable = Boolean(databaseUrl);

@@ -2,9 +2,6 @@
 import { X, Download01 as Download } from '@untitledui/icons';
 
 
-import { X, Download01 as Download } from '@untitledui/icons';
-
-
 import { useState } from "react";
 
 import { ToggleGroup } from "./ToggleGroup";

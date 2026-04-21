@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prismaDb";
 import { publishAlert, alertChannel } from "@/lib/alertBus";
 import type { AlertAudience, AlertType, AlertSeverity } from "@prisma/client";
@@ -48,7 +49,7 @@ export async function createAlert(input: AlertCreateInput) {
       estimatedImpact: input.estimatedImpact,
       impactCurrency: input.impactCurrency ?? "EUR",
       impactWindowDays: input.impactWindowDays ?? 180,
-      metadata: input.metadata ?? {},
+      metadata: (input.metadata ?? {}) as Prisma.InputJsonValue,
       assignedToUserId: input.assignedToUserId,
     },
   });

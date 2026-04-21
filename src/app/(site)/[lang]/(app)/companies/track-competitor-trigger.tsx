@@ -2,9 +2,6 @@
 import { Plus } from '@untitledui/icons';
 
 
-import { Plus } from '@untitledui/icons';
-
-
 import React from "react";
 
 

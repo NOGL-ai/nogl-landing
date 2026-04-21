@@ -2,9 +2,6 @@
 import { ChevronDown, ChevronRight, RefreshCcw01 as RotateCcw, Eye } from '@untitledui/icons';
 
 
-import { ChevronDown, ChevronRight, RefreshCcw01 as RotateCcw, Eye } from '@untitledui/icons';
-
-
 import React, { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";

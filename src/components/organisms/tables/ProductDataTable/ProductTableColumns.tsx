@@ -7,16 +7,17 @@ import { SortableHeader } from "../DataTable/DataTableHeader";
 import { SelectionCheckbox } from "../DataTable/DataTableSelection";
 import { Badge } from "@/components/ui/badge";
 import { Button } from '@/components/base/buttons/button';
-import { 
-	Eye, 
-	Edit01, 
-	Copy01, 
-	Trash01, 
-	CheckCircle, 
+import {
+	Eye,
+	Edit01,
+	Copy01,
+	Trash01,
+	CheckCircle,
 	AlertCircle,
 	ArrowUp,
 	ArrowDown,
-	ArrowsUp
+	ArrowsUp,
+	DotsVertical,
 } from "@untitledui/icons";
 import {
 	DropdownMenu,
@@ -24,7 +25,6 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { DotsVertical } from "@untitledui/icons";
 
 // Channel icons mapping
 const CHANNEL_ICONS: Record<string, { icon: React.ComponentType<any>; title: string; color: string }> = {

@@ -2,9 +2,6 @@
 import { ChevronDown, ChevronRight, SearchLg as Search } from '@untitledui/icons';
 
 
-import { ChevronDown, ChevronRight, SearchLg as Search } from '@untitledui/icons';
-
-
 import { useState } from "react";
 
 import type { CategoryWithVariants } from "@/types/forecast";

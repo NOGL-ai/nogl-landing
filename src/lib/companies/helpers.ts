@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Prisma } from "@prisma/client";
 
 import { prisma } from "@/lib/prisma";
@@ -18,6 +17,7 @@ import {
   CompanySnapshotDTO,
   CompanySocialLinksDTO,
   GetCompaniesResponse,
+  PriceDistributionBucket,
 } from "@/types/company";
 import { PageMeta } from "@/types/product";
 import { isFeatureEnabled } from "@/lib/featureFlags";
@@ -246,6 +246,14 @@ function createPagination(page: number, limit: number, total: number): PageMeta 
 
 function parseCount(value: bigint | number): number {
   return typeof value === "bigint" ? Number(value) : value;
+}
+
+function simpleHash(str: string): number {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) {
+    h = Math.imul(31, h) + str.charCodeAt(i);
+  }
+  return Math.abs(h);
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -1048,7 +1056,7 @@ export async function getCompanyEventsResponse(params: {
 
       events = rows.map(mapEventRowToDTO);
       total = parseCount(countRows[0]?.count ?? 0);
-      if (events.length === 0 && !hasFilters) {
+      if (events.length === 0 && !hasFilters && process.env.NODE_ENV !== 'production') {
         console.log(`[events] No events found for company ${company.id} (${company.name}). Table exists but may be empty.`);
       }
     } catch (error) {
@@ -1134,7 +1142,6 @@ export async function getCompanyPricingResponse(params: {
   slug: string;
   page: number;
   limit: number;
-  sort?: 'price_asc' | 'price_desc' | 'discount_desc' | 'last_seen_desc';
   productType?: string;
   minPrice?: number;
   maxPrice?: number;
@@ -1337,8 +1344,8 @@ export async function getCompanyPricingResponse(params: {
     max_price: toNullableNumber(aggregate.max_price),
     product_types: productTypes,
     price_distribution: priceDist,
-    top_products: topProductRows.map((r) => ({
-      product_id: r.product_id ?? `tp-${Math.random()}`,
+    top_products: topProductRows.map((r, idx) => ({
+      product_id: r.product_id ?? `tp-${company.slug}-${idx}`,
       product_title: r.product_title ?? "Unknown Product",
       product_image_url: r.product_page_image_url,
       product_url: r.product_url,
@@ -1382,7 +1389,9 @@ export async function getCompanyAssetsResponse(params: {
   let total = 0;
 
   const tableExists = await relationExists("nogl", "CompanyAsset");
-  console.log(`[assets] CompanyAsset table exists: ${tableExists}, company: ${company.name} (${company.id})`);
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`[assets] CompanyAsset table exists: ${tableExists}, company: ${company.name} (${company.id})`);
+  }
 
   if (tableExists) {
     try {
@@ -1422,9 +1431,13 @@ export async function getCompanyAssetsResponse(params: {
 
       items = rows.map(mapAssetRowToDTO);
       total = parseCount(countRows[0]?.count ?? 0);
-      console.log(`[assets] Found ${items.length} assets for ${company.name} (total: ${total})`);
+      if (process.env.NODE_ENV !== 'production') {
+        console.log(`[assets] Found ${items.length} assets for ${company.name} (total: ${total})`);
+      }
     } catch (error) {
-      console.error(`[assets] Query failed for ${company.name}:`, error);
+      if (process.env.NODE_ENV !== 'production') {
+        console.error(`[assets] Query failed for ${company.name}:`, error);
+      }
       if (!isMissingRelationError(error)) {
         throw error;
       }
@@ -1432,7 +1445,9 @@ export async function getCompanyAssetsResponse(params: {
   }
 
   if (items.length === 0 && !params.channel) {
-    console.log(`[assets] No real assets for ${company.name} — returning placeholder set`);
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`[assets] No real assets for ${company.name} — returning placeholder set`);
+    }
     const placeholderChannels = ['instagram', 'meta_ads', 'email'];
     items = placeholderChannels.flatMap((channel, ci) =>
       Array.from({ length: 4 }, (_, i) => ({
@@ -1447,8 +1462,8 @@ export async function getCompanyAssetsResponse(params: {
           : channel === 'meta_ads'
           ? `Meta Ad creative ${i + 1} — placeholder until ad library scraping runs.`
           : `Email campaign ${i + 1} — placeholder until email ingestion pipeline runs.`,
-        likes: channel === 'instagram' ? Math.floor(Math.random() * 500) + 50 : null,
-        comments: channel === 'instagram' ? Math.floor(Math.random() * 50) + 5 : null,
+        likes: channel === 'instagram' ? (simpleHash(`${company.slug}-${channel}-${i}-l`) % 500) + 50 : null,
+        comments: channel === 'instagram' ? (simpleHash(`${company.slug}-${channel}-${i}-c`) % 50) + 5 : null,
         published_at: new Date(Date.now() - (ci * 4 + i) * 86400000).toISOString(),
         raw_payload: null,
         createdAt: new Date().toISOString(),

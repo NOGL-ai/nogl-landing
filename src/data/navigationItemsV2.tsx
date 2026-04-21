@@ -31,6 +31,7 @@ import {
     Image03,
     Activity,
     CpuChip01,
+    Sale02,
 } from "@untitledui/icons";
 import type { ReactNode } from "react";
 

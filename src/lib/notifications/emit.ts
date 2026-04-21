@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prismaDb";
 import { channelForUser, publish } from "./bus";
 import type { CreateNotificationInput } from "./types";
@@ -35,7 +36,7 @@ export async function createNotification(input: CreateNotificationInput) {
       description: input.description ?? null,
       actionUrl: input.actionUrl ?? null,
       actorId: input.actorId ?? null,
-      metadata: input.metadata ?? {},
+      metadata: (input.metadata ?? {}) as Prisma.InputJsonValue,
     },
     include: {
       actor: { select: { id: true, name: true, image: true } },

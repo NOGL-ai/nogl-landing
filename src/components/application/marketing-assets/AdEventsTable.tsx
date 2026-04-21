@@ -2,9 +2,6 @@
 import { ChevronUp, ChevronDown, ChevronSelectorVertical as ChevronsUpDown, ChevronLeft, ChevronRight } from '@untitledui/icons';
 
 
-import { ChevronUp, ChevronDown, ChevronSelectorVertical as ChevronsUpDown, ChevronLeft, ChevronRight } from '@untitledui/icons';
-
-
 import { useState, useEffect, useCallback } from "react";
 import {
   createColumnHelper,
