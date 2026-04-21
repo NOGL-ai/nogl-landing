@@ -24,7 +24,7 @@ export function ExportMenu({ onExportCsv, disabled }: ExportMenuProps) {
         <button
           type="button"
           disabled={disabled}
-          className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex items-center gap-1.5 rounded-full border border-border-primary bg-bg-primary px-3 py-1.5 text-xs font-medium text-text-tertiary transition-colors hover:bg-bg-secondary hover:text-text-primary disabled:cursor-not-allowed disabled:opacity-50"
         >
           <Download className="h-3.5 w-3.5" />
           Export
@@ -35,7 +35,7 @@ export function ExportMenu({ onExportCsv, disabled }: ExportMenuProps) {
         <DropdownMenuItem onClick={onExportCsv}>Export CSV</DropdownMenuItem>
         <DropdownMenuItem disabled>
           Export PDF
-          <span className="ml-2 text-[10px] text-muted-foreground">Coming soon</span>
+          <span className="ml-2 text-[10px] text-text-tertiary">Coming soon</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
