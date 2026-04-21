@@ -1,4 +1,4 @@
-import { CompareClient } from "@/components/analytics/compare/CompareClient";
+import { ComparePageContent } from "../_components/ComparePageContent";
 
 export const metadata = {
   title: "Multi-Company Analysis | NOGL",
@@ -6,9 +6,5 @@ export const metadata = {
 };
 
 export default function ComparePage() {
-  return (
-    <div className="flex flex-col gap-6 p-6 lg:p-8">
-      <CompareClient />
-    </div>
-  );
+  return <ComparePageContent />;
 }
