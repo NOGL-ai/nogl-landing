@@ -33,7 +33,7 @@ export default async function DashboardsPage({
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-1">
           <h1 className="text-2xl font-semibold tracking-tight">Dashboards</h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-text-tertiary">
             Build custom charts from your scraped data sources.
           </p>
         </div>
@@ -64,7 +64,7 @@ const PERSONA_COLORS: Record<string, string> = {
   CFO: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300",
   CMO: "bg-violet-50 text-violet-700 dark:bg-violet-950 dark:text-violet-300",
   OPS: "bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300",
-  GENERIC: "bg-muted text-muted-foreground",
+  GENERIC: "bg-bg-tertiary text-text-tertiary",
 };
 
 type DashboardSummary = {
@@ -90,14 +90,14 @@ function DashboardCard({
   return (
     <Link
       href={`/${lang}/analytics/dashboards/${dashboard.id}`}
-      className="group relative flex flex-col gap-3 rounded-xl border bg-card p-5 shadow-sm transition-shadow hover:shadow-md"
+      className="group relative flex flex-col gap-3 rounded-xl border bg-bg-primary p-5 shadow-sm transition-shadow hover:shadow-md"
     >
       {/* Top row */}
       <div className="flex items-start justify-between gap-2">
         <div className="flex min-w-0 flex-col gap-1">
           <span className="truncate font-medium leading-tight">{dashboard.name}</span>
           {dashboard.description && (
-            <span className="line-clamp-2 text-xs text-muted-foreground">
+            <span className="line-clamp-2 text-xs text-text-tertiary">
               {dashboard.description}
             </span>
           )}
@@ -112,7 +112,7 @@ function DashboardCard({
       </div>
 
       {/* Stats row */}
-      <div className="flex items-center gap-4 text-xs text-muted-foreground">
+      <div className="flex items-center gap-4 text-xs text-text-tertiary">
         <span className="flex items-center gap-1">
           <LayoutDashboardIcon className="h-3 w-3" />
           {dashboard.widgetCount} widget{dashboard.widgetCount !== 1 ? "s" : ""}
@@ -137,13 +137,13 @@ function DashboardCard({
 
 function EmptyState({ lang }: { lang: Locale }) {
   return (
-    <div className="flex flex-col items-center gap-4 rounded-xl border border-dashed bg-muted/30 py-20 text-center">
-      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-        <LayoutDashboardIcon className="h-6 w-6 text-muted-foreground" />
+    <div className="flex flex-col items-center gap-4 rounded-xl border border-dashed bg-bg-secondary py-20 text-center">
+      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-bg-tertiary">
+        <LayoutDashboardIcon className="h-6 w-6 text-text-tertiary" />
       </div>
       <div className="flex flex-col gap-1">
         <p className="font-medium">No dashboards yet</p>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-text-tertiary">
           Create your first dashboard to start exploring your data.
         </p>
       </div>
@@ -160,7 +160,7 @@ function DashboardGridSkeleton() {
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {[1, 2, 3].map((i) => (
-        <div key={i} className="h-32 animate-pulse rounded-xl border bg-muted" />
+        <div key={i} className="h-32 animate-pulse rounded-xl border bg-bg-tertiary" />
       ))}
     </div>
   );

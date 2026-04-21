@@ -61,16 +61,16 @@ const tierBadgeColors: Record<string, string> = {
 };
 
 function ScoreBar({ score }: { score: number | null }) {
-  if (score === null) return <span className="text-muted-foreground text-xs">—</span>;
+  if (score === null) return <span className="text-text-tertiary text-xs">—</span>;
   const pct = Math.round(score * 100);
   const color =
     pct >= 70 ? "bg-green-500" : pct >= 40 ? "bg-yellow-500" : "bg-red-500";
   return (
     <div className="flex items-center gap-2">
-      <div className="w-24 h-1.5 rounded-full bg-muted overflow-hidden">
+      <div className="w-24 h-1.5 rounded-full bg-bg-tertiary overflow-hidden">
         <div className={`h-full rounded-full ${color}`} style={{ width: `${pct}%` }} />
       </div>
-      <span className="text-xs font-medium text-foreground tabular-nums">{pct}%</span>
+      <span className="text-xs font-medium text-text-primary tabular-nums">{pct}%</span>
     </div>
   );
 }
@@ -78,9 +78,9 @@ function ScoreBar({ score }: { score: number | null }) {
 function MetricRow({ metric }: { metric: MetricDetail }) {
   const cfg = statusConfig[metric.status] ?? statusConfig.null_with_reason;
   return (
-    <tr className="border-b border-border hover:bg-muted/20 transition-colors">
+    <tr className="border-b border-border-primary hover:bg-bg-secondary transition-colors">
       <td className="px-4 py-3">
-        <span className="font-mono text-xs text-foreground">{metric.metric_key}</span>
+        <span className="font-mono text-xs text-text-primary">{metric.metric_key}</span>
       </td>
       <td className="px-4 py-3">
         <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${tierBadgeColors[metric.tier] ?? ""}`}>
@@ -96,12 +96,12 @@ function MetricRow({ metric }: { metric: MetricDetail }) {
       <td className="px-4 py-3">
         <ScoreBar score={metric.score_normalized ?? metric.score ?? null} />
       </td>
-      <td className="px-4 py-3 text-xs text-muted-foreground">
+      <td className="px-4 py-3 text-xs text-text-tertiary">
         {metric.confidence != null ? `${Math.round(metric.confidence * 100)}%` : "—"}
       </td>
-      <td className="px-4 py-3 text-xs text-muted-foreground max-w-xs">
+      <td className="px-4 py-3 text-xs text-text-tertiary max-w-xs">
         {(metric.reason ?? metric.null_reason)
-          ? <code className="bg-muted px-1 rounded">{metric.reason ?? metric.null_reason}</code>
+          ? <code className="bg-bg-tertiary px-1 rounded">{metric.reason ?? metric.null_reason}</code>
           : metric.raw_value_json
           ? <span className="truncate block">{JSON.stringify(metric.raw_value_json).slice(0, 60)}</span>
           : "—"}
@@ -162,11 +162,11 @@ export default async function AnalysisReportPage({
     return (
       <div className="p-6 max-w-3xl mx-auto text-center">
         <AlertTriangle className="h-10 w-10 text-yellow-500 mx-auto mb-3" />
-        <p className="text-muted-foreground">
-          Could not load report for run <code className="bg-muted px-1 rounded text-xs">{runId}</code>.
+        <p className="text-text-tertiary">
+          Could not load report for run <code className="bg-bg-tertiary px-1 rounded text-xs">{runId}</code>.
           The API may be unreachable or the run is still in progress.
         </p>
-        <a href="/ad-scoring/assets" className="mt-4 inline-block text-sm text-primary hover:underline">
+        <a href="/ad-scoring/assets" className="mt-4 inline-block text-sm text-text-brand hover:underline">
           ← Back to assets
         </a>
       </div>
@@ -187,7 +187,7 @@ export default async function AnalysisReportPage({
       : null;
 
   const scoreColor =
-    score === null ? "text-muted-foreground"
+    score === null ? "text-text-tertiary"
     : score >= 70 ? "text-green-600 dark:text-green-400"
     : score >= 40 ? "text-yellow-600 dark:text-yellow-400"
     : "text-red-600 dark:text-red-400";
@@ -196,37 +196,37 @@ export default async function AnalysisReportPage({
     <div className="p-6 max-w-6xl mx-auto space-y-8">
       {/* Header */}
       <div>
-        <a href="/ad-scoring/assets" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
+        <a href="/ad-scoring/assets" className="text-xs text-text-tertiary hover:text-text-primary transition-colors">
           ← Assets
         </a>
-        <h1 className="mt-2 text-2xl font-semibold text-foreground">
+        <h1 className="mt-2 text-2xl font-semibold text-text-primary">
           Analysis Report
         </h1>
-        <p className="mt-1 text-xs font-mono text-muted-foreground break-all">{runId}</p>
+        <p className="mt-1 text-xs font-mono text-text-tertiary break-all">{runId}</p>
       </div>
 
       {/* Summary cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
-          <p className="text-xs text-muted-foreground">Structural Score</p>
+        <div className="rounded-xl border border-border-primary bg-bg-primary p-4 shadow-sm">
+          <p className="text-xs text-text-tertiary">Structural Score</p>
           <p className={`text-3xl font-bold mt-1 ${scoreColor}`}>
             {score !== null ? `${score}%` : "—"}
           </p>
-          <p className="text-xs text-muted-foreground mt-1">Tier A + B only</p>
+          <p className="text-xs text-text-tertiary mt-1">Tier A + B only</p>
         </div>
-        <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
-          <p className="text-xs text-muted-foreground">Status</p>
-          <p className="text-xl font-semibold mt-1 capitalize text-foreground">{run.status}</p>
+        <div className="rounded-xl border border-border-primary bg-bg-primary p-4 shadow-sm">
+          <p className="text-xs text-text-tertiary">Status</p>
+          <p className="text-xl font-semibold mt-1 capitalize text-text-primary">{run.status}</p>
         </div>
-        <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
-          <p className="text-xs text-muted-foreground">Needs Review</p>
+        <div className="rounded-xl border border-border-primary bg-bg-primary p-4 shadow-sm">
+          <p className="text-xs text-text-tertiary">Needs Review</p>
           <p className="text-3xl font-bold mt-1 text-purple-600 dark:text-purple-400">
             {run.review_required_count ?? 0}
           </p>
         </div>
-        <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
-          <p className="text-xs text-muted-foreground">Pass / Warn / Fail</p>
-          <p className="text-base font-semibold mt-1 text-foreground">
+        <div className="rounded-xl border border-border-primary bg-bg-primary p-4 shadow-sm">
+          <p className="text-xs text-text-tertiary">Pass / Warn / Fail</p>
+          <p className="text-base font-semibold mt-1 text-text-primary">
             <span className="text-green-600 dark:text-green-400">{run.metrics_pass}</span>
             {" / "}
             <span className="text-yellow-600 dark:text-yellow-400">{run.metrics_warn}</span>
@@ -242,22 +242,22 @@ export default async function AnalysisReportPage({
         if (!rows || rows.length === 0) return null;
         return (
           <section key={tier}>
-            <h2 className="text-sm font-semibold text-foreground mb-2">
+            <h2 className="text-sm font-semibold text-text-primary mb-2">
               {tierLabels[tier]}
             </h2>
             {tier === "subjective" && (
-              <p className="text-xs text-muted-foreground mb-3 flex items-start gap-1.5">
+              <p className="text-xs text-text-tertiary mb-3 flex items-start gap-1.5">
                 <Info className="h-3.5 w-3.5 mt-0.5 shrink-0" />
                 Tier-C metrics are always routed to human review. Advisory VLM annotations
                 appear in the Semantic Summary below. These values never affect the structural score.
               </p>
             )}
-            <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-sm">
-              <table className="min-w-full divide-y divide-border text-sm">
-                <thead className="bg-muted/40">
+            <div className="overflow-x-auto rounded-xl border border-border-primary bg-bg-primary shadow-sm">
+              <table className="min-w-full divide-y divide-border-primary text-sm">
+                <thead className="bg-bg-secondary">
                   <tr>
                     {["Metric", "Tier", "Status", "Score", "Confidence", "Value / Reason"].map((h) => (
-                      <th key={h} className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                      <th key={h} className="px-4 py-3 text-left text-xs font-medium text-text-tertiary uppercase tracking-wider">
                         {h}
                       </th>
                     ))}
@@ -277,12 +277,12 @@ export default async function AnalysisReportPage({
       {/* VLM advisory annotations */}
       {advisory_semantic_summary.length > 0 && (
         <section>
-          <h2 className="text-sm font-semibold text-foreground mb-3">
+          <h2 className="text-sm font-semibold text-text-primary mb-3">
             Semantic Summary (Advisory — VLM annotations)
           </h2>
-          <p className="text-xs text-muted-foreground mb-3">
+          <p className="text-xs text-text-tertiary mb-3">
             Generated by{" "}
-            <code className="bg-muted px-1 rounded">
+            <code className="bg-bg-tertiary px-1 rounded">
               {advisory_semantic_summary[0]?.source_model ?? "VLM"}
             </code>
             . Confidence is capped at 0.50 for all VLM outputs. These are structured descriptions,
@@ -298,11 +298,11 @@ export default async function AnalysisReportPage({
                   <span className="text-xs font-medium text-purple-700 dark:text-purple-300 font-mono">
                     {tag.tag_type}
                   </span>
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-xs text-text-tertiary">
                     confidence {Math.round(tag.confidence * 100)}%
                   </span>
                 </div>
-                <p className="text-sm text-foreground">{tag.value}</p>
+                <p className="text-sm text-text-primary">{tag.value}</p>
               </div>
             ))}
           </div>
@@ -313,14 +313,14 @@ export default async function AnalysisReportPage({
       <div className="flex gap-3">
         <a
           href="/ad-scoring/reviews"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-bg-brand-solid text-white hover:opacity-90 transition-opacity"
         >
           <Eye className="h-4 w-4" />
           Open Review Queue
         </a>
         <a
           href="/ad-scoring/assets"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-muted text-foreground hover:bg-muted/70 transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-bg-tertiary text-text-primary hover:bg-bg-secondary transition-colors"
         >
           ← Back to Assets
         </a>

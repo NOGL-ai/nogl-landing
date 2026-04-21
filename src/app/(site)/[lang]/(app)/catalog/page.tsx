@@ -606,9 +606,9 @@ const badgeClasses: Record<string, string> = {
   Minimalist: 'border-[#E5E7EB] bg-[#F3F4F6] text-[#6B7280]',
 };
 
-const iconButtonClasses = 'rounded-lg p-2.5 transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40';
-const compactIconButtonClasses = 'rounded p-1 transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40';
-const secondaryButtonClasses = 'inline-flex items-center justify-center gap-1 rounded-lg border border-border-secondary bg-background px-3.5 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40 disabled:cursor-not-allowed disabled:opacity-60';
+const iconButtonClasses = 'rounded-lg p-2.5 transition-colors hover:bg-bg-secondary focus:outline-none focus:ring-2 focus:ring-ring/40';
+const compactIconButtonClasses = 'rounded p-1 transition-colors hover:bg-bg-secondary focus:outline-none focus:ring-2 focus:ring-ring/40';
+const secondaryButtonClasses = 'inline-flex items-center justify-center gap-1 rounded-lg border border-border-secondary bg-bg-primary px-3.5 py-2.5 text-sm font-semibold text-text-primary shadow-sm transition-colors hover:bg-bg-secondary focus:outline-none focus:ring-2 focus:ring-ring/40 disabled:cursor-not-allowed disabled:opacity-60';
 
 // Utility functions for price formatting
 const fmtPrice = (price: number) => {
@@ -715,8 +715,8 @@ const ProductsCell = ({ competitor, maxProducts }: { competitor: any, maxProduct
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-2">
-        <div className="text-lg font-semibold text-foreground">{competitor.products.toLocaleString()}</div>
-        <div className="text-xs text-muted-foreground">({percentageOfLeader}% of leader)</div>
+        <div className="text-lg font-semibold text-text-primary">{competitor.products.toLocaleString()}</div>
+        <div className="text-xs text-text-tertiary">({percentageOfLeader}% of leader)</div>
       </div>
       <div className="flex items-center gap-2">
         <MiniSparkline data={trendData} />
@@ -741,12 +741,12 @@ const PricePositionCell = ({
       <div className="min-w-[280px]">
         <span
           role="status"
-          className="inline-flex items-center gap-1 rounded-md border border-border-secondary bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground"
+          className="inline-flex items-center gap-1 rounded-md border border-border-secondary bg-bg-tertiary px-2 py-0.5 text-xs font-medium text-text-tertiary"
           aria-label="Price comparison not available"
         >
           N/A
         </span>
-        <div className="mt-1 text-[11px] text-muted-foreground">Missing or invalid competitor price.</div>
+        <div className="mt-1 text-[11px] text-text-tertiary">Missing or invalid competitor price.</div>
       </div>
     );
   }
@@ -759,8 +759,8 @@ const PricePositionCell = ({
 
   const colors = isEqual
     ? {
-        bg: 'bg-muted dark:bg-gray-700',
-        text: 'text-muted-foreground dark:text-gray-300',
+        bg: 'bg-bg-tertiary dark:bg-gray-700',
+        text: 'text-text-tertiary dark:text-gray-300',
         border: 'border-border-secondary dark:border-gray-600',
       }
     : isWinning
@@ -804,8 +804,8 @@ const PricePositionCell = ({
             </svg>
           </div>
           <div>
-            <div className="text-[10px] font-medium text-muted-foreground dark:text-gray-400">Comp. Price</div>
-            <div className="font-semibold text-primary" aria-label={`Competitor price: ${fmtPrice(competitorPrice)}`}>
+            <div className="text-[10px] font-medium text-text-tertiary dark:text-gray-400">Comp. Price</div>
+            <div className="font-semibold text-text-brand" aria-label={`Competitor price: ${fmtPrice(competitorPrice)}`}>
               {fmtPrice(competitorPrice)}
             </div>
           </div>
@@ -813,8 +813,8 @@ const PricePositionCell = ({
 
         <div className="flex items-center gap-1.5">
           <div>
-            <div className="text-right text-[10px] font-medium text-muted-foreground dark:text-gray-400">My Price</div>
-            <div className="text-right font-semibold text-primary" aria-label={`Your price: ${fmtPrice(myPrice)}`}>
+            <div className="text-right text-[10px] font-medium text-text-tertiary dark:text-gray-400">My Price</div>
+            <div className="text-right font-semibold text-text-brand" aria-label={`Your price: ${fmtPrice(myPrice)}`}>
               {fmtPrice(myPrice)}
             </div>
           </div>
@@ -874,33 +874,33 @@ const PricePositionCell = ({
 
       {/* Tooltip: now keyboard-friendly via focus-within */}
       <div
-        className="pointer-events-none absolute left-0 top-full z-50 mt-2 hidden w-[320px] rounded-lg border border-border-secondary bg-background p-4 shadow-lg group-hover:block group-focus-within:block"
+        className="pointer-events-none absolute left-0 top-full z-50 mt-2 hidden w-[320px] rounded-lg border border-border-secondary bg-bg-primary p-4 shadow-lg group-hover:block group-focus-within:block"
         role="tooltip"
         aria-hidden="true"
       >
         <div className="space-y-3">
-          <div className="text-sm font-semibold text-primary">Price Analysis</div>
+          <div className="text-sm font-semibold text-text-brand">Price Analysis</div>
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1 rounded-lg bg-blue-50 dark:bg-blue-900 p-3">
-              <div className="text-xs text-muted-foreground">Competitor</div>
+              <div className="text-xs text-text-tertiary">Competitor</div>
               <div className="text-lg font-bold text-blue-700 dark:text-blue-300">{fmtPrice(competitorPrice)}</div>
             </div>
             <div className="space-y-1 rounded-lg bg-purple-50 dark:bg-purple-900 p-3">
-              <div className="text-xs text-muted-foreground">Your Price</div>
+              <div className="text-xs text-text-tertiary">Your Price</div>
               <div className="text-lg font-bold text-purple-700 dark:text-purple-300">{fmtPrice(myPrice)}</div>
             </div>
           </div>
-          <div className="space-y-2 rounded-lg border border-border-secondary bg-muted p-3">
+          <div className="space-y-2 rounded-lg border border-border-secondary bg-bg-tertiary p-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-muted-foreground">Difference:</span>
+              <span className="text-xs text-text-tertiary">Difference:</span>
               <span className={`text-sm font-semibold ${colors.text}`}>{fmtDiff(priceDiff)}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-xs text-muted-foreground">Percentage:</span>
+              <span className="text-xs text-text-tertiary">Percentage:</span>
               <span className={`text-sm font-semibold ${colors.text}`}>{fmtPct(pctDiff)}</span>
             </div>
             <div className="flex items-center justify-between border-t border-border-secondary pt-2">
-              <span className="text-xs text-muted-foreground">Status:</span>
+              <span className="text-xs text-text-tertiary">Status:</span>
               <span className={`text-sm font-bold ${colors.text}`}>{statusText}</span>
             </div>
           </div>
@@ -1231,11 +1231,11 @@ export default function CompetitorPage() {
   // Show loading state
   if (isLoading) {
     return (
-      <main className="mx-auto w-full min-h-screen space-y-6 md:space-y-8 bg-background px-4 md:px-8 pt-6 md:pt-8 pb-8 md:pb-12 text-foreground transition-colors">
+      <main className="mx-auto w-full min-h-screen space-y-6 md:space-y-8 bg-bg-primary px-4 md:px-8 pt-6 md:pt-8 pb-8 md:pb-12 text-text-primary transition-colors">
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-muted-foreground">Loading products...</p>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-border-brand mx-auto mb-4"></div>
+            <p className="text-text-tertiary">Loading products...</p>
           </div>
         </div>
       </main>
@@ -1245,13 +1245,13 @@ export default function CompetitorPage() {
   // Show error state
   if (error) {
     return (
-      <main className="mx-auto w-full min-h-screen space-y-6 md:space-y-8 bg-background px-4 md:px-8 pt-6 md:pt-8 pb-8 md:pb-12 text-foreground transition-colors">
+      <main className="mx-auto w-full min-h-screen space-y-6 md:space-y-8 bg-bg-primary px-4 md:px-8 pt-6 md:pt-8 pb-8 md:pb-12 text-text-primary transition-colors">
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <p className="text-destructive mb-4">{error}</p>
+            <p className="text-text-error mb-4">{error}</p>
             <button 
               onClick={() => window.location.reload()} 
-              className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+              className="px-4 py-2 bg-bg-brand-solid text-white rounded-md hover:bg-brand-700"
             >
               Retry
             </button>
@@ -1273,31 +1273,31 @@ export default function CompetitorPage() {
         {searchQuery && `Found ${filteredProducts.length} products matching "${searchQuery}"`}
       </div>
       
-      <main className="mx-auto w-full min-h-screen space-y-6 md:space-y-8 bg-background px-4 md:px-8 pt-6 md:pt-8 pb-8 md:pb-12 text-foreground transition-colors">
+      <main className="mx-auto w-full min-h-screen space-y-6 md:space-y-8 bg-bg-primary px-4 md:px-8 pt-6 md:pt-8 pb-8 md:pb-12 text-text-primary transition-colors">
       {/* Page Header - Figma Design */}
       <header className="flex flex-col items-start gap-4 self-stretch" role="banner">
         <div className="flex items-start content-start gap-4 self-stretch flex-wrap">
           <div className="flex min-w-[200px] md:min-w-[320px] flex-col items-start gap-1 flex-1">
-            <h1 className="self-stretch text-foreground text-xl md:text-2xl font-semibold leading-8">
+            <h1 className="self-stretch text-text-primary text-xl md:text-2xl font-semibold leading-8">
               NogLens
             </h1>
-            <p className="self-stretch text-muted-foreground text-sm md:text-base font-normal leading-6">
+            <p className="self-stretch text-text-tertiary text-sm md:text-base font-normal leading-6">
               Unlock the potential of Google Lens! Experience the world from a fresh perspective.
             </p>
           </div>
           <div className="flex items-center gap-3" role="group" aria-label="Page actions">
             <button
-              className="inline-flex items-center justify-center gap-1 rounded-lg border border-border-secondary bg-background px-3.5 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40"
+              className="inline-flex items-center justify-center gap-1 rounded-lg border border-border-secondary bg-bg-primary px-3.5 py-2.5 text-sm font-semibold text-text-primary shadow-sm transition-colors hover:bg-bg-secondary focus:outline-none focus:ring-2 focus:ring-ring/40"
               aria-label="Share"
             >
-              <Share04 className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+              <Share04 className="h-5 w-5 text-text-tertiary" aria-hidden="true" />
               <span>Share</span>
             </button>
             <button
-              className="inline-flex items-center justify-center gap-1 rounded-lg border-2 border-white/10 bg-primary px-3.5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring/40"
+              className="inline-flex items-center justify-center gap-1 rounded-lg border-2 border-white/10 bg-bg-brand-solid px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-ring/40"
               aria-label="Invite team"
             >
-              <UserPlus01 className="h-5 w-5 text-primary-foreground/80" aria-hidden="true" />
+              <UserPlus01 className="h-5 w-5 text-white/80" aria-hidden="true" />
               <span>Invite team</span>
             </button>
           </div>
@@ -1308,7 +1308,7 @@ export default function CompetitorPage() {
       {/* File Upload Widget - Functional */}
       <FileUpload.Root>
         <FileUpload.DropZone
-          className="rounded-xl border-2 border-primary bg-background p-4 md:p-6 transition-colors hover:border-primary/80 focus-within:border-primary"
+          className="rounded-xl border-2 border-border-brand bg-bg-primary p-4 md:p-6 transition-colors hover:border-border-brand/80 focus-within:border-border-brand"
           hint="SVG, PNG, JPG or GIF (max. 800x400px)"
           accept="image/*,.svg,.png,.jpg,.jpeg,.gif"
           maxSize={5 * 1024 * 1024} // 5MB
@@ -1338,25 +1338,25 @@ export default function CompetitorPage() {
         )}
       </FileUpload.Root>
 
-      <section className="rounded-xl border border-border-secondary bg-card shadow-sm transition-colors">
+      <section className="rounded-xl border border-border-secondary bg-bg-primary shadow-sm transition-colors">
         <div className="border-b border-border-secondary p-4 md:p-6">
           <div className="flex flex-wrap items-start justify-between gap-3 md:gap-4">
             <div className="flex-1 min-w-[200px]">
               <div className="flex flex-wrap items-center gap-2">
-                <h2 className="text-base md:text-lg font-semibold text-foreground">Product Catalog</h2>
-                <span className="inline-flex items-center rounded-full border border-border-secondary bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+                <h2 className="text-base md:text-lg font-semibold text-text-primary">Product Catalog</h2>
+                <span className="inline-flex items-center rounded-full border border-border-secondary bg-bg-tertiary px-2 py-0.5 text-xs font-medium text-text-tertiary">
                   {sortedProducts.length} products
                 </span>
               </div>
-              <p className="mt-1 text-xs md:text-sm text-muted-foreground">Monitor your jewelry products with competitor pricing and inventory tracking.</p>
+              <p className="mt-1 text-xs md:text-sm text-text-tertiary">Monitor your jewelry products with competitor pricing and inventory tracking.</p>
             </div>
             <div className="flex items-center gap-2 md:gap-3">
-              <button className="hidden sm:flex items-center gap-1 rounded-lg border border-border-secondary bg-background px-3 md:px-3.5 py-2 md:py-2.5 text-xs md:text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted">
+              <button className="hidden sm:flex items-center gap-1 rounded-lg border border-border-secondary bg-bg-primary px-3 md:px-3.5 py-2 md:py-2.5 text-xs md:text-sm font-semibold text-text-primary shadow-sm transition-colors hover:bg-bg-secondary">
                 <Upload className="h-4 md:h-5 w-4 md:w-5 text-quaternary" />
                 <span className="hidden md:inline">Import</span>
               </button>
-              <button className="flex items-center gap-1 rounded-lg border-2 border-white/10 bg-primary px-3 md:px-3.5 py-2 md:py-2.5 text-xs md:text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90">
-                <Plus className="h-4 md:h-5 w-4 md:w-5 text-primary-foreground/80" />
+              <button className="flex items-center gap-1 rounded-lg border-2 border-white/10 bg-bg-brand-solid px-3 md:px-3.5 py-2 md:py-2.5 text-xs md:text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-700">
+                <Plus className="h-4 md:h-5 w-4 md:w-5 text-white/80" />
                 <span className="hidden sm:inline">Nogl Product</span>
               </button>
             </div>
@@ -1369,7 +1369,7 @@ export default function CompetitorPage() {
               type="button"
               onClick={() => setActiveTab('all')}
               className={`px-3 md:px-4 py-2 text-xs md:text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring/40 ${
-                activeTab === 'all' ? 'border-r border-border-secondary bg-muted text-foreground' : 'border-r border-border-secondary bg-background text-muted-foreground hover:bg-muted'
+                activeTab === 'all' ? 'border-r border-border-secondary bg-bg-tertiary text-text-primary' : 'border-r border-border-secondary bg-bg-primary text-text-tertiary hover:bg-bg-secondary'
               }`}
               role="tab"
               aria-selected={activeTab === 'all'}
@@ -1383,7 +1383,7 @@ export default function CompetitorPage() {
               type="button"
               onClick={() => setActiveTab('monitored')}
               className={`px-3 md:px-4 py-2 text-xs md:text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring/40 ${
-                activeTab === 'monitored' ? 'border-r border-border-secondary bg-muted text-foreground' : 'border-r border-border-secondary bg-background text-muted-foreground hover:bg-muted'
+                activeTab === 'monitored' ? 'border-r border-border-secondary bg-bg-tertiary text-text-primary' : 'border-r border-border-secondary bg-bg-primary text-text-tertiary hover:bg-bg-secondary'
               }`}
               role="tab"
               aria-selected={activeTab === 'monitored'}
@@ -1396,7 +1396,7 @@ export default function CompetitorPage() {
               type="button"
               onClick={() => setActiveTab('unmonitored')}
               className={`px-3 md:px-4 py-2 text-xs md:text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring/40 ${
-                activeTab === 'unmonitored' ? 'bg-muted text-foreground' : 'bg-background text-muted-foreground hover:bg-muted'
+                activeTab === 'unmonitored' ? 'bg-bg-tertiary text-text-primary' : 'bg-bg-primary text-text-tertiary hover:bg-bg-secondary'
               }`}
               role="tab"
               aria-selected={activeTab === 'unmonitored'}
@@ -1418,19 +1418,19 @@ export default function CompetitorPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search products by name, brand, or SKU"
-                className="w-full rounded-lg border border-border-secondary bg-background py-2 pl-8 md:pl-10 pr-10 md:pr-16 text-sm md:text-base text-foreground placeholder:text-muted-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-ring/40"
+                className="w-full rounded-lg border border-border-secondary bg-bg-primary py-2 pl-8 md:pl-10 pr-10 md:pr-16 text-sm md:text-base text-text-primary placeholder:text-text-tertiary focus:border-transparent focus:outline-none focus:ring-2 focus:ring-ring/40"
                 aria-describedby="search-help"
                 aria-label="Search products by name, brand, or SKU"
               />
               <span
                 id="search-help"
-                className="hidden md:inline-flex absolute right-3 top-1/2 -translate-y-1/2 rounded border border-border-secondary bg-background px-1.5 py-0.5 text-xs text-muted-foreground"
+                className="hidden md:inline-flex absolute right-3 top-1/2 -translate-y-1/2 rounded border border-border-secondary bg-bg-primary px-1.5 py-0.5 text-xs text-text-tertiary"
                 aria-label="Keyboard shortcut: Command K"
               >
                 ⌘K
               </span>
             </div>
-            <button className="flex items-center gap-1 rounded-lg border border-border-secondary bg-background px-3 md:px-3.5 py-2 md:py-2.5 text-xs md:text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted">
+            <button className="flex items-center gap-1 rounded-lg border border-border-secondary bg-bg-primary px-3 md:px-3.5 py-2 md:py-2.5 text-xs md:text-sm font-semibold text-text-primary shadow-sm transition-colors hover:bg-bg-secondary">
               <svg className="h-4 md:h-5 w-4 md:w-5 text-quaternary" fill="none" stroke="currentColor" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.67} d="M3 4h14M6 8h8M9 12h2" />
               </svg>
@@ -1504,7 +1504,7 @@ export default function CompetitorPage() {
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border-secondary px-4 md:px-6 py-3">
-          <div className="text-xs md:text-sm font-medium text-muted-foreground dark:text-gray-300">
+          <div className="text-xs md:text-sm font-medium text-text-tertiary dark:text-gray-300">
             Page {currentPage} of {totalPages}
             <span className="sr-only">
               Showing {startIndex + 1}-{Math.min(endIndex, sortedProducts.length)} of {sortedProducts.length} products
@@ -1515,7 +1515,7 @@ export default function CompetitorPage() {
             <button
               onClick={goToPreviousPage}
               disabled={currentPage === 1}
-              className="inline-flex items-center justify-center gap-1 rounded-lg border border-border-secondary bg-background px-3 py-2 text-xs md:text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40 disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex items-center justify-center gap-1 rounded-lg border border-border-secondary bg-bg-primary px-3 py-2 text-xs md:text-sm font-semibold text-text-primary shadow-sm transition-colors hover:bg-bg-secondary focus:outline-none focus:ring-2 focus:ring-ring/40 disabled:cursor-not-allowed disabled:opacity-60"
               aria-label="Go to previous page"
             >
               Previous
@@ -1539,8 +1539,8 @@ export default function CompetitorPage() {
                     onClick={() => goToPage(pageNum)}
                     className={`inline-flex items-center justify-center w-8 h-8 rounded-lg text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring/40 ${
                       currentPage === pageNum
-                        ? 'bg-primary text-primary-foreground'
-                        : 'text-foreground hover:bg-muted'
+                        ? 'bg-bg-brand-solid text-white'
+                        : 'text-text-primary hover:bg-bg-secondary'
                     }`}
                     aria-label={`Go to page ${pageNum}`}
                     aria-current={currentPage === pageNum ? 'page' : undefined}
@@ -1553,7 +1553,7 @@ export default function CompetitorPage() {
             <button
               onClick={goToNextPage}
               disabled={currentPage === totalPages}
-              className="inline-flex items-center justify-center gap-1 rounded-lg border border-border-secondary bg-background px-3 py-2 text-xs md:text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40 disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex items-center justify-center gap-1 rounded-lg border border-border-secondary bg-bg-primary px-3 py-2 text-xs md:text-sm font-semibold text-text-primary shadow-sm transition-colors hover:bg-bg-secondary focus:outline-none focus:ring-2 focus:ring-ring/40 disabled:cursor-not-allowed disabled:opacity-60"
               aria-label="Go to next page"
             >
               Next
