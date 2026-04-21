@@ -110,6 +110,34 @@ These rules exist because they've been violated and cost real data. Every future
 
 - 2026-04-19 — feature branch with stale schema caused 171k-row data loss on `products.company_id`. Full recovery via raw ALTER TABLE + URL-domain backfill. Forecast + repricing schemas survived because they were in separate Postgres schemas (`forecast`, `repricing`) not in the dropping branch's `schemas = [...]` array — that's the only thing that prevented a bigger outage.
 
+## 🚨 Hard Rule — Worktree sessions MUST end with a PR merge to main
+
+This rule exists because a full session of edits was silently isolated in a git worktree and never reached main, causing confusion about what was actually done.
+
+**Every Claude Code session that runs in a worktree MUST do the following before ending:**
+
+1. **Commit all changes** to the worktree branch (don't leave anything unstaged).
+2. **Push the branch** to the remote:
+   ```bash
+   git push gitea <branch-name>
+   ```
+3. **Open a PR** (or merge directly to main if the session is self-contained):
+   ```bash
+   # Option A — merge directly (small/solo sessions):
+   cd nogl-landing
+   git checkout main
+   git merge <worktree-branch> --no-ff -m "merge(<scope>): <summary>"
+   git push gitea main
+
+   # Option B — PR (multi-reviewer or larger changes):
+   gh pr create --base main --head <worktree-branch> --title "<title>" --body "<summary>"
+   ```
+4. **Verify** with `git log --oneline main | head -5` that the commits are visible on main.
+
+**Never leave a worktree session without confirming the work is on main.** If the session ends and this step hasn't been done, the next session must start by running `git worktree list` and merging any unmerged branches before doing new work.
+
+---
+
 ## 🚦 Multi-session coordination
 
 Multiple Claude Code sessions work in parallel (via worktrees + feature branches). Rules to prevent conflicts:
