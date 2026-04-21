@@ -260,7 +260,6 @@ export function CompareClient() {
     setPriceFilter((prev) => (prev?.range === bucket.range ? null : bucket));
   }
 
-  // Sorted mock products
   const sortedProducts = useMemo(() => {
     const sourceProducts: TrackedProduct[] = (summary?.top_products ?? []).map((product) => {
       const discountPct =
@@ -355,28 +354,35 @@ export function CompareClient() {
       header: "Competitor",
       enableSorting: false,
       meta: { align: "left" },
-      cell: (info) => (
-        <div className="flex items-center gap-2">
-          <div className="relative h-6 w-6 shrink-0">
-            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-[9px] font-bold text-primary">
-              {info.row.original.company_initials}
+      cell: (info) => {
+        const brand = info.row.original.company_name;
+        return (
+          <div
+            className="inline-flex cursor-default shrink-0"
+            title={brand}
+            aria-label={brand}
+          >
+            <span className="sr-only">{brand}</span>
+            <div className="relative h-6 w-6 shrink-0">
+              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-[9px] font-bold text-primary">
+                {info.row.original.company_initials}
+              </div>
+              {info.row.original.company_logo_url ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={info.row.original.company_logo_url}
+                  alt=""
+                  className="absolute inset-0 h-6 w-6 rounded-full border border-border bg-background object-contain p-0.5"
+                  onError={(e) => {
+                    // Hide broken favicon and reveal initials badge underneath.
+                    e.currentTarget.style.display = "none";
+                  }}
+                />
+              ) : null}
             </div>
-            {info.row.original.company_logo_url ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={info.row.original.company_logo_url}
-                alt={`${info.row.original.company_name} logo`}
-                className="absolute inset-0 h-6 w-6 rounded-full border border-border bg-background object-contain p-0.5"
-                onError={(e) => {
-                  // Hide broken favicon and reveal initials badge underneath.
-                  e.currentTarget.style.display = "none";
-                }}
-              />
-            ) : null}
           </div>
-          <span className="text-sm text-foreground">{info.row.original.company_name}</span>
-        </div>
-      ),
+        );
+      },
     }),
     colHelper.accessor("product_title", {
       header: "Product Title",
