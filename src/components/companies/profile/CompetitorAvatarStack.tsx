@@ -18,7 +18,7 @@ export function CompetitorAvatarStack({ competitors, compareLabel }: CompetitorA
           <div
             key={c.id}
             title={c.name}
-            className="relative inline-flex h-9 w-9 shrink-0 overflow-hidden rounded-full border-2 border-white bg-muted text-center text-xs font-semibold leading-9 text-muted-foreground"
+            className="relative inline-flex h-9 w-9 shrink-0 overflow-hidden rounded-full border-2 border-white bg-bg-tertiary text-center text-xs font-semibold leading-9 text-text-tertiary"
           >
             {c.logoUrl ? (
               // eslint-disable-next-line @next/next/no-img-element -- competitor logos are external dynamic URLs

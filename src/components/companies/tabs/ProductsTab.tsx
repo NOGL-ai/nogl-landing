@@ -72,7 +72,7 @@ function ProductCard({
         className="group overflow-hidden rounded-xl border border-border-primary bg-bg-primary transition-shadow hover:shadow-md"
       >
         {/* Image — aspect-[4/3] for better product fit */}
-        <div className="relative aspect-[4/3] overflow-hidden bg-white border-b border-border-primary">
+        <div className="relative aspect-[4/3] overflow-hidden bg-bg-primary border-b border-border-primary">
           {product.image_url ? (
             <Image
               src={product.image_url}
@@ -164,7 +164,7 @@ function ProductRow({
         className="group flex items-center gap-4 rounded-xl border border-border-primary bg-bg-primary px-4 py-3 transition-colors hover:bg-bg-secondary"
       >
         {/* Thumbnail */}
-        <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-border-primary bg-white">
+        <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-border-primary bg-bg-primary">
           {product.image_url ? (
             <Image
               src={product.image_url}

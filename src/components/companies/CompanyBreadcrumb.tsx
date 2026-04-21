@@ -13,7 +13,7 @@ export function CompanyBreadcrumb({ companyName, lang }: CompanyBreadcrumbProps)
   const t = useTranslations("companies");
 
   return (
-    <nav aria-label="breadcrumb" className="border-b border-border bg-bg-primary/95 backdrop-blur supports-[backdrop-filter]:bg-bg-primary/60">
+    <nav aria-label="breadcrumb" className="border-b border-border-primary bg-bg-primary/95 backdrop-blur supports-[backdrop-filter]:bg-bg-primary/60">
       <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
         <ol className="flex flex-wrap items-center gap-2">
           <li>

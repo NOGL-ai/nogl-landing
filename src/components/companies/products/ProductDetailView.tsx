@@ -33,11 +33,11 @@ type GradeInfo = { label: string; color: string; bg: string; border: string };
 
 function getGrade(score: number | null | undefined): GradeInfo {
   if (score == null || !Number.isFinite(score)) {
-    return { label: "—", color: "text-muted-foreground", bg: "bg-muted", border: "border-border" };
+    return { label: "—", color: "text-text-tertiary", bg: "bg-bg-tertiary", border: "border-border-primary" };
   }
-  if (score >= 97) return { label: "A+", color: "text-emerald-700 dark:text-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-950/40", border: "border-emerald-300 dark:border-emerald-700" };
-  if (score >= 93) return { label: "A",  color: "text-emerald-700 dark:text-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-950/40", border: "border-emerald-300 dark:border-emerald-700" };
-  if (score >= 90) return { label: "A-", color: "text-emerald-700 dark:text-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-950/40", border: "border-emerald-300 dark:border-emerald-700" };
+  if (score >= 97) return { label: "A+", color: "text-text-success dark:text-success-400", bg: "bg-success-50 dark:bg-success-950/40", border: "border-emerald-300 dark:border-emerald-700" };
+  if (score >= 93) return { label: "A",  color: "text-text-success dark:text-success-400", bg: "bg-success-50 dark:bg-success-950/40", border: "border-emerald-300 dark:border-emerald-700" };
+  if (score >= 90) return { label: "A-", color: "text-text-success dark:text-success-400", bg: "bg-success-50 dark:bg-success-950/40", border: "border-emerald-300 dark:border-emerald-700" };
   if (score >= 87) return { label: "B+", color: "text-blue-700 dark:text-blue-400",    bg: "bg-blue-50 dark:bg-blue-950/40",    border: "border-blue-300 dark:border-blue-700" };
   if (score >= 83) return { label: "B",  color: "text-blue-700 dark:text-blue-400",    bg: "bg-blue-50 dark:bg-blue-950/40",    border: "border-blue-300 dark:border-blue-700" };
   if (score >= 80) return { label: "B-", color: "text-blue-700 dark:text-blue-400",    bg: "bg-blue-50 dark:bg-blue-950/40",    border: "border-blue-300 dark:border-blue-700" };
@@ -87,29 +87,29 @@ export function ProductDetailView({ data, slug, lang, companyName }: Props) {
     <div className="space-y-6">
 
       {/* ── FIX 5: Breadcrumb ─────────────────────────────────────────── */}
-      <nav className="flex items-center gap-1.5 text-sm text-muted-foreground flex-wrap">
+      <nav className="flex items-center gap-1.5 text-sm text-text-tertiary flex-wrap">
         <Link
           href={`/${lang}/companies`}
-          className="hover:text-foreground transition-colors shrink-0"
+          className="hover:text-text-primary transition-colors shrink-0"
         >
           Company Explorer
         </Link>
-        <span className="text-muted-foreground/40 shrink-0">›</span>
+        <span className="text-text-tertiary/40 shrink-0">›</span>
         <Link
           href={`/${lang}/companies/${slug}`}
-          className="hover:text-foreground transition-colors shrink-0"
+          className="hover:text-text-primary transition-colors shrink-0"
         >
           {companyName}
         </Link>
-        <span className="text-muted-foreground/40 shrink-0">›</span>
+        <span className="text-text-tertiary/40 shrink-0">›</span>
         <Link
           href={`/${lang}/companies/${slug}/products`}
-          className="hover:text-foreground transition-colors shrink-0"
+          className="hover:text-text-primary transition-colors shrink-0"
         >
           Products
         </Link>
-        <span className="text-muted-foreground/40 shrink-0">›</span>
-        <span className="text-foreground font-medium truncate max-w-[240px]">
+        <span className="text-text-tertiary/40 shrink-0">›</span>
+        <span className="text-text-primary font-medium truncate max-w-[240px]">
           {product.title}
         </span>
       </nav>
@@ -125,13 +125,13 @@ export function ProductDetailView({ data, slug, lang, companyName }: Props) {
           {/* Badge row: category + brand */}
           <div className="flex items-center gap-2 flex-wrap">
             {product.category && (
-              <span className="inline-flex items-center gap-1 text-xs border rounded-full px-2.5 py-0.5 text-muted-foreground bg-muted/50">
+              <span className="inline-flex items-center gap-1 text-xs border rounded-full px-2.5 py-0.5 text-text-tertiary bg-bg-secondary">
                 <Tag className="h-3 w-3" />
                 {categories[0] ?? product.category}
               </span>
             )}
             {product.brand && (
-              <span className="inline-flex items-center text-xs border rounded-full px-2.5 py-0.5 text-muted-foreground bg-muted/50">
+              <span className="inline-flex items-center text-xs border rounded-full px-2.5 py-0.5 text-text-tertiary bg-bg-secondary">
                 {product.brand}
               </span>
             )}
@@ -149,7 +149,7 @@ export function ProductDetailView({ data, slug, lang, companyName }: Props) {
           </div>
 
           {/* Title */}
-          <h1 className="text-xl font-bold text-foreground leading-snug">
+          <h1 className="text-xl font-bold text-text-primary leading-snug">
             {product.title}
           </h1>
 
@@ -159,7 +159,7 @@ export function ProductDetailView({ data, slug, lang, companyName }: Props) {
               href={product.source_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground border rounded-md px-3 py-1.5 transition-colors w-fit"
+              className="inline-flex items-center gap-1.5 text-sm text-text-tertiary hover:text-text-primary border rounded-md px-3 py-1.5 transition-colors w-fit"
             >
               <ExternalLink className="h-3.5 w-3.5" />
               View on site
@@ -169,21 +169,21 @@ export function ProductDetailView({ data, slug, lang, companyName }: Props) {
           {/* FIX 3: 4 KPI chips */}
           <div className="grid grid-cols-2 gap-3">
             {/* Current Price */}
-            <div className="rounded-lg border bg-card p-3 space-y-0.5">
-              <p className="text-[11px] text-muted-foreground font-medium uppercase tracking-wide">
+            <div className="rounded-lg border bg-bg-primary p-3 space-y-0.5">
+              <p className="text-[11px] text-text-tertiary font-medium uppercase tracking-wide">
                 Current Price
               </p>
-              <p className="text-lg font-bold text-foreground">
+              <p className="text-lg font-bold text-text-primary">
                 {fmtPrice(product.current_price)}
               </p>
             </div>
 
             {/* Price Range */}
-            <div className="rounded-lg border bg-card p-3 space-y-0.5">
-              <p className="text-[11px] text-muted-foreground font-medium uppercase tracking-wide">
+            <div className="rounded-lg border bg-bg-primary p-3 space-y-0.5">
+              <p className="text-[11px] text-text-tertiary font-medium uppercase tracking-wide">
                 Price Range
               </p>
-              <p className="text-sm font-semibold text-foreground">
+              <p className="text-sm font-semibold text-text-primary">
                 {hasPriceRange
                   ? `${fmtPrice(kpiMinPrice)} – ${fmtPrice(kpiMaxPrice)}`
                   : fmtPrice(product.current_price)}
@@ -191,12 +191,12 @@ export function ProductDetailView({ data, slug, lang, companyName }: Props) {
             </div>
 
             {/* Avg Discount */}
-            <div className="rounded-lg border bg-card p-3 space-y-0.5">
-              <p className="text-[11px] text-muted-foreground font-medium uppercase tracking-wide flex items-center gap-1">
+            <div className="rounded-lg border bg-bg-primary p-3 space-y-0.5">
+              <p className="text-[11px] text-text-tertiary font-medium uppercase tracking-wide flex items-center gap-1">
                 <TrendingDown className="h-3 w-3" />
                 Avg Discount
               </p>
-              <p className="text-sm font-semibold text-foreground">
+              <p className="text-sm font-semibold text-text-primary">
                 {product.discount_pct != null && product.discount_pct > 0
                   ? `${product.discount_pct.toFixed(0)}%`
                   : "—"}
@@ -204,19 +204,19 @@ export function ProductDetailView({ data, slug, lang, companyName }: Props) {
             </div>
 
             {/* First Seen */}
-            <div className="rounded-lg border bg-card p-3 space-y-0.5">
-              <p className="text-[11px] text-muted-foreground font-medium uppercase tracking-wide flex items-center gap-1">
+            <div className="rounded-lg border bg-bg-primary p-3 space-y-0.5">
+              <p className="text-[11px] text-text-tertiary font-medium uppercase tracking-wide flex items-center gap-1">
                 <Calendar className="h-3 w-3" />
                 First Seen
               </p>
-              <p className="text-sm font-semibold text-foreground">
+              <p className="text-sm font-semibold text-text-primary">
                 {fmtDate(product.first_seen)}
               </p>
             </div>
           </div>
 
           {/* Last updated */}
-          <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+          <p className="text-xs text-text-tertiary flex items-center gap-1.5">
             <Clock className="h-3 w-3 shrink-0" />
             Last updated {fmtDate(product.last_seen)}
           </p>
@@ -224,18 +224,18 @@ export function ProductDetailView({ data, slug, lang, companyName }: Props) {
       </div>
 
       {/* ── Detail card ─────────────────────────────────────────────── */}
-      <div className="rounded-lg border bg-card overflow-hidden">
+      <div className="rounded-lg border bg-bg-primary overflow-hidden">
 
         {/* Filters row */}
         <div className="border-b px-4 sm:px-6 py-3 flex items-center gap-3 flex-wrap">
-          <span className="text-sm font-semibold text-foreground">Filters</span>
+          <span className="text-sm font-semibold text-text-primary">Filters</span>
           <div className="flex items-center gap-1.5 flex-wrap">
             {["Variants", "Variant Title", "Category", "Brand"].map((f) => (
               <span
                 key={f}
-                className="inline-flex items-center gap-0.5 text-xs border rounded px-2 py-0.5 text-muted-foreground"
+                className="inline-flex items-center gap-0.5 text-xs border rounded px-2 py-0.5 text-text-tertiary"
               >
-                <span className="text-muted-foreground/50">+</span> {f}
+                <span className="text-text-tertiary/50">+</span> {f}
               </span>
             ))}
           </div>
@@ -243,30 +243,30 @@ export function ProductDetailView({ data, slug, lang, companyName }: Props) {
 
         {/* Variant / price stats row */}
         <div className="border-b px-4 sm:px-6 py-3 space-y-1">
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-text-tertiary">
             {variants.length} variant{variants.length !== 1 ? "s" : ""} with
             these filters
           </p>
           <div className="flex items-center flex-wrap gap-x-2.5 gap-y-1">
             <span>
-              <strong className="text-foreground text-base">
+              <strong className="text-text-primary text-base">
                 {fmtPrice(product.current_price)}
               </strong>
-              <span className="text-xs text-muted-foreground ml-1.5">
+              <span className="text-xs text-text-tertiary ml-1.5">
                 Current Price
               </span>
             </span>
             {hasPriceRange && (
               <>
-                <span className="text-muted-foreground/40">·</span>
-                <span className="text-xs text-muted-foreground">
+                <span className="text-text-tertiary/40">·</span>
+                <span className="text-xs text-text-tertiary">
                   Range {fmtPrice(kpiMinPrice)} – {fmtPrice(kpiMaxPrice)}
                 </span>
               </>
             )}
             {product.discount_pct != null && product.discount_pct > 0 && (
               <>
-                <span className="text-muted-foreground/40">·</span>
+                <span className="text-text-tertiary/40">·</span>
                 <span className="inline-flex items-center rounded-full bg-primary/10 text-primary px-2.5 py-0.5 text-xs font-medium">
                   {product.discount_pct.toFixed(0)}% Chance of Discount
                 </span>
@@ -280,10 +280,10 @@ export function ProductDetailView({ data, slug, lang, companyName }: Props) {
           {/* Product Types / Category */}
           {categories.length > 0 && (
             <div>
-              <h3 className="text-xs font-semibold text-foreground mb-1.5">
+              <h3 className="text-xs font-semibold text-text-primary mb-1.5">
                 Product Types
               </h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">
+              <p className="text-xs text-text-tertiary leading-relaxed">
                 {categories.join(" · ")}
               </p>
             </div>
@@ -292,17 +292,17 @@ export function ProductDetailView({ data, slug, lang, companyName }: Props) {
           {/* Brand */}
           {product.brand && (
             <div>
-              <h3 className="text-xs font-semibold text-foreground mb-1.5">
+              <h3 className="text-xs font-semibold text-text-primary mb-1.5">
                 Brand
               </h3>
-              <p className="text-xs text-muted-foreground">{product.brand}</p>
+              <p className="text-xs text-text-tertiary">{product.brand}</p>
             </div>
           )}
 
           {/* Source */}
           {product.source_url && (
             <div>
-              <h3 className="text-xs font-semibold text-foreground mb-1.5">
+              <h3 className="text-xs font-semibold text-text-primary mb-1.5">
                 Source
               </h3>
               <a
@@ -321,7 +321,7 @@ export function ProductDetailView({ data, slug, lang, companyName }: Props) {
 
         {/* ── FIX 6: Price sparkline chart ────────────────────────── */}
         <div className="border-b px-4 sm:px-6 py-4">
-          <h3 className="text-sm font-semibold text-foreground mb-3">
+          <h3 className="text-sm font-semibold text-text-primary mb-3">
             Price Over Time
           </h3>
           <PriceSparklineChart history={price_history} productId={product.id} />
@@ -329,7 +329,7 @@ export function ProductDetailView({ data, slug, lang, companyName }: Props) {
 
         {/* ── Sales Over Time — blurred Coming Soon ─────────────────── */}
         <div className="px-4 sm:px-6 py-4">
-          <h3 className="text-sm font-semibold text-foreground mb-3">
+          <h3 className="text-sm font-semibold text-text-primary mb-3">
             Sales Over Time
           </h3>
           <div className="relative rounded-lg border overflow-hidden h-52">
@@ -374,7 +374,7 @@ export function ProductDetailView({ data, slug, lang, companyName }: Props) {
             </div>
 
             {/* Frosted-glass overlay */}
-            <div className="absolute inset-0 backdrop-blur-[8px] bg-background/60" />
+            <div className="absolute inset-0 backdrop-blur-[8px] bg-bg-primary/60" />
 
             {/* Coming Soon badge */}
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
@@ -382,10 +382,10 @@ export function ProductDetailView({ data, slug, lang, companyName }: Props) {
                 <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
                 Coming Soon
               </span>
-              <p className="text-sm font-medium text-foreground">
+              <p className="text-sm font-medium text-text-primary">
                 Sales &amp; inventory tracking
               </p>
-              <p className="text-xs text-muted-foreground max-w-[240px] text-center leading-relaxed">
+              <p className="text-xs text-text-tertiary max-w-[240px] text-center leading-relaxed">
                 Volume, revenue, and inventory data will appear here once available.
               </p>
             </div>
@@ -395,20 +395,20 @@ export function ProductDetailView({ data, slug, lang, companyName }: Props) {
         {/* ── Variants table (only if > 1) ─────────────────────────── */}
         {variants.length > 1 && (
           <div className="px-4 sm:px-6 py-4 border-t">
-            <h3 className="text-sm font-semibold text-foreground mb-3">
+            <h3 className="text-sm font-semibold text-text-primary mb-3">
               Top Variants
             </h3>
             <div className="overflow-x-auto rounded-lg border">
               <table className="w-full text-sm">
-                <thead className="bg-muted/50">
+                <thead className="bg-bg-secondary">
                   <tr>
-                    <th className="px-4 py-2.5 text-left text-xs font-medium text-muted-foreground">
+                    <th className="px-4 py-2.5 text-left text-xs font-medium text-text-tertiary">
                       Title
                     </th>
-                    <th className="px-4 py-2.5 text-right text-xs font-medium text-muted-foreground">
+                    <th className="px-4 py-2.5 text-right text-xs font-medium text-text-tertiary">
                       Price
                     </th>
-                    <th className="px-4 py-2.5 text-right text-xs font-medium text-muted-foreground">
+                    <th className="px-4 py-2.5 text-right text-xs font-medium text-text-tertiary">
                       Discount
                     </th>
                   </tr>
@@ -417,13 +417,13 @@ export function ProductDetailView({ data, slug, lang, companyName }: Props) {
                   {variants.map((v) => (
                     <tr
                       key={v.id}
-                      className="border-t border-border/40 hover:bg-muted/30"
+                      className="border-t border-border-primary/40 hover:bg-bg-secondary"
                     >
-                      <td className="px-4 py-2.5 text-foreground">{v.title}</td>
+                      <td className="px-4 py-2.5 text-text-primary">{v.title}</td>
                       <td className="px-4 py-2.5 text-right font-medium">
                         {fmtPrice(v.price)}
                       </td>
-                      <td className="px-4 py-2.5 text-right text-muted-foreground">
+                      <td className="px-4 py-2.5 text-right text-text-tertiary">
                         {fmtPrice(v.discount_price)}
                       </td>
                     </tr>

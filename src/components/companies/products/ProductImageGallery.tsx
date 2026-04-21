@@ -13,7 +13,7 @@ export function ProductImageGallery({ images, alt }: ProductImageGalleryProps) {
 
   if (!validImages.length) {
     return (
-      <div className="w-full aspect-square rounded-lg bg-muted border flex items-center justify-center">
+      <div className="w-full aspect-square rounded-lg bg-bg-tertiary border border-border-primary flex items-center justify-center">
         <svg
           width="48"
           height="48"
@@ -21,7 +21,7 @@ export function ProductImageGallery({ images, alt }: ProductImageGalleryProps) {
           fill="none"
           stroke="currentColor"
           strokeWidth="1"
-          className="text-muted-foreground/30"
+          className="text-text-tertiary/30"
         >
           <rect x="3" y="3" width="18" height="18" rx="2" />
           <circle cx="8.5" cy="8.5" r="1.5" />
@@ -34,7 +34,7 @@ export function ProductImageGallery({ images, alt }: ProductImageGalleryProps) {
   return (
     <div className="space-y-2">
       {/* Main image */}
-      <div className="w-full aspect-square rounded-lg border bg-white overflow-hidden flex items-center justify-center">
+      <div className="w-full aspect-square rounded-lg border bg-bg-primary overflow-hidden flex items-center justify-center">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={validImages[selected]}
@@ -53,9 +53,9 @@ export function ProductImageGallery({ images, alt }: ProductImageGalleryProps) {
               type="button"
               onClick={() => setSelected(i)}
               aria-label={`View image ${i + 1}`}
-              className={`w-14 h-14 rounded border overflow-hidden bg-white flex-shrink-0 transition-all ${
+              className={`w-14 h-14 rounded border overflow-hidden bg-bg-primary flex-shrink-0 transition-all ${
                 selected === i
-                  ? "ring-2 ring-primary ring-offset-1"
+                  ? "ring-2 ring-border-brand ring-offset-1"
                   : "opacity-60 hover:opacity-100"
               }`}
             >

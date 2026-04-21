@@ -286,19 +286,19 @@ export function PriceSparklineChart({ history }: PriceSparklineChartProps) {
     <div className="space-y-2">
       {/* Header row */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+        <div className="flex items-center gap-3 text-xs text-text-tertiary">
           {minP !== null && maxP !== null && minP !== maxP && (
             <>
               <span>
                 Low:{" "}
-                <span className="font-medium text-foreground">
+                <span className="font-medium text-text-primary">
                   {fmtPrice(minP)}
                 </span>
               </span>
-              <span className="text-muted-foreground/40">·</span>
+              <span className="text-text-tertiary/40">·</span>
               <span>
                 High:{" "}
-                <span className="font-medium text-foreground">
+                <span className="font-medium text-text-primary">
                   {fmtPrice(maxP)}
                 </span>
               </span>
@@ -314,8 +314,8 @@ export function PriceSparklineChart({ history }: PriceSparklineChartProps) {
               onClick={() => setPeriod(p)}
               className={`px-2.5 py-0.5 text-xs rounded font-medium transition-colors ${
                 period === p
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "bg-bg-brand-solid text-white"
+                  : "text-text-tertiary hover:text-text-primary"
               }`}
             >
               {p === "all" ? "All" : p}
@@ -327,7 +327,7 @@ export function PriceSparklineChart({ history }: PriceSparklineChartProps) {
       {/* Chart */}
       <div className="w-full">
         {isEmpty ? (
-          <div className="h-36 flex items-center justify-center text-sm text-muted-foreground">
+          <div className="h-36 flex items-center justify-center text-sm text-text-tertiary">
             No price data for this period
           </div>
         ) : (
@@ -337,7 +337,7 @@ export function PriceSparklineChart({ history }: PriceSparklineChartProps) {
 
       {/* Footer */}
       {!isEmpty && (
-        <p className="text-[10px] text-muted-foreground/60 text-right">
+        <p className="text-[10px] text-text-tertiary/60 text-right">
           {chartData.length} data point{chartData.length !== 1 ? "s" : ""}
           {period !== "all" ? ` · last ${period}` : ""}
         </p>
