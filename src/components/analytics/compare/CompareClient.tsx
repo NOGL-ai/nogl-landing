@@ -2,7 +2,7 @@
 import { Download01 as Download, Share01 as Share2, List as LayoutList, LayoutGrid01 as LayoutGrid, SwitchVertical01 as ArrowUpDown, ArrowUp, ArrowDown, ChevronLeft, ChevronRight, X, Settings01 as Settings, LinkExternal01 as ExternalLink, Grid01 as Grid, HelpCircle } from '@untitledui/icons';
 
 
-import { useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import {
@@ -20,8 +20,8 @@ import { FilterBar, PeriodChip } from "@/components/companies/FilterBar";
 import { fmtPrice } from "@/components/companies/pricing/utils";
 import type { PriceDistributionBucket } from "@/types/company";
 
-import { CompareProductTypesTable, MOCK_PRODUCT_TYPES } from "./CompareProductTypesTable";
-import { CompaniesCompareTable, MOCK_COMPANIES } from "./CompaniesCompareTable";
+import { CompareProductTypesTable } from "./CompareProductTypesTable";
+import { CompaniesCompareTable } from "./CompaniesCompareTable";
 
 // Dynamically import chart components to prevent SSR window errors
 const PriceDistributionChart = dynamic(
@@ -56,78 +56,52 @@ interface TrackedProduct {
 
 type SortByOption = "rank" | "price_desc" | "discount_desc";
 
-// ── Mock data ─────────────────────────────────────────────────────────────────
+type MultiCompanySummary = {
+  companies: Array<{
+    slug: string;
+    name: string;
+    total_products: number;
+    min_price: number | null;
+    max_price: number | null;
+    avg_price: number | null;
+    market_share_pct: number;
+  }>;
+  top_products: Array<{
+    rank: number;
+    company_slug: string;
+    company_name: string;
+    product_title: string;
+    price: number;
+    list_price: number | null;
+    image_url: string | null;
+    product_url: string | null;
+  }>;
+  product_categories: Array<{
+    category: string;
+    total_products: number;
+    min_price: number | null;
+    max_price: number | null;
+    avg_price: number | null;
+  }>;
+  price_distribution: Array<{
+    range: string;
+    count: number;
+    percentage: number;
+  }>;
+};
 
-const MOCK_PRODUCTS: TrackedProduct[] = [
-  {
-    rank: 1,
-    company_name: "Zara",
-    company_initials: "ZR",
-    company_slug: "zara",
-    product_title: "Oversized Linen Blazer",
-    image_url: null,
-    price: 89,
-    avg_discount_pct: 22.5,
-    variant_count: 12,
-    product_url: null,
-  },
-  {
-    rank: 2,
-    company_name: "H&M",
-    company_initials: "HM",
-    company_slug: "hm",
-    product_title: "Premium Slim Fit Chinos",
-    image_url: null,
-    price: 42,
-    avg_discount_pct: 0,
-    variant_count: 8,
-    product_url: null,
-  },
-  {
-    rank: 3,
-    company_name: "Uniqlo",
-    company_initials: "UQ",
-    company_slug: "uniqlo",
-    product_title: "Merino Wool V-Neck Sweater",
-    image_url: null,
-    price: 69,
-    avg_discount_pct: 31.0,
-    variant_count: 6,
-    product_url: null,
-  },
-  {
-    rank: 4,
-    company_name: "Zara",
-    company_initials: "ZR",
-    company_slug: "zara",
-    product_title: "Floral Midi Dress",
-    image_url: null,
-    price: 115,
-    avg_discount_pct: 18.2,
-    variant_count: 9,
-    product_url: null,
-  },
-  {
-    rank: 5,
-    company_name: "H&M",
-    company_initials: "HM",
-    company_slug: "hm",
-    product_title: "Relaxed Cotton T-Shirt",
-    image_url: null,
-    price: 18,
-    avg_discount_pct: 0,
-    variant_count: 15,
-    product_url: null,
-  },
-];
+function toInitials(name: string): string {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? "")
+    .join("");
+}
 
-const MOCK_PRICE_DIST: PriceDistributionBucket[] = [
-  { range: "0-50", count: 420, percentage: 28 },
-  { range: "50-100", count: 530, percentage: 35 },
-  { range: "100-250", count: 380, percentage: 25 },
-  { range: "250-500", count: 150, percentage: 10 },
-  { range: "500+", count: 30, percentage: 2 },
-];
+function normalizeRangeLabel(range: string): string {
+  return range.replace(/€/g, "").replace(/[–—]/g, "-").trim();
+}
 
 const ROWS_PER_PAGE_OPTIONS = [10, 25, 50, 100];
 
@@ -216,6 +190,8 @@ export function CompareClient() {
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [page, setPage] = useState(0);
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [summary, setSummary] = useState<MultiCompanySummary | null>(null);
+  const [loadingSummary, setLoadingSummary] = useState(true);
 
   // Product types table
   const [depth, setDepth] = useState(3);
@@ -223,6 +199,40 @@ export function CompareClient() {
 
   // Price filter from bucket click
   const [priceFilter, setPriceFilter] = useState<PriceDistributionBucket | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadSummary() {
+      setLoadingSummary(true);
+      try {
+        const response = await fetch("/api/analytics/multi-company-summary", {
+          cache: "no-store",
+        });
+        if (!response.ok) {
+          throw new Error(`Failed to load summary (${response.status})`);
+        }
+        const data = (await response.json()) as MultiCompanySummary;
+        if (!cancelled) {
+          setSummary(data);
+        }
+      } catch (error) {
+        console.error("Failed to load multi-company summary", error);
+        if (!cancelled) {
+          setSummary(null);
+        }
+      } finally {
+        if (!cancelled) {
+          setLoadingSummary(false);
+        }
+      }
+    }
+
+    loadSummary();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   function setFilter(key: string, value: string | null) {
     setFilters((prev) => ({ ...prev, [key]: value }));
@@ -235,16 +245,79 @@ export function CompareClient() {
 
   // Sorted mock products
   const sortedProducts = useMemo(() => {
-    const copy = [...MOCK_PRODUCTS];
+    const sourceProducts: TrackedProduct[] = (summary?.top_products ?? []).map((product) => {
+      const discountPct =
+        product.list_price && product.list_price > 0
+          ? ((product.list_price - product.price) / product.list_price) * 100
+          : 0;
+      return {
+        rank: product.rank,
+        company_name: product.company_name,
+        company_initials: toInitials(product.company_name),
+        company_slug: product.company_slug,
+        product_title: product.product_title,
+        image_url: product.image_url,
+        price: product.price,
+        avg_discount_pct: Math.max(0, Number(discountPct.toFixed(1))),
+        variant_count: 0,
+        product_url: product.product_url,
+      };
+    });
+    const copy = [...sourceProducts];
     if (sortBy === "price_desc") copy.sort((a, b) => b.price - a.price);
     else if (sortBy === "discount_desc") copy.sort((a, b) => b.avg_discount_pct - a.avg_discount_pct);
     else copy.sort((a, b) => a.rank - b.rank);
     return copy;
-  }, [sortBy]);
+  }, [sortBy, summary]);
 
   const totalProducts = sortedProducts.length;
-  const totalVariants = MOCK_PRODUCTS.reduce((acc, p) => acc + p.variant_count, 0);
-  const totalDatapoints = totalVariants * 14; // mock: 14 days of snapshots
+  const totalVariants = sortedProducts.reduce((acc, p) => acc + p.variant_count, 0);
+  const totalDatapoints = summary?.companies.reduce((acc, c) => acc + c.total_products, 0) ?? 0;
+  const companiesRows = useMemo(
+    () =>
+      (summary?.companies ?? []).map((company, idx) => ({
+        id: `${idx}-${company.slug}`,
+        slug: company.slug,
+        name: company.name,
+        initials: toInitials(company.name),
+        logo_url: null,
+        product_count: company.total_products,
+        min_price: company.min_price ?? 0,
+        max_price: company.max_price ?? 0,
+        avg_price: company.avg_price ?? 0,
+        market_share_pct: company.market_share_pct,
+      })),
+    [summary]
+  );
+
+  const productTypeRows = useMemo(
+    () =>
+      (summary?.product_categories ?? []).map((category) => ({
+        name: category.category,
+        breadcrumb: [category.category],
+        product_count: category.total_products,
+        pct_tagged: 100,
+        avg_rating: null,
+        pct_discounted: 0,
+        min_price: category.min_price ?? 0,
+        max_price: category.max_price ?? 0,
+        avg_price: category.avg_price ?? 0,
+        avg_full_price: category.avg_price ?? 0,
+        avg_discount_pct: 0,
+      })),
+    [summary]
+  );
+
+  const priceBuckets = useMemo(
+    () =>
+      (summary?.price_distribution ?? []).map((bucket) => ({
+        range: normalizeRangeLabel(bucket.range),
+        count: bucket.count,
+        percentage: bucket.percentage,
+      })),
+    [summary]
+  );
+
 
   const paginatedProducts = sortedProducts.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
   const totalPages = Math.ceil(totalProducts / rowsPerPage);
@@ -416,12 +489,12 @@ export function CompareClient() {
                 {
                   key: "company",
                   label: "Company",
-                  options: MOCK_COMPANIES.map((c) => ({ label: c.name, value: c.slug })),
+                  options: companiesRows.map((c) => ({ label: c.name, value: c.slug })),
                 },
                 {
                   key: "productType",
                   label: "Product Type",
-                  options: MOCK_PRODUCT_TYPES.map((t) => ({ label: t.name, value: t.name })),
+                  options: productTypeRows.map((t) => ({ label: t.name, value: t.name })),
                 },
                 {
                   key: "avgDiscount",
@@ -654,17 +727,18 @@ export function CompareClient() {
 
         {/* ── Product Types table ── */}
         <CompareProductTypesTable
-          rows={MOCK_PRODUCT_TYPES}
+          rows={productTypeRows}
           activeType={activeType}
           onTypeSelect={setActiveType}
           depth={depth}
           onDepthChange={setDepth}
+          loading={loadingSummary}
         />
 
         {/* ── Distribution Row ── */}
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Left: Color / Size / etc. Distribution */}
-          <ColorDistributionWidget />
+          <ColorDistributionWidget loading={loadingSummary} />
 
           {/* Right: Price Distribution */}
           <Card className="flex flex-col p-5">
@@ -701,17 +775,18 @@ export function CompareClient() {
             </div>
 
             <PriceDistributionChart
-              buckets={MOCK_PRICE_DIST}
+              buckets={priceBuckets}
               onBucketClick={handleBucketClick}
+              loading={loadingSummary}
             />
           </Card>
         </div>
 
         {/* ── Companies table ── */}
-        <CompaniesCompareTable rows={MOCK_COMPANIES} />
+        <CompaniesCompareTable rows={companiesRows} loading={loadingSummary} />
 
         {/* ── Gender Distribution ── */}
-        <GenderDistributionWidget />
+        <GenderDistributionWidget loading={loadingSummary} />
       </div>
     </>
   );

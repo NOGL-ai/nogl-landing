@@ -31,46 +31,9 @@ interface DistributionEntry {
 }
 
 interface ColorDistributionWidgetProps {
-  data?: DistributionEntry[];
+  dataByType?: Partial<Record<DistributionType, DistributionEntry[]>>;
   loading?: boolean;
 }
-
-// ── Mock data ─────────────────────────────────────────────────────────────────
-
-const MOCK_DATA: Record<DistributionType, DistributionEntry[]> = {
-  color: [
-    { label: "Black", count: 45, color: "#111827" },
-    { label: "White", count: 32, color: "#f9fafb" },
-    { label: "Gray",  count: 18, color: "#9ca3af" },
-    { label: "Blue",  count: 12, color: "#3b82f6" },
-    { label: "Red",   count: 8,  color: "#ef4444" },
-    { label: "Green", count: 6,  color: "#22c55e" },
-    { label: "Beige", count: 5,  color: "#d4b896" },
-  ],
-  size: [
-    { label: "M",   count: 38 },
-    { label: "L",   count: 34 },
-    { label: "S",   count: 28 },
-    { label: "XL",  count: 22 },
-    { label: "XS",  count: 15 },
-    { label: "XXL", count: 10 },
-  ],
-  category: [
-    { label: "Tops",        count: 40 },
-    { label: "Bottoms",     count: 28 },
-    { label: "Dresses",     count: 22 },
-    { label: "Footwear",    count: 18 },
-    { label: "Accessories", count: 14 },
-    { label: "Outerwear",   count: 10 },
-  ],
-  brand: [
-    { label: "Nike",   count: 35 },
-    { label: "Adidas", count: 28 },
-    { label: "Zara",   count: 22 },
-    { label: "H&M",    count: 18 },
-    { label: "Uniqlo", count: 14 },
-  ],
-};
 
 const FALLBACK_COLORS = ["#3b82f6", "#8b5cf6", "#ec4899", "#f59e0b", "#10b981", "#6366f1", "#f97316"];
 
@@ -83,7 +46,7 @@ const DISTRIBUTION_OPTIONS: { value: DistributionType; label: string }[] = [
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export function ColorDistributionWidget({ loading = false }: ColorDistributionWidgetProps) {
+export function ColorDistributionWidget({ dataByType = {}, loading = false }: ColorDistributionWidgetProps) {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
 
@@ -92,7 +55,7 @@ export function ColorDistributionWidget({ loading = false }: ColorDistributionWi
   const [dropdownOpen, setDropdownOpen]         = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const entries = MOCK_DATA[distributionType];
+  const entries = dataByType[distributionType] ?? [];
   const showRevenueOverlay = activeTab === "revenue";
 
   const textColor = isDark ? "#9ca3af" : "#6b7280";

@@ -19,18 +19,10 @@ interface GenderDistributionWidgetProps {
   loading?: boolean;
 }
 
-// ── Mock data ─────────────────────────────────────────────────────────────────
-
-const DEFAULT_DATA: GenderEntry[] = [
-  { gender: "Male",   count: 1842, pct: 59, color: "#3b82f6" },
-  { gender: "Unisex", count: 905,  pct: 29, color: "#8b5cf6" },
-  { gender: "Female", count: 374,  pct: 12, color: "#ec4899" },
-];
-
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export function GenderDistributionWidget({
-  data = DEFAULT_DATA,
+  data = [],
   loading = false,
 }: GenderDistributionWidgetProps) {
   const { resolvedTheme } = useTheme();
