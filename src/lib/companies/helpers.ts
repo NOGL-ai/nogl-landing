@@ -705,29 +705,7 @@ export async function resolveCompanyBySlug(slug: string): Promise<CompanyDTO | n
     return company;
   }
 
-  const competitor = await findCompetitorBySlug(slug);
-  if (competitor) {
-    return competitor;
-  }
-
-  // Fallback: if the param looks like a CUID, try lookup by id (handles stale id-based URLs)
-  if (/^c[a-z0-9]{24}$/.test(slug)) {
-    try {
-      const rows = await prisma.$queryRaw<CompanyRow[]>(Prisma.sql`
-        SELECT id, slug, name, domain, country_code, locale, website, source_key, industry,
-               product_types, dataset_quality_score, tracking_status, tracked_competitor_id,
-               wm_key, arango_id, "createdAt" AS created_at, "updatedAt" AS updated_at
-        FROM nogl."Company"
-        WHERE id = ${slug}
-        LIMIT 1
-      `);
-      return rows[0] ? mapCompanyRowToDTO(rows[0]) : null;
-    } catch {
-      return null;
-    }
-  }
-
-  return null;
+  return findCompetitorBySlug(slug);
 }
 
 export async function buildPlaceholderSnapshot(
