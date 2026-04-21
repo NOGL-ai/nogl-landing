@@ -119,7 +119,7 @@ export default function RepricingRulesCard({
       {/* Card body */}
       <div className="grid grid-cols-2 gap-x-4 gap-y-3 px-4 py-3 text-sm">
         <div>
-          <p className="text-xs text-text-tertiary">Scope</p>
+          <p className="text-xs text-text-tertiary">Products</p>
           <p className="mt-0.5 font-medium text-text-primary">{scopeLabel}</p>
         </div>
         <div>
@@ -129,7 +129,7 @@ export default function RepricingRulesCard({
           </p>
         </div>
         <div>
-          <p className="text-xs text-text-tertiary">Schedule</p>
+          <p className="text-xs text-text-tertiary">Method</p>
           <p className="mt-0.5 font-medium text-text-primary">
             {rule.scheduleType === "MANUAL" ? "Manual" :
              rule.scheduleType === "HOURLY" ? "Hourly" :
@@ -151,14 +151,21 @@ export default function RepricingRulesCard({
       </div>
 
       {/* Last run */}
-      <div className="flex items-center gap-1.5 border-t border-border-primary px-4 py-2 text-xs text-text-secondary">
-        <Clock className="h-3.5 w-3.5 flex-shrink-0" />
-        <span>Last run: {lastRunText}</span>
-        {rule.autoApply && (
-          <Badge className="ml-auto bg-brand-secondary px-1.5 py-0.5 text-xs text-brand-secondary">
-            Autopilot
-          </Badge>
-        )}
+      <div className="flex items-center justify-between border-t border-border-primary px-4 py-2 text-xs text-text-secondary">
+        <div className="flex items-center gap-1.5">
+          <Clock className="h-3.5 w-3.5 shrink-0" />
+          <span>Last run: {lastRunText}</span>
+          {rule.autoApply && (
+            <Badge className="bg-brand-secondary px-1.5 py-0.5 text-xs text-brand-secondary">
+              Autopilot
+            </Badge>
+          )}
+        </div>
+        <span className="text-text-tertiary">
+          {rule.scheduleType === "MANUAL" ? "Manual" :
+           rule.scheduleType === "HOURLY" ? "Hourly" :
+           rule.scheduleType === "DAILY"  ? "Daily" : "Weekly"}
+        </span>
       </div>
 
       {/* Actions */}
@@ -180,7 +187,7 @@ export default function RepricingRulesCard({
           isDisabled={rule.status === "ARCHIVED"}
         >
           <Play className="h-4 w-4" />
-          Preview
+          Show Preview
         </Button>
       </div>
     </div>

@@ -62,9 +62,12 @@ export default async function AutoRepricingOverviewPage({ searchParams }: PagePr
               Repricing Preview
               {job.ruleName ? ` — ${job.ruleName}` : ""}
             </h1>
-            <p className="text-sm text-text-secondary">
-              Review the proposed price changes. Apply or reject individually or in bulk.
-            </p>
+            <div className="flex items-center gap-3">
+              <p className="text-sm text-text-secondary">
+                Review the proposed price changes. Apply or reject individually or in bulk.
+              </p>
+              <span className="text-sm text-text-tertiary">{job.proposals.length} Products</span>
+            </div>
           </div>
         </div>
 
