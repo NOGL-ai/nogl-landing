@@ -70,7 +70,7 @@ export function CompanyTabs({ slug, initialData }: CompanyTabsProps) {
   return (
     <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-6">
       <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
-        <TabsList className="h-auto flex-wrap justify-start rounded-2xl bg-muted/60 p-1">
+        <TabsList className="h-auto flex-wrap justify-start rounded-2xl bg-bg-secondary p-1">
           {TAB_DEFS.map((tab) => (
             <TabsTrigger
               key={tab.value}

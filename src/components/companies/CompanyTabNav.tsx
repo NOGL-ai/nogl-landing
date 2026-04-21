@@ -40,7 +40,7 @@ export function CompanyTabNav({ slug, lang }: CompanyTabNavProps) {
 
   return (
     <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
-      <div className="flex h-auto flex-wrap justify-start rounded-2xl bg-muted/60 p-1">
+      <div className="flex h-auto flex-wrap justify-start rounded-2xl bg-bg-secondary p-1">
         {TABS.map((tab) => {
           const href = `/${lang}/companies/${slug}/${tab.key}`;
           const isActive = pathname === href;
@@ -53,8 +53,8 @@ export function CompanyTabNav({ slug, lang }: CompanyTabNavProps) {
               className={`inline-flex items-center rounded-xl px-4 py-2 text-sm font-medium transition-colors
                 ${
                   isActive
-                    ? "bg-background text-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? "bg-bg-primary text-text-primary shadow-sm"
+                    : "text-text-tertiary hover:text-text-primary"
                 }`}
             >
               {Icon ? <Icon className="mr-2 h-4 w-4" /> : null}

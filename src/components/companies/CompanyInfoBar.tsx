@@ -57,7 +57,7 @@ function QualityBadge({ score, qualityLabel }: { score: number | undefined | nul
   return (
     <button
       type="button"
-      className="flex items-center gap-3 rounded-lg border border-border bg-bg-secondary px-4 py-2.5 transition-colors hover:bg-bg-tertiary"
+      className="flex items-center gap-3 rounded-lg border border-border-primary bg-bg-secondary px-4 py-2.5 transition-colors hover:bg-bg-tertiary"
     >
       <div className="relative h-10 w-10 flex-shrink-0">
         <svg className="h-10 w-10 -rotate-90" viewBox="0 0 48 48">
@@ -89,7 +89,7 @@ function QualityBadge({ score, qualityLabel }: { score: number | undefined | nul
           {hasScore ? (
             <span className="text-xs font-bold text-text-primary">{getGrade(percentage)}</span>
           ) : (
-            <span className="text-xs font-bold text-muted-foreground">—</span>
+            <span className="text-xs font-bold text-text-tertiary">—</span>
           )}
         </div>
       </div>
@@ -98,7 +98,7 @@ function QualityBadge({ score, qualityLabel }: { score: number | undefined | nul
         {hasScore ? (
           <p className="text-sm font-semibold text-text-primary">{percentage.toFixed(1)}%</p>
         ) : (
-          <p className="text-sm font-semibold text-muted-foreground">—</p>
+          <p className="text-sm font-semibold text-text-tertiary">—</p>
         )}
       </div>
     </button>
@@ -114,7 +114,7 @@ function DataTypeIcon({ type }: { type: string }) {
   };
 
   return (
-    <div className="flex h-6 w-6 items-center justify-center rounded-full border border-border bg-bg-secondary text-text-secondary transition-colors hover:text-text-primary">
+    <div className="flex h-6 w-6 items-center justify-center rounded-full border border-border-primary bg-bg-secondary text-text-secondary transition-colors hover:text-text-primary">
       {icons[type as keyof typeof icons] || <Sparkles className="h-3 w-3" />}
     </div>
   );
@@ -126,7 +126,7 @@ function DataTypesBadge() {
   return (
     <button
       type="button"
-      className="flex items-center gap-2 rounded-full border border-border bg-bg-secondary px-3 py-1.5 text-xs font-medium text-text-secondary transition-colors hover:bg-bg-tertiary hover:text-text-primary"
+      className="flex items-center gap-2 rounded-full border border-border-primary bg-bg-secondary px-3 py-1.5 text-xs font-medium text-text-secondary transition-colors hover:bg-bg-tertiary hover:text-text-primary"
     >
       <div className="flex gap-1">
         <DataTypeIcon type="pricing" />
@@ -155,7 +155,7 @@ export function CompanyInfoBar({ company, snapshot }: CompanyInfoBarProps) {
   };
 
   return (
-    <div className="border-b border-border bg-bg-primary/95 backdrop-blur supports-[backdrop-filter]:bg-bg-primary/60">
+    <div className="border-b border-border-primary bg-bg-primary/95 backdrop-blur supports-[backdrop-filter]:bg-bg-primary/60">
       <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           {/* Show stored score; fall back to snapshot estimate so we never show "—" when data exists */}
@@ -164,7 +164,7 @@ export function CompanyInfoBar({ company, snapshot }: CompanyInfoBarProps) {
             qualityLabel={t("quality")}
           />
 
-          <div className="flex items-center gap-2 whitespace-nowrap rounded-full border border-border bg-bg-secondary px-3 py-1.5 text-xs text-text-secondary transition-colors hover:bg-bg-tertiary hover:text-text-primary">
+          <div className="flex items-center gap-2 whitespace-nowrap rounded-full border border-border-primary bg-bg-secondary px-3 py-1.5 text-xs text-text-secondary transition-colors hover:bg-bg-tertiary hover:text-text-primary">
             <Calendar className="h-3 w-3 flex-shrink-0" />
             <span>
               {t("dataSince")} {formatDate(snapshot.data_since)}
@@ -177,7 +177,7 @@ export function CompanyInfoBar({ company, snapshot }: CompanyInfoBarProps) {
             href={websiteUrl}
             target="_blank"
             rel="noreferrer"
-            className="flex items-center gap-2 rounded-full border border-border bg-bg-secondary px-3 py-1.5 text-xs text-text-secondary transition-colors hover:bg-bg-tertiary hover:text-text-primary"
+            className="flex items-center gap-2 rounded-full border border-border-primary bg-bg-secondary px-3 py-1.5 text-xs text-text-secondary transition-colors hover:bg-bg-tertiary hover:text-text-primary"
           >
             <Globe className="h-3 w-3" />
             <span className="max-w-[150px] truncate">{company.domain}</span>

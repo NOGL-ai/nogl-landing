@@ -34,7 +34,7 @@ export function ProductImageGallery({ images, alt }: ProductImageGalleryProps) {
   return (
     <div className="space-y-2">
       {/* Main image */}
-      <div className="w-full aspect-square rounded-lg border bg-white overflow-hidden flex items-center justify-center">
+      <div className="w-full aspect-square rounded-lg border bg-bg-primary overflow-hidden flex items-center justify-center">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={validImages[selected]}
@@ -53,7 +53,7 @@ export function ProductImageGallery({ images, alt }: ProductImageGalleryProps) {
               type="button"
               onClick={() => setSelected(i)}
               aria-label={`View image ${i + 1}`}
-              className={`w-14 h-14 rounded border overflow-hidden bg-white flex-shrink-0 transition-all ${
+              className={`w-14 h-14 rounded border overflow-hidden bg-bg-primary flex-shrink-0 transition-all ${
                 selected === i
                   ? "ring-2 ring-border-brand ring-offset-1"
                   : "opacity-60 hover:opacity-100"
