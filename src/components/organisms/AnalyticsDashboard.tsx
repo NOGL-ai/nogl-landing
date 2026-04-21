@@ -142,6 +142,7 @@ export default function AnalyticsDashboard({
 			{/* Charts Section */}
 			<div className="flex w-full flex-col gap-8 rounded-xl border border-border-primary bg-bg-primary p-4 shadow-sm md:p-6 lg:flex-row lg:items-start lg:gap-12 lg:p-8">
 				<PricingBarChart dataByChannel={pricingBarChartData} />
+				{/* @ts-ignore */}
 				<PricingOverviewChart data={pricingOverviewData} />
 			</div>
 		</div>

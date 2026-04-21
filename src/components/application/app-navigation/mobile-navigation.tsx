@@ -153,8 +153,8 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
                                                     badge={subItem.badge}
                                                     type="collapsible-child"
                                                     current={isSubActive}
-                                                    onClick={() => handleNavigation(subItem.href)}
-                                                    theme={currentTheme}
+                                                    onClick={() => handleNavigation(subItem.href!)}
+                                                    theme={currentTheme as 'dark' | 'light' | undefined}
                                                 >
                                                     {subItem.label}
                                                 </NavItemBase>

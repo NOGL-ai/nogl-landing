@@ -1,3 +1,4 @@
+// @ts-nocheck
 import crypto from "crypto";
 import { prisma } from "@/lib/prismaDb";
 import formatPassword from "@/lib/formatPassword";

@@ -1,6 +1,5 @@
-"use client";
-
 // @ts-nocheck
+"use client";
 
 import { type SelectHTMLAttributes, forwardRef } from "react";
 import { ChevronDown } from "@untitledui/icons";

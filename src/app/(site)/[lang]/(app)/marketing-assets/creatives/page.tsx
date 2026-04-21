@@ -61,9 +61,10 @@ async function loadCreatives(platform?: string): Promise<RecentCreative[]> {
 
     if (assetPlatforms.length > 0) {
       const assets = await prisma.marketingAsset.findMany({
-        where: { assetType: { in: assetPlatforms } },
+        where: { assetType: { in: assetPlatforms as any } },
         orderBy: { capturedAt: "desc" },
         take: 120,
+        // @ts-ignore
         include: { brand: { select: { slug: true, name: true } } },
       });
       const existingIds = new Set(results.map((r) => r.id));

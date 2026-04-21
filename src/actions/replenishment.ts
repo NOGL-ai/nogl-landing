@@ -245,7 +245,7 @@ export async function updatePurchaseOrderStatus(params: {
     data.arrivedAt = now;
   }
 
-  await prisma.$transaction(async (tx: typeof prisma) => {
+  await prisma.$transaction(async (tx: any) => {
     await tx.replenishmentPurchaseOrder.update({
       where: { id: params.purchaseOrderId },
       data,

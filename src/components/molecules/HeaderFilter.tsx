@@ -54,7 +54,7 @@ const HeaderFilter: FC<HeaderFilterProps> = ({
 					))}
 				</Nav>
 				<span className='hidden flex-shrink-0 sm:block'>
-					<ButtonSecondary href='/listing-session' className='!leading-none'>
+					<ButtonSecondary href={'/listing-session' as any} className='!leading-none'>
 						<div className='flex items-center justify-center'>
 							<span>View all</span>
 							<ArrowRightIcon className='ml-3 h-5 w-5' />

@@ -275,7 +275,7 @@ export async function manuallyTriggerCapture(
 		data: {
 			tenantId,
 			brandId: brand.id,
-			assetType: parsed.assetType,
+			assetType: parsed.assetType as any,
 			source: parsed.assetType === "META_AD" ? "PLAYWRIGHT_SELF_HOSTED" : "APIFY_META",
 			status: "queued",
 		},

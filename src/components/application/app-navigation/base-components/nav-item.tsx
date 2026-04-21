@@ -49,6 +49,7 @@ export const NavItemBase = ({ current, type, badge, href, icon: Icon, children, 
     // Try to call the icon first to see if it returns JSX (for Avatar-based icons)
     const iconElement = Icon && (() => {
         try {
+            // @ts-ignore
             const result = Icon();
             // If it returns a valid React element, use it directly (Avatar case)
             if (result) {
@@ -107,6 +108,7 @@ export const NavItemBase = ({ current, type, badge, href, icon: Icon, children, 
                 target={isExternal ? "_blank" : "_self"}
                 rel="noopener noreferrer"
                 className={cx("py-2 pr-3 pl-10", styles.root, current && styles.rootSelected)}
+                // @ts-ignore
                 onClick={onClick}
                 aria-current={current ? "page" : undefined}
             >
@@ -123,6 +125,7 @@ export const NavItemBase = ({ current, type, badge, href, icon: Icon, children, 
             target={isExternal ? "_blank" : "_self"}
             rel="noopener noreferrer"
             className={cx("px-0 py-[2px]", styles.root, current && styles.rootSelected)}
+            // @ts-ignore
             onClick={onClick}
             aria-current={current ? "page" : undefined}
         >

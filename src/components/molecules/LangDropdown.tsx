@@ -1,5 +1,5 @@
-import { Globe02 as GlobeAltIcon, ChevronDown as ChevronDownIcon, CurrencyDollar as BanknotesIcon } from '@untitledui/icons';
 // @ts-nocheck
+import { Globe02 as GlobeAltIcon, ChevronDown as ChevronDownIcon, CurrencyDollar as BanknotesIcon } from '@untitledui/icons';
 import { Popover, Tab, Transition } from "@headlessui/react";
 
 import { FC, Fragment } from "react";

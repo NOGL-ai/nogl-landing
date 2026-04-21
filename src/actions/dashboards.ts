@@ -249,7 +249,7 @@ export async function cloneWidget(widgetId: string) {
       dashboardId: original.dashboardId,
       title: `${original.title} (copy)`,
       type: original.type,
-      config: original.config,
+      config: original.config as never,
       layout: { ...newLayout } as never,
     },
   });

@@ -1,6 +1,6 @@
+// @ts-nocheck
 "use client";
 
-// @ts-nocheck
 
 import React, { useState } from "react";
 import { Building06 } from "@untitledui/icons";

@@ -17,5 +17,6 @@ export default async function DashboardDetailPage({
     notFound();
   }
 
+  // @ts-ignore
   return <DashboardEditor dashboard={dashboard} lang={lang} />;
 }

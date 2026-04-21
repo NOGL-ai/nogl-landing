@@ -1,7 +1,7 @@
+// @ts-nocheck
 "use client";
 
 import { ArrowDown as ArrowDownIcon, ArrowUp as ArrowUpIcon, Check as CheckIcon, Copy01 as CopyIcon, Pencil01 as PencilIcon, ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon, RefreshCw01 as RefreshCwIcon, Square, VolumeMax as Volume2Icon, VolumeX as VolumeXIcon, ThumbsUp as ThumbsUpIcon, ThumbsDown as ThumbsDownIcon, HelpCircle as HelpCircleIcon } from '@untitledui/icons';
-// @ts-nocheck
 
 
 

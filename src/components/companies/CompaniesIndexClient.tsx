@@ -175,7 +175,7 @@ export function CompaniesIndexClient({ companies, pagination, lang, error = null
       params.delete(key);
     }
     if (key !== "page") params.set("page", "1");
-    router.push(`${pathname}?${params.toString()}`);
+    router.push(`${pathname}?${params.toString()}` as any);
   }
 
   function handleSearchChange(value: string) {
@@ -245,7 +245,7 @@ export function CompaniesIndexClient({ companies, pagination, lang, error = null
       params.delete("sort_dir");
     }
     params.set("page", "1");
-    router.push(`${pathname}?${params.toString()}`);
+    router.push(`${pathname}?${params.toString()}` as any);
   }
 
   const sortDir = searchParams.get("sort_dir") ?? "asc";

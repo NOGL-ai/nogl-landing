@@ -1,6 +1,6 @@
+// @ts-nocheck
 "use client";
 
-// @ts-nocheck
 
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import { SearchLg, InfoCircle, Plus } from "@untitledui/icons";

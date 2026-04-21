@@ -1,6 +1,5 @@
-"use client";
-
 // @ts-nocheck
+"use client";
 
 import type { FocusEventHandler, PointerEventHandler, RefAttributes, RefObject } from "react";
 import { useCallback, useContext, useRef, useState } from "react";

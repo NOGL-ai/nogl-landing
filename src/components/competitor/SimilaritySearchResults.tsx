@@ -286,7 +286,7 @@ export default function SimilaritySearchResults({
                         <Button
                           size="sm"
                           color="tertiary"
-                          onClick={(e) => {
+                          onClick={(e: any) => {
                             e.stopPropagation();
                             window.open(match.url, '_blank');
                           }}

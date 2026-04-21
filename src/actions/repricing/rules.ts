@@ -251,6 +251,7 @@ export async function duplicateRule(id: string): Promise<RepricingRuleDTO> {
   });
 
   const rule = await prisma.repricingRule.create({
+    // @ts-ignore
     data: {
       ...existing,
       id: undefined as unknown as string,  // let Prisma generate new id

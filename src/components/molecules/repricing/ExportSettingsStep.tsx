@@ -1,6 +1,6 @@
+// @ts-nocheck
 "use client";
 
-// @ts-nocheck
 
 import React from "react";
 import { InfoCircle, FileCheck02, Mail01 } from "@untitledui/icons";

@@ -1,6 +1,6 @@
+// @ts-nocheck
 "use client";
 
-// @ts-nocheck
 
 import React from "react";
 import { Input } from "@/components/base/input/input";

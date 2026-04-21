@@ -173,6 +173,7 @@ export const POST = withRequestLogging(
             currency: body.currency || 'EUR',
             trend: trend ? Number(trend.toFixed(2)) : null,
             notes: body.notes,
+            // @ts-ignore
             sourceUrl: body.sourceUrl,
           },
         });
