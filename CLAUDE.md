@@ -119,9 +119,40 @@ Multiple Claude Code sessions work in parallel (via worktrees + feature branches
 3. **Branch protection on `main`** should require: `test` passing, `Vercel` passing (Vercel GitHub app auto-deploys), code review approval. Never force-push to `main`.
 4. **The `.claude/prompts/` directory is the canonical source** for feature specs. If a session implements a prompt, that session is the owner until merge. Don't start a second session on the same prompt.
 
+## 🐳 Worker deployment (production architecture)
+
+Background workers are **isolated from the web app** on a dedicated LXC:
+
+| Host | What runs | How |
+|---|---|---|
+| CT 504 `nogl-dev` (10.10.10.182) | Next.js web app only | PM2 (`ecosystem.config.js`, one `next` app) |
+| CT 505 `nogl-workers` (10.10.10.183) | All BullMQ workers | Docker Compose (`docker-compose.workers.yml`) |
+| CT 213 (10.10.10.213) | Postgres | existing |
+| CT 214 (10.10.10.214) | Redis | existing |
+
+**Two Docker images** (in Gitea registry at `10.10.10.171:3000`):
+- `nogladmin/nogl-worker-ingest` — data workers (ingest, apify-ingest, compute-proxies, score-aesthetic). Built from `docker/worker-ingest.Dockerfile`.
+- `nogladmin/nogl-worker-browser` — Playwright workers (meta-ads, homepage-capture). Built from `docker/worker-browser.Dockerfile`.
+
+**CI flow** (on push to main, `.gitea/workflows/`):
+1. `build-images.yml` — SSHes to CT 504, builds both images, pushes to Gitea registry, prunes dangling layers.
+2. `deploy.yml` — job 1 SSHes to CT 504 (`npm run build` + `pm2 restart next`), job 2 SSHes to CT 505 (`docker compose pull && up -d`).
+
+**Adding a new scraper:**
+1. Add worker code to `src/workers/<name>/`
+2. Add `start<Name>Worker()` call to `scripts/start-workers-browser.ts` (if Playwright) or `scripts/start-workers-ingest.ts` (if data-only)
+3. `git push` — CI rebuilds the image and rolls it out to CT 505. No infra changes.
+
+**Gitea secrets required:**
+- `NOGL_DEV_SSH_KEY` — SSH key for root@10.10.10.182 (CT 504)
+- `NOGL_WORKERS_SSH_KEY` — SSH key for root@10.10.10.183 (CT 505)
+- `GITEA_TOKEN` — Gitea personal access token with `write:packages` scope, for `docker push`
+
 ## Production URLs
 
-- Dev server (CT 504): `http://10.10.10.182:3000` (internal), `https://scripts-helps-nest-ind.trycloudflare.com` (public tunnel, may rotate)
+- Web (CT 504): `http://10.10.10.182:3000` (internal), `https://scripts-helps-nest-ind.trycloudflare.com` (public tunnel, may rotate)
+- Workers (CT 505): `http://10.10.10.183` — no public port, internal only
+- Gitea: `http://10.10.10.171:3000` — registry at same host
 - Postgres: `10.10.10.213:5432/nogl_landing` (schemas: `nogl`, `public`, `forecast`)
 - Redis: `10.10.10.214:6379`
 - Calumet tenant ID: `cmnw4qqo10000ltccgauemneu`

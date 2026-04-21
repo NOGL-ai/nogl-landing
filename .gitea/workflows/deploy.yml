@@ -5,15 +5,16 @@ on:
     branches: [main]
 
 jobs:
-  deploy:
+  deploy-web:
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy via SSH
+      - name: Build & deploy web app (CT 504)
         uses: appleboy/ssh-action@v1
         with:
           host: 10.10.10.182
           username: root
           key: ${{ secrets.NOGL_DEV_SSH_KEY }}
+          command_timeout: 20m
           script: |
             set -e
             cd /root/nogl-landing
@@ -22,10 +23,55 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
 
-            echo "=== Install deps (only if lockfile changed) ==="
+            echo "=== Install deps ==="
             npm ci --prefer-offline
 
-            echo "=== Restart dev server ==="
-            systemctl restart nogl-dev
+            echo "=== Build Next.js ==="
+            npm run build
+
+            echo "=== Restart web server ==="
+            pm2 restart next --update-env
             sleep 5
             curl -sf http://localhost:3000/api/health && echo "Health OK" || echo "Health check failed (server still starting)"
+
+  deploy-workers:
+    runs-on: ubuntu-latest
+    needs: [deploy-web]
+    env:
+      GITEA_TOKEN: ${{ secrets.GITEA_TOKEN }}
+    steps:
+      - name: Roll out worker containers (CT 505)
+        uses: appleboy/ssh-action@v1
+        env:
+          GITEA_TOKEN: ${{ secrets.GITEA_TOKEN }}
+        with:
+          host: 10.10.10.183
+          username: root
+          key: ${{ secrets.NOGL_WORKERS_SSH_KEY }}
+          envs: GITEA_TOKEN
+          command_timeout: 15m
+          script: |
+            set -e
+
+            echo "=== Fetch latest compose file from Gitea ==="
+            mkdir -p /opt/nogl-workers
+            curl -sf \
+              -H "Authorization: token $GITEA_TOKEN" \
+              "http://10.10.10.171:3000/nogladmin/nogl-landing/raw/branch/main/docker-compose.workers.yml" \
+              -o /opt/nogl-workers/docker-compose.workers.yml
+
+            echo "=== Login to Gitea registry ==="
+            echo "$GITEA_TOKEN" | docker login 10.10.10.171:3000 -u nogladmin --password-stdin
+
+            echo "=== Pull new images ==="
+            docker compose -f /opt/nogl-workers/docker-compose.workers.yml pull
+
+            echo "=== Restart workers ==="
+            docker compose -f /opt/nogl-workers/docker-compose.workers.yml \
+              up -d --remove-orphans
+
+            echo "=== Prune old images (keep 48h) ==="
+            docker image prune -f --filter until=48h
+
+            echo "=== Worker status ==="
+            docker compose -f /opt/nogl-workers/docker-compose.workers.yml ps

@@ -65,6 +65,9 @@
     "knip:files": "knip --include files",
     "seed:marketing-assets": "tsx scripts/seed-marketing-assets-demo.ts",
     "workers:start": "tsx scripts/start-workers.ts",
+    "workers:ingest": "tsx src/lib/queues/workers/ingest.worker.ts",
+    "workers:data": "tsx scripts/start-workers-data.ts",
+    "workers:browser": "tsx scripts/start-workers-browser.ts",
     "workers:meta-ads": "tsx scripts/run-meta-ads-worker.ts",
     "workers:meta-ads:schedule": "tsx scripts/schedule-meta-ads-scrape.ts",
     "workers:imap": "tsx scripts/imap-ingest.ts"

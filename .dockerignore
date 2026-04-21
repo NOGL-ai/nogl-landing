@@ -97,3 +97,8 @@ test-*.js
 # Vercel
 .vercel
 vercel.json
+
+# Worker infra (not needed in web app image)
+docker
+docker-compose.workers.yml
+komodo

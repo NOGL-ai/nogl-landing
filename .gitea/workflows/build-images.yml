@@ -1,0 +1,64 @@
+name: Build and push worker images
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-worker-images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build & push worker images via CT 504
+        uses: appleboy/ssh-action@v1
+        env:
+          GITEA_TOKEN: ${{ secrets.GITEA_TOKEN }}
+        with:
+          host: 10.10.10.182
+          username: root
+          key: ${{ secrets.NOGL_DEV_SSH_KEY }}
+          envs: GITEA_TOKEN
+          command_timeout: 30m
+          script: |
+            set -e
+            cd /root/nogl-landing
+
+            REGISTRY=10.10.10.171:3000
+            ORG=nogladmin
+            SHA=$(git rev-parse --short HEAD)
+
+            echo "=== Disk check before build ==="
+            DISK_FREE=$(df / --output=avail -BG | tail -1 | tr -d 'G')
+            echo "Disk free: ${DISK_FREE}G"
+            if [ "${DISK_FREE}" -lt 5 ]; then
+              echo "Low disk — pruning before build"
+              docker system prune -af --filter until=24h
+            fi
+
+            echo "=== Login to Gitea registry ==="
+            echo "$GITEA_TOKEN" | docker login "$REGISTRY" -u "$ORG" --password-stdin
+
+            echo "=== Build nogl-worker-ingest ==="
+            INGEST_IMAGE="$REGISTRY/$ORG/nogl-worker-ingest"
+            docker build \
+              --cache-from "$INGEST_IMAGE:latest" \
+              -t "$INGEST_IMAGE:$SHA" \
+              -t "$INGEST_IMAGE:latest" \
+              -f docker/worker-ingest.Dockerfile \
+              .
+            docker push "$INGEST_IMAGE:$SHA"
+            docker push "$INGEST_IMAGE:latest"
+
+            echo "=== Build nogl-worker-browser ==="
+            BROWSER_IMAGE="$REGISTRY/$ORG/nogl-worker-browser"
+            docker build \
+              --cache-from "$BROWSER_IMAGE:latest" \
+              -t "$BROWSER_IMAGE:$SHA" \
+              -t "$BROWSER_IMAGE:latest" \
+              -f docker/worker-browser.Dockerfile \
+              .
+            docker push "$BROWSER_IMAGE:$SHA"
+            docker push "$BROWSER_IMAGE:latest"
+
+            echo "=== Prune dangling images ==="
+            docker image prune -f
+            echo "=== Build complete: $SHA ==="
