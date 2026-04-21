@@ -88,6 +88,9 @@ tsconfig.tsbuildinfo
 
 # Scripts that aren't needed in production
 scripts
+# Allow worker entry scripts (needed by worker Docker images)
+!scripts/start-workers-data.ts
+!scripts/start-workers-browser.ts
 
 # Test databases
 *.db
