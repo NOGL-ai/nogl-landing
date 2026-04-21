@@ -807,23 +807,19 @@ export function CompareClient() {
                 <Download className="h-3.5 w-3.5" />
               </button>
 
-              {/* Product Matrix (coming soon) — Particl-style: no noisy badge; explain on hover */}
+              {/* Product Matrix — full pivot workspace */}
               <Tooltip delayDuration={200}>
                 <TooltipTrigger asChild>
-                  <span className="inline-flex rounded-md">
-                    <button
-                      type="button"
-                      disabled
-                      aria-disabled="true"
-                      aria-label="Product matrix — coming soon"
-                      className="flex h-7 w-7 cursor-not-allowed items-center justify-center rounded-md border border-dashed border-border bg-muted/20 text-muted-foreground/50"
-                    >
-                      <Grid className="h-3.5 w-3.5" />
-                    </button>
-                  </span>
+                  <Link
+                    href="/en/analytics/product-matrix"
+                    className="flex h-7 w-7 items-center justify-center rounded-md border border-border bg-background text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                    aria-label="Open Product Matrix"
+                  >
+                    <Grid className="h-3.5 w-3.5" />
+                  </Link>
                 </TooltipTrigger>
                 <TooltipContent side="bottom" sideOffset={6} className="max-w-[14rem] text-xs">
-                  Product matrix opens this table in a grid workspace. Coming soon.
+                  Open Product Matrix: pivot, presets, camera quick filters, and drill-down.
                 </TooltipContent>
               </Tooltip>
 

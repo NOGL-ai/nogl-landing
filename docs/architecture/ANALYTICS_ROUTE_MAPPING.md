@@ -8,6 +8,7 @@ Ensure analytics navigation links always resolve to implemented pages and avoid 
 
 - `/en/analytics/compare` -> **Two-company snapshot**: `TwoCompanyCompareClient` (`src/components/analytics/compare/TwoCompanyCompareClient.tsx`), wrapped by `compare/page.tsx`.
 - `/en/analytics/multi-company` -> **Full competitive analysis**: `CompareClient` via `ComparePageContent` (`src/app/(site)/[lang]/(app)/analytics/_components/ComparePageContent.tsx`).
+- `/en/analytics/product-matrix` -> **Product Matrix**: `ProductMatrixClient` (`src/components/analytics/product-matrix/ProductMatrixClient.tsx`) + API `GET /api/analytics/product-matrix` (aggregated pivot cells; URL-synced filters; localStorage presets).
 
 ## Rationale
 
