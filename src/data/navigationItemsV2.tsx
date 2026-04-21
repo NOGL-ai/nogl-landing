@@ -138,9 +138,14 @@ export const navigationStructure: NavigationSection[] = [
                             },
                         ],
                     },
-                    // ── Advanced Analytics (accordion) ───────────────────
                     {
-                        label: 'Advanced Analytics',
+                        label: 'Product Explorer',
+                        href: '/en/product-explorer',
+                        icon: Package,
+                    },
+                    // ── Advanced Analysis (accordion) ────────────────────
+                    {
+                        label: 'Advanced Analysis',
                         icon: BarChartSquare02,
                         isAccordionGroup: true,
                         groupItems: [
@@ -155,9 +160,14 @@ export const navigationStructure: NavigationSection[] = [
                                 icon: Grid03,
                             },
                             {
-                                label: 'Tools',
-                                href: '/en/analytics/tools',
+                                label: 'Multi-Company Analysis',
+                                href: '/en/analytics/multi-company',
                                 icon: BarChart02,
+                            },
+                            {
+                                label: 'Product Matrix',
+                                href: '/en/analytics/product-matrix',
+                                icon: Grid03,
                             },
                             {
                                 label: 'Benchmarking',
@@ -165,9 +175,9 @@ export const navigationStructure: NavigationSection[] = [
                                 icon: LineChartUp03,
                             },
                             {
-                                label: 'Product Export',
-                                href: '/en/analytics/export',
-                                icon: Share01,
+                                label: 'White Space',
+                                href: '/en/analytics/white-space',
+                                icon: BarChart02,
                             },
                         ],
                     },
