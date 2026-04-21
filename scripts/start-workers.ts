@@ -4,6 +4,7 @@ import { startHomepageWorker } from "@/workers/scrape-homepages";
 import { startComputeProxiesWorker } from "@/workers/compute-proxies";
 import { startScoreAestheticWorker } from "@/workers/score-aesthetic";
 import { startMetaAdsWorker } from "@/workers/meta-ads";
+import { startSnapshotRefreshWorker } from "@/workers/snapshot-refresh";
 
 const workers = [
 	startIngestApifyWorker(),
@@ -11,6 +12,7 @@ const workers = [
 	startComputeProxiesWorker(),
 	startScoreAestheticWorker(),
 	startMetaAdsWorker(),
+	startSnapshotRefreshWorker(),
 ];
 console.log(`[workers] started ${workers.length} workers`);
 

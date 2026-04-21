@@ -8,6 +8,7 @@ export const QUEUE_NAMES = {
 	computeProxies: "assets-compute-proxies",
 	scoreAesthetic: "assets-score-aesthetic",
 	metaAdsScrape: "assets-meta-ads-scrape",
+	snapshotRefresh: "snapshot-refresh",
 } as const;
 
 export type QueueName = (typeof QUEUE_NAMES)[keyof typeof QUEUE_NAMES];

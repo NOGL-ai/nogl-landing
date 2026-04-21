@@ -2,6 +2,7 @@
 import { startIngestApifyWorker } from "@/workers/ingest-apify";
 import { startComputeProxiesWorker } from "@/workers/compute-proxies";
 import { startScoreAestheticWorker } from "@/workers/score-aesthetic";
+import { startSnapshotRefreshWorker } from "@/workers/snapshot-refresh";
 
 // The ads-events ingest worker (ingest.worker.ts) runs as its own container
 // with embedded signal handling. This script handles the lighter data-only
@@ -10,6 +11,7 @@ const workers = [
 	startIngestApifyWorker(),
 	startComputeProxiesWorker(),
 	startScoreAestheticWorker(),
+	startSnapshotRefreshWorker(),
 ];
 console.log(`[workers:data] started ${workers.length} workers`);
 
