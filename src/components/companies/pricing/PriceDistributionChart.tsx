@@ -62,7 +62,7 @@ export function PriceDistributionChart({
           </p>
         )}
         {!loading && buckets.length > 0 && (
-          <ResponsiveContainer width="100%" height={290}>
+          <ResponsiveContainer width="100%" height={290} minWidth={0} minHeight={220}>
             <BarChart data={chartData} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
               <CartesianGrid strokeDasharray="4 4" stroke={gridColor} vertical={false} />
               <XAxis

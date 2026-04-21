@@ -4,6 +4,7 @@ import { Download01 as Download, Share01 as Share2, List as LayoutList, LayoutGr
 
 import { useState, useMemo } from "react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import {
   createColumnHelper,
   flexRender,
@@ -335,12 +336,12 @@ export function CompareClient() {
       meta: { align: "center" },
       cell: (info) => (
         <div className="flex items-center justify-center gap-1.5">
-          <a
-            href={`/en/companies/${info.row.original.company_slug}`}
+          <Link
+            href={`/en/companies?company=${encodeURIComponent(info.row.original.company_slug)}`}
             className="inline-flex items-center gap-1 rounded-md border border-border bg-background px-2 py-1 text-xs font-medium text-foreground transition-colors hover:bg-muted"
           >
             Explore
-          </a>
+          </Link>
           {info.row.original.product_url && (
             <a
               href={info.row.original.product_url}

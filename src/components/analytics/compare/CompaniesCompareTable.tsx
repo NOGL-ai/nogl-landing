@@ -192,7 +192,7 @@ export function CompaniesCompareTable({ rows, loading = false }: CompaniesCompar
       meta: { align: "center" },
       cell: (info) => (
         <Link
-          href={`/en/companies/${info.row.original.slug}`}
+          href={`/en/companies?company=${encodeURIComponent(info.row.original.slug)}`}
           className="inline-flex items-center gap-1 rounded-md border border-border bg-background px-2.5 py-1 text-xs font-medium text-foreground transition-colors hover:bg-muted"
         >
           Explore

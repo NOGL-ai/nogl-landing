@@ -230,7 +230,7 @@ export function ColorDistributionWidget({ loading = false }: ColorDistributionWi
           </p>
         )}
         {!loading && entries.length > 0 && (
-          <ResponsiveContainer width="100%" height={260}>
+          <ResponsiveContainer width="100%" height={260} minWidth={0} minHeight={220}>
             <BarChart
               layout="vertical"
               data={chartData}

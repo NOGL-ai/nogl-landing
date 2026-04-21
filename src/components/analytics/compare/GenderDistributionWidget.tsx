@@ -61,7 +61,7 @@ export function GenderDistributionWidget({
           <div className="flex items-center gap-6">
             {/* Donut chart with center label */}
             <div className="relative shrink-0" style={{ width: 160, height: 160 }}>
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={140}>
                 <PieChart>
                   <Pie
                     data={data}

@@ -52,6 +52,17 @@ export default function withI18nMiddleware(middleware: CustomMiddleware) {
 	) => {
 		// do i18n stuff
 		const pathname = request.nextUrl.pathname;
+		const isBypassPath =
+			pathname.startsWith("/_next") ||
+			pathname.startsWith("/_vercel") ||
+			pathname.startsWith("/api") ||
+			pathname.startsWith("/images") ||
+			pathname === "/favicon.ico";
+
+		if (isBypassPath) {
+			return middleware(request, event, response);
+		}
+
 		const pathnameIsMissingLocale = i18n.locales.every(
 			(locale) =>
 				!pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
