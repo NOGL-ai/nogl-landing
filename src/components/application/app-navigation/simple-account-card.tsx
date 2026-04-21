@@ -390,7 +390,7 @@ export const SimpleAccountCard: React.FC<SimpleAccountCardProps> = memo(({
               <div className="box-border content-stretch flex items-center px-[6px] py-0 relative shrink-0 w-full" data-name="_Nav account card menu item">
               <button
                 type="button"
-                className="box-border content-stretch flex flex-[1_0_0] gap-[12px] items-center min-h-px min-w-px overflow-clip p-[8px] relative rounded-[6px] shrink-0 w-full text-left cursor-pointer transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#375dfb]/60 focus-visible:ring-offset-white dark:focus-visible:ring-offset-(--color-gray-950) hover:bg-(--color-gray-100) dark:hover:bg-[--color-gray-800]"
+                className="box-border content-stretch flex flex-[1_0_0] gap-[12px] items-center min-h-px min-w-px overflow-clip p-[8px] relative rounded-[6px] shrink-0 w-full text-left cursor-pointer transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand/60 focus-visible:ring-offset-white dark:focus-visible:ring-offset-(--color-gray-950) hover:bg-(--color-gray-100) dark:hover:bg-[--color-gray-800]"
                 data-name="Content"
                 onClick={(event) => {
                   event.preventDefault();

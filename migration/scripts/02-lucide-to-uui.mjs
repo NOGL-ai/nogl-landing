@@ -1,126 +1,103 @@
 #!/usr/bin/env node
-/**
- * Phase 3: lucide-react → @untitledui/icons
- *
- * Algorithm (idempotent):
- *   1. Find all TS/TSX files in src/ that import from lucide-react.
- *   2. For each import block, split imports into mapped (→ UUI) and unmapped (stay in lucide).
- *   3. When the UUI export name differs from the local name, use an alias so JSX is untouched.
- *   4. Merge new UUI imports into any existing @untitledui/icons import, or add one.
- *   5. Re-add unmapped icons as a trimmed lucide import.
- *   6. Print unmapped icons at the end for manual triage.
- */
-import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
-import { join, extname, dirname } from 'node:path';
+// 02-lucide-to-uui.mjs — rewrites lucide-react imports to @untitledui/icons
+// Handles `import { X, Foo as Bar } from 'lucide-react'`.
+// Run from repo root of nogl-landing:  node migration/scripts/02-lucide-to-uui.mjs
+
+import fs from 'node:fs';
+import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const __dir = dirname(fileURLToPath(import.meta.url));
-const root = join(__dir, '../..');
-const mapping = JSON.parse(readFileSync(join(__dir, '../mappings/lucide.json'), 'utf-8'));
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.resolve(__dirname, '../..', 'src');
+const MAPPING = JSON.parse(
+  fs.readFileSync(path.resolve(__dirname, '../mappings/lucide.json'), 'utf8')
+);
+delete MAPPING._comment;
 
-const unmapped = new Set();
-let changedCount = 0;
+const misses = new Map();
+const touched = [];
+
+// Matches both single-line and multi-line `import { ... } from 'lucide-react';`
+const IMPORT_RE = /import\s*\{([\s\S]*?)\}\s*from\s*['"]lucide-react['"]\s*;?/g;
 
 function walk(dir) {
-  const out = [];
-  for (const name of readdirSync(dir)) {
-    const p = join(dir, name);
-    const s = statSync(p);
-    if (s.isDirectory() && name !== 'node_modules' && !name.startsWith('.')) {
-      out.push(...walk(p));
-    } else if (s.isFile() && (extname(name) === '.ts' || extname(name) === '.tsx')) {
-      out.push(p);
-    }
+  for (const name of fs.readdirSync(dir)) {
+    if (name === 'node_modules' || name.startsWith('.')) continue;
+    const p = path.join(dir, name);
+    const s = fs.statSync(p);
+    if (s.isDirectory()) walk(p);
+    else if (/\.(t|j)sx?$/.test(name)) processFile(p);
   }
-  return out;
 }
 
-function insertAfterDirective(src, importStr) {
-  const m = src.match(/^(['"]use (?:client|server)['"];?\n\n?)/);
-  if (m) {
-    return src.slice(0, m[0].length) + importStr + '\n' + src.slice(m[0].length);
-  }
-  return importStr + '\n' + src;
-}
+function processFile(file) {
+  const src = fs.readFileSync(file, 'utf8');
+  if (!src.includes('lucide-react')) return;
 
-const lucideRe = /import\s*\{([^}]+)\}\s*from\s*['"]lucide-react['"];?[ \t]*\n?/gms;
-const uuiRe = /import\s*\{([^}]+)\}\s*from\s*['"]@untitledui\/icons['"];?[ \t]*\n?/;
+  let allMapped = true;
+  const uuiImports = new Set();
 
-for (const file of walk(join(root, 'src'))) {
-  let src = readFileSync(file, 'utf-8');
-  if (!src.includes('lucide-react')) continue;
+  const matches = [...src.matchAll(IMPORT_RE)];
+  if (!matches.length) return;
 
-  const lucideMatches = [...src.matchAll(lucideRe)];
-  if (!lucideMatches.length) continue;
-
-  // Collect mapped vs unmapped
-  const toUui = new Map(); // localName -> import spec string
-  const toKeep = [];       // raw specifiers to keep in lucide
-
-  for (const m of lucideMatches) {
-    for (const raw of m[1]
+  for (const m of matches) {
+    const names = m[1]
       .split(',')
-      .map(s => s.trim().replace(/\s+/g, ' '))
-      .filter(s => Boolean(s) && !s.startsWith('//')) // skip inline comments
-    ) {
-      const parts = raw.split(/\s+/);
-      const exportedName = parts[0];
-      if (!exportedName || !/^\w/.test(exportedName)) continue;
-      const localName = parts[2] ?? parts[0]; // "Name as Alias" or just "Name"
-      const uuiName = mapping[exportedName];
-
-      if (uuiName == null) {
-        // undefined (not in map) or null (explicitly unmapped) → keep in lucide
-        unmapped.add(exportedName);
-        toKeep.push(raw);
+      .map((s) => s.replace(/\/\/.*/g, '').trim())
+      .filter(Boolean);
+    for (const raw of names) {
+      const [origRaw, aliasRaw] = raw.split(/\s+as\s+/).map((s) => s.trim());
+      const orig = origRaw.replace(/,$/, '');
+      const alias = aliasRaw?.replace(/,$/, '') || null;
+      const target = MAPPING[orig];
+      if (!target) {
+        allMapped = false;
+        if (!misses.has(orig)) misses.set(orig, new Set());
+        misses.get(orig).add(file);
+        continue;
+      }
+      // If the UUI name equals the source name, keep alias unnecessary;
+      // else emit `Target as Source` so JSX call sites keep working.
+      if (target === orig) {
+        uuiImports.add(alias ? `${target} as ${alias}` : target);
+      } else if (alias) {
+        uuiImports.add(`${target} as ${alias}`);
       } else {
-        const spec = uuiName === localName ? uuiName : `${uuiName} as ${localName}`;
-        toUui.set(localName, spec);
+        uuiImports.add(`${target} as ${orig}`);
       }
     }
   }
 
-  // Remove all lucide import blocks
-  src = src.replace(lucideRe, '');
+  if (!allMapped) return; // don't touch file until mapping is complete
 
-  // Merge UUI imports
-  if (toUui.size > 0) {
-    const newSpecs = [...toUui.values()];
-    const existM = src.match(uuiRe);
-    if (existM) {
-      const existing = existM[1]
-        .split(',')
-        .map(s => s.trim().replace(/\s+/g, ' '))
-        .filter(Boolean);
-      const merged = [...new Set([...existing, ...newSpecs])];
-      src = src.replace(uuiRe, `import { ${merged.join(', ')} } from '@untitledui/icons';\n`);
-    } else {
-      src = insertAfterDirective(src, `import { ${newSpecs.join(', ')} } from '@untitledui/icons';`);
-    }
+  // Remove all lucide-react imports
+  let out = src.replace(IMPORT_RE, '');
+
+  // Merge into existing @untitledui/icons import if any
+  const existing = /import\s*\{([^}]+)\}\s*from\s*['"]@untitledui\/icons['"]\s*;?/;
+  if (existing.test(out)) {
+    out = out.replace(existing, (_m, inside) => {
+      const merged = new Set(
+        inside.split(',').map((s) => s.trim()).filter(Boolean).concat([...uuiImports])
+      );
+      return `import { ${[...merged].sort().join(', ')} } from "@untitledui/icons";`;
+    });
+  } else {
+    out = `import { ${[...uuiImports].sort().join(', ')} } from "@untitledui/icons";\n` + out;
   }
 
-  // Re-add unmapped lucide imports
-  if (toKeep.length > 0) {
-    const lucideImport = `import { ${toKeep.join(', ')} } from 'lucide-react';`;
-    src = insertAfterDirective(src, lucideImport);
-  }
-
-  // Clean up excessive blank lines
-  src = src.replace(/\n{3,}/g, '\n\n');
-
-  const orig = readFileSync(file, 'utf-8');
-  if (src !== orig) {
-    writeFileSync(file, src);
-    console.log(`✓  ${file.replace(root + '/', '').replace(root.replace(/\//g, '\\') + '\\', '')}`);
-    changedCount++;
-  }
+  out = out.replace(/\n{3,}/g, '\n\n');
+  fs.writeFileSync(file, out);
+  touched.push(file);
 }
 
-console.log(`\n✅ Phase 3 complete — updated ${changedCount} file(s)`);
+walk(ROOT);
 
-if (unmapped.size > 0) {
-  console.log('\n⚠️  Unmapped icons (left in lucide-react). Add to migration/mappings/lucide.json and re-run:');
-  [...unmapped].sort().forEach(n => console.log(`  - ${n}`));
-} else {
-  console.log('✅ All lucide icons were mapped — no leftovers');
+console.log(`\n✅ Rewrote ${touched.length} file(s).`);
+if (misses.size) {
+  console.log(`\n⚠️  Unmapped lucide icons (add to migration/mappings/lucide.json and re-run):\n`);
+  for (const [name, files] of [...misses.entries()].sort()) {
+    console.log(`  ${name}  (${files.size} file${files.size > 1 ? 's' : ''})`);
+  }
+  process.exit(1);
 }

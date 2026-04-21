@@ -1,116 +1,82 @@
 #!/usr/bin/env node
-/**
- * Phase 4: @/components/ui/button → @/components/base/buttons/button
- *
- * Rewrites:
- *   - Import path
- *   - variant="x" → color="y"  (static string props only)
- *   - variant={'x'} → color={'y'}
- *
- * Flags (does NOT rewrite):
- *   - variant={someVariable}   — dynamic variant, printed for manual fix
- *   - asChild                  — not supported in base button, printed for manual fix
- */
-import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
-import { join, extname, dirname } from 'node:path';
+// 03-ui-button-to-base.mjs — migrates @/components/ui/button → @/components/base/buttons/button
+// Key API delta: `variant` (ui) → `color` (base). Mapping:
+//   primary     → primary
+//   secondary   → secondary
+//   tertiary    → tertiary
+//   destructive → primary-destructive
+//   ghost       → tertiary
+//   outline     → secondary
+// `size` is 1:1 (sm|md|lg|xl).
+//
+// This script is intentionally conservative: it only rewrites files that import
+// Button from @/components/ui/button AND whose Button usages we can parse safely
+// (no dynamic variant props). Files with dynamic `variant={someVar}` are reported
+// for manual review.
+
+import fs from 'node:fs';
+import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const __dir = dirname(fileURLToPath(import.meta.url));
-const root = join(__dir, '../..');
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.resolve(__dirname, '../..', 'src');
 
-const VARIANT_MAP = {
+const VARIANT_TO_COLOR = {
   primary: 'primary',
   secondary: 'secondary',
   tertiary: 'tertiary',
+  destructive: 'primary-destructive',
   ghost: 'tertiary',
   outline: 'secondary',
-  destructive: 'primary-destructive',
 };
 
-const OLD_IMPORT = /(['"])@\/components\/ui\/button\1/;
-const NEW_IMPORT = `'@/components/base/buttons/button'`;
-
-// Matches: variant="primary" or variant={'primary'} or variant={"primary"}
-const STATIC_VARIANT_RE = /\bvariant=(?:"([^"]+)"|'([^']+)'|\{(?:"([^"]+)"|'([^']+)')\})/g;
-// Dynamic variant (variable expression)
-const DYNAMIC_VARIANT_RE = /\bvariant=\{(?!['"]).+?\}/g;
-// asChild usage
-const ASCHILD_RE = /\basChild\b/;
-
+const touched = [];
 const needsManual = [];
-let changed = 0;
 
 function walk(dir) {
-  const out = [];
-  for (const name of readdirSync(dir)) {
-    const p = join(dir, name);
-    const s = statSync(p);
-    if (s.isDirectory() && name !== 'node_modules' && !name.startsWith('.')) {
-      out.push(...walk(p));
-    } else if (s.isFile() && (extname(name) === '.ts' || extname(name) === '.tsx')) {
-      out.push(p);
-    }
+  for (const name of fs.readdirSync(dir)) {
+    if (name === 'node_modules' || name.startsWith('.')) continue;
+    const p = path.join(dir, name);
+    const s = fs.statSync(p);
+    if (s.isDirectory()) walk(p);
+    else if (/\.(t|j)sx?$/.test(name)) processFile(p);
   }
-  return out;
 }
 
-for (const file of walk(join(root, 'src'))) {
-  let src = readFileSync(file, 'utf-8');
-  if (!OLD_IMPORT.test(src)) continue;
+function processFile(file) {
+  const src = fs.readFileSync(file, 'utf8');
+  if (!/from\s*['"]@\/components\/ui\/button['"]/.test(src)) return;
 
-  const rel = file.replace(root, '').replace(/^[/\\]/, '');
-  const flags = [];
+  // Detect dynamic variant — bail for manual review
+  if (/<Button[^>]*\svariant=\{(?!['"])/.test(src)) {
+    needsManual.push(file);
+    return;
+  }
 
-  // Replace import path
-  src = src.replace(
-    /import\s*(\{[^}]+\})\s*from\s*(['"])@\/components\/ui\/button\2/,
-    (_, named) => `import ${named} from ${NEW_IMPORT}`
+  let out = src;
+
+  // Rewrite import
+  out = out.replace(
+    /from\s*(['"])@\/components\/ui\/button\1/g,
+    'from $1@/components/base/buttons/button$1'
   );
 
-  // Flag dynamic variant
-  if (DYNAMIC_VARIANT_RE.test(src)) {
-    flags.push('dynamic variant={expr} — map manually');
-    DYNAMIC_VARIANT_RE.lastIndex = 0;
-  }
-
-  // Flag asChild
-  if (ASCHILD_RE.test(src)) {
-    flags.push('asChild — replace with <a href> or Link wrapping');
-  }
-
-  // Replace static variants
-  src = src.replace(STATIC_VARIANT_RE, (match, d1, d2, d3, d4) => {
-    const v = d1 ?? d2 ?? d3 ?? d4;
-    const mapped = VARIANT_MAP[v];
-    if (!mapped) {
-      flags.push(`unknown variant="${v}" — check manually`);
-      return match;
-    }
-    // Use same quote style as original
-    if (match.startsWith('variant="') || match.startsWith("variant='")) {
-      return `color="${mapped}"`;
-    }
-    return `color={"${mapped}"}`;
+  // Rewrite variant="x" → color="y"
+  out = out.replace(/<Button([^>]*?)\svariant=(['"])([a-z-]+)\2/g, (m, pre, q, v) => {
+    const color = VARIANT_TO_COLOR[v] ?? v;
+    return `<Button${pre} color=${q}${color}${q}`;
   });
 
-  const orig = readFileSync(file, 'utf-8');
-  if (src !== orig) {
-    writeFileSync(file, src);
-    console.log(`✓  ${rel}`);
-    changed++;
-  }
-
-  if (flags.length) {
-    needsManual.push({ file: rel, flags });
+  if (out !== src) {
+    fs.writeFileSync(file, out);
+    touched.push(file);
   }
 }
 
-console.log(`\n✅ Phase 4 complete — updated ${changed} file(s)`);
+walk(ROOT);
 
+console.log(`\n✅ Rewrote ${touched.length} file(s).`);
 if (needsManual.length) {
-  console.log('\n⚠️  Files requiring manual follow-up:');
-  for (const { file, flags } of needsManual) {
-    console.log(`\n  ${file}`);
-    flags.forEach(f => console.log(`    • ${f}`));
-  }
+  console.log(`\n⚠️  ${needsManual.length} file(s) use a dynamic <Button variant={...}> — migrate by hand:\n`);
+  needsManual.forEach((f) => console.log('  ' + f));
 }

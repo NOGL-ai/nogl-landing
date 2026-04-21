@@ -483,7 +483,7 @@ const CollapsedSidebar: React.FC<CollapsedSidebarProps> = ({
                             onFocus={() => handleIconFocus(accountMenu.id)}
                             onBlur={handleIconMouseLeave}
                             onKeyDown={(event) => handleIconKeyDown(accountMenu, event)}
-                            className={`flex w-10 h-10 items-center justify-center rounded-full border border-[rgba(0,0,0,0.08)] dark:border-[rgba(255,255,255,0.08)] overflow-hidden transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#375dfb]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-(--color-gray-950)
+                            className={`flex w-10 h-10 items-center justify-center rounded-full border border-[rgba(0,0,0,0.08)] dark:border-[rgba(255,255,255,0.08)] overflow-hidden transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-(--color-gray-950)
                                 ${hoveredItem === accountMenu.id
                                     ? 'ring-2 ring-(--color-gray-200) dark:ring-(--color-gray-800) ring-offset-2 ring-offset-white dark:ring-offset-(--color-gray-950)'
                                     : 'hover:ring-2 hover:ring-(--color-gray-200) dark:hover:ring-(--color-gray-800)'
