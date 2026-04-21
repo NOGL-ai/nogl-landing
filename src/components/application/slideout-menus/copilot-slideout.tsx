@@ -1,3 +1,4 @@
+"use client";
 /**
  * Copilot Slideout Component
  * 
@@ -8,7 +9,6 @@
  * Documentation: https://www.assistant-ui.com/docs/ui/AssistantSidebar
  */
 
-"use client";
 
 import type { ReactNode } from "react";
 import { DialogTrigger } from "react-aria-components";

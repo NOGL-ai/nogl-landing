@@ -1,3 +1,4 @@
+"use client";
 /**
  * Copilot Runtime Provider for Slideout Menu
  * 
@@ -18,7 +19,6 @@
  * - useChatRuntime: https://www.assistant-ui.com/docs/runtimes/ai-sdk
  */
 
-"use client";
 
 import { AssistantRuntimeProvider } from "@assistant-ui/react";
 import { useChatRuntime, AssistantChatTransport } from "@assistant-ui/react-ai-sdk";

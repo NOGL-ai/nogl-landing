@@ -1,3 +1,4 @@
+"use client";
 /**
  * Copilot Layout Wrapper
  * 
@@ -14,7 +15,6 @@
  * It connects to LocalRuntime → N8n adapter → /api/ai/chat → n8n → AI
  */
 
-"use client";
 
 import { CopilotTrigger } from "./copilot-trigger";
 
