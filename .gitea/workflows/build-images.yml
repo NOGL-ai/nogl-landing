@@ -11,12 +11,12 @@ jobs:
       - name: Build & push worker images via CT 504
         uses: appleboy/ssh-action@v1
         env:
-          GITEA_TOKEN: ${{ secrets.GITEA_TOKEN }}
+          NOGL_REGISTRY_TOKEN: ${{ secrets.NOGL_REGISTRY_TOKEN }}
         with:
           host: 10.10.10.182
           username: root
           key: ${{ secrets.NOGL_DEV_SSH_KEY }}
-          envs: GITEA_TOKEN
+          envs: NOGL_REGISTRY_TOKEN
           command_timeout: 30m
           script: |
             set -e
@@ -35,7 +35,7 @@ jobs:
             fi
 
             echo "=== Login to Gitea registry ==="
-            echo "$GITEA_TOKEN" | docker login "$REGISTRY" -u "$ORG" --password-stdin
+            echo "$NOGL_REGISTRY_TOKEN" | docker login "$REGISTRY" -u "$ORG" --password-stdin
 
             echo "=== Build nogl-worker-ingest ==="
             INGEST_IMAGE="$REGISTRY/$ORG/nogl-worker-ingest"

@@ -38,17 +38,17 @@ jobs:
     runs-on: ubuntu-latest
     needs: [deploy-web]
     env:
-      GITEA_TOKEN: ${{ secrets.GITEA_TOKEN }}
+      NOGL_REGISTRY_TOKEN: ${{ secrets.NOGL_REGISTRY_TOKEN }}
     steps:
       - name: Roll out worker containers (CT 505)
         uses: appleboy/ssh-action@v1
         env:
-          GITEA_TOKEN: ${{ secrets.GITEA_TOKEN }}
+          NOGL_REGISTRY_TOKEN: ${{ secrets.NOGL_REGISTRY_TOKEN }}
         with:
           host: 10.10.10.183
           username: root
           key: ${{ secrets.NOGL_WORKERS_SSH_KEY }}
-          envs: GITEA_TOKEN
+          envs: NOGL_REGISTRY_TOKEN
           command_timeout: 15m
           script: |
             set -e
@@ -56,12 +56,12 @@ jobs:
             echo "=== Fetch latest compose file from Gitea ==="
             mkdir -p /opt/nogl-workers
             curl -sf \
-              -H "Authorization: token $GITEA_TOKEN" \
+              -H "Authorization: token $NOGL_REGISTRY_TOKEN" \
               "http://10.10.10.171:3000/nogladmin/nogl-landing/raw/branch/main/docker-compose.workers.yml" \
               -o /opt/nogl-workers/docker-compose.workers.yml
 
             echo "=== Login to Gitea registry ==="
-            echo "$GITEA_TOKEN" | docker login 10.10.10.171:3000 -u nogladmin --password-stdin
+            echo "$NOGL_REGISTRY_TOKEN" | docker login 10.10.10.171:3000 -u nogladmin --password-stdin
 
             echo "=== Pull new images ==="
             docker compose -f /opt/nogl-workers/docker-compose.workers.yml pull
