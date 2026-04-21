@@ -54,7 +54,6 @@ export async function GET(request: NextRequest, context: RouteContext) {
       productType,
       minPrice,
       maxPrice,
-      sort,
       productPage,
       productLimit,
     });

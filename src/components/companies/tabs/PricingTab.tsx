@@ -8,7 +8,6 @@ import {
   ArrowDown,
 } from '@untitledui/icons';
 
-import { LinkExternal01 as ExternalLink, LayoutGrid01 as LayoutGrid, List } from '@untitledui/icons';
 
 
 import { useEffect, useMemo, useState } from "react";
@@ -394,7 +393,7 @@ export function PricingTab({ slug }: PricingTabProps) {
     params.set("product_limit", "20");
     const qs = params.toString();
     return `/api/companies/${slug}/pricing${qs ? `?${qs}` : ""}`;
-  }, [slug, filters]);
+  }
 
   // Single effect — re-fetch whenever slug, filters, sort, or productPage change
   useEffect(() => {
@@ -640,39 +639,6 @@ export function PricingTab({ slug }: PricingTabProps) {
         </Card>
       )}
 
-      {/* ── Discount Metrics + Price Distribution | Product Types table ── */}
-      <div className="grid items-stretch gap-6 lg:grid-cols-3">
-
-        {/* Left column */}
-        <div className="flex flex-col gap-6">
-          <DiscountMetricsCard
-            totalDiscounted={data.total_discounted}
-            totalProducts={data.total_products}
-            loading={state.loading}
-          />
-          {priceDist.length > 0 && (
-            <PriceDistributionChart
-              buckets={priceDist}
-              onBucketClick={handleBucketClick}
-              slug={slug}
-              loading={state.loading}
-            />
-          )}
-        </div>
-
-        {/* Right column — TanStack Table */}
-        <div className="lg:col-span-2">
-          <ProductTypesTable
-            rows={tableRows}
-            activeType={filters.productType}
-            onTypeSelect={(type) => setFilter("productType", type)}
-            globalMin={globalMin}
-            globalMax={globalMax}
-            totalProducts={data.total_products}
-            loading={allProductTypesRows.length === 0 && state.loading}
-          />
-        </div>
-      </div>
 
       {/* ── Product table ──────────────────────────────────────────────────── */}
       <Card className="overflow-hidden p-0">
