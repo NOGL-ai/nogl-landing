@@ -28,18 +28,22 @@ interface AccordionGroupProps {
     onNavigate: (href: string) => void;
     theme: "light" | "dark";
     depth?: number;
+    isOpen?: boolean;
+    onToggle?: () => void;
 }
 
-function AccordionGroup({ group, activeUrl, onNavigate, theme, depth = 0 }: AccordionGroupProps) {
+function AccordionGroup({ group, activeUrl, onNavigate, theme, depth = 0, isOpen: controlledOpen, onToggle }: AccordionGroupProps) {
     const hasActive = groupHasActiveDescendant(group, activeUrl);
-    const [isOpen, setIsOpen] = useState(hasActive);
+    const [localOpen, setLocalOpen] = useState(hasActive);
+    const isOpen = controlledOpen !== undefined ? controlledOpen : localOpen;
+    const toggle = onToggle ?? (() => setLocalOpen((v) => !v));
     const Icon = group.icon;
 
     return (
         <div className="w-full">
             <button
                 type="button"
-                onClick={() => setIsOpen((v) => !v)}
+                onClick={toggle}
                 className={[
                     "flex items-center justify-between w-full rounded-md text-sm text-left transition-colors duration-150",
                     depth === 0 ? "px-3 py-1.5" : "px-2 py-1",
@@ -145,6 +149,13 @@ export const SubmenuPanel: React.FC<SubmenuPanelProps> = ({
     const internalPanelRef = useRef<HTMLDivElement>(null);
     const panelRef = externalPanelRef ?? internalPanelRef;
 
+    const [openGroupLabel, setOpenGroupLabel] = useState<string | null>(() => {
+        const activeGroup = item.subItems?.find(
+            (s) => s.isAccordionGroup && groupHasActiveDescendant(s, activeUrl),
+        );
+        return activeGroup?.label ?? null;
+    });
+
     const panelStyle = useMemo<React.CSSProperties>(() => {
         const normalizedLeft = position.left ?? 0;
         return {
@@ -199,6 +210,12 @@ export const SubmenuPanel: React.FC<SubmenuPanelProps> = ({
                                         onNavigate={onNavigate}
                                         theme={theme}
                                         depth={0}
+                                        isOpen={openGroupLabel === subItem.label}
+                                        onToggle={() =>
+                                            setOpenGroupLabel((prev) =>
+                                                prev === subItem.label ? null : subItem.label,
+                                            )
+                                        }
                                     />
                                 );
                             }
