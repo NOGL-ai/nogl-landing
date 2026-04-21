@@ -1,8 +1,6 @@
 "use client";
 
-// eslint-disable-next-line no-restricted-imports -- icon has no @untitledui/icons equivalent; keep in lucide-react until UUI ships it
-import { GripVertical } from 'lucide-react';
-import { Plus } from '@untitledui/icons';
+import { Plus, DotsGrid } from '@untitledui/icons';
 
 import React, { useState, useTransition, useCallback } from "react";
 import { useRouter } from "next/navigation";
@@ -67,7 +65,7 @@ function SortableCard({
         aria-label="Drag to reorder"
         tabIndex={0}
       >
-        <GripVertical className="h-4 w-4" />
+        <DotsGrid className="h-4 w-4" />
       </button>
       <div className="pl-7">
         <RepricingRulesCard

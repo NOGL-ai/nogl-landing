@@ -1,8 +1,6 @@
 "use client";
 
-// eslint-disable-next-line no-restricted-imports -- icon has no @untitledui/icons equivalent; keep in lucide-react until UUI ships it
-import { GripVertical } from 'lucide-react';
-import { Pencil01 as Pencil, Trash01 as Trash2Icon, Copy01 as Copy, DotsHorizontal as MoreHorizontalIcon } from '@untitledui/icons';
+import { Pencil01 as Pencil, Trash01 as Trash2Icon, Copy01 as Copy, DotsHorizontal as MoreHorizontalIcon, DotsGrid } from '@untitledui/icons';
 
 import { Component, type ErrorInfo, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
@@ -45,7 +43,7 @@ export function WidgetFrame({
         {/* Drag handle (only active in arrange mode) */}
         <div className="flex min-w-0 items-center gap-2">
           {arrangeMode && (
-            <GripVertical className="drag-handle h-4 w-4 shrink-0 cursor-grab text-muted-foreground active:cursor-grabbing" />
+            <DotsGrid className="drag-handle h-4 w-4 shrink-0 cursor-grab text-text-tertiary active:cursor-grabbing" />
           )}
           <h3 className="truncate text-sm font-medium leading-tight">
             {widget.title}
