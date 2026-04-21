@@ -1,7 +1,5 @@
-// src/app/(site)/onboarding/page.tsx
-
-// Constants
 "use client";
+// src/app/(site)/onboarding/page.tsx
 
 const DEFAULT_USER_ROLE = "USER";
 const DEFAULT_FORM_VALUES = {
