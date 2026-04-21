@@ -163,7 +163,7 @@ export const navigationStructure: NavigationSection[] = [
                                 icon: Grid03,
                             },
                             {
-                                label: 'Multi-Company Analysis',
+                                label: 'Competitive Compare',
                                 href: '/en/analytics/multi-company',
                                 icon: BarChart02,
                             },
