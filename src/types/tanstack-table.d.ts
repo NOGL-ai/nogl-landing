@@ -14,5 +14,9 @@ declare module "@tanstack/react-table" {
     thClass?: string;
     /** Extra classes on <td> (e.g. min-w-0 for truncation) */
     tdClass?: string;
+    /** Human label in “Configure columns” style panels */
+    configureLabel?: string;
+    /** Helper copy for the info tooltip next to the label */
+    configureInfo?: string;
   }
 }
