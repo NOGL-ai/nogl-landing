@@ -188,7 +188,7 @@ export const SubmenuPanel: React.FC<SubmenuPanelProps> = ({
                         {item.label}
                     </h2>
 
-                    <nav className="flex flex-col items-start self-stretch gap-1 overflow-y-auto pr-1 flex-1">
+                    <nav className="flex flex-col items-start self-stretch gap-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] flex-1">
                         {item.subItems.map((subItem, index) => {
                             if (subItem.isAccordionGroup) {
                                 return (

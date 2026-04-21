@@ -123,10 +123,10 @@ export const navigationStructure: NavigationSection[] = [
                         ],
                     },
 
-                    // ── Ad Scoring (accordion) ───────────────────────────
+                    // ── Creative Scoring (accordion) ─────────────────────
                     {
-                        label: 'Ad Scoring',
-                        icon: Star01,
+                        label: 'Creative Scoring',
+                        icon: Beaker02,
                         isAccordionGroup: true,
                         groupItems: [
                             {
@@ -193,12 +193,12 @@ export const navigationStructure: NavigationSection[] = [
                             {
                                 label: 'Product Type Taxonomy',
                                 href: '/en/tools/taxonomy',
-                                icon: LayersThree01,
+                                icon: Grid03,
                             },
                             {
                                 label: 'Product Editor',
                                 href: '/en/tools/product-editor',
-                                icon: Package,
+                                icon: FileCheck02,
                             },
                             {
                                 label: 'Exports',
