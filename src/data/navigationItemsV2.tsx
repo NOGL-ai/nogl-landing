@@ -84,35 +84,38 @@ export const navigationStructure: NavigationSection[] = [
                 label: 'Fractional CMO',
                 icon: Target04,
                 subItems: [
-                    // ── Digital Shelf Analytics (section heading) ────────
+                    // ── Digital Shelf Analytics (accordion) ──────────────
                     {
                         label: 'Digital Shelf Analytics',
-                        isSubHeading: true,
-                    },
-                    {
-                        label: 'Competitor Explorer',
-                        href: '/en/companies',
-                        icon: SearchMd,
-                    },
-                    {
-                        label: 'Tracked Competitors',
-                        href: '/en/companies/competitor',
-                        icon: Star01,
-                    },
-                    {
-                        label: 'Trends',
-                        href: '/en/trends',
-                        icon: TrendUp02,
-                    },
-                    {
-                        label: 'Marketing Asset Library',
-                        href: '/en/marketing-assets',
-                        icon: LayersThree01,
-                    },
-                    {
-                        label: 'Events Feed',
-                        href: '/en/marketing-assets/events',
-                        icon: Database01,
+                        icon: BarChartSquare02,
+                        isAccordionGroup: true,
+                        groupItems: [
+                            {
+                                label: 'Competitor Explorer',
+                                href: '/en/companies',
+                                icon: SearchMd,
+                            },
+                            {
+                                label: 'Tracked Competitors',
+                                href: '/en/companies/competitor',
+                                icon: Star01,
+                            },
+                            {
+                                label: 'Trends',
+                                href: '/en/trends',
+                                icon: TrendUp02,
+                            },
+                            {
+                                label: 'Marketing Asset Library',
+                                href: '/en/marketing-assets',
+                                icon: LayersThree01,
+                            },
+                            {
+                                label: 'Events Feed',
+                                href: '/en/marketing-assets/events',
+                                icon: Database01,
+                            },
+                        ],
                     },
 
                     // ── Ad Scoring (accordion) ───────────────────────────
