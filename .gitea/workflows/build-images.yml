@@ -49,23 +49,13 @@ jobs:
 
             echo "=== Build nogl-worker-ingest ==="
             INGEST_IMAGE="$REGISTRY/$ORG/nogl-worker-ingest"
-            docker build \
-              --cache-from "$INGEST_IMAGE:latest" \
-              -t "$INGEST_IMAGE:$SHA" \
-              -t "$INGEST_IMAGE:latest" \
-              -f docker/worker-ingest.Dockerfile \
-              .
+            docker build --network=host --cache-from "$INGEST_IMAGE:latest" -t "$INGEST_IMAGE:$SHA" -t "$INGEST_IMAGE:latest" -f docker/worker-ingest.Dockerfile .
             docker push "$INGEST_IMAGE:$SHA"
             docker push "$INGEST_IMAGE:latest"
 
             echo "=== Build nogl-worker-browser ==="
             BROWSER_IMAGE="$REGISTRY/$ORG/nogl-worker-browser"
-            docker build \
-              --cache-from "$BROWSER_IMAGE:latest" \
-              -t "$BROWSER_IMAGE:$SHA" \
-              -t "$BROWSER_IMAGE:latest" \
-              -f docker/worker-browser.Dockerfile \
-              .
+            docker build --network=host --cache-from "$BROWSER_IMAGE:latest" -t "$BROWSER_IMAGE:$SHA" -t "$BROWSER_IMAGE:latest" -f docker/worker-browser.Dockerfile .
             docker push "$BROWSER_IMAGE:$SHA"
             docker push "$BROWSER_IMAGE:latest"
 
