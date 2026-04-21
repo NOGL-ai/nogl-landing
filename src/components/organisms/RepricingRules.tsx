@@ -1,6 +1,6 @@
 "use client";
 
-import { Plus, DotsGrid } from '@untitledui/icons';
+import { Plus, DotsGrid, Stars02, XClose } from '@untitledui/icons';
 
 import React, { useState, useTransition, useCallback } from "react";
 import { useRouter } from "next/navigation";
@@ -31,6 +31,7 @@ import type { Route } from 'next';
 
 interface Props {
   initialRules: RepricingRuleDTO[];
+  discoveryCount?: number;
 }
 
 // ─── Sortable wrapper ─────────────────────────────────────────────────────────
@@ -81,7 +82,7 @@ function SortableCard({
 
 // ─── Main organism ────────────────────────────────────────────────────────────
 
-export default function RepricingRules({ initialRules }: Props) {
+export default function RepricingRules({ initialRules, discoveryCount }: Props) {
   const router = useRouter();
   const [rules, setRules] = useState<RepricingRuleDTO[]>(initialRules);
   const [isPending, startTransition] = useTransition();
@@ -177,9 +178,14 @@ export default function RepricingRules({ initialRules }: Props) {
         {/* Header */}
         <div className="mb-4 flex items-center justify-between rounded-xl border border-border-primary bg-background px-4 py-3">
           <div>
-            <h1 className="text-xl font-bold text-text-primary">Repricing Rules</h1>
+            <h1 className="text-xl font-bold text-text-primary">
+              Repricing Rules
+              <span className="ml-2 inline-flex items-center rounded-full bg-bg-secondary px-2 py-0.5 text-sm font-medium text-text-tertiary">
+                {rules.length}
+              </span>
+            </h1>
             <p className="mt-0.5 text-sm text-text-secondary">
-              Create and manage your automated pricing rules
+              Automated pricing rules · drag to reorder
             </p>
           </div>
           <Button
@@ -192,6 +198,33 @@ export default function RepricingRules({ initialRules }: Props) {
             Add Rule
           </Button>
         </div>
+
+        {/* Auto-discovery banner */}
+        {(discoveryCount ?? 0) > 0 && (
+          <div className="mb-4 flex items-center gap-3 rounded-xl border border-brand-200 bg-brand-50 px-4 py-3">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-100">
+              <Stars02 className="h-4 w-4 text-text-brand-secondary" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-semibold text-text-brand-secondary">
+                Competitors auto-discovery complete
+              </p>
+              <p className="text-xs text-text-secondary">
+                {discoveryCount} new competitor suggestions are ready.{" "}
+                <a href="/en/companies/competitor" className="font-medium text-text-brand underline-offset-2 hover:underline">
+                  Review here
+                </a>
+              </p>
+            </div>
+            <button
+              className="text-text-tertiary hover:text-text-primary"
+              aria-label="Dismiss"
+              onClick={() => {/* no-op for now */}}
+            >
+              <XClose className="h-4 w-4" />
+            </button>
+          </div>
+        )}
 
         {/* Empty state */}
         {rules.length === 0 && (
