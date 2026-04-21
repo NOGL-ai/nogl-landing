@@ -22,6 +22,10 @@ jobs:
             set -e
             cd /root/nogl-landing
 
+            echo "=== Pull latest from Gitea ==="
+            git fetch gitea main
+            git reset --hard gitea/main
+
             REGISTRY=10.10.10.171:3000
             ORG=nogladmin
             SHA=$(git rev-parse --short HEAD)

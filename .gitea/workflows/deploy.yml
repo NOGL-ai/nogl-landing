@@ -20,8 +20,8 @@ jobs:
             cd /root/nogl-landing
 
             echo "=== Pull latest ==="
-            git fetch origin main
-            git reset --hard origin/main
+            git fetch gitea main
+            git reset --hard gitea/main
 
             echo "=== Install deps ==="
             npm ci --prefer-offline
