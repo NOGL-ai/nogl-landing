@@ -1,9 +1,21 @@
 "use client";
+import { Download01 as Download, FileDownload01 as FileDown, Lock01 as Lock, ChevronDown } from '@untitledui/icons';
 
-import { useEffect, useRef, useState } from "react";
+
+import { useState, useRef, useEffect } from "react";
 import { useTheme } from "next-themes";
-import ApexCharts from "apexcharts";
-import { Download, FileDown, Lock, ChevronDown } from "lucide-react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+  LabelList,
+} from "recharts";
+
 
 import { Card } from "@/components/ui/card";
 
@@ -29,59 +41,68 @@ const MOCK_DATA: Record<DistributionType, DistributionEntry[]> = {
   color: [
     { label: "Black", count: 45, color: "#111827" },
     { label: "White", count: 32, color: "#f9fafb" },
-    { label: "Gray", count: 18, color: "#9ca3af" },
-    { label: "Blue", count: 12, color: "#3b82f6" },
-    { label: "Red", count: 8, color: "#ef4444" },
-    { label: "Green", count: 6, color: "#22c55e" },
-    { label: "Beige", count: 5, color: "#d4b896" },
+    { label: "Gray",  count: 18, color: "#9ca3af" },
+    { label: "Blue",  count: 12, color: "#3b82f6" },
+    { label: "Red",   count: 8,  color: "#ef4444" },
+    { label: "Green", count: 6,  color: "#22c55e" },
+    { label: "Beige", count: 5,  color: "#d4b896" },
   ],
   size: [
-    { label: "M", count: 38 },
-    { label: "L", count: 34 },
-    { label: "S", count: 28 },
-    { label: "XL", count: 22 },
-    { label: "XS", count: 15 },
+    { label: "M",   count: 38 },
+    { label: "L",   count: 34 },
+    { label: "S",   count: 28 },
+    { label: "XL",  count: 22 },
+    { label: "XS",  count: 15 },
     { label: "XXL", count: 10 },
   ],
   category: [
-    { label: "Tops", count: 40 },
-    { label: "Bottoms", count: 28 },
-    { label: "Dresses", count: 22 },
-    { label: "Footwear", count: 18 },
+    { label: "Tops",        count: 40 },
+    { label: "Bottoms",     count: 28 },
+    { label: "Dresses",     count: 22 },
+    { label: "Footwear",    count: 18 },
     { label: "Accessories", count: 14 },
-    { label: "Outerwear", count: 10 },
+    { label: "Outerwear",   count: 10 },
   ],
   brand: [
-    { label: "Nike", count: 35 },
+    { label: "Nike",   count: 35 },
     { label: "Adidas", count: 28 },
-    { label: "Zara", count: 22 },
-    { label: "H&M", count: 18 },
+    { label: "Zara",   count: 22 },
+    { label: "H&M",    count: 18 },
     { label: "Uniqlo", count: 14 },
   ],
 };
 
+const FALLBACK_COLORS = ["#3b82f6", "#8b5cf6", "#ec4899", "#f59e0b", "#10b981", "#6366f1", "#f97316"];
+
 const DISTRIBUTION_OPTIONS: { value: DistributionType; label: string }[] = [
-  { value: "color", label: "Color Distribution" },
-  { value: "size", label: "Size Distribution" },
+  { value: "color",    label: "Color Distribution"    },
+  { value: "size",     label: "Size Distribution"     },
   { value: "category", label: "Category Distribution" },
-  { value: "brand", label: "Brand Distribution" },
+  { value: "brand",    label: "Brand Distribution"    },
 ];
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export function ColorDistributionWidget({ loading = false }: ColorDistributionWidgetProps) {
   const { resolvedTheme } = useTheme();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const chartInstanceRef = useRef<ApexCharts | null>(null);
+  const isDark = resolvedTheme === "dark";
 
   const [distributionType, setDistributionType] = useState<DistributionType>("color");
-  const [activeTab, setActiveTab] = useState<TabMode>("count");
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [activeTab, setActiveTab]               = useState<TabMode>("count");
+  const [dropdownOpen, setDropdownOpen]         = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const isDark = resolvedTheme === "dark";
   const entries = MOCK_DATA[distributionType];
   const showRevenueOverlay = activeTab === "revenue";
+
+  const textColor = isDark ? "#9ca3af" : "#6b7280";
+  const gridColor = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)";
+
+  const chartData = entries.map((e, i) => ({
+    label: e.label,
+    count: e.count,
+    fill: e.color ?? FALLBACK_COLORS[i % FALLBACK_COLORS.length],
+  }));
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -94,79 +115,6 @@ export function ColorDistributionWidget({ loading = false }: ColorDistributionWi
     return () => document.removeEventListener("mousedown", handler);
   }, [dropdownOpen]);
 
-  // Build / rebuild chart
-  useEffect(() => {
-    if (!containerRef.current || loading || entries.length === 0) return;
-
-    const labelColor = isDark ? "#9ca3af" : "#6b7280";
-    const gridColor = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)";
-    const bgColor = isDark ? "transparent" : "#ffffff";
-
-    const barColors = entries.map(
-      (e, i) =>
-        e.color ??
-        ["#3b82f6", "#8b5cf6", "#ec4899", "#f59e0b", "#10b981", "#6366f1", "#f97316"][i % 7]
-    );
-
-    const options: ApexCharts.ApexOptions = {
-      chart: {
-        type: "bar",
-        height: 260,
-        toolbar: { show: false },
-        zoom: { enabled: false },
-        background: bgColor,
-        foreColor: labelColor,
-        animations: { enabled: false },
-      },
-      plotOptions: {
-        bar: {
-          horizontal: true,
-          distributed: true,
-          borderRadius: 3,
-          barHeight: "65%",
-          dataLabels: { position: "inside" },
-        },
-      },
-      dataLabels: {
-        enabled: true,
-        formatter: (val: number) => (val >= 5 ? `${Math.round(val)}%` : ""),
-        style: { fontSize: "9px", fontWeight: "700", colors: ["#ffffff"] },
-        offsetX: -4,
-      },
-      stroke: { show: false },
-      series: [{ name: "Variant Count", data: entries.map((e) => e.count) }],
-      xaxis: {
-        categories: entries.map((e) => e.label),
-        axisBorder: { show: false },
-        axisTicks: { show: false },
-        labels: { style: { fontSize: "11px", colors: labelColor } },
-      },
-      yaxis: {
-        labels: { style: { fontSize: "11px", colors: labelColor } },
-      },
-      colors: barColors,
-      legend: { show: false },
-      grid: { borderColor: gridColor, strokeDashArray: 4 },
-      tooltip: {
-        theme: isDark ? "dark" : "light",
-        y: { formatter: (val) => `${val} variants` },
-      },
-    };
-
-    try { chartInstanceRef.current?.destroy(); } catch { /* ignore */ }
-    chartInstanceRef.current = null;
-
-    const chart = new ApexCharts(containerRef.current, options);
-    chartInstanceRef.current = chart;
-    void chart.render();
-
-    return () => {
-      try { chartInstanceRef.current?.destroy(); } catch { /* ignore */ }
-      chartInstanceRef.current = null;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [entries, loading, isDark]);
-
   const selectedLabel =
     DISTRIBUTION_OPTIONS.find((o) => o.value === distributionType)?.label ?? "Color Distribution";
 
@@ -175,8 +123,6 @@ export function ColorDistributionWidget({ loading = false }: ColorDistributionWi
       {/* Header */}
       <div className="mb-3 flex items-center justify-between">
         <h3 className="text-sm font-semibold text-foreground">Distribution</h3>
-
-        {/* Action icons */}
         <div className="flex items-center gap-1.5">
           <button
             type="button"
@@ -221,10 +167,7 @@ export function ColorDistributionWidget({ loading = false }: ColorDistributionWi
                       : "text-foreground hover:bg-muted"
                     }`}
                 >
-                  {opt.value === distributionType && (
-                    <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                  )}
-                  {opt.value !== distributionType && <span className="h-1.5 w-1.5" />}
+                  <span className={`h-1.5 w-1.5 rounded-full ${opt.value === distributionType ? "bg-primary" : ""}`} />
                   {opt.label}
                 </button>
               ))}
@@ -274,20 +217,66 @@ export function ColorDistributionWidget({ loading = false }: ColorDistributionWi
         </button>
       </div>
 
-      {/* Chart area — always keep in DOM */}
-      <div className="relative flex-1">
-        <div ref={containerRef} style={{ minHeight: 260 }} />
-
+      {/* Chart area */}
+      <div className="relative flex-1" style={{ minHeight: 260 }}>
         {loading && (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-primary" />
           </div>
         )}
-
         {!loading && entries.length === 0 && (
           <p className="flex h-[260px] items-center justify-center text-sm text-muted-foreground">
             No distribution data.
           </p>
+        )}
+        {!loading && entries.length > 0 && (
+          <ResponsiveContainer width="100%" height={260}>
+            <BarChart
+              layout="vertical"
+              data={chartData}
+              margin={{ top: 4, right: 16, left: 4, bottom: 0 }}
+            >
+              <CartesianGrid strokeDasharray="4 4" stroke={gridColor} horizontal={false} />
+              <XAxis
+                type="number"
+                tick={{ fill: textColor, fontSize: 11 }}
+                axisLine={false}
+                tickLine={false}
+              />
+              <YAxis
+                type="category"
+                dataKey="label"
+                tick={{ fill: textColor, fontSize: 11 }}
+                axisLine={false}
+                tickLine={false}
+                width={60}
+              />
+              <Tooltip
+                contentStyle={{
+                  background: isDark ? "#111827" : "#ffffff",
+                  border: `1px solid ${gridColor}`,
+                  borderRadius: 8,
+                  fontSize: 12,
+                }}
+                labelStyle={{ color: textColor }}
+                formatter={(value) => [`${value as number} variants`, "Count"] as [string, string]}
+              />
+              <Bar dataKey="count" radius={[0, 3, 3, 0]} barSize={20}>
+                {chartData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.fill} />
+                ))}
+                <LabelList
+                  dataKey="count"
+                  position="insideRight"
+                  formatter={(value: unknown) => {
+                    const v = value as number;
+                    return v >= 5 ? `${Math.round(v)}%` : "";
+                  }}
+                  style={{ fill: "#ffffff", fontSize: 9, fontWeight: 700 }}
+                />
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
         )}
 
         {/* Coming Soon overlay for Revenue tab */}

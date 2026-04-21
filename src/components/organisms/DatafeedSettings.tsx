@@ -1,5 +1,6 @@
 "use client";
 
+import { File01 as DocumentTextIcon, X as XMarkIcon, LinkExternal01 as ArrowTopRightOnSquareIcon, ArrowUp as ArrowUpIcon } from '@untitledui/icons';
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Toggle from "@/components/ui/toggle";
@@ -8,12 +9,6 @@ import Select from "@/shared/Select";
 import Badge from "@/shared/Badge";
 
 // Icons
-import { DocumentTextIcon } from "@heroicons/react/24/outline";
-import {
-	XMarkIcon,
-	ArrowTopRightOnSquareIcon,
-	ArrowUpIcon,
-} from "@heroicons/react/16/solid";
 
 interface DatafeedSettingsProps {
 	className?: string;

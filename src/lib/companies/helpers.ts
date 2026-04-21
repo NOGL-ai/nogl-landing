@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Prisma } from "@prisma/client";
 
 import { prisma } from "@/lib/prisma";
@@ -18,6 +17,7 @@ import {
   CompanySnapshotDTO,
   CompanySocialLinksDTO,
   GetCompaniesResponse,
+  PriceDistributionBucket,
 } from "@/types/company";
 import { PageMeta } from "@/types/product";
 import { isFeatureEnabled } from "@/lib/featureFlags";
@@ -168,6 +168,40 @@ function normalizeDomain(domain: string): string {
     .toLowerCase();
 }
 
+function displayName(name: string, domain: string): string {
+  if (/^[a-z0-9_-]+$/.test(name) && !name.includes(" ")) {
+    return domain
+      .replace(/\.[a-z]{2,}$/, "")
+      .replace(/[-_]/g, " ")
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+  }
+  return name;
+}
+
+function deduplicateByName(companies: CompanyListItem[]): CompanyListItem[] {
+  const seen = new Map<string, CompanyListItem>();
+  for (const company of companies) {
+    const key = company.name.trim().toLowerCase();
+    const existing = seen.get(key);
+    if (!existing || company.total_products > existing.total_products) {
+      seen.set(key, company);
+    }
+  }
+  return Array.from(seen.values());
+}
+
+function deduplicateByDomain(companies: CompanyListItem[]): CompanyListItem[] {
+  const seen = new Map<string, CompanyListItem>();
+  for (const company of companies) {
+    const key = normalizeDomain(company.domain);
+    const existing = seen.get(key);
+    if (!existing || company.total_products > existing.total_products) {
+      seen.set(key, company);
+    }
+  }
+  return Array.from(seen.values());
+}
+
 function toNullableNumber(value: NumericValue): number | null {
   if (value === null) {
     return null;
@@ -212,6 +246,14 @@ function createPagination(page: number, limit: number, total: number): PageMeta 
 
 function parseCount(value: bigint | number): number {
   return typeof value === "bigint" ? Number(value) : value;
+}
+
+function simpleHash(str: string): number {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) {
+    h = Math.imul(31, h) + str.charCodeAt(i);
+  }
+  return Math.abs(h);
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -678,11 +720,15 @@ export async function buildPlaceholderSnapshot(
       SELECT
         COUNT(*)::int AS total_products,
         COALESCE(SUM(COALESCE(product_variants_count, 0)), 0)::int AS total_variants,
-        COUNT(*) FILTER (WHERE product_discount_price IS NOT NULL)::int AS total_discounted,
+        COUNT(*) FILTER (
+          WHERE product_discount_price IS NOT NULL
+             OR (product_discount_percentage IS NOT NULL
+                 AND product_discount_percentage > 0)
+        )::int AS total_discounted,
         AVG(product_discount_percentage) AS avg_discount_pct,
-        AVG(product_original_price) AS avg_price,
-        MIN(product_original_price) AS min_price,
-        MAX(product_original_price) AS max_price,
+        AVG(product_original_price) FILTER (WHERE product_original_price > 0) AS avg_price,
+        MIN(product_original_price) FILTER (WHERE product_original_price > 0) AS min_price,
+        MAX(product_original_price) FILTER (WHERE product_original_price > 0) AS max_price,
         MIN(extraction_timestamp) AS data_since,
         MAX(extraction_timestamp) AS last_scraped_at
       FROM public.products
@@ -749,6 +795,8 @@ export async function getCompaniesResponse(params: {
   limit: number;
   countryCode?: string;
   trackingStatus?: string;
+  sortBy?: "name" | "total_products" | "last_scraped_at";
+  sortDir?: "asc" | "desc";
 }): Promise<GetCompaniesResponse> {
   const hasCompanyTable = await relationExists("nogl", "Company");
   const hasCompanySnapshotTable = await relationExists("nogl", "CompanySnapshot");
@@ -781,6 +829,19 @@ export async function getCompaniesResponse(params: {
           ? Prisma.sql`WHERE ${Prisma.join(filters, " AND ")}`
           : Prisma.empty;
 
+      const sortColSql =
+        params.sortBy === "total_products"
+          ? hasCompanySnapshotTable
+            ? Prisma.sql`COALESCE(cs.total_products, 0)`
+            : Prisma.sql`0`
+          : params.sortBy === "last_scraped_at"
+          ? hasCompanySnapshotTable
+            ? Prisma.sql`cs.last_scraped_at`
+            : Prisma.sql`c."createdAt"`
+          : Prisma.sql`c.name`;
+      const sortDirSql =
+        params.sortDir === "desc" ? Prisma.sql`DESC NULLS LAST` : Prisma.sql`ASC NULLS LAST`;
+
       const [rows, countRows] = await Promise.all([
         prisma.$queryRaw<CompanyListRow[]>(Prisma.sql`
           SELECT
@@ -808,7 +869,7 @@ export async function getCompaniesResponse(params: {
             ? Prisma.sql`LEFT JOIN nogl."CompanySnapshot" cs ON cs.company_id = c.id`
             : Prisma.empty}
           ${whereSql}
-          ORDER BY c.name ASC
+          ORDER BY ${sortColSql} ${sortDirSql}
           LIMIT ${params.limit}
           OFFSET ${(params.page - 1) * params.limit}
         `),
@@ -822,10 +883,10 @@ export async function getCompaniesResponse(params: {
       const total = parseCount(countRows[0]?.count ?? 0);
 
       if (total > 0) {
-        const companies: CompanyListItem[] = rows.map((row) => ({
+        const rawCompanies: CompanyListItem[] = rows.map((row) => ({
           id: row.id,
           slug: row.slug,
-          name: row.name,
+          name: displayName(row.name, row.domain),
           domain: row.domain,
           country_code: row.country_code,
           industry: row.industry,
@@ -834,6 +895,8 @@ export async function getCompaniesResponse(params: {
           total_products: row.total_products ?? 0,
           last_scraped_at: toIsoString(row.last_scraped_at),
         }));
+
+        const companies = deduplicateByDomain(deduplicateByName(rawCompanies));
 
         return {
           companies,
@@ -909,11 +972,21 @@ export async function getCompanyOverviewResponse(slug: string): Promise<CompanyO
   }
 
   const snapshot = await findSnapshotByCompanyId(company.id);
+  const placeholder = await buildPlaceholderSnapshot(company.id, company.domain, company.name);
   const extensions = buildCompanyOverviewExtensions(company);
+
+  // Use snapshot for everything except total_products — prefer the live count when it's higher
+  const resolvedSnapshot = snapshot
+    ? {
+        ...snapshot,
+        total_products: Math.max(snapshot.total_products, placeholder.total_products),
+        last_scraped_at: placeholder.last_scraped_at ?? snapshot.last_scraped_at,
+      }
+    : placeholder;
 
   return {
     company,
-    snapshot: snapshot ?? (await buildPlaceholderSnapshot(company.id, company.domain, company.name)),
+    snapshot: resolvedSnapshot,
     ...extensions,
   };
 }
@@ -922,17 +995,34 @@ export async function getCompanyEventsResponse(params: {
   slug: string;
   page: number;
   limit: number;
+  eventTypes?: string[];
+  fromDate?: string;
+  toDate?: string;
 }): Promise<CompanyEventsResponse | null> {
   const company = await resolveCompanyBySlug(params.slug);
   if (!company) {
     return null;
   }
 
+  const hasFilters =
+    params.eventTypes != null && params.eventTypes.length > 0;
+
   let events: CompanyEventDTO[] = [];
   let total = 0;
 
   if (await relationExists("nogl", "CompanyEvent")) {
     try {
+      const typeFilterSql =
+        params.eventTypes && params.eventTypes.length > 0
+          ? Prisma.sql` AND event_type = ANY(${params.eventTypes})`
+          : Prisma.empty;
+      const fromFilterSql = params.fromDate
+        ? Prisma.sql` AND event_date >= ${new Date(params.fromDate)}`
+        : Prisma.empty;
+      const toFilterSql = params.toDate
+        ? Prisma.sql` AND event_date <= ${new Date(params.toDate)}`
+        : Prisma.empty;
+
       const [rows, countRows] = await Promise.all([
         prisma.$queryRaw<CompanyEventRow[]>(Prisma.sql`
           SELECT
@@ -952,7 +1042,7 @@ export async function getCompanyEventsResponse(params: {
             raw_payload,
             "createdAt" AS created_at
           FROM nogl."CompanyEvent"
-          WHERE company_id = ${company.id}
+          WHERE company_id = ${company.id}${typeFilterSql}${fromFilterSql}${toFilterSql}
           ORDER BY event_date DESC
           LIMIT ${params.limit}
           OFFSET ${(params.page - 1) * params.limit}
@@ -960,12 +1050,15 @@ export async function getCompanyEventsResponse(params: {
         prisma.$queryRaw<CountRow[]>(Prisma.sql`
           SELECT COUNT(*) AS count
           FROM nogl."CompanyEvent"
-          WHERE company_id = ${company.id}
+          WHERE company_id = ${company.id}${typeFilterSql}${fromFilterSql}${toFilterSql}
         `),
       ]);
 
       events = rows.map(mapEventRowToDTO);
       total = parseCount(countRows[0]?.count ?? 0);
+      if (events.length === 0 && !hasFilters && process.env.NODE_ENV !== 'production') {
+        console.log(`[events] No events found for company ${company.id} (${company.name}). Table exists but may be empty.`);
+      }
     } catch (error) {
       if (!isMissingRelationError(error)) {
         throw error;
@@ -973,7 +1066,7 @@ export async function getCompanyEventsResponse(params: {
     }
   }
 
-  if (events.length === 0) {
+  if (events.length === 0 && !hasFilters) {
     const now = Date.now();
 
     events = [
@@ -1049,21 +1142,36 @@ export async function getCompanyPricingResponse(params: {
   slug: string;
   page: number;
   limit: number;
-  sort?: 'price_asc' | 'price_desc' | 'discount_desc' | 'last_seen_desc';
   productType?: string;
   minPrice?: number;
   maxPrice?: number;
+  sort?: "price_asc" | "price_desc" | "discount_desc" | "last_seen_desc";
+  productPage?: number;
+  productLimit?: number;
 }): Promise<CompanyPricingResponse | null> {
   const company = await resolveCompanyBySlug(params.slug);
   if (!company) {
     return null;
   }
 
+  const productPage = params.productPage ?? 1;
+  const productLimit = params.productLimit ?? 20;
+
   const whereSql = await buildProductsWhereSql(company.id, company.name, company.domain, {
     productType: params.productType,
     minPrice: params.minPrice,
     maxPrice: params.maxPrice,
   });
+
+  // Sort clause for the product table
+  const sortClause =
+    params.sort === "price_asc"
+      ? Prisma.sql`product_original_price ASC NULLS LAST`
+      : params.sort === "price_desc"
+      ? Prisma.sql`product_original_price DESC NULLS LAST`
+      : params.sort === "discount_desc"
+      ? Prisma.sql`product_discount_percentage DESC NULLS LAST`
+      : Prisma.sql`extraction_timestamp DESC NULLS LAST`;
 
   type TopProductForPricingRow = {
     product_id: string | null;
@@ -1087,81 +1195,97 @@ export async function getCompanyPricingResponse(params: {
     last_seen: Date | null;
   };
 
-  const sortClauses = {
-    'price_asc': Prisma.sql`product_original_price ASC NULLS LAST`,
-    'price_desc': Prisma.sql`product_original_price DESC NULLS LAST`,
-    'discount_desc': Prisma.sql`product_discount_percentage DESC NULLS LAST`,
-    'last_seen_desc': Prisma.sql`extraction_timestamp DESC NULLS LAST`,
-  };
-  const sortClause = sortClauses[params.sort ?? 'last_seen_desc'] ?? sortClauses['last_seen_desc'];
-
   // Also fetch the snapshot for price_distribution (fire in parallel)
   const snapshotPromise = prisma.companySnapshot
     .findFirst({ where: { company_id: company.id }, select: { price_distribution: true } })
     .catch(() => null);
 
-  const [aggregateRows, groupedRows, topProductRows, productsRows, productCountRows] = await Promise.all([
-    prisma.$queryRaw<ProductAggregateRow[]>(Prisma.sql`
-      SELECT
-        COUNT(*)::int AS total_products,
-        COALESCE(SUM(COALESCE(product_variants_count, 0)), 0)::int AS total_variants,
-        COUNT(*) FILTER (WHERE product_discount_price IS NOT NULL)::int AS total_discounted,
-        AVG(product_discount_percentage) AS avg_discount_pct,
-        AVG(product_original_price) AS avg_price,
-        MIN(product_original_price) AS min_price,
-        MAX(product_original_price) AS max_price
-      FROM public.products
-      ${whereSql}
-    `),
-    prisma.$queryRaw<ProductTypeAggregateRow[]>(Prisma.sql`
-      SELECT
-        COALESCE(product_category, 'Uncategorized') AS type,
-        COUNT(*)::int AS count,
-        AVG(product_original_price) AS avg_price,
-        MIN(product_original_price) AS min_price,
-        MAX(product_original_price) AS max_price,
-        AVG(product_discount_percentage) AS avg_discount_pct
-      FROM public.products
-      ${whereSql}
-      GROUP BY COALESCE(product_category, 'Uncategorized')
-      ORDER BY COUNT(*) DESC, COALESCE(product_category, 'Uncategorized') ASC
-    `),
-    prisma.$queryRaw<TopProductForPricingRow[]>(Prisma.sql`
-      SELECT
-        product_id,
-        product_title,
-        product_page_image_url,
-        product_url,
-        CAST(product_original_price AS float8) AS product_original_price,
-        CAST(product_discount_price AS float8) AS product_discount_price,
-        product_category
-      FROM public.products
-      ${whereSql}
-        AND product_page_image_url IS NOT NULL
-        AND product_title IS NOT NULL
-      ORDER BY product_original_price DESC NULLS LAST
-      LIMIT 8
-    `),
-    prisma.$queryRaw<ProductForTableRow[]>(Prisma.sql`
-      SELECT
-        id AS product_id,
-        product_title,
-        COALESCE(product_page_image_url, product_image_url) AS product_image_url,
-        product_url,
-        product_category AS category,
-        CAST(product_original_price AS float8) AS original_price,
-        CAST(product_discount_price AS float8) AS discount_price,
-        CAST(product_discount_percentage AS float8) AS discount_pct,
-        extraction_timestamp AS last_seen
-      FROM public.products
-      ${whereSql}
-      ORDER BY ${sortClause}
-      LIMIT ${params.limit} OFFSET ${(params.page - 1) * params.limit}
-    `),
-    prisma.$queryRaw<CountRow[]>(Prisma.sql`
-      SELECT COUNT(*)::int AS count FROM public.products ${whereSql}
-    `),
-  ]);
+  const [aggregateRows, groupedRows, groupCountRows, productCountRows, topProductRows, productsRows] =
+    await Promise.all([
+      // BUG 1+2: fixed discount count (either column) + price aggregates exclude 0-price rows
+      prisma.$queryRaw<ProductAggregateRow[]>(Prisma.sql`
+        SELECT
+          COUNT(*)::int AS total_products,
+          COALESCE(SUM(COALESCE(product_variants_count, 0)), 0)::int AS total_variants,
+          COUNT(*) FILTER (
+            WHERE product_discount_price IS NOT NULL
+               OR (product_discount_percentage IS NOT NULL
+                   AND product_discount_percentage > 0)
+          )::int AS total_discounted,
+          AVG(product_discount_percentage) AS avg_discount_pct,
+          AVG(product_original_price) FILTER (WHERE product_original_price > 0) AS avg_price,
+          MIN(product_original_price) FILTER (WHERE product_original_price > 0) AS min_price,
+          MAX(product_original_price) FILTER (WHERE product_original_price > 0) AS max_price
+        FROM public.products
+        ${whereSql}
+      `),
+      // Product types grouped (for product_types_pagination)
+      prisma.$queryRaw<ProductTypeAggregateRow[]>(Prisma.sql`
+        SELECT
+          COALESCE(product_category, 'Uncategorized') AS type,
+          COUNT(*)::int AS count,
+          AVG(product_original_price) AS avg_price,
+          MIN(product_original_price) FILTER (WHERE product_original_price > 0) AS min_price,
+          MAX(product_original_price) FILTER (WHERE product_original_price > 0) AS max_price,
+          AVG(product_discount_percentage) AS avg_discount_pct
+        FROM public.products
+        ${whereSql}
+        GROUP BY COALESCE(product_category, 'Uncategorized')
+        ORDER BY COUNT(*) DESC, COALESCE(product_category, 'Uncategorized') ASC
+        LIMIT ${params.limit}
+        OFFSET ${(params.page - 1) * params.limit}
+      `),
+      // BUG 3: count product TYPE groups (for product_types_pagination)
+      prisma.$queryRaw<CountRow[]>(Prisma.sql`
+        SELECT COUNT(*) AS count
+        FROM (
+          SELECT COALESCE(product_category, 'Uncategorized')
+          FROM public.products
+          ${whereSql}
+          GROUP BY COALESCE(product_category, 'Uncategorized')
+        ) grouped
+      `),
+      // BUG 3: separate individual product count (for product-level pagination)
+      prisma.$queryRaw<CountRow[]>(Prisma.sql`
+        SELECT COUNT(*) AS count
+        FROM public.products
+        ${whereSql}
+      `),
+      // BUG 4: COALESCE both image columns for top products
+      prisma.$queryRaw<TopProductForPricingRow[]>(Prisma.sql`
+        SELECT
+          product_id,
+          product_title,
+          COALESCE(product_page_image_url, product_image_url) AS product_page_image_url,
+          product_url,
+          CAST(product_original_price AS float8) AS product_original_price,
+          CAST(product_discount_price AS float8) AS product_discount_price,
+          product_category
+        FROM public.products
+        ${whereSql}
+          AND product_title IS NOT NULL
+        ORDER BY product_original_price DESC NULLS LAST
+        LIMIT 8
+      `),
+      // NEW: paginated product table with sort
+      prisma.$queryRaw<ProductForTableRow[]>(Prisma.sql`
+        SELECT
+          product_id,
+          product_title,
+          COALESCE(product_page_image_url, product_image_url) AS product_image_url,
+          product_url,
+          product_category AS category,
+          CAST(product_original_price AS float8) AS original_price,
+          CAST(product_discount_price AS float8) AS discount_price,
+          CAST(product_discount_percentage AS float8) AS discount_pct,
+          extraction_timestamp AS last_seen
+        FROM public.products
+        ${whereSql}
+        ORDER BY ${sortClause}
+        LIMIT ${productLimit}
+        OFFSET ${(productPage - 1) * productLimit}
+      `),
+    ]);
 
   const aggregate = aggregateRows[0] ?? {
     total_products: 0,
@@ -1174,6 +1298,8 @@ export async function getCompanyPricingResponse(params: {
     data_since: null,
     last_scraped_at: null,
   };
+
+  const totalProductCount = parseCount(productCountRows[0]?.count ?? 0);
 
   const productTypes: CompanyPricingProductTypeRow[] = groupedRows.map((row) => ({
     type: row.type ?? "Uncategorized",
@@ -1218,8 +1344,8 @@ export async function getCompanyPricingResponse(params: {
     max_price: toNullableNumber(aggregate.max_price),
     product_types: productTypes,
     price_distribution: priceDist,
-    top_products: topProductRows.map((r) => ({
-      product_id: r.product_id ?? `tp-${Math.random()}`,
+    top_products: topProductRows.map((r, idx) => ({
+      product_id: r.product_id ?? `tp-${company.slug}-${idx}`,
       product_title: r.product_title ?? "Unknown Product",
       product_image_url: r.product_page_image_url,
       product_url: r.product_url,
@@ -1227,8 +1353,24 @@ export async function getCompanyPricingResponse(params: {
       discount_price: typeof r.product_discount_price === "number" ? r.product_discount_price : null,
       category: r.product_category,
     })),
-    products,
-    pagination: createPagination(params.page, params.limit, parseCount(productCountRows[0]?.count ?? 0)),
+    products: productsRows.map((r) => ({
+      product_id: r.product_id,
+      product_title: r.product_title ?? "Unknown",
+      product_image_url: r.product_image_url ?? null,
+      product_url: r.product_url ?? null,
+      category: r.category ?? null,
+      original_price: r.original_price ?? null,
+      discount_price: r.discount_price ?? null,
+      discount_pct: r.discount_pct ?? null,
+      last_seen: r.last_seen ? r.last_seen.toISOString() : null,
+    })),
+    // BUG 3: pagination = product-level; product_types_pagination = type-group level
+    pagination: createPagination(productPage, productLimit, totalProductCount),
+    product_types_pagination: createPagination(
+      params.page,
+      params.limit,
+      parseCount(groupCountRows[0]?.count ?? 0)
+    ),
   };
 }
 
@@ -1246,7 +1388,12 @@ export async function getCompanyAssetsResponse(params: {
   let items: CompanyAssetDTO[] = [];
   let total = 0;
 
-  if (await relationExists("nogl", "CompanyAsset")) {
+  const tableExists = await relationExists("nogl", "CompanyAsset");
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`[assets] CompanyAsset table exists: ${tableExists}, company: ${company.name} (${company.id})`);
+  }
+
+  if (tableExists) {
     try {
       const filters: Prisma.Sql[] = [Prisma.sql`company_id = ${company.id}`];
       if (params.channel) {
@@ -1284,11 +1431,45 @@ export async function getCompanyAssetsResponse(params: {
 
       items = rows.map(mapAssetRowToDTO);
       total = parseCount(countRows[0]?.count ?? 0);
+      if (process.env.NODE_ENV !== 'production') {
+        console.log(`[assets] Found ${items.length} assets for ${company.name} (total: ${total})`);
+      }
     } catch (error) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error(`[assets] Query failed for ${company.name}:`, error);
+      }
       if (!isMissingRelationError(error)) {
         throw error;
       }
     }
+  }
+
+  if (items.length === 0 && !params.channel) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`[assets] No real assets for ${company.name} — returning placeholder set`);
+    }
+    const placeholderChannels = ['instagram', 'meta_ads', 'email'];
+    items = placeholderChannels.flatMap((channel, ci) =>
+      Array.from({ length: 4 }, (_, i) => ({
+        id: `placeholder-${channel}-${i}`,
+        company_id: company.id,
+        channel,
+        asset_type: channel === 'email' ? 'email' : 'image',
+        url: null,
+        thumbnail_url: null,
+        caption: channel === 'instagram'
+          ? `Sample Instagram post ${i + 1} — real assets will appear once the scraper ingests ${company.name}'s social feeds.`
+          : channel === 'meta_ads'
+          ? `Meta Ad creative ${i + 1} — placeholder until ad library scraping runs.`
+          : `Email campaign ${i + 1} — placeholder until email ingestion pipeline runs.`,
+        likes: channel === 'instagram' ? (simpleHash(`${company.slug}-${channel}-${i}-l`) % 500) + 50 : null,
+        comments: channel === 'instagram' ? (simpleHash(`${company.slug}-${channel}-${i}-c`) % 50) + 5 : null,
+        published_at: new Date(Date.now() - (ci * 4 + i) * 86400000).toISOString(),
+        raw_payload: null,
+        createdAt: new Date().toISOString(),
+      } satisfies CompanyAssetDTO))
+    );
+    total = items.length;
   }
 
   const overview = await getCompanyOverviewResponse(params.slug);

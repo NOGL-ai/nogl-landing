@@ -1,7 +1,7 @@
 "use client"
 
+import { Moon01 as Moon, Sun } from '@untitledui/icons';
 import { useCallback, useEffect, useRef, useState } from "react"
-import { Moon, Sun } from "lucide-react"
 import { flushSync } from "react-dom"
 import { useTheme } from "next-themes"
 

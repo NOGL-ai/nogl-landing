@@ -1,161 +1,56 @@
 "use client";
-import { ApexOptions } from "apexcharts";
-import React, { useState } from "react";
-import dynamic from "next/dynamic";
-const ReactApexChart = dynamic(() => import("react-apexcharts"), {
-	ssr: false,
-});
+import React from "react";
+import {
+	AreaChart,
+	Area,
+	XAxis,
+	YAxis,
+	CartesianGrid,
+	Tooltip,
+	ResponsiveContainer,
+} from "recharts";
 
-const options: ApexOptions = {
-	legend: {
-		show: false,
-	},
-	colors: ["#635BFF"],
-	chart: {
-		fontFamily: "Satoshi, sans-serif",
-		height: 300,
-		type: "area",
-		dropShadow: {
-			enabled: true,
-			color: "#623CEA14",
-			top: 10,
-			blur: 4,
-			left: 0,
-			opacity: 0.1,
-		},
-
-		toolbar: {
-			show: false,
-		},
-	},
-	fill: {
-		gradient: {
-			shade: "light",
-			type: "vertical",
-			shadeIntensity: 0.1,
-			gradientToColors: ["#635BFF"],
-			inverseColors: true,
-			opacityFrom: 0.3,
-			opacityTo: 0,
-			stops: [0, 100],
-			colorStops: [],
-		},
-	},
-	responsive: [
-		{
-			breakpoint: 1024,
-			options: {
-				chart: {
-					height: 300,
-				},
-			},
-		},
-		{
-			breakpoint: 1366,
-			options: {
-				chart: {
-					height: 320,
-				},
-			},
-		},
-	],
-	stroke: {
-		width: [2],
-		curve: "smooth",
-	},
-	// labels: {
-	//   show: false,
-	//   position: "top",
-	// },
-	grid: {
-		xaxis: {
-			lines: {
-				show: false,
-			},
-		},
-		yaxis: {
-			lines: {
-				show: true,
-			},
-		},
-	},
-	dataLabels: {
-		enabled: false,
-	},
-	markers: {
-		size: 0,
-		hover: {
-			size: 0,
-		},
-	},
-	xaxis: {
-		type: "category",
-		categories: [
-			"Sep",
-			"Oct",
-			"Nov",
-			"Dec",
-			"Jan",
-			"Feb",
-			"Mar",
-			"Apr",
-			"May",
-			"Jun",
-			"Jul",
-			"Aug",
-		],
-		axisBorder: {
-			show: false,
-		},
-		axisTicks: {
-			show: false,
-		},
-	},
-	yaxis: {
-		title: {
-			style: {
-				fontSize: "0px",
-			},
-		},
-		min: 0,
-		max: 100,
-	},
-};
-
-interface ChartOneState {
-	series: {
-		name: string;
-		data: number[];
-	}[];
-}
+const data = [
+	{ name: "Sep", value: 23 },
+	{ name: "Oct", value: 11 },
+	{ name: "Nov", value: 22 },
+	{ name: "Dec", value: 27 },
+	{ name: "Jan", value: 53 },
+	{ name: "Feb", value: 62 },
+	{ name: "Mar", value: 37 },
+	{ name: "Apr", value: 41 },
+	{ name: "May", value: 54 },
+	{ name: "Jun", value: 72 },
+	{ name: "Jul", value: 63 },
+	{ name: "Aug", value: 85 },
+];
 
 const ChartOne: React.FC = () => {
-	const [state, setState] = useState<ChartOneState>({
-		series: [
-			{
-				name: "Product One",
-				data: [23, 11, 22, 27, 53, 62, 37, 41, 54, 72, 63, 85],
-			},
-		],
-	});
-
-	const handleReset = () => {
-		setState((prevState) => ({
-			...prevState,
-		}));
-	};
-
-	handleReset;
-
 	return (
 		<div id='chartOne' className='-ml-5'>
-			<ReactApexChart
-				options={options}
-				series={state.series}
-				type='area'
-				height={300}
-				width='100%'
-			/>
+			<ResponsiveContainer width='100%' height={300}>
+				<AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+					<defs>
+						<linearGradient id='colorValue' x1='0' y1='0' x2='0' y2='1'>
+							<stop offset='5%' stopColor='#635BFF' stopOpacity={0.3} />
+							<stop offset='95%' stopColor='#635BFF' stopOpacity={0} />
+						</linearGradient>
+					</defs>
+					<CartesianGrid strokeDasharray='3 3' vertical={false} />
+					<XAxis dataKey='name' tickLine={false} axisLine={false} tick={{ fontSize: 12 }} />
+					<YAxis domain={[0, 100]} tickLine={false} axisLine={false} tick={{ fontSize: 12 }} />
+					<Tooltip />
+					<Area
+						type='monotone'
+						dataKey='value'
+						name='Product One'
+						stroke='#635BFF'
+						strokeWidth={2}
+						fill='url(#colorValue)'
+						dot={false}
+					/>
+				</AreaChart>
+			</ResponsiveContainer>
 		</div>
 	);
 };

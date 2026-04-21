@@ -1,19 +1,10 @@
 'use client';
+import { ArrowDown, ArrowUp, Download01 as Download, Plus, SearchLg as Search, Settings01 as Settings, Loading01 as Loader2, SearchLg as SearchIcon, Upload01 as Upload } from '@untitledui/icons';
 
 /// <reference types="react" />
 import * as React from 'react';
 import type { ChangeEvent, KeyboardEvent } from 'react';
-import {
-  ArrowDown,
-  ArrowUp,
-  Download,
-  Plus,
-  Search,
-  Settings,
-  Upload,
-  Loader2,
-  Search as SearchIcon,
-} from 'lucide-react';
+
 import { computeTrend, formatPercentCompact, formatPercentDetailed } from '@/utils/priceTrend';
 import Checkbox from '@/components/ui/checkbox';
 import TanStackTable from '@/components/application/table/tanstack-table';
@@ -22,7 +13,7 @@ import { getProducts } from '@/lib/services/productClient';
 import { ProductDTO } from '@/types/product';
 import { SimilaritySearchResult } from '@/types/market-intelligence';
 import SimilaritySearchResults from '@/components/competitor/SimilaritySearchResults';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/base/buttons/button';
 import { Badge } from '@/components/ui/badge';
 import toast from 'react-hot-toast';
 

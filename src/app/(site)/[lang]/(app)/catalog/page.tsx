@@ -1,16 +1,7 @@
 'use client';
 
 import React from 'react';
-import {
-  ArrowDown,
-  ArrowUp,
-  Download,
-  Plus,
-  Search,
-  Settings,
-  Upload,
-} from 'lucide-react';
-import { Share04, UserPlus01, UploadCloud02 } from '@untitledui/icons';
+import { Share04, UserPlus01, UploadCloud02, ArrowDown, ArrowUp, Download01 as Download, Plus, SearchLg as Search, Settings01 as Settings, Upload01 as Upload } from '@untitledui/icons';
 import { computeTrend, formatPercentCompact, formatPercentDetailed } from '@/utils/priceTrend';
 import Checkbox from '@/components/ui/checkbox';
 import TanStackTable from '@/components/application/table/tanstack-table';
@@ -735,7 +726,6 @@ const ProductsCell = ({ competitor, maxProducts }: { competitor: any, maxProduct
   );
 };
 
-
 // Price Position Component
 const PricePositionCell = ({
   competitorPrice,
@@ -1142,7 +1132,6 @@ export default function CompetitorPage() {
     setPriceSort(prev => (prev === 'none' ? 'asc' : prev === 'asc' ? 'desc' : 'none'));
     setProductSort('none');
   };
-
 
   const toggleProductSort = () => {
     setProductSort(prev => (prev === 'none' ? 'asc' : prev === 'asc' ? 'desc' : 'none'));

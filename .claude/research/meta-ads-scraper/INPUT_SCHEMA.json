@@ -1,0 +1,154 @@
+{
+  "title": "Meta Ads Library Scraper 2025 Input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "searchQuery": {
+      "title": "Search Query",
+      "type": "string",
+      "description": "Search term for ads (e.g., company name, keyword)",
+      "example": "Nike",
+      "editor": "textfield"
+    },
+    "country": {
+      "title": "Country",
+      "type": "string",
+      "description": "Country code for ad targeting (e.g., US, IT, GB)",
+      "default": "ALL",
+      "example": "US",
+      "editor": "textfield"
+    },
+    "adType": {
+      "title": "Ad Type",
+      "type": "string",
+      "description": "Type of ads to search",
+      "default": "ALL",
+      "enum": [
+        "ALL",
+        "POLITICAL_AND_ISSUE_ADS",
+        "HOUSING_ADS",
+        "EMPLOYMENT_ADS",
+        "CREDIT_ADS"
+      ],
+      "editor": "select"
+    },
+    "maxAds": {
+      "title": "Maximum Ads",
+      "type": "integer",
+      "description": "Maximum number of ads to scrape",
+      "default": 100,
+      "minimum": 1,
+      "maximum": 10000,
+      "editor": "number"
+    },
+    "includeInactive": {
+      "title": "Include Inactive Ads",
+      "type": "boolean",
+      "description": "Include ads that are no longer active",
+      "default": false,
+      "editor": "checkbox"
+    },
+    "scrapeDetails": {
+      "title": "Scrape Detailed Information",
+      "type": "boolean",
+      "description": "Extract detailed ad information (slower but more comprehensive)",
+      "default": true,
+      "editor": "checkbox"
+    },
+    "proxyConfiguration": {
+      "title": "Proxy Configuration",
+      "type": "object",
+      "description": "Proxy settings for anti-detection",
+      "editor": "json",
+      "prefill": {
+        "useApifyProxy": true,
+        "apifyProxyGroups": ["RESIDENTIAL"]
+      }
+    },
+    "outputFormat": {
+      "title": "Output Format",
+      "type": "string",
+      "description": "Format for the output data",
+      "default": "detailed",
+      "enum": [
+        "basic",
+        "detailed",
+        "full"
+      ],
+      "editor": "select"
+    },
+    "delayBetweenRequests": {
+      "title": "Delay Between Requests (ms)",
+      "type": "integer",
+      "description": "Delay between requests to avoid rate limiting",
+      "default": 3000,
+      "minimum": 1000,
+      "maximum": 10000,
+      "editor": "number"
+    },
+    "pageId": {
+      "title": "Page ID (Optional)",
+      "type": "string",
+      "description": "Specific Facebook Page ID to search ads for",
+      "example": "123456789",
+      "editor": "textfield"
+    },
+    "enableGraphQLInterception": {
+      "title": "Enable GraphQL Interception",
+      "type": "boolean",
+      "description": "Intercept GraphQL requests for more comprehensive data (2025 feature)",
+      "default": true,
+      "editor": "checkbox"
+    },
+    "useAdvancedStealth": {
+      "title": "Use Advanced Anti-Detection",
+      "type": "boolean",
+      "description": "Enable advanced stealth techniques for 2025",
+      "default": true,
+      "editor": "checkbox"
+    },
+    "headlessMode": {
+      "title": "Headless Mode",
+      "type": "boolean",
+      "description": "Run browser in headless mode (faster but may be detected)",
+      "default": false,
+      "editor": "checkbox"
+    },
+    "accessToken": {
+      "title": "Meta Graph API access token (optional)",
+      "type": "string",
+      "description": "If provided AND adType is a regulated category (political, housing, employment, credit), the Actor calls the official Ad Library API instead of scraping. Leave empty to always use the browser path.",
+      "editor": "textfield",
+      "isSecret": true
+    },
+    "apiVersion": {
+      "title": "Graph API version",
+      "type": "string",
+      "description": "Meta Graph API version used by the official-API path.",
+      "default": "v19.0",
+      "editor": "textfield"
+    },
+    "extraApiParams": {
+      "title": "Extra Graph API params",
+      "type": "object",
+      "description": "Forwarded verbatim to the ads_archive endpoint. Use this to pass new Meta fields (e.g. additional target_* filters) without a code change.",
+      "editor": "json",
+      "default": {}
+    },
+    "shard": {
+      "title": "Shard { index, total }",
+      "type": "object",
+      "description": "Run N Actors in parallel over disjoint ad-ID space. Example: {\"index\":0,\"total\":4} in Actor 1, {\"index\":1,\"total\":4} in Actor 2, etc. Leave empty for single-Actor runs.",
+      "editor": "json"
+    },
+    "rawCacheMaxBytes": {
+      "title": "Raw-payload cache max bytes",
+      "type": "integer",
+      "description": "Upper bound on storage/raw/ (gzipped GraphQL bodies). LRU-evicts oldest first. Default 500 MB.",
+      "default": 524288000,
+      "minimum": 10485760,
+      "editor": "number"
+    }
+  },
+  "required": ["searchQuery"]
+}

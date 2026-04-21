@@ -1,23 +1,12 @@
+// eslint-disable-next-line no-restricted-imports -- icon has no @untitledui/icons equivalent; keep in lucide-react until UUI ships it
+import { Cookie } from 'lucide-react';
+import { Eye, Lock01 as Lock, File01 as FileText, Globe01 as Globe, Shield01 as Shield, Users01 as Users, Mail01 as Mail, Phone01 as Phone, MarkerPin01 as MapPin, Scale01 as Scale, Bank as Landmark } from '@untitledui/icons';
 import React from "react";
 import Link from "next/link";
 import { getSEOTags, renderSchemaTags } from "@/lib/seo";
 import Breadcrumb from "@/components/atoms/Breadcrumb";
 import Section from "@/components/organisms/section";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-	Shield,
-	Eye,
-	Lock,
-	Users,
-	FileText,
-	Mail,
-	Phone,
-	MapPin,
-	Globe,
-	Scale,
-	Landmark,
-	Cookie,
-} from "lucide-react";
 
 export const metadata = getSEOTags({
 	title: `Privacy Policy | ${process.env.SITE_NAME}`,

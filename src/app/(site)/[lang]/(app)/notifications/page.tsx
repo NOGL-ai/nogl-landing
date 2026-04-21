@@ -1,35 +1,38 @@
-import { Metadata } from "next";
-import GlassParticlePage from "@/components/templates/GlassParticlePage";
+import type { Metadata } from "next";
+import { listNotifications } from "@/actions/notifications";
+import { InboxTabs } from "@/components/notifications/InboxTabs";
+import type { NotificationTab } from "@/lib/notifications/types";
 
 export const metadata: Metadata = {
 	title: "Notifications | Nogl",
 	description:
-		"Manage your notifications and stay updated with the latest alerts",
-	keywords: ["notifications", "alerts", "updates", "messages", "communication"],
-	openGraph: {
-		title: "Notifications | Nogl",
-		description:
-			"Manage your notifications and stay updated with the latest alerts",
-		type: "website",
-	},
+		"Cross-cutting inbox for mentions, invites, billing events, and system messages.",
 };
 
-export default function NotificationsPage() {
+export const dynamic = "force-dynamic";
+
+const VALID_TABS: NotificationTab[] = ["all", "mentions", "system", "archive"];
+
+function resolveTab(raw: string | string[] | undefined): NotificationTab {
+	const value = Array.isArray(raw) ? raw[0] : raw;
+	return (VALID_TABS as string[]).includes(value ?? "")
+		? (value as NotificationTab)
+		: "all";
+}
+
+export default async function NotificationsPage({
+	searchParams,
+}: {
+	searchParams: Promise<{ tab?: string }>;
+}) {
+	const params = await searchParams;
+	const tab = resolveTab(params.tab);
+
+	const result = await listNotifications({ tab, pageSize: 50 });
+
 	return (
-		<GlassParticlePage>
-			<div className='container mx-auto px-4 py-24'>
-				<div className='mx-auto max-w-4xl text-center'>
-					<div className='mb-16'>
-						<h1 className='mb-6 text-4xl font-bold text-gray-900 md:text-6xl dark:text-white'>
-							Notifications
-						</h1>
-						<p className='mb-8 text-lg text-gray-600 dark:text-gray-300'>
-							Stay informed with personalized notifications and manage your
-							alert preferences.
-						</p>
-					</div>
-				</div>
-			</div>
-		</GlassParticlePage>
+		<div className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
+			<InboxTabs tab={tab} result={result} unreadCount={result.unreadCount} />
+		</div>
 	);
 }

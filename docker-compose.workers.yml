@@ -1,0 +1,81 @@
+# Worker services for CT 505 (nogl-workers, 10.10.10.183)
+# Deploy: docker compose -f docker-compose.workers.yml up -d
+# Env:    /opt/nogl-workers/.env  (mounted read-only)
+#
+# Required env vars in .env:
+#   REDIS_URL, REDIS_DB_BULLMQ, DATABASE_URL, NODE_ENV
+#   APIFY_TOKEN, OPENAI_API_KEY (optional), META_ADS_LOCALE (optional)
+#
+# Two images, three containers:
+#   nogl-worker-ingest  → ads-events ingest (concurrency 4, own signal handling)
+#   nogl-worker-data    → apify-ingest + compute-proxies + score-aesthetic
+#   nogl-worker-browser → meta-ads + homepage-capture (Playwright)
+
+services:
+  worker-ingest:
+    image: 10.10.10.171:3000/nogladmin/nogl-worker-ingest:latest
+    container_name: nogl-worker-ingest
+    restart: always
+    env_file:
+      - /opt/nogl-workers/.env
+    environment:
+      NODE_ENV: production
+      REDIS_DB_BULLMQ: "5"
+    command: ["node_modules/.bin/tsx", "--tsconfig", "tsconfig.json", "src/lib/queues/workers/ingest.worker.ts"]
+    mem_limit: 512m
+    cpus: "0.5"
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "3"
+    networks:
+      - workers
+
+  worker-data:
+    image: 10.10.10.171:3000/nogladmin/nogl-worker-ingest:latest
+    container_name: nogl-worker-data
+    restart: always
+    env_file:
+      - /opt/nogl-workers/.env
+    environment:
+      NODE_ENV: production
+      REDIS_DB_BULLMQ: "5"
+    command: ["node_modules/.bin/tsx", "--tsconfig", "tsconfig.json", "scripts/start-workers-data.ts"]
+    mem_limit: 512m
+    cpus: "0.5"
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "3"
+    networks:
+      - workers
+
+  worker-browser:
+    image: 10.10.10.171:3000/nogladmin/nogl-worker-browser:latest
+    container_name: nogl-worker-browser
+    restart: always
+    env_file:
+      - /opt/nogl-workers/.env
+    environment:
+      NODE_ENV: production
+      PLAYWRIGHT_BROWSERS_PATH: /app/.playwright
+    mem_limit: 2g
+    cpus: "2.0"
+    # Chromium requires host IPC for shared memory (/dev/shm)
+    ipc: host
+    # Allow sandboxed Chromium — drop only if builds fail with SUID sandbox errors
+    security_opt:
+      - seccomp:unconfined
+    logging:
+      driver: json-file
+      options:
+        max-size: "100m"
+        max-file: "3"
+    networks:
+      - workers
+
+networks:
+  workers:
+    driver: bridge

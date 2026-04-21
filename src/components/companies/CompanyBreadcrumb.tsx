@@ -1,7 +1,7 @@
 "use client";
 
+import { ChevronRight } from '@untitledui/icons';
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 type CompanyBreadcrumbProps = {

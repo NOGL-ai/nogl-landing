@@ -10,7 +10,7 @@ import { ProductTableAdvancedFilters } from "./ProductTableAdvancedFilters";
 import { ProductTableBulkActions } from "./ProductTableBulkActions";
 import { DataTableGlobalSearch } from "../DataTable/DataTableGlobalSearch";
 import { DataTableColumnManagement } from "../DataTable/DataTableColumnManagement";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 import { Icon } from "../Icon";
 
 export interface Product {
@@ -104,7 +104,7 @@ export function ProductDataTable({
 					
 					<div className="flex w-full items-center gap-2 sm:w-auto">
 						<Button
-							variant="secondary"
+							color="secondary"
 							onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
 							className="relative flex-1 border-border text-secondary hover:bg-secondary_bg sm:flex-none dark:border-border dark:text-tertiary"
 							aria-label={`Advanced filters. ${showAdvancedFilters ? 'Open' : 'Closed'}`}
@@ -119,7 +119,7 @@ export function ProductDataTable({
 					{/* View Mode Toggle */}
 					<div className="flex items-center space-x-1">
 						<Button
-							variant={viewMode === "table" ? "primary" : "secondary"}
+							color={viewMode === "table" ? "primary" : "secondary"}
 							size="sm"
 							onClick={() => setViewMode("table")}
 							className={
@@ -132,7 +132,7 @@ export function ProductDataTable({
 							<Icon name="List" className="h-4 w-4" aria-hidden={true} />
 						</Button>
 						<Button
-							variant={viewMode === "grid" ? "primary" : "secondary"}
+							color={viewMode === "grid" ? "primary" : "secondary"}
 							size="sm"
 							onClick={() => setViewMode("grid")}
 							className={

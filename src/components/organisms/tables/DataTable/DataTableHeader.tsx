@@ -4,7 +4,7 @@ import React from "react";
 import { flexRender, Table } from "@tanstack/react-table";
 import { Table as UntitledTable } from "@/components/application/table/table";
 import { Icon } from "../Icon";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/base/buttons/button';
 import { DataTableDragDropWrapper } from "./DataTableDragDropWrapper";
 import { DataTableSortableHeaderCell } from "./DataTableSortableHeaderCell";
 
@@ -71,7 +71,7 @@ export function SortableHeader({
 
 	return (
 		<Button
-			variant="ghost"
+			color="tertiary"
 			onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
 			className={`h-8 px-2 lg:px-3 ${className || ""}`}
 			aria-label={`Sort by ${children} - ${sortLabel}`}

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import type { Route } from 'next';
 
 const Breadcrumbs = ({ title, pages }: { title: string; pages: string[] }) => {
 	return (
@@ -10,7 +11,7 @@ const Breadcrumbs = ({ title, pages }: { title: string; pages: string[] }) => {
 
 			<ul className='flex items-center justify-center gap-2'>
 				<li>
-					<Link className='dark:text-tertiary' href='/'>
+					<Link className='dark:text-tertiary' href={'/' as Route}>
 						{pages[0]}
 					</Link>
 				</li>

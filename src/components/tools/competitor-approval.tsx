@@ -1,3 +1,6 @@
+"use client";
+
+import { Check as CheckIcon, X as XIcon, AlertTriangle as AlertTriangleIcon, LinkExternal01 as ExternalLinkIcon } from '@untitledui/icons';
 /**
  * Competitor Approval UI Component
  * 
@@ -6,17 +9,15 @@
  * and editing capabilities.
  */
 
-"use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from '@/components/base/buttons/button';
+import { Input } from '@/components/base/input/input';
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { CheckIcon, XIcon, AlertTriangleIcon, ExternalLinkIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface CompetitorData {
@@ -240,7 +241,7 @@ export function CompetitorApprovalUI({ addResult, args }: CompetitorApprovalProp
                 {args.action === "CREATE_COMPETITOR" ? "New Competitor Data:" : "Updated Data:"}
               </h4>
               <Button
-                variant="outline"
+                color="secondary"
                 size="sm"
                 onClick={() => setIsEditing(!isEditing)}
               >
@@ -253,8 +254,8 @@ export function CompetitorApprovalUI({ addResult, args }: CompetitorApprovalProp
                 <label className="text-sm font-medium">Name *</label>
                 <Input
                   value={formData.name}
-                  onChange={(e) => updateField("name", e.target.value)}
-                  disabled={!isEditing}
+                  onChange={(value) => updateField("name", value)}
+                  isDisabled={!isEditing}
                   placeholder="Competitor name"
                 />
               </div>
@@ -263,8 +264,8 @@ export function CompetitorApprovalUI({ addResult, args }: CompetitorApprovalProp
                 <label className="text-sm font-medium">Domain *</label>
                 <Input
                   value={formData.domain}
-                  onChange={(e) => updateField("domain", e.target.value)}
-                  disabled={!isEditing}
+                  onChange={(value) => updateField("domain", value)}
+                  isDisabled={!isEditing}
                   placeholder="example.com"
                 />
               </div>
@@ -273,8 +274,8 @@ export function CompetitorApprovalUI({ addResult, args }: CompetitorApprovalProp
                 <label className="text-sm font-medium">Website</label>
                 <Input
                   value={formData.website || ""}
-                  onChange={(e) => updateField("website", e.target.value)}
-                  disabled={!isEditing}
+                  onChange={(value) => updateField("website", value)}
+                  isDisabled={!isEditing}
                   placeholder="https://example.com"
                 />
               </div>
@@ -283,12 +284,10 @@ export function CompetitorApprovalUI({ addResult, args }: CompetitorApprovalProp
                 <label className="text-sm font-medium">Market Position</label>
                 <Input
                   type="number"
-                  value={formData.marketPosition || ""}
-                  onChange={(e) => updateField("marketPosition", e.target.value ? Number(e.target.value) : undefined)}
-                  disabled={!isEditing}
+                  value={formData.marketPosition ? String(formData.marketPosition) : ""}
+                  onChange={(value) => updateField("marketPosition", value ? Number(value) : undefined)}
+                  isDisabled={!isEditing}
                   placeholder="1-10"
-                  min="1"
-                  max="10"
                 />
               </div>
 
@@ -296,12 +295,10 @@ export function CompetitorApprovalUI({ addResult, args }: CompetitorApprovalProp
                 <label className="text-sm font-medium">Market Share (%)</label>
                 <Input
                   type="number"
-                  value={formData.marketShare || ""}
-                  onChange={(e) => updateField("marketShare", e.target.value ? Number(e.target.value) : undefined)}
-                  disabled={!isEditing}
+                  value={formData.marketShare ? String(formData.marketShare) : ""}
+                  onChange={(value) => updateField("marketShare", value ? Number(value) : undefined)}
+                  isDisabled={!isEditing}
                   placeholder="0-100"
-                  min="0"
-                  max="100"
                 />
               </div>
 
@@ -309,8 +306,8 @@ export function CompetitorApprovalUI({ addResult, args }: CompetitorApprovalProp
                 <label className="text-sm font-medium">Data Source</label>
                 <Input
                   value={formData.dataSource || ""}
-                  onChange={(e) => updateField("dataSource", e.target.value)}
-                  disabled={!isEditing}
+                  onChange={(value) => updateField("dataSource", value)}
+                  isDisabled={!isEditing}
                   placeholder="Source of data"
                 />
               </div>
@@ -333,10 +330,10 @@ export function CompetitorApprovalUI({ addResult, args }: CompetitorApprovalProp
               <div className="flex gap-2">
                 <Input
                   value={newCategory}
-                  onChange={(e) => setNewCategory(e.target.value)}
-                  disabled={!isEditing}
+                  onChange={(value) => setNewCategory(value)}
+                  isDisabled={!isEditing}
                   placeholder="Add category"
-                  onKeyPress={(e) => e.key === "Enter" && addCategory()}
+                  onKeyDown={(e) => e.key === "Enter" && addCategory()}
                 />
                 <Button
                   size="sm"
@@ -350,7 +347,7 @@ export function CompetitorApprovalUI({ addResult, args }: CompetitorApprovalProp
                 {(formData.categories || []).map((category) => (
                   <Badge
                     key={category}
-                    variant="secondary"
+                    color="secondary"
                     className="flex items-center gap-1"
                   >
                     {category}
@@ -386,7 +383,7 @@ export function CompetitorApprovalUI({ addResult, args }: CompetitorApprovalProp
           </div>
           <div className="flex gap-2">
             <Button
-              variant="outline"
+              color="secondary"
               onClick={handleReject}
               className="text-red-600 hover:text-red-700"
             >

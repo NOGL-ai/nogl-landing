@@ -1,7 +1,7 @@
 "use client";
 
+import { ArrowUp as ArrowUpIcon, ArrowDown as ArrowDownIcon, DotsVertical as MoreVerticalIcon } from '@untitledui/icons';
 import React from "react";
-import { ArrowUpIcon, ArrowDownIcon, MoreVerticalIcon } from "lucide-react";
 
 interface MetricCardProps {
 	label: string;

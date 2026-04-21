@@ -40,6 +40,11 @@ export async function GET(request: NextRequest, context: RouteContext) {
       | "price_desc"
       | "discount_desc"
       | "last_seen_desc";
+    const productPage = parsePositiveInt(searchParams.get("product_page"), 1);
+    const productLimit = Math.min(
+      parsePositiveInt(searchParams.get("product_limit"), 20),
+      100
+    );
 
     const response = await getCompanyPricingResponse({
       slug,
@@ -49,6 +54,8 @@ export async function GET(request: NextRequest, context: RouteContext) {
       productType,
       minPrice,
       maxPrice,
+      productPage,
+      productLimit,
     });
 
     if (!response) {

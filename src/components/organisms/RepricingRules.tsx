@@ -1,9 +1,13 @@
 "use client";
 
+// eslint-disable-next-line no-restricted-imports -- icon has no @untitledui/icons equivalent; keep in lucide-react until UUI ships it
+import { GripVertical } from 'lucide-react';
+import { Plus } from '@untitledui/icons';
+
 import React, { useState, useTransition, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { Plus, GripVertical } from "lucide-react";
+
 import {
   DndContext,
   closestCenter,
@@ -25,6 +29,7 @@ import RepricingRulesCard from "../molecules/RepricingRulesCard";
 import { activateRule, pauseRule, reorderRules } from "@/actions/repricing/rules";
 import { simulateRule } from "@/actions/repricing/execution";
 import type { RepricingRuleDTO } from "@/lib/repricing/types";
+import type { Route } from 'next';
 
 interface Props {
   initialRules: RepricingRuleDTO[];
@@ -121,7 +126,7 @@ export default function RepricingRules({ initialRules }: Props) {
   // ─── Navigate to wizard ─────────────────────────────────────────────────
 
   const handleManage = useCallback((id: string) => {
-    router.push(`/repricing/manage?id=${id}`);
+    router.push(`/repricing/manage?id=${id}` as Route);
   }, [router]);
 
   // ─── Run preview ────────────────────────────────────────────────────────
@@ -132,7 +137,7 @@ export default function RepricingRules({ initialRules }: Props) {
         toast.loading("Running preview…", { id: `preview-${id}` });
         const job = await simulateRule(id);
         toast.success("Preview ready!", { id: `preview-${id}` });
-        router.push(`/repricing/auto-overview?jobId=${job.id}`);
+        router.push(`/repricing/auto-overview?jobId=${job.id}` as Route);
       } catch (err) {
         toast.error(err instanceof Error ? err.message : "Preview failed", {
           id: `preview-${id}`,
@@ -182,7 +187,7 @@ export default function RepricingRules({ initialRules }: Props) {
           <Button
             color="primary"
             size="sm"
-            onClick={() => router.push("/repricing/manage")}
+            onClick={() => router.push("/repricing/manage" as Route)}
             className="flex items-center gap-1.5 bg-brand-solid hover:bg-brand-solid_hover"
           >
             <Plus className="h-4 w-4" />
@@ -200,7 +205,7 @@ export default function RepricingRules({ initialRules }: Props) {
             <Button
               color="primary"
               size="sm"
-              onClick={() => router.push("/repricing/manage")}
+              onClick={() => router.push("/repricing/manage" as Route)}
               className="mt-4 bg-brand-solid hover:bg-brand-solid_hover"
             >
               <Plus className="mr-1.5 h-4 w-4" />

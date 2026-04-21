@@ -29,23 +29,32 @@ const globalForPrisma = global as typeof global & {
 
 const createUnavailableClient = (message: string): PrismaClient => {
   if (!globalForPrisma.__prismaUnavailableClient) {
-    const handler: ProxyHandler<object> = {
-      get: (_target, property) => {
-        if (property === Symbol.toStringTag) {
-          return 'PrismaClientUnavailable';
-        }
-
-        if (property === 'then') {
-          return undefined;
-        }
-
-        return (..._args: unknown[]) => {
-          throw new Error(`${message}. Attempted to access prisma.${String(property)} without a configured database.`);
-        };
-      },
+    // Build a recursive proxy so chained calls like prisma.notification.count()
+    // also throw a clear error instead of "not a function".
+    const makeProxy = (path: string): object => {
+      const handler: ProxyHandler<object> = {
+        get: (_target, property) => {
+          if (property === Symbol.toStringTag) {
+            return 'PrismaClientUnavailable';
+          }
+          if (property === 'then') {
+            // Prevent accidental "thenable" detection
+            return undefined;
+          }
+          return makeProxy(path ? `${path}.${String(property)}` : String(property));
+        },
+        // Trap direct calls: prisma.someMethod() or prisma.model.count()
+        apply: (_target, _thisArg, _args) => {
+          throw new Error(
+            `${message}. Attempted to call prisma.${path}() without a configured database.`,
+          );
+        },
+      };
+      // Use a function as target so the proxy itself is callable
+      return new Proxy(function () {} as unknown as object, handler);
     };
 
-    globalForPrisma.__prismaUnavailableClient = new Proxy({}, handler) as PrismaClient;
+    globalForPrisma.__prismaUnavailableClient = makeProxy('') as unknown as PrismaClient;
   }
 
   return globalForPrisma.__prismaUnavailableClient;
@@ -63,5 +72,5 @@ if (databaseUrl && process.env.NODE_ENV !== 'production') {
   globalForPrisma.prisma = prismaClient;
 }
 
-export const prisma: any = prismaClient;
+export const prisma: PrismaClient = prismaClient as PrismaClient;
 export const isPrismaAvailable = Boolean(databaseUrl);

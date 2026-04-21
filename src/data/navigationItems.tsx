@@ -1,12 +1,6 @@
-import { 
-    BarChartSquare02, 
-    Package, 
-    RefreshCw01, 
-    FileX01, 
-    LayersThree01,
-    Tag01
-} from "@untitledui/icons";
-import { Building2 } from "lucide-react";
+import { BarChartSquare02, Package, RefreshCw01, FileX01, LayersThree01, Tag01, HelpCircle, Building02 as Building2 } from '@untitledui/icons';
+
+
 import type { NavItemType } from "@/components/application/app-navigation/config";
 import { SidebarNavigationSectionsSubheadings } from "@/components/application/app-navigation/sidebar-navigation/sidebar-sections-subheadings";
 
@@ -53,6 +47,16 @@ const navItemsWithSectionsSubheadings: Array<{ label: string; items: NavItemType
                 label: "Price Rules",
                 href: "/repricing",
                 icon: RefreshCw01,
+            },
+        ],
+    },
+    {
+        label: "Support",
+        items: [
+            {
+                label: "Help & Docs",
+                href: "/fractional-cfo/docs",
+                icon: HelpCircle,
             },
         ],
     },
