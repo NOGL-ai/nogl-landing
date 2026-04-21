@@ -20,6 +20,7 @@ jobs:
           command_timeout: 30m
           script: |
             set -e
+            export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
             REGISTRY=10.10.10.171:3000
             ORG=nogladmin
