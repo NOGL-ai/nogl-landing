@@ -53,9 +53,9 @@ import {
 // ⚡ PERFORMANCE OPTIMIZED IMPORTS
 // ============================================
 
-// For production builds, consider specific imports for better tree-shaking
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+// For production builds, prefer migrated base primitives for better long-term consistency
+import { Button as BaseButton } from "@/components/base/buttons/button";
+import { Input as BaseInput } from "@/components/base/input/input";
 import { Modal } from "@/components/ui/modal";
 
 // Dynamic imports for large components that aren't always needed
