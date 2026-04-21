@@ -126,7 +126,6 @@
     "@types/negotiator": "^0.6.4",
     "@untitledui/file-icons": "^0.0.9",
     "@untitledui/icons": "^0.0.19",
-    "@vercel/speed-insights": "^1.2.0",
     "@vis.gl/react-google-maps": "^1.5.5",
     "ai": "^5.0.68",
     "algoliasearch": "^5.39.0",
