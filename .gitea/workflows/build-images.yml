@@ -17,7 +17,7 @@ jobs:
           username: root
           key: ${{ secrets.NOGL_PVE03_SSH_KEY }}
           envs: NOGL_REGISTRY_TOKEN
-          command_timeout: 30m
+          command_timeout: 90m
           script: |
             set -e
             export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin

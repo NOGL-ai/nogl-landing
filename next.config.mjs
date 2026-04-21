@@ -12,6 +12,13 @@ const nextConfig = {
 	distDir: process.env.NEXT_DIST_DIR || '.next',
 	poweredByHeader: false,
 	serverExternalPackages: ["@mastra/*"],
+	async redirects() {
+		return [
+			{ source: '/:lang/sign-in', destination: '/:lang/auth/signin', permanent: true },
+			{ source: '/:lang/sign-up', destination: '/:lang/auth/signup', permanent: true },
+			{ source: '/:lang/login',   destination: '/:lang/auth/signin', permanent: true },
+		];
+	},
 	async headers() {
 		return [
 			{
