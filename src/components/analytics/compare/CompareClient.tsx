@@ -46,6 +46,7 @@ interface TrackedProduct {
   company_name: string;
   company_initials: string;
   company_slug: string;
+  company_logo_url: string | null;
   product_title: string;
   image_url: string | null;
   price: number;
@@ -101,6 +102,22 @@ function toInitials(name: string): string {
 
 function normalizeRangeLabel(range: string): string {
   return range.replace(/€/g, "").replace(/[–—]/g, "-").trim();
+}
+
+const COMPANY_DOMAIN_BY_SLUG: Record<string, string> = {
+  calumet: "calumet.de",
+  teltec: "teltec.de",
+  "foto-erhardt": "foto-erhardt.de",
+  "foto-leistenschneider": "foto-leistenschneider.de",
+  fotokoch: "fotokoch.de",
+  "kamera-express": "kamera-express.de",
+};
+
+function getCompanyLogoUrl(slug: string): string | null {
+  const domain = COMPANY_DOMAIN_BY_SLUG[slug];
+  if (!domain) return null;
+  // Google favicon service gives a lightweight stable logo-like mark per company domain.
+  return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=64`;
 }
 
 const ROWS_PER_PAGE_OPTIONS = [10, 25, 50, 100];
@@ -255,6 +272,7 @@ export function CompareClient() {
         company_name: product.company_name,
         company_initials: toInitials(product.company_name),
         company_slug: product.company_slug,
+        company_logo_url: getCompanyLogoUrl(product.company_slug),
         product_title: product.product_title,
         image_url: product.image_url,
         price: product.price,
@@ -339,8 +357,22 @@ export function CompareClient() {
       meta: { align: "left" },
       cell: (info) => (
         <div className="flex items-center gap-2">
-          <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[9px] font-bold text-primary">
-            {info.row.original.company_initials}
+          <div className="relative h-6 w-6 shrink-0">
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-[9px] font-bold text-primary">
+              {info.row.original.company_initials}
+            </div>
+            {info.row.original.company_logo_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={info.row.original.company_logo_url}
+                alt={`${info.row.original.company_name} logo`}
+                className="absolute inset-0 h-6 w-6 rounded-full border border-border bg-background object-contain p-0.5"
+                onError={(e) => {
+                  // Hide broken favicon and reveal initials badge underneath.
+                  e.currentTarget.style.display = "none";
+                }}
+              />
+            ) : null}
           </div>
           <span className="text-sm text-foreground">{info.row.original.company_name}</span>
         </div>
