@@ -12,8 +12,8 @@ interface DonutBadgeProps {
 
 export function DonutBadge({ pct }: DonutBadgeProps) {
   const clamped = Math.min(Math.max(Math.round(pct), 0), 100);
-  const filled = `#3b82f6`;
-  const track = `hsl(var(--bg-tertiary))`;
+  const filled = `var(--color-brand-600)`;
+  const track = `var(--color-bg-tertiary)`;
 
   return (
     <div className="inline-flex items-center justify-center">

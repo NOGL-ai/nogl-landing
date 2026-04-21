@@ -70,7 +70,7 @@ function FlagEmoji({ code }: { code?: string | null }) {
 }
 
 const secondaryBtn =
-  "inline-flex items-center justify-center gap-1 rounded-lg border border-border-secondary bg-background px-3.5 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring/40 disabled:cursor-not-allowed disabled:opacity-60";
+  "inline-flex items-center justify-center gap-1 rounded-lg border border-border-secondary bg-bg-primary px-3.5 py-2.5 text-sm font-semibold text-text-primary shadow-sm transition-colors hover:bg-bg-secondary focus:outline-none focus:ring-2 focus:ring-ring/40 disabled:cursor-not-allowed disabled:opacity-60";
 
 interface RowProps {
   competitor: CompetitorDTO;
@@ -97,7 +97,7 @@ function SortableRow({ competitor, onMutated, onRowClick }: RowProps) {
     <tr
       ref={setNodeRef}
       style={style}
-      className="group border-b border-border-secondary transition-colors hover:bg-muted/30 cursor-pointer"
+      className="group border-b border-border-secondary transition-colors hover:bg-bg-secondary cursor-pointer"
       onClick={() => onRowClick(competitor.id)}
     >
       {/* Drag handle */}
@@ -107,7 +107,7 @@ function SortableRow({ competitor, onMutated, onRowClick }: RowProps) {
           {...attributes}
           {...listeners}
           onClick={(e) => e.stopPropagation()}
-          className="cursor-grab touch-none text-muted-foreground opacity-0 group-hover:opacity-100 active:cursor-grabbing"
+          className="cursor-grab touch-none text-text-tertiary opacity-0 group-hover:opacity-100 active:cursor-grabbing"
           aria-label="Reorder"
         >
           <GripVertical className="h-4 w-4" />
@@ -117,7 +117,7 @@ function SortableRow({ competitor, onMutated, onRowClick }: RowProps) {
       {/* Logo + name */}
       <td className="px-4 py-3">
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 shrink-0 rounded-full border border-border bg-muted p-1">
+          <div className="h-10 w-10 shrink-0 rounded-full border border-border-primary bg-bg-tertiary p-1">
             {avatar ? (
               <img
                 src={avatar}
@@ -126,7 +126,7 @@ function SortableRow({ competitor, onMutated, onRowClick }: RowProps) {
                 onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
               />
             ) : (
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-border text-xs font-semibold text-muted-foreground">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-bg-tertiary text-xs font-semibold text-text-tertiary">
                 {competitor.name.charAt(0).toUpperCase()}
               </div>
             )}
@@ -134,20 +134,20 @@ function SortableRow({ competitor, onMutated, onRowClick }: RowProps) {
           <div className="min-w-0">
             <div className="flex items-center gap-1.5">
               <FlagEmoji code={competitor.country_code} />
-              <span className="truncate text-sm font-semibold text-foreground">
+              <span className="truncate text-sm font-semibold text-text-primary">
                 {competitor.nickname ?? competitor.name}
               </span>
             </div>
             {competitor.nickname && (
-              <span className="block text-xs text-muted-foreground truncate">{competitor.name}</span>
+              <span className="block text-xs text-text-tertiary truncate">{competitor.name}</span>
             )}
-            <span className="block text-xs text-muted-foreground truncate">{competitor.domain}</span>
+            <span className="block text-xs text-text-tertiary truncate">{competitor.domain}</span>
           </div>
         </div>
       </td>
 
       {/* Products */}
-      <td className="px-4 py-3 text-sm text-foreground">
+      <td className="px-4 py-3 text-sm text-text-primary">
         {competitor.productCount.toLocaleString()}
       </td>
 
@@ -161,7 +161,7 @@ function SortableRow({ competitor, onMutated, onRowClick }: RowProps) {
       </td>
 
       {/* Tracked since */}
-      <td className="px-4 py-3 text-sm text-muted-foreground">
+      <td className="px-4 py-3 text-sm text-text-tertiary">
         {competitor.addedAt ? formatDate(competitor.addedAt) : "—"}
       </td>
 
@@ -266,13 +266,13 @@ export default function CompetitorPage() {
   const sortableIds = competitors.map((c) => c.trackedId ?? c.id);
 
   return (
-    <main className="mx-auto min-h-screen w-full space-y-6 bg-background px-4 pb-8 pt-6 text-foreground transition-colors md:space-y-8 md:px-8 md:pb-12 md:pt-8">
+    <main className="mx-auto min-h-screen w-full space-y-6 bg-bg-primary px-4 pb-8 pt-6 text-text-primary transition-colors md:space-y-8 md:px-8 md:pb-12 md:pt-8">
       <header className="flex flex-wrap items-start justify-between gap-3 md:gap-4">
         <div className="min-w-[200px] flex-1">
-          <h1 className="text-xl font-semibold text-foreground md:text-2xl">
+          <h1 className="text-xl font-semibold text-text-primary md:text-2xl">
             Competitor Analysis
           </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="mt-1 text-sm text-text-tertiary">
             Focus only on the competitors you actively track, compare, and review.
           </p>
         </div>
@@ -288,26 +288,26 @@ export default function CompetitorPage() {
           <button
             type="button"
             onClick={() => { setDialogOpen(true); setDialogKey((k) => k + 1); }}
-            className="inline-flex items-center gap-1 rounded-lg border-2 border-purple-700 bg-primary px-3.5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
+            className="inline-flex items-center gap-1 rounded-lg border-2 border-purple-700 bg-bg-brand-solid px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-700"
           >
-            <Plus className="h-5 w-5 text-primary-foreground/80" />
+            <Plus className="h-5 w-5 text-white/80" />
             <span>Add Competitor</span>
           </button>
         </div>
       </header>
 
-      <section className="rounded-xl border border-border-secondary bg-card shadow-sm transition-colors">
+      <section className="rounded-xl border border-border-secondary bg-bg-primary shadow-sm transition-colors">
         {/* Section header */}
         <div className="border-b border-border-secondary p-4 md:p-6">
           <div className="flex flex-wrap items-center gap-2">
-            <h2 className="text-base font-semibold text-foreground md:text-lg">
+            <h2 className="text-base font-semibold text-text-primary md:text-lg">
               Tracked competitors
             </h2>
-            <span className="inline-flex items-center rounded-full border border-border-secondary bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+            <span className="inline-flex items-center rounded-full border border-border-secondary bg-bg-tertiary px-2 py-0.5 text-xs font-medium text-text-tertiary">
               {total} {total === 1 ? "competitor" : "competitors"}
             </span>
           </div>
-          <p className="mt-1 text-xs text-muted-foreground md:text-sm">
+          <p className="mt-1 text-xs text-text-tertiary md:text-sm">
             Keep this page focused on matched competitors only.
           </p>
         </div>
@@ -325,8 +325,8 @@ export default function CompetitorPage() {
                 onClick={() => setActiveTab(tab)}
                 className={`px-4 py-2 text-sm font-semibold capitalize transition-colors focus:outline-none focus:ring-2 focus:ring-ring/40 ${
                   activeTab === tab
-                    ? "bg-muted text-foreground"
-                    : "bg-background text-muted-foreground hover:bg-muted"
+                    ? "bg-bg-tertiary text-text-primary"
+                    : "bg-bg-primary text-text-tertiary hover:bg-bg-secondary"
                 } ${tab !== "paused" ? "border-r border-border-secondary" : ""}`}
               >
                 {tab === "all" ? "All Competitors" : tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -341,7 +341,7 @@ export default function CompetitorPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by name or domain"
-              className="w-full rounded-lg border border-border-secondary bg-background py-2 pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-ring/40"
+              className="w-full rounded-lg border border-border-secondary bg-bg-primary py-2 pl-10 pr-4 text-sm text-text-primary placeholder:text-text-tertiary focus:border-transparent focus:outline-none focus:ring-2 focus:ring-ring/40"
             />
           </div>
         </div>
@@ -350,19 +350,19 @@ export default function CompetitorPage() {
         {isLoading ? (
           <div className="flex h-64 items-center justify-center">
             <div className="text-center">
-              <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-b-2 border-primary" />
-              <p className="text-muted-foreground">Loading competitors…</p>
+              <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-b-2 border-brand-600" />
+              <p className="text-text-tertiary">Loading competitors…</p>
             </div>
           </div>
         ) : error ? (
           <div className="flex h-64 items-center justify-center px-6">
             <div className="text-center">
               <h3 className="mb-2 text-lg font-semibold">Failed to load competitors</h3>
-              <p className="mb-4 text-muted-foreground">{error}</p>
+              <p className="mb-4 text-text-tertiary">{error}</p>
               <button
                 type="button"
                 onClick={loadCompetitors}
-                className="rounded-lg bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90"
+                className="rounded-lg bg-bg-brand-solid px-4 py-2 text-white hover:bg-brand-700"
               >
                 Try Again
               </button>
@@ -371,15 +371,15 @@ export default function CompetitorPage() {
         ) : competitors.length === 0 ? (
           <div className="flex h-64 flex-col items-center justify-center gap-4 px-6">
             <div className="text-center">
-              <h3 className="text-lg font-semibold text-foreground">No competitors tracked yet</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <h3 className="text-lg font-semibold text-text-primary">No competitors tracked yet</h3>
+              <p className="mt-1 text-sm text-text-tertiary">
                 Add competitors to start monitoring their pricing and products.
               </p>
             </div>
             <button
               type="button"
               onClick={() => { setDialogOpen(true); setDialogKey((k) => k + 1); }}
-              className="inline-flex items-center gap-1 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
+              className="inline-flex items-center gap-1 rounded-lg bg-bg-brand-solid px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-700"
             >
               <Plus className="h-4 w-4" />
               Add your first competitor
@@ -396,21 +396,21 @@ export default function CompetitorPage() {
                 <SortableContext items={sortableIds} strategy={verticalListSortingStrategy}>
                   <table className="w-full min-w-[640px]">
                     <thead>
-                      <tr className="border-b border-border-secondary bg-muted/30">
+                      <tr className="border-b border-border-secondary bg-bg-secondary">
                         <th className="w-8 px-3 py-3" />
-                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-text-tertiary">
                           Competitor
                         </th>
-                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-text-tertiary">
                           Products
                         </th>
-                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-text-tertiary">
                           Status
                         </th>
-                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-text-tertiary">
                           Tracked since
                         </th>
-                        <th className="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                        <th className="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-text-tertiary">
                           Actions
                         </th>
                       </tr>
@@ -433,20 +433,20 @@ export default function CompetitorPage() {
             {/* Pagination */}
             <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border-secondary px-4 py-3 md:px-6">
               <div className="flex items-center gap-3">
-                <label htmlFor="page-size" className="text-sm text-muted-foreground">
+                <label htmlFor="page-size" className="text-sm text-text-tertiary">
                   Rows per page:
                 </label>
                 <select
                   id="page-size"
                   value={itemsPerPage}
                   onChange={(e) => setItemsPerPage(Number(e.target.value))}
-                  className="rounded-md border border-border-secondary bg-background px-2 py-1 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring/40"
+                  className="rounded-md border border-border-secondary bg-bg-primary px-2 py-1 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-ring/40"
                 >
                   <option value={10}>10</option>
                   <option value={25}>25</option>
                   <option value={50}>50</option>
                 </select>
-                <span className="text-sm font-medium text-muted-foreground">
+                <span className="text-sm font-medium text-text-tertiary">
                   {total > 0
                     ? `${(currentPage - 1) * itemsPerPage + 1}–${Math.min(currentPage * itemsPerPage, total)} of ${total}`
                     : "No results"}
@@ -461,7 +461,7 @@ export default function CompetitorPage() {
                 >
                   Previous
                 </button>
-                <span className="text-sm text-muted-foreground">
+                <span className="text-sm text-text-tertiary">
                   Page {currentPage} of {Math.max(totalPages, 1)}
                 </span>
                 <button

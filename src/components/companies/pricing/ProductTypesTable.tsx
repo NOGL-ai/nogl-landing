@@ -13,7 +13,6 @@ import {
 
 import { useState } from "react";
 
-import { Card } from "@/components/ui/card";
 import type { CompanyPricingProductTypeRow } from "@/types/company";
 import { DonutBadge } from "./DonutBadge";
 import { PriceRangeBar } from "./PriceRangeBar";
@@ -131,7 +130,7 @@ export function ProductTypesTable({
   });
 
   return (
-    <Card className="overflow-hidden p-0 shadow-xs">
+    <div className="overflow-hidden rounded-xl border border-border-primary bg-bg-primary shadow-xs">
       <div className="flex items-center justify-between border-b border-border-primary px-5 py-3">
         <h3 className="text-sm font-semibold text-text-primary">Product Types</h3>
         <span className="text-xs text-text-tertiary">
@@ -210,6 +209,6 @@ export function ProductTypesTable({
           </table>
         </div>
       )}
-    </Card>
+    </div>
   );
 }

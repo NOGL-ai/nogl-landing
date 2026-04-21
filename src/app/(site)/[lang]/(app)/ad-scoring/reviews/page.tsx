@@ -76,23 +76,23 @@ export default async function ReviewsPage({
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-foreground">Review Queue</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <h1 className="text-2xl font-semibold text-text-primary">Review Queue</h1>
+        <p className="mt-1 text-sm text-text-tertiary">
           Items requiring human judgement: Tier-C metrics (always) and Tier-B
           metrics where model confidence fell below 70%.
         </p>
       </div>
 
       {/* State tabs */}
-      <div className="flex gap-1 border-b border-border">
+      <div className="flex gap-1 border-b border-border-primary">
         {tabs.map((t) => (
           <a
             key={t}
             href={`?state=${t}`}
             className={`px-4 py-2 text-sm font-medium transition-colors capitalize ${
               t === state
-                ? "border-b-2 border-primary text-primary"
-                : "text-muted-foreground hover:text-foreground"
+                ? "border-b-2 border-border-brand text-text-brand"
+                : "text-text-tertiary hover:text-text-primary"
             }`}
           >
             {t}
@@ -101,16 +101,16 @@ export default async function ReviewsPage({
       </div>
 
       {reviews.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-border bg-muted/30 p-12 text-center">
-          <CheckCircle2 className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
-          <p className="text-sm text-muted-foreground">
+        <div className="rounded-xl border border-dashed border-border-primary bg-bg-secondary p-12 text-center">
+          <CheckCircle2 className="h-10 w-10 text-text-tertiary mx-auto mb-3" />
+          <p className="text-sm text-text-tertiary">
             No {state} items in the queue.
           </p>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-sm">
-          <table className="min-w-full divide-y divide-border text-sm">
-            <thead className="bg-muted/40">
+        <div className="overflow-x-auto rounded-xl border border-border-primary bg-bg-primary shadow-sm">
+          <table className="min-w-full divide-y divide-border-primary text-sm">
+            <thead className="bg-bg-secondary">
               <tr>
                 {[
                   "Metric",
@@ -123,22 +123,22 @@ export default async function ReviewsPage({
                 ].map((h) => (
                   <th
                     key={h}
-                    className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider"
+                    className="px-4 py-3 text-left text-xs font-medium text-text-tertiary uppercase tracking-wider"
                   >
                     {h}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-border">
+            <tbody className="divide-y divide-border-primary">
               {reviews.map((r) => {
                 const cfg = stateConfig[r.state];
                 return (
                   <tr
                     key={r.id}
-                    className="hover:bg-muted/20 transition-colors"
+                    className="hover:bg-bg-secondary transition-colors"
                   >
-                    <td className="px-4 py-3 font-mono text-xs text-foreground">
+                    <td className="px-4 py-3 font-mono text-xs text-text-primary">
                       {r.metric_key}
                     </td>
                     <td className="px-4 py-3">
@@ -151,7 +151,7 @@ export default async function ReviewsPage({
                         );
                       })()}
                     </td>
-                    <td className="px-4 py-3 text-xs text-muted-foreground">
+                    <td className="px-4 py-3 text-xs text-text-tertiary">
                       {(() => {
                         const key = r.reason ?? r.trigger_reason ?? "";
                         // Normalise "tier_b_low_confidence:0.51" → "tier_b_low_confidence"
@@ -159,7 +159,7 @@ export default async function ReviewsPage({
                         return triggerLabels[baseKey] ?? baseKey;
                       })()}
                     </td>
-                    <td className="px-4 py-3 text-xs text-muted-foreground tabular-nums">
+                    <td className="px-4 py-3 text-xs text-text-tertiary tabular-nums">
                       {(() => {
                         const conf = r.evidence_json?.confidence;
                         return conf != null ? `${Math.round(conf * 100)}%` : "—";
@@ -173,21 +173,21 @@ export default async function ReviewsPage({
                         {r.state}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-xs text-muted-foreground">
+                    <td className="px-4 py-3 text-xs text-text-tertiary">
                       {new Date(r.created_at).toLocaleDateString()}
                     </td>
                     <td className="px-4 py-3">
                       {r.state === "open" || r.state === "assigned" ? (
                         <a
                           href={`/ad-scoring/reviews/${r.id}`}
-                          className="text-xs font-medium text-primary hover:underline"
+                          className="text-xs font-medium text-text-brand hover:underline"
                         >
                           Review →
                         </a>
                       ) : (
                         <a
                           href={`/ad-scoring/reviews/${r.id}`}
-                          className="text-xs text-muted-foreground hover:underline"
+                          className="text-xs text-text-tertiary hover:underline"
                         >
                           View
                         </a>

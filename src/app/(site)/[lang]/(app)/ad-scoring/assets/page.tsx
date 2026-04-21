@@ -59,13 +59,13 @@ export default async function AssetsPage({
       {/* Page header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-foreground">
+          <h1 className="text-2xl font-semibold text-text-primary">
             Ad Creative Assets
           </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="mt-1 text-sm text-text-tertiary">
             Upload images and videos for the 27-criterion scoring pipeline.
             GPU-dependent metrics (YOLO / SAM2 / OCR) will return{" "}
-            <code className="bg-muted px-1 rounded text-xs">
+            <code className="bg-bg-tertiary px-1 rounded text-xs">
               null_with_reason
             </code>{" "}
             when the GPU worker is offline.
@@ -74,10 +74,10 @@ export default async function AssetsPage({
       </div>
 
       {/* Upload card */}
-      <section className="rounded-xl border border-border bg-card p-6 shadow-sm">
+      <section className="rounded-xl border border-border-primary bg-bg-primary p-6 shadow-sm">
         <div className="flex items-center gap-2 mb-4">
-          <UploadCloud className="h-5 w-5 text-primary" />
-          <h2 className="text-base font-medium text-foreground">
+          <UploadCloud className="h-5 w-5 text-text-brand" />
+          <h2 className="text-base font-medium text-text-primary">
             Upload New Creative
           </h2>
         </div>
@@ -86,27 +86,27 @@ export default async function AssetsPage({
 
       {/* Asset list */}
       <section>
-        <h2 className="text-base font-medium text-foreground mb-3">
+        <h2 className="text-base font-medium text-text-primary mb-3">
           Recent Assets
         </h2>
 
         {assets.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-border bg-muted/30 p-12 text-center">
-            <UploadCloud className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
-            <p className="text-sm text-muted-foreground">
+          <div className="rounded-xl border border-dashed border-border-primary bg-bg-secondary p-12 text-center">
+            <UploadCloud className="h-10 w-10 text-text-tertiary mx-auto mb-3" />
+            <p className="text-sm text-text-tertiary">
               No assets yet. Upload your first creative above.
             </p>
           </div>
         ) : (
-          <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
-            <table className="min-w-full divide-y divide-border text-sm">
-              <thead className="bg-muted/40">
+          <div className="overflow-hidden rounded-xl border border-border-primary bg-bg-primary shadow-sm">
+            <table className="min-w-full divide-y divide-border-primary text-sm">
+              <thead className="bg-bg-secondary">
                 <tr>
                   {["Asset", "Platform", "Type", "Status", "Uploaded", "Actions"].map(
                     (h) => (
                       <th
                         key={h}
-                        className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider"
+                        className="px-4 py-3 text-left text-xs font-medium text-text-tertiary uppercase tracking-wider"
                       >
                         {h}
                       </th>
@@ -114,25 +114,25 @@ export default async function AssetsPage({
                   )}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border">
+              <tbody className="divide-y divide-border-primary">
                 {assets.map((asset) => (
-                  <tr key={asset.id} className="hover:bg-muted/20 transition-colors">
+                  <tr key={asset.id} className="hover:bg-bg-secondary transition-colors">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
                         {asset.asset_type === "video" ? (
-                          <Video className="h-4 w-4 text-muted-foreground shrink-0" />
+                          <Video className="h-4 w-4 text-text-tertiary shrink-0" />
                         ) : (
-                          <ImageIcon className="h-4 w-4 text-muted-foreground shrink-0" />
+                          <ImageIcon className="h-4 w-4 text-text-tertiary shrink-0" />
                         )}
-                        <span className="truncate max-w-[200px] font-mono text-xs text-foreground">
+                        <span className="truncate max-w-[200px] font-mono text-xs text-text-primary">
                           {asset.filename || asset.id.slice(0, 8) + "…"}
                         </span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-muted-foreground">
+                    <td className="px-4 py-3 text-text-tertiary">
                       {asset.platform.replace(/_/g, " ")}
                     </td>
-                    <td className="px-4 py-3 text-muted-foreground capitalize">
+                    <td className="px-4 py-3 text-text-tertiary capitalize">
                       {asset.asset_type}
                     </td>
                     <td className="px-4 py-3">
@@ -143,14 +143,14 @@ export default async function AssetsPage({
                         {asset.status}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-muted-foreground text-xs">
+                    <td className="px-4 py-3 text-text-tertiary text-xs">
                       {new Date(asset.created_at).toLocaleDateString()}
                     </td>
                     <td className="px-4 py-3">
                       {asset.status === "ready" && (
                         <a
                           href={`/ad-scoring/analysis/${asset.id}`}
-                          className="text-xs font-medium text-primary hover:underline"
+                          className="text-xs font-medium text-text-brand hover:underline"
                         >
                           View report →
                         </a>

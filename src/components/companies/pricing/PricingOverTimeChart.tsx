@@ -16,7 +16,6 @@ import {
 import { format, parseISO } from "date-fns";
 
 
-import { Card } from "@/components/ui/card";
 import type { PricingTimeseriesData } from "@/types/pricing";
 import { CHART_BLUE, formatMetricValue } from "./utils";
 
@@ -103,12 +102,12 @@ export function PricingOverTimeChart({
 
   if (error) {
     return (
-      <Card className="flex items-center justify-center border-destructive/30 bg-destructive/5 p-8">
+      <div className="flex items-center justify-center rounded-xl border border-border-error bg-bg-error p-8">
         <div className="text-center">
-          <p className="text-sm font-medium text-destructive">Failed to load pricing trends</p>
-          <p className="text-xs text-muted-foreground">{error}</p>
+          <p className="text-sm font-medium text-text-error">Failed to load pricing trends</p>
+          <p className="text-xs text-text-tertiary">{error}</p>
         </div>
-      </Card>
+      </div>
     );
   }
 
@@ -116,17 +115,17 @@ export function PricingOverTimeChart({
   const dateTo   = rawPoints[rawPoints.length - 1]?.date;
 
   return (
-    <Card className="flex flex-col overflow-hidden">
+    <div className="flex flex-col overflow-hidden rounded-xl border border-border-primary bg-bg-primary shadow-xs">
       {/* Header */}
-      <div className="border-b border-border px-6 py-4">
+      <div className="border-b border-border-primary px-6 py-4">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-lg font-semibold text-foreground">Pricing Over Time</h2>
+          <h2 className="text-lg font-semibold text-text-primary">Pricing Over Time</h2>
           <div className="flex gap-2">
             <button
               onClick={handleExportCsv}
               disabled={!rawPoints.length}
               title="Export as CSV"
-              className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-50"
+              className="inline-flex items-center gap-2 rounded-md border border-border-primary px-3 py-2 text-sm font-medium text-text-tertiary transition-colors hover:bg-bg-secondary hover:text-text-primary disabled:opacity-50"
             >
               <Download className="h-4 w-4" />
               <span className="hidden sm:inline">CSV</span>
@@ -136,30 +135,30 @@ export function PricingOverTimeChart({
 
         {/* Metric tabs + time range */}
         <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="inline-flex rounded-lg border border-border bg-muted/30 p-1">
+          <div className="inline-flex rounded-lg border border-border-primary bg-bg-secondary p-1">
             {(Object.keys(METRIC_KEYS) as PricingMetric[]).map((m) => (
               <button
                 key={m}
                 onClick={() => setMetric(m)}
                 className={`rounded px-3 py-2 text-sm font-medium transition-colors ${
                   metric === m
-                    ? "bg-background text-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? "bg-bg-primary text-text-primary shadow-sm"
+                    : "text-text-tertiary hover:text-text-primary"
                 }`}
               >
                 {METRIC_KEYS[m].label}
               </button>
             ))}
           </div>
-          <div className="inline-flex rounded-lg border border-border bg-muted/30 p-1">
+          <div className="inline-flex rounded-lg border border-border-primary bg-bg-secondary p-1">
             {TIME_RANGE_OPTIONS.map(({ value, label }) => (
               <button
                 key={value}
                 onClick={() => setTimeRange(value)}
                 className={`rounded px-3 py-2 text-sm font-medium transition-colors ${
                   timeRange === value
-                    ? "bg-background text-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? "bg-bg-primary text-text-primary shadow-sm"
+                    : "text-text-tertiary hover:text-text-primary"
                 }`}
               >
                 {label}
@@ -169,7 +168,7 @@ export function PricingOverTimeChart({
         </div>
 
         {dateFrom && dateTo && (
-          <p className="mt-3 text-xs text-muted-foreground">
+          <p className="mt-3 text-xs text-text-tertiary">
             {dateFrom} to {dateTo}
           </p>
         )}
@@ -179,11 +178,11 @@ export function PricingOverTimeChart({
       <div className="flex-1 overflow-hidden px-2 py-4">
         {loading ? (
           <div className="flex h-64 items-center justify-center">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-primary" />
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-bg-tertiary border-t-brand-600" />
           </div>
         ) : visibleData.length === 0 ? (
           <div className="flex h-64 items-center justify-center">
-            <p className="text-sm text-muted-foreground">No pricing data available</p>
+            <p className="text-sm text-text-tertiary">No pricing data available</p>
           </div>
         ) : (
           <ResponsiveContainer width="100%" height={320}>
@@ -245,10 +244,10 @@ export function PricingOverTimeChart({
       </div>
 
       {rawPoints.length > 0 && (
-        <div className="border-t border-border bg-muted/20 px-6 py-3">
-          <p className="text-xs text-muted-foreground">Datapoints: {rawPoints.length}</p>
+        <div className="border-t border-border-primary bg-bg-secondary px-6 py-3">
+          <p className="text-xs text-text-tertiary">Datapoints: {rawPoints.length}</p>
         </div>
       )}
-    </Card>
+    </div>
   );
 }

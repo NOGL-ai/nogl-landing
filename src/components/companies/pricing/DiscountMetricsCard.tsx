@@ -2,7 +2,6 @@
 
 import { InfoCircle as Info } from '@untitledui/icons';
 import { useTranslations } from "next-intl";
-import { Card } from "@/components/ui/card";
 
 interface DiscountMetricsCardProps {
   totalDiscounted: number;
@@ -19,7 +18,7 @@ export function DiscountMetricsCard({
   const percentage = totalProducts > 0 ? Math.round((totalDiscounted / totalProducts) * 100) : 0;
 
   if (loading) {
-    return <Card className="h-32 animate-pulse bg-bg-tertiary" />;
+    return <div className="h-32 animate-pulse rounded-xl bg-bg-tertiary" />;
   }
 
   // Calculate donut chart values for 64x64 SVG
@@ -28,7 +27,7 @@ export function DiscountMetricsCard({
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
   return (
-    <Card className="flex flex-col overflow-hidden p-5">
+    <div className="flex flex-col overflow-hidden rounded-xl border border-border-primary bg-bg-primary p-5 shadow-xs">
       {/* Header */}
       <div className="mb-4 flex items-center gap-2">
         <h3 className="text-sm font-semibold text-text-primary">
@@ -56,7 +55,7 @@ export function DiscountMetricsCard({
               stroke="currentColor"
               strokeWidth="6"
               strokeOpacity="0.2"
-              className="text-blue-500"
+              className="text-brand-600"
               strokeLinecap="round"
             />
             {/* Progress circle */}
@@ -69,7 +68,7 @@ export function DiscountMetricsCard({
               strokeWidth="6"
               strokeDasharray={circumference}
               strokeDashoffset={strokeDashoffset}
-              className="text-blue-500"
+              className="text-brand-600"
               strokeLinecap="round"
               style={{
                 transition: "stroke-dashoffset 0.3s ease-in-out, stroke 0.3s",
@@ -94,6 +93,6 @@ export function DiscountMetricsCard({
           </p>
         </div>
       </div>
-    </Card>
+    </div>
   );
 }

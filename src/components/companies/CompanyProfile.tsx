@@ -1,7 +1,5 @@
 "use client";
 
-// eslint-disable-next-line no-restricted-imports -- icon has no @untitledui/icons equivalent; keep in lucide-react until UUI ships it
-import { Facebook, Instagram } from 'lucide-react';
 import { LinkExternal01 as ExternalLink, MusicNote01 as Music2 } from '@untitledui/icons';
 import type { ReactNode } from "react";
 import { useLocale, useTranslations } from "next-intl";

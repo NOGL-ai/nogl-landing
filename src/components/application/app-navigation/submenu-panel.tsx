@@ -44,8 +44,8 @@ function AccordionGroup({ group, activeUrl, onNavigate, theme, depth = 0 }: Acco
                     "flex items-center justify-between w-full rounded-md text-sm text-left transition-colors duration-150",
                     depth === 0 ? "px-3 py-1.5" : "px-2 py-1",
                     hasActive
-                        ? "text-[#182230] dark:text-white font-medium"
-                        : "text-(--color-gray-700) dark:text-(--color-gray-400) hover:bg-(--color-gray-100) dark:hover:bg-[#1a1f2d]",
+                        ? "text-[--color-gray-900] dark:text-white font-medium"
+                        : "text-(--color-gray-700) dark:text-(--color-gray-400) hover:bg-(--color-gray-100) dark:hover:bg-[--color-gray-900]",
                 ].join(" ")}
             >
                 <div className="flex items-center gap-2 min-w-0">

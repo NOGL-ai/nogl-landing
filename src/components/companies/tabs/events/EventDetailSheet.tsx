@@ -30,7 +30,7 @@ function SourcePreview({ event }: { event: CompanyEventDTO }) {
       return (
         <div className="space-y-3">
           {img && (
-            <div className="overflow-hidden rounded-lg border bg-muted">
+            <div className="overflow-hidden rounded-lg border border-border-primary bg-bg-tertiary">
               <img
                 src={img}
                 alt={event.title ?? "Source asset"}
@@ -39,7 +39,7 @@ function SourcePreview({ event }: { event: CompanyEventDTO }) {
             </div>
           )}
           {event.summary && (
-            <p className="text-sm leading-6 text-foreground whitespace-pre-wrap">
+            <p className="text-sm leading-6 text-text-primary whitespace-pre-wrap">
               {event.summary}
             </p>
           )}
@@ -50,7 +50,7 @@ function SourcePreview({ event }: { event: CompanyEventDTO }) {
       return (
         <div className="space-y-3 rounded-lg border p-4">
           {img && (
-            <div className="overflow-hidden rounded bg-muted">
+            <div className="overflow-hidden rounded bg-bg-tertiary">
               <img
                 src={img}
                 alt={event.title ?? "Product"}
@@ -60,7 +60,7 @@ function SourcePreview({ event }: { event: CompanyEventDTO }) {
           )}
           {event.title && <p className="text-sm font-semibold">{event.title}</p>}
           {event.summary && (
-            <p className="text-sm text-muted-foreground">{event.summary}</p>
+            <p className="text-sm text-text-tertiary">{event.summary}</p>
           )}
         </div>
       );
@@ -69,7 +69,7 @@ function SourcePreview({ event }: { event: CompanyEventDTO }) {
       return (
         <div className="space-y-3">
           {img && (
-            <div className="overflow-hidden rounded-lg border bg-muted">
+            <div className="overflow-hidden rounded-lg border border-border-primary bg-bg-tertiary">
               <img
                 src={img}
                 alt={event.title ?? "Event"}
@@ -78,18 +78,18 @@ function SourcePreview({ event }: { event: CompanyEventDTO }) {
             </div>
           )}
           {event.platform && (
-            <span className="inline-flex rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+            <span className="inline-flex rounded-full border border-border-primary bg-bg-secondary px-2 py-0.5 text-xs font-medium text-text-tertiary">
               {event.platform}
             </span>
           )}
           {event.summary && (
-            <p className="text-sm leading-6 text-foreground">{event.summary}</p>
+            <p className="text-sm leading-6 text-text-primary">{event.summary}</p>
           )}
         </div>
       );
     default:
       return event.summary ? (
-        <p className="text-sm leading-6 text-foreground">{event.summary}</p>
+        <p className="text-sm leading-6 text-text-primary">{event.summary}</p>
       ) : null;
   }
 }
@@ -116,7 +116,7 @@ export function EventDetailSheet({ event, onClose }: EventDetailSheetProps) {
                   {meta.label}
                 </span>
                 {event.platform && (
-                  <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+                  <span className="rounded-full border border-border-primary bg-bg-secondary px-2 py-0.5 text-xs font-medium text-text-tertiary">
                     {event.platform}
                   </span>
                 )}
@@ -124,7 +124,7 @@ export function EventDetailSheet({ event, onClose }: EventDetailSheetProps) {
               <SheetTitle className="mt-2">
                 {event.title ?? "Event details"}
               </SheetTitle>
-              <dl className="mt-2 grid grid-cols-2 gap-2 text-xs text-muted-foreground">
+              <dl className="mt-2 grid grid-cols-2 gap-2 text-xs text-text-tertiary">
                 <div>
                   <dt className="font-medium">Occurred</dt>
                   <dd>{formatDateTime(event.event_date)}</dd>
@@ -140,11 +140,11 @@ export function EventDetailSheet({ event, onClose }: EventDetailSheetProps) {
               <SourcePreview event={event} />
 
               {event.raw_payload !== null && event.raw_payload !== undefined && (
-                <details className="rounded-lg border p-3 text-xs">
-                  <summary className="cursor-pointer font-medium text-foreground">
+                <details className="rounded-lg border border-border-primary p-3 text-xs">
+                  <summary className="cursor-pointer font-medium text-text-primary">
                     Metadata
                   </summary>
-                  <pre className="mt-2 max-h-64 overflow-auto whitespace-pre-wrap rounded bg-muted p-2 text-[11px] text-muted-foreground">
+                  <pre className="mt-2 max-h-64 overflow-auto whitespace-pre-wrap rounded bg-bg-tertiary p-2 text-[11px] text-text-tertiary">
                     {JSON.stringify(event.raw_payload, null, 2)}
                   </pre>
                 </details>
@@ -157,13 +157,13 @@ export function EventDetailSheet({ event, onClose }: EventDetailSheetProps) {
                   href={event.source_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-1.5 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+                  className="inline-flex items-center justify-center gap-1.5 rounded-md bg-bg-brand-solid px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-bg-brand-solid-hover"
                 >
                   Open source
                   <ExternalLink className="h-3.5 w-3.5" />
                 </a>
               ) : (
-                <span className="inline-flex cursor-not-allowed items-center justify-center gap-1.5 rounded-md bg-muted px-4 py-2 text-sm font-medium text-muted-foreground">
+                <span className="inline-flex cursor-not-allowed items-center justify-center gap-1.5 rounded-md bg-bg-tertiary px-4 py-2 text-sm font-medium text-text-tertiary">
                   No source link
                 </span>
               )}

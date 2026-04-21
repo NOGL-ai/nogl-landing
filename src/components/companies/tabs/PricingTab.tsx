@@ -1,8 +1,6 @@
 "use client";
 import {
   LinkExternal01 as ExternalLink,
-  LayoutGrid01 as LayoutGrid,
-  List,
   SwitchVertical01 as ArrowUpDown,
   ArrowUp,
   ArrowDown,
@@ -22,7 +20,6 @@ import {
 } from "@tanstack/react-table";
 
 import { FilterBar } from "@/components/companies/FilterBar";
-import { Card } from "@/components/ui/card";
 import { DiscountMetricsCard } from "@/components/companies/pricing/DiscountMetricsCard";
 import type {
   CompanyPricingResponse,
@@ -89,9 +86,9 @@ function PriceRangeBar({
   const left = ((min - globalMin) / range) * 100;
   const width = Math.max(((max - min) / range) * 100, 3);
   return (
-    <div className="relative h-1.5 w-20 flex-shrink-0 rounded-full bg-muted">
+    <div className="relative h-1.5 w-20 flex-shrink-0 rounded-full bg-bg-tertiary">
       <div
-        className="absolute h-1.5 rounded-full bg-primary/60"
+        className="absolute h-1.5 rounded-full bg-brand-600"
         style={{ left: `${left}%`, width: `${Math.min(width, 100 - left)}%` }}
       />
     </div>
@@ -119,7 +116,7 @@ function PriceDistributionBars({
   onBucketClick?: (min: number, max: number) => void;
 }) {
   if (!buckets.length)
-    return <p className="text-xs text-muted-foreground">No distribution data.</p>;
+    return <p className="text-xs text-text-tertiary">No distribution data.</p>;
 
   const maxPct = Math.max(...buckets.map((b) => b.percentage), 1);
   const chartMax = Math.ceil(maxPct / 20) * 20 || 20;
@@ -152,9 +149,8 @@ function PriceDistributionBars({
               x2={W}
               y1={y}
               y2={y}
-              stroke="currentColor"
+              stroke="var(--color-border-primary)"
               strokeDasharray="3 3"
-              className="text-border"
               strokeWidth="0.8"
             />
             <text
@@ -163,7 +159,7 @@ function PriceDistributionBars({
               textAnchor="end"
               dominantBaseline="middle"
               fontSize="9"
-              className="fill-muted-foreground"
+              fill="var(--color-text-tertiary)"
             >
               {tick}%
             </text>
@@ -190,7 +186,8 @@ function PriceDistributionBars({
               width={bw}
               height={barH}
               rx="3"
-              className="fill-primary/70 hover:fill-primary transition-colors"
+              fill="var(--color-brand-600)"
+              opacity="0.75"
             />
             {bucket.percentage >= 4 && (
               <text
@@ -209,7 +206,7 @@ function PriceDistributionBars({
               y={MT + H + 14}
               textAnchor="middle"
               fontSize="8.5"
-              className="fill-muted-foreground"
+              fill="var(--color-text-tertiary)"
             >
               {label}
             </text>
@@ -222,120 +219,10 @@ function PriceDistributionBars({
         x2={ML}
         y1={MT}
         y2={MT + H}
-        stroke="currentColor"
+        stroke="var(--color-border-primary)"
         strokeWidth="0.8"
-        className="text-border"
       />
     </svg>
-  );
-}
-
-// ── Product row ───────────────────────────────────────────────────────────────
-
-function ProductRow({
-  product,
-  lang,
-  slug,
-}: {
-  product: CompanyPricingProduct;
-  lang: string;
-  slug: string;
-}) {
-  const href = `/${lang}/companies/${slug}/products/${encodeURIComponent(product.product_id)}`;
-
-  return (
-    <tr
-      className="cursor-pointer transition-colors hover:bg-muted/40"
-      onClick={() => {
-        window.location.href = href;
-      }}
-    >
-      <td className="w-12 px-4 py-2">
-        <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded bg-muted">
-          {product.product_image_url ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={product.product_image_url}
-              alt=""
-              className="h-full w-full object-contain p-0.5"
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center">
-              <svg
-                className="h-4 w-4 text-muted-foreground/30"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1}
-                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14"
-                />
-              </svg>
-            </div>
-          )}
-        </div>
-      </td>
-      <td className="max-w-[200px] px-4 py-2">
-        <p className="line-clamp-2 text-xs font-medium leading-snug text-foreground">
-          {product.product_title}
-        </p>
-      </td>
-      <td className="hidden px-4 py-2 sm:table-cell">
-        {product.category ? (
-          <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
-            {product.category}
-          </span>
-        ) : (
-          <span className="text-xs text-muted-foreground/40">—</span>
-        )}
-      </td>
-      <td className="whitespace-nowrap px-4 py-2 text-right tabular-nums">
-        {product.discount_price != null ? (
-          <span className="flex flex-col items-end gap-0.5">
-            <span className="text-xs line-through text-muted-foreground">
-              {fmtPrice(product.original_price)}
-            </span>
-            <span className="text-sm font-semibold text-destructive">
-              {fmtPrice(product.discount_price)}
-            </span>
-          </span>
-        ) : (
-          <span className="text-sm font-medium text-foreground">
-            {fmtPrice(product.original_price)}
-          </span>
-        )}
-      </td>
-      <td className="hidden px-4 py-2 text-right sm:table-cell">
-        {product.discount_pct != null && product.discount_pct > 0 ? (
-          <span className="rounded-full bg-destructive/10 px-2 py-0.5 text-xs font-semibold text-destructive">
-            -{Math.round(product.discount_pct)}%
-          </span>
-        ) : (
-          <span className="text-xs text-muted-foreground/40">—</span>
-        )}
-      </td>
-      <td className="hidden whitespace-nowrap px-4 py-2 text-right text-xs text-muted-foreground tabular-nums md:table-cell">
-        {product.last_seen ? timeAgo(product.last_seen) : "—"}
-      </td>
-      <td
-        className="px-4 py-2"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {product.product_url && (
-          <a
-            href={product.product_url}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center text-muted-foreground/50 hover:text-foreground transition-colors"
-          >
-            <ExternalLink className="h-3.5 w-3.5" />
-          </a>
-        )}
-      </td>
-    </tr>
   );
 }
 
@@ -362,10 +249,13 @@ function PricingSkeleton() {
   );
 }
 
+// ── TanStack column definitions for products ──────────────────────────────────
+
+const productColumnHelper = createColumnHelper<CompanyPricingProduct>();
+
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 export function PricingTab({ slug }: PricingTabProps) {
-  // FIX 4 — get lang + slug from URL params for navigation
   const routeParams = useParams<{ lang: string; slug: string }>();
   const lang = routeParams.lang ?? "en";
   const currentSlug = routeParams.slug ?? slug;
@@ -383,6 +273,7 @@ export function PricingTab({ slug }: PricingTabProps) {
   });
   const [sort, setSort] = useState<SortOption>("last_seen_desc");
   const [productPage, setProductPage] = useState(1);
+  const [listSorting, setListSorting] = useState<SortingState>([]);
 
   function buildUrl(f: PricingFilters, s: SortOption, pp: number): string {
     const params = new URLSearchParams();
@@ -396,7 +287,6 @@ export function PricingTab({ slug }: PricingTabProps) {
     return `/api/companies/${slug}/pricing${qs ? `?${qs}` : ""}`;
   }
 
-  // Single effect — re-fetch whenever slug, filters, sort, or productPage change
   useEffect(() => {
     let cancelled = false;
     async function load() {
@@ -407,7 +297,6 @@ export function PricingTab({ slug }: PricingTabProps) {
         );
         if (!cancelled) {
           setState({ data, error: null, loading: false });
-          // Populate product type options from first load
           if (allProductTypes.length === 0) {
             const types = data.product_types
               .map((r) => r.type)
@@ -437,6 +326,129 @@ export function PricingTab({ slug }: PricingTabProps) {
     setProductPage(1);
   }
 
+  const productColumns = useMemo(
+    () => [
+      productColumnHelper.display({
+        id: "image",
+        header: "",
+        enableSorting: false,
+        cell: (info) => {
+          const product = info.row.original;
+          return (
+            <div className="h-10 w-10 shrink-0 overflow-hidden rounded bg-bg-tertiary">
+              {product.product_image_url ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={product.product_image_url}
+                  alt={product.product_title}
+                  className="h-full w-full object-contain p-0.5"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center">
+                  <svg className="h-4 w-4 text-text-disabled" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1}
+                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14" />
+                  </svg>
+                </div>
+              )}
+            </div>
+          );
+        },
+      }),
+      productColumnHelper.accessor("product_title", {
+        header: "Product",
+        enableSorting: true,
+        cell: (info) => {
+          const product = info.row.original;
+          const href = `/${lang}/companies/${currentSlug}/products/${encodeURIComponent(product.product_id)}`;
+          return (
+            <a href={href} className="line-clamp-2 max-w-[200px] text-xs font-medium leading-snug text-text-primary hover:underline">
+              {info.getValue()}
+            </a>
+          );
+        },
+      }),
+      productColumnHelper.accessor("category", {
+        header: "Category",
+        enableSorting: true,
+        cell: (info) => info.getValue() ? (
+          <span className="rounded bg-bg-secondary px-1.5 py-0.5 text-[10px] text-text-tertiary">
+            {info.getValue()}
+          </span>
+        ) : <span className="text-text-disabled">—</span>,
+      }),
+      productColumnHelper.accessor("original_price", {
+        header: "Price",
+        enableSorting: true,
+        meta: { align: "right" as const },
+        cell: (info) => {
+          const product = info.row.original;
+          if (product.discount_price != null) {
+            return (
+              <span className="flex flex-col items-end gap-0.5">
+                <span className="text-xs line-through text-text-tertiary">{fmtPrice(info.getValue())}</span>
+                <span className="text-sm font-semibold text-text-success">{fmtPrice(product.discount_price)}</span>
+              </span>
+            );
+          }
+          return <span className="tabular-nums text-xs font-medium text-text-primary">{fmtPrice(info.getValue())}</span>;
+        },
+      }),
+      productColumnHelper.accessor("discount_pct", {
+        header: "Disc.",
+        enableSorting: true,
+        meta: { align: "right" as const },
+        cell: (info) => {
+          const pct = info.getValue();
+          return pct != null && pct > 0 ? (
+            <span className="rounded bg-bg-success px-1.5 py-0.5 text-[10px] font-semibold text-text-success">
+              -{Math.round(pct)}%
+            </span>
+          ) : <span className="text-text-disabled">—</span>;
+        },
+      }),
+      productColumnHelper.accessor("last_seen", {
+        header: "Last seen",
+        enableSorting: true,
+        cell: (info) => {
+          const v = info.getValue();
+          return v ? (
+            <span className="text-xs tabular-nums text-text-tertiary">{timeAgo(v)}</span>
+          ) : <span className="text-text-disabled">—</span>;
+        },
+      }),
+      productColumnHelper.accessor("product_url", {
+        id: "link",
+        header: "",
+        enableSorting: false,
+        cell: (info) => {
+          const url = info.getValue();
+          return url ? (
+            <a
+              href={url}
+              target="_blank"
+              rel="noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="inline-flex items-center gap-1 rounded border border-border-primary px-2 py-1 text-xs text-text-tertiary transition-colors hover:bg-bg-secondary"
+            >
+              <ExternalLink className="h-3 w-3" />
+            </a>
+          ) : null;
+        },
+      }),
+    ],
+    [lang, currentSlug]
+  );
+
+  const listTable = useReactTable({
+    data: state.data?.products ?? [],
+    columns: productColumns,
+    state: { sorting: listSorting },
+    onSortingChange: setListSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+  });
+
   if (state.loading && !state.data) return <PricingSkeleton />;
   if (state.error) return <InlineError message={state.error} />;
   if (!state.data) return null;
@@ -463,7 +475,7 @@ export function PricingTab({ slug }: PricingTabProps) {
   return (
     <div className="space-y-6">
       {/* ── Filter bar ── */}
-      <div className="flex flex-wrap items-center gap-3 rounded-xl border border-border bg-muted/30 px-4 py-3">
+      <div className="flex flex-wrap items-center gap-3 rounded-xl border border-border-primary bg-bg-secondary px-4 py-3">
         <FilterBar
           filters={[
             {
@@ -504,14 +516,14 @@ export function PricingTab({ slug }: PricingTabProps) {
           resultCount={data.total_products}
           resultLabel="products"
           right={
-            <span className="text-xs text-muted-foreground">
+            <span className="text-xs text-text-tertiary">
               {formatNumber(data.total_variants)} variants ·{" "}
               {formatNumber(data.total_datapoints)} datapoints
             </span>
           }
         />
         {state.loading && (
-          <span className="ml-2 text-xs text-muted-foreground animate-pulse">
+          <span className="ml-2 animate-pulse text-xs text-text-tertiary">
             Filtering…
           </span>
         )}
@@ -528,12 +540,12 @@ export function PricingTab({ slug }: PricingTabProps) {
           />
 
           {priceDist.length > 0 && (
-            <Card className="p-5">
+            <div className="rounded-xl border border-border-primary bg-bg-primary p-5 shadow-xs">
               <div className="mb-3 flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-foreground">
+                <h3 className="text-sm font-semibold text-text-primary">
                   Price Distribution
                 </h3>
-                <span className="text-xs text-muted-foreground">
+                <span className="text-xs text-text-tertiary">
                   % of Product Prices
                 </span>
               </div>
@@ -545,103 +557,105 @@ export function PricingTab({ slug }: PricingTabProps) {
                   setProductPage(1);
                 }}
               />
-            </Card>
+            </div>
           )}
         </div>
 
-        {/* Right column (2/3): Product Types table — rows are clickable */}
-        <Card className="overflow-hidden p-0 lg:col-span-2">
-          <div className="flex items-center justify-between border-b border-border px-5 py-3">
-            <h3 className="text-sm font-semibold text-foreground">
+        {/* Right column (2/3): Product Types table */}
+        <div className="overflow-hidden rounded-xl border border-border-primary bg-bg-primary shadow-xs lg:col-span-2">
+          <div className="flex items-center justify-between border-b border-border-primary px-5 py-3">
+            <h3 className="text-sm font-semibold text-text-primary">
               Product Types
             </h3>
-            <span className="text-xs text-muted-foreground">
+            <span className="text-xs text-text-tertiary">
               {formatNumber(data.total_products)} products
             </span>
           </div>
           {data.product_types.length === 0 ? (
-            <p className="px-5 py-8 text-sm text-muted-foreground">
+            <p className="px-5 py-8 text-sm text-text-tertiary">
               No category data yet.
             </p>
           ) : (
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm">
-                <thead className="border-b border-border bg-muted/30">
+                <thead className="border-b border-border-primary bg-bg-primary">
                   <tr>
-                    <th className="px-5 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    <th className="px-5 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-text-tertiary">
                       Name
                     </th>
-                    <th className="px-4 py-2.5 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    <th className="px-4 py-2.5 text-right text-xs font-medium uppercase tracking-wider text-text-tertiary">
                       # Products
                     </th>
-                    <th className="px-4 py-2.5 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    <th className="px-4 py-2.5 text-right text-xs font-medium uppercase tracking-wider text-text-tertiary">
                       % Discount
                     </th>
-                    <th className="px-5 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    <th className="px-5 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-text-tertiary">
                       Price Range
                     </th>
                     <th className="w-6 px-2 py-2.5" />
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-border">
-                  {data.product_types.map((row) => (
-                    <tr
-                      key={row.type}
-                      className="cursor-pointer transition-colors hover:bg-muted/30"
-                      onClick={() => {
-                        setFilter("productType", row.type);
-                        setProductPage(1);
-                      }}
-                    >
-                      <td className="max-w-[200px] truncate px-5 py-3 font-medium text-foreground">
-                        {row.type}
-                      </td>
-                      <td className="px-4 py-3 text-right tabular-nums text-muted-foreground">
-                        {row.count.toLocaleString()}
-                      </td>
-                      <td className="px-4 py-3 text-right tabular-nums text-muted-foreground">
-                        {formatPercent(row.avg_discount_pct)}
-                      </td>
-                      <td className="px-5 py-3">
-                        <div className="flex items-center gap-2">
-                          <span className="w-14 text-right text-xs text-muted-foreground">
-                            {fmtPrice(row.min_price)}
-                          </span>
-                          <PriceRangeBar
-                            min={row.min_price}
-                            max={row.max_price}
-                            globalMin={globalMin}
-                            globalMax={globalMax}
-                          />
-                          <span className="w-14 text-xs text-muted-foreground">
-                            {fmtPrice(row.max_price)}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-2 py-3 text-xs text-muted-foreground/50">
-                        ›
-                      </td>
-                    </tr>
-                  ))}
+                <tbody className="divide-y divide-border-primary">
+                  {data.product_types.map((row) => {
+                    const isActive = filters.productType === row.type;
+                    return (
+                      <tr
+                        key={row.type}
+                        className={`cursor-pointer transition-colors hover:bg-bg-secondary ${isActive ? "bg-brand-50" : ""}`}
+                        onClick={() => {
+                          setFilter("productType", row.type);
+                          setProductPage(1);
+                        }}
+                      >
+                        <td className={`max-w-[200px] truncate px-5 py-3 font-medium ${isActive ? "text-text-brand underline" : "text-text-primary"}`}>
+                          {row.type}
+                        </td>
+                        <td className="px-4 py-3 text-right tabular-nums text-text-tertiary">
+                          {row.count.toLocaleString()}
+                        </td>
+                        <td className="px-4 py-3 text-right tabular-nums text-text-success">
+                          {formatPercent(row.avg_discount_pct)}
+                        </td>
+                        <td className="px-5 py-3">
+                          <div className="flex items-center gap-2">
+                            <span className="w-14 text-right text-xs text-text-tertiary">
+                              {fmtPrice(row.min_price)}
+                            </span>
+                            <PriceRangeBar
+                              min={row.min_price}
+                              max={row.max_price}
+                              globalMin={globalMin}
+                              globalMax={globalMax}
+                            />
+                            <span className="w-14 text-xs text-text-tertiary">
+                              {fmtPrice(row.max_price)}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="px-2 py-3 text-xs text-text-tertiary">
+                          ›
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
           )}
-        </Card>
+        </div>
       </div>
 
-
-      {/* ── Product table ──────────────────────────────────────────────────── */}
-      <Card className="overflow-hidden p-0">
+      {/* ── Top Pricing (TanStack table) ──────────────────────────────────────── */}
+      <div className="overflow-hidden rounded-xl border border-border-primary bg-bg-primary shadow-xs">
         {/* Header with sort + active filter label */}
-        <div className="flex items-center justify-between border-b border-border px-5 py-3">
+        <div className="flex items-center justify-between border-b border-border-primary px-5 py-3">
           <div>
-            <h3 className="text-sm font-semibold text-foreground">Products</h3>
-            <p className="mt-0.5 text-xs text-muted-foreground">
-              {formatNumber(data.total_products)} total
-              {filters.productType
-                ? ` · filtered by "${filters.productType}"`
-                : ""}
+            <h2 className="min-w-0 flex-1 truncate text-base font-semibold text-text-primary">
+              Top Pricing
+            </h2>
+            <p className="mt-0.5 text-xs text-text-tertiary">
+              <span className="font-medium text-text-primary">{formatNumber(data.total_products)}</span> products
+              {filters.productType ? ` · filtered by "${filters.productType}"` : ""}
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -655,7 +669,7 @@ export function PricingTab({ slug }: PricingTabProps) {
                   });
                   setProductPage(1);
                 }}
-                className="text-xs text-muted-foreground hover:text-foreground underline"
+                className="text-xs text-text-tertiary underline hover:text-text-primary"
               >
                 Clear filters
               </button>
@@ -666,53 +680,65 @@ export function PricingTab({ slug }: PricingTabProps) {
                 setSort(e.target.value as SortOption);
                 setProductPage(1);
               }}
-              className="rounded border border-border bg-background px-2 py-1.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+              className="rounded border border-border-primary bg-bg-primary px-2 py-1.5 text-xs text-text-primary focus:outline-none focus:ring-1 focus:ring-border-brand"
             >
-              <option value="last_seen_desc">Latest first</option>
-              <option value="price_asc">Price: low → high</option>
-              <option value="price_desc">Price: high → low</option>
-              <option value="discount_desc">Biggest discount</option>
+              <option value="last_seen_desc">Recently added</option>
+              <option value="price_asc">Price ↑</option>
+              <option value="price_desc">Price ↓</option>
+              <option value="discount_desc">Discount ↓</option>
             </select>
           </div>
         </div>
 
-        {/* Table */}
-        <div className="overflow-x-auto">
+        {/* TanStack sortable table */}
+        <div className="overflow-x-auto" style={{ maxHeight: 480 }}>
           <table className="min-w-full text-sm">
-            <thead className="border-b border-border bg-muted/30">
-              <tr>
-                <th className="w-12 px-4 py-2.5" />
-                <th className="px-4 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  Product
-                </th>
-                <th className="hidden px-4 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground sm:table-cell">
-                  Category
-                </th>
-                <th className="px-4 py-2.5 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  Price
-                </th>
-                <th className="hidden px-4 py-2.5 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground sm:table-cell">
-                  Discount
-                </th>
-                <th className="hidden px-4 py-2.5 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground md:table-cell">
-                  Last Seen
-                </th>
-                <th className="w-8 px-4 py-2.5" />
-              </tr>
+            <thead className="sticky top-0 z-10 border-b border-border-primary bg-bg-primary">
+              {listTable.getHeaderGroups().map((hg) => (
+                <tr key={hg.id}>
+                  {hg.headers.map((header) => {
+                    const align = (header.column.columnDef.meta as { align?: string } | undefined)?.align ?? "left";
+                    const canSort = header.column.getCanSort();
+                    return (
+                      <th
+                        key={header.id}
+                        className={`whitespace-nowrap px-3 py-2.5 text-xs font-medium uppercase tracking-[0.08em] text-text-tertiary ${
+                          align === "right" ? "text-right" : "text-left"
+                        } ${canSort ? "cursor-pointer select-none hover:text-text-primary" : ""}`}
+                        onClick={canSort ? header.column.getToggleSortingHandler() : undefined}
+                      >
+                        {flexRender(header.column.columnDef.header, header.getContext())}
+                        {canSort && (
+                          header.column.getIsSorted() === "asc" ? <ArrowUp className="ml-1 inline h-3 w-3" /> :
+                          header.column.getIsSorted() === "desc" ? <ArrowDown className="ml-1 inline h-3 w-3" /> :
+                          <ArrowUpDown className="ml-1 inline h-3 w-3 opacity-30" />
+                        )}
+                      </th>
+                    );
+                  })}
+                </tr>
+              ))}
             </thead>
-            <tbody className="divide-y divide-border">
-              {(data.products ?? []).map((product) => (
-                <ProductRow
-                  key={product.product_id}
-                  product={product}
-                  lang={lang}
-                  slug={currentSlug}
-                />
+            <tbody className="divide-y divide-border-primary">
+              {listTable.getRowModel().rows.map((row) => (
+                <tr key={row.id} className="cursor-pointer transition-colors hover:bg-bg-secondary">
+                  {row.getVisibleCells().map((cell) => {
+                    const align = (cell.column.columnDef.meta as { align?: string } | undefined)?.align ?? "left";
+                    return (
+                      <td
+                        key={cell.id}
+                        className={`px-3 py-2.5 ${align === "right" ? "text-right" : "text-left"}`}
+                      >
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </td>
+                    );
+                  })}
+                </tr>
               ))}
             </tbody>
           </table>
           {(data.products ?? []).length === 0 && !state.loading && (
-            <div className="py-12 text-center text-sm text-muted-foreground">
+            <div className="py-12 text-center text-sm text-text-tertiary">
               No products match the current filters.
             </div>
           )}
@@ -720,15 +746,15 @@ export function PricingTab({ slug }: PricingTabProps) {
 
         {/* Product-level pagination */}
         {data.pagination && data.pagination.totalPages > 1 && (
-          <div className="flex items-center justify-between border-t border-border px-5 py-3">
+          <div className="flex items-center justify-between border-t border-border-primary px-5 py-3">
             <button
               disabled={productPage <= 1}
               onClick={() => setProductPage((p) => p - 1)}
-              className="rounded border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed"
+              className="rounded border border-border-primary px-3 py-1.5 text-xs font-medium transition-colors hover:bg-bg-secondary disabled:cursor-not-allowed disabled:opacity-40"
             >
               ← Prev
             </button>
-            <span className="text-xs text-muted-foreground">
+            <span className="text-xs text-text-tertiary">
               Page {productPage} of {data.pagination.totalPages}
               {" · "}
               {formatNumber(data.pagination.total)} products
@@ -736,13 +762,13 @@ export function PricingTab({ slug }: PricingTabProps) {
             <button
               disabled={productPage >= data.pagination.totalPages}
               onClick={() => setProductPage((p) => p + 1)}
-              className="rounded border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed"
+              className="rounded border border-border-primary px-3 py-1.5 text-xs font-medium transition-colors hover:bg-bg-secondary disabled:cursor-not-allowed disabled:opacity-40"
             >
               Next →
             </button>
           </div>
         )}
-      </Card>
+      </div>
     </div>
   );
 }

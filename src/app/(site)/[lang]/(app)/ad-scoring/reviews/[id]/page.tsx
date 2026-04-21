@@ -51,12 +51,12 @@ export default async function ReviewDetailPage({
   if (!review) {
     return (
       <div className="p-6 max-w-2xl mx-auto text-center">
-        <p className="text-muted-foreground">
+        <p className="text-text-tertiary">
           Could not load review item. The API may be unreachable.
         </p>
         <a
           href="/ad-scoring/reviews"
-          className="mt-4 inline-block text-sm text-primary hover:underline"
+          className="mt-4 inline-block text-sm text-text-brand hover:underline"
         >
           ← Back to queue
         </a>
@@ -73,7 +73,7 @@ export default async function ReviewDetailPage({
       {/* Breadcrumb */}
       <a
         href="/ad-scoring/reviews"
-        className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+        className="text-xs text-text-tertiary hover:text-text-primary transition-colors"
       >
         ← Review Queue
       </a>
@@ -81,11 +81,11 @@ export default async function ReviewDetailPage({
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-foreground flex items-center gap-2">
-            <Eye className="h-5 w-5 text-primary" />
+          <h1 className="text-xl font-semibold text-text-primary flex items-center gap-2">
+            <Eye className="h-5 w-5 text-text-brand" />
             Review Item
           </h1>
-          <p className="mt-1 text-xs font-mono text-muted-foreground break-all">
+          <p className="mt-1 text-xs font-mono text-text-tertiary break-all">
             {id}
           </p>
         </div>
@@ -126,9 +126,9 @@ export default async function ReviewDetailPage({
               : "—",
           },
         ].map(({ label, value }) => (
-          <div key={label} className="rounded-lg border border-border bg-card p-3">
-            <p className="text-xs text-muted-foreground mb-0.5">{label}</p>
-            <p className="text-sm font-medium text-foreground font-mono break-all">
+          <div key={label} className="rounded-lg border border-border-primary bg-bg-primary p-3">
+            <p className="text-xs text-text-tertiary mb-0.5">{label}</p>
+            <p className="text-sm font-medium text-text-primary font-mono break-all">
               {value}
             </p>
           </div>
@@ -146,21 +146,21 @@ export default async function ReviewDetailPage({
       {/* Evidence */}
       {review.evidence_json && Object.keys(review.evidence_json).length > 0 && (
         <section>
-          <h2 className="text-sm font-semibold text-foreground mb-2">
+          <h2 className="text-sm font-semibold text-text-primary mb-2">
             Evidence
           </h2>
-          <div className="rounded-xl border border-border bg-muted/30 p-4 space-y-3">
+          <div className="rounded-xl border border-border-primary bg-bg-secondary p-4 space-y-3">
             {Object.entries(review.evidence_json).map(([key, val]) => (
               <div key={key}>
-                <p className="text-xs font-mono text-muted-foreground mb-1">
+                <p className="text-xs font-mono text-text-tertiary mb-1">
                   {key}
                 </p>
                 {typeof val === "string" ? (
-                  <p className="text-sm text-foreground bg-card border border-border rounded-lg p-3">
+                  <p className="text-sm text-text-primary bg-bg-primary border border-border-primary rounded-lg p-3">
                     {val}
                   </p>
                 ) : (
-                  <pre className="text-xs text-foreground bg-card border border-border rounded-lg p-3 overflow-x-auto">
+                  <pre className="text-xs text-text-primary bg-bg-primary border border-border-primary rounded-lg p-3 overflow-x-auto">
                     {JSON.stringify(val, null, 2)}
                   </pre>
                 )}
@@ -172,25 +172,25 @@ export default async function ReviewDetailPage({
 
       {/* Prior decision (if closed) */}
       {isClosed && (
-        <section className="rounded-xl border border-border bg-card p-4 space-y-2">
-          <h2 className="text-sm font-semibold text-foreground">Decision</h2>
+        <section className="rounded-xl border border-border-primary bg-bg-primary p-4 space-y-2">
+          <h2 className="text-sm font-semibold text-text-primary">Decision</h2>
           <div className="grid grid-cols-2 gap-3 text-sm">
             <div>
-              <p className="text-xs text-muted-foreground">Decision</p>
-              <p className="font-medium text-foreground capitalize">
+              <p className="text-xs text-text-tertiary">Decision</p>
+              <p className="font-medium text-text-primary capitalize">
                 {review.decision ?? "—"}
               </p>
             </div>
             <div>
-              <p className="text-xs text-muted-foreground">Assignee</p>
-              <p className="font-medium text-foreground">
+              <p className="text-xs text-text-tertiary">Assignee</p>
+              <p className="font-medium text-text-primary">
                 {review.assignee ?? "—"}
               </p>
             </div>
             {review.decision_notes && (
               <div className="col-span-2">
-                <p className="text-xs text-muted-foreground">Notes</p>
-                <p className="text-foreground mt-1 bg-muted/40 rounded-lg p-3 text-sm">
+                <p className="text-xs text-text-tertiary">Notes</p>
+                <p className="text-text-primary mt-1 bg-bg-secondary rounded-lg p-3 text-sm">
                   {review.decision_notes}
                 </p>
               </div>
@@ -202,7 +202,7 @@ export default async function ReviewDetailPage({
       {/* Decision form (only for open/assigned) */}
       {!isClosed && (
         <section>
-          <h2 className="text-sm font-semibold text-foreground mb-3">
+          <h2 className="text-sm font-semibold text-text-primary mb-3">
             Submit Decision
           </h2>
           <ReviewDecisionForm reviewId={id} />
@@ -213,7 +213,7 @@ export default async function ReviewDetailPage({
       <div className="pt-2">
         <a
           href={`/ad-scoring/analysis/${review.run_id}`}
-          className="text-xs text-primary hover:underline"
+          className="text-xs text-text-brand hover:underline"
         >
           View full analysis report for this run →
         </a>

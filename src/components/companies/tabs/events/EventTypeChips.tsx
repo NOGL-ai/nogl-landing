@@ -27,8 +27,8 @@ export function EventTypeChips({ selected, onChange }: EventTypeChipsProps) {
         aria-pressed={allActive}
         className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
           allActive
-            ? "border-primary/50 bg-primary/10 text-primary"
-            : "border-border bg-background text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+            ? "border-border-brand bg-brand-50 text-text-brand"
+            : "border-border-primary bg-bg-primary text-text-tertiary hover:bg-bg-secondary hover:text-text-primary"
         }`}
       >
         All
@@ -44,8 +44,8 @@ export function EventTypeChips({ selected, onChange }: EventTypeChipsProps) {
             aria-pressed={active}
             className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
               active
-                ? "border-primary/50 bg-primary/10 text-primary"
-                : "border-border bg-background text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+                ? "border-border-brand bg-brand-50 text-text-brand"
+                : "border-border-primary bg-bg-primary text-text-tertiary hover:bg-bg-secondary hover:text-text-primary"
             }`}
           >
             <span aria-hidden className={`h-1.5 w-1.5 rounded-full ${meta.dotClass}`} />

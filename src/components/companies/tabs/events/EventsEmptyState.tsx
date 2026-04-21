@@ -1,7 +1,5 @@
 "use client";
-// eslint-disable-next-line no-restricted-imports -- icon has no @untitledui/icons equivalent; keep in lucide-react until UUI ships it
-import { CalendarRange } from 'lucide-react';
-
+import { Calendar } from '@untitledui/icons';
 
 import { Card } from "@/components/ui/card";
 
@@ -13,7 +11,7 @@ export function EventsEmptyState({ hasFilters }: EventsEmptyStateProps) {
   return (
     <Card className="flex flex-col items-center gap-3 p-10 text-center">
       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-bg-tertiary text-text-tertiary">
-        <CalendarRange className="h-6 w-6" />
+        <Calendar className="h-6 w-6" />
       </div>
       <div>
         <p className="text-sm font-medium text-text-primary">No events in this period.</p>

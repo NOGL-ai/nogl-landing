@@ -12,9 +12,9 @@ export function RatingsTab({ active: _active }: RatingsTabProps) {
   const t = useTranslations("companies");
 
   return (
-    <Card className="p-8">
-      <h2 className="text-lg font-semibold text-foreground">{t("ratings.emptyTitle")}</h2>
-      <p className="mt-2 text-sm text-muted-foreground">{t("ratings.emptyDescription")}</p>
-    </Card>
+    <div className="rounded-xl border border-border-primary bg-bg-primary p-8 shadow-xs">
+      <h2 className="text-lg font-semibold text-text-primary">{t("ratings.emptyTitle")}</h2>
+      <p className="mt-2 text-sm text-text-tertiary">{t("ratings.emptyDescription")}</p>
+    </div>
   );
 }

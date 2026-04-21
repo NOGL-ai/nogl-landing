@@ -3,7 +3,6 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LabelList, Cell } from "recharts";
 import { useTheme } from "next-themes";
 
-import { Card } from "@/components/ui/card";
 import type { PriceDistributionBucket } from "@/types/company";
 import { CHART_BLUE } from "./utils";
 
@@ -33,7 +32,7 @@ export function PriceDistributionChart({
   }));
 
   return (
-    <Card className="flex flex-1 flex-col p-5">
+    <div className="flex flex-1 flex-col rounded-xl border border-border-primary bg-bg-primary p-5 shadow-xs">
       <div className="mb-3 flex items-center justify-between">
         <div>
           <h3 className="text-sm font-semibold text-text-primary">Price Distribution</h3>
@@ -54,7 +53,7 @@ export function PriceDistributionChart({
       <div className="relative" style={{ minHeight: 290 }}>
         {loading && (
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-primary" />
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-bg-tertiary border-t-brand-600" />
           </div>
         )}
         {!loading && buckets.length === 0 && (
@@ -113,6 +112,6 @@ export function PriceDistributionChart({
           </ResponsiveContainer>
         )}
       </div>
-    </Card>
+    </div>
   );
 }
