@@ -1,5 +1,5 @@
 "use client";
-import { Download01 as Download, Share01 as Share2, List as LayoutList, LayoutGrid01 as LayoutGrid, SwitchVertical01 as ArrowUpDown, ArrowUp, ArrowDown, ChevronLeft, ChevronRight, X, Settings01 as Settings, LinkExternal01 as ExternalLink, Grid01 as Grid, HelpCircle, Columns02 as Columns, InfoCircle } from '@untitledui/icons';
+import { Download01 as Download, Share01 as Share2, List as LayoutList, LayoutGrid01 as LayoutGrid, ArrowUp, ArrowDown, ChevronLeft, ChevronRight, X, Settings01 as Settings, LinkExternal01 as ExternalLink, Grid01 as Grid, HelpCircle, Columns02 as Columns, InfoCircle } from '@untitledui/icons';
 
 
 import { useEffect, useState, useMemo } from "react";
@@ -131,10 +131,34 @@ const ROWS_PER_PAGE_OPTIONS = [10, 25, 50, 100];
 
 const colHelper = createColumnHelper<TrackedProduct>();
 
+/** Particl-style: paired ↑↓ when unsorted; dominant arrow when sorted. */
 function SortIcon({ isSorted }: { isSorted: false | "asc" | "desc" }) {
-  if (isSorted === "asc") return <ArrowUp className="h-3 w-3 shrink-0" aria-hidden />;
-  if (isSorted === "desc") return <ArrowDown className="h-3 w-3 shrink-0" aria-hidden />;
-  return <ArrowUpDown className="h-3 w-3 shrink-0 opacity-40" aria-hidden />;
+  const pair = "inline-flex h-4 shrink-0 items-center gap-px";
+  const sm = "h-2.5 w-2.5 shrink-0";
+  const md = "h-3 w-3 shrink-0";
+
+  if (isSorted === "asc") {
+    return (
+      <span className={pair} aria-hidden>
+        <ArrowUp className={`${md} text-foreground`} />
+        <ArrowDown className={`${sm} text-muted-foreground opacity-40`} />
+      </span>
+    );
+  }
+  if (isSorted === "desc") {
+    return (
+      <span className={pair} aria-hidden>
+        <ArrowUp className={`${sm} text-muted-foreground opacity-40`} />
+        <ArrowDown className={`${md} text-foreground`} />
+      </span>
+    );
+  }
+  return (
+    <span className={`${pair} text-muted-foreground`} aria-hidden>
+      <ArrowUp className={`${sm} opacity-80`} />
+      <ArrowDown className={`${sm} opacity-80`} />
+    </span>
+  );
 }
 
 function PriceTrackedProductsColumnSettings({ table }: { table: Table<TrackedProduct> }) {
