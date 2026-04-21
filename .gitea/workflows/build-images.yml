@@ -44,6 +44,7 @@ jobs:
             echo "=== Build nogl-worker-ingest ==="
             INGEST_IMAGE="$REGISTRY/$ORG/nogl-worker-ingest"
             docker build \
+              --security-opt apparmor=unconfined \
               --cache-from "$INGEST_IMAGE:latest" \
               -t "$INGEST_IMAGE:$SHA" \
               -t "$INGEST_IMAGE:latest" \
@@ -55,6 +56,7 @@ jobs:
             echo "=== Build nogl-worker-browser ==="
             BROWSER_IMAGE="$REGISTRY/$ORG/nogl-worker-browser"
             docker build \
+              --security-opt apparmor=unconfined \
               --cache-from "$BROWSER_IMAGE:latest" \
               -t "$BROWSER_IMAGE:$SHA" \
               -t "$BROWSER_IMAGE:latest" \
