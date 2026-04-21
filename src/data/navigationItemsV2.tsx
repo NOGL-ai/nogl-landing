@@ -106,7 +106,7 @@ export const navigationStructure: NavigationSection[] = [
                                 icon: TrendUp02,
                             },
                             {
-                                label: 'Marketing Asset Library',
+                                label: 'Asset Library',
                                 href: '/en/marketing-assets',
                                 icon: LayersThree01,
                             },
