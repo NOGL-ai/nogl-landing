@@ -3,6 +3,7 @@ import { SearchLg as Search, X } from '@untitledui/icons';
 
 
 
+import { buildProductExplorerResearchHref } from "@/lib/product-explorer-search";
 import { useTranslations } from "next-intl";
 import { useRouter, usePathname } from "next/navigation";
 import { useState, useCallback } from "react";
@@ -25,7 +26,7 @@ export function ProductSearchField({ className }: ProductSearchFieldProps) {
       e.preventDefault();
       const trimmed = query.trim();
       if (!trimmed) return;
-      router.push(`/${lang}/product-explorer?q=${encodeURIComponent(trimmed)}`);
+      router.push(buildProductExplorerResearchHref(lang, [trimmed]));
     },
     [query, lang, router],
   );

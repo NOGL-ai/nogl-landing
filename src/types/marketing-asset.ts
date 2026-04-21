@@ -62,7 +62,14 @@ export type MarketingAssetListParams = {
 	page?: number;
 	pageSize?: number;
 	sort?: "newest" | "oldest" | "longevity";
-	preset?: "discounts" | "canon" | "video-ads";
+	preset?:
+		| "discounts"
+		| "warehouse-sales"
+		| "restock-alerts"
+		| "luggage"
+		| "exclude-cart-emails"
+		| "canon"
+		| "video-ads";
 };
 
 export type MarketingAssetListResponse = {

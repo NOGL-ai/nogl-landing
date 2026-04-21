@@ -2,6 +2,8 @@
 
 import { z } from "zod";
 
+import { AssetType, Prisma } from "@prisma/client";
+
 import { prisma } from "@/lib/prismaDb";
 import { getAuthSession } from "@/lib/auth";
 import { getCalumetTenantId } from "@/lib/tenant";
@@ -36,7 +38,17 @@ const listParamsSchema = z.object({
 	page: z.coerce.number().int().min(1).default(1),
 	pageSize: z.coerce.number().int().min(1).max(200).default(48),
 	sort: z.enum(["newest", "oldest", "longevity"]).default("newest"),
-	preset: z.enum(["discounts", "canon", "video-ads"]).optional(),
+	preset: z
+		.enum([
+			"discounts",
+			"warehouse-sales",
+			"restock-alerts",
+			"luggage",
+			"exclude-cart-emails",
+			"canon",
+			"video-ads",
+		])
+		.optional(),
 });
 
 async function requireUser(): Promise<void> {
@@ -93,14 +105,29 @@ export async function listMarketingAssets(
 	const parsed = listParamsSchema.parse(params);
 	const tenantId = await getCalumetTenantId();
 
-	const where: Record<string, unknown> = { tenantId };
+	const andParts: Prisma.MarketingAssetWhereInput[] = [{ tenantId }];
 
-	if (parsed.assetType && parsed.assetType !== "ALL") where.assetType = parsed.assetType;
+	const emailLockedPreset =
+		parsed.preset === "discounts" ||
+		parsed.preset === "warehouse-sales" ||
+		parsed.preset === "restock-alerts" ||
+		parsed.preset === "exclude-cart-emails";
+
+	if (parsed.preset === "video-ads") {
+		andParts.push({ assetType: { in: [AssetType.YOUTUBE_AD, AssetType.TIKTOK_AD] } });
+	} else if (emailLockedPreset) {
+		andParts.push({ assetType: AssetType.EMAIL });
+	} else if (parsed.assetType && parsed.assetType !== "ALL") {
+		andParts.push({ assetType: parsed.assetType as AssetType });
+	}
+
 	if (parsed.from || parsed.to) {
-		where.capturedAt = {
-			...(parsed.from ? { gte: new Date(parsed.from) } : {}),
-			...(parsed.to ? { lte: new Date(parsed.to) } : {}),
-		};
+		andParts.push({
+			capturedAt: {
+				...(parsed.from ? { gte: new Date(parsed.from) } : {}),
+				...(parsed.to ? { lte: new Date(parsed.to) } : {}),
+			},
+		});
 	}
 
 	if (parsed.brandSlug) {
@@ -111,34 +138,95 @@ export async function listMarketingAssets(
 		if (!brand) {
 			return { items: [], total: 0, page: parsed.page, pageSize: parsed.pageSize, totalPages: 0 };
 		}
-		where.brandId = brand.id;
+		andParts.push({ brandId: brand.id });
 	}
 
-	if (parsed.search) {
-		const term = parsed.search;
-		where.OR = [
-			{ title: { contains: term, mode: "insensitive" } },
-			{ bodyText: { contains: term, mode: "insensitive" } },
-		];
+	if (parsed.search?.trim()) {
+		const term = parsed.search.trim();
+		andParts.push({
+			OR: [
+				{ title: { contains: term, mode: "insensitive" } },
+				{ bodyText: { contains: term, mode: "insensitive" } },
+			],
+		});
 	}
 
 	if (parsed.preset === "discounts") {
-		where.assetType = "EMAIL";
-		where.bodyText = { contains: "Rabatt", mode: "insensitive" };
+		andParts.push({
+			OR: [
+				{ bodyText: { contains: "discount", mode: "insensitive" } },
+				{ bodyText: { contains: "rabatt", mode: "insensitive" } },
+				{ bodyText: { contains: "sale", mode: "insensitive" } },
+				{ title: { contains: "sale", mode: "insensitive" } },
+				{ bodyText: { contains: "% off", mode: "insensitive" } },
+				{ bodyText: { contains: "save", mode: "insensitive" } },
+			],
+		});
+	}
+	if (parsed.preset === "warehouse-sales") {
+		andParts.push({
+			OR: [
+				{ bodyText: { contains: "warehouse", mode: "insensitive" } },
+				{ title: { contains: "warehouse", mode: "insensitive" } },
+				{ bodyText: { contains: "clearance", mode: "insensitive" } },
+				{ bodyText: { contains: "outlet", mode: "insensitive" } },
+			],
+		});
+	}
+	if (parsed.preset === "restock-alerts") {
+		andParts.push({
+			OR: [
+				{ bodyText: { contains: "restock", mode: "insensitive" } },
+				{ title: { contains: "restock", mode: "insensitive" } },
+				{ bodyText: { contains: "back in stock", mode: "insensitive" } },
+				{ bodyText: { contains: "wieder verfügbar", mode: "insensitive" } },
+				{ bodyText: { contains: "nachschub", mode: "insensitive" } },
+			],
+		});
+	}
+	if (parsed.preset === "luggage") {
+		andParts.push({
+			OR: [
+				{ title: { contains: "luggage", mode: "insensitive" } },
+				{ bodyText: { contains: "luggage", mode: "insensitive" } },
+				{ title: { contains: "suitcase", mode: "insensitive" } },
+				{ bodyText: { contains: "suitcase", mode: "insensitive" } },
+				{ title: { contains: "koffer", mode: "insensitive" } },
+				{ bodyText: { contains: "koffer", mode: "insensitive" } },
+			],
+		});
+	}
+	if (parsed.preset === "exclude-cart-emails") {
+		andParts.push({
+			NOT: {
+				OR: [
+					{ title: { contains: "abandoned cart", mode: "insensitive" } },
+					{ bodyText: { contains: "abandoned cart", mode: "insensitive" } },
+					{ title: { contains: "your cart", mode: "insensitive" } },
+					{ bodyText: { contains: "your cart", mode: "insensitive" } },
+					{ title: { contains: "warenkorb", mode: "insensitive" } },
+					{ bodyText: { contains: "warenkorb", mode: "insensitive" } },
+				],
+			},
+		});
 	}
 	if (parsed.preset === "canon") {
-		where.OR = [
-			{ title: { contains: "Canon", mode: "insensitive" } },
-			{ bodyText: { contains: "Canon", mode: "insensitive" } },
-		];
+		andParts.push({
+			OR: [
+				{ title: { contains: "Canon", mode: "insensitive" } },
+				{ bodyText: { contains: "Canon", mode: "insensitive" } },
+			],
+		});
 	}
 	if (parsed.preset === "video-ads") {
-		where.assetType = { in: ["YOUTUBE_AD", "TIKTOK_AD"] };
+		andParts.push({ assetType: { in: ["YOUTUBE_AD", "TIKTOK_AD"] } });
 	}
 
 	if (parsed.hasDiscount) {
-		where.bodyText = { contains: "%", mode: "insensitive" };
+		andParts.push({ bodyText: { contains: "%", mode: "insensitive" } });
 	}
+
+	const where: Prisma.MarketingAssetWhereInput = { AND: andParts };
 
 	const orderBy =
 		parsed.sort === "oldest"

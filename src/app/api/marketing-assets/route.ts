@@ -7,8 +7,8 @@ export async function GET(req: NextRequest) {
 	try {
 		const sp = req.nextUrl.searchParams;
 		const params: MarketingAssetListParams = {
-			assetType: (sp.get("type") as MarketingAssetListParams["assetType"]) ?? undefined,
-			brandSlug: sp.get("brand") ?? undefined,
+			assetType: (sp.get("assetType") || sp.get("type") || undefined) as MarketingAssetListParams["assetType"],
+			brandSlug: sp.get("brandSlug") || sp.get("brand") || undefined,
 			search: sp.get("search") ?? undefined,
 			from: sp.get("from") ?? undefined,
 			to: sp.get("to") ?? undefined,

@@ -55,51 +55,68 @@ export function AssetDetailModal({
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className='max-h-[90vh] max-w-4xl overflow-y-auto'>
-				<DialogHeader>
-					<DialogTitle>{detail?.title ?? "Asset detail"}</DialogTitle>
+			<DialogContent
+				showCloseButton
+				className="max-h-[92vh] w-[min(100vw-2rem,1120px)] max-w-none gap-0 overflow-y-auto p-0 sm:max-w-[min(100vw-2rem,1120px)]"
+			>
+				<DialogHeader className="border-b border-border px-6 py-4">
+					<DialogTitle className="pr-8 text-xl font-semibold">
+						{detail?.title ?? "Asset detail"}
+					</DialogTitle>
 				</DialogHeader>
 				{loading ? (
-					<div className='flex h-64 items-center justify-center text-sm text-muted-foreground'>
+					<div className="flex h-64 items-center justify-center px-6 text-sm text-muted-foreground">
 						Loading…
 					</div>
 				) : !detail ? (
-					<div className='text-sm text-muted-foreground'>Not found.</div>
+					<div className="px-6 py-8 text-sm text-muted-foreground">Not found.</div>
 				) : (
-					<div className='grid gap-6 lg:grid-cols-[2fr_1fr]'>
-						<div>
+					<div className="grid gap-0 lg:grid-cols-[1.35fr_1fr]">
+						<div className="border-b border-border p-6 lg:border-b-0 lg:border-r">
+							<div className="mb-4 flex flex-wrap items-center gap-3 text-sm">
+								<span className="font-semibold text-foreground">{detail.brandName}</span>
+								<span className="text-muted-foreground">
+									{new Date(detail.capturedAt).toLocaleDateString("en-GB", {
+										day: "numeric",
+										month: "short",
+										year: "numeric",
+									})}
+								</span>
+								{detail.sourceUrl ? (
+									<a
+										className="inline-flex items-center gap-1 font-medium text-primary underline-offset-2 hover:underline"
+										href={detail.sourceUrl}
+										target="_blank"
+										rel="noreferrer"
+									>
+										View →
+									</a>
+								) : null}
+							</div>
 							{hero ? (
-								<div className='relative aspect-[4/3] w-full overflow-hidden rounded-lg border border-border bg-muted'>
-									<Image src={hero} alt={detail.title ?? "asset"} fill className='object-contain' unoptimized />
+								<div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg border border-border bg-muted">
+									<Image src={hero} alt={detail.title ?? "asset"} fill className="object-contain" unoptimized />
 								</div>
 							) : null}
 							{detail.bodyText ? (
-								<div className='mt-4 whitespace-pre-wrap rounded border border-border bg-card p-4 text-sm text-foreground'>
+								<div className="mt-4 max-h-[40vh] overflow-y-auto whitespace-pre-wrap rounded-lg border border-border bg-muted/30 p-4 text-sm text-foreground">
 									{detail.bodyText}
 								</div>
 							) : null}
 						</div>
-						<div className='space-y-4 text-sm'>
+						<div className="space-y-4 p-6 text-sm">
 							<div>
-								<div className='text-xs uppercase text-muted-foreground'>Brand</div>
-								<div className='font-medium text-foreground'>{detail.brandName}</div>
-							</div>
-							<div>
-								<div className='text-xs uppercase text-muted-foreground'>Captured</div>
-								<div>{new Date(detail.capturedAt).toLocaleString()}</div>
-							</div>
-							<div>
-								<div className='text-xs uppercase text-muted-foreground'>Source</div>
-								<div>{detail.source}</div>
+								<div className="text-xs uppercase text-muted-foreground">Source</div>
+								<div className="text-foreground">{detail.source}</div>
 							</div>
 							{detail.sourceUrl ? (
 								<div>
-									<div className='text-xs uppercase text-muted-foreground'>URL</div>
+									<div className="text-xs uppercase text-muted-foreground">URL</div>
 									<a
-										className='break-all text-primary underline'
+										className="break-all text-primary underline underline-offset-2"
 										href={detail.sourceUrl}
-										target='_blank'
-										rel='noreferrer'
+										target="_blank"
+										rel="noreferrer"
 									>
 										{detail.sourceUrl}
 									</a>

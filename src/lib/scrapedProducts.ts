@@ -52,9 +52,31 @@ function getPool(): Pool | null {
   return pool;
 }
 
+function escapeIlikePattern(raw: string): string {
+  return `%${raw.trim().replace(/[%_]/g, "\\$&")}%`;
+}
+
+function normalizeSearchTerms(searchQuery?: string | string[]): string[] {
+  if (searchQuery == null) return [];
+  if (Array.isArray(searchQuery)) {
+    const seen = new Set<string>();
+    const out: string[] = [];
+    for (const t of searchQuery) {
+      const s = typeof t === "string" ? t.trim() : "";
+      if (!s || seen.has(s.toLowerCase())) continue;
+      seen.add(s.toLowerCase());
+      out.push(s);
+      if (out.length >= 12) break;
+    }
+    return out;
+  }
+  const one = typeof searchQuery === "string" ? searchQuery.trim() : "";
+  return one ? [one] : [];
+}
+
 export async function getScrapedProducts(
   limit = 20,
-  searchQuery?: string,
+  searchQuery?: string | string[],
 ): Promise<ScrapedProduct[]> {
   const db = getPool();
   if (!db) {
@@ -65,22 +87,24 @@ export async function getScrapedProducts(
   let queryText: string;
   let params: unknown[];
 
-  if (searchQuery && searchQuery.trim().length > 0) {
-    // Full-text ILIKE search across payload title/name fields and url
-    const term = `%${searchQuery.trim().replace(/[%_]/g, "\\$&")}%`;
+  const terms = normalizeSearchTerms(searchQuery);
+
+  if (terms.length > 0) {
+    const patterns = terms.map(escapeIlikePattern);
+    const orBlocks = patterns.map((_, i) => {
+      const n = i + 1;
+      return `(payload->>'title' ILIKE $${n} OR payload->>'name' ILIKE $${n} OR url ILIKE $${n})`;
+    });
+    const limitParam = patterns.length + 1;
     queryText = `
       SELECT url, source, item_type, updated_at, payload
       FROM scraping.scraped_items
       WHERE item_type = 'product'
-        AND (
-          payload->>'title' ILIKE $1
-          OR payload->>'name' ILIKE $1
-          OR url ILIKE $1
-        )
+        AND (${orBlocks.join(" OR ")})
       ORDER BY updated_at DESC
-      LIMIT $2
+      LIMIT $${limitParam}
     `;
-    params = [term, safeLimit];
+    params = [...patterns, safeLimit];
   } else {
     queryText = `
       SELECT url, source, item_type, updated_at, payload

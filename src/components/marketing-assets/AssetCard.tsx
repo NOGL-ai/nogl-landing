@@ -5,17 +5,21 @@ import type { AssetTypeName, MarketingAssetListItem } from "@/types/marketing-as
 
 const TYPE_LABEL: Record<AssetTypeName, string> = {
 	EMAIL: "Email",
-	HOMEPAGE: "Homepage",
-	HOMEPAGE_MOBILE: "Mobile Homepage",
+	HOMEPAGE: "Homepages",
+	HOMEPAGE_MOBILE: "Mobile Homepages",
 	INSTAGRAM: "Instagram",
-	META_AD: "Meta Ad",
+	META_AD: "Meta Ads",
 	YOUTUBE_AD: "YouTube Ad",
 	TIKTOK_AD: "TikTok Ad",
 };
 
 function fmtDate(iso: string): string {
 	try {
-		return new Date(iso).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+		return new Date(iso).toLocaleDateString("en-GB", {
+			day: "numeric",
+			month: "short",
+			year: "numeric",
+		});
 	} catch {
 		return iso;
 	}
@@ -35,55 +39,46 @@ export function AssetCard({
 	onClick: () => void;
 }) {
 	const hero = resolveMedia(asset.mediaUrls?.[0]);
+	const title = asset.title ?? asset.bodyText ?? "Untitled";
 	const proxies = asset.proxies ?? {};
 	const longevity = proxies.longevityDays;
-	const iteration = proxies.iterationRate28d;
 
 	return (
 		<button
-			type='button'
+			type="button"
 			onClick={onClick}
-			className='group flex flex-col overflow-hidden rounded-lg border border-border bg-card text-left shadow-sm transition hover:border-primary hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary'
+			className="group flex h-full min-h-[320px] w-full max-w-[400px] flex-col overflow-hidden rounded-xl border border-border bg-card text-left shadow-sm transition hover:border-primary/40 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 		>
-			<div className='relative aspect-[4/3] w-full bg-muted'>
+			<div className="relative aspect-[5/4] w-full shrink-0 bg-muted">
 				{hero ? (
 					<Image
 						src={hero}
-						alt={asset.title ?? TYPE_LABEL[asset.assetType]}
+						alt={title}
 						fill
-						sizes='(max-width: 768px) 100vw, 33vw'
-						className='object-cover transition group-hover:scale-105'
+						sizes="(max-width: 1024px) 100vw, 400px"
+						className="object-cover transition duration-300 group-hover:scale-[1.02]"
 						unoptimized
 					/>
 				) : (
-					<div className='flex h-full items-center justify-center text-xs text-muted-foreground'>
+					<div className="flex h-full min-h-[200px] items-center justify-center px-4 text-center text-xs text-muted-foreground">
 						No preview
 					</div>
 				)}
-				<div className='absolute left-2 top-2 flex gap-1'>
-					<span className='rounded-full bg-background/90 px-2 py-0.5 text-[10px] font-medium text-foreground'>
-						{TYPE_LABEL[asset.assetType]}
-					</span>
-				</div>
 				{longevity && longevity > 60 ? (
-					<span className='absolute right-2 top-2 rounded-full bg-green-500/90 px-2 py-0.5 text-[10px] font-medium text-white'>
+					<span className="absolute right-2 top-2 rounded-full bg-green-600/90 px-2 py-0.5 text-[10px] font-medium text-white">
 						{longevity}d live
 					</span>
 				) : null}
 			</div>
-			<div className='flex flex-1 flex-col gap-1 p-3'>
-				<div className='flex items-center justify-between text-[11px] text-muted-foreground'>
-					<span className='truncate font-medium text-foreground'>{asset.brandName}</span>
+			<div className="flex flex-1 flex-col gap-2 p-4">
+				<p className="line-clamp-3 text-sm font-semibold leading-snug text-foreground">{title}</p>
+				<div className="mt-auto flex flex-wrap items-baseline gap-x-2 gap-y-1 text-xs text-muted-foreground">
+					<span className="font-medium text-foreground">{asset.brandName}</span>
 					<span>{fmtDate(asset.capturedAt)}</span>
-				</div>
-				<p className='line-clamp-2 text-sm text-foreground'>
-					{asset.title ?? asset.bodyText ?? "Untitled"}
-				</p>
-				{iteration && iteration > 5 ? (
-					<span className='mt-1 w-fit rounded bg-amber-500/15 px-1.5 py-0.5 text-[10px] text-amber-700 dark:text-amber-300'>
-						{iteration} variants / 28d
+					<span className="w-full text-[11px] uppercase tracking-wide text-muted-foreground">
+						{TYPE_LABEL[asset.assetType]}
 					</span>
-				) : null}
+				</div>
 			</div>
 		</button>
 	);

@@ -99,6 +99,7 @@ export const navigationStructure: NavigationSection[] = [
                             { label: 'Trends',              href: '/en/trends',                 icon: TrendUp02 },
                             { label: 'Asset Library',       href: '/en/marketing-assets',       icon: LayersThree01 },
                             { label: 'Events Feed',         href: '/en/marketing-assets/events',icon: Database01 },
+                            { label: 'Ingestion health',    href: '/en/marketing-assets/pipeline', icon: Activity },
                             { label: 'Product Explorer',    href: '/en/product-explorer',       icon: Package },
                         ],
                     },
