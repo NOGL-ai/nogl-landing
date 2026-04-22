@@ -845,7 +845,7 @@ export function CompareClient() {
 
           {/* Table */}
           <div className="overflow-x-auto [-webkit-overflow-scrolling:touch]">
-            <table className="w-full min-w-[38rem] table-fixed text-sm sm:min-w-[54rem]">
+            <table className="w-full min-w-[34rem] table-fixed text-sm sm:min-w-[54rem]">
               <thead className="border-b border-border bg-card">
                 {productTable.getHeaderGroups().map((headerGroup) => (
                   <tr key={headerGroup.id}>
@@ -869,11 +869,9 @@ export function CompareClient() {
                           scope="col"
                           onClick={canSort ? header.column.getToggleSortingHandler() : undefined}
                         >
-                          <div
-                            className={`flex min-w-0 flex-wrap items-end gap-x-1 gap-y-0.5 sm:flex-nowrap sm:items-center ${justify}`}
-                          >
+                          <div className={`flex min-w-0 flex-nowrap items-center gap-1 ${justify}`}>
                             <span
-                              className={`min-w-0 max-w-full hyphens-auto break-words [overflow-wrap:anywhere] sm:max-w-none ${
+                              className={`min-w-0 max-w-full truncate whitespace-nowrap ${
                                 align === "right"
                                   ? "text-right"
                                   : align === "center"
