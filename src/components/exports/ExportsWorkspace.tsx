@@ -12,6 +12,62 @@ const TAB_ITEMS: Array<{ id: ExportTab; label: string }> = [
 	{ id: "credits", label: "Purchase More Credits" },
 ];
 
+type PresetKey =
+	| "new-products"
+	| "product-pricing"
+	| "monthly-sales"
+	| "sku-sizes"
+	| "womens-sales";
+
+const PRESETS: Array<{ key: PresetKey; label: string }> = [
+	{ key: "new-products", label: "New Products" },
+	{ key: "product-pricing", label: "Product Pricing" },
+	{ key: "monthly-sales", label: "Monthly Competitor Sales" },
+	{ key: "sku-sizes", label: "SKU Sizes" },
+	{ key: "womens-sales", label: "Women's Sales over Time" },
+];
+
+const PRESET_CONFIG: Record<
+	PresetKey,
+	{ aggregation: string; datasource: string; columnsCount: number; previewFile: string; sampleNote: string }
+> = {
+	"new-products": {
+		aggregation: "Entire Selected Period",
+		datasource: "Products",
+		columnsCount: 21,
+		previewFile: "new_products_export.csv",
+		sampleNote: "Newly observed products in the selected period.",
+	},
+	"product-pricing": {
+		aggregation: "Daily",
+		datasource: "Products",
+		columnsCount: 24,
+		previewFile: "product_pricing_export.csv",
+		sampleNote: "Price and discount snapshots for tracked SKUs.",
+	},
+	"monthly-sales": {
+		aggregation: "Monthly",
+		datasource: "Products",
+		columnsCount: 18,
+		previewFile: "monthly_competitor_sales.csv",
+		sampleNote: "Monthly grouped sales and assortment movement.",
+	},
+	"sku-sizes": {
+		aggregation: "Entire Selected Period",
+		datasource: "Products",
+		columnsCount: 16,
+		previewFile: "sku_sizes_export.csv",
+		sampleNote: "Size-level SKU coverage and availability.",
+	},
+	"womens-sales": {
+		aggregation: "Weekly",
+		datasource: "Products",
+		columnsCount: 20,
+		previewFile: "womens_sales_over_time.csv",
+		sampleNote: "Women's segment sales trend over time.",
+	},
+};
+
 function EmptyState({
 	title,
 	description,
@@ -40,9 +96,11 @@ function EmptyState({
 
 export function ExportsWorkspace({ lang }: { lang: string }) {
 	const [activeTab, setActiveTab] = useState<ExportTab>("generate");
+	const [selectedPreset, setSelectedPreset] = useState<PresetKey>("new-products");
 
 	const tabBody = useMemo(() => {
 		if (activeTab === "generate") {
+			const cfg = PRESET_CONFIG[selectedPreset];
 			return (
 				<div className="space-y-6">
 					<section>
@@ -51,17 +109,21 @@ export function ExportsWorkspace({ lang }: { lang: string }) {
 							Apply a preset of already configured options to quickly get a report.
 						</p>
 						<div className="mt-3 flex flex-wrap gap-2">
-							{["New Products", "Product Pricing", "Monthly Competitor Sales", "SKU Sizes", "Women's Sales over Time"].map(
-								(preset) => (
+							{PRESETS.map((preset) => (
 									<button
-										key={preset}
+										key={preset.key}
 										type="button"
-										className="rounded-full border border-border bg-card px-3 py-1.5 text-sm text-foreground hover:bg-accent"
+										onClick={() => setSelectedPreset(preset.key)}
+										aria-pressed={selectedPreset === preset.key}
+										className={`rounded-full border px-3 py-1.5 text-sm transition ${
+											selectedPreset === preset.key
+												? "border-primary bg-primary/10 text-primary"
+												: "border-border bg-card text-foreground hover:bg-accent"
+										}`}
 									>
-										{preset}
+										{preset.label}
 									</button>
-								),
-							)}
+								))}
 						</div>
 					</section>
 
@@ -81,7 +143,7 @@ export function ExportsWorkspace({ lang }: { lang: string }) {
 									Timeseries Aggregation *
 								</label>
 								<select className="h-9 w-full rounded-md border border-border bg-background px-2 text-sm">
-									<option>Entire Selected Period</option>
+									<option>{cfg.aggregation}</option>
 								</select>
 								<label className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
 									Time Frame *
@@ -91,17 +153,17 @@ export function ExportsWorkspace({ lang }: { lang: string }) {
 									Datasource *
 								</label>
 								<select className="h-9 w-full rounded-md border border-border bg-background px-2 text-sm">
-									<option>Products</option>
+									<option>{cfg.datasource}</option>
 								</select>
 								<label className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
 									Columns
 								</label>
-								<p className="text-xs text-muted-foreground">21 columns selected</p>
+								<p className="text-xs text-muted-foreground">{cfg.columnsCount} columns selected</p>
 								<button
 									type="button"
 									className="inline-flex h-9 items-center rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground"
 								>
-									Generate report
+									Generate {PRESETS.find((p) => p.key === selectedPreset)?.label}
 								</button>
 							</div>
 							<div id="report-preview" className="rounded-lg border border-border bg-background p-4">
@@ -109,7 +171,7 @@ export function ExportsWorkspace({ lang }: { lang: string }) {
 									<span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
 										Preview
 									</span>
-									<span className="rounded bg-muted px-2 py-0.5 text-xs text-muted-foreground">export.csv</span>
+									<span className="rounded bg-muted px-2 py-0.5 text-xs text-muted-foreground">{cfg.previewFile}</span>
 								</div>
 								<div className="overflow-x-auto rounded border border-border">
 									<table className="min-w-[680px] w-full text-xs">
@@ -136,7 +198,7 @@ export function ExportsWorkspace({ lang }: { lang: string }) {
 												<td className="px-2 py-2">cmp_123</td>
 												<td className="px-2 py-2">prod_456</td>
 												<td className="px-2 py-2">Sample Co</td>
-												<td className="px-2 py-2">Sample data not representative of actual report</td>
+												<td className="px-2 py-2">{cfg.sampleNote}</td>
 											</tr>
 										</tbody>
 									</table>
@@ -196,7 +258,7 @@ export function ExportsWorkspace({ lang }: { lang: string }) {
 				</div>
 			</div>
 		);
-	}, [activeTab]);
+	}, [activeTab, selectedPreset]);
 
 	return (
 		<div className="min-h-screen bg-background">
@@ -206,11 +268,45 @@ export function ExportsWorkspace({ lang }: { lang: string }) {
 						<h1 className="text-2xl font-semibold tracking-tight text-foreground">Exports</h1>
 						<p className="mt-1 text-sm text-muted-foreground">500 credits available</p>
 					</div>
-					<details className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm sm:w-[280px]">
+					<details className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm sm:w-[360px]">
 						<summary className="cursor-pointer font-medium text-foreground">How to use</summary>
-						<p className="mt-2 text-muted-foreground">
-							Generate new exports, browse team reports, manage scheduled reports, and purchase additional credits.
-						</p>
+						<div className="mt-2 space-y-2 text-muted-foreground">
+							<p>
+								Generate new exports, browse team reports, manage scheduled reports, and purchase additional credits.
+							</p>
+							<div className="rounded-md border border-border bg-background p-3">
+								<p className="text-sm font-medium text-foreground">Help</p>
+								<p className="mt-1 text-xs text-muted-foreground">
+									Running into issues? Email us at{" "}
+									<a className="text-primary underline underline-offset-2" href="mailto:support@nogl.tech">
+										support@nogl.tech
+									</a>{" "}
+									or use the links below.
+								</p>
+								<div className="mt-2 flex flex-wrap gap-2">
+									<Link href="/en/help-center" className="text-xs text-primary underline underline-offset-2">
+										Help Center
+									</Link>
+									<Link href="/en/settings" className="text-xs text-primary underline underline-offset-2">
+										Settings
+									</Link>
+									<Link href="/en/user/billing" className="text-xs text-primary underline underline-offset-2">
+										Billing
+									</Link>
+									<a
+										href="https://github.com/NOGL-ai/nogl-landing/commits/main"
+										target="_blank"
+										rel="noreferrer"
+										className="text-xs text-primary underline underline-offset-2"
+									>
+										Changelog
+									</a>
+									<a href="mailto:support@nogl.tech" className="text-xs text-primary underline underline-offset-2">
+										Email Support
+									</a>
+								</div>
+							</div>
+						</div>
 					</details>
 				</div>
 
