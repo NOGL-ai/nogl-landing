@@ -1,5 +1,5 @@
 "use client";
-import { Download01 as Download, Share01 as Share2, List as LayoutList, LayoutGrid01 as LayoutGrid, ArrowUp, ArrowDown, ChevronLeft, ChevronRight, X, Settings01 as Settings, LinkExternal01 as ExternalLink, Grid01 as Grid, HelpCircle, Columns02 as Columns, InfoCircle } from '@untitledui/icons';
+import { Download01 as Download, Share01 as Share2, List as LayoutList, LayoutGrid01 as LayoutGrid, ArrowUp, ArrowDown, ChevronLeft, ChevronRight, X, Settings01 as Settings, LinkExternal01 as ExternalLink, Grid01 as Grid, HelpCircle, Columns02 as Columns, InfoCircle, Eye } from '@untitledui/icons';
 
 
 import { useEffect, useState, useMemo } from "react";
@@ -15,9 +15,6 @@ import {
   type Table,
   type VisibilityState,
 } from "@tanstack/react-table";
-import { Eye, EyeOff } from "lucide-react";
-
-
 import { Card } from "@/components/ui/card";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -131,7 +128,7 @@ const ROWS_PER_PAGE_OPTIONS = [10, 25, 50, 100];
 
 const colHelper = createColumnHelper<TrackedProduct>();
 
-/** Particl-style: paired ↑↓ when unsorted; dominant arrow when sorted. */
+/** Paired ↑↓ when unsorted; dominant arrow when sorted. */
 function SortIcon({ isSorted }: { isSorted: false | "asc" | "desc" }) {
   const pair = "inline-flex h-4 shrink-0 items-center gap-px";
   const sm = "h-2.5 w-2.5 shrink-0";
@@ -236,7 +233,10 @@ function PriceTrackedProductsColumnSettings({ table }: { table: Table<TrackedPro
                   {visible ? (
                     <Eye className="h-4 w-4" aria-hidden />
                   ) : (
-                    <EyeOff className="h-4 w-4 opacity-80" aria-hidden />
+                    <span className="relative inline-flex h-4 w-4 items-center justify-center" aria-hidden>
+                      <Eye className="h-4 w-4 opacity-60" />
+                      <span className="absolute h-px w-4 rotate-[-25deg] bg-current" />
+                    </span>
                   )}
                 </button>
               </li>

@@ -2,7 +2,7 @@
 
 ## Marketing Asset Library (`/[lang]/marketing-assets`)
 
-- **Main route** now renders the **asset library** (Particl-style workspace): channel tabs, optional capture date range, company filter, title/body search, preset chips, two-column cards, detail modal, and paged **Load more** via `/api/marketing-assets`.
+- **Main route** now renders the **asset library** workspace: channel tabs, optional capture date range, company filter, title/body search, preset chips, two-column cards, detail modal, and paged **Load more** via `/api/marketing-assets`.
 - **Ingestion health** (queues, events chart, creatives strip) moved to **`/[lang]/marketing-assets/pipeline`**. Nav: **Digital Shelf → Ingestion health**.
 - **API query params** (fixed): the list endpoint accepts **`assetType`** or legacy **`type`**, and **`brandSlug`** or legacy **`brand`**. The UI sends `assetType` / `brandSlug`.
 - **Presets** (server-side `AND` filters): discount emails, warehouse sales, restock alerts, luggage keywords, exclude cart-style emails, Canon products, video ads (YouTube + TikTok). Email-locked presets override the tab’s `assetType` where needed; **video-ads** forces YouTube/TikTok types.
@@ -10,7 +10,7 @@
 
 ## Product Explorer (`/[lang]/product-explorer`)
 
-- **Landing**: suggested keywords, preview grid, **How to use**. Plain **`?q=`** redirects to research with canonical **`searchTerms`** (JSON array, URL-encoded), matching the Particl-style shareable URL pattern.
+- **Landing**: suggested keywords, preview grid, **How to use**. Plain **`?q=`** redirects to research with canonical **`searchTerms`** (JSON array, URL-encoded), matching the reference shareable URL pattern.
 - **Research** (`/[lang]/product-explorer/research`): requires non-empty `searchTerms` (or `q` → redirect); supports **Load more** with `limit`. **`getScrapedProducts`** accepts a single string or string array (OR across terms).
 - **Dashboard search field** navigates to research using `buildProductExplorerResearchHref`.
 

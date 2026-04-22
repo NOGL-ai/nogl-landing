@@ -53,7 +53,7 @@ export function StatWidget({ value, delta, config }: Props) {
         </p>
       )}
 
-      {/* Big number — Particl style: large, prominent */}
+      {/* Big number — large and prominent */}
       <p className="text-3xl font-bold tabular-nums leading-tight">{formatted}</p>
 
       {/* Sub-label */}

@@ -296,8 +296,8 @@ export function MarketingAssetLibrary({
 
 				{tab === "SMS" ? (
 					<div className="rounded-xl border border-dashed border-border-primary py-16 text-center text-sm text-text-tertiary">
-						SMS is shown in Particl for text-message creatives. This tenant does not ingest SMS rows yet —
-						the tab is here for parity.
+						SMS is shown for text-message creatives. This tenant does not ingest SMS rows yet — the tab is
+						here for parity.
 					</div>
 				) : loading && items.length === 0 ? (
 					<ol className="m-0 grid list-none grid-cols-1 gap-4 p-0 lg:grid-cols-2">
@@ -338,6 +338,7 @@ export function MarketingAssetLibrary({
 
 			<AssetDetailModal
 				assetId={selectedId}
+				lang={lang}
 				open={modalOpen}
 				onOpenChange={(v) => {
 					setModalOpen(v);

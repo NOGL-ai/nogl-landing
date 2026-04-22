@@ -184,7 +184,7 @@ export function CompanyInfoBar({ company, snapshot }: CompanyInfoBarProps) {
             <ExternalLink className="h-3 w-3" />
           </a>
 
-          {/* Global period selector — matches Particl top-right "Last 4w" */}
+          {/* Global period selector */}
           <div className="ml-auto">
             <PeriodChip value={period} onChange={setPeriod} />
           </div>

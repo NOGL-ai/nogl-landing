@@ -47,7 +47,7 @@ export function ProductTaxonomyClient({ lang }: { lang: string }) {
 						<div className="mt-2 space-y-2 text-text-tertiary">
 							<p>
 								Use the columns left-to-right. Each depth lists child types under your current selection.
-								This mirrors tools like Particl where PDP fields feed categorization models.
+								This mirrors taxonomy workflows where PDP fields feed categorization models.
 							</p>
 							<p>
 								To re-map real catalog products, use your product editor or ingestion pipeline — this UI is
@@ -63,7 +63,7 @@ export function ProductTaxonomyClient({ lang }: { lang: string }) {
 					<section className="mb-6 rounded-xl border border-border-primary bg-bg-primary p-5 shadow-sm">
 						<h2 className="text-sm font-semibold text-text-primary">AI categorization</h2>
 						<p className="mt-2 text-sm leading-relaxed text-text-tertiary">
-							In production systems like Particl, product titles, sizes, materials, and PDP keywords are passed
+							In production systems, product titles, sizes, materials, and PDP keywords are passed
 							through large language models and rules to assign each SKU to a{" "}
 							<strong className="text-text-primary">stable taxonomy path</strong>. That path powers filters,
 							peer sets, and market benchmarks across retailers.

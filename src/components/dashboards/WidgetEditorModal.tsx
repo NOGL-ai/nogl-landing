@@ -496,7 +496,7 @@ function TopTableFields({
 }) {
   return (
     <div className="grid grid-cols-2 gap-4">
-      {/* Entity toggle — Particl-style Competitor / Self */}
+      {/* Entity toggle — Competitor / Self */}
       <div className="col-span-2 flex flex-col gap-1.5">
         <Label>Data source</Label>
         <div className="inline-flex rounded-lg border p-0.5">

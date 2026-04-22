@@ -211,7 +211,7 @@ export function DashboardEditor({
               {/* Auto-save indicator */}
               <AutoSaveIndicator state={saveState} savedAt={savedAt} />
 
-              {/* Arrange mode toggle — matches Particl's lock/unlock pattern */}
+              {/* Arrange mode toggle */}
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
@@ -329,7 +329,7 @@ export function DashboardEditor({
             </ResponsiveGridLayout>
           )}
 
-          {/* "+ Add Another Chart" footer link — matches Particl screenshot */}
+          {/* "+ Add Another Chart" footer link */}
           {widgets.length > 0 && (
             <button
               onClick={() => setAddModalOpen(true)}

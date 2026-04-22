@@ -1433,7 +1433,7 @@ model Notification {
 }
 
 // ---------------------------------------------------------------------------
-// Dashboards (Particl-style builder)
+// Dashboards (reference-style builder)
 // ---------------------------------------------------------------------------
 
 enum DashboardPersona {

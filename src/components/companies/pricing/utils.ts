@@ -1,6 +1,6 @@
 import type { PricingMetric } from "./PricingOverTimeChart";
 
-/** Shared blue accent — matches Particl's chart color */
+/** Shared blue accent for pricing charts */
 export const CHART_BLUE = "#3b82f6";
 
 /** Format a price value to a compact Euro string */

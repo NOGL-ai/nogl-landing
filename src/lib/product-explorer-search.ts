@@ -1,5 +1,5 @@
 /**
- * Particl-style `searchTerms` query: JSON array of strings, URL-encoded once in the query string.
+ * `searchTerms` query: JSON array of strings, URL-encoded once in the query string.
  * Example: ?searchTerms=%5B%22running+shoes%22%5D → ["running shoes"]
  */
 export function parseSearchTermsParam(raw: string | string[] | undefined): string[] {

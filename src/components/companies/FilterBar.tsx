@@ -7,7 +7,7 @@ import { ChevronDown, X } from '@untitledui/icons';
 import { useEffect, useRef, useState } from "react";
 
 // ── FilterChip ──────────────────────────────────────────────────────────────
-// A single dropdown filter pill matching Particl's style.
+// A single dropdown filter pill.
 // Renders the label (or active value) + chevron. Click opens the dropdown.
 // When a value is selected it shows a clear (×) button instead of chevron.
 

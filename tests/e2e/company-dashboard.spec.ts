@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 const now = () => new Date().toISOString();
 
-test.describe("Company dashboard (Particl-style chrome)", () => {
+test.describe("Company dashboard (reference-style chrome)", () => {
   test.setTimeout(120_000);
 
   test.beforeEach(async ({ page }) => {

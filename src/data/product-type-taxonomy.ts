@@ -1,5 +1,5 @@
 /**
- * Demo product-type tree for the Taxonomy Explorer (Particl-style UX).
+ * Demo product-type tree for the Taxonomy Explorer.
  * Replace or extend with Google Product Taxonomy CSV, Shopify taxonomy, or your own API.
  */
 export type ProductTaxonomyNode = {

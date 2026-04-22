@@ -17,7 +17,7 @@ import {
 type Config = z.infer<typeof BarChartConfig>;
 type Series = NonNullable<WidgetQueryResult["series"]>;
 
-// Particl-style palette — muted earthy tones
+// Dashboard palette — muted earthy tones
 const PALETTE = [
   "#4b5563", // slate
   "#1d4ed8", // blue

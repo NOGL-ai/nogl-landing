@@ -2,7 +2,7 @@
 
 ## Route
 
-- **`/[lang]/product-taxonomy`** (protected) — Particl-style **Explore** workspace: AI categorization explainer, example PDP → path, **Taxonomy Explorer** with five depth columns, disabled **Customize** (placeholder for a future paid tier).
+- **`/[lang]/product-taxonomy`** (protected) — **Explore** workspace: AI categorization explainer, example PDP → path, **Taxonomy Explorer** with five depth columns, disabled **Customize** (placeholder for a future paid tier).
 
 ## Data
 

@@ -102,7 +102,7 @@ export function GlobalFilterBar({
         </PopoverContent>
       </Popover>
 
-      {/* Dataset count badge — Particl shows "→ 1 dataset(s)" */}
+      {/* Dataset count badge */}
       <span className="flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs text-muted-foreground">
         → 1 dataset(s)
       </span>
