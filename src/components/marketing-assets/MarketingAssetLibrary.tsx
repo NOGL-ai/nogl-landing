@@ -154,25 +154,25 @@ export function MarketingAssetLibrary({
 	const hasMore = tab !== "SMS" && items.length < total;
 
 	return (
-		<div className="min-h-screen bg-background">
-			<div className="mx-auto max-w-[1180px] px-4 py-6 lg:px-8 lg:py-8">
+		<div className="min-h-screen bg-bg-primary">
+			<div className="mx-auto max-w-6xl px-4 py-6 lg:px-8 lg:py-8">
 				<div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 					<div>
-						<h1 className="text-2xl font-semibold tracking-tight text-foreground">
+						<h1 className="text-2xl font-semibold tracking-tight text-text-primary">
 							Marketing Asset Library
 						</h1>
-						<p className="mt-1 max-w-xl text-sm text-muted-foreground">
+						<p className="mt-1 max-w-xl text-sm text-text-tertiary">
 							Browse competitor creatives across email, site, social, and paid ads — filtered like a
 							research workspace.
 						</p>
 					</div>
-					<details className="w-full shrink-0 rounded-lg border border-border bg-card px-3 py-2 text-sm sm:max-w-xs">
-						<summary className="cursor-pointer font-medium text-foreground">How to use</summary>
-						<p className="mt-2 text-muted-foreground">
+					<details className="w-full shrink-0 rounded-lg border border-border-primary bg-bg-primary px-3 py-2 text-sm sm:max-w-xs">
+						<summary className="cursor-pointer font-medium text-text-primary">How to use</summary>
+						<p className="mt-2 text-text-tertiary">
 							Pick a channel tab, narrow by company and date, optionally apply a preset, then open any
 							card for the full asset. Use{" "}
 							<Link
-								className="text-primary underline underline-offset-2"
+								className="text-text-brand underline underline-offset-2"
 								href={`/${lang}/marketing-assets/pipeline`}
 							>
 								Ingestion health
@@ -182,7 +182,7 @@ export function MarketingAssetLibrary({
 					</details>
 				</div>
 
-				<div className="mb-1 border-b border-border">
+				<div className="mb-1 border-b border-border-primary">
 					<div className="flex flex-wrap gap-0 overflow-x-visible pb-px">
 						{TYPE_TABS.map((t) => {
 							const active = tab === t.key;
@@ -198,13 +198,13 @@ export function MarketingAssetLibrary({
 									}}
 									className={`shrink-0 whitespace-nowrap border-b-2 px-3 py-3 text-sm font-medium transition sm:px-4 ${
 										active
-											? "border-primary text-foreground"
-											: "border-transparent text-muted-foreground hover:text-foreground"
+											? "border-border-brand text-text-primary"
+											: "border-transparent text-text-tertiary hover:text-text-primary"
 									}`}
 								>
 									<span>{t.label}</span>
 									{typeof count === "number" ? (
-										<span className="ml-1 text-xs font-normal text-muted-foreground">
+										<span className="ml-1 text-xs font-normal text-text-tertiary">
 											({count.toLocaleString()})
 										</span>
 									) : null}
@@ -214,13 +214,13 @@ export function MarketingAssetLibrary({
 					</div>
 				</div>
 
-				<div className="mb-4 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+				<div className="mb-4 flex flex-wrap items-center gap-2 text-xs text-text-tertiary">
 					<span className="font-medium uppercase tracking-wide">Range</span>
 					<input
 						type="date"
 						value={from}
 						onChange={(e) => setFrom(e.target.value)}
-						className="h-9 rounded-md border border-border bg-background px-2 text-foreground"
+						className="h-9 rounded-md border border-border-primary bg-bg-primary px-2 text-text-primary"
 						aria-label="Captured from"
 					/>
 					<span>—</span>
@@ -228,22 +228,22 @@ export function MarketingAssetLibrary({
 						type="date"
 						value={to}
 						onChange={(e) => setTo(e.target.value)}
-						className="h-9 rounded-md border border-border bg-background px-2 text-foreground"
+						className="h-9 rounded-md border border-border-primary bg-bg-primary px-2 text-text-primary"
 						aria-label="Captured to"
 					/>
-					<span className="rounded-md border border-border bg-muted/40 px-2 py-1 font-medium text-foreground">
+					<span className="rounded-md border border-border-primary bg-bg-secondary px-2 py-1 font-medium text-text-primary">
 						{rangeLabel}
 					</span>
 				</div>
 
 				<div className="mb-4 mt-4 flex flex-col gap-3">
-					<div className="grid gap-3 text-xs font-medium uppercase tracking-wide text-muted-foreground sm:grid-cols-2 lg:grid-cols-3">
+					<div className="grid gap-3 text-xs font-medium uppercase tracking-wide text-text-tertiary sm:grid-cols-2 lg:grid-cols-3">
 						<div className="flex min-w-0 flex-col gap-1 normal-case">
-							<span className="text-[10px] uppercase tracking-wide text-muted-foreground">Company</span>
+							<span className="text-xs uppercase tracking-wide text-text-tertiary">Company</span>
 							<select
 								value={brandSlug ?? ""}
 								onChange={(e) => setBrandSlug(e.target.value || undefined)}
-								className="h-9 w-full min-w-0 rounded-md border border-border bg-background px-2 text-sm font-normal normal-case text-foreground"
+								className="h-9 w-full min-w-0 rounded-md border border-border-primary bg-bg-primary px-2 text-sm font-normal normal-case text-text-primary"
 								aria-label="Filter by company"
 							>
 								<option value="">All companies</option>
@@ -255,7 +255,7 @@ export function MarketingAssetLibrary({
 							</select>
 						</div>
 						<div className="flex min-w-0 flex-col gap-1 normal-case">
-							<span className="text-[10px] uppercase tracking-wide text-muted-foreground">
+							<span className="text-xs uppercase tracking-wide text-text-tertiary">
 								Title &amp; contents
 							</span>
 							<input
@@ -263,20 +263,20 @@ export function MarketingAssetLibrary({
 								placeholder="Search title or body…"
 								value={searchInput}
 								onChange={(e) => setSearchInput(e.target.value)}
-								className="h-9 w-full rounded-md border border-border bg-background px-3 text-sm font-normal normal-case text-foreground placeholder:text-muted-foreground"
+								className="h-9 w-full rounded-md border border-border-primary bg-bg-primary px-3 text-sm font-normal normal-case text-text-primary placeholder:text-text-quaternary"
 							/>
 						</div>
 						<div className="flex min-w-0 flex-col gap-1 opacity-60">
-							<span className="text-[10px] uppercase tracking-wide">Company vertical</span>
-							<span className="h-9 rounded-md border border-dashed border-border px-2 py-2 text-sm font-normal normal-case text-muted-foreground">
+							<span className="text-xs uppercase tracking-wide">Company vertical</span>
+							<span className="h-9 rounded-md border border-dashed border-border-primary px-2 py-2 text-sm font-normal normal-case text-text-tertiary">
 								Coming soon
 							</span>
 						</div>
 					</div>
 
-					<div className="flex flex-col gap-2 text-sm text-muted-foreground">
+					<div className="flex flex-col gap-2 text-sm text-text-tertiary">
 						<p>
-							<span className="font-medium text-foreground">
+							<span className="font-medium text-text-primary">
 								Found {tab === "SMS" ? "0" : total.toLocaleString()} assets
 							</span>{" "}
 							for these filters. {contextLine}
@@ -295,7 +295,7 @@ export function MarketingAssetLibrary({
 				) : null}
 
 				{tab === "SMS" ? (
-					<div className="rounded-xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
+					<div className="rounded-xl border border-dashed border-border-primary py-16 text-center text-sm text-text-tertiary">
 						SMS is shown in Particl for text-message creatives. This tenant does not ingest SMS rows yet —
 						the tab is here for parity.
 					</div>
@@ -303,14 +303,14 @@ export function MarketingAssetLibrary({
 					<ol className="m-0 grid list-none grid-cols-1 gap-4 p-0 lg:grid-cols-2">
 						{Array.from({ length: 6 }).map((_, i) => (
 							<li key={i}>
-								<div className="h-[320px] animate-pulse rounded-xl bg-muted" />
+								<div className="h-80 animate-pulse rounded-xl bg-bg-secondary" />
 							</li>
 						))}
 					</ol>
 				) : items.length === 0 ? (
-					<div className="rounded-xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
+					<div className="rounded-xl border border-dashed border-border-primary py-16 text-center text-sm text-text-tertiary">
 						No assets match these filters. Seed demo data with{" "}
-						<code className="rounded bg-muted px-1.5 py-0.5 text-xs">npm run seed:marketing-assets</code> or
+						<code className="rounded bg-bg-secondary px-1.5 py-0.5 text-xs">npm run seed:marketing-assets</code> or
 						adjust filters.
 					</div>
 				) : (
@@ -327,7 +327,7 @@ export function MarketingAssetLibrary({
 								type="button"
 								disabled={loadingMore}
 								onClick={() => void fetchPage(page + 1, "append")}
-								className="mt-6 flex h-10 w-full items-center justify-center rounded-lg bg-primary text-sm font-medium text-primary-foreground shadow transition hover:bg-primary/90 disabled:opacity-60"
+								className="mt-6 flex h-10 w-full items-center justify-center rounded-lg bg-bg-brand-solid text-sm font-medium text-white shadow transition hover:bg-bg-brand-solid-hover disabled:opacity-60"
 							>
 								{loadingMore ? "Loading…" : "Load more"}
 							</button>

@@ -80,13 +80,13 @@ function EmptyState({
 	onClick: () => void;
 }) {
 	return (
-		<div className="rounded-xl border border-dashed border-border bg-card px-6 py-16 text-center">
-			<p className="text-base font-semibold text-foreground">{title}</p>
-			<p className="mx-auto mt-2 max-w-2xl text-sm text-muted-foreground">{description}</p>
+		<div className="rounded-xl border border-dashed border-border-primary bg-bg-primary px-6 py-16 text-center">
+			<p className="text-base font-semibold text-text-primary">{title}</p>
+			<p className="mx-auto mt-2 max-w-2xl text-sm text-text-tertiary">{description}</p>
 			<button
 				type="button"
 				onClick={onClick}
-				className="mt-5 inline-flex h-9 items-center rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground"
+				className="mt-5 inline-flex h-9 items-center rounded-lg bg-bg-brand-solid px-4 text-sm font-medium text-white"
 			>
 				{ctaLabel}
 			</button>
@@ -104,8 +104,8 @@ export function ExportsWorkspace({ lang }: { lang: string }) {
 			return (
 				<div className="space-y-6">
 					<section>
-						<h2 className="text-lg font-semibold text-foreground">Presets</h2>
-						<p className="mt-1 text-sm text-muted-foreground">
+						<h2 className="text-lg font-semibold text-text-primary">Presets</h2>
+						<p className="mt-1 text-sm text-text-tertiary">
 							Apply a preset of already configured options to quickly get a report.
 						</p>
 						<div className="mt-3 flex flex-wrap gap-2">
@@ -117,8 +117,8 @@ export function ExportsWorkspace({ lang }: { lang: string }) {
 										aria-pressed={selectedPreset === preset.key}
 										className={`rounded-full border px-3 py-1.5 text-sm transition ${
 											selectedPreset === preset.key
-												? "border-primary bg-primary/10 text-primary"
-												: "border-border bg-card text-foreground hover:bg-accent"
+												? "border-border-brand bg-brand-50 text-text-brand"
+												: "border-border-primary bg-bg-primary text-text-primary hover:bg-bg-secondary"
 										}`}
 									>
 										{preset.label}
@@ -127,55 +127,55 @@ export function ExportsWorkspace({ lang }: { lang: string }) {
 						</div>
 					</section>
 
-					<section className="rounded-xl border border-border bg-card">
-						<div className="border-b border-border px-4 py-3 text-sm font-semibold text-foreground">
+					<section className="rounded-xl border border-border-primary bg-bg-primary">
+						<div className="border-b border-border-primary px-4 py-3 text-sm font-semibold text-text-primary">
 							Report Generation Options
 						</div>
-						<div className="grid gap-4 p-4 lg:grid-cols-[minmax(280px,380px)_1fr]">
-							<div className="space-y-3 rounded-lg border border-border bg-background p-3">
-								<label className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
+						<div className="grid gap-4 p-4 lg:grid-cols-2">
+							<div className="space-y-3 rounded-lg border border-border-primary bg-bg-primary p-3">
+								<label className="block text-xs font-medium uppercase tracking-wide text-text-tertiary">
 									Competitor *
 								</label>
-								<select className="h-9 w-full rounded-md border border-border bg-background px-2 text-sm">
+								<select className="h-9 w-full rounded-md border border-border-primary bg-bg-primary px-2 text-sm text-text-primary">
 									<option>All</option>
 								</select>
-								<label className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
+								<label className="block text-xs font-medium uppercase tracking-wide text-text-tertiary">
 									Timeseries Aggregation *
 								</label>
-								<select className="h-9 w-full rounded-md border border-border bg-background px-2 text-sm">
+								<select className="h-9 w-full rounded-md border border-border-primary bg-bg-primary px-2 text-sm text-text-primary">
 									<option>{cfg.aggregation}</option>
 								</select>
-								<label className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
+								<label className="block text-xs font-medium uppercase tracking-wide text-text-tertiary">
 									Time Frame *
 								</label>
-								<input type="date" className="h-9 w-full rounded-md border border-border bg-background px-2 text-sm" />
-								<label className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
+								<input type="date" className="h-9 w-full rounded-md border border-border-primary bg-bg-primary px-2 text-sm text-text-primary" />
+								<label className="block text-xs font-medium uppercase tracking-wide text-text-tertiary">
 									Datasource *
 								</label>
-								<select className="h-9 w-full rounded-md border border-border bg-background px-2 text-sm">
+								<select className="h-9 w-full rounded-md border border-border-primary bg-bg-primary px-2 text-sm text-text-primary">
 									<option>{cfg.datasource}</option>
 								</select>
-								<label className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
+								<label className="block text-xs font-medium uppercase tracking-wide text-text-tertiary">
 									Columns
 								</label>
-								<p className="text-xs text-muted-foreground">{cfg.columnsCount} columns selected</p>
+								<p className="text-xs text-text-tertiary">{cfg.columnsCount} columns selected</p>
 								<button
 									type="button"
-									className="inline-flex h-9 items-center rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground"
+									className="inline-flex h-9 items-center rounded-lg bg-bg-brand-solid px-4 text-sm font-medium text-white"
 								>
 									Generate {PRESETS.find((p) => p.key === selectedPreset)?.label}
 								</button>
 							</div>
-							<div id="report-preview" className="rounded-lg border border-border bg-background p-4">
+							<div id="report-preview" className="rounded-lg border border-border-primary bg-bg-primary p-4">
 								<div className="mb-3 flex items-center justify-between">
-									<span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+									<span className="text-xs font-semibold uppercase tracking-wide text-text-tertiary">
 										Preview
 									</span>
-									<span className="rounded bg-muted px-2 py-0.5 text-xs text-muted-foreground">{cfg.previewFile}</span>
+									<span className="rounded bg-bg-secondary px-2 py-0.5 text-xs text-text-tertiary">{cfg.previewFile}</span>
 								</div>
-								<div className="overflow-x-auto rounded border border-border">
-									<table className="min-w-[680px] w-full text-xs">
-										<thead className="bg-muted/40 text-left text-muted-foreground">
+								<div className="overflow-x-auto rounded border border-border-primary">
+									<table className="min-w-full w-full text-xs">
+										<thead className="bg-bg-secondary text-left text-text-tertiary">
 											<tr>
 												{[
 													"start_date",
@@ -192,7 +192,7 @@ export function ExportsWorkspace({ lang }: { lang: string }) {
 											</tr>
 										</thead>
 										<tbody>
-											<tr className="border-t border-border">
+											<tr className="border-t border-border-primary">
 												<td className="px-2 py-2">2026-04-01</td>
 												<td className="px-2 py-2">2026-04-21</td>
 												<td className="px-2 py-2">cmp_123</td>
@@ -224,7 +224,7 @@ export function ExportsWorkspace({ lang }: { lang: string }) {
 		if (activeTab === "scheduled") {
 			return (
 				<div className="space-y-4">
-					<p className="text-sm text-muted-foreground">
+					<p className="text-sm text-text-tertiary">
 						Reports that you have scheduled from tools within the app are visible here. To subscribe to a report,
 						use Share or Subscribe actions where available.
 					</p>
@@ -239,9 +239,9 @@ export function ExportsWorkspace({ lang }: { lang: string }) {
 		}
 
 		return (
-			<div className="rounded-xl border border-border bg-card p-6">
-				<h2 className="text-lg font-semibold text-foreground">500 credits available</h2>
-				<p className="mt-2 text-sm text-muted-foreground">
+			<div className="rounded-xl border border-border-primary bg-bg-primary p-6">
+				<h2 className="text-lg font-semibold text-text-primary">500 credits available</h2>
+				<p className="mt-2 text-sm text-text-tertiary">
 					Credits are used when generating export reports. Purchase additional credits when your team needs more
 					generation capacity.
 				</p>
@@ -250,7 +250,7 @@ export function ExportsWorkspace({ lang }: { lang: string }) {
 						<button
 							key={pkg}
 							type="button"
-							className="rounded-lg border border-border bg-background px-4 py-2 text-sm text-foreground hover:bg-accent"
+							className="rounded-lg border border-border-primary bg-bg-primary px-4 py-2 text-sm text-text-primary hover:bg-bg-secondary"
 						>
 							{pkg}
 						</button>
@@ -261,47 +261,47 @@ export function ExportsWorkspace({ lang }: { lang: string }) {
 	}, [activeTab, selectedPreset]);
 
 	return (
-		<div className="min-h-screen bg-background">
-			<div className="mx-auto max-w-[1180px] px-4 py-6 lg:px-8 lg:py-8">
-				<div className="mb-4 flex flex-col gap-3 border-b border-border pb-4 sm:flex-row sm:items-start sm:justify-between">
+		<div className="min-h-screen bg-bg-primary">
+			<div className="mx-auto max-w-6xl px-4 py-6 lg:px-8 lg:py-8">
+				<div className="mb-4 flex flex-col gap-3 border-b border-border-primary pb-4 sm:flex-row sm:items-start sm:justify-between">
 					<div>
-						<h1 className="text-2xl font-semibold tracking-tight text-foreground">Exports</h1>
-						<p className="mt-1 text-sm text-muted-foreground">500 credits available</p>
+						<h1 className="text-2xl font-semibold tracking-tight text-text-primary">Exports</h1>
+						<p className="mt-1 text-sm text-text-tertiary">500 credits available</p>
 					</div>
-					<details className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm sm:w-[360px]">
-						<summary className="cursor-pointer font-medium text-foreground">How to use</summary>
-						<div className="mt-2 space-y-2 text-muted-foreground">
+					<details className="w-full rounded-lg border border-border-primary bg-bg-primary px-3 py-2 text-sm sm:max-w-sm">
+						<summary className="cursor-pointer font-medium text-text-primary">How to use</summary>
+						<div className="mt-2 space-y-2 text-text-tertiary">
 							<p>
 								Generate new exports, browse team reports, manage scheduled reports, and purchase additional credits.
 							</p>
-							<div className="rounded-md border border-border bg-background p-3">
-								<p className="text-sm font-medium text-foreground">Help</p>
-								<p className="mt-1 text-xs text-muted-foreground">
+							<div className="rounded-md border border-border-primary bg-bg-primary p-3">
+								<p className="text-sm font-medium text-text-primary">Help</p>
+								<p className="mt-1 text-xs text-text-tertiary">
 									Running into issues? Email us at{" "}
-									<a className="text-primary underline underline-offset-2" href="mailto:support@nogl.tech">
+									<a className="text-text-brand underline underline-offset-2" href="mailto:support@nogl.tech">
 										support@nogl.tech
 									</a>{" "}
 									or use the links below.
 								</p>
 								<div className="mt-2 flex flex-wrap gap-2">
-									<Link href="/en/help-center" className="text-xs text-primary underline underline-offset-2">
+									<Link href="/en/help-center" className="text-xs text-text-brand underline underline-offset-2">
 										Help Center
 									</Link>
-									<Link href="/en/settings" className="text-xs text-primary underline underline-offset-2">
+									<Link href="/en/settings" className="text-xs text-text-brand underline underline-offset-2">
 										Settings
 									</Link>
-									<Link href="/en/user/billing" className="text-xs text-primary underline underline-offset-2">
+									<Link href="/en/user/billing" className="text-xs text-text-brand underline underline-offset-2">
 										Billing
 									</Link>
 									<a
 										href="https://github.com/NOGL-ai/nogl-landing/commits/main"
 										target="_blank"
 										rel="noreferrer"
-										className="text-xs text-primary underline underline-offset-2"
+										className="text-xs text-text-brand underline underline-offset-2"
 									>
 										Changelog
 									</a>
-									<a href="mailto:support@nogl.tech" className="text-xs text-primary underline underline-offset-2">
+									<a href="mailto:support@nogl.tech" className="text-xs text-text-brand underline underline-offset-2">
 										Email Support
 									</a>
 								</div>
@@ -310,7 +310,7 @@ export function ExportsWorkspace({ lang }: { lang: string }) {
 					</details>
 				</div>
 
-				<div className="mb-6 border-b border-border">
+				<div className="mb-6 border-b border-border-primary">
 					<div className="flex flex-wrap gap-0">
 						{TAB_ITEMS.map((tab) => (
 							<button
@@ -319,8 +319,8 @@ export function ExportsWorkspace({ lang }: { lang: string }) {
 								onClick={() => setActiveTab(tab.id)}
 								className={`border-b-2 px-3 py-3 text-sm font-medium transition sm:px-4 ${
 									activeTab === tab.id
-										? "border-primary text-foreground"
-										: "border-transparent text-muted-foreground hover:text-foreground"
+										? "border-border-brand text-text-primary"
+										: "border-transparent text-text-tertiary hover:text-text-primary"
 								}`}
 							>
 								{tab.label}
@@ -333,9 +333,9 @@ export function ExportsWorkspace({ lang }: { lang: string }) {
 					{tabBody}
 				</main>
 
-				<p className="mt-6 text-xs text-muted-foreground">
+				<p className="mt-6 text-xs text-text-tertiary">
 					Need deeper benchmarking?{" "}
-					<Link href={`/${lang}/product-explorer`} className="text-primary underline underline-offset-2">
+					<Link href={`/${lang}/product-explorer`} className="text-text-brand underline underline-offset-2">
 						Open Product Explorer
 					</Link>
 					.

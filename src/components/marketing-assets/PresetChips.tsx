@@ -29,15 +29,15 @@ export function PresetChips({
 	disabled?: boolean;
 }) {
 	return (
-		<div className="flex flex-wrap items-center gap-2 border-b border-border pb-3">
+		<div className="flex flex-wrap items-center gap-2 border-b border-border-primary pb-3">
 			<button
 				type="button"
 				disabled={disabled}
 				onClick={() => onSelect(null)}
 				className={`rounded-full border px-3 py-1.5 text-xs font-medium transition disabled:opacity-50 ${
 					active === null
-						? "border-primary bg-primary/10 text-primary"
-						: "border-border bg-card text-muted-foreground hover:border-primary/50 hover:text-foreground"
+						? "border-border-brand bg-brand-50 text-text-brand"
+						: "border-border-primary bg-bg-primary text-text-tertiary hover:border-border-secondary hover:text-text-primary"
 				}`}
 			>
 				All
@@ -50,8 +50,8 @@ export function PresetChips({
 					onClick={() => onSelect(p.key)}
 					className={`rounded-full border px-3 py-1.5 text-xs font-medium transition disabled:opacity-50 ${
 						active === p.key
-							? "border-primary bg-primary/10 text-primary"
-							: "border-border bg-card text-muted-foreground hover:border-primary/50 hover:text-foreground"
+							? "border-border-brand bg-brand-50 text-text-brand"
+							: "border-border-primary bg-bg-primary text-text-tertiary hover:border-border-secondary hover:text-text-primary"
 					}`}
 				>
 					{p.label}

@@ -47,9 +47,9 @@ export function AssetCard({
 		<button
 			type="button"
 			onClick={onClick}
-			className="group flex h-full min-h-[320px] w-full max-w-[400px] flex-col overflow-hidden rounded-xl border border-border bg-card text-left shadow-sm transition hover:border-primary/40 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+			className="group flex h-full min-h-80 w-full max-w-sm flex-col overflow-hidden rounded-xl border border-border-primary bg-bg-primary text-left shadow-sm transition hover:border-border-secondary hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-border-brand"
 		>
-			<div className="relative aspect-[5/4] w-full shrink-0 bg-muted">
+			<div className="relative aspect-[5/4] w-full shrink-0 bg-bg-secondary">
 				{hero ? (
 					<Image
 						src={hero}
@@ -60,22 +60,22 @@ export function AssetCard({
 						unoptimized
 					/>
 				) : (
-					<div className="flex h-full min-h-[200px] items-center justify-center px-4 text-center text-xs text-muted-foreground">
+					<div className="flex h-full min-h-48 items-center justify-center px-4 text-center text-xs text-text-tertiary">
 						No preview
 					</div>
 				)}
 				{longevity && longevity > 60 ? (
-					<span className="absolute right-2 top-2 rounded-full bg-green-600/90 px-2 py-0.5 text-[10px] font-medium text-white">
+					<span className="absolute right-2 top-2 rounded-full bg-success-secondary px-2 py-0.5 text-xs font-medium text-text-success">
 						{longevity}d live
 					</span>
 				) : null}
 			</div>
 			<div className="flex flex-1 flex-col gap-2 p-4">
-				<p className="line-clamp-3 text-sm font-semibold leading-snug text-foreground">{title}</p>
-				<div className="mt-auto flex flex-wrap items-baseline gap-x-2 gap-y-1 text-xs text-muted-foreground">
-					<span className="font-medium text-foreground">{asset.brandName}</span>
+				<p className="line-clamp-3 text-sm font-semibold leading-snug text-text-primary">{title}</p>
+				<div className="mt-auto flex flex-wrap items-baseline gap-x-2 gap-y-1 text-xs text-text-tertiary">
+					<span className="font-medium text-text-primary">{asset.brandName}</span>
 					<span>{fmtDate(asset.capturedAt)}</span>
-					<span className="w-full text-[11px] uppercase tracking-wide text-muted-foreground">
+					<span className="w-full text-xs uppercase tracking-wide text-text-tertiary">
 						{TYPE_LABEL[asset.assetType]}
 					</span>
 				</div>
