@@ -464,8 +464,8 @@ export function CompareClient() {
       enableSorting: true,
       meta: {
         align: "center",
-        thClass: "min-w-0 w-10 sm:w-12",
-        tdClass: "min-w-0 w-10 sm:w-12",
+        thClass: "min-w-0 w-8 sm:w-12",
+        tdClass: "min-w-0 w-8 sm:w-12",
         configureLabel: "Rank",
       },
       cell: (info) => (
@@ -478,8 +478,8 @@ export function CompareClient() {
       enableSorting: false,
       meta: {
         align: "center",
-        thClass: "min-w-0 w-11 px-1.5 sm:w-14 sm:px-3",
-        tdClass: "min-w-0 w-11 px-1.5 sm:w-14 sm:px-3",
+        thClass: "min-w-0 w-9 px-1 sm:w-14 sm:px-3",
+        tdClass: "min-w-0 w-9 px-1 sm:w-14 sm:px-3",
         configureLabel: "Competitor",
       },
       cell: (info) => {
@@ -524,8 +524,8 @@ export function CompareClient() {
       enableSorting: true,
       meta: {
         align: "left",
-        thClass: "min-w-0 w-[32%] sm:w-[34%] lg:w-[36%]",
-        tdClass: "min-w-0 w-[32%] sm:w-[34%] lg:w-[36%]",
+        thClass: "min-w-0 w-[42%] sm:w-[34%] lg:w-[36%]",
+        tdClass: "min-w-0 w-[42%] sm:w-[34%] lg:w-[36%]",
         configureLabel: "Product Title",
       },
       cell: (info) => {
@@ -546,8 +546,8 @@ export function CompareClient() {
       enableSorting: false,
       meta: {
         align: "center",
-        thClass: "min-w-0 w-14 sm:w-16",
-        tdClass: "min-w-0 w-14 sm:w-16",
+        thClass: "min-w-0 w-12 sm:w-16",
+        tdClass: "min-w-0 w-12 sm:w-16",
         configureLabel: "Image",
       },
       cell: (info) =>
