@@ -171,6 +171,42 @@ Background workers are **isolated from the web app** on a dedicated LXC:
 2. Add `start<Name>Worker()` call to `scripts/start-workers-browser.ts` (if Playwright) or `scripts/start-workers-ingest.ts` (if data-only)
 3. `git push` — CI rebuilds the image and rolls it out to CT 505. No infra changes.
 
+## 🚨 Hard Rule — Deployment SHA parity (origin + gitea + server)
+
+This rule exists because deploys can appear "successful" while serving older code if remotes diverge.
+
+**Never claim a deploy is complete until all 4 SHAs match:**
+1. local `main`
+2. `origin/main`
+3. `gitea/main`
+4. deployed server HEAD (`/root/nogl-landing` on CT 504)
+
+Required verification sequence:
+```bash
+# 1) Sync + compare local and remotes
+git fetch --all --prune
+git rev-parse main origin/main gitea/main
+
+# 2) If gitea is behind, push explicitly
+git push gitea main
+
+# 3) Deploy CT 504 from gitea/main deterministically
+ssh nogl-dev "cd /root/nogl-landing && git fetch --all --prune && git checkout main && git reset --hard gitea/main && npm run build && pm2 restart next --update-env"
+
+# 4) Verify deployed commit
+ssh nogl-dev "cd /root/nogl-landing && git rev-parse HEAD"
+```
+
+Post-deploy smoke checks (required):
+```bash
+node -e "fetch('https://app.nogl.tech/en/analytics/compare',{redirect:'manual'}).then(r=>console.log(r.status))"
+node -e "fetch('https://app.nogl.tech/en/marketing-assets',{redirect:'manual'}).then(r=>console.log(r.status,r.headers.get('location')||''))"
+```
+
+If UI still looks old after SHA parity:
+- Assume cache/edge/runtime mismatch, not "code not pushed"
+- Re-validate app route status + inspect correct production host/container before further UI conclusions
+
 **Gitea secrets required:**
 - `NOGL_DEV_SSH_KEY` — SSH key for root@10.10.10.182 (CT 504)
 - `NOGL_WORKERS_SSH_KEY` — SSH key for root@10.10.10.183 (CT 505)
