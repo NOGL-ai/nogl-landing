@@ -48,6 +48,11 @@ export function resolveMedia(key: string | undefined): string | null {
 	return `/api/marketing-assets/media/${encodeURIComponent(key)}`;
 }
 
+export function isVideoMediaUrl(url: string | null | undefined): boolean {
+	if (!url) return false;
+	return /\.(mp4|webm|mov|m4v)(\?.*)?$/i.test(url);
+}
+
 function toObject(value: unknown): Record<string, unknown> {
 	if (value && typeof value === "object") return value as Record<string, unknown>;
 	return {};

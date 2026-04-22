@@ -6,6 +6,7 @@ type AssetNavigationRowProps = {
 	canNavigate: boolean;
 	onPrev: () => void;
 	onNext: () => void;
+	className?: string;
 };
 
 export function AssetNavigationRow({
@@ -14,9 +15,10 @@ export function AssetNavigationRow({
 	canNavigate,
 	onPrev,
 	onNext,
+	className,
 }: AssetNavigationRowProps) {
 	return (
-		<div className="mb-4 flex flex-wrap items-center justify-between gap-2 text-sm">
+		<div className={`mb-4 flex flex-wrap items-center justify-between gap-2 text-sm ${className ?? ""}`}>
 			<div className="font-medium text-text-primary">
 				Asset {Math.max(activeIndex, 1)} of {totalForCounter.toLocaleString()}
 			</div>

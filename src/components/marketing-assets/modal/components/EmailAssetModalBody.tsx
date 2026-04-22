@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { isVideoMediaUrl } from "@/components/marketing-assets/modal/utils";
 
 type EmailAssetModalBodyProps = {
 	title: string | null;
@@ -21,9 +22,11 @@ export function EmailAssetModalBody({
 	setActivePreviewTab,
 	setActiveContentTab,
 }: EmailAssetModalBodyProps) {
+	const isVideo = isVideoMediaUrl(hero);
+
 	return (
 		<>
-			<div className="mb-4 h-12 border-b border-border-primary">
+			<div className="mb-5 h-12 border-b border-border-primary">
 				<div className="flex h-full items-center gap-3 text-sm">
 					<span className="font-semibold uppercase tracking-wide text-text-primary">Email Preview</span>
 					<button
@@ -65,7 +68,7 @@ export function EmailAssetModalBody({
 				</div>
 			</div>
 
-			<div className="mb-4 rounded-xl border border-border-primary bg-bg-secondary p-4">
+			<div className="mb-5 rounded-xl border border-border-primary bg-bg-secondary p-4">
 				{activeContentTab === "email" && bodyText ? (
 					<div className="max-h-[480px] overflow-y-auto whitespace-pre-wrap text-sm text-text-primary">
 						{bodyText}
@@ -76,13 +79,24 @@ export function EmailAssetModalBody({
 							activePreviewTab === "mobile" ? "h-[500px] w-[280px]" : "h-[420px] w-full max-w-[680px]"
 						}`}
 					>
-						<Image
-							src={hero}
-							alt={title ?? "asset"}
-							fill
-							className={activePreviewTab === "mobile" ? "object-cover object-top" : "object-contain"}
-							unoptimized
-						/>
+						{isVideo ? (
+							<video
+								src={hero}
+								controls
+								playsInline
+								className={activePreviewTab === "mobile" ? "h-full w-full object-cover object-top" : "h-full w-full object-contain"}
+								preload="metadata"
+								disablePictureInPicture
+							/>
+						) : (
+							<Image
+								src={hero}
+								alt={title ?? "asset"}
+								fill
+								className={activePreviewTab === "mobile" ? "object-cover object-top" : "object-contain"}
+								unoptimized
+							/>
+						)}
 					</div>
 				) : (
 					<div className="py-12 text-center text-sm text-text-tertiary">No media available.</div>

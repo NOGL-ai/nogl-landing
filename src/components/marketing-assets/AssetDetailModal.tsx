@@ -12,6 +12,7 @@ import { AssetNavigationRow } from "@/components/marketing-assets/modal/molecule
 import { MetaAdAssetModalBody } from "@/components/marketing-assets/modal/components/MetaAdAssetModalBody";
 import { EmailAssetModalBody } from "@/components/marketing-assets/modal/components/EmailAssetModalBody";
 import { HomepageAssetModalBody } from "@/components/marketing-assets/modal/components/HomepageAssetModalBody";
+import { InstagramAssetModalBody } from "@/components/marketing-assets/modal/components/InstagramAssetModalBody";
 import { RelatedAssetsSection } from "@/components/marketing-assets/modal/components/RelatedAssetsSection";
 import {
 	getMetaAdModalData,
@@ -118,6 +119,7 @@ export function AssetDetailModal({
 	const hero = resolveMedia(detail?.mediaUrls?.[0]);
 	const isMetaAd = detail?.assetType === "META_AD";
 	const isEmail = detail?.assetType === "EMAIL";
+	const isInstagram = detail?.assetType === "INSTAGRAM";
 	const isHomepageAsset = detail?.assetType === "HOMEPAGE" || detail?.assetType === "HOMEPAGE_MOBILE";
 	const metaAdData = getMetaAdModalData(detail);
 	const productExplorerHref = getProductExplorerHref(detail, lang);
@@ -126,7 +128,7 @@ export function AssetDetailModal({
 				EMAIL: "More emails from this company",
 				HOMEPAGE: "More homepages from this company",
 				HOMEPAGE_MOBILE: "More mobile homepages from this company",
-				INSTAGRAM: "More instagram assets from this company",
+				INSTAGRAM: "More instagram posts from this company",
 				META_AD: "More meta ads from this company",
 				YOUTUBE_AD: "More YouTube ads from this company",
 				TIKTOK_AD: "More TikTok ads from this company",
@@ -159,16 +161,24 @@ export function AssetDetailModal({
 			<DialogContent
 				showCloseButton
 				className={`max-h-[94vh] max-w-none gap-0 overflow-y-auto p-0 ${
-					isHomepageAsset
+					isHomepageAsset || isInstagram
 						? "w-[min(100vw-2rem,1376px)] sm:max-w-[min(100vw-2rem,1376px)]"
 						: "w-[min(100vw-2rem,985px)] sm:max-w-[min(100vw-2rem,985px)]"
 				}`}
 			>
-				<DialogHeader className="border-b border-border-primary px-6 py-4">
-					<DialogTitle className="pr-8 text-2xl font-semibold text-text-primary">
+				<DialogHeader
+					className={`px-6 ${
+						isHomepageAsset || isInstagram ? "pb-2 pt-6" : "border-b border-border-primary py-4"
+					}`}
+				>
+					<DialogTitle
+						className={`pr-8 font-semibold text-text-primary ${
+							isHomepageAsset || isInstagram ? "text-[32px] leading-tight" : "text-2xl"
+						}`}
+					>
 						{detail?.title ?? "Asset detail"}
 					</DialogTitle>
-					{detail && !isHomepageAsset ? (
+					{detail && !isHomepageAsset && !isInstagram ? (
 						<div className="mt-2 flex flex-wrap items-center gap-3 text-sm text-text-tertiary">
 							<span className="font-medium text-text-primary">{detail.brandName}</span>
 							{detail.sourceUrl ? (
@@ -206,7 +216,17 @@ export function AssetDetailModal({
 				) : !detail ? (
 					<div className="px-6 py-8 text-sm text-text-tertiary">Not found.</div>
 				) : (
-					<div className="px-6 py-5">
+					<div className={`px-6 ${isHomepageAsset || isInstagram ? "pb-6 pt-2" : "py-6"}`}>
+						{isHomepageAsset || isInstagram ? (
+							<AssetNavigationRow
+								activeIndex={activeIndex}
+								totalForCounter={totalForCounter}
+								canNavigate={canNavigate}
+								onPrev={goPrev}
+								onNext={goNext}
+								className="mb-5"
+							/>
+						) : null}
 						{isMetaAd ? (
 							<MetaAdAssetModalBody
 								brandName={detail.brandName}
@@ -219,6 +239,15 @@ export function AssetDetailModal({
 								adsLaunched={metaAdData.adsLaunched}
 								adLibraryUrl={metaAdData.adLibraryUrl}
 								linkedUrl={metaAdData.linkedUrl}
+							/>
+						) : isInstagram ? (
+							<InstagramAssetModalBody
+								brandName={detail.brandName}
+								title={detail.title}
+								bodyText={detail.bodyText}
+								hero={hero}
+								capturedAt={detail.capturedAt}
+								sourceUrl={detail.sourceUrl}
 							/>
 						) : isHomepageAsset ? (
 							<HomepageAssetModalBody
@@ -248,13 +277,16 @@ export function AssetDetailModal({
 							/>
 						)}
 
-						<AssetNavigationRow
-							activeIndex={activeIndex}
-							totalForCounter={totalForCounter}
-							canNavigate={canNavigate}
-							onPrev={goPrev}
-							onNext={goNext}
-						/>
+						{!isHomepageAsset && !isInstagram ? (
+							<AssetNavigationRow
+								activeIndex={activeIndex}
+								totalForCounter={totalForCounter}
+								canNavigate={canNavigate}
+								onPrev={goPrev}
+								onNext={goNext}
+								className="mb-5"
+							/>
+						) : null}
 
 						<RelatedAssetsSection
 							lang={lang}

@@ -2,10 +2,12 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowRight } from "@untitledui/icons";
+import { Calendar, ChevronDown, Plus } from "@untitledui/icons";
 
 import { Card } from "@/components/ui/card";
-import { fmtPrice } from "@/components/companies/pricing/utils";
+import { CompanyPickerModal } from "@/components/analytics/compare/CompanyPickerModal";
+import { CompareDateRangePopover } from "@/components/analytics/compare/CompareDateRangePopover";
+import { CompareMetricsTable } from "@/components/analytics/compare/CompareMetricsTable";
 
 type CompanyRow = {
   slug: string;
@@ -19,20 +21,19 @@ type CompanyRow = {
 
 type Summary = { companies: CompanyRow[] };
 
-function Stat({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-lg border border-border/80 bg-muted/20 px-3 py-2">
-      <p className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground">{label}</p>
-      <p className="mt-0.5 text-sm font-semibold tabular-nums text-foreground">{value}</p>
-    </div>
-  );
-}
-
 export function TwoCompanyCompareClient() {
   const [summary, setSummary] = useState<Summary | null>(null);
   const [loading, setLoading] = useState(true);
   const [slugA, setSlugA] = useState("");
   const [slugB, setSlugB] = useState("");
+  const [pickerTarget, setPickerTarget] = useState<"A" | "B" | null>(null);
+  const [dateRange, setDateRange] = useState<{ start: string; end: string }>(() => {
+    const now = new Date();
+    const end = now.toISOString().slice(0, 10);
+    const startDate = new Date(now);
+    startDate.setDate(now.getDate() - 27);
+    return { start: startDate.toISOString().slice(0, 10), end };
+  });
 
   useEffect(() => {
     let cancelled = false;
@@ -63,6 +64,10 @@ export function TwoCompanyCompareClient() {
   const companies = summary?.companies ?? [];
   const rowA = useMemo(() => companies.find((c) => c.slug === slugA), [companies, slugA]);
   const rowB = useMemo(() => companies.find((c) => c.slug === slugB), [companies, slugB]);
+  const companyOptions = useMemo(
+    () => companies.map((company) => ({ slug: company.slug, name: company.name })),
+    [companies]
+  );
 
   return (
     <div className="space-y-6">
@@ -93,45 +98,51 @@ export function TwoCompanyCompareClient() {
           <p className="text-sm text-muted-foreground">No tracked companies yet. Add competitors to compare.</p>
         ) : (
           <div className="space-y-6">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <label className="flex flex-col gap-1.5 text-sm">
-                <span className="font-medium text-foreground">Company A</span>
-                <select
-                  value={slugA}
-                  onChange={(e) => setSlugA(e.target.value)}
-                  className="rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
-                >
-                  {companies.map((c) => (
-                    <option key={c.slug} value={c.slug}>
-                      {c.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label className="flex flex-col gap-1.5 text-sm">
-                <span className="font-medium text-foreground">Company B</span>
-                <select
-                  value={slugB}
-                  onChange={(e) => setSlugB(e.target.value)}
-                  className="rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
-                >
-                  {companies.map((c) => (
-                    <option key={c.slug} value={c.slug}>
-                      {c.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
-
-            <div className="grid gap-4 lg:grid-cols-[1fr_auto_1fr] lg:items-stretch">
-              <CompanyCard row={rowA} emptyLabel="Select company A" />
-              <div className="hidden items-center justify-center lg:flex">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-muted/40 text-muted-foreground">
-                  <ArrowRight className="h-4 w-4" aria-hidden />
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div className="grid flex-1 gap-3 sm:grid-cols-[1fr_auto_1fr] sm:items-end">
+                <div className="space-y-1.5 text-sm">
+                  <p className="font-medium text-foreground">Company A</p>
+                  <button
+                    type="button"
+                    onClick={() => setPickerTarget("A")}
+                    className="inline-flex h-11 w-full items-center justify-between rounded-md border border-dashed border-border bg-background px-3 text-sm text-foreground transition-colors hover:bg-muted"
+                  >
+                    <span className="inline-flex min-w-0 items-center gap-2 truncate">
+                      <Plus className="h-4 w-4 shrink-0 text-muted-foreground" />
+                      <span className="truncate">{rowA?.name ?? "Choose a company"}</span>
+                    </span>
+                    <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />
+                  </button>
+                </div>
+                <p className="pb-2 text-center text-sm font-semibold text-muted-foreground">vs</p>
+                <div className="space-y-1.5 text-sm">
+                  <p className="font-medium text-foreground">Company B</p>
+                  <button
+                    type="button"
+                    onClick={() => setPickerTarget("B")}
+                    className="inline-flex h-11 w-full items-center justify-between rounded-md border border-dashed border-border bg-background px-3 text-sm text-foreground transition-colors hover:bg-muted"
+                  >
+                    <span className="inline-flex min-w-0 items-center gap-2 truncate">
+                      <Plus className="h-4 w-4 shrink-0 text-muted-foreground" />
+                      <span className="truncate">{rowB?.name ?? "Choose a company"}</span>
+                    </span>
+                    <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />
+                  </button>
                 </div>
               </div>
-              <CompanyCard row={rowB} emptyLabel="Select company B" />
+              <div className="flex items-center gap-2 pt-7 sm:pt-0">
+                <Calendar className="h-4 w-4 text-muted-foreground" />
+                <CompareDateRangePopover
+                  startDate={dateRange.start}
+                  endDate={dateRange.end}
+                  onRangeChange={setDateRange}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <p className="text-[15px] font-semibold text-foreground">Filter comparison data</p>
+              <CompareMetricsTable companyA={rowA} companyB={rowB} />
             </div>
 
             <div className="flex flex-wrap gap-3 border-t border-border pt-4">
@@ -161,39 +172,30 @@ export function TwoCompanyCompareClient() {
           </div>
         )}
       </Card>
-    </div>
-  );
-}
 
-function CompanyCard({ row, emptyLabel }: { row: CompanyRow | undefined; emptyLabel: string }) {
-  if (!row) {
-    return (
-      <div className="flex min-h-[12rem] items-center justify-center rounded-xl border border-dashed border-border bg-muted/10 p-4 text-center text-sm text-muted-foreground">
-        {emptyLabel}
-      </div>
-    );
-  }
+      <CompanyPickerModal
+        key={`picker-a-${slugA}-${slugB}`}
+        open={pickerTarget === "A"}
+        title="Select company A"
+        description="This company will be compared side-by-side in the left column."
+        companies={companyOptions}
+        selectedSlug={slugA || null}
+        blockedSlug={slugB || null}
+        onOpenChange={(open) => setPickerTarget(open ? "A" : null)}
+        onConfirm={setSlugA}
+      />
 
-  return (
-    <div className="rounded-xl border border-border bg-card p-4 shadow-sm sm:p-5">
-      <h2 className="text-lg font-semibold text-foreground">{row.name}</h2>
-      <p className="mt-0.5 text-xs text-muted-foreground">{row.slug}</p>
-      <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-2">
-        <Stat label="Products tracked" value={row.total_products.toLocaleString()} />
-        <Stat
-          label="Avg. price"
-          value={row.avg_price != null ? fmtPrice(row.avg_price) : "—"}
-        />
-        <Stat
-          label="Price band"
-          value={
-            row.min_price != null && row.max_price != null
-              ? `${fmtPrice(row.min_price)} – ${fmtPrice(row.max_price)}`
-              : "—"
-          }
-        />
-        <Stat label="Share of catalog" value={`${row.market_share_pct.toFixed(1)}%`} />
-      </div>
+      <CompanyPickerModal
+        key={`picker-b-${slugA}-${slugB}`}
+        open={pickerTarget === "B"}
+        title="Select company B"
+        description="This company will be compared side-by-side in the right column."
+        companies={companyOptions}
+        selectedSlug={slugB || null}
+        blockedSlug={slugA || null}
+        onOpenChange={(open) => setPickerTarget(open ? "B" : null)}
+        onConfirm={setSlugB}
+      />
     </div>
   );
 }

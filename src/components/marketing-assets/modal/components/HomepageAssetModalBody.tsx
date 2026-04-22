@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { isVideoMediaUrl } from "@/components/marketing-assets/modal/utils";
 
 type HomepageAssetModalBodyProps = {
 	title: string | null;
@@ -17,9 +18,11 @@ export function HomepageAssetModalBody({
 	sourceUrl,
 	capturedAt,
 }: HomepageAssetModalBodyProps) {
+	const isVideo = isVideoMediaUrl(hero);
+
 	return (
 		<>
-			<div className="mb-4 flex flex-wrap items-center gap-3 text-sm text-text-tertiary">
+			<div className="mb-5 flex flex-wrap items-center gap-3 text-sm text-text-tertiary">
 				<span className="font-medium text-text-primary">{brandName}</span>
 				{sourceUrl ? (
 					<a
@@ -42,17 +45,28 @@ export function HomepageAssetModalBody({
 				</span>
 			</div>
 
-			<div className="mb-4 overflow-hidden rounded-xl border border-border-primary bg-bg-secondary p-2 sm:p-3">
+			<div className="mb-5 overflow-hidden rounded-xl border border-border-primary bg-bg-secondary p-2 sm:p-3">
 				{hero ? (
 					<div className="w-full overflow-hidden rounded-lg border border-border-primary bg-bg-primary">
-						<Image
-							src={hero}
-							alt={title ?? "homepage asset"}
-							width={1400}
-							height={1800}
-							unoptimized
-							className="h-auto w-full object-contain"
-						/>
+						{isVideo ? (
+							<video
+								src={hero}
+								controls
+								playsInline
+								className="h-auto w-full object-contain"
+								preload="metadata"
+								disablePictureInPicture
+							/>
+						) : (
+							<Image
+								src={hero}
+								alt={title ?? "homepage asset"}
+								width={1400}
+								height={1800}
+								unoptimized
+								className="h-auto w-full object-contain"
+							/>
+						)}
 					</div>
 				) : (
 					<div className="flex h-[360px] items-center justify-center text-sm text-text-tertiary">

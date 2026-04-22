@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { ExternalLinkAction } from "@/components/marketing-assets/modal/atoms/ExternalLinkAction";
+import { isVideoMediaUrl } from "@/components/marketing-assets/modal/utils";
 
 type MetaAdAssetModalBodyProps = {
 	brandName: string;
@@ -28,9 +29,11 @@ export function MetaAdAssetModalBody({
 	adLibraryUrl,
 	linkedUrl,
 }: MetaAdAssetModalBodyProps) {
+	const isVideo = isVideoMediaUrl(hero);
+
 	return (
 		<>
-			<div className="mb-4 flex flex-wrap items-start justify-between gap-3 border-b border-border-primary pb-4">
+			<div className="mb-5 flex flex-wrap items-start justify-between gap-3 border-b border-border-primary pb-4">
 				<div className="grid gap-4 text-sm sm:grid-cols-3 sm:gap-8">
 					<div>
 						<p className="text-text-tertiary">Running from</p>
@@ -62,7 +65,7 @@ export function MetaAdAssetModalBody({
 				) : null}
 			</div>
 
-			<div className="mb-4 rounded-xl border border-border-primary bg-bg-secondary p-4">
+			<div className="mb-5 rounded-xl border border-border-primary bg-bg-secondary p-4">
 				<div className="mb-4 flex items-center gap-3">
 					<div className="h-10 w-10 rounded-full border border-border-primary bg-bg-primary" />
 					<div>
@@ -73,7 +76,18 @@ export function MetaAdAssetModalBody({
 				{metaBody ? <p className="mb-4 text-sm leading-6 text-text-primary">{metaBody}</p> : null}
 				<div className="relative h-[360px] w-full overflow-hidden rounded-lg border border-border-primary bg-bg-primary">
 					{hero ? (
-						<Image src={hero} alt={title ?? "asset"} fill className="object-contain" unoptimized />
+						isVideo ? (
+							<video
+								src={hero}
+								controls
+								playsInline
+								className="h-full w-full object-contain"
+								preload="metadata"
+								disablePictureInPicture
+							/>
+						) : (
+							<Image src={hero} alt={title ?? "asset"} fill className="object-contain" unoptimized />
+						)
 					) : (
 						<div className="flex h-full items-center justify-center text-sm text-text-tertiary">
 							No media available.
@@ -83,7 +97,7 @@ export function MetaAdAssetModalBody({
 			</div>
 
 			{linkedUrl ? (
-				<div className="mb-5">
+				<div className="mb-6">
 					<ExternalLinkAction
 						href={linkedUrl}
 						label="View Linked Url"

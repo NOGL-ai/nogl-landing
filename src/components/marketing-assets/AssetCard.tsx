@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import type { AssetTypeName, MarketingAssetListItem } from "@/types/marketing-asset";
+import { isVideoMediaUrl } from "@/components/marketing-assets/modal/utils";
 
 const TYPE_LABEL: Record<AssetTypeName, string> = {
 	EMAIL: "Email",
@@ -39,6 +40,7 @@ export function AssetCard({
 	onClick: () => void;
 }) {
 	const hero = resolveMedia(asset.mediaUrls?.[0]);
+	const isVideo = isVideoMediaUrl(hero);
 	const title = asset.title ?? asset.bodyText ?? "Untitled";
 	const proxies = asset.proxies ?? {};
 	const longevity = proxies.longevityDays;
@@ -51,6 +53,18 @@ export function AssetCard({
 		>
 			<div className="relative aspect-[5/4] w-full shrink-0 bg-bg-secondary">
 				{hero ? (
+					isVideo ? (
+						<video
+							src={hero}
+							className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+							autoPlay
+							loop
+							muted
+							playsInline
+							preload="metadata"
+							disablePictureInPicture
+						/>
+					) : (
 					<Image
 						src={hero}
 						alt={title}
@@ -59,6 +73,7 @@ export function AssetCard({
 						className="object-cover transition duration-300 group-hover:scale-[1.02]"
 						unoptimized
 					/>
+					)
 				) : (
 					<div className="flex h-full min-h-48 items-center justify-center px-4 text-center text-xs text-text-tertiary">
 						No preview

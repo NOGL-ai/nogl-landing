@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import type { MarketingAssetDetail } from "@/types/marketing-asset";
-import { resolveMedia } from "@/components/marketing-assets/modal/utils";
+import { isVideoMediaUrl, resolveMedia } from "@/components/marketing-assets/modal/utils";
 
 type RelatedAssetsSectionProps = {
 	lang: string;
@@ -21,6 +21,8 @@ export function RelatedAssetsSection({
 	relatedItems,
 	onSelectAsset,
 }: RelatedAssetsSectionProps) {
+	const isHomepageAsset = detail.assetType === "HOMEPAGE" || detail.assetType === "HOMEPAGE_MOBILE";
+
 	return (
 		<>
 			<div className="mb-3 flex min-w-0 items-center justify-between gap-3">
@@ -37,17 +39,12 @@ export function RelatedAssetsSection({
 			{relatedLoading ? (
 				<div className="py-4 text-sm text-text-tertiary">Loading related assets…</div>
 			) : (
-				<ul
-					className={`grid gap-3 ${
-						detail.assetType === "HOMEPAGE" || detail.assetType === "HOMEPAGE_MOBILE"
-							? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-5"
-							: "grid-cols-2 sm:grid-cols-3 md:grid-cols-4"
-					}`}
-				>
+				<ul className={isHomepageAsset ? "flex flex-wrap gap-3" : "grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4"}>
 					{relatedItems.slice(0, 12).map((asset) => {
 						const thumb = resolveMedia(asset.mediaUrls?.[0]);
+						const isVideo = isVideoMediaUrl(thumb);
 						return (
-							<li key={asset.id}>
+							<li key={asset.id} className={isHomepageAsset ? "w-[200px]" : undefined}>
 								<button
 									type="button"
 									onClick={() => onSelectAsset(asset.id)}
@@ -55,21 +52,28 @@ export function RelatedAssetsSection({
 										asset.id === detail.id ? "border-border-brand" : "border-border-primary"
 									}`}
 								>
-									<div
-										className={`relative w-full bg-bg-secondary ${
-											detail.assetType === "HOMEPAGE" || detail.assetType === "HOMEPAGE_MOBILE"
-												? "h-[200px]"
-												: "h-[200px]"
-										}`}
-									>
+									<div className={`relative w-full bg-bg-secondary ${isHomepageAsset ? "h-[200px]" : "h-[200px]"}`}>
 										{thumb ? (
-											<Image
-												src={thumb}
-												alt={asset.title ?? "Image"}
-												fill
-												className="object-cover"
-												unoptimized
-											/>
+											isVideo ? (
+												<video
+													src={thumb}
+													className="h-full w-full object-cover"
+													autoPlay
+													loop
+													muted
+													playsInline
+													preload="metadata"
+													disablePictureInPicture
+												/>
+											) : (
+												<Image
+													src={thumb}
+													alt={asset.title ?? "Image"}
+													fill
+													className="object-cover"
+													unoptimized
+												/>
+											)
 										) : null}
 									</div>
 								</button>
