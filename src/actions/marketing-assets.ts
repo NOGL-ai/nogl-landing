@@ -6,7 +6,7 @@ import { AssetType, Prisma } from "@prisma/client";
 
 import { prisma } from "@/lib/prismaDb";
 import { getAuthSession } from "@/lib/auth";
-import { getCalumetTenantId } from "@/lib/tenant";
+import { getCalumetTenantId, getMarketingTenantIds } from "@/lib/tenant";
 import { getQueue, QUEUE_NAMES } from "@/lib/queue";
 import type {
 	AssetCaptureRunDTO,
@@ -103,9 +103,9 @@ export async function listMarketingAssets(
 ): Promise<MarketingAssetListResponse> {
 	await requireUser();
 	const parsed = listParamsSchema.parse(params);
-	const tenantId = await getCalumetTenantId();
+	const tenantIds = await getMarketingTenantIds();
 
-	const andParts: Prisma.MarketingAssetWhereInput[] = [{ tenantId }];
+	const andParts: Prisma.MarketingAssetWhereInput[] = [{ tenantId: { in: tenantIds } }];
 
 	const emailLockedPreset =
 		parsed.preset === "discounts" ||
@@ -257,9 +257,9 @@ export async function listMarketingAssets(
 
 export async function getAssetDetail(id: string): Promise<MarketingAssetDetail | null> {
 	await requireUser();
-	const tenantId = await getCalumetTenantId();
+	const tenantIds = await getMarketingTenantIds();
 	const row = await prisma.marketingAsset.findFirst({
-		where: { id, tenantId },
+		where: { id, tenantId: { in: tenantIds } },
 		include: { brand: { select: { name: true, slug: true } } },
 	});
 	if (!row) return null;
@@ -268,24 +268,24 @@ export async function getAssetDetail(id: string): Promise<MarketingAssetDetail |
 
 export async function getAssetStats(): Promise<AssetStatsByType> {
 	await requireUser();
-	const tenantId = await getCalumetTenantId();
+	const tenantIds = await getMarketingTenantIds();
 	const since = new Date(Date.now() - 28 * 86400_000);
 
 	const [byTypeRows, brandRows, last28d, total] = await Promise.all([
 		prisma.marketingAsset.groupBy({
 			by: ["assetType"],
-			where: { tenantId },
+			where: { tenantId: { in: tenantIds } },
 			_count: { _all: true },
 		}),
 		prisma.marketingAsset.groupBy({
 			by: ["brandId"],
-			where: { tenantId },
+			where: { tenantId: { in: tenantIds } },
 			_count: { _all: true },
 			orderBy: { _count: { brandId: "desc" } },
 			take: 25,
 		}),
-		prisma.marketingAsset.count({ where: { tenantId, capturedAt: { gte: since } } }),
-		prisma.marketingAsset.count({ where: { tenantId } }),
+		prisma.marketingAsset.count({ where: { tenantId: { in: tenantIds }, capturedAt: { gte: since } } }),
+		prisma.marketingAsset.count({ where: { tenantId: { in: tenantIds } } }),
 	]);
 
 	const brands = await prisma.company.findMany({
@@ -320,9 +320,9 @@ export async function getAssetStats(): Promise<AssetStatsByType> {
 
 export async function getCaptureRuns(limit = 25): Promise<AssetCaptureRunDTO[]> {
 	await requireUser();
-	const tenantId = await getCalumetTenantId();
+	const tenantIds = await getMarketingTenantIds();
 	const rows = await prisma.assetCaptureRun.findMany({
-		where: { tenantId },
+		where: { tenantId: { in: tenantIds } },
 		orderBy: { startedAt: "desc" },
 		take: limit,
 	});

@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prismaDb";
 const CACHE_TTL_MS = 5 * 60 * 1000;
 
 let cached: { id: string; expiresAt: number } | null = null;
+let cachedMarketingTenantIds: { ids: string[]; expiresAt: number } | null = null;
 
 /**
  * Resolve the assets.Tenant.id used by Marketing Asset tables.
@@ -23,13 +24,27 @@ export async function getCalumetTenantId(): Promise<string> {
 	});
 
 	if (existing) {
-		const linkedTenant = await prisma.tenant.findFirst({
+		const linkedTenants = await prisma.tenant.findMany({
 			where: { companyId: existing.id },
-			select: { id: true },
+			select: {
+				id: true,
+				_count: {
+					select: {
+						marketingAssets: true,
+					},
+				},
+			},
+			orderBy: { createdAt: "asc" },
 		});
-		if (linkedTenant) {
-			cached = { id: linkedTenant.id, expiresAt: now + CACHE_TTL_MS };
-			return linkedTenant.id;
+		if (linkedTenants.length > 0) {
+			const tenantWithAssets =
+				linkedTenants
+					.filter((tenant) => tenant._count.marketingAssets > 0)
+					.sort((a, b) => b._count.marketingAssets - a._count.marketingAssets)[0] ??
+				linkedTenants[0];
+
+			cached = { id: tenantWithAssets.id, expiresAt: now + CACHE_TTL_MS };
+			return tenantWithAssets.id;
 		}
 	}
 
@@ -48,13 +63,27 @@ export async function getCalumetTenantId(): Promise<string> {
 		select: { id: true },
 	});
 
-	const linkedCreatedTenant = await prisma.tenant.findFirst({
+	const linkedCreatedTenants = await prisma.tenant.findMany({
 		where: { companyId: created.id },
-		select: { id: true },
+		select: {
+			id: true,
+			_count: {
+				select: {
+					marketingAssets: true,
+				},
+			},
+		},
+		orderBy: { createdAt: "asc" },
 	});
-	if (linkedCreatedTenant) {
-		cached = { id: linkedCreatedTenant.id, expiresAt: now + CACHE_TTL_MS };
-		return linkedCreatedTenant.id;
+	if (linkedCreatedTenants.length > 0) {
+		const tenantWithAssets =
+			linkedCreatedTenants
+				.filter((tenant) => tenant._count.marketingAssets > 0)
+				.sort((a, b) => b._count.marketingAssets - a._count.marketingAssets)[0] ??
+			linkedCreatedTenants[0];
+
+		cached = { id: tenantWithAssets.id, expiresAt: now + CACHE_TTL_MS };
+		return tenantWithAssets.id;
 	}
 
 	// Fallback for single-tenant environments where tenant exists but is not
@@ -84,4 +113,36 @@ export async function getCalumetTenantId(): Promise<string> {
 
 export function clearTenantCache(): void {
 	cached = null;
+	cachedMarketingTenantIds = null;
+}
+
+/**
+ * Resolve the tenant scope used by Marketing Asset read endpoints.
+ *
+ * We prefer all tenants that currently have marketing assets so the UI
+ * reflects the full indexed corpus instead of a single operator tenant.
+ */
+export async function getMarketingTenantIds(): Promise<string[]> {
+	const now = Date.now();
+	if (cachedMarketingTenantIds && cachedMarketingTenantIds.expiresAt > now) {
+		return cachedMarketingTenantIds.ids;
+	}
+
+	const grouped = await prisma.marketingAsset.groupBy({
+		by: ["tenantId"],
+		_count: { _all: true },
+	});
+
+	const ids = grouped
+		.filter((row) => row._count._all > 0)
+		.map((row) => row.tenantId);
+
+	if (ids.length > 0) {
+		cachedMarketingTenantIds = { ids, expiresAt: now + CACHE_TTL_MS };
+		return ids;
+	}
+
+	const fallback = await getCalumetTenantId();
+	cachedMarketingTenantIds = { ids: [fallback], expiresAt: now + CACHE_TTL_MS };
+	return [fallback];
 }
