@@ -47,7 +47,7 @@ export function AssetCard({
 		<button
 			type="button"
 			onClick={onClick}
-			className="group flex h-full min-h-80 w-full max-w-sm flex-col overflow-hidden rounded-xl border border-border-primary bg-bg-primary text-left shadow-sm transition hover:border-border-secondary hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-border-brand"
+			className="group flex h-full min-h-80 w-full flex-col overflow-hidden rounded-xl border border-border-primary bg-bg-primary text-left shadow-sm transition hover:border-border-secondary hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-border-brand"
 		>
 			<div className="relative aspect-[5/4] w-full shrink-0 bg-bg-secondary">
 				{hero ? (
@@ -64,6 +64,30 @@ export function AssetCard({
 						No preview
 					</div>
 				)}
+				<div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/65 via-black/15 to-transparent opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+					<div className="flex h-full w-full items-center justify-center">
+						<div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/55 bg-black/30 text-white shadow-sm backdrop-blur-[1px]">
+							<svg
+								aria-hidden="true"
+								viewBox="0 0 24 24"
+								className="h-5 w-5"
+								fill="none"
+								stroke="currentColor"
+								strokeWidth="1.8"
+								strokeLinecap="round"
+								strokeLinejoin="round"
+							>
+								<circle cx="11" cy="11" r="7" />
+								<line x1="20" y1="20" x2="16.5" y2="16.5" />
+								<line x1="11" y1="8.5" x2="11" y2="13.5" />
+								<line x1="8.5" y1="11" x2="13.5" y2="11" />
+							</svg>
+						</div>
+					</div>
+					<p className="absolute bottom-3 left-3 right-3 line-clamp-2 text-base font-semibold leading-tight text-white">
+						{title}
+					</p>
+				</div>
 				{longevity && longevity > 60 ? (
 					<span className="absolute right-2 top-2 rounded-full bg-success-secondary px-2 py-0.5 text-xs font-medium text-text-success">
 						{longevity}d live

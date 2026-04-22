@@ -11,8 +11,13 @@ import type { MarketingAssetDetail, MarketingAssetListResponse } from "@/types/m
 import { AssetNavigationRow } from "@/components/marketing-assets/modal/molecules/AssetNavigationRow";
 import { MetaAdAssetModalBody } from "@/components/marketing-assets/modal/components/MetaAdAssetModalBody";
 import { EmailAssetModalBody } from "@/components/marketing-assets/modal/components/EmailAssetModalBody";
+import { HomepageAssetModalBody } from "@/components/marketing-assets/modal/components/HomepageAssetModalBody";
 import { RelatedAssetsSection } from "@/components/marketing-assets/modal/components/RelatedAssetsSection";
-import { getMetaAdModalData, resolveMedia } from "@/components/marketing-assets/modal/utils";
+import {
+	getMetaAdModalData,
+	getProductExplorerHref,
+	resolveMedia,
+} from "@/components/marketing-assets/modal/utils";
 
 export function AssetDetailModal({
 	assetId,
@@ -112,7 +117,21 @@ export function AssetDetailModal({
 
 	const hero = resolveMedia(detail?.mediaUrls?.[0]);
 	const isMetaAd = detail?.assetType === "META_AD";
+	const isEmail = detail?.assetType === "EMAIL";
+	const isHomepageAsset = detail?.assetType === "HOMEPAGE" || detail?.assetType === "HOMEPAGE_MOBILE";
 	const metaAdData = getMetaAdModalData(detail);
+	const productExplorerHref = getProductExplorerHref(detail, lang);
+	const relatedHeading = detail
+		? ({
+				EMAIL: "More emails from this company",
+				HOMEPAGE: "More homepages from this company",
+				HOMEPAGE_MOBILE: "More mobile homepages from this company",
+				INSTAGRAM: "More instagram assets from this company",
+				META_AD: "More meta ads from this company",
+				YOUTUBE_AD: "More YouTube ads from this company",
+				TIKTOK_AD: "More TikTok ads from this company",
+			}[detail.assetType])
+		: "More assets from this company";
 	const activeIndex =
 		detail && relatedItems.length > 0 ? relatedItems.findIndex((asset) => asset.id === detail.id) + 1 : 0;
 	const fallbackTotal = detail ? 1 : 0;
@@ -139,13 +158,17 @@ export function AssetDetailModal({
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent
 				showCloseButton
-				className="max-h-[94vh] w-[min(100vw-2rem,985px)] max-w-none gap-0 overflow-y-auto p-0 sm:max-w-[min(100vw-2rem,985px)]"
+				className={`max-h-[94vh] max-w-none gap-0 overflow-y-auto p-0 ${
+					isHomepageAsset
+						? "w-[min(100vw-2rem,1376px)] sm:max-w-[min(100vw-2rem,1376px)]"
+						: "w-[min(100vw-2rem,985px)] sm:max-w-[min(100vw-2rem,985px)]"
+				}`}
 			>
 				<DialogHeader className="border-b border-border-primary px-6 py-4">
 					<DialogTitle className="pr-8 text-2xl font-semibold text-text-primary">
 						{detail?.title ?? "Asset detail"}
 					</DialogTitle>
-					{detail ? (
+					{detail && !isHomepageAsset ? (
 						<div className="mt-2 flex flex-wrap items-center gap-3 text-sm text-text-tertiary">
 							<span className="font-medium text-text-primary">{detail.brandName}</span>
 							{detail.sourceUrl ? (
@@ -158,6 +181,12 @@ export function AssetDetailModal({
 									View →
 								</a>
 							) : null}
+							<a
+								className="rounded-md border border-border-primary px-2 py-1 font-medium text-text-primary transition hover:bg-bg-secondary"
+								href={productExplorerHref}
+							>
+								Product identified
+							</a>
 							<span>
 								{new Date(detail.capturedAt).toLocaleString("en-GB", {
 									day: "numeric",
@@ -191,7 +220,15 @@ export function AssetDetailModal({
 								adLibraryUrl={metaAdData.adLibraryUrl}
 								linkedUrl={metaAdData.linkedUrl}
 							/>
-						) : (
+						) : isHomepageAsset ? (
+							<HomepageAssetModalBody
+								title={detail.title}
+								hero={hero}
+								brandName={detail.brandName}
+								sourceUrl={detail.sourceUrl}
+								capturedAt={detail.capturedAt}
+							/>
+						) : isEmail ? (
 							<EmailAssetModalBody
 								title={detail.title}
 								bodyText={detail.bodyText}
@@ -200,6 +237,14 @@ export function AssetDetailModal({
 								activeContentTab={activeContentTab}
 								setActivePreviewTab={setActivePreviewTab}
 								setActiveContentTab={setActiveContentTab}
+							/>
+						) : (
+							<HomepageAssetModalBody
+								title={detail.title}
+								hero={hero}
+								brandName={detail.brandName}
+								sourceUrl={detail.sourceUrl}
+								capturedAt={detail.capturedAt}
 							/>
 						)}
 
@@ -214,7 +259,7 @@ export function AssetDetailModal({
 						<RelatedAssetsSection
 							lang={lang}
 							detail={detail}
-							isMetaAd={isMetaAd}
+							relatedHeading={relatedHeading}
 							relatedLoading={relatedLoading}
 							relatedItems={relatedItems}
 							onSelectAsset={setCurrentAssetId}

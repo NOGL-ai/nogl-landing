@@ -300,7 +300,7 @@ export function MarketingAssetLibrary({
 						here for parity.
 					</div>
 				) : loading && items.length === 0 ? (
-					<ol className="m-0 grid list-none grid-cols-1 gap-4 p-0 lg:grid-cols-2">
+					<ol className="m-0 grid list-none grid-cols-1 gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
 						{Array.from({ length: 6 }).map((_, i) => (
 							<li key={i}>
 								<div className="h-80 animate-pulse rounded-xl bg-bg-secondary" />
@@ -315,7 +315,7 @@ export function MarketingAssetLibrary({
 					</div>
 				) : (
 					<>
-						<ol className="m-0 grid list-none grid-cols-1 justify-items-start gap-4 p-0 lg:grid-cols-2">
+						<ol className="m-0 grid list-none grid-cols-1 gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
 							{items.map((a) => (
 								<li key={a.id} className="w-full">
 									<AssetCard asset={a} onClick={() => openAsset(a.id)} />

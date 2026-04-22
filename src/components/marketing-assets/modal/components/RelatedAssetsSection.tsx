@@ -7,7 +7,7 @@ import { resolveMedia } from "@/components/marketing-assets/modal/utils";
 type RelatedAssetsSectionProps = {
 	lang: string;
 	detail: MarketingAssetDetail;
-	isMetaAd: boolean;
+	relatedHeading: string;
 	relatedLoading: boolean;
 	relatedItems: MarketingAssetDetail[];
 	onSelectAsset: (id: string) => void;
@@ -16,7 +16,7 @@ type RelatedAssetsSectionProps = {
 export function RelatedAssetsSection({
 	lang,
 	detail,
-	isMetaAd,
+	relatedHeading,
 	relatedLoading,
 	relatedItems,
 	onSelectAsset,
@@ -25,7 +25,7 @@ export function RelatedAssetsSection({
 		<>
 			<div className="mb-3 flex min-w-0 items-center justify-between gap-3">
 				<h3 className="min-w-0 truncate whitespace-nowrap text-base font-semibold text-text-primary sm:text-lg">
-					{isMetaAd ? "More meta ads from this company" : "More emails from this company"}
+					{relatedHeading}
 				</h3>
 				<a
 					href={`/${lang}/marketing-assets?assetType=${encodeURIComponent(detail.assetType)}&brand=${encodeURIComponent(detail.brandSlug)}`}
@@ -37,7 +37,13 @@ export function RelatedAssetsSection({
 			{relatedLoading ? (
 				<div className="py-4 text-sm text-text-tertiary">Loading related assets…</div>
 			) : (
-				<ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+				<ul
+					className={`grid gap-3 ${
+						detail.assetType === "HOMEPAGE" || detail.assetType === "HOMEPAGE_MOBILE"
+							? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-5"
+							: "grid-cols-2 sm:grid-cols-3 md:grid-cols-4"
+					}`}
+				>
 					{relatedItems.slice(0, 12).map((asset) => {
 						const thumb = resolveMedia(asset.mediaUrls?.[0]);
 						return (
@@ -49,7 +55,13 @@ export function RelatedAssetsSection({
 										asset.id === detail.id ? "border-border-brand" : "border-border-primary"
 									}`}
 								>
-									<div className="relative h-[200px] w-full bg-bg-secondary">
+									<div
+										className={`relative w-full bg-bg-secondary ${
+											detail.assetType === "HOMEPAGE" || detail.assetType === "HOMEPAGE_MOBILE"
+												? "h-[200px]"
+												: "h-[200px]"
+										}`}
+									>
 										{thumb ? (
 											<Image
 												src={thumb}

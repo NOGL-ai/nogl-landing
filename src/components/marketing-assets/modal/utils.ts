@@ -1,6 +1,7 @@
 "use client";
 
 import type { MarketingAssetDetail } from "@/types/marketing-asset";
+import { buildProductExplorerResearchHref } from "@/lib/product-explorer-search";
 
 export type MetaAdModalData = {
 	adLibraryUrl: string | null;
@@ -11,6 +12,35 @@ export type MetaAdModalData = {
 	adsLaunched: number | null;
 	metaBody: string | null;
 };
+
+function asCleanString(value: unknown): string | null {
+	if (typeof value !== "string") return null;
+	const clean = value.trim();
+	return clean.length > 0 ? clean : null;
+}
+
+function getProductSearchTerms(detail: MarketingAssetDetail): string[] {
+	const payload = detail.payload as Record<string, unknown>;
+	// TODO: Replace this fallback heuristic with real product-identification mapping from CV/search indexing.
+	const candidates: Array<unknown> = [
+		payload.searchQuery,
+		detail.title,
+		detail.brandName,
+		detail.bodyText,
+	];
+	const terms = candidates
+		.map(asCleanString)
+		.filter((value): value is string => Boolean(value))
+		.map((value) => value.slice(0, 120));
+	return terms.length > 0 ? terms.slice(0, 1) : [];
+}
+
+export function getProductExplorerHref(detail: MarketingAssetDetail | null, lang: string): string {
+	if (!detail) return `/${lang}/product-explorer`;
+	const terms = getProductSearchTerms(detail);
+	if (terms.length === 0) return `/${lang}/product-explorer`;
+	return buildProductExplorerResearchHref(lang, terms);
+}
 
 export function resolveMedia(key: string | undefined): string | null {
 	if (!key) return null;
