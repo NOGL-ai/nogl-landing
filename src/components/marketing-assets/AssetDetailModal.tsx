@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import {
 	Dialog,
@@ -9,12 +8,11 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog";
 import type { MarketingAssetDetail, MarketingAssetListResponse } from "@/types/marketing-asset";
-
-function resolveMedia(key: string | undefined): string | null {
-	if (!key) return null;
-	if (key.startsWith("http")) return key;
-	return `/api/marketing-assets/media/${encodeURIComponent(key)}`;
-}
+import { AssetNavigationRow } from "@/components/marketing-assets/modal/molecules/AssetNavigationRow";
+import { MetaAdAssetModalBody } from "@/components/marketing-assets/modal/components/MetaAdAssetModalBody";
+import { EmailAssetModalBody } from "@/components/marketing-assets/modal/components/EmailAssetModalBody";
+import { RelatedAssetsSection } from "@/components/marketing-assets/modal/components/RelatedAssetsSection";
+import { getMetaAdModalData, resolveMedia } from "@/components/marketing-assets/modal/utils";
 
 export function AssetDetailModal({
 	assetId,
@@ -113,6 +111,8 @@ export function AssetDetailModal({
 	}, [detail, open, relatedItems]);
 
 	const hero = resolveMedia(detail?.mediaUrls?.[0]);
+	const isMetaAd = detail?.assetType === "META_AD";
+	const metaAdData = getMetaAdModalData(detail);
 	const activeIndex =
 		detail && relatedItems.length > 0 ? relatedItems.findIndex((asset) => asset.id === detail.id) + 1 : 0;
 	const fallbackTotal = detail ? 1 : 0;
@@ -178,152 +178,47 @@ export function AssetDetailModal({
 					<div className="px-6 py-8 text-sm text-text-tertiary">Not found.</div>
 				) : (
 					<div className="px-6 py-5">
-						<div className="mb-4 h-12 border-b border-border-primary">
-							<div className="flex h-full items-center gap-3 text-sm">
-								<span className="font-semibold uppercase tracking-wide text-text-primary">Email Preview</span>
-								<button
-									type="button"
-									onClick={() => setActivePreviewTab("desktop")}
-									className={`rounded-md px-2.5 py-1 ${
-										activePreviewTab === "desktop" ? "bg-brand-50 text-text-brand" : "text-text-tertiary"
-									}`}
-								>
-									Desktop
-								</button>
-								<button
-									type="button"
-									onClick={() => setActivePreviewTab("mobile")}
-									className={`rounded-md px-2.5 py-1 ${
-										activePreviewTab === "mobile" ? "bg-brand-50 text-text-brand" : "text-text-tertiary"
-									}`}
-								>
-									Mobile
-								</button>
-								<button
-									type="button"
-									onClick={() => setActiveContentTab("email")}
-									className={`rounded-md px-2.5 py-1 ${
-										activeContentTab === "email" ? "bg-brand-50 text-text-brand" : "text-text-tertiary"
-									}`}
-								>
-									Email
-								</button>
-								<button
-									type="button"
-									onClick={() => setActiveContentTab("image")}
-									className={`rounded-md px-2.5 py-1 ${
-										activeContentTab === "image" ? "bg-brand-50 text-text-brand" : "text-text-tertiary"
-									}`}
-								>
-									Image
-								</button>
-							</div>
-						</div>
-
-						<div className="mb-4 flex flex-wrap items-center justify-between gap-2 text-sm">
-							<div className="font-medium text-text-primary">
-								Asset {Math.max(activeIndex, 1)} of {totalForCounter.toLocaleString()}
-							</div>
-							<div className="flex items-center gap-2">
-								<button
-									type="button"
-									onClick={goPrev}
-									disabled={!canNavigate}
-									className="rounded-md border border-border-primary px-2 py-1 text-text-tertiary disabled:opacity-50"
-									aria-label="Previous asset"
-								>
-									←
-								</button>
-								<button
-									type="button"
-									onClick={goNext}
-									disabled={!canNavigate}
-									className="rounded-md border border-border-primary px-2 py-1 text-text-tertiary disabled:opacity-50"
-									aria-label="Next asset"
-								>
-									→
-								</button>
-								<div className="ml-2 text-text-tertiary">Use left and right arrow keys to navigate assets</div>
-							</div>
-						</div>
-
-						<div className="mb-4 rounded-xl border border-border-primary bg-bg-secondary p-4">
-							{activeContentTab === "email" && detail.bodyText ? (
-								<div className="max-h-[480px] overflow-y-auto whitespace-pre-wrap text-sm text-text-primary">
-									{detail.bodyText}
-								</div>
-							) : hero ? (
-								<div
-									className={`relative mx-auto overflow-hidden rounded-lg border border-border-primary bg-bg-primary ${
-										activePreviewTab === "mobile"
-											? "h-[500px] w-[280px]"
-											: "h-[420px] w-full max-w-[680px]"
-									}`}
-								>
-									<Image
-										src={hero}
-										alt={detail.title ?? "asset"}
-										fill
-										className={activePreviewTab === "mobile" ? "object-cover object-top" : "object-contain"}
-										unoptimized
-									/>
-								</div>
-							) : (
-								<div className="py-12 text-center text-sm text-text-tertiary">No media available.</div>
-							)}
-						</div>
-
-						<div className="mb-5 rounded-lg border border-border-primary bg-bg-secondary p-4 text-xs leading-5 text-text-tertiary">
-							NOGL is not responsible for the content displayed in assets reflected here. This image was
-							stored and listed here through automated systems. To report an image, please contact
-							support.
-						</div>
-
-						<div className="mb-3 flex min-w-0 items-center justify-between gap-3">
-							<h3 className="min-w-0 truncate whitespace-nowrap text-base font-semibold text-text-primary sm:text-lg">
-								More emails from this company
-							</h3>
-							<a
-								href={`/${lang}/marketing-assets?assetType=EMAIL&brand=${encodeURIComponent(detail.brandSlug)}`}
-								className="rounded-md border border-border-primary px-3 py-2 text-sm font-medium text-text-brand hover:bg-brand-50"
-							>
-								See all
-							</a>
-						</div>
-						{relatedLoading ? (
-							<div className="py-4 text-sm text-text-tertiary">Loading related assets…</div>
+						{isMetaAd ? (
+							<MetaAdAssetModalBody
+								brandName={detail.brandName}
+								title={detail.title}
+								hero={hero}
+								metaBody={metaAdData.metaBody}
+								runningFrom={metaAdData.runningFrom}
+								runningTo={metaAdData.runningTo}
+								platformCount={metaAdData.platformCount}
+								adsLaunched={metaAdData.adsLaunched}
+								adLibraryUrl={metaAdData.adLibraryUrl}
+								linkedUrl={metaAdData.linkedUrl}
+							/>
 						) : (
-							<ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-								{relatedItems.slice(0, 12).map((asset) => {
-									const thumb = resolveMedia(asset.mediaUrls?.[0]);
-									return (
-										<li key={asset.id}>
-											<button
-												type="button"
-												onClick={() => setCurrentAssetId(asset.id)}
-												className={`w-full overflow-hidden rounded-lg border ${
-													asset.id === detail.id
-														? "border-border-brand"
-														: "border-border-primary"
-												}`}
-											>
-												<div className="relative h-[200px] w-full bg-bg-secondary">
-													{thumb ? (
-														<Image
-															src={thumb}
-															alt={asset.title ?? "Image"}
-															fill
-															className="object-cover"
-															unoptimized
-														/>
-													) : null}
-												</div>
-											</button>
-										</li>
-									);
-								})}
-							</ul>
+							<EmailAssetModalBody
+								title={detail.title}
+								bodyText={detail.bodyText}
+								hero={hero}
+								activePreviewTab={activePreviewTab}
+								activeContentTab={activeContentTab}
+								setActivePreviewTab={setActivePreviewTab}
+								setActiveContentTab={setActiveContentTab}
+							/>
 						)}
+
+						<AssetNavigationRow
+							activeIndex={activeIndex}
+							totalForCounter={totalForCounter}
+							canNavigate={canNavigate}
+							onPrev={goPrev}
+							onNext={goNext}
+						/>
+
+						<RelatedAssetsSection
+							lang={lang}
+							detail={detail}
+							isMetaAd={isMetaAd}
+							relatedLoading={relatedLoading}
+							relatedItems={relatedItems}
+							onSelectAsset={setCurrentAssetId}
+						/>
 					</div>
 				)}
 			</DialogContent>
