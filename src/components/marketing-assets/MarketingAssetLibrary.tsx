@@ -155,7 +155,7 @@ export function MarketingAssetLibrary({
 
 	return (
 		<div className="min-h-screen bg-background">
-			<div className="mx-auto max-w-[900px] px-4 py-6 lg:px-6 lg:py-8">
+			<div className="mx-auto max-w-[1180px] px-4 py-6 lg:px-8 lg:py-8">
 				<div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 					<div>
 						<h1 className="text-2xl font-semibold tracking-tight text-foreground">
@@ -182,8 +182,8 @@ export function MarketingAssetLibrary({
 					</details>
 				</div>
 
-				<div className="mb-1 flex flex-col gap-3 border-b border-border sm:flex-row sm:items-center sm:justify-between">
-					<div className="-mx-1 flex gap-0 overflow-x-auto pb-px sm:mx-0">
+				<div className="mb-1 border-b border-border">
+					<div className="flex flex-wrap gap-0 overflow-x-visible pb-px">
 						{TYPE_TABS.map((t) => {
 							const active = tab === t.key;
 							const count =
@@ -196,7 +196,7 @@ export function MarketingAssetLibrary({
 										setPreset(null);
 										setTab(t.key);
 									}}
-									className={`shrink-0 border-b-2 px-3 py-3 text-sm font-medium transition sm:px-4 ${
+									className={`shrink-0 whitespace-nowrap border-b-2 px-3 py-3 text-sm font-medium transition sm:px-4 ${
 										active
 											? "border-primary text-foreground"
 											: "border-transparent text-muted-foreground hover:text-foreground"
@@ -212,37 +212,38 @@ export function MarketingAssetLibrary({
 							);
 						})}
 					</div>
-					<div className="flex shrink-0 flex-wrap items-center gap-2 pb-2 text-xs text-muted-foreground sm:pb-0">
-						<span className="hidden sm:inline">Range</span>
-						<input
-							type="date"
-							value={from}
-							onChange={(e) => setFrom(e.target.value)}
-							className="h-9 rounded-md border border-border bg-background px-2 text-foreground"
-							aria-label="Captured from"
-						/>
-						<span>—</span>
-						<input
-							type="date"
-							value={to}
-							onChange={(e) => setTo(e.target.value)}
-							className="h-9 rounded-md border border-border bg-background px-2 text-foreground"
-							aria-label="Captured to"
-						/>
-						<span className="rounded-md border border-border bg-muted/40 px-2 py-1 font-medium text-foreground">
-							{rangeLabel}
-						</span>
-					</div>
+				</div>
+
+				<div className="mb-4 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+					<span className="font-medium uppercase tracking-wide">Range</span>
+					<input
+						type="date"
+						value={from}
+						onChange={(e) => setFrom(e.target.value)}
+						className="h-9 rounded-md border border-border bg-background px-2 text-foreground"
+						aria-label="Captured from"
+					/>
+					<span>—</span>
+					<input
+						type="date"
+						value={to}
+						onChange={(e) => setTo(e.target.value)}
+						className="h-9 rounded-md border border-border bg-background px-2 text-foreground"
+						aria-label="Captured to"
+					/>
+					<span className="rounded-md border border-border bg-muted/40 px-2 py-1 font-medium text-foreground">
+						{rangeLabel}
+					</span>
 				</div>
 
 				<div className="mb-4 mt-4 flex flex-col gap-3">
-					<div className="flex flex-wrap items-end gap-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-						<div className="flex min-w-[140px] flex-col gap-1 normal-case">
+					<div className="grid gap-3 text-xs font-medium uppercase tracking-wide text-muted-foreground sm:grid-cols-2 lg:grid-cols-3">
+						<div className="flex min-w-0 flex-col gap-1 normal-case">
 							<span className="text-[10px] uppercase tracking-wide text-muted-foreground">Company</span>
 							<select
 								value={brandSlug ?? ""}
 								onChange={(e) => setBrandSlug(e.target.value || undefined)}
-								className="h-9 w-full min-w-[140px] rounded-md border border-border bg-background px-2 text-sm font-normal normal-case text-foreground"
+								className="h-9 w-full min-w-0 rounded-md border border-border bg-background px-2 text-sm font-normal normal-case text-foreground"
 								aria-label="Filter by company"
 							>
 								<option value="">All companies</option>
@@ -253,7 +254,7 @@ export function MarketingAssetLibrary({
 								))}
 							</select>
 						</div>
-						<div className="flex min-w-[200px] flex-1 flex-col gap-1 normal-case">
+						<div className="flex min-w-0 flex-col gap-1 normal-case">
 							<span className="text-[10px] uppercase tracking-wide text-muted-foreground">
 								Title &amp; contents
 							</span>
@@ -265,7 +266,7 @@ export function MarketingAssetLibrary({
 								className="h-9 w-full rounded-md border border-border bg-background px-3 text-sm font-normal normal-case text-foreground placeholder:text-muted-foreground"
 							/>
 						</div>
-						<div className="flex min-w-[120px] flex-col gap-1 opacity-60">
+						<div className="flex min-w-0 flex-col gap-1 opacity-60">
 							<span className="text-[10px] uppercase tracking-wide">Company vertical</span>
 							<span className="h-9 rounded-md border border-dashed border-border px-2 py-2 text-sm font-normal normal-case text-muted-foreground">
 								Coming soon

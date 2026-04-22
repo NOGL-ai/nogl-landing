@@ -23,6 +23,8 @@ export const ROUTE_CONFIG = {
 		'/marketing-assets',
 		'/pricing-suite',
 		'/product-explorer',
+		'/product-taxonomy',
+		'/product-editor',
 		'/analytics',
 		'/demand',
 		'/replenishment',

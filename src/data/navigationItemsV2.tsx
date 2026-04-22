@@ -29,6 +29,7 @@ import {
     Database01,
     CheckSquare,
     Activity,
+    Folder,
     CpuChip01,
     SwitchHorizontal01 as CompareCompaniesIcon,
 } from "@untitledui/icons";
@@ -101,6 +102,8 @@ export const navigationStructure: NavigationSection[] = [
                             { label: 'Events Feed',         href: '/en/marketing-assets/events',icon: Database01 },
                             { label: 'Ingestion health',    href: '/en/marketing-assets/pipeline', icon: Activity },
                             { label: 'Product Explorer',    href: '/en/product-explorer',       icon: Package },
+                            { label: 'Product taxonomy',    href: '/en/product-taxonomy',       icon: Folder },
+                            { label: 'Product Editor',      href: '/en/product-editor',         icon: Folder },
                         ],
                     },
                     // ── Creative Scoring (accordion) ─────────────────────
@@ -186,6 +189,16 @@ export const navigationStructure: NavigationSection[] = [
                         label: 'Product Catalog',
                         href: '/en/product-explorer',
                         icon: Package,
+                    },
+                    {
+                        label: 'Product taxonomy',
+                        href: '/en/product-taxonomy',
+                        icon: Folder,
+                    },
+                    {
+                        label: 'Product Editor',
+                        href: '/en/product-editor',
+                        icon: Folder,
                     },
                     { label: 'Forecasting', isSubHeading: true },
                     {
