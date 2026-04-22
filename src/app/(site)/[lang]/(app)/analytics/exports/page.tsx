@@ -1,15 +1,18 @@
-export default function ExportsPage() {
-  return (
-    <div className="flex flex-col gap-6 p-6 lg:p-8">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold">Exports</h1>
-        <p className="text-muted-foreground">View and manage exports.</p>
-      </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <div className="rounded-lg border bg-card p-6">
-          <div className="h-32 animate-pulse rounded bg-muted" />
-        </div>
-      </div>
-    </div>
-  );
+import type { Locale } from "@/i18n";
+import { ExportsWorkspace } from "@/components/exports/ExportsWorkspace";
+
+export const dynamic = "force-dynamic";
+
+export const metadata = {
+	title: "Exports | NOGL",
+	description: "Generate and manage competitor export reports",
+};
+
+export default async function ExportsPage({
+	params,
+}: {
+	params: Promise<{ lang: Locale }>;
+}) {
+	const { lang } = await params;
+	return <ExportsWorkspace lang={lang} />;
 }
