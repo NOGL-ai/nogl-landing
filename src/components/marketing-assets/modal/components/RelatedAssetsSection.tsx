@@ -39,48 +39,50 @@ export function RelatedAssetsSection({
 			{relatedLoading ? (
 				<div className="py-4 text-sm text-text-tertiary">Loading related assets…</div>
 			) : (
-				<ul className={isHomepageAsset ? "flex flex-wrap gap-3" : "grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4"}>
-					{relatedItems.slice(0, 12).map((asset) => {
-						const thumb = resolveMedia(asset.mediaUrls?.[0]);
-						const isVideo = isVideoMediaUrl(thumb);
-						return (
-							<li key={asset.id} className={isHomepageAsset ? "w-[200px]" : undefined}>
-								<button
-									type="button"
-									onClick={() => onSelectAsset(asset.id)}
-									className={`w-full overflow-hidden rounded-lg border ${
-										asset.id === detail.id ? "border-border-brand" : "border-border-primary"
-									}`}
-								>
-									<div className={`relative w-full bg-bg-secondary ${isHomepageAsset ? "h-[200px]" : "h-[200px]"}`}>
-										{thumb ? (
-											isVideo ? (
-												<video
-													src={thumb}
-													className="h-full w-full object-cover"
-													autoPlay
-													loop
-													muted
-													playsInline
-													preload="metadata"
-													disablePictureInPicture
-												/>
-											) : (
-												<Image
-													src={thumb}
-													alt={asset.title ?? "Image"}
-													fill
-													className="object-cover"
-													unoptimized
-												/>
-											)
-										) : null}
-									</div>
-								</button>
-							</li>
-						);
-					})}
-				</ul>
+				<div className="overflow-x-auto pb-2">
+					<ul className="flex min-w-max flex-nowrap gap-3">
+						{relatedItems.slice(0, 12).map((asset) => {
+							const thumb = resolveMedia(asset.mediaUrls?.[0]);
+							const isVideo = isVideoMediaUrl(thumb);
+							return (
+								<li key={asset.id} className="w-[200px] shrink-0">
+									<button
+										type="button"
+										onClick={() => onSelectAsset(asset.id)}
+										className={`w-full overflow-hidden rounded-lg border ${
+											asset.id === detail.id ? "border-border-brand" : "border-border-primary"
+										}`}
+									>
+										<div className={`relative w-full bg-bg-secondary ${isHomepageAsset ? "h-[200px]" : "h-[200px]"}`}>
+											{thumb ? (
+												isVideo ? (
+													<video
+														src={thumb}
+														className="h-full w-full object-cover"
+														autoPlay
+														loop
+														muted
+														playsInline
+														preload="metadata"
+														disablePictureInPicture
+													/>
+												) : (
+													<Image
+														src={thumb}
+														alt={asset.title ?? "Image"}
+														fill
+														className="object-cover"
+														unoptimized
+													/>
+												)
+											) : null}
+										</div>
+									</button>
+								</li>
+							);
+						})}
+					</ul>
+				</div>
 			)}
 		</>
 	);

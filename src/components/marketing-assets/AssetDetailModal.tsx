@@ -120,6 +120,7 @@ export function AssetDetailModal({
 	const isMetaAd = detail?.assetType === "META_AD";
 	const isEmail = detail?.assetType === "EMAIL";
 	const isInstagram = detail?.assetType === "INSTAGRAM";
+	const isHomepageMobileAsset = detail?.assetType === "HOMEPAGE_MOBILE";
 	const isHomepageAsset = detail?.assetType === "HOMEPAGE" || detail?.assetType === "HOMEPAGE_MOBILE";
 	const metaAdData = getMetaAdModalData(detail);
 	const productExplorerHref = getProductExplorerHref(detail, lang);
@@ -256,6 +257,7 @@ export function AssetDetailModal({
 								brandName={detail.brandName}
 								sourceUrl={detail.sourceUrl}
 								capturedAt={detail.capturedAt}
+								useMobileFrame={isHomepageMobileAsset}
 							/>
 						) : isEmail ? (
 							<EmailAssetModalBody
@@ -274,6 +276,7 @@ export function AssetDetailModal({
 								brandName={detail.brandName}
 								sourceUrl={detail.sourceUrl}
 								capturedAt={detail.capturedAt}
+								useMobileFrame={false}
 							/>
 						)}
 
