@@ -131,6 +131,7 @@
     "ai": "^5.0.68",
     "algoliasearch": "^5.39.0",
     "apify-client": "^2.23.0",
+    "arangojs": "^10.0.0",
     "axios": "^1.12.2",
     "bcrypt": "^6.0.0",
     "bullmq": "^5.75.2",
