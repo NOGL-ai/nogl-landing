@@ -51,6 +51,8 @@ export interface UploadUrlRequest {
 
 export interface UploadUrlResponse {
   upload_url: string;
+  /** Form fields for presigned POST (empty object = use plain PUT) */
+  upload_fields: Record<string, string>;
   object_key: string;
   asset_id: string;
   expires_at: string;
