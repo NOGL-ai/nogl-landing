@@ -15,17 +15,14 @@ import {
     FileX01,
     FileCheck02,
     Package,
-    PackageCheck,
     LayersThree01,
     RefreshCw01,
     TrendUp02,
     Grid03,
     BarChart02,
     Share01,
-    Bell01,
     Upload01,
     Beaker02,
-    BookOpen01,
     Database01,
     CheckSquare,
     Activity,
@@ -151,13 +148,35 @@ export const navigationStructure: NavigationSection[] = [
                 label: 'Fractional CFO',
                 icon: Wallet01,
                 subItems: [
-                    { label: 'Repricing', isSubHeading: true },
                     {
-                        label: 'Price Alerts',
-                        href: '/en/alerts',
-                        icon: Bell01,
+                        label: 'Dashboards',
+                        href: '/en/fractional-cfo/dashboards',
+                        icon: BarChartSquare02,
                     },
-                    // ── Repricing (accordion) ───────────────────────────
+                    // ── Alerts (CFO-specific, accordion) ───────────────
+                    {
+                        label: 'Alerts',
+                        icon: NotificationBox,
+                        isAccordionGroup: true,
+                        groupItems: [
+                            { label: 'Overview',      href: '/en/fractional-cfo/alerts',               icon: NotificationBox },
+                            { label: 'Customization', href: '/en/fractional-cfo/alerts/customization', icon: Settings03 },
+                            { label: 'Inactive',      href: '/en/fractional-cfo/alerts/inactive',      icon: FileX01 },
+                            { label: 'Share',         href: '/en/fractional-cfo/alerts/share',         icon: Share01 },
+                        ],
+                    },
+                    {
+                        label: 'Forecasting',
+                        href: '/en/fractional-cfo/forecasting',
+                        icon: LineChartUp02,
+                    },
+                    {
+                        label: 'Demand Shaping',
+                        href: '/en/fractional-cfo/demand-shaping',
+                        icon: Beaker02,
+                        badge: <BetaPill />,
+                    },
+                    // ── Repricing (accordion — preserved from original) ─────
                     {
                         label: 'Repricing',
                         icon: RefreshCw01,
@@ -184,60 +203,6 @@ export const navigationStructure: NavigationSection[] = [
                                 icon: BarChartSquare02,
                             },
                         ],
-                    },
-                    {
-                        label: 'Product Catalog',
-                        href: '/en/product-explorer',
-                        icon: Package,
-                    },
-                    {
-                        label: 'Product taxonomy',
-                        href: '/en/product-taxonomy',
-                        icon: Folder,
-                    },
-                    {
-                        label: 'Product Editor',
-                        href: '/en/product-editor',
-                        icon: Folder,
-                    },
-                    { label: 'Forecasting', isSubHeading: true },
-                    {
-                        label: 'Forecast',
-                        href: '/en/demand',
-                        icon: LineChartUp02,
-                    },
-                    {
-                        label: 'Demand Shaping',
-                        href: '/en/fractional-cfo/demand-shaping',
-                        icon: Beaker02,
-                        badge: <BetaPill />,
-                    },
-                    {
-                        label: 'Replenishment',
-                        href: '/en/replenishment',
-                        icon: PackageCheck,
-                    },
-                    {
-                        label: 'Analytics',
-                        href: '/en/fractional-cfo/analytics',
-                        icon: PieChart03,
-                    },
-                    // ── Alerts (CFO-specific, accordion) ───────────────
-                    {
-                        label: 'Alerts',
-                        icon: NotificationBox,
-                        isAccordionGroup: true,
-                        groupItems: [
-                            { label: 'Overview',      href: '/en/fractional-cfo/alerts',               icon: NotificationBox },
-                            { label: 'Customization', href: '/en/fractional-cfo/alerts/customization', icon: Settings03 },
-                            { label: 'Inactive',      href: '/en/fractional-cfo/alerts/inactive',      icon: FileX01 },
-                            { label: 'Share',         href: '/en/fractional-cfo/alerts/share',         icon: Share01 },
-                        ],
-                    },
-                    {
-                        label: 'Docs',
-                        href: '/en/fractional-cfo/docs',
-                        icon: BookOpen01,
                     },
                 ],
             },
