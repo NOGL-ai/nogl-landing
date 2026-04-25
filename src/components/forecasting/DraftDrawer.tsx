@@ -1,7 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { Ico, ICONS } from "./icons";
+import { ChevronDown, ChevronRight, Home02, Trash01 } from "@untitledui/icons";
+import {
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+} from "@/components/ui/sheet";
+import { Button } from "@/components/base/buttons/button";
+import { cn } from "@/lib/utils";
 import type { ForecastRow } from "./types";
 
 interface DraftDrawerProps {
@@ -43,416 +52,167 @@ export function DraftDrawer({ type, selectedRows, onClose }: DraftDrawerProps) {
         ? selectedRows
         : selectedRows.filter((r) => (qtys[r.id] || 0) > 0 || initQtys[r.id] > 0);
 
+    const stats: [string, string][] = [
+        [String(suppliers), "Suppliers"],
+        [String(variants), "Variants"],
+        [totalUnits.toLocaleString(), "Units"],
+        [fmtEur(totalCost), "Total"],
+    ];
+
     return (
-        <div
-            style={{ position: "fixed", inset: 0, zIndex: 50 }}
-            onClick={(e) => {
-                if (e.target === e.currentTarget) onClose();
-            }}
-        >
-            <div
-                style={{
-                    position: "absolute",
-                    top: 0,
-                    right: 0,
-                    height: "100%",
-                    width: 400,
-                    background: "var(--color-bg-primary)",
-                    borderLeft: "1px solid var(--color-border-secondary)",
-                    boxShadow: "-8px 0 24px rgba(0,0,0,.08)",
-                    display: "flex",
-                    flexDirection: "column",
-                    animation: "fc-slide-in-r 200ms cubic-bezier(.16,1,.3,1)",
-                }}
+        <Sheet open={true} onOpenChange={(open) => !open && onClose()}>
+            <SheetContent
+                side="right"
+                className="flex w-full max-w-[400px] flex-col gap-0 p-0"
             >
                 {/* Header */}
-                <div
-                    style={{
-                        padding: "16px 20px",
-                        borderBottom: "1px solid var(--color-border-secondary)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                    }}
-                >
-                    <span
-                        style={{
-                            fontSize: 16,
-                            fontWeight: 700,
-                            color: "var(--color-text-primary)",
-                        }}
-                    >
+                <SheetHeader className="flex flex-row items-center justify-between space-y-0 border-b border-border-secondary px-5 py-4">
+                    <SheetTitle className="text-base font-bold text-text-primary">
                         {title}
-                    </span>
-                    <button
-                        onClick={onClose}
-                        aria-label="Close drawer"
-                        style={{
-                            background: "transparent",
-                            border: 0,
-                            color: "var(--color-text-tertiary)",
-                            borderRadius: 6,
-                            padding: 4,
-                            cursor: "pointer",
-                            display: "flex",
-                        }}
-                    >
-                        <Ico path={ICONS.x} size={16} />
-                    </button>
-                </div>
+                    </SheetTitle>
+                    <SheetDescription className="sr-only">{title} drawer</SheetDescription>
+                </SheetHeader>
 
                 {/* Stats */}
-                <div
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(4,1fr)",
-                        padding: "14px 20px",
-                        borderBottom: "1px solid var(--color-border-secondary)",
-                        gap: 4,
-                    }}
-                >
-                    {(
-                        [
-                            [String(suppliers), "Suppliers"],
-                            [String(variants), "Variants"],
-                            [totalUnits.toLocaleString(), "Units"],
-                            [fmtEur(totalCost), "Total"],
-                        ] as [string, string][]
-                    ).map(([v, l]) => (
-                        <div key={l} style={{ textAlign: "center" }}>
+                <div className="grid grid-cols-4 gap-1 border-b border-border-secondary px-5 py-3.5">
+                    {stats.map(([v, l]) => (
+                        <div key={l} className="text-center">
                             <div
-                                style={{
-                                    fontSize: l === "Total" ? 15 : 18,
-                                    fontWeight: 700,
-                                    color: "var(--color-text-primary)",
-                                    fontFamily: "var(--font-mono)",
-                                    lineHeight: 1.2,
-                                }}
+                                className={cn(
+                                    "font-mono font-bold leading-tight text-text-primary",
+                                    l === "Total" ? "text-[15px]" : "text-lg",
+                                )}
                             >
                                 {v}
                             </div>
-                            <div
-                                style={{
-                                    fontSize: 11,
-                                    color: "var(--color-text-tertiary)",
-                                    marginTop: 2,
-                                }}
-                            >
-                                {l}
-                            </div>
+                            <div className="mt-0.5 text-[11px] text-text-tertiary">{l}</div>
                         </div>
                     ))}
                 </div>
 
                 {/* Body */}
-                <div
-                    style={{
-                        flex: 1,
-                        overflowY: "auto",
-                        padding: "14px 20px",
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 12,
-                    }}
-                >
+                <div className="flex flex-1 flex-col gap-3 overflow-y-auto px-5 py-3.5">
                     <div
-                        style={{
-                            display: "grid",
-                            gridTemplateColumns: "1fr 50px 90px 100px 24px",
-                            gap: 6,
-                            fontSize: 10,
-                            fontWeight: 600,
-                            color: "var(--color-text-quaternary)",
-                            textTransform: "uppercase",
-                            letterSpacing: ".08em",
-                            paddingBottom: 6,
-                            borderBottom: "1px solid var(--color-border-secondary)",
-                        }}
+                        className="grid grid-cols-[1fr_50px_90px_100px_24px] gap-1.5 border-b border-border-secondary pb-1.5 text-[10px] font-semibold uppercase tracking-wider text-text-quaternary"
                     >
                         <span></span>
-                        <span style={{ textAlign: "right" }}>VARIANTS</span>
-                        <span style={{ textAlign: "right" }}>COST</span>
+                        <span className="text-right">VARIANTS</span>
+                        <span className="text-right">COST</span>
                         <span>ORDER TARGET</span>
                         <span></span>
                     </div>
-                    <div
-                        style={{
-                            display: "grid",
-                            gridTemplateColumns: "1fr 50px 90px 100px 24px",
-                            gap: 6,
-                            alignItems: "center",
-                            fontSize: 12.5,
-                        }}
-                    >
+                    <div className="grid grid-cols-[1fr_50px_90px_100px_24px] items-center gap-1.5 text-[12.5px]">
                         <div>
-                            <div
-                                style={{
-                                    fontWeight: 600,
-                                    color: "var(--color-text-primary)",
-                                    fontSize: 12,
-                                }}
-                            >
+                            <div className="text-xs font-semibold text-text-primary">
                                 PLACEHOLDER
                             </div>
-                            <div
-                                style={{
-                                    fontSize: 11,
-                                    color: "var(--color-text-tertiary)",
-                                }}
-                            >
+                            <div className="text-[11px] text-text-tertiary">
                                 → Example Warehouse 1
                             </div>
                         </div>
-                        <div
-                            style={{
-                                textAlign: "right",
-                                fontFamily: "var(--font-mono)",
-                                fontSize: 12,
-                            }}
-                        >
-                            {variants}
-                        </div>
-                        <div
-                            style={{
-                                textAlign: "right",
-                                fontFamily: "var(--font-mono)",
-                                fontSize: 12,
-                            }}
-                        >
-                            {fmtEur(totalCost)}
-                        </div>
+                        <div className="text-right font-mono text-xs">{variants}</div>
+                        <div className="text-right font-mono text-xs">{fmtEur(totalCost)}</div>
                         <div>
                             <select
-                                style={{
-                                    fontSize: 11,
-                                    padding: "2px 4px",
-                                    border: "1px solid var(--color-border-primary)",
-                                    borderRadius: 4,
-                                    background: "var(--color-bg-primary)",
-                                    color: "var(--color-text-secondary)",
-                                    cursor: "pointer",
-                                    width: "100%",
-                                }}
+                                className="w-full cursor-pointer rounded border border-border-primary bg-bg-primary px-1 py-0.5 text-[11px] text-text-secondary"
                             >
                                 <option>New draft order</option>
                                 <option>Add to existing</option>
                             </select>
                         </div>
                         <button
+                            type="button"
                             aria-label="Remove"
-                            style={{
-                                background: "transparent",
-                                border: 0,
-                                color: "var(--color-text-tertiary)",
-                                cursor: "pointer",
-                                padding: 0,
-                            }}
+                            className="cursor-pointer border-0 bg-transparent p-0 text-text-tertiary"
                         >
-                            <Ico path={ICONS.trash} size={13} />
+                            <Trash01 className="h-3.5 w-3.5" />
                         </button>
                     </div>
 
                     {/* Include zero toggle */}
-                    <div
-                        style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 8,
-                            fontSize: 12.5,
-                            color: "var(--color-text-secondary)",
-                        }}
-                    >
+                    <div className="flex items-center gap-2 text-[12.5px] text-text-secondary">
                         <button
+                            type="button"
                             onClick={() => setIncludeZero((v) => !v)}
                             aria-pressed={includeZero}
-                            style={{
-                                position: "relative",
-                                width: 28,
-                                height: 16,
-                                borderRadius: 999,
-                                border: 0,
-                                background: includeZero ? "#1570EF" : "var(--color-gray-300)",
-                                cursor: "pointer",
-                                flexShrink: 0,
-                                transition: "background 200ms",
-                            }}
+                            className={cn(
+                                "relative h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border-0 transition-colors duration-200",
+                                includeZero ? "bg-brand-solid" : "bg-bg-quaternary",
+                            )}
                         >
                             <span
-                                style={{
-                                    position: "absolute",
-                                    top: 2,
-                                    left: includeZero ? 14 : 2,
-                                    width: 12,
-                                    height: 12,
-                                    borderRadius: "50%",
-                                    background: "#fff",
-                                    boxShadow: "0 1px 2px rgba(0,0,0,.2)",
-                                    transition: "left 200ms",
-                                }}
+                                className={cn(
+                                    "absolute top-0.5 h-3 w-3 rounded-full bg-white shadow-sm transition-[left] duration-200",
+                                    includeZero ? "left-3.5" : "left-0.5",
+                                )}
                             />
                         </button>
                         Include zero amount items
                     </div>
 
-                    <button
-                        style={{
-                            width: "100%",
-                            padding: 10,
-                            background: "#1570EF",
-                            color: "#fff",
-                            border: 0,
-                            borderRadius: 8,
-                            fontSize: 14,
-                            fontWeight: 600,
-                            cursor: "pointer",
-                        }}
-                    >
+                    <Button color="primary" size="md" className="w-full">
                         {isOrder
                             ? `Save ${suppliers} Order`
                             : `Save ${suppliers} Transfer`}
-                    </button>
+                    </Button>
 
                     {/* Variants section */}
-                    <div
-                        style={{
-                            border: "1px solid var(--color-border-primary)",
-                            borderRadius: 8,
-                            overflow: "hidden",
-                        }}
-                    >
+                    <div className="overflow-hidden rounded-lg border border-border-primary">
                         <button
+                            type="button"
                             onClick={() => setExpanded((v) => !v)}
-                            style={{
-                                width: "100%",
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 8,
-                                padding: "10px 14px",
-                                background: "var(--color-bg-secondary)",
-                                border: 0,
-                                cursor: "pointer",
-                                fontSize: 12.5,
-                            }}
+                            className="flex w-full cursor-pointer items-center gap-2 border-0 bg-bg-secondary px-3.5 py-2.5 text-[12.5px]"
                         >
-                            <Ico
-                                path={expanded ? ICONS.chevD : ICONS.chevR}
-                                size={13}
-                                style={{ color: "var(--color-text-tertiary)" }}
-                            />
-                            <span
-                                style={{
-                                    fontWeight: 600,
-                                    color: "var(--color-text-primary)",
-                                    flex: 1,
-                                    textAlign: "left",
-                                }}
-                            >
+                            {expanded ? (
+                                <ChevronDown className="h-3.5 w-3.5 text-text-tertiary" />
+                            ) : (
+                                <ChevronRight className="h-3.5 w-3.5 text-text-tertiary" />
+                            )}
+                            <span className="flex-1 text-left text-xs font-semibold text-text-primary">
                                 PLACEHOLDER → Example Warehouse 1
                             </span>
-                            <span
-                                style={{
-                                    fontSize: 11,
-                                    color: "var(--color-text-tertiary)",
-                                }}
-                            >
+                            <span className="text-[11px] text-text-tertiary">
                                 {variants} variants · {fmtEur(totalCost)}
                             </span>
-                            <Ico
-                                path={ICONS.trash}
-                                size={13}
-                                style={{ color: "var(--color-text-tertiary)" }}
-                            />
+                            <Trash01 className="h-3.5 w-3.5 text-text-tertiary" />
                         </button>
 
                         {expanded &&
                             visibleRows.map((row) => (
                                 <div
                                     key={row.id}
-                                    style={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        gap: 10,
-                                        padding: "10px 14px",
-                                        borderTop: "1px solid var(--color-border-secondary)",
-                                    }}
+                                    className="flex items-center gap-2.5 border-t border-border-secondary px-3.5 py-2.5"
                                 >
-                                    <div
-                                        style={{
-                                            width: 32,
-                                            height: 32,
-                                            borderRadius: 5,
-                                            background: "var(--color-bg-secondary)",
-                                            border: "1px solid var(--color-border-secondary)",
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                            flexShrink: 0,
-                                        }}
-                                    >
-                                        <Ico
-                                            path={ICONS.wh}
-                                            size={14}
-                                            style={{ opacity: 0.4 }}
-                                        />
+                                    <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded border border-border-secondary bg-bg-secondary">
+                                        <Home02 className="h-3.5 w-3.5 opacity-40" />
                                     </div>
-                                    <div style={{ flex: 1, minWidth: 0 }}>
-                                        <div
-                                            style={{
-                                                fontSize: 12.5,
-                                                fontWeight: 500,
-                                                color: "var(--color-text-primary)",
-                                                whiteSpace: "nowrap",
-                                                overflow: "hidden",
-                                                textOverflow: "ellipsis",
-                                            }}
-                                        >
+                                    <div className="min-w-0 flex-1">
+                                        <div className="truncate text-[12.5px] font-medium text-text-primary">
                                             {row.name}
                                         </div>
-                                        <div
-                                            style={{
-                                                fontSize: 11,
-                                                color: "var(--color-text-tertiary)",
-                                            }}
-                                        >
+                                        <div className="text-[11px] text-text-tertiary">
                                             {row.size || "—"}
                                         </div>
                                     </div>
                                     <input
                                         type="number"
                                         value={qtys[row.id] ?? 0}
-                                        onChange={(e) =>
-                                            updateQty(row.id, e.target.value)
-                                        }
+                                        onChange={(e) => updateQty(row.id, e.target.value)}
                                         onClick={(e) => e.stopPropagation()}
-                                        style={{
-                                            width: 64,
-                                            padding: "4px 8px",
-                                            border: "1px solid var(--color-border-primary)",
-                                            borderRadius: 5,
-                                            fontSize: 12.5,
-                                            fontFamily: "var(--font-mono)",
-                                            color: "var(--color-text-primary)",
-                                            background: "var(--color-bg-primary)",
-                                            textAlign: "right",
-                                        }}
+                                        className="w-16 rounded border border-border-primary bg-bg-primary px-2 py-1 text-right font-mono text-[12.5px] text-text-primary"
                                     />
                                     <button
+                                        type="button"
                                         aria-label="Remove variant"
-                                        style={{
-                                            background: "transparent",
-                                            border: 0,
-                                            color: "var(--color-text-tertiary)",
-                                            cursor: "pointer",
-                                            padding: 2,
-                                        }}
+                                        className="cursor-pointer border-0 bg-transparent p-0.5 text-text-tertiary"
                                     >
-                                        <Ico path={ICONS.trash} size={13} />
+                                        <Trash01 className="h-3.5 w-3.5" />
                                     </button>
                                 </div>
                             ))}
                     </div>
                 </div>
-            </div>
-        </div>
+            </SheetContent>
+        </Sheet>
     );
 }

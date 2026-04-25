@@ -1,7 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Ico, ICONS } from "./icons";
+import { useState } from "react";
+import { ChevronRight, Eye, FilterLines, Home02 } from "@untitledui/icons";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
 import { InventoryChart } from "./InventoryChart";
 import type { ForecastRow } from "./types";
 
@@ -13,32 +21,19 @@ interface ProductModalProps {
 function Toggle({ on, onToggle }: { on: boolean; onToggle: () => void }) {
     return (
         <button
+            type="button"
             onClick={onToggle}
-            style={{
-                position: "relative",
-                width: 32,
-                height: 18,
-                borderRadius: 999,
-                border: 0,
-                background: on ? "#1570EF" : "var(--color-gray-300)",
-                cursor: "pointer",
-                flexShrink: 0,
-                transition: "background 200ms",
-            }}
             aria-pressed={on}
+            className={cn(
+                "relative h-[18px] w-8 flex-shrink-0 cursor-pointer rounded-full border-0 transition-colors duration-200",
+                on ? "bg-brand-solid" : "bg-bg-quaternary",
+            )}
         >
             <span
-                style={{
-                    position: "absolute",
-                    top: 2,
-                    left: on ? 16 : 2,
-                    width: 14,
-                    height: 14,
-                    borderRadius: "50%",
-                    background: "#fff",
-                    boxShadow: "0 1px 3px rgba(0,0,0,.2)",
-                    transition: "left 200ms",
-                }}
+                className={cn(
+                    "absolute top-0.5 h-3.5 w-3.5 rounded-full bg-white shadow-sm transition-[left] duration-200",
+                    on ? "left-4" : "left-0.5",
+                )}
             />
         </button>
     );
@@ -48,14 +43,6 @@ export function ProductModal({ row, onClose }: ProductModalProps) {
     const [wh, setWh] = useState(0);
     const [showHist, setShowHist] = useState(false);
     const [showPre, setShowPre] = useState(true);
-
-    useEffect(() => {
-        const fn = (e: KeyboardEvent) => {
-            if (e.key === "Escape") onClose();
-        };
-        window.addEventListener("keydown", fn);
-        return () => window.removeEventListener("keydown", fn);
-    }, [onClose]);
 
     const platforms: [string, string, string[]][] = [
         [
@@ -86,90 +73,24 @@ export function ProductModal({ row, onClose }: ProductModalProps) {
     ];
 
     return (
-        <div
-            style={{
-                position: "fixed",
-                inset: 0,
-                background: "rgba(12,17,29,.45)",
-                backdropFilter: "blur(3px)",
-                zIndex: 100,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: 24,
-            }}
-            onClick={(e) => {
-                if (e.target === e.currentTarget) onClose();
-            }}
-        >
-            <div
-                style={{
-                    background: "var(--color-bg-primary)",
-                    borderRadius: 12,
-                    boxShadow: "0 24px 60px rgba(0,0,0,.22)",
-                    width: "min(960px,100%)",
-                    maxHeight: "90vh",
-                    display: "flex",
-                    flexDirection: "column",
-                    animation: "fc-slide-up 180ms cubic-bezier(.16,1,.3,1)",
-                }}
+        <Dialog open={true} onOpenChange={(open) => !open && onClose()}>
+            <DialogContent
+                className="flex max-h-[90vh] w-full max-w-[960px] flex-col overflow-hidden gap-0 p-0"
             >
-                <div
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        padding: "14px 20px",
-                        borderBottom: "1px solid var(--color-border-secondary)",
-                    }}
-                >
-                    <span style={{ fontSize: 16, fontWeight: 700 }}>Inventory Chart</span>
-                    <button
-                        onClick={onClose}
-                        aria-label="Close"
-                        style={{
-                            background: "transparent",
-                            border: 0,
-                            color: "var(--color-text-tertiary)",
-                            borderRadius: 6,
-                            padding: 4,
-                            display: "flex",
-                            cursor: "pointer",
-                        }}
-                    >
-                        <Ico path={ICONS.x} size={16} />
-                    </button>
-                </div>
-                <div
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns: "220px 1fr",
-                        flex: 1,
-                        overflow: "hidden",
-                    }}
-                >
+                <DialogHeader className="flex flex-row items-center justify-between space-y-0 border-b border-border-secondary px-5 py-3.5">
+                    <DialogTitle className="text-base font-bold text-text-primary">
+                        Inventory Chart
+                    </DialogTitle>
+                    <DialogDescription className="sr-only">
+                        Inventory chart for {row.name}
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="grid flex-1 grid-cols-[220px_1fr] overflow-hidden">
                     {/* Left rail */}
-                    <div
-                        style={{
-                            padding: 16,
-                            borderRight: "1px solid var(--color-border-secondary)",
-                            overflowY: "auto",
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: 10,
-                        }}
-                    >
+                    <div className="flex flex-col gap-2.5 overflow-y-auto border-r border-border-secondary p-4">
                         <div
-                            style={{
-                                width: "100%",
-                                aspectRatio: 1,
-                                borderRadius: 8,
-                                background:
-                                    "linear-gradient(135deg,#f4f4f5,#e9eaec)",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                            }}
+                            className="flex aspect-square w-full items-center justify-center rounded-lg"
+                            style={{ background: "linear-gradient(135deg,#f4f4f5,#e9eaec)" }}
                         >
                             <svg width="130" height="130" viewBox="0 0 130 130" fill="none">
                                 {(["#4B5563", "#374151", "#1F2937", "#6B7280", "#9CA3AF"] as const).map(
@@ -204,94 +125,39 @@ export function ProductModal({ row, onClose }: ProductModalProps) {
                             </svg>
                         </div>
                         <div>
-                            <span
-                                style={{
-                                    display: "inline-flex",
-                                    alignItems: "center",
-                                    padding: "2px 8px",
-                                    borderRadius: 5,
-                                    background: "#7F56D9",
-                                    color: "#fff",
-                                    fontSize: 10,
-                                    fontWeight: 700,
-                                    fontFamily: "var(--font-mono)",
-                                }}
-                            >
+                            <span className="inline-flex items-center rounded bg-brand-solid px-2 py-0.5 font-mono text-[10px] font-bold text-white">
                                 NOGL ID: {row.sku.slice(-12)}
                             </span>
-                            <div
-                                style={{
-                                    fontSize: 11,
-                                    color: "var(--color-text-tertiary)",
-                                    marginTop: 4,
-                                }}
-                            >
+                            <div className="mt-1 text-[11px] text-text-tertiary">
                                 First sold 5 years ago (18.09.2020)
                             </div>
                         </div>
-                        <div style={{ fontSize: 14, fontWeight: 700, lineHeight: 1.3 }}>
+                        <div className="text-sm font-bold leading-snug text-text-primary">
                             {row.name}
                         </div>
                         {row.size && (
-                            <div style={{ fontSize: 12, color: "var(--color-text-secondary)" }}>
-                                {row.size}
-                            </div>
+                            <div className="text-xs text-text-secondary">{row.size}</div>
                         )}
-                        <div
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 5,
-                                fontSize: 12,
-                                color: "var(--color-text-secondary)",
-                                padding: "5px 0",
-                                borderTop: "1px solid var(--color-border-secondary)",
-                                borderBottom: "1px solid var(--color-border-secondary)",
-                            }}
-                        >
-                            <Ico path={ICONS.sort} size={13} style={{ opacity: 0.4 }} /> Menge 1 Das
+                        <div className="flex items-center gap-1.5 border-y border-border-secondary py-1.5 text-xs text-text-secondary">
+                            <FilterLines className="h-3.5 w-3.5 opacity-40" /> Menge 1 Das
                         </div>
-                        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                        <div className="flex flex-col gap-1.5">
                             {platforms.map(([pl, col, lines]) => (
-                                <div key={pl} style={{ display: "flex", gap: 6 }}>
+                                <div key={pl} className="flex gap-1.5">
                                     <div
-                                        style={{
-                                            width: 16,
-                                            height: 16,
-                                            borderRadius: 3,
-                                            background: `${col}20`,
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                            flexShrink: 0,
-                                            marginTop: 2,
-                                        }}
+                                        className="mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-sm"
+                                        style={{ background: `${col}20` }}
                                     >
                                         <div
-                                            style={{
-                                                width: 8,
-                                                height: 8,
-                                                borderRadius: "50%",
-                                                background: col,
-                                            }}
+                                            className="h-2 w-2 rounded-full"
+                                            style={{ background: col }}
                                         />
                                     </div>
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            flexDirection: "column",
-                                            gap: 1,
-                                        }}
-                                    >
+                                    <div className="flex flex-col gap-px">
                                         {lines.map((l) => (
                                             <div
                                                 key={l}
-                                                style={{
-                                                    fontSize: 10.5,
-                                                    color: "var(--color-text-secondary)",
-                                                    fontFamily: "var(--font-mono)",
-                                                    wordBreak: "break-all",
-                                                }}
+                                                className="break-all font-mono text-[10.5px] text-text-secondary"
                                             >
                                                 {l}
                                             </div>
@@ -300,105 +166,43 @@ export function ProductModal({ row, onClose }: ProductModalProps) {
                                 </div>
                             ))}
                         </div>
-                        <div
-                            style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                gap: 4,
-                                paddingTop: 6,
-                                borderTop: "1px solid var(--color-border-secondary)",
-                            }}
-                        >
+                        <div className="flex flex-col gap-1 border-t border-border-secondary pt-1.5">
                             {meta.map(([k, v]) => (
-                                <div key={k} style={{ display: "flex", gap: 6, fontSize: 11.5 }}>
-                                    <Ico
-                                        path={ICONS.chevR}
-                                        size={10}
-                                        style={{ opacity: 0.3, flexShrink: 0, marginTop: 2 }}
-                                    />
-                                    <span
-                                        style={{
-                                            color: "var(--color-text-secondary)",
-                                            minWidth: 64,
-                                        }}
-                                    >
-                                        {k}
-                                    </span>
-                                    <span
-                                        style={{
-                                            fontFamily: "var(--font-mono)",
-                                            color: "var(--color-text-primary)",
-                                        }}
-                                    >
-                                        {v}
-                                    </span>
+                                <div key={k} className="flex gap-1.5 text-[11.5px]">
+                                    <ChevronRight className="mt-0.5 h-2.5 w-2.5 flex-shrink-0 opacity-30" />
+                                    <span className="min-w-16 text-text-secondary">{k}</span>
+                                    <span className="font-mono text-text-primary">{v}</span>
                                 </div>
                             ))}
                         </div>
                         <button
-                            style={{
-                                background: "transparent",
-                                border: 0,
-                                padding: 0,
-                                display: "inline-flex",
-                                alignItems: "center",
-                                gap: 5,
-                                fontSize: 12,
-                                color: "var(--color-brand-700)",
-                                fontWeight: 500,
-                                cursor: "pointer",
-                            }}
+                            type="button"
+                            className="inline-flex cursor-pointer items-center gap-1.5 border-0 bg-transparent p-0 text-xs font-medium text-text-brand-secondary"
                         >
-                            <Ico path={ICONS.eye} size={13} /> Show in Forecast
+                            <Eye className="h-3.5 w-3.5" /> Show in Forecast
                         </button>
                     </div>
                     {/* Right rail */}
-                    <div
-                        style={{
-                            padding: 16,
-                            overflowY: "auto",
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: 12,
-                        }}
-                    >
-                        <span style={{ fontSize: 14, fontWeight: 600 }}>Inventory Chart</span>
-                        <div
-                            style={{
-                                display: "flex",
-                                gap: 2,
-                                border: "1px solid var(--color-border-primary)",
-                                borderRadius: 7,
-                                padding: 2,
-                                background: "var(--color-bg-secondary)",
-                                width: "fit-content",
-                            }}
-                        >
+                    <div className="flex flex-col gap-3 overflow-y-auto p-4">
+                        <span className="text-sm font-semibold text-text-primary">Inventory Chart</span>
+                        <div className="flex w-fit gap-0.5 rounded-md border border-border-primary bg-bg-secondary p-0.5">
                             {["Example Warehouse 1", "Example Warehouse 2"].map((w, i) => (
                                 <button
                                     key={i}
+                                    type="button"
                                     onClick={() => setWh(i)}
-                                    style={{
-                                        padding: "4px 10px",
-                                        borderRadius: 5,
-                                        border: 0,
-                                        background:
-                                            wh === i ? "var(--color-bg-primary)" : "transparent",
-                                        color:
-                                            wh === i
-                                                ? "var(--color-text-primary)"
-                                                : "var(--color-text-secondary)",
-                                        fontSize: 12,
-                                        fontWeight: 500,
-                                        cursor: "pointer",
-                                        boxShadow: wh === i ? "var(--shadow-xs)" : "none",
-                                    }}
+                                    className={cn(
+                                        "cursor-pointer rounded border-0 px-2.5 py-1 text-xs font-medium transition-colors",
+                                        wh === i
+                                            ? "bg-bg-primary text-text-primary shadow-xs"
+                                            : "bg-transparent text-text-secondary",
+                                    )}
                                 >
                                     {w}
                                 </button>
                             ))}
                         </div>
-                        <div style={{ display: "flex", gap: 14 }}>
+                        <div className="flex gap-3.5">
                             {(
                                 [
                                     [showHist, setShowHist, "Show History"],
@@ -407,13 +211,7 @@ export function ProductModal({ row, onClose }: ProductModalProps) {
                             ).map(([on, set, label]) => (
                                 <div
                                     key={label}
-                                    style={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        gap: 6,
-                                        fontSize: 12,
-                                        color: "var(--color-text-secondary)",
-                                    }}
+                                    className="flex items-center gap-1.5 text-xs text-text-secondary"
                                 >
                                     <Toggle on={on} onToggle={() => set((v) => !v)} />
                                     {label}
@@ -422,48 +220,33 @@ export function ProductModal({ row, onClose }: ProductModalProps) {
                         </div>
                         <InventoryChart showHistory={showHist} />
                         <div>
-                            <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 8 }}>
+                            <div className="mb-2 text-[13px] font-semibold text-text-primary">
                                 Out of Stock events
                             </div>
-                            <div
-                                style={{
-                                    border: "1px solid #FECACA",
-                                    borderRadius: 7,
-                                    background: "#FFF5F5",
-                                    padding: "10px 14px",
-                                }}
-                            >
-                                <div style={{ fontSize: 12, fontWeight: 600, color: "#D92D20" }}>
+                            <div className="rounded-md border border-border-error-subtle bg-error px-3.5 py-2.5">
+                                <div className="text-xs font-semibold text-text-error">
                                     30.05.2026 – 25.08.2027 (453 days)
                                 </div>
-                                <div style={{ fontSize: 11.5, color: "#7F1D1D", marginTop: 2 }}>
+                                <div className="mt-0.5 text-[11.5px] text-text-error-secondary">
                                     OOS Amount: <strong>18,6k units</strong>
                                 </div>
-                                <div style={{ fontSize: 11.5, color: "#7F1D1D", marginTop: 1 }}>
+                                <div className="mt-px text-[11.5px] text-text-error-secondary">
                                     Lost Revenue: <strong>25k €</strong>
                                 </div>
                             </div>
                         </div>
                         <div>
-                            <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 6 }}>
+                            <div className="mb-1.5 text-[13px] font-semibold text-text-primary">
                                 Incoming Inventories
                             </div>
-                            <div
-                                style={{
-                                    fontSize: 12,
-                                    color: "var(--color-text-tertiary)",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    gap: 6,
-                                }}
-                            >
-                                <Ico path={ICONS.wh} size={13} style={{ opacity: 0.4 }} /> {row.warehouses}{" "}
-                                warehouse{row.warehouses > 1 ? "s" : ""} · no incoming orders
+                            <div className="flex items-center gap-1.5 text-xs text-text-tertiary">
+                                <Home02 className="h-3.5 w-3.5 opacity-40" />{" "}
+                                {row.warehouses} warehouse{row.warehouses > 1 ? "s" : ""} · no incoming orders
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </DialogContent>
+        </Dialog>
     );
 }

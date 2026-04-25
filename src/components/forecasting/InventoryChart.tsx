@@ -162,14 +162,9 @@ export function InventoryChart({ showHistory }: InventoryChartProps) {
     ];
 
     return (
-        <div style={{ position: "relative" }}>
+        <div className="relative">
             <div
-                style={{
-                    border: "1px solid var(--color-border-secondary)",
-                    borderRadius: 8,
-                    overflow: "hidden",
-                    background: "var(--color-bg-primary)",
-                }}
+                className="overflow-hidden rounded-lg border border-border-secondary bg-bg-primary"
                 onMouseMove={handleMove}
                 onMouseLeave={() => setTooltip(null)}
             >
@@ -177,7 +172,7 @@ export function InventoryChart({ showHistory }: InventoryChartProps) {
                     ref={svgRef}
                     width="100%"
                     viewBox={`0 0 ${W} ${H}`}
-                    style={{ display: "block", minHeight: 180 }}
+                    className="block min-h-[180px]"
                 >
                     <defs>
                         <linearGradient id="fc-inv-grad" x1="0" y1="0" x2="0" y2="1">
@@ -320,31 +315,16 @@ export function InventoryChart({ showHistory }: InventoryChartProps) {
                 </svg>
                 {tooltip && (
                     <div
-                        style={{
-                            position: "absolute",
-                            top: 20,
-                            [tooltip.flip ? "right" : "left"]: tooltip.flip
-                                ? `${(svgRef.current?.getBoundingClientRect().width ?? 0) - tooltip.x + 8}px`
-                                : `${tooltip.x + 8}px`,
-                            background: "var(--color-bg-primary)",
-                            border: "1px solid var(--color-border-primary)",
-                            borderRadius: 7,
-                            padding: "8px 10px",
-                            boxShadow: "var(--shadow-md)",
-                            pointerEvents: "none",
-                            minWidth: 165,
-                            zIndex: 20,
-                        }}
+                        className="pointer-events-none absolute top-5 z-20 min-w-[165px] rounded-md border border-border-primary bg-bg-primary p-2 shadow-md"
+                        style={
+                            tooltip.flip
+                                ? {
+                                      right: `${(svgRef.current?.getBoundingClientRect().width ?? 0) - tooltip.x + 8}px`,
+                                  }
+                                : { left: `${tooltip.x + 8}px` }
+                        }
                     >
-                        <div
-                            style={{
-                                fontSize: 11,
-                                fontWeight: 700,
-                                color: "var(--color-text-primary)",
-                                marginBottom: 5,
-                                fontFamily: "var(--font-mono)",
-                            }}
-                        >
+                        <div className="mb-1.5 font-mono text-[11px] font-bold text-text-primary">
                             {tooltip.date}
                         </div>
                         {([
@@ -356,34 +336,19 @@ export function InventoryChart({ showHistory }: InventoryChartProps) {
                         ] as [string, string, string, boolean][]).map(([color, label, val, solid]) => (
                             <div
                                 key={label}
-                                style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    gap: 7,
-                                    fontSize: 11,
-                                    marginBottom: 2,
-                                }}
+                                className="mb-0.5 flex items-center gap-[7px] text-[11px]"
                             >
                                 <div
+                                    className="h-[7px] w-[7px] flex-shrink-0 rounded-full"
                                     style={{
-                                        width: 7,
-                                        height: 7,
-                                        borderRadius: "50%",
                                         background: solid ? color : "transparent",
-                                        border: solid ? `1.5px solid ${color}` : `1.5px dashed ${color}`,
-                                        flexShrink: 0,
+                                        border: solid
+                                            ? `1.5px solid ${color}`
+                                            : `1.5px dashed ${color}`,
                                     }}
                                 />
-                                <span style={{ color: "var(--color-text-secondary)", flex: 1 }}>
-                                    {label}
-                                </span>
-                                <span
-                                    style={{
-                                        fontFamily: "var(--font-mono)",
-                                        color: "var(--color-text-primary)",
-                                        fontWeight: 600,
-                                    }}
-                                >
+                                <span className="flex-1 text-text-secondary">{label}</span>
+                                <span className="font-mono font-semibold text-text-primary">
                                     {val}
                                 </span>
                             </div>
@@ -392,35 +357,21 @@ export function InventoryChart({ showHistory }: InventoryChartProps) {
                 )}
             </div>
             {/* Legend */}
-            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 8 }}>
+            <div className="mt-2 flex flex-wrap gap-2.5">
                 {legendItems.map(([color, label, solid]) => (
                     <div
                         key={label}
-                        style={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: 5,
-                            fontSize: 11,
-                            color: "var(--color-text-secondary)",
-                        }}
+                        className="inline-flex items-center gap-1.5 text-[11px] text-text-secondary"
                     >
                         {solid ? (
                             <div
-                                style={{
-                                    width: 8,
-                                    height: 8,
-                                    borderRadius: "50%",
-                                    background: color,
-                                }}
+                                className="h-2 w-2 rounded-full"
+                                style={{ background: color }}
                             />
                         ) : (
                             <div
-                                style={{
-                                    width: 16,
-                                    height: 0,
-                                    border: `1.5px dashed ${color}`,
-                                    borderRadius: 1,
-                                }}
+                                className="h-0 w-4 rounded-[1px]"
+                                style={{ border: `1.5px dashed ${color}` }}
                             />
                         )}
                         <span>{label}</span>

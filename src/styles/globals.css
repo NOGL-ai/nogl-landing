@@ -375,3 +375,29 @@ body.app-hide-footer footer {
 	animation: scroll linear infinite;
 	animation-duration: 30s;
 }
+
+/* Forecasting (extracted from ForecastingClient.tsx so ProductModal and
+   DraftDrawer can reference these keyframes regardless of mount order) */
+@keyframes fc-slide-in-r {
+	from {
+		transform: translateX(100%);
+	}
+	to {
+		transform: translateX(0);
+	}
+}
+
+@keyframes fc-slide-up {
+	from {
+		opacity: 0;
+		transform: translateY(8px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.fc-row:hover {
+	background: var(--color-bg-secondary) !important;
+}

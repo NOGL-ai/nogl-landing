@@ -1,6 +1,9 @@
 "use client";
 
-import { Ico, ICONS } from "./icons";
+import { Check, ChevronRight, DotsHorizontal, Eye, Home02 } from "@untitledui/icons";
+
+import { cn } from "@/lib/utils";
+
 import type { ForecastRow } from "./types";
 
 interface AlertRowProps {
@@ -12,33 +15,33 @@ interface AlertRowProps {
     onOpenChart: () => void;
 }
 
-const REORDER_STYLES = {
-    purple: { bg: "#F4EBFF", color: "#6941C6" },
-    blue: { bg: "#EFF4FF", color: "#1849A9" },
-    gray: { bg: "var(--color-bg-secondary)", color: "var(--color-text-secondary)" },
-} as const;
-
-const DAY_COLOR_STYLES = {
-    red: { bg: "#FEE4E2", color: "#B42318" },
-    orange: { bg: "#FEF0C7", color: "#B54708" },
-    blue: { bg: "#D1E9FF", color: "#175CD3" },
-    purple: { bg: "#F4EBFF", color: "#6941C6" },
-    gray: { bg: "var(--color-bg-secondary)", color: "var(--color-text-secondary)" },
-} as const;
-
-const REACH_COLOR_BY_LABEL: Record<string, string> = {
-    Reorder: "#F79009",
-    Overstock: "#7F56D9",
-    "Out of stock": "#D92D20",
-    OK: "#17B26A",
-    Critical: "#D92D20",
+const REORDER_CLASSES: Record<"purple" | "blue" | "gray", string> = {
+    purple: "bg-brand-secondary text-text-brand-secondary",
+    blue: "bg-brand-secondary text-text-brand-secondary",
+    gray: "bg-bg-secondary text-text-secondary",
 };
 
-const OOS_TONE_COLORS = {
-    red: "#D92D20",
-    orange: "#DC6803",
-    muted: "var(--color-text-secondary)",
-} as const;
+const DAY_CLASSES: Record<"red" | "orange" | "blue" | "purple" | "gray", string> = {
+    red: "bg-error text-text-error-secondary",
+    orange: "bg-warning text-text-warning-secondary",
+    blue: "bg-brand-secondary text-text-brand-secondary",
+    purple: "bg-brand-secondary text-text-brand-secondary",
+    gray: "bg-bg-secondary text-text-secondary",
+};
+
+const REACH_CLASSES: Record<string, { text: string; fill: string }> = {
+    Reorder: { text: "text-text-warning", fill: "bg-warning-solid" },
+    Overstock: { text: "text-text-brand-secondary", fill: "bg-brand-solid" },
+    "Out of stock": { text: "text-text-error", fill: "bg-error-solid" },
+    OK: { text: "text-text-success", fill: "bg-success-solid" },
+    Critical: { text: "text-text-error", fill: "bg-error-solid" },
+};
+
+const OOS_TEXT: Record<"red" | "orange" | "muted", string> = {
+    red: "text-text-error",
+    orange: "text-text-warning",
+    muted: "text-text-secondary",
+};
 
 export function AlertRow({
     row,
@@ -48,467 +51,225 @@ export function AlertRow({
     onToggleExpand,
     onOpenChart,
 }: AlertRowProps) {
-    const reorderStyle = REORDER_STYLES[row.reorder.type];
-    const dayStyle = DAY_COLOR_STYLES[row.reorder.daysColor];
-    const reachColor = REACH_COLOR_BY_LABEL[row.reach.label] ?? "var(--color-text-secondary)";
-    const oosColor = OOS_TONE_COLORS[row.oos.tone];
+    const reorderClass = REORDER_CLASSES[row.reorder.type];
+    const dayClass = DAY_CLASSES[row.reorder.daysColor];
+    const reachClasses =
+        REACH_CLASSES[row.reach.label] ?? {
+            text: "text-text-secondary",
+            fill: "bg-border-secondary",
+        };
+    const oosClass = OOS_TEXT[row.oos.tone];
 
     return (
         <>
             <tr
-                style={{
-                    background: selected
-                        ? "rgba(127,86,217,.04)"
-                        : "var(--color-bg-primary)",
-                    borderBottom: "1px solid var(--color-border-secondary)",
-                    transition: "background 120ms",
-                }}
-                className="fc-row"
+                className={cn(
+                    "fc-row border-b border-border-secondary transition-colors",
+                    selected ? "bg-brand-secondary/40" : "bg-bg-primary",
+                )}
             >
                 {/* Select */}
-                <td style={{ padding: "10px 6px 10px 12px", verticalAlign: "middle" }}>
+                <td className="py-2.5 pl-3 pr-1.5 align-middle">
                     <input
                         type="checkbox"
                         checked={selected}
                         onChange={onToggleSelect}
-                        style={{
-                            width: 14,
-                            height: 14,
-                            accentColor: "#7F56D9",
-                            cursor: "pointer",
-                        }}
+                        className="h-3.5 w-3.5 cursor-pointer accent-brand-solid"
                     />
                 </td>
                 {/* Expand */}
-                <td style={{ padding: "10px 6px", verticalAlign: "middle" }}>
+                <td className="px-1.5 py-2.5 align-middle">
                     <button
                         onClick={onToggleExpand}
                         aria-label={expanded ? "Collapse" : "Expand"}
-                        style={{
-                            width: 18,
-                            height: 18,
-                            border: 0,
-                            background: "transparent",
-                            color: "var(--color-text-tertiary)",
-                            cursor: "pointer",
-                            padding: 0,
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            transform: expanded ? "rotate(90deg)" : "none",
-                            transition: "transform 150ms",
-                        }}
+                        className={cn(
+                            "flex h-[18px] w-[18px] cursor-pointer items-center justify-center border-0 bg-transparent p-0 text-text-tertiary transition-transform",
+                            expanded && "rotate-90",
+                        )}
                     >
-                        <Ico path={ICONS.chevR} size={11} />
+                        <ChevronRight className="h-[11px] w-[11px]" />
                     </button>
                 </td>
                 {/* Name */}
-                <td
-                    style={{
-                        padding: "10px 12px",
-                        verticalAlign: "middle",
-                        minWidth: 220,
-                    }}
-                >
-                    <div
-                        style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 6,
-                            marginBottom: 2,
-                            flexWrap: "wrap",
-                        }}
-                    >
+                <td className="min-w-[220px] px-3 py-2.5 align-middle">
+                    <div className="mb-0.5 flex flex-wrap items-center gap-1.5">
                         {row.badges.map((b) => (
                             <span
                                 key={b}
-                                style={{
-                                    padding: "1px 5px",
-                                    background: "#FEF3C7",
-                                    color: "#92400E",
-                                    fontSize: 9.5,
-                                    fontWeight: 700,
-                                    borderRadius: 3,
-                                    textTransform: "uppercase",
-                                    letterSpacing: ".04em",
-                                }}
+                                className="rounded-sm bg-warning px-1.5 py-px text-[9.5px] font-bold uppercase tracking-[.04em] text-text-warning-secondary"
                             >
                                 {b}
                             </span>
                         ))}
-                        <span
-                            style={{
-                                fontSize: 13,
-                                fontWeight: 500,
-                                color: "var(--color-text-primary)",
-                            }}
-                        >
+                        <span className="text-[13px] font-medium text-text-primary">
                             {row.name}
                         </span>
                     </div>
-                    <div
-                        style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 6,
-                            fontSize: 11.5,
-                            color: "var(--color-text-tertiary)",
-                            fontFamily: "var(--font-mono)",
-                        }}
-                    >
+                    <div className="flex items-center gap-1.5 font-mono text-[11.5px] text-text-tertiary">
                         {row.size && (
-                            <span
-                                style={{
-                                    color: "var(--color-text-secondary)",
-                                    fontWeight: 500,
-                                }}
-                            >
+                            <span className="font-medium text-text-secondary">
                                 {row.size}
                             </span>
                         )}
-                        <span
-                            style={{
-                                whiteSpace: "nowrap",
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                                maxWidth: 200,
-                            }}
-                        >
+                        <span className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
                             {row.sku}
                         </span>
                     </div>
                 </td>
                 {/* Warehouses */}
-                <td style={{ padding: "10px 12px", verticalAlign: "middle" }}>
-                    <div
-                        style={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: 5,
-                            fontSize: 11.5,
-                            color: "var(--color-text-secondary)",
-                            background: "var(--color-bg-secondary)",
-                            padding: "3px 8px",
-                            borderRadius: 5,
-                            border: "1px solid var(--color-border-secondary)",
-                        }}
-                    >
-                        <Ico path={ICONS.wh} size={11} style={{ opacity: 0.55 }} />
-                        <span style={{ fontFamily: "var(--font-mono)" }}>{row.warehouses}</span>
-                        <span
-                            style={{
-                                whiteSpace: "nowrap",
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                                maxWidth: 140,
-                            }}
-                        >
+                <td className="px-3 py-2.5 align-middle">
+                    <div className="inline-flex items-center gap-1.5 rounded-md border border-border-secondary bg-bg-secondary px-2 py-[3px] text-[11.5px] text-text-secondary">
+                        <Home02 className="h-[11px] w-[11px] opacity-55" />
+                        <span className="font-mono">{row.warehouses}</span>
+                        <span className="max-w-[140px] overflow-hidden text-ellipsis whitespace-nowrap">
                             {row.wh}
                         </span>
                     </div>
                 </td>
                 {/* Reorder */}
-                <td style={{ padding: "10px 12px", verticalAlign: "middle" }}>
-                    <div
-                        style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: 4,
-                            alignItems: "flex-start",
-                        }}
-                    >
+                <td className="px-3 py-2.5 align-middle">
+                    <div className="flex flex-col items-start gap-1">
                         <span
-                            style={{
-                                fontSize: 11,
-                                fontWeight: 600,
-                                padding: "2px 8px",
-                                borderRadius: 5,
-                                background: reorderStyle.bg,
-                                color: reorderStyle.color,
-                            }}
+                            className={cn(
+                                "rounded-md px-2 py-0.5 text-[11px] font-semibold",
+                                reorderClass,
+                            )}
                         >
                             {row.reorder.label}
                         </span>
                         <span
-                            style={{
-                                fontSize: 11,
-                                fontWeight: 600,
-                                padding: "2px 8px",
-                                borderRadius: 5,
-                                background: dayStyle.bg,
-                                color: dayStyle.color,
-                                fontFamily: "var(--font-mono)",
-                            }}
+                            className={cn(
+                                "rounded-md px-2 py-0.5 font-mono text-[11px] font-semibold",
+                                dayClass,
+                            )}
                         >
                             {row.reorder.days}
                         </span>
                     </div>
                 </td>
                 {/* Stock */}
-                <td
-                    style={{
-                        padding: "10px 12px",
-                        verticalAlign: "middle",
-                        textAlign: "right",
-                    }}
-                >
-                    <div
-                        style={{
-                            fontSize: 13,
-                            fontWeight: 600,
-                            color: "var(--color-text-primary)",
-                            fontFamily: "var(--font-mono)",
-                        }}
-                    >
+                <td className="px-3 py-2.5 text-right align-middle">
+                    <div className="font-mono text-[13px] font-semibold text-text-primary">
                         {row.stock.current.toLocaleString()}
                     </div>
-                    <div
-                        style={{
-                            fontSize: 10.5,
-                            color: "var(--color-text-tertiary)",
-                            fontFamily: "var(--font-mono)",
-                            marginTop: 2,
-                        }}
-                    >
+                    <div className="mt-0.5 font-mono text-[10.5px] text-text-tertiary">
                         +{row.stock.incoming.toLocaleString()} · ↑{row.stock.preorder} · ↓
                         {row.stock.reserved}
                     </div>
                 </td>
                 {/* OOS */}
-                <td style={{ padding: "10px 12px", verticalAlign: "middle" }}>
-                    <div
-                        style={{
-                            fontSize: 11.5,
-                            color: oosColor,
-                            fontFamily: "var(--font-mono)",
-                        }}
-                    >
+                <td className="px-3 py-2.5 align-middle">
+                    <div className={cn("font-mono text-[11.5px]", oosClass)}>
                         {row.oos.date}
                     </div>
-                    <div
-                        style={{
-                            fontSize: 10.5,
-                            color: "var(--color-text-tertiary)",
-                            marginTop: 2,
-                        }}
-                    >
+                    <div className="mt-0.5 text-[10.5px] text-text-tertiary">
                         {row.oos.eta}
                     </div>
                 </td>
                 {/* Reach */}
-                <td style={{ padding: "10px 12px", verticalAlign: "middle" }}>
+                <td className="px-3 py-2.5 align-middle">
                     <div
-                        style={{
-                            fontSize: 11.5,
-                            fontWeight: 600,
-                            color: reachColor,
-                            fontFamily: "var(--font-mono)",
-                            marginBottom: 3,
-                        }}
+                        className={cn(
+                            "mb-[3px] font-mono text-[11.5px] font-semibold",
+                            reachClasses.text,
+                        )}
                     >
                         {row.reach.days}
                     </div>
-                    <div style={{ display: "flex", gap: 1, marginBottom: 3 }}>
+                    <div className="mb-[3px] flex gap-px">
                         {row.reach.segs.map((on, i) => (
                             <div
                                 key={i}
-                                style={{
-                                    height: 4,
-                                    flex: 1,
-                                    background: on
-                                        ? reachColor
-                                        : "var(--color-border-secondary)",
-                                    borderRadius: 1,
-                                }}
+                                className={cn(
+                                    "h-1 flex-1 rounded-sm",
+                                    on ? reachClasses.fill : "bg-border-secondary",
+                                )}
                             />
                         ))}
                     </div>
-                    <div style={{ fontSize: 10, color: reachColor, fontWeight: 600 }}>
+                    <div className={cn("text-[10px] font-semibold", reachClasses.text)}>
                         {row.reach.label}
                     </div>
                 </td>
                 {/* OOS Impact */}
-                <td style={{ padding: "10px 12px", verticalAlign: "middle" }}>
+                <td className="px-3 py-2.5 align-middle">
                     {row.oosImpact.ok ? (
-                        <span
-                            style={{
-                                fontSize: 11,
-                                color: "#079455",
-                                display: "inline-flex",
-                                alignItems: "center",
-                                gap: 4,
-                                fontWeight: 500,
-                            }}
-                        >
-                            <Ico path={ICONS.check} size={12} /> {row.oosImpact.text}
+                        <span className="inline-flex items-center gap-1 text-[11px] font-medium text-text-success">
+                            <Check className="h-3 w-3" /> {row.oosImpact.text}
                         </span>
                     ) : row.oosImpact.potential ? (
                         <span
-                            style={{
-                                fontSize: 11,
-                                color: "#B54708",
-                                display: "inline-flex",
-                                alignItems: "center",
-                                gap: 4,
-                                fontWeight: 500,
-                                background: "#FEF0C7",
-                                padding: "2px 7px",
-                                borderRadius: 4,
-                            }}
+                            className="inline-flex items-center gap-1 rounded-sm bg-warning px-1.5 py-0.5 text-[11px] font-medium text-text-warning-secondary"
                             title="Potential lost revenue if reorder is delayed"
                         >
                             ⚠ {row.oosImpact.text}
                         </span>
                     ) : (
                         <>
-                            <div
-                                style={{
-                                    fontSize: 12,
-                                    fontWeight: 700,
-                                    color: "#B42318",
-                                    fontFamily: "var(--font-mono)",
-                                }}
-                            >
+                            <div className="font-mono text-[12px] font-bold text-text-error-secondary">
                                 {row.oosImpact.value}
                             </div>
-                            <div
-                                style={{
-                                    fontSize: 10.5,
-                                    color: "#B42318",
-                                    fontFamily: "var(--font-mono)",
-                                    opacity: 0.85,
-                                }}
-                            >
+                            <div className="font-mono text-[10.5px] text-text-error-secondary opacity-85">
                                 {row.oosImpact.units}
                             </div>
                         </>
                     )}
                 </td>
                 {/* Releasable Current */}
-                <td style={{ padding: "10px 12px", verticalAlign: "middle" }}>
+                <td className="px-3 py-2.5 align-middle">
                     {row.relCurrent ? (
                         <>
-                            <div
-                                style={{
-                                    fontSize: 12,
-                                    fontWeight: 600,
-                                    color: "#7F56D9",
-                                    fontFamily: "var(--font-mono)",
-                                }}
-                            >
+                            <div className="font-mono text-[12px] font-semibold text-text-brand-secondary">
                                 {row.relCurrent.value}
                             </div>
-                            <div
-                                style={{
-                                    fontSize: 10.5,
-                                    color: "var(--color-text-tertiary)",
-                                    fontFamily: "var(--font-mono)",
-                                }}
-                            >
+                            <div className="font-mono text-[10.5px] text-text-tertiary">
                                 {row.relCurrent.units}
                             </div>
                         </>
                     ) : (
-                        <span style={{ color: "var(--color-text-quaternary)", fontSize: 13 }}>
-                            —
-                        </span>
+                        <span className="text-[13px] text-text-quaternary">—</span>
                     )}
                 </td>
                 {/* Releasable Incoming */}
-                <td style={{ padding: "10px 12px", verticalAlign: "middle" }}>
+                <td className="px-3 py-2.5 align-middle">
                     {row.relIncoming ? (
                         <>
-                            <div
-                                style={{
-                                    fontSize: 12,
-                                    fontWeight: 600,
-                                    color: "#7F56D9",
-                                    fontFamily: "var(--font-mono)",
-                                }}
-                            >
+                            <div className="font-mono text-[12px] font-semibold text-text-brand-secondary">
                                 {row.relIncoming.value}
                             </div>
-                            <div
-                                style={{
-                                    fontSize: 10.5,
-                                    color: "var(--color-text-tertiary)",
-                                    fontFamily: "var(--font-mono)",
-                                }}
-                            >
+                            <div className="font-mono text-[10.5px] text-text-tertiary">
                                 {row.relIncoming.units}
                             </div>
                         </>
                     ) : (
-                        <span style={{ color: "var(--color-text-quaternary)", fontSize: 13 }}>
-                            —
-                        </span>
+                        <span className="text-[13px] text-text-quaternary">—</span>
                     )}
                 </td>
                 {/* Actions */}
-                <td
-                    style={{
-                        padding: "10px 12px 10px 6px",
-                        verticalAlign: "middle",
-                        textAlign: "right",
-                    }}
-                >
-                    <div
-                        style={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: 4,
-                        }}
-                    >
+                <td className="py-2.5 pl-1.5 pr-3 text-right align-middle">
+                    <div className="inline-flex items-center gap-1">
                         <button
                             onClick={onOpenChart}
                             aria-label="Open inventory chart"
-                            style={{
-                                background: "transparent",
-                                border: 0,
-                                padding: 4,
-                                color: "var(--color-text-tertiary)",
-                                cursor: "pointer",
-                                borderRadius: 5,
-                                display: "flex",
-                            }}
+                            className="flex cursor-pointer rounded-md border-0 bg-transparent p-1 text-text-tertiary"
                         >
-                            <Ico path={ICONS.eye} size={14} />
+                            <Eye className="h-3.5 w-3.5" />
                         </button>
                         <button
                             aria-label="Row actions"
-                            style={{
-                                background: "transparent",
-                                border: 0,
-                                padding: 4,
-                                color: "var(--color-text-tertiary)",
-                                cursor: "pointer",
-                                borderRadius: 5,
-                                display: "flex",
-                            }}
+                            className="flex cursor-pointer rounded-md border-0 bg-transparent p-1 text-text-tertiary"
                         >
-                            <Ico path={ICONS.moreH} size={14} />
+                            <DotsHorizontal className="h-3.5 w-3.5" />
                         </button>
                     </div>
                 </td>
             </tr>
 
             {expanded && (
-                <tr style={{ background: "var(--color-bg-secondary)" }}>
-                    <td colSpan={11} style={{ padding: 0 }}>
-                        <div
-                            style={{
-                                padding: "12px 22px 14px 56px",
-                                borderBottom: "1px solid var(--color-border-secondary)",
-                            }}
-                        >
-                            <div
-                                style={{
-                                    display: "grid",
-                                    gridTemplateColumns: "repeat(4,minmax(150px,1fr))",
-                                    gap: 12,
-                                    fontSize: 11.5,
-                                }}
-                            >
+                <tr className="bg-bg-secondary">
+                    <td colSpan={11} className="p-0">
+                        <div className="border-b border-border-secondary px-14 py-3">
+                            <div className="grid grid-cols-1 gap-3 text-xs sm:grid-cols-2 md:grid-cols-4">
                                 {(
                                     [
                                         ["Lead Time", "30 days"],
@@ -522,24 +283,10 @@ export function AlertRow({
                                     ] as [string, string][]
                                 ).map(([k, v]) => (
                                     <div key={k}>
-                                        <div
-                                            style={{
-                                                fontSize: 10,
-                                                fontWeight: 600,
-                                                textTransform: "uppercase",
-                                                letterSpacing: ".05em",
-                                                color: "var(--color-text-quaternary)",
-                                                marginBottom: 2,
-                                            }}
-                                        >
+                                        <div className="mb-0.5 text-[10px] font-semibold uppercase tracking-wider text-text-quaternary">
                                             {k}
                                         </div>
-                                        <div
-                                            style={{
-                                                fontFamily: "var(--font-mono)",
-                                                color: "var(--color-text-primary)",
-                                            }}
-                                        >
+                                        <div className="font-mono text-text-primary">
                                             {v}
                                         </div>
                                     </div>
