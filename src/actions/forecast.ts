@@ -441,3 +441,67 @@ export async function exportForecastData(
 function round(n: number): number {
   return Math.round(n * 100) / 100;
 }
+
+// ─── Public API: annotations ─────────────────────────────────────────────
+
+export interface ForecastAnnotationDTO {
+  id: string;
+  annotationDate: string; // YYYY-MM-DD
+  endDate: string | null; // YYYY-MM-DD
+  kind: string;
+  severity: string;
+  title: string;
+  description: string | null;
+  delta: number | null;
+  channelName: string | null;
+  variantId: string | null;
+}
+
+export async function getForecastAnnotations(params: {
+  companyId: string;
+  startDate?: Date;
+  endDate?: Date;
+}): Promise<ForecastAnnotationDTO[]> {
+  await requireUser();
+
+  const tenantId = await resolveTenantId(params.companyId);
+  if (!tenantId) return [];
+
+  const where: Record<string, unknown> = { tenantId };
+  if (params.startDate || params.endDate) {
+    const dateFilter: Record<string, unknown> = {};
+    if (params.startDate) dateFilter.gte = params.startDate;
+    if (params.endDate) dateFilter.lte = params.endDate;
+    where.annotationDate = dateFilter;
+  }
+
+  const rows = await prisma.forecastAnnotation.findMany({
+    where,
+    orderBy: { annotationDate: "asc" },
+    select: {
+      id: true,
+      annotationDate: true,
+      endDate: true,
+      kind: true,
+      severity: true,
+      title: true,
+      description: true,
+      delta: true,
+      channelName: true,
+      variantId: true,
+    },
+  });
+
+  return rows.map((r) => ({
+    id: r.id,
+    annotationDate: format(r.annotationDate, "yyyy-MM-dd"),
+    endDate: r.endDate ? format(r.endDate, "yyyy-MM-dd") : null,
+    kind: r.kind,
+    severity: r.severity,
+    title: r.title,
+    description: r.description ?? null,
+    delta: r.delta ?? null,
+    channelName: r.channelName ?? null,
+    variantId: r.variantId ?? null,
+  }));
+}
