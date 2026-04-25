@@ -1,14 +1,17 @@
 "use client";
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Logo from "@/shared/Logo";
 import { GoogleSigninButton } from "../atoms";
-import { SigninWithPassword } from "../molecules";
+import { SigninWithPassword, SigninWithMagicLink } from "../molecules";
 
 export default function Signin() {
 	const pathname = usePathname();
 	const lang = pathname?.split("/")[1] || "en";
+	// Pilots pick at signin: password (default) or magic-link.
+	const [mode, setMode] = useState<"password" | "magicLink">("password");
 	return (
 		<section className="flex min-h-screen w-full items-stretch overflow-hidden bg-white dark:bg-[#071025]">
 		{/* Left: Sign-in form */}
@@ -42,9 +45,52 @@ export default function Signin() {
 
 							{/* Content */}
 							<div className="flex w-full flex-col items-center gap-6 rounded-xl">
+								{/* Mode toggle: pilots choose password vs magic-link */}
+								<div
+									className="flex w-full items-center rounded-lg border border-[#d5d7da] bg-[#f5f5f5] p-1 dark:border-stroke-dark dark:bg-white/5"
+									role="tablist"
+									aria-label="Choose signin method"
+								>
+									<button
+										type="button"
+										role="tab"
+										aria-selected={mode === "password"}
+										onClick={() => setMode("password")}
+										className={`flex-1 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+											mode === "password"
+												? "bg-white text-[#181d27] shadow-sm dark:bg-white/10 dark:text-white"
+												: "text-[#535862] dark:text-tertiary"
+										}`}
+									>
+										Password
+									</button>
+									<button
+										type="button"
+										role="tab"
+										aria-selected={mode === "magicLink"}
+										onClick={() => setMode("magicLink")}
+										className={`flex-1 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+											mode === "magicLink"
+												? "bg-white text-[#181d27] shadow-sm dark:bg-white/10 dark:text-white"
+												: "text-[#535862] dark:text-tertiary"
+										}`}
+									>
+										Magic link
+									</button>
+								</div>
+
 								{/* Form */}
 								<div className="w-full">
-									<SigninWithPassword />
+									{mode === "password" ? (
+										<SigninWithPassword />
+									) : (
+										<>
+											<p className="mb-4 text-sm leading-5 text-[#535862] dark:text-tertiary">
+												Enter your email and we&apos;ll send you a one-time signin link.
+											</p>
+											<SigninWithMagicLink />
+										</>
+									)}
 								</div>
 
 								{/* Actions */}

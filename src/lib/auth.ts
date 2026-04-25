@@ -9,7 +9,7 @@ import { getServerSession } from "next-auth";
 import bcrypt from "bcrypt";
 import { getMagicLinkEmail } from "@/lib/emailTemplates/magicLinkEmail";
 import { getBookingConfirmationEmail } from "@/lib/emailTemplates/bookingConfirmationEmail";
-import { sendEmail, formatEmail } from "@/lib/email";
+import { formatEmail } from "@/lib/email";
 
 export const authOptions: NextAuthOptions = {
 	pages: {
@@ -181,33 +181,50 @@ export const authOptions: NextAuthOptions = {
 		}),
 
 		EmailProvider({
+			// Prefer Stalwart submission relay (homelab) when configured;
+			// fall back to the legacy EMAIL_SERVER_* vars for dev/local environments.
 			server: {
-				host: process.env.EMAIL_SERVER_HOST,
-				port: Number(process.env.EMAIL_SERVER_PORT),
+				host:
+					process.env.STALWART_HOST ||
+					process.env.EMAIL_SERVER_HOST ||
+					"10.10.10.101",
+				port: Number(
+					process.env.STALWART_SUBMISSION_PORT ||
+						process.env.EMAIL_SERVER_PORT ||
+						587
+				),
 				auth: {
-					user: process.env.EMAIL_SERVER_USER,
-					pass: process.env.EMAIL_SERVER_PASSWORD,
+					user:
+						process.env.STALWART_ALERTS_USER ||
+						process.env.EMAIL_SERVER_USER ||
+						"alerts@nogl.tech",
+					pass:
+						process.env.STALWART_ALERTS_PASSWORD ||
+						process.env.EMAIL_SERVER_PASSWORD,
 				},
+				// Stalwart uses STARTTLS on 587, not implicit TLS.
 				secure: false,
+				requireTLS: true,
 				tls: {
 					rejectUnauthorized: false,
-					ciphers: "SSLv3",
 				},
 			},
-			from: process.env.EMAIL_FROM,
+			from:
+				process.env.STALWART_ALERTS_FROM ||
+				process.env.EMAIL_FROM ||
+				"alerts@nogl.tech",
+			maxAge: 15 * 60, // 15 min token expiry
 			async sendVerificationRequest({
 				identifier: email,
 				url,
-				provider: { server, from },
-				theme,
+				provider,
 			}) {
-				// Determine if this is a booking confirmation
+				// Determine if this is a booking confirmation flow
 				const isBookingConfirmation = url.includes("booking");
 
 				let emailContent;
 
 				if (isBookingConfirmation) {
-					// Ensure bookingDetails is defined with required properties
 					const bookingDetails = {
 						date: new Date().toISOString(),
 						includeRecording: false,
@@ -216,27 +233,35 @@ export const authOptions: NextAuthOptions = {
 						participants: 1,
 						totalAmount: 0,
 					};
-					// Use the booking confirmation email template
 					emailContent = getBookingConfirmationEmail({
 						url,
 						email,
 						bookingDetails,
 					});
 				} else {
-					// Use the standard magic link email template
+					// Standard magic-link signin email — clean template that
+					// also reminds the pilot they can sign in with a password.
+					const host =
+						process.env.NEXTAUTH_URL?.replace(/^https?:\/\//, "") ||
+						"app.nogl.tech";
 					emailContent = getMagicLinkEmail({
 						url,
-						host: "yourdomain.com",
+						host,
 						email,
 					});
 				}
 
-				// Send the email using your sendEmail function
-				await sendEmail({
+				// Send through the EmailProvider's configured server (Stalwart
+				// submission relay in prod), NOT through the legacy sendEmail()
+				// helper which uses different env vars.
+				const { createTransport } = await import("nodemailer");
+				const transport = createTransport(provider.server as any);
+				await transport.sendMail({
 					to: email,
+					from: provider.from,
 					subject: emailContent.subject,
-					html: emailContent.html,
 					text: emailContent.text,
+					html: emailContent.html,
 				});
 			},
 		}),
