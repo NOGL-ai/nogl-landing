@@ -1,6 +1,10 @@
 /**
  * Pure helper functions for the forecast demo seed script.
  * Extracted so they can be unit-tested without a Prisma connection.
+ *
+ * TODO Wave 2: in ensureTenantAndChannels(), when companyId === CALUMET_COMPANY_ID,
+ * override channel weights with CALUMET_CHANNEL_WEIGHTS from @/config/forecast
+ * instead of the global FORECAST_CHANNELS[i].weight defaults.
  */
 
 import type { ForecastChannelName } from "@/config/forecast";

@@ -104,8 +104,8 @@ export const DEFAULT_SCALE: ForecastScale = "daily";
 export type ForecastMetric = "sale" | "revenue";
 export const DEFAULT_METRIC: ForecastMetric = "sale";
 
-export const FORECAST_HORIZON_DAYS = 60;
-export const FORECAST_HISTORY_DAYS = 14;
+export const FORECAST_HORIZON_DAYS = 180;
+export const FORECAST_HISTORY_DAYS = 365;
 
 export const FORECAST_CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
 export const FORECAST_CACHE_MAX_ENTRIES = 500;
@@ -113,3 +113,39 @@ export const FORECAST_CACHE_MAX_ENTRIES = 500;
 // Approximate fixed rate used only when seeding the Indonesian Instax dataset.
 // Not used for any real-money conversion.
 export const SEED_IDR_TO_EUR = 0.000058;
+
+/**
+ * Multipliers applied to the median forecast value when synthesizing the
+ * pessimistic (Q30) and optimistic (Q70) quantile series in seed scripts.
+ *
+ * The spread is intentionally visible on a monthly chart:
+ *  3 → 0.65× median  (35% below)
+ *  4 → 1.0× median   (median)
+ *  5 → 1.35× median  (35% above)
+ *
+ * TODO Wave 2: replace the inline literals in scripts/seed-calumet-forecast.ts
+ * (line ~671) and scripts/seed-forecast-demo.ts (line ~337) with these values.
+ */
+export const QUANTILE_MULTIPLIERS: Record<3 | 4 | 5, number> = {
+  3: 0.65,
+  4: 1.0,
+  5: 1.35,
+} as const;
+
+/**
+ * Calumet-specific channel weight overrides.
+ * Reflects their real sales mix: flagship Shopify store, 30+ physical stores
+ * (offline), professional/studio B2B market, Amazon.de listing, other web
+ * traffic, and a small idealo/eBay residual (marketplace).
+ *
+ * TODO Wave 2: read from CALUMET_CHANNEL_WEIGHTS in ensureTenantAndChannels()
+ * inside src/lib/forecast/seed-helpers.ts when companyId === CALUMET_COMPANY_ID.
+ */
+export const CALUMET_CHANNEL_WEIGHTS: Record<ForecastChannelName, number> = {
+  shopify: 0.30,
+  offline: 0.22,
+  b2b: 0.18,
+  amazon: 0.15,
+  web: 0.10,
+  marketplace: 0.05,
+} as const;

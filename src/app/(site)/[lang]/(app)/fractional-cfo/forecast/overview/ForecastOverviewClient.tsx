@@ -14,12 +14,19 @@ import {
     type ForecastQuantile,
     type ForecastScale,
 } from "@/config/forecast";
-import { getForecastSales, type ForecastResponse } from "@/actions/forecast";
+import {
+    getForecastSales,
+    getForecastAnnotations,
+    type ForecastResponse,
+    type ForecastAnnotationDTO,
+} from "@/actions/forecast";
 import { ForecastChart } from "@/components/forecast/charts/ForecastChart";
 import { QueryClientProvider } from "@/components/atoms/QueryClientProvider";
 import type {
     ForecastChannelConfig,
     ForecastChannelData,
+    ForecastAnnotation,
+    ForecastAnnotationKind,
 } from "@/types/forecast";
 import { cx } from "@/utils/cx";
 
@@ -55,6 +62,16 @@ function ForecastOverviewClientInner({ companyId, companyName }: ForecastOvervie
         () => new Set(ALL_CHANNEL_NAMES),
     );
 
+    // Annotation layer toggles — all enabled by default.
+    const [annotationLayerState, setAnnotationLayerState] = useState<
+        Record<ForecastAnnotationKind, boolean>
+    >({
+        event_spike: true,
+        out_of_stock: true,
+        promotion: true,
+        launch: true,
+    });
+
     // ─── Data ─────────────────────────────────────────────────────────────
     const channelsKey = useMemo(
         () => Array.from(activeChannels).sort().join(","),
@@ -84,6 +101,12 @@ function ForecastOverviewClientInner({ companyId, companyName }: ForecastOvervie
         staleTime: 60_000,
     });
 
+    const annotationsQuery = useQuery<ForecastAnnotationDTO[]>({
+        queryKey: ["forecast-annotations", companyId, startDate.toISOString(), endDate.toISOString()],
+        queryFn: () => getForecastAnnotations({ companyId, startDate, endDate }),
+        staleTime: 5 * 60_000,
+    });
+
     // ─── Derived ──────────────────────────────────────────────────────────
     const visibleChannels = useMemo<ForecastChannelConfig[]>(
         () => FORECAST_CHANNELS.filter((c) => activeChannels.has(c.name)),
@@ -91,6 +114,37 @@ function ForecastOverviewClientInner({ companyId, companyName }: ForecastOvervie
     );
 
     const chartData = (query.data?.channels ?? {}) as ForecastChannelData;
+
+    // Map DTO → ForecastAnnotation (field names are identical; just narrow the types).
+    const annotations = useMemo<ForecastAnnotation[]>(
+        () =>
+            (annotationsQuery.data ?? []).filter(
+                (a) => annotationLayerState[a.kind as ForecastAnnotationKind],
+            ) as ForecastAnnotation[],
+        [annotationsQuery.data, annotationLayerState],
+    );
+
+    const annotationLayers = useMemo(
+        () =>
+            (
+                [
+                    { kind: "event_spike" as ForecastAnnotationKind, label: "Event Spike" },
+                    { kind: "out_of_stock" as ForecastAnnotationKind, label: "Out of Stock" },
+                    { kind: "promotion" as ForecastAnnotationKind, label: "Promotion" },
+                    { kind: "launch" as ForecastAnnotationKind, label: "Launch" },
+                ] as const
+            ).map((layer) => ({
+                kind: layer.kind,
+                label: layer.label,
+                enabled: annotationLayerState[layer.kind],
+                onToggle: () =>
+                    setAnnotationLayerState((prev) => ({
+                        ...prev,
+                        [layer.kind]: !prev[layer.kind],
+                    })),
+            })),
+        [annotationLayerState],
+    );
 
     // ─── Handlers ─────────────────────────────────────────────────────────
     const toggleChannel = (name: ForecastChannelName) => {
@@ -188,6 +242,8 @@ function ForecastOverviewClientInner({ companyId, companyName }: ForecastOvervie
                         mode={mode}
                         startForecastDate={query.data?.startForecastDate}
                         height={420}
+                        annotations={annotations}
+                        annotationLayers={annotationLayers}
                     />
                 )}
 
