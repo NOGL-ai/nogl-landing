@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import Avatar from "@/shared/Avatar";
 import ThemeToggler from "@/components/atoms/ThemeToggler";
@@ -16,9 +16,34 @@ interface UserProfileProps {
 	onLogout?: () => void | Promise<void>;
 }
 
+interface ActiveBrand {
+	id: string;
+	name: string;
+	slug?: string;
+}
+
 const UserProfile: React.FC<UserProfileProps> = ({ isCollapsed }) => {
 	const { data: session } = useSession();
 	const pathname = usePathname();
+	const [activeBrand, setActiveBrand] = useState<ActiveBrand | null>(null);
+
+	// Load the active brand from localStorage (set by the brand-onboarding flow).
+	// We check on every pathname change so finishing onboarding refreshes the label.
+	useEffect(() => {
+		try {
+			const raw = localStorage.getItem("nogl:active_brand");
+			if (raw) {
+				const parsed = JSON.parse(raw) as ActiveBrand;
+				if (parsed?.id && parsed?.name) {
+					setActiveBrand(parsed);
+					return;
+				}
+			}
+			setActiveBrand(null);
+		} catch {
+			setActiveBrand(null);
+		}
+	}, [pathname]);
 
 	const profilePic = session?.user?.image
 		? session.user.image.includes("http")
@@ -53,9 +78,19 @@ const UserProfile: React.FC<UserProfileProps> = ({ isCollapsed }) => {
 											<h4 className='font-inter truncate text-[14px] font-medium leading-5 tracking-[-0.084px] text-white'>
 												{session?.user?.name || "Account"}
 											</h4>
-											<p className='font-inter truncate text-[12px] font-normal leading-4 text-[#9293A9]'>
-												{session?.user?.email || ""}
-											</p>
+											{activeBrand ? (
+												<p
+													className='font-inter truncate text-[12px] font-normal leading-4 text-[#D7E0F4]'
+													title={`Active brand: ${activeBrand.name}`}
+												>
+													<span className='inline-block h-1.5 w-1.5 rounded-full bg-[#00C8F4] align-middle mr-1.5' />
+													{activeBrand.name}
+												</p>
+											) : (
+												<p className='font-inter truncate text-[12px] font-normal leading-4 text-[#9293A9]'>
+													{session?.user?.email || ""}
+												</p>
+											)}
 										</div>
 									</div>
 								)}
@@ -93,6 +128,11 @@ const UserProfile: React.FC<UserProfileProps> = ({ isCollapsed }) => {
 														<p className='mt-0.5 text-xs text-neutral-600 dark:text-neutral-300'>
 															{session.user.email}
 														</p>
+														{activeBrand && (
+															<p className='mt-0.5 text-xs font-medium text-primary-600 dark:text-primary-400'>
+																Brand: {activeBrand.name}
+															</p>
+														)}
 													</div>
 												</div>
 

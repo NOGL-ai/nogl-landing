@@ -191,3 +191,61 @@ export async function listBrands(): Promise<BrandProfile[]> {
 export async function getBrand(brandId: string): Promise<BrandProfile> {
   return apiFetch(`/brands/${brandId}`);
 }
+
+/**
+ * Create a new brand profile in the ad-scoring service.
+ *
+ * The shape is the FastAPI /api/v1/brands POST schema:
+ *   { name, palette_hex, product_terms, logo_reference_paths }
+ *
+ * On the browser this is proxied through `/api/ad-scoring/brands` so the
+ * AD_SCORING_API_KEY is never exposed to the client. On the server it goes
+ * directly to the FastAPI service.
+ */
+export interface CreateBrandInput {
+  name: string;
+  slug?: string;
+  country?: string;
+  homepage_url?: string;
+  palette_hex: string[];
+  product_terms: string[];
+  logo_reference_paths: string[];
+}
+
+export async function createBrand(
+  input: CreateBrandInput
+): Promise<BrandProfile> {
+  // Browser path: hit the internal Next.js proxy so the API key stays server-side.
+  if (typeof window !== "undefined") {
+    const res = await fetch("/api/ad-scoring/brands", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(input),
+    });
+    if (!res.ok) {
+      const body = await res.text().catch(() => "");
+      throw new Error(`createBrand ${res.status}: ${body}`);
+    }
+    return res.json() as Promise<BrandProfile>;
+  }
+
+  // Server path: hit FastAPI directly with the server-side API key.
+  return apiFetch("/brands", {
+    method: "POST",
+    body: JSON.stringify(input),
+  });
+}
+
+/**
+ * Upload a logo image as a brand reference asset.
+ *
+ * Reuses the standard asset upload flow (presign → PUT → finalize), tagging the
+ * resulting asset with `asset_type=image`. The returned `asset.s3_key` is what
+ * downstream callers should pass into `logo_reference_paths`.
+ */
+export async function uploadBrandLogo(file: File): Promise<AssetOut> {
+  return uploadAsset(file, {
+    platform: "meta_feed", // any platform works — logos aren't platform-scoped
+    asset_type: "image",
+  });
+}

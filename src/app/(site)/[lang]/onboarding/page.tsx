@@ -38,7 +38,7 @@ const VALIDATION_MESSAGES = {
 };
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useSession, signIn } from "next-auth/react";
 import { getSignedURL } from "@/actions/upload";
@@ -59,6 +59,8 @@ interface OnboardingFormData {
 export default function OnboardingPage() {
 	const { data: session, status, update } = useSession();
 	const router = useRouter();
+	const params = useParams<{ lang?: string }>();
+	const lang = (params?.lang as string) || "en";
 	const [formData, setFormData] =
 		useState<OnboardingFormData>(DEFAULT_FORM_VALUES);
 	const [loading, setLoading] = useState(false);
@@ -80,17 +82,19 @@ export default function OnboardingPage() {
 		}
 	}, [session]);
 
-	// Redirect based on authentication status and onboarding state
+	// Redirect based on authentication status and onboarding state.
+	// Once user-profile onboarding is done, send pilot clients into the brand
+	// onboarding flow to capture their brand_profile.
 	useEffect(() => {
 		if (status === "authenticated") {
 			if (session.user?.onboardingCompleted) {
-				router.push("/" as any); // Redirect to homepage
+				router.push(`/${lang}/onboarding/brand` as any);
 				return;
 			}
 		} else if (status === "unauthenticated") {
 			signIn();
 		}
-	}, [session, status, router]);
+	}, [session, status, router, lang]);
 
 	// Validate the form before submission
 	const validateForm = () => {
@@ -254,7 +258,7 @@ export default function OnboardingPage() {
 					},
 				});
 
-				router.push("/" as any); // Redirect to homepage after onboarding
+				router.push(`/${lang}/onboarding/brand` as any); // Step 2: brand onboarding
 			} else {
 				const errorData = await res.json();
 				toast.error(
