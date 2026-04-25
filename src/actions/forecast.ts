@@ -32,7 +32,9 @@ const salesParamsSchema = z.object({
   companyId: z.string().min(1),
   startDate: dateOrString.optional(),
   endDate: dateOrString.optional(),
-  channels: z.array(z.enum(["web", "marketplace", "b2b"])).optional(),
+  channels: z
+    .array(z.enum(["web", "marketplace", "b2b", "shopify", "amazon", "offline"]))
+    .optional(),
   categories: z.array(z.string()).optional(),
   variantIds: z.array(z.string()).optional(),
   quantile: z.union([z.literal(3), z.literal(4), z.literal(5)]).optional(),

@@ -49,6 +49,14 @@ interface ForecastChartProps {
   startForecastDate?: string;
   annotations?: ForecastAnnotation[];
   annotationLayers?: AnnotationLayerToggle[];
+  /**
+   * Bar layout mode.
+   *  - `'stacked'` (default): channels stack on top of one another, with
+   *    history and forecast in two separate stacks.
+   *  - `'grouped'`: channels render side-by-side as separate bars per
+   *    category, all with rounded tops (mockup style).
+   */
+  mode?: "stacked" | "grouped";
 }
 
 // Per-kind dot colors used in the legend + flag stems.
@@ -249,7 +257,17 @@ export function ForecastChart({
   startForecastDate,
   annotations,
   annotationLayers,
+  mode = "stacked",
 }: ForecastChartProps) {
+  const isGrouped = mode === "grouped";
+  // In grouped mode each Bar lives on its own track (no stackId), so every
+  // top is rounded. In stacked mode only the top-most channel of each stack
+  // gets rounded corners.
+  const historyStackId = isGrouped ? undefined : "history";
+  const forecastStackId = isGrouped ? undefined : "forecast";
+  const groupedRadius: [number, number, number, number] = [4, 4, 0, 0];
+  const stackedTopRadius: [number, number, number, number] = [3, 3, 0, 0];
+  const stackedFlatRadius: [number, number, number, number] = [0, 0, 0, 0];
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
   const textColor = isDark ? "#d5d7da" : "#414651";
@@ -422,30 +440,40 @@ export function ForecastChart({
             }}
           />
 
-          {/* HISTORY stack (blues) */}
+          {/* HISTORY bars (blues). In stacked mode they share stackId="history"
+              and only the top channel gets rounded corners; in grouped mode
+              they sit side-by-side and every bar has rounded tops. */}
           {channels.map((ch, i) => (
             <Bar
               key={`h-${ch.name}`}
               dataKey={`history_${ch.name}`}
-              stackId="history"
+              stackId={historyStackId}
               fill={HISTORY_PALETTE[i % HISTORY_PALETTE.length]}
               radius={
-                i === channels.length - 1 ? [3, 3, 0, 0] : [0, 0, 0, 0]
+                isGrouped
+                  ? groupedRadius
+                  : i === channels.length - 1
+                    ? stackedTopRadius
+                    : stackedFlatRadius
               }
               maxBarSize={24}
               isAnimationActive={false}
             />
           ))}
 
-          {/* FORECAST stack (pinks) */}
+          {/* FORECAST bars (pinks). Same stacked vs. grouped logic as above. */}
           {channels.map((ch, i) => (
             <Bar
               key={`f-${ch.name}`}
               dataKey={`forecast_${ch.name}`}
-              stackId="forecast"
+              stackId={forecastStackId}
               fill={FORECAST_PALETTE[i % FORECAST_PALETTE.length]}
               radius={
-                i === channels.length - 1 ? [3, 3, 0, 0] : [0, 0, 0, 0]
+                isGrouped
+                  ? groupedRadius
+                  : i === channels.length - 1
+                    ? stackedTopRadius
+                    : stackedFlatRadius
               }
               maxBarSize={24}
               isAnimationActive={false}
