@@ -2,6 +2,7 @@ import { Palette, Package as Package2, Plus } from '@untitledui/icons';
 import React from "react";
 import type { Locale } from "@/i18n";
 import type { BrandProfile } from "@/lib/ad-scoring/types";
+import { getTenantContext, filterBrandsByTenant } from "@/lib/ad-scoring/tenant";
 
 export const metadata = {
   title: "Brand Profiles",
@@ -16,6 +17,10 @@ export default async function BrandsPage({
 
   const apiBase = process.env.AD_SCORING_API_URL ?? "http://10.10.10.184:8000";
 
+  // Resolve tenant scope for this user.  Admins see everything; pilots see only
+  // brands whose name contains their tenant token (calumet_de -> "calumet").
+  const tenant = await getTenantContext();
+
   let brands: BrandProfile[] = [];
   try {
     const apiKey = process.env.AD_SCORING_API_KEY ?? "";
@@ -23,7 +28,10 @@ export default async function BrandsPage({
       next: { revalidate: 60 },
       headers: apiKey ? { "X-API-Key": apiKey } : {},
     });
-    if (res.ok) brands = await res.json();
+    if (res.ok) {
+      const all = (await res.json()) as BrandProfile[];
+      brands = filterBrandsByTenant(all, tenant);
+    }
   } catch {
     // API unreachable — show empty state
   }

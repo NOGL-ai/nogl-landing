@@ -2,6 +2,11 @@
 
 A full-stack SaaS landing page and application built with Next.js, featuring modern UI components, authentication, and comprehensive integrations.
 
+## 📚 Research
+
+This codebase is backed by competitor + UX + market research. See [RESEARCH.md](RESEARCH.md)
+for the index, or jump straight to [docs/research/INDEX.md](docs/research/INDEX.md).
+
 ## 🚀 Features
 
 - Modern Next.js 14 application

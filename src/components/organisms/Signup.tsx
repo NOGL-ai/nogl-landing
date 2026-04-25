@@ -1,10 +1,13 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { SignupWithPassword } from "../molecules";
 import type { Route } from "next";
 
 export default function Signup() {
+	const pathname = usePathname();
+	const lang = pathname?.split("/")[1] || "en";
 	return (
 		<section className="flex min-h-screen w-full items-stretch overflow-hidden bg-white dark:bg-[#071025]">
 			{/* Left: Sign-up form */}
@@ -56,7 +59,7 @@ export default function Signup() {
 										Already have an account?
 									</p>
 									<Link
-										href={"/auth/signin" as Route}
+										href={`/${lang}/auth/signin` as Route}
 										className="text-sm font-semibold leading-5 text-[#6941c6] hover:underline"
 									>
 										Log in
