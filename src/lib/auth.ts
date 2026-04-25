@@ -254,15 +254,24 @@ export const authOptions: NextAuthOptions = {
 				// Send through the EmailProvider's configured server (Stalwart
 				// submission relay in prod), NOT through the legacy sendEmail()
 				// helper which uses different env vars.
-				const { createTransport } = await import("nodemailer");
-				const transport = createTransport(provider.server as any);
-				await transport.sendMail({
-					to: email,
-					from: provider.from,
-					subject: emailContent.subject,
-					text: emailContent.text,
-					html: emailContent.html,
-				});
+				try {
+					const { createTransport } = await import("nodemailer");
+					const transport = createTransport(provider.server as any);
+					const info = await transport.sendMail({
+						to: email,
+						from: provider.from,
+						subject: emailContent.subject,
+						text: emailContent.text,
+						html: emailContent.html,
+					});
+					console.log(
+						`[magic-link] sent to ${email} messageId=${info.messageId}`
+					);
+				} catch (err) {
+					// Surface the underlying SMTP error so we can debug from logs.
+					console.error("[magic-link] sendVerificationRequest failed:", err);
+					throw err;
+				}
 			},
 		}),
 
