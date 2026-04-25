@@ -228,7 +228,7 @@ export default function SigninWithPassword() {
 				</label>
 
 				<Link
-					href={'/auth/forgot-password' as any}
+					href={`/${pathname?.split("/")[1] || "en"}/auth/forgot-password` as any}
 					className='text-sm font-semibold leading-5 text-[#6941c6] hover:underline'
 				>
 					Forgot password

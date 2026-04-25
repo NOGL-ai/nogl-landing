@@ -1,11 +1,14 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import Logo from "@/shared/Logo";
 import { GoogleSigninButton } from "../atoms";
 import { SigninWithPassword } from "../molecules";
 
 export default function Signin() {
+	const pathname = usePathname();
+	const lang = pathname?.split("/")[1] || "en";
 	return (
 		<section className="flex min-h-screen w-full items-stretch overflow-hidden bg-white dark:bg-[#071025]">
 		{/* Left: Sign-in form */}
@@ -56,7 +59,7 @@ export default function Signin() {
 									Don&apos;t have an account?
 								</p>
 								<Link
-									href={"/auth/signup" as any}
+									href={`/${lang}/auth/signup` as any}
 									className="text-sm font-semibold leading-5 text-[#6941c6] hover:underline"
 								>
 									Sign up

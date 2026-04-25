@@ -5,6 +5,7 @@ import { notFound, redirect } from "next/navigation";
 import type { Locale } from "@/i18n";
 import type { AnalysisReport, MetricDetail, MetricStatus } from "@/lib/ad-scoring/types";
 import type { Route } from 'next';
+import ShareReportButton from "@/components/application/ad-scoring/ShareReportButton";
 
 export const metadata = {
   title: "Analysis Report",
@@ -115,7 +116,7 @@ export default async function AnalysisReportPage({
 }: {
   params: Promise<{ lang: Locale; runId: string }>;
 }) {
-  const { runId } = await params;
+  const { runId, lang } = await params;
 
   const apiBase = process.env.AD_SCORING_API_URL ?? "http://10.10.10.184:8000";
 
@@ -141,7 +142,7 @@ export default async function AnalysisReportPage({
       if (byAsset?.ok) {
         const latestRun = await byAsset.json() as { id: string };
         // redirect() must be called outside try/catch to propagate correctly
-        redirect(`/ad-scoring/analysis/${latestRun.id}` as Route);
+        redirect(`/${lang}/ad-scoring/analysis/${latestRun.id}` as Route);
       }
       notFound();
     }
@@ -166,7 +167,7 @@ export default async function AnalysisReportPage({
           Could not load report for run <code className="bg-bg-tertiary px-1 rounded text-xs">{runId}</code>.
           The API may be unreachable or the run is still in progress.
         </p>
-        <a href="/ad-scoring/assets" className="mt-4 inline-block text-sm text-text-brand hover:underline">
+        <a href={`/${lang}/ad-scoring/assets`} className="mt-4 inline-block text-sm text-text-brand hover:underline">
           ← Back to assets
         </a>
       </div>
@@ -195,14 +196,19 @@ export default async function AnalysisReportPage({
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-8">
       {/* Header */}
-      <div>
-        <a href="/ad-scoring/assets" className="text-xs text-text-tertiary hover:text-text-primary transition-colors">
-          ← Assets
-        </a>
-        <h1 className="mt-2 text-2xl font-semibold text-text-primary">
-          Analysis Report
-        </h1>
-        <p className="mt-1 text-xs font-mono text-text-tertiary break-all">{runId}</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <a href={`/${lang}/ad-scoring/assets`} className="text-xs text-text-tertiary hover:text-text-primary transition-colors">
+            ← Assets
+          </a>
+          <h1 className="mt-2 text-2xl font-semibold text-text-primary">
+            Analysis Report
+          </h1>
+          <p className="mt-1 text-xs font-mono text-text-tertiary break-all">{runId}</p>
+        </div>
+        <div className="shrink-0">
+          <ShareReportButton runId={resolvedRunId} lang={lang} />
+        </div>
       </div>
 
       {/* Summary cards */}
@@ -312,14 +318,14 @@ export default async function AnalysisReportPage({
       {/* Actions */}
       <div className="flex gap-3">
         <a
-          href="/ad-scoring/reviews"
+          href={`/${lang}/ad-scoring/reviews`}
           className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-bg-brand-solid text-white hover:opacity-90 transition-opacity"
         >
           <Eye className="h-4 w-4" />
           Open Review Queue
         </a>
         <a
-          href="/ad-scoring/assets"
+          href={`/${lang}/ad-scoring/assets`}
           className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-bg-tertiary text-text-primary hover:bg-bg-secondary transition-colors"
         >
           ← Back to Assets
