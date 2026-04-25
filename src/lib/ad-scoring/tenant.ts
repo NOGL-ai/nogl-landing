@@ -16,12 +16,38 @@ import { authOptions } from "@/lib/auth";
 const EMAIL_TO_TENANT: Record<string, string> = {
   "calumet@nogl.tech": "calumet_de",
   "teltec@nogl.tech": "teltec_de",
+  "erhardt@nogl.tech": "foto_erhardt_de",
+  "leistenschneider@nogl.tech": "foto_leistenschneider_de",
+  "fotokoch@nogl.tech": "fotokoch_de",
 };
+
+/**
+ * Stable list of tenant IDs that exist in assets.Tenant on CT 213.
+ * Verified 2026-04-25 via:
+ *   psql -d nogl_landing -c 'SELECT id FROM assets."Tenant";'
+ * Used as a sanity check on the local-part fallback so we don't leak
+ * other tenants when a user's local part happens to match an unrelated
+ * slug.
+ */
+const KNOWN_TENANT_IDS: ReadonlySet<string> = new Set([
+  "calumet",
+  "calumet_de",
+  "foto_erhardt",
+  "foto_erhardt_de",
+  "fotokoch_de",
+  "foto_leistenschneider_de",
+  "kamera_express",
+  "kamera_express_de",
+  "teltec_de",
+]);
 
 /** Token used inside a brand name to identify a tenant. */
 const TENANT_BRAND_TOKEN: Record<string, string> = {
   calumet_de: "calumet",
   teltec_de: "teltec",
+  foto_erhardt_de: "erhardt",
+  foto_leistenschneider_de: "leistenschneider",
+  fotokoch_de: "fotokoch",
 };
 
 export interface TenantContext {
@@ -49,12 +75,23 @@ export async function getTenantContext(): Promise<TenantContext> {
   // Explicit map first
   let slug = EMAIL_TO_TENANT[email] ?? null;
 
-  // Fallback: derive slug from local part (e.g. "calumet@nogl.tech" -> "calumet_de")
+  // Fallback: derive slug from local part (e.g. "calumet@nogl.tech" -> "calumet_de").
+  // Validate against KNOWN_TENANT_IDS to avoid silently leaking another tenant's
+  // data when the local part matches an unrelated slug.
   if (!slug) {
     const local = email.split("@")[0];
     if (local && /^[a-z][a-z0-9_-]*$/.test(local)) {
-      // Default region suffix when not specified.
-      slug = local.includes("_") ? local : `${local}_de`;
+      const candidate = local.includes("_") ? local : `${local}_de`;
+      if (KNOWN_TENANT_IDS.has(candidate)) {
+        slug = candidate;
+      } else {
+        // eslint-disable-next-line no-console
+        console.warn(
+          `[tenant] No tenant mapping for email "${email}"; derived slug ` +
+            `"${candidate}" not in KNOWN_TENANT_IDS. Returning null so ` +
+            `caller renders an empty state instead of leaking other tenants.`,
+        );
+      }
     }
   }
 
