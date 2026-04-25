@@ -15,7 +15,13 @@ export const CALUMET_COMPANY = {
   country_code: "NL",
 } as const;
 
-export type ForecastChannelName = "web" | "marketplace" | "b2b";
+export type ForecastChannelName =
+  | "web"
+  | "marketplace"
+  | "b2b"
+  | "shopify"
+  | "amazon"
+  | "offline";
 
 export interface ForecastChannelDef {
   name: ForecastChannelName;
@@ -26,9 +32,12 @@ export interface ForecastChannelDef {
 }
 
 export const FORECAST_CHANNELS: readonly ForecastChannelDef[] = [
-  { name: "web", label: "Web", colorFg: "#2970FF", colorBg: "#EFF4FF", weight: 0.6 },
-  { name: "marketplace", label: "Marketplace", colorFg: "#F79009", colorBg: "#FFFAEB", weight: 0.3 },
+  { name: "web", label: "Web", colorFg: "#2970FF", colorBg: "#EFF4FF", weight: 0.4 },
+  { name: "marketplace", label: "Marketplace", colorFg: "#F79009", colorBg: "#FFFAEB", weight: 0.2 },
   { name: "b2b", label: "B2B", colorFg: "#12B76A", colorBg: "#ECFDF3", weight: 0.1 },
+  { name: "shopify", label: "Shopify", colorFg: "#2563EB", colorBg: "#EFF4FF", weight: 0.15 },
+  { name: "amazon", label: "Amazon", colorFg: "#EC4899", colorBg: "#FCE7F3", weight: 0.1 },
+  { name: "offline", label: "Offline Store", colorFg: "#1E3A5F", colorBg: "#E0E7FF", weight: 0.05 },
 ] as const;
 
 /**
@@ -71,6 +80,9 @@ export const HISTORY_PALETTE: readonly string[] = [
   "#2970FF", // web   — blue
   "#F79009", // marketplace — amber
   "#12B76A", // b2b   — green
+  "#90C4FF", // shopify history (light sky)
+  "#2563EB", // amazon history (medium blue)
+  "#1E3A5F", // offline history (dark navy)
 ] as const;
 
 /**
@@ -81,6 +93,9 @@ export const FORECAST_PALETTE: readonly string[] = [
   "#84ADFF", // web   — light blue
   "#FEC84B", // marketplace — light amber
   "#6CE9A6", // b2b   — light green
+  "#F9A8D4", // shopify forecast (light pink)
+  "#EC4899", // amazon forecast (hot pink)
+  "#7C3AED", // offline forecast (muted purple)
 ] as const;
 
 export type ForecastScale = "daily" | "weekly" | "monthly";

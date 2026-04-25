@@ -29,6 +29,11 @@ interface ComparisonForecastChartProps {
   channels: ForecastChannelConfig[];
   annotations?: ForecastAnnotation[];
   annotationLayers?: AnnotationLayerToggle[];
+  /**
+   * Bar layout mode forwarded to both `<ForecastChart />` instances.
+   * Defaults to `'stacked'` to preserve existing behavior.
+   */
+  mode?: "stacked" | "grouped";
 }
 
 export function ComparisonForecastChart({
@@ -42,6 +47,7 @@ export function ComparisonForecastChart({
   channels,
   annotations,
   annotationLayers,
+  mode = "stacked",
 }: ComparisonForecastChartProps) {
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
@@ -56,6 +62,7 @@ export function ComparisonForecastChart({
           height={300}
           annotations={annotations}
           annotationLayers={annotationLayers}
+          mode={mode}
         />
       </div>
       <div>
@@ -69,6 +76,7 @@ export function ComparisonForecastChart({
           height={300}
           annotations={annotations}
           annotationLayers={annotationLayers}
+          mode={mode}
         />
       </div>
     </div>

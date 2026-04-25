@@ -73,11 +73,15 @@ export function weekdayFactor(channel: ForecastChannelName, date: Date): number 
 export function discountFactor(channel: ForecastChannelName): number {
   switch (channel) {
     case "web":
+    case "shopify":
       return 1.0;
     case "marketplace":
+    case "amazon":
       return 0.92;
     case "b2b":
       return 0.85;
+    case "offline":
+      return 1.0;
   }
 }
 
