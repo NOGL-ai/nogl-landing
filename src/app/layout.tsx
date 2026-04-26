@@ -1,7 +1,6 @@
 import "../styles/globals.scss";
 import { Inter } from "next/font/google";
 import Script from "next/script";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import ClientLayout from "./ClientLayout";
 import { ThemeProvider } from "@/components/atoms/ThemeProvider";
 import "@/styles/globals.css";
@@ -94,7 +93,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 				<ThemeProvider>
 					{children}
 				</ThemeProvider>
-				{process.env.NODE_ENV === "production" ? <SpeedInsights /> : null}
 				{/* Videoask widget temporarily disabled
         <Script
           id="videoask-config"
