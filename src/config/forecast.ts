@@ -105,7 +105,7 @@ export type ForecastMetric = "sale" | "revenue";
 export const DEFAULT_METRIC: ForecastMetric = "sale";
 
 export const FORECAST_HORIZON_DAYS = 180;
-export const FORECAST_HISTORY_DAYS = 365;
+export const FORECAST_HISTORY_DAYS = 730;
 
 export const FORECAST_CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
 export const FORECAST_CACHE_MAX_ENTRIES = 500;
