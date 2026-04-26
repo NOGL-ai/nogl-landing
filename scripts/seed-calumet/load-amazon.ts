@@ -68,6 +68,10 @@ function parseBool(s: string | null | undefined): boolean {
 }
 
 export function loadAmazon(path: string): AmazonRow[] {
+  if (!fs.existsSync(path)) {
+    console.warn(`[load-amazon] CSV not found at ${path} — returning [] (hero SKUs only)`);
+    return [];
+  }
   const raw = fs.readFileSync(path);
   // Strip BOM
   const content = raw[0] === 0xef && raw[1] === 0xbb && raw[2] === 0xbf
