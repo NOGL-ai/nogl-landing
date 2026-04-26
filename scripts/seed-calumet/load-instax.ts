@@ -67,6 +67,10 @@ function parseDate(s: string): Date | null {
 }
 
 export function loadInstax(path: string): InstaxRow[] {
+  if (!fs.existsSync(path)) {
+    console.warn(`[load-instax] CSV not found at ${path} — returning [] (hero SKUs only)`);
+    return [];
+  }
   const raw = fs.readFileSync(path);
   // Strip UTF-8 BOM if present
   const content = raw[0] === 0xef && raw[1] === 0xbb && raw[2] === 0xbf
