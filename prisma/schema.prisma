@@ -833,7 +833,7 @@ model ForecastVariant {
   quantiles       ForecastQuantile[]
   poLines         ReplenishmentPOLine[]
 
-  @@index([productId])
+  @@index([productId, isActive])
   @@schema("forecast")
 }
 
@@ -852,6 +852,8 @@ model ForecastHistoricalSale {
   @@unique([variantId, channelId, saleDate])
   @@index([variantId, saleDate])
   @@index([channelId, saleDate])
+  @@index([variantId, saleDate, isStockout])
+  @@index([channelId, variantId, saleDate])
   @@schema("forecast")
 }
 
@@ -871,6 +873,7 @@ model ForecastQuantile {
   @@unique([variantId, channelId, forecastDate, quantile])
   @@index([variantId, forecastDate])
   @@index([channelId, forecastDate])
+  @@index([variantId, forecastDate, quantile])
   @@schema("forecast")
 }
 
